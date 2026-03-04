@@ -1,0 +1,65 @@
+name: Auditor Agent
+
+on:
+  workflow_run:
+    workflows: ["Daily Ingest"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auditor
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    # Only run if ingest succeeded (or manual trigger)
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/New_York
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas anthropic
+
+      - name: Run Auditor agent
+        run: python agents/auditor.py
+
+      - name: Commit audit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase --autostash origin/main
+
+          CHANGED=0
+          for f in "data/picks.json" "data/audit_log.json"; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
+          if [ "$CHANGED" -eq 0 ]; then
+            echo "No audit changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Auditor results $(TZ=America/New_York date +%Y-%m-%d) [skip ci]"
+          git push origin HEAD:main

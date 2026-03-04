@@ -1,0 +1,82 @@
+name: Daily Ingest
+
+on:
+  schedule:
+    - cron: "0 13 * * *"   # 8:00 AM ET (13:00 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ingest
+  cancel-in-progress: true
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/New_York
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas numpy requests beautifulsoup4 lxml
+
+      - name: Ingest ESPN scores (yesterday + backfill)
+        run: |
+          python ingest/espn_daily_ingest.py \
+            --out data/nba_master.csv \
+            --max-backfill-days 7
+
+      - name: Ingest player game logs (yesterday)
+        run: |
+          python ingest/espn_player_ingest.py \
+            --mode yesterday \
+            --master data/nba_master.csv \
+            --whitelist playerprops/player_whitelist.csv \
+            --out data/player_game_log.csv \
+            --dim data/player_dim.csv \
+            --team-out data/team_game_log.csv \
+            --sleep 0.25
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase --autostash origin/main
+
+          FILES=(
+            "data/nba_master.csv"
+            "data/player_game_log.csv"
+            "data/player_dim.csv"
+            "data/team_game_log.csv"
+          )
+
+          CHANGED=0
+          for f in "${FILES[@]}"; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
+          if [ "$CHANGED" -eq 0 ]; then
+            echo "No data changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Daily ingest [skip ci]"
+          git push origin HEAD:main

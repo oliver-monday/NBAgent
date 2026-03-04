@@ -1,0 +1,80 @@
+name: Analyst Agent
+
+on:
+  # Chains off the Auditor completing — ensures audit feedback is written first
+  workflow_run:
+    workflows: ["Auditor Agent"]
+    types: [completed]
+  # Also allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: analyst
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/New_York
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas anthropic
+
+      - name: Run Analyst agent
+        run: python agents/analyst.py
+
+      - name: Commit picks
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase --autostash origin/main
+
+          if [ -f "data/picks.json" ] && [ -n "$(git status --porcelain -- data/picks.json)" ]; then
+            git add data/picks.json
+            git commit -m "Analyst picks $(TZ=America/New_York date +%Y-%m-%d) [skip ci]"
+            git push origin HEAD:main
+          else
+            echo "No pick changes to commit."
+          fi
+
+      - name: Build and deploy frontend
+        run: python agents/build_site.py
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  deploy:
+    needs: analyze
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

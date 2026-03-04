@@ -1,0 +1,72 @@
+name: Injuries Refresh
+
+on:
+  schedule:
+    - cron: "0 14 * * *"   #  9:00 AM ET
+    - cron: "0 15 * * *"   # 10:00 AM ET
+    - cron: "0 16 * * *"   # 11:00 AM ET
+    - cron: "0 17 * * *"   # 12:00 PM ET
+    - cron: "0 18 * * *"   #  1:00 PM ET
+    - cron: "0 19 * * *"   #  2:00 PM ET
+    - cron: "0 20 * * *"   #  3:00 PM ET
+    - cron: "0 21 * * *"   #  4:00 PM ET
+    - cron: "0 22 * * *"   #  5:00 PM ET
+    - cron: "0 23 * * *"   #  6:00 PM ET
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: injuries-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/New_York
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas requests beautifulsoup4 lxml
+
+      - name: Refresh Rotowire injuries
+        run: |
+          SLATE_DATE="$(TZ=America/New_York date +%Y-%m-%d)"
+          python ingest/rotowire_injuries_only.py --date "$SLATE_DATE"
+
+      - name: Commit injuries
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase --autostash origin/main
+
+          CHANGED=0
+          for f in "data/injuries_today.json" "logs/injury_log.csv"; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
+          if [ "$CHANGED" -eq 0 ]; then
+            echo "No injury changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Injuries refresh [skip ci]"
+          git push origin HEAD:main
