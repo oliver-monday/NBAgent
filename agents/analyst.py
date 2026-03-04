@@ -38,7 +38,7 @@ TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
 # ── Config ───────────────────────────────────────────────────────────
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 4096
+MAX_TOKENS = 8192
 # How many recent games to include per player in the prompt
 RECENT_GAME_WINDOW = 10
 # How many audit log entries to feed back as context (keep lean)
