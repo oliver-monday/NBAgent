@@ -220,16 +220,35 @@ Select high-confidence player prop picks for today's games. Focus on:
 - Assists (AST)
 - 3-pointers made (3PM)
 
-## SELECTION PHILOSOPHY
-- Prioritize SAFE, high hit-rate thresholds over "reach" picks
-- Season averages can be misleading — weight recent form (last 5–10 games) heavily
-- Consider matchup context: opponent's defensive stats, pace, home/away splits
-- Factor in rest/back-to-back situations
-- Injuries to key teammates change usage — factor this in
-- Only pick players with enough recent data (minimum 5 games)
+## TIER SYSTEM — HOW TO THINK ABOUT THRESHOLDS
+This system targets fixed tier thresholds that match how parlays are structured on betting platforms.
+Do NOT pick arbitrary lines. Only use values from these tiers:
+
+  PTS tiers:  10 / 15 / 20 / 25 / 30
+  REB tiers:  2 / 4 / 6 / 8 / 10 / 12
+  AST tiers:  2 / 4 / 6 / 8 / 10 / 12
+  3PM tiers:  1 / 2 / 3 / 4
+
+For each player/stat, your job is to find the highest tier where their hit rate across recent games
+is strong enough to justify ≥70% confidence. Work DOWN from the player's ceiling until you find
+a tier with a reliable floor.
+
+Example reasoning process for PTS:
+  - Player averages 21 pts but has inconsistent games (14, 22, 18, 28, 16, 24, 12, 19, 21, 17)
+  - At the 20+ tier: hit rate = 4/10 = 40% → skip
+  - At the 15+ tier: hit rate = 8/10 = 80% → this is the pick
+  - pick_value = 15, confidence = 80%
+
+The edge is in finding floors the market undervalues. Season averages overstate consistency.
+A player who averages 21 pts but only clears 20 half the time is a 15-tier pick, not a 20-tier pick.
+
+## SELECTION RULES
+- Weight recent form (last 5–10 games) heavily — season averages are misleading
+- Minimum 5 recent games required to evaluate any player
 - Skip players listed as OUT or DOUBTFUL
-- Express confidence as a percentage (only include picks with ≥70% confidence)
-- Pick as many qualifying props as there are — don't artificially limit volume
+- Factor in teammate injuries (affects usage/role), back-to-back fatigue, home/away splits
+- Pick as many qualifying props as there are — don't limit volume artificially
+- Only output picks with confidence_pct ≥ 70
 
 ## TODAY'S GAMES
 {games_block}
@@ -258,12 +277,12 @@ Each pick must follow this exact schema:
     "pick_value": number,
     "direction": "OVER",
     "confidence_pct": number (70-99),
-    "reasoning": "2-3 sentence statistical justification referencing specific recent numbers"
+    "reasoning": "2-3 sentence justification: state the tier hit rate from recent games (e.g. '8/10 games over 15 pts'), explain why this tier is the right floor, note any relevant matchup or usage context"
   }}
 ]
 
-Pick value should be the threshold the player needs to EXCEED (i.e., the line).
-Always set direction to OVER — we only pick overs on safe floors.
+pick_value must be one of the valid tier values listed above. No other values allowed.
+direction is always OVER.
 Only include picks with confidence_pct >= 70.
 """
 

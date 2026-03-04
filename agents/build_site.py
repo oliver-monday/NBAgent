@@ -266,6 +266,17 @@ def generate_html(d: dict) -> str:
                  overflow: hidden; margin-top: 4px; width: 64px; margin-left: auto; }}
     .conf-fill {{ height: 100%; border-radius: 99px; background: var(--accent2); }}
 
+    /* Game group headers */
+    .game-group {{ margin-bottom: 24px; }}
+    .game-group-header {{ display: flex; align-items: center; gap: 10px;
+                          margin-bottom: 10px; padding-bottom: 8px;
+                          border-bottom: 1px solid var(--border); }}
+    .game-matchup {{ font-size: 14px; font-weight: 700; letter-spacing: -0.3px; }}
+    .game-tip {{ font-size: 11px; color: var(--accent2); background: var(--surface2);
+                 border: 1px solid var(--border); border-radius: 4px;
+                 padding: 2px 7px; white-space: nowrap; }}
+    .game-pick-count {{ font-size: 11px; color: var(--muted); margin-left: auto; }}
+
     /* Streak pill */
     .streak-pill {{ display: inline-flex; align-items: center; gap: 4px;
                     font-size: 10px; font-weight: 600; padding: 2px 7px;
@@ -402,22 +413,67 @@ function renderPicks() {{
     c.innerHTML = `<div class="empty"><div class="empty-icon">🏀</div>No picks yet for ${{DATA.today_str}}.<br>Check back after 11 AM ET.</div>`;
     return;
   }}
-  const byProp = {{}};
-  picks.forEach(p => (byProp[p.prop_type]=byProp[p.prop_type]||[]).push(p));
+
+  // Build a game key → metadata map, preserving tip-off sort order
+  const gameMap = {{}};
+  picks.forEach(p => {{
+    const ha = p.home_away === 'H' ? 'H' : 'A';
+    // Normalize: always store as "AWAY @ HOME"
+    const home = ha === 'H' ? p.team : p.opponent;
+    const away = ha === 'A' ? p.team : p.opponent;
+    const key  = `${{away}}@${{home}}`;
+    if (!gameMap[key]) {{
+      gameMap[key] = {{
+        key, home, away,
+        game_time: p.game_time || '',
+        picks: []
+      }};
+    }}
+    gameMap[key].picks.push(p);
+  }});
+
+  // Sort games by tip-off time (TBD goes last)
+  function timeToMinutes(t) {{
+    if (!t || t === 'TBD') return 9999;
+    const m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!m) return 9999;
+    let h = parseInt(m[1]), min = parseInt(m[2]);
+    if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
+    if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
+    return h * 60 + min;
+  }}
+  const games = Object.values(gameMap).sort((a,b) =>
+    timeToMinutes(a.game_time) - timeToMinutes(b.game_time));
+
   const ps = DATA.prop_stats;
-  let html = `<div class="section-header">${{picks.length}} pick${{picks.length!==1?'s':''}} — ${{DATA.today_str}}</div><div class="picks-grid">`;
-  ['PTS','REB','AST','3PM'].forEach(pt => {{
-    if (!byProp[pt]) return;
-    byProp[pt].sort((a,b)=>b.confidence_pct-a.confidence_pct).forEach(p => {{
-      const ha   = p.home_away==='H' ? 'vs' : '@';
-      const time = p.game_time ? `<span class="game-time">⏰ ${{p.game_time}}</span>` : '';
+  let html = `<div class="section-header">${{picks.length}} pick${{picks.length!==1?'s':''}} — ${{DATA.today_str}}</div>`;
+
+  games.forEach(g => {{
+    const timeTag = g.game_time ? `<span class="game-tip">⏰ ${{g.game_time}}</span>` : '';
+    html += `
+      <div class="game-group">
+        <div class="game-group-header">
+          <span class="game-matchup">${{g.away}} @ ${{g.home}}</span>
+          ${{timeTag}}
+          <span class="game-pick-count">${{g.picks.length}} pick${{g.picks.length!==1?'s':''}}</span>
+        </div>
+        <div class="picks-grid">`;
+
+    // Sort picks within game by prop type order, then confidence desc
+    const propOrder = {{'PTS':0,'REB':1,'AST':2,'3PM':3}};
+    g.picks.sort((a,b) =>
+      (propOrder[a.prop_type]??9) - (propOrder[b.prop_type]??9) ||
+      b.confidence_pct - a.confidence_pct
+    ).forEach(p => {{
+      const pt  = p.prop_type;
+      const ha  = p.home_away === 'H' ? 'vs' : '@';
       const pill = streakPill(ps[pt]);
       html += `
         <div class="pick-card">
           <div class="prop-badge ${{propColor(pt)}}">${{pt}}</div>
           <div class="pick-main">
             <div class="player">${{p.player_name}}</div>
-            <div class="matchup"><span>${{p.team}} ${{ha}} ${{p.opponent}}</span>${{time}}</div>
+            <div class="matchup"><span>${{p.team}} ${{ha}} ${{p.opponent}}</span></div>
             <div class="reasoning">${{p.reasoning}}</div>
             ${{pill ? `<div style="margin-top:5px">${{pill}}</div>` : ''}}
           </div>
@@ -429,8 +485,10 @@ function renderPicks() {{
           </div>
         </div>`;
     }});
+
+    html += `</div></div>`;
   }});
-  html += '</div>';
+
   c.innerHTML = html;
 }}
 
