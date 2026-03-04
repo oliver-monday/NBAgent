@@ -16,6 +16,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: injuries-refresh
@@ -70,3 +72,25 @@ jobs:
 
           git commit -m "Injuries refresh [skip ci]"
           git push origin HEAD:main
+
+      - name: Rebuild frontend with updated injuries
+        run: |
+          pip install pandas
+          python agents/build_site.py
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  deploy:
+    needs: refresh
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
