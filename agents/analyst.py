@@ -25,13 +25,14 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
-MASTER_CSV     = DATA / "nba_master.csv"
-GAME_LOG_CSV   = DATA / "player_game_log.csv"
-DIM_CSV        = DATA / "player_dim.csv"
-INJURIES_JSON  = DATA / "injuries_today.json"
-AUDIT_LOG_JSON = DATA / "audit_log.json"
-PICKS_JSON     = DATA / "picks.json"
-WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
+MASTER_CSV        = DATA / "nba_master.csv"
+GAME_LOG_CSV      = DATA / "player_game_log.csv"
+DIM_CSV           = DATA / "player_dim.csv"
+INJURIES_JSON     = DATA / "injuries_today.json"
+AUDIT_LOG_JSON    = DATA / "audit_log.json"
+PICKS_JSON        = DATA / "picks.json"
+PLAYER_STATS_JSON = DATA / "player_stats.json"
+WHITELIST_CSV     = ROOT / "playerprops" / "player_whitelist.csv"
 
 ET = ZoneInfo("America/New_York")
 TODAY = dt.datetime.now(ET).date()
@@ -40,8 +41,6 @@ TODAY_STR = TODAY.strftime("%Y-%m-%d")
 # ── Config ───────────────────────────────────────────────────────────
 MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 16384
-# How many recent games to include per player in the prompt
-RECENT_GAME_WINDOW = 10
 # How many audit log entries to feed back as context (keep lean)
 AUDIT_CONTEXT_ENTRIES = 5
 
@@ -78,32 +77,18 @@ def load_todays_games() -> list[dict]:
     return games
 
 
-def load_player_game_log() -> pd.DataFrame:
-    if not GAME_LOG_CSV.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(GAME_LOG_CSV, dtype={"game_id": str, "player_id": str})
-    df["game_date"] = pd.to_datetime(df["game_date"], errors="coerce").dt.strftime("%Y-%m-%d")
-    # Exclude today (no results yet) and DNPs
-    df = df[df["game_date"] < TODAY_STR].copy()
-    df = df[df["dnp"].astype(str) != "1"].copy()
-    return df
-
-
-
-def load_whitelist() -> set:
-    """Returns set of lowercase active player names from whitelist. Empty set = no filtering."""
-    if not WHITELIST_CSV.exists():
-        print(f"[analyst] WARNING: whitelist not found, no player filtering applied.")
-        return set()
+def load_player_stats() -> dict:
+    """Load pre-computed player stats from stats_builder output."""
+    if not PLAYER_STATS_JSON.exists():
+        print(f"[analyst] WARNING: player_stats.json not found — falling back to empty context.")
+        return {}
     try:
-        df = pd.read_csv(WHITELIST_CSV, dtype=str)
-        active = df[df["active"].astype(str).str.strip() == "1"]
-        names = set(active["player_name"].str.strip().str.lower().tolist())
-        print(f"[analyst] Whitelist loaded: {len(names)} active players")
-        return names
+        with open(PLAYER_STATS_JSON, "r") as f:
+            return json.load(f)
     except Exception as e:
-        print(f"[analyst] WARNING: could not load whitelist: {e}")
-        return set()
+        print(f"[analyst] WARNING: could not load player_stats.json: {e}")
+        return {}
+
 
 def load_injuries(teams_today: list[str]) -> dict:
     if not INJURIES_JSON.exists():
@@ -132,45 +117,65 @@ def load_audit_feedback() -> list[dict]:
         return []
 
 
-def build_player_context(game_log: pd.DataFrame, teams_today: list[str],
-                          whitelist: set) -> str:
+def build_player_context(player_stats: dict) -> str:
     """
-    For whitelisted players on teams playing today, build a compact
-    recent-performance summary to include in the prompt.
-    If whitelist is empty, falls back to all players on today's teams.
+    Convert pre-computed player stats cards into a compact prompt block.
+    One player per section; all signal is pre-digested.
     """
-    if game_log.empty:
-        return "No player game log data available."
-
-    recent = game_log[game_log["team_abbrev"].isin(teams_today)].copy()
-    if recent.empty:
-        return "No recent game log data for today's teams."
-
-    # Apply whitelist filter if available
-    if whitelist:
-        recent = recent[recent["player_name"].str.strip().str.lower().isin(whitelist)].copy()
-        if recent.empty:
-            return "No whitelisted players found for today's teams."
-
-    # Sort by date descending, take last N games per player
-    recent = recent.sort_values("game_date", ascending=False)
-    recent = recent.groupby("player_id").head(RECENT_GAME_WINDOW).copy()
+    if not player_stats:
+        return "No player stats data available."
 
     lines = []
-    for player_name, grp in recent.groupby("player_name"):
-        grp = grp.sort_values("game_date", ascending=False)
-        team = grp["team_abbrev"].iloc[0]
-        games = []
-        for _, r in grp.iterrows():
-            games.append(
-                f"{r['game_date']} vs {r['opp_abbrev']} "
-                f"({'H' if r['home_away']=='H' else 'A'}): "
-                f"{r['pts']}pts {r['reb']}reb {r['ast']}ast {r['tpm']}3pm "
-                f"{r['minutes']}min"
-            )
-        lines.append(f"\n{player_name} ({team}):\n  " + "\n  ".join(games))
+    for player_name, s in sorted(player_stats.items()):
+        team     = s.get("team", "?")
+        opponent = s.get("opponent", "?")
+        b2b      = " [B2B]" if s.get("on_back_to_back") else ""
+        games_n  = s.get("games_available", 0)
+        mins     = s.get("avg_minutes_last5", "?")
+        m_trend  = s.get("minutes_trend", "stable")
 
-    return "\n".join(lines)
+        best     = s.get("best_tiers", {})
+        trend    = s.get("trend", {})
+        splits   = s.get("home_away_splits", {})
+        raw      = s.get("raw_avgs", {})
+        opp_def  = s.get("opp_defense") or {}
+
+        # Build stat lines — only include stats with a qualifying best tier
+        stat_lines = []
+        for stat in ["PTS", "REB", "AST", "3PM"]:
+            bt = best.get(stat)
+            if not bt:
+                continue
+            tr    = trend.get(stat, "stable")
+            ha    = splits.get(stat, {})
+            h_bt  = ha.get("H")
+            a_bt  = ha.get("A")
+            split_str = ""
+            if h_bt and a_bt:
+                split_str = f" | H:{int(h_bt['hit_rate']*100)}% A:{int(a_bt['hit_rate']*100)}%"
+            elif h_bt:
+                split_str = f" | H:{int(h_bt['hit_rate']*100)}%"
+            elif a_bt:
+                split_str = f" | A:{int(a_bt['hit_rate']*100)}%"
+
+            opp_stat = opp_def.get(stat, {})
+            opp_str  = f" | opp allows {opp_stat.get('allowed_pg','?')} {stat}/g ({opp_stat.get('rating','?')} defense, #{opp_stat.get('rank','?')})" if opp_stat else ""
+
+            stat_lines.append(
+                f"  {stat}: floor={bt['tier']} hit={int(bt['hit_rate']*100)}%"
+                f" trend={tr}{split_str}{opp_str}"
+            )
+
+        if not stat_lines:
+            continue  # no qualifying tiers — skip entirely
+
+        lines.append(
+            f"\n{player_name} ({team} vs {opponent}{b2b}) "
+            f"| {games_n}g | {mins}min avg ({m_trend})"
+        )
+        lines.extend(stat_lines)
+
+    return "\n".join(lines) if lines else "No players with qualifying tier hit rates today."
 
 
 def build_audit_context(audit_entries: list[dict]) -> str:
@@ -206,7 +211,7 @@ def build_audit_context(audit_entries: list[dict]) -> str:
 # ── Prompt builder ───────────────────────────────────────────────────
 
 def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str) -> str:
-    games_block = json.dumps(games, indent=2)
+    games_block    = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
     return f"""You are the Analyst for NBAgent, an NBA player props selection system.
@@ -220,34 +225,34 @@ Select high-confidence player prop picks for today's games. Focus on:
 - Assists (AST)
 - 3-pointers made (3PM)
 
-## TIER SYSTEM — HOW TO THINK ABOUT THRESHOLDS
-This system targets fixed tier thresholds that match how parlays are structured on betting platforms.
-Do NOT pick arbitrary lines. Only use values from these tiers:
+## TIER SYSTEM
+Picks use fixed tier thresholds only. No arbitrary lines.
 
   PTS tiers:  10 / 15 / 20 / 25 / 30
   REB tiers:  2 / 4 / 6 / 8 / 10 / 12
   AST tiers:  2 / 4 / 6 / 8 / 10 / 12
   3PM tiers:  1 / 2 / 3 / 4
 
-For each player/stat, your job is to find the highest tier where their hit rate across recent games
-is strong enough to justify ≥70% confidence. Work DOWN from the player's ceiling until you find
-a tier with a reliable floor.
+Each player's stats card already shows the highest tier with ≥70% hit rate (the "floor").
+Your job is to validate that floor and set confidence, then decide whether to pick it.
 
-Example reasoning process for PTS:
-  - Player averages 21 pts but has inconsistent games (14, 22, 18, 28, 16, 24, 12, 19, 21, 17)
-  - At the 20+ tier: hit rate = 4/10 = 40% → skip
-  - At the 15+ tier: hit rate = 8/10 = 80% → this is the pick
-  - pick_value = 15, confidence = 80%
+## HOW TO READ THE STATS CARD
+Each player entry shows:
+  STAT: floor=<tier> hit=<pct>% trend=<up/stable/down> | H:<pct>% A:<pct>% | opp allows X/g (<rating> defense, #N)
 
-The edge is in finding floors the market undervalues. Season averages overstate consistency.
-A player who averages 21 pts but only clears 20 half the time is a 15-tier pick, not a 20-tier pick.
+- floor: highest tier clearing 70% in last 10 games — this is your pick_value
+- hit%: exact hit rate at that tier
+- trend: last 5 vs last 10 average — up/down/stable
+- H/A splits: hit rate at that tier home vs away — use this when today's game is H or A
+- opp defense: how many of this stat the opponent allows per game, their rank, and rating (tough/mid/soft)
+- [B2B]: player's team is on a back-to-back today — apply caution, especially for PTS/minutes
+- mins avg: average minutes last 5 games — flag if low (<25) or declining
 
 ## SELECTION RULES
-- Weight recent form (last 5–10 games) heavily — season averages are misleading
-- Minimum 5 recent games required to evaluate any player
-- Skip players listed as OUT or DOUBTFUL
-- Factor in teammate injuries (affects usage/role), back-to-back fatigue, home/away splits
-- Pick as many qualifying props as there are — don't limit volume artificially
+- Only pick stats that appear in a player's card (pre-filtered to ≥70% floor)
+- Adjust confidence up/down based on: trend direction, H/A split for today's context, opponent rating, B2B flag
+- Skip players listed as OUT or DOUBTFUL in the injury report
+- Pick as many qualifying props as there are — don't limit volume
 - Only output picks with confidence_pct ≥ 70
 
 ## TODAY'S GAMES
@@ -256,7 +261,7 @@ A player who averages 21 pts but only clears 20 half the time is a 15-tier pick,
 ## CURRENT INJURY REPORT
 {injuries_block}
 
-## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+## PLAYER STATS CARDS
 {player_context}
 
 ## AUDITOR FEEDBACK FROM PREVIOUS DAYS
@@ -264,7 +269,6 @@ A player who averages 21 pts but only clears 20 half the time is a 15-tier pick,
 
 ## OUTPUT FORMAT
 Respond ONLY with a valid JSON array. No preamble, no explanation outside the JSON.
-Each pick must follow this exact schema:
 
 [
   {{
@@ -277,17 +281,15 @@ Each pick must follow this exact schema:
     "pick_value": number,
     "direction": "OVER",
     "confidence_pct": number (70-99),
-    "reasoning": "2-3 sentence justification: state the tier hit rate from recent games (e.g. '8/10 games over 15 pts'), explain why this tier is the right floor, note any relevant matchup or usage context"
+    "reasoning": "2-3 sentences: cite the floor hit rate, note trend/split/matchup context that raises or tempers confidence"
   }}
 ]
 
-pick_value must be one of the valid tier values listed above. No other values allowed.
+pick_value must be one of the valid tier values listed above.
 direction is always OVER.
 Only include picks with confidence_pct >= 70.
 """
 
-
-# ── Claude call ──────────────────────────────────────────────────────
 
 def call_analyst(prompt: str) -> list[dict]:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -366,18 +368,16 @@ def main():
 
     teams_today = list({g["home_abbrev"] for g in games} | {g["away_abbrev"] for g in games})
 
-    game_log = load_player_game_log()
-    print(f"[analyst] Loaded {len(game_log)} player game log rows")
-
     injuries = load_injuries(teams_today)
     print(f"[analyst] Loaded injuries for {len(injuries)} of {len(teams_today)} teams playing today")
 
     audit_entries = load_audit_feedback()
     print(f"[analyst] Loaded {len(audit_entries)} audit log entries")
 
-    whitelist = load_whitelist()
+    player_stats = load_player_stats()
+    print(f"[analyst] Loaded stats cards for {len(player_stats)} players")
 
-    player_context = build_player_context(game_log, teams_today, whitelist)
+    player_context = build_player_context(player_stats)
 
     audit_context = build_audit_context(audit_entries)
 
