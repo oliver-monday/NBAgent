@@ -26,10 +26,8 @@ SITE = ROOT / "site"
 PICKS_JSON     = DATA / "picks.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 MASTER_CSV     = DATA / "nba_master.csv"
-INJURIES_JSON  = DATA / "injuries_today.json"
 
 ET = ZoneInfo("America/New_York")
-PT = ZoneInfo("America/Los_Angeles")
 TODAY_STR = dt.datetime.now(ET).strftime("%Y-%m-%d")
 
 
@@ -64,8 +62,8 @@ def load_game_times() -> dict:
                     utc = dt.datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
                     if utc.tzinfo is None:
                         utc = utc.replace(tzinfo=dt.timezone.utc)
-                    pt = utc.astimezone(PT)
-                    label = pt.strftime("%-I:%M %p PT")
+                    et = utc.astimezone(ET)
+                    label = et.strftime("%-I:%M %p ET")
                 except Exception:
                     label = "TBD"
             for abbrev in [row.get("home_team_abbrev", ""), row.get("away_team_abbrev", "")]:
@@ -132,47 +130,10 @@ def compute_daily_trend(picks: list) -> list:
     return trend[-30:]
 
 
-def load_injuries_display() -> dict:
-    """
-    Load injuries_today.json and return a display-ready dict:
-      {
-        "fetched_at": "3:05 PM PT",
-        "teams": {
-          "LAL": [{"name": "LeBron James", "status": "QUESTIONABLE", "reason": "Ankle"},...]
-        }
-      }
-    Non-list keys (metadata) are extracted; list keys are team rosters.
-    """
-    raw = load_json(INJURIES_JSON, {})
-    if not raw:
-        return {"fetched_at": None, "teams": {}}
-
-    # Extract timestamp — try common key names
-    fetched_at = None
-    for key in ("fetched_at", "as_of", "timestamp", "updated_at", "scraped_at"):
-        if key in raw and isinstance(raw[key], str):
-            fetched_at = raw[key]
-            break
-
-    # Format timestamp to PT if it looks like an ISO string
-    if fetched_at:
-        try:
-            ts = dt.datetime.fromisoformat(fetched_at.replace("Z", "+00:00"))
-            if ts.tzinfo is None:
-                ts = ts.replace(tzinfo=dt.timezone.utc)
-            fetched_at = ts.astimezone(PT).strftime("%-I:%M %p PT, %b %-d")
-        except Exception:
-            pass  # keep raw string if parsing fails
-
-    teams = {k: v for k, v in raw.items() if isinstance(v, list)}
-    return {"fetched_at": fetched_at, "teams": teams}
-
-
 def build_site():
     picks     = load_json(PICKS_JSON, [])
     audit_log = load_json(AUDIT_LOG_JSON, [])
     game_times = load_game_times()
-    injuries_display = load_injuries_display()
 
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
     past_picks  = [p for p in picks if p.get("date") != TODAY_STR
@@ -213,7 +174,6 @@ def build_site():
         "recent_results": sorted(past_picks,
                                   key=lambda p: p.get("date", ""),
                                   reverse=True)[:40],
-        "injuries":  injuries_display,
         "built_at": dt.datetime.now(ET).strftime("%B %d, %Y at %-I:%M %p ET"),
     }
 
@@ -234,7 +194,6 @@ def generate_html(d: dict) -> str:
     prop_stats_json = json.dumps(d["prop_stats"])
     last_audit_json = json.dumps(d["last_audit"])
     trend_json      = json.dumps(d["daily_trend"])
-    injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "teams": {}}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -307,62 +266,40 @@ def generate_html(d: dict) -> str:
                  overflow: hidden; margin-top: 4px; width: 64px; margin-left: auto; }}
     .conf-fill {{ height: 100%; border-radius: 99px; background: var(--accent2); }}
 
-    /* Injury report dropdown */
-    .injury-dropdown {{ margin-bottom: 20px; }}
-    .injury-header {{ background: var(--surface); border: 1px solid var(--border);
-                      border-radius: 10px; padding: 12px 16px;
-                      display: flex; align-items: center; justify-content: space-between;
-                      cursor: pointer; user-select: none; transition: border-color 0.15s; }}
-    .injury-header:hover {{ border-color: var(--accent); }}
-    .injury-header.open {{ border-radius: 10px 10px 0 0; border-bottom-color: transparent; }}
-    .injury-header-left {{ display: flex; align-items: center; gap: 10px; }}
-    .injury-title {{ font-size: 13px; font-weight: 600; }}
-    .injury-as-of {{ font-size: 11px; color: var(--muted); }}
-    .injury-chevron {{ font-size: 12px; color: var(--muted); transition: transform 0.2s; }}
-    .injury-chevron.open {{ transform: rotate(180deg); }}
-    .injury-body {{ background: var(--surface); border: 1px solid var(--border);
-                    border-top: none; border-radius: 0 0 10px 10px;
-                    padding: 12px 16px; display: none; }}
-    .injury-body.open {{ display: block; }}
-    .injury-game {{ margin-bottom: 16px; }}
-    .injury-game:last-child {{ margin-bottom: 0; }}
-    .injury-game-header {{ font-size: 11px; font-weight: 700; color: var(--muted);
-                           text-transform: uppercase; letter-spacing: 0.8px;
-                           margin-bottom: 8px; }}
-    .injury-team-block {{ margin-bottom: 10px; }}
-    .injury-team-name {{ font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--text); }}
-    .injury-player-row {{ display: flex; align-items: center; gap: 8px;
-                          padding: 4px 0; border-bottom: 1px solid var(--border);
-                          font-size: 12px; }}
-    .injury-player-row:last-child {{ border-bottom: none; }}
-    .injury-player-name {{ flex: 1; }}
-    .injury-reason {{ color: var(--muted); font-size: 11px; flex: 2; }}
-    .status-OUT  {{ background: rgba(239,68,68,0.15);  color: #ef4444;
-                    font-size: 10px; font-weight: 700; padding: 2px 6px;
-                    border-radius: 4px; white-space: nowrap; }}
-    .status-DOUBTFUL {{ background: rgba(249,115,22,0.15); color: #f97316;
-                        font-size: 10px; font-weight: 700; padding: 2px 6px;
-                        border-radius: 4px; white-space: nowrap; }}
-    .status-QUESTIONABLE {{ background: rgba(234,179,8,0.15); color: #eab308;
-                            font-size: 10px; font-weight: 700; padding: 2px 6px;
-                            border-radius: 4px; white-space: nowrap; }}
-    .status-PROBABLE {{ background: rgba(34,197,94,0.15); color: #22c55e;
-                        font-size: 10px; font-weight: 700; padding: 2px 6px;
-                        border-radius: 4px; white-space: nowrap; }}
-    .status-OTHER {{ background: var(--surface2); color: var(--muted);
-                     font-size: 10px; font-weight: 700; padding: 2px 6px;
-                     border-radius: 4px; white-space: nowrap; }}
-
     /* Game group headers */
-    .game-group {{ margin-bottom: 24px; }}
+    .game-group {{ margin-bottom: 12px; }}
     .game-group-header {{ display: flex; align-items: center; gap: 10px;
-                          margin-bottom: 10px; padding-bottom: 8px;
-                          border-bottom: 1px solid var(--border); }}
+                          padding: 11px 14px; border-radius: 10px;
+                          background: var(--surface); border: 1px solid var(--border);
+                          cursor: pointer; user-select: none;
+                          transition: border-color 0.15s; }}
+    .game-group-header:hover {{ border-color: var(--accent); }}
+    .game-group-header.open {{ border-radius: 10px 10px 0 0; border-bottom-color: transparent; }}
     .game-matchup {{ font-size: 14px; font-weight: 700; letter-spacing: -0.3px; }}
     .game-tip {{ font-size: 11px; color: var(--accent2); background: var(--surface2);
                  border: 1px solid var(--border); border-radius: 4px;
                  padding: 2px 7px; white-space: nowrap; }}
     .game-pick-count {{ font-size: 11px; color: var(--muted); margin-left: auto; }}
+    .game-chevron {{ font-size: 11px; color: var(--muted); transition: transform 0.2s;
+                     flex-shrink: 0; }}
+    .game-chevron.open {{ transform: rotate(180deg); }}
+    .game-body {{ background: var(--surface); border: 1px solid var(--border);
+                  border-top: none; border-radius: 0 0 10px 10px;
+                  padding: 10px 10px 12px; display: none; }}
+    .game-body.open {{ display: block; }}
+
+    /* Back to top */
+    #back-to-top {{ position: fixed; bottom: 24px; right: 24px;
+                    width: 40px; height: 40px; border-radius: 50%;
+                    background: var(--accent); color: #fff;
+                    border: none; cursor: pointer; font-size: 16px;
+                    display: flex; align-items: center; justify-content: center;
+                    opacity: 0; pointer-events: none;
+                    transition: opacity 0.25s, transform 0.25s;
+                    transform: translateY(8px); z-index: 100;
+                    box-shadow: 0 4px 12px rgba(108,99,255,0.4); }}
+    #back-to-top.visible {{ opacity: 1; pointer-events: auto; transform: translateY(0); }}
+    #back-to-top:hover {{ background: #7c74ff; }}
 
     /* Streak pill */
     .streak-pill {{ display: inline-flex; align-items: center; gap: 4px;
@@ -438,10 +375,9 @@ def generate_html(d: dict) -> str:
   <button class="tab" onclick="showTab('audit')">Audit Log</button>
 </div>
 
-<div id="tab-picks" class="page active">
-  <div id="injury-container"></div>
-  <div id="picks-container"></div>
-</div>
+<button id="back-to-top" onclick="window.scrollTo({{top:0,behavior:'smooth'}})" aria-label="Back to top">↑</button>
+
+<div id="tab-picks" class="page active"><div id="picks-container"></div></div>
 <div id="tab-results" class="page">
   <div class="overall-banner">
     <div>
@@ -472,7 +408,6 @@ const DATA = {{
   daily_trend:      {trend_json},
   last_audit:       {last_audit_json},
   recent_results:   {results_json},
-  injuries:         {injuries_json},
 }};
 
 function showTab(name) {{
@@ -494,110 +429,6 @@ function streakPill(s) {{
   const cls  = s.streak_type==='HIT' ? 'streak-hit' : 'streak-miss';
   const icon = s.streak_type==='HIT' ? '🔥' : '❄️';
   return `<span class="streak-pill ${{cls}}">${{icon}} ${{s.streak_count}} ${{s.streak_type.toLowerCase()}} streak</span>`;
-}}
-
-// ── INJURY REPORT ──
-function statusClass(s) {{
-  if (!s) return 'status-OTHER';
-  const u = s.toUpperCase();
-  if (u.includes('OUT'))          return 'status-OUT';
-  if (u.includes('DOUBT'))        return 'status-DOUBTFUL';
-  if (u.includes('QUEST'))        return 'status-QUESTIONABLE';
-  if (u.includes('PROB'))         return 'status-PROBABLE';
-  return 'status-OTHER';
-}}
-
-function toggleInjuries() {{
-  const header  = document.getElementById('injury-header');
-  const body    = document.getElementById('injury-body');
-  const chevron = document.getElementById('injury-chevron');
-  const open = body.classList.toggle('open');
-  header.classList.toggle('open', open);
-  chevron.classList.toggle('open', open);
-}}
-
-function renderInjuries() {{
-  const c = document.getElementById('injury-container');
-  const inj = DATA.injuries;
-  if (!inj || !inj.teams || !Object.keys(inj.teams).length) {{
-    c.innerHTML = '';
-    return;
-  }}
-
-  // Group teams by game using today's picks to map team → opponent
-  const teamToGame = {{}};
-  const gameOrder  = [];
-  DATA.today_picks.forEach(p => {{
-    const home = p.home_away === 'H' ? p.team : p.opponent;
-    const away = p.home_away === 'A' ? p.team : p.opponent;
-    const key  = `${{away}}@${{home}}`;
-    const gt   = p.game_time || '';
-    [p.team, p.opponent].forEach(t => {{
-      if (!teamToGame[t]) {{
-        teamToGame[t] = {{key, home, away, game_time: gt}};
-        if (!gameOrder.find(g => g.key === key))
-          gameOrder.push({{key, home, away, game_time: gt}});
-      }}
-    }});
-  }});
-
-  // Teams in injuries but not in picks go into an "Other" bucket
-  const coveredTeams = new Set(Object.keys(teamToGame));
-  const otherTeams   = Object.keys(inj.teams).filter(t => !coveredTeams.has(t));
-
-  // Build game buckets
-  const gameBuckets = gameOrder.map(g => ({{
-    ...g,
-    teams: [g.away, g.home].filter(t => inj.teams[t]?.length)
-  }})).filter(g => g.teams.length);
-
-  if (otherTeams.filter(t => inj.teams[t]?.length).length) {{
-    gameBuckets.push({{key:'other', home:'', away:'', game_time:'',
-                       teams: otherTeams.filter(t => inj.teams[t]?.length)}});
-  }}
-
-  if (!gameBuckets.length) {{ c.innerHTML = ''; return; }}
-
-  const asOf = inj.fetched_at ? `as of ${{inj.fetched_at}}` : 'latest data';
-  let html = `
-    <div class="injury-dropdown">
-      <div class="injury-header" id="injury-header" onclick="toggleInjuries()">
-        <div class="injury-header-left">
-          <span class="injury-title">🏥 Injury Report</span>
-          <span class="injury-as-of">${{asOf}}</span>
-        </div>
-        <span class="injury-chevron" id="injury-chevron">▼</span>
-      </div>
-      <div class="injury-body" id="injury-body">`;
-
-  gameBuckets.forEach(g => {{
-    const gameLabel = g.key === 'other' ? 'Other Teams'
-      : `${{g.away}} @ ${{g.home}}${{g.game_time ? ' — ' + g.game_time : ''}}`;
-    html += `<div class="injury-game"><div class="injury-game-header">${{gameLabel}}</div>`;
-
-    g.teams.forEach(team => {{
-      const players = inj.teams[team] || [];
-      html += `<div class="injury-team-block"><div class="injury-team-name">${{team}}</div>`;
-      players.forEach(p => {{
-        // Defensive: handle various field name conventions from scraper
-        const name   = p.player_name || p.name || p.player || '?';
-        const status = p.status || p.designation || '?';
-        const reason = p.reason || p.injury || p.description || '';
-        const cls    = statusClass(status);
-        html += `
-          <div class="injury-player-row">
-            <span class="injury-player-name">${{name}}</span>
-            <span class="injury-reason">${{reason}}</span>
-            <span class="${{cls}}">${{status.toUpperCase()}}</span>
-          </div>`;
-      }});
-      html += `</div>`;
-    }});
-    html += `</div>`;
-  }});
-
-  html += `</div></div>`;
-  c.innerHTML = html;
 }}
 
 // ── TODAY'S PICKS ──
@@ -643,16 +474,19 @@ function renderPicks() {{
   const ps = DATA.prop_stats;
   let html = `<div class="section-header">${{picks.length}} pick${{picks.length!==1?'s':''}} — ${{DATA.today_str}}</div>`;
 
-  games.forEach(g => {{
+  games.forEach((g, gi) => {{
     const timeTag = g.game_time ? `<span class="game-tip">⏰ ${{g.game_time}}</span>` : '';
+    const gid = `game-${{gi}}`;
     html += `
       <div class="game-group">
-        <div class="game-group-header">
+        <div class="game-group-header open" id="hdr-${{gid}}" onclick="toggleGame('${{gid}}')">
           <span class="game-matchup">${{g.away}} @ ${{g.home}}</span>
           ${{timeTag}}
           <span class="game-pick-count">${{g.picks.length}} pick${{g.picks.length!==1?'s':''}}</span>
+          <span class="game-chevron open" id="chv-${{gid}}">▼</span>
         </div>
-        <div class="picks-grid">`;
+        <div class="game-body open" id="body-${{gid}}">
+          <div class="picks-grid">`;
 
     // Sort picks within game by prop type order, then confidence desc
     const propOrder = {{'PTS':0,'REB':1,'AST':2,'3PM':3}};
@@ -681,7 +515,7 @@ function renderPicks() {{
         </div>`;
     }});
 
-    html += `</div></div>`;
+    html += `</div></div></div>`;
   }});
 
   c.innerHTML = html;
@@ -850,7 +684,24 @@ function renderAudit() {{
   c.innerHTML = html;
 }}
 
-renderInjuries();
+// ── COLLAPSIBLE GAME GROUPS ──
+function toggleGame(gid) {{
+  const hdr  = document.getElementById('hdr-'  + gid);
+  const body = document.getElementById('body-' + gid);
+  const chv  = document.getElementById('chv-'  + gid);
+  const open = body.classList.toggle('open');
+  hdr.classList.toggle('open', open);
+  chv.classList.toggle('open', open);
+}}
+
+// ── BACK TO TOP ──
+(function() {{
+  const btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {{
+    btn.classList.toggle('visible', window.scrollY > 300);
+  }}, {{passive: true}});
+}})();
+
 renderPicks();
 renderResults();
 renderAudit();
