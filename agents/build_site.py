@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 """
-NBAgent — Site Builder
+NBAgent — Site Builder v2
 
-Reads data/picks.json and data/audit_log.json,
+Reads data/picks.json, data/audit_log.json, and data/nba_master.csv,
 writes site/index.html for GitHub Pages deployment.
+
+Features:
+  - Game time on each pick card
+  - Hit rate trend chart (daily, last 30 days)
+  - Per-prop-type streak indicator
 """
 
 from __future__ import annotations
 
 import json
 import datetime as dt
+from collections import defaultdict
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -19,6 +25,7 @@ SITE = ROOT / "site"
 
 PICKS_JSON     = DATA / "picks.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
+MASTER_CSV     = DATA / "nba_master.csv"
 
 ET = ZoneInfo("America/New_York")
 TODAY_STR = dt.datetime.now(ET).strftime("%Y-%m-%d")
@@ -34,55 +41,159 @@ def load_json(path: Path, default):
         return default
 
 
+def load_game_times() -> dict:
+    """
+    Returns {team_abbrev: "7:30 PM ET"} for today's games from nba_master.csv.
+    """
+    if not MASTER_CSV.exists():
+        return {}
+    try:
+        import pandas as pd
+        df = pd.read_csv(MASTER_CSV, dtype=str)
+        df["game_date"] = df["game_date"].astype(str).str[:10]
+        today = df[df["game_date"] == TODAY_STR].copy()
+        times = {}
+        for _, row in today.iterrows():
+            raw = row.get("game_time_utc", "")
+            if not raw or str(raw).strip() in ("", "nan"):
+                label = "TBD"
+            else:
+                try:
+                    utc = dt.datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+                    if utc.tzinfo is None:
+                        utc = utc.replace(tzinfo=dt.timezone.utc)
+                    et = utc.astimezone(ET)
+                    label = et.strftime("%-I:%M %p ET")
+                except Exception:
+                    label = "TBD"
+            for abbrev in [row.get("home_team_abbrev", ""), row.get("away_team_abbrev", "")]:
+                if abbrev and str(abbrev) != "nan":
+                    times[str(abbrev).upper()] = label
+        return times
+    except Exception:
+        return {}
+
+
+def compute_streak(picks: list, prop_type: str) -> dict:
+    """
+    Compute current consecutive hit/miss streak and last-10 record
+    for a given prop type.
+    """
+    graded = [p for p in picks
+              if p.get("prop_type") == prop_type
+              and p.get("result") in ("HIT", "MISS")]
+    graded = sorted(graded, key=lambda p: p.get("date", ""), reverse=True)
+
+    streak_count = 0
+    streak_type = None
+    for p in graded:
+        if streak_type is None:
+            streak_type = p["result"]
+            streak_count = 1
+        elif p["result"] == streak_type:
+            streak_count += 1
+        else:
+            break
+
+    last10 = graded[:10]
+    l10_hits = sum(1 for p in last10 if p["result"] == "HIT")
+    l10_total = len(last10)
+
+    return {
+        "streak_type": streak_type,
+        "streak_count": streak_count,
+        "last10_hits": l10_hits,
+        "last10_total": l10_total,
+        "last10_pct": round(100 * l10_hits / l10_total, 0) if l10_total else 0,
+    }
+
+
+def compute_daily_trend(picks: list) -> list:
+    """
+    Returns [{date, hits, total, pct}] sorted ascending for the trend chart.
+    """
+    by_date = defaultdict(lambda: {"hits": 0, "total": 0})
+    for p in picks:
+        if p.get("result") not in ("HIT", "MISS"):
+            continue
+        d = p.get("date", "")
+        by_date[d]["total"] += 1
+        if p["result"] == "HIT":
+            by_date[d]["hits"] += 1
+
+    trend = []
+    for date in sorted(by_date.keys()):
+        h = by_date[date]["hits"]
+        t = by_date[date]["total"]
+        trend.append({"date": date, "hits": h, "total": t,
+                      "pct": round(100 * h / t, 1) if t else 0})
+    return trend[-30:]
+
+
 def build_site():
-    picks = load_json(PICKS_JSON, [])
+    picks     = load_json(PICKS_JSON, [])
     audit_log = load_json(AUDIT_LOG_JSON, [])
+    game_times = load_game_times()
 
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
-    past_picks  = [p for p in picks if p.get("date") != TODAY_STR and p.get("result") in ("HIT", "MISS")]
+    past_picks  = [p for p in picks if p.get("date") != TODAY_STR
+                   and p.get("result") in ("HIT", "MISS")]
 
-    # Overall hit rate
+    # Attach game time to today's picks
+    for p in today_picks:
+        p["game_time"] = game_times.get(str(p.get("team", "")).upper(), "")
+
     total_hits   = sum(1 for p in past_picks if p["result"] == "HIT")
     total_graded = len(past_picks)
     overall_pct  = round(100 * total_hits / total_graded, 1) if total_graded else 0
 
-    # Hit rate by prop type
     prop_types = ["PTS", "REB", "AST", "3PM"]
     prop_stats = {}
     for pt in prop_types:
         subset = [p for p in past_picks if p.get("prop_type") == pt]
         h = sum(1 for p in subset if p["result"] == "HIT")
-        prop_stats[pt] = {"hits": h, "total": len(subset), "pct": round(100*h/len(subset), 1) if subset else 0}
+        streak = compute_streak(past_picks, pt)
+        prop_stats[pt] = {
+            "hits": h,
+            "total": len(subset),
+            "pct": round(100 * h / len(subset), 1) if subset else 0,
+            **streak,
+        }
 
-    # Last audit entry
-    last_audit = audit_log[-1] if audit_log else None
+    daily_trend = compute_daily_trend(past_picks)
+    last_audit  = audit_log[-1] if audit_log else None
 
-    # Inject data as JSON into page
     page_data = {
-        "today_str": TODAY_STR,
-        "today_picks": today_picks,
+        "today_str":      TODAY_STR,
+        "today_picks":    today_picks,
         "overall_hit_rate": overall_pct,
-        "total_graded": total_graded,
-        "prop_stats": prop_stats,
-        "last_audit": last_audit,
-        "recent_results": sorted(past_picks, key=lambda p: p.get("date",""), reverse=True)[:30],
+        "total_graded":   total_graded,
+        "prop_stats":     prop_stats,
+        "daily_trend":    daily_trend,
+        "last_audit":     last_audit,
+        "recent_results": sorted(past_picks,
+                                  key=lambda p: p.get("date", ""),
+                                  reverse=True)[:40],
         "built_at": dt.datetime.now(ET).strftime("%B %d, %Y at %-I:%M %p ET"),
     }
 
     html = generate_html(page_data)
-
     SITE.mkdir(exist_ok=True)
     with open(SITE / "index.html", "w") as f:
         f.write(html)
 
-    print(f"[build_site] Wrote site/index.html ({len(today_picks)} today's picks, {total_graded} graded historical)")
+    print(f"[build_site] Wrote site/index.html "
+          f"({len(today_picks)} today's picks, "
+          f"{total_graded} graded, "
+          f"{len(daily_trend)} trend days)")
 
 
 def generate_html(d: dict) -> str:
-    picks_json = json.dumps(d["today_picks"])
-    results_json = json.dumps(d["recent_results"])
+    picks_json      = json.dumps(d["today_picks"])
+    results_json    = json.dumps(d["recent_results"])
     prop_stats_json = json.dumps(d["prop_stats"])
     last_audit_json = json.dumps(d["last_audit"])
+    trend_json      = json.dumps(d["daily_trend"])
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -92,231 +203,128 @@ def generate_html(d: dict) -> str:
   <title>NBAgent</title>
   <style>
     :root {{
-      --bg: #0d0d0f;
-      --surface: #18181c;
-      --surface2: #202026;
-      --border: #2a2a32;
-      --accent: #6c63ff;
-      --accent2: #00d4aa;
-      --hit: #22c55e;
-      --miss: #ef4444;
-      --text: #e8e8f0;
-      --muted: #888898;
-      --pts: #f97316;
-      --reb: #3b82f6;
-      --ast: #a855f7;
-      --3pm: #eab308;
+      --bg: #0d0d0f; --surface: #18181c; --surface2: #202026;
+      --border: #2a2a32; --accent: #6c63ff; --accent2: #00d4aa;
+      --hit: #22c55e; --miss: #ef4444; --text: #e8e8f0; --muted: #888898;
+      --pts: #f97316; --reb: #3b82f6; --ast: #a855f7; --3pm: #eab308;
     }}
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    body {{
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 15px;
-      min-height: 100vh;
-    }}
+    body {{ background: var(--bg); color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 15px; min-height: 100vh; }}
 
-    /* ── Header ── */
-    header {{
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }}
+    header {{ background: var(--surface); border-bottom: 1px solid var(--border);
+              padding: 16px 20px; display: flex; align-items: center;
+              justify-content: space-between; position: sticky; top: 0; z-index: 10; }}
     .logo {{ font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }}
     .logo span {{ color: var(--accent); }}
     .built-at {{ font-size: 11px; color: var(--muted); }}
 
-    /* ── Nav tabs ── */
-    .tabs {{
-      display: flex;
-      gap: 4px;
-      padding: 12px 20px 0;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }}
-    .tab {{
-      padding: 8px 16px;
-      border-radius: 6px 6px 0 0;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      border: none;
-      background: none;
-      border-bottom: 2px solid transparent;
-      transition: all 0.15s;
-    }}
+    .tabs {{ display: flex; gap: 4px; padding: 12px 20px 0;
+             border-bottom: 1px solid var(--border); background: var(--surface);
+             position: sticky; top: 53px; z-index: 9; }}
+    .tab {{ padding: 8px 16px; border-radius: 6px 6px 0 0; cursor: pointer;
+            font-size: 13px; font-weight: 500; color: var(--muted); border: none;
+            background: none; border-bottom: 2px solid transparent; transition: all 0.15s; }}
     .tab.active {{ color: var(--text); border-bottom-color: var(--accent); }}
     .tab:hover:not(.active) {{ color: var(--text); }}
 
-    /* ── Page sections ── */
     .page {{ display: none; padding: 20px; max-width: 900px; margin: 0 auto; }}
     .page.active {{ display: block; }}
 
-    /* ── Stats bar ── */
-    .stats-bar {{
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }}
-    @media(min-width: 500px) {{ .stats-bar {{ grid-template-columns: repeat(4, 1fr); }} }}
-    .stat-card {{
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-    }}
-    .stat-card .label {{ font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }}
-    .stat-card .value {{ font-size: 24px; font-weight: 700; }}
-    .stat-card.pts .value {{ color: var(--pts); }}
-    .stat-card.reb .value {{ color: var(--reb); }}
-    .stat-card.ast .value {{ color: var(--ast); }}
-    .stat-card.tpm .value {{ color: var(--3pm); }}
-
-    /* ── Section headers ── */
-    .section-header {{
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--muted);
-      margin-bottom: 12px;
-      margin-top: 20px;
-    }}
+    .section-header {{ font-size: 11px; font-weight: 600; text-transform: uppercase;
+                       letter-spacing: 1px; color: var(--muted);
+                       margin-bottom: 12px; margin-top: 24px; }}
     .section-header:first-child {{ margin-top: 0; }}
 
-    /* ── Pick cards ── */
-    .picks-grid {{
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }}
-    .pick-card {{
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 12px;
-      align-items: start;
-    }}
+    /* Pick cards */
+    .picks-grid {{ display: flex; flex-direction: column; gap: 10px; }}
+    .pick-card {{ background: var(--surface); border: 1px solid var(--border);
+                  border-radius: 12px; padding: 14px 16px;
+                  display: grid; grid-template-columns: auto 1fr auto;
+                  gap: 12px; align-items: start; transition: border-color 0.15s; }}
     .pick-card:hover {{ border-color: var(--accent); }}
-    .prop-badge {{
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }}
+    .prop-badge {{ width: 44px; height: 44px; border-radius: 10px;
+                   display: flex; align-items: center; justify-content: center;
+                   font-size: 11px; font-weight: 700; flex-shrink: 0; }}
     .prop-PTS {{ background: rgba(249,115,22,0.15); color: var(--pts); }}
     .prop-REB {{ background: rgba(59,130,246,0.15); color: var(--reb); }}
     .prop-AST {{ background: rgba(168,85,247,0.15); color: var(--ast); }}
-    .prop-3PM {{ background: rgba(234,179,8,0.15); color: var(--3pm); }}
-    .pick-main .player {{ font-size: 16px; font-weight: 600; }}
-    .pick-main .matchup {{ font-size: 12px; color: var(--muted); margin-top: 2px; }}
-    .pick-main .reasoning {{ font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }}
+    .prop-3PM {{ background: rgba(234,179,8,0.15);  color: var(--3pm); }}
+    .pick-main .player  {{ font-size: 16px; font-weight: 600; }}
+    .pick-main .matchup {{ font-size: 12px; color: var(--muted); margin-top: 3px;
+                           display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
+    .game-time {{ font-size: 11px; background: var(--surface2); border: 1px solid var(--border);
+                  border-radius: 4px; padding: 1px 6px; color: var(--accent2); white-space: nowrap; }}
+    .pick-main .reasoning {{ font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.55; }}
     .pick-right {{ text-align: right; flex-shrink: 0; }}
-    .pick-line {{ font-size: 20px; font-weight: 700; color: var(--accent2); }}
-    .pick-line .direction {{ font-size: 11px; color: var(--muted); font-weight: 400; display: block; }}
-    .confidence {{
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--muted);
-    }}
-    .conf-bar {{
-      height: 3px;
-      background: var(--border);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-top: 4px;
-      width: 60px;
-    }}
-    .conf-fill {{
-      height: 100%;
-      border-radius: 99px;
-      background: var(--accent2);
-    }}
+    .pick-line {{ font-size: 22px; font-weight: 700; color: var(--accent2); }}
+    .pick-line .direction {{ font-size: 10px; color: var(--muted); font-weight: 400;
+                              display: block; margin-bottom: 1px; }}
+    .confidence {{ margin-top: 5px; font-size: 11px; color: var(--muted); }}
+    .conf-bar {{ height: 3px; background: var(--border); border-radius: 99px;
+                 overflow: hidden; margin-top: 4px; width: 64px; margin-left: auto; }}
+    .conf-fill {{ height: 100%; border-radius: 99px; background: var(--accent2); }}
 
-    /* ── Result badges ── */
-    .result-hit {{ color: var(--hit); font-weight: 600; font-size: 12px; }}
-    .result-miss {{ color: var(--miss); font-weight: 600; font-size: 12px; }}
-    .result-nd {{ color: var(--muted); font-size: 12px; }}
+    /* Streak pill */
+    .streak-pill {{ display: inline-flex; align-items: center; gap: 4px;
+                    font-size: 10px; font-weight: 600; padding: 2px 7px;
+                    border-radius: 99px; margin-top: 5px; }}
+    .streak-hit  {{ background: rgba(34,197,94,0.15);  color: var(--hit); }}
+    .streak-miss {{ background: rgba(239,68,68,0.15);  color: var(--miss); }}
 
-    /* ── History table ── */
+    /* Prop streak cards */
+    .prop-streak-grid {{ display: grid; grid-template-columns: repeat(2,1fr);
+                         gap: 10px; margin-bottom: 20px; }}
+    @media(min-width:500px) {{ .prop-streak-grid {{ grid-template-columns: repeat(4,1fr); }} }}
+    .prop-streak-card {{ background: var(--surface); border: 1px solid var(--border);
+                         border-radius: 10px; padding: 12px 14px; }}
+    .psc-label {{ font-size: 10px; color: var(--muted); text-transform: uppercase;
+                  letter-spacing: 0.5px; margin-bottom: 6px;
+                  display: flex; justify-content: space-between; align-items: center; }}
+    .psc-pct {{ font-size: 22px; font-weight: 700; }}
+    .psc-sub {{ font-size: 11px; color: var(--muted); margin-top: 2px; }}
+
+    /* Overall banner */
+    .overall-banner {{ background: linear-gradient(135deg,rgba(108,99,255,0.12),rgba(0,212,170,0.12));
+                       border: 1px solid var(--border); border-radius: 12px;
+                       padding: 18px 20px; display: flex; align-items: flex-start;
+                       justify-content: space-between; margin-bottom: 20px;
+                       flex-wrap: wrap; gap: 16px; }}
+    .overall-banner .big {{ font-size: 38px; font-weight: 800; color: var(--accent2); line-height: 1; }}
+    .overall-banner .sub {{ font-size: 12px; color: var(--muted); margin-top: 3px; }}
+
+    /* Trend chart */
+    .chart-wrap {{ background: var(--surface); border: 1px solid var(--border);
+                   border-radius: 12px; padding: 16px; margin-bottom: 20px; }}
+    .chart-title {{ font-size: 11px; color: var(--muted); margin-bottom: 12px;
+                    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }}
+    #trend-chart {{ width: 100%; height: 120px; display: block; }}
+
+    /* History table */
     .history-table {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
-    .history-table th {{
-      text-align: left;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 8px 10px;
-      border-bottom: 1px solid var(--border);
-    }}
-    .history-table td {{
-      padding: 10px 10px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }}
+    .history-table th {{ text-align: left; font-size: 10px; font-weight: 600;
+                         color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
+                         padding: 8px 10px; border-bottom: 1px solid var(--border); }}
+    .history-table td {{ padding: 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }}
     .history-table tr:last-child td {{ border-bottom: none; }}
     .history-table tr:hover td {{ background: var(--surface2); }}
+    .result-hit  {{ color: var(--hit);  font-weight: 600; font-size: 12px; }}
+    .result-miss {{ color: var(--miss); font-weight: 600; font-size: 12px; }}
+    .result-nd   {{ color: var(--muted); font-size: 12px; }}
 
-    /* ── Audit panel ── */
-    .audit-card {{
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }}
+    /* Audit */
+    .audit-card {{ background: var(--surface); border: 1px solid var(--border);
+                   border-radius: 12px; padding: 16px; margin-bottom: 12px; }}
     .audit-card h3 {{ font-size: 14px; font-weight: 600; margin-bottom: 12px; }}
     .audit-list {{ list-style: none; }}
-    .audit-list li {{
-      padding: 6px 0;
-      font-size: 13px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      line-height: 1.5;
-    }}
+    .audit-list li {{ padding: 7px 0; font-size: 13px; color: var(--muted);
+                      border-bottom: 1px solid var(--border); line-height: 1.5; }}
     .audit-list li:last-child {{ border-bottom: none; }}
     .audit-list li::before {{ content: "→ "; color: var(--accent); }}
 
-    /* ── Empty states ── */
-    .empty {{
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--muted);
-      font-size: 14px;
-    }}
+    .empty {{ text-align: center; padding: 48px 20px; color: var(--muted); font-size: 14px; }}
     .empty-icon {{ font-size: 36px; margin-bottom: 12px; }}
-
-    /* ── Overall hit rate ── */
-    .overall-stat {{
-      background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,170,0.15));
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }}
-    .overall-stat .big {{ font-size: 36px; font-weight: 800; color: var(--accent2); }}
-    .overall-stat .sub {{ font-size: 12px; color: var(--muted); margin-top: 2px; }}
   </style>
 </head>
 <body>
@@ -332,185 +340,266 @@ def generate_html(d: dict) -> str:
   <button class="tab" onclick="showTab('audit')">Audit Log</button>
 </div>
 
-<!-- TODAY'S PICKS -->
-<div id="tab-picks" class="page active">
-  <div id="picks-container"></div>
-</div>
-
-<!-- RESULTS -->
+<div id="tab-picks" class="page active"><div id="picks-container"></div></div>
 <div id="tab-results" class="page">
-  <div class="overall-stat">
+  <div class="overall-banner">
     <div>
       <div class="big" id="overall-pct">—</div>
       <div class="sub" id="overall-sub">overall hit rate</div>
     </div>
-    <div id="prop-stats-mini"></div>
+    <div id="prop-streak-grid" class="prop-streak-grid" style="flex:1;max-width:440px"></div>
   </div>
+  <div class="chart-wrap">
+    <div class="chart-title">Daily hit rate — last 30 days</div>
+    <canvas id="trend-chart"></canvas>
+    <div id="chart-empty" style="display:none;text-align:center;padding:20px;color:var(--muted);font-size:13px">
+      Not enough data yet — check back after a few days of picks.
+    </div>
+  </div>
+  <div class="section-header">Pick history</div>
   <div id="results-container"></div>
 </div>
-
-<!-- AUDIT LOG -->
-<div id="tab-audit" class="page">
-  <div id="audit-container"></div>
-</div>
+<div id="tab-audit" class="page"><div id="audit-container"></div></div>
 
 <script>
-  const DATA = {{
-    today_str: {json.dumps(d["today_str"])},
-    today_picks: {picks_json},
-    overall_hit_rate: {d["overall_hit_rate"]},
-    total_graded: {d["total_graded"]},
-    prop_stats: {prop_stats_json},
-    last_audit: {last_audit_json},
-    recent_results: {results_json},
-  }};
+const DATA = {{
+  today_str:        {json.dumps(d["today_str"])},
+  today_picks:      {picks_json},
+  overall_hit_rate: {d["overall_hit_rate"]},
+  total_graded:     {d["total_graded"]},
+  prop_stats:       {prop_stats_json},
+  daily_trend:      {trend_json},
+  last_audit:       {last_audit_json},
+  recent_results:   {results_json},
+}};
 
-  function showTab(name) {{
-    document.querySelectorAll('.tab').forEach((t,i) => {{
-      const names = ['picks','results','audit'];
-      t.classList.toggle('active', names[i] === name);
-    }});
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
+function showTab(name) {{
+  document.querySelectorAll('.tab').forEach((t,i) =>
+    t.classList.toggle('active', ['picks','results','audit'][i] === name));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name === 'results') drawTrendChart();
+}}
+
+function propColor(pt) {{
+  return {{PTS:'prop-PTS',REB:'prop-REB',AST:'prop-AST','3PM':'prop-3PM'}}[pt]||'';
+}}
+function propVar(pt) {{
+  return {{PTS:'var(--pts)',REB:'var(--reb)',AST:'var(--ast)','3PM':'var(--3pm)'}}[pt]||'var(--muted)';
+}}
+function streakPill(s) {{
+  if (!s || !s.streak_type) return '';
+  const cls  = s.streak_type==='HIT' ? 'streak-hit' : 'streak-miss';
+  const icon = s.streak_type==='HIT' ? '🔥' : '❄️';
+  return `<span class="streak-pill ${{cls}}">${{icon}} ${{s.streak_count}} ${{s.streak_type.toLowerCase()}} streak</span>`;
+}}
+
+// ── TODAY'S PICKS ──
+function renderPicks() {{
+  const c = document.getElementById('picks-container');
+  const picks = DATA.today_picks;
+  if (!picks.length) {{
+    c.innerHTML = `<div class="empty"><div class="empty-icon">🏀</div>No picks yet for ${{DATA.today_str}}.<br>Check back after 11 AM ET.</div>`;
+    return;
   }}
-
-  function propColor(pt) {{
-    return {{PTS:'prop-PTS', REB:'prop-REB', AST:'prop-AST', '3PM':'prop-3PM'}}[pt] || '';
-  }}
-
-  function renderPicks() {{
-    const c = document.getElementById('picks-container');
-    const picks = DATA.today_picks;
-
-    if (!picks.length) {{
-      c.innerHTML = `<div class="empty"><div class="empty-icon">🏀</div>No picks generated yet for ${{DATA.today_str}}.<br>Check back after 11 AM ET.</div>`;
-      return;
-    }}
-
-    const byProp = {{}};
-    picks.forEach(p => {{ (byProp[p.prop_type] = byProp[p.prop_type]||[]).push(p); }});
-    const order = ['PTS','REB','AST','3PM'];
-
-    let html = `<div class="section-header">${{picks.length}} picks — ${{DATA.today_str}}</div><div class="picks-grid">`;
-    order.forEach(pt => {{
-      if (!byProp[pt]) return;
-      byProp[pt].sort((a,b) => b.confidence_pct - a.confidence_pct).forEach(p => {{
-        const ha = p.home_away === 'H' ? 'vs' : '@';
-        html += `
-          <div class="pick-card">
-            <div class="prop-badge ${{propColor(p.prop_type)}}">${{p.prop_type}}</div>
-            <div class="pick-main">
-              <div class="player">${{p.player_name}}</div>
-              <div class="matchup">${{p.team}} ${{ha}} ${{p.opponent}}</div>
-              <div class="reasoning">${{p.reasoning}}</div>
+  const byProp = {{}};
+  picks.forEach(p => (byProp[p.prop_type]=byProp[p.prop_type]||[]).push(p));
+  const ps = DATA.prop_stats;
+  let html = `<div class="section-header">${{picks.length}} pick${{picks.length!==1?'s':''}} — ${{DATA.today_str}}</div><div class="picks-grid">`;
+  ['PTS','REB','AST','3PM'].forEach(pt => {{
+    if (!byProp[pt]) return;
+    byProp[pt].sort((a,b)=>b.confidence_pct-a.confidence_pct).forEach(p => {{
+      const ha   = p.home_away==='H' ? 'vs' : '@';
+      const time = p.game_time ? `<span class="game-time">⏰ ${{p.game_time}}</span>` : '';
+      const pill = streakPill(ps[pt]);
+      html += `
+        <div class="pick-card">
+          <div class="prop-badge ${{propColor(pt)}}">${{pt}}</div>
+          <div class="pick-main">
+            <div class="player">${{p.player_name}}</div>
+            <div class="matchup"><span>${{p.team}} ${{ha}} ${{p.opponent}}</span>${{time}}</div>
+            <div class="reasoning">${{p.reasoning}}</div>
+            ${{pill ? `<div style="margin-top:5px">${{pill}}</div>` : ''}}
+          </div>
+          <div class="pick-right">
+            <div class="pick-line"><span class="direction">OVER</span>${{p.pick_value}}</div>
+            <div class="confidence">${{p.confidence_pct}}%
+              <div class="conf-bar"><div class="conf-fill" style="width:${{p.confidence_pct}}%"></div></div>
             </div>
-            <div class="pick-right">
-              <div class="pick-line">
-                <span class="direction">OVER</span>
-                ${{p.pick_value}}
-              </div>
-              <div class="confidence">${{p.confidence_pct}}%
-                <div class="conf-bar"><div class="conf-fill" style="width:${{p.confidence_pct}}%"></div></div>
-              </div>
-            </div>
-          </div>`;
-      }});
+          </div>
+        </div>`;
     }});
-    html += '</div>';
-    c.innerHTML = html;
-  }}
+  }});
+  html += '</div>';
+  c.innerHTML = html;
+}}
 
-  function renderResults() {{
-    // Overall stat
-    document.getElementById('overall-pct').textContent =
-      DATA.total_graded ? DATA.overall_hit_rate + '%' : '—';
-    document.getElementById('overall-sub').textContent =
-      DATA.total_graded ? `${{DATA.total_graded}} picks graded` : 'no graded picks yet';
+// ── RESULTS ──
+function renderResults() {{
+  document.getElementById('overall-pct').textContent =
+    DATA.total_graded ? DATA.overall_hit_rate+'%' : '—';
+  document.getElementById('overall-sub').textContent =
+    DATA.total_graded ? `${{DATA.total_graded}} picks graded` : 'no graded picks yet';
 
-    // Prop breakdown
-    const ps = DATA.prop_stats;
-    let mini = '';
-    ['PTS','REB','AST','3PM'].forEach(pt => {{
-      const s = ps[pt];
-      if (s && s.total > 0)
-        mini += `<div style="text-align:right;margin-bottom:4px"><span style="font-size:11px;color:var(--muted)">${{pt}} </span><strong>${{s.pct}}%</strong> <span style="font-size:11px;color:var(--muted)">${{s.hits}}/${{s.total}}</span></div>`;
-    }});
-    document.getElementById('prop-stats-mini').innerHTML = mini;
-
-    const c = document.getElementById('results-container');
-    const results = DATA.recent_results;
-    if (!results.length) {{
-      c.innerHTML = `<div class="empty"><div class="empty-icon">📊</div>No graded results yet.</div>`;
-      return;
-    }}
-
-    let html = `<table class="history-table">
-      <thead><tr>
-        <th>Date</th><th>Player</th><th>Prop</th><th>Pick</th><th>Actual</th><th>Result</th>
-      </tr></thead><tbody>`;
-    results.forEach(p => {{
-      const res = p.result === 'HIT'
-        ? `<span class="result-hit">✓ HIT</span>`
-        : p.result === 'MISS'
-        ? `<span class="result-miss">✗ MISS</span>`
-        : `<span class="result-nd">—</span>`;
-      html += `<tr>
-        <td>${{p.date}}</td>
-        <td><strong>${{p.player_name}}</strong><br><span style="font-size:11px;color:var(--muted)">${{p.team}}</span></td>
-        <td><span class="prop-badge ${{propColor(p.prop_type)}}" style="width:36px;height:20px;border-radius:4px;font-size:10px;display:inline-flex">${{p.prop_type}}</span></td>
-        <td>OVER ${{p.pick_value}}</td>
-        <td>${{p.actual_value ?? '—'}}</td>
-        <td>${{res}}</td>
-      </tr>`;
-    }});
-    html += '</tbody></table>';
-    c.innerHTML = html;
-  }}
-
-  function renderAudit() {{
-    const c = document.getElementById('audit-container');
-    const a = DATA.last_audit;
-    if (!a) {{
-      c.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div>No audit data yet.<br>The Auditor runs each morning after box scores are ingested.</div>`;
-      return;
-    }}
-
-    let html = `
-      <div class="audit-card">
-        <h3>Last Audit — ${{a.date}}</h3>
-        <div style="display:flex;gap:20px;margin-bottom:12px">
-          <div><div style="font-size:11px;color:var(--muted)">Hit Rate</div><div style="font-size:22px;font-weight:700;color:var(--accent2)">${{a.hit_rate_pct}}%</div></div>
-          <div><div style="font-size:11px;color:var(--muted)">Picks</div><div style="font-size:22px;font-weight:700">${{a.total_picks}}</div></div>
-          <div><div style="font-size:11px;color:var(--muted)">Hits</div><div style="font-size:22px;font-weight:700;color:var(--hit)">${{a.hits}}</div></div>
-          <div><div style="font-size:11px;color:var(--muted)">Misses</div><div style="font-size:22px;font-weight:700;color:var(--miss)">${{a.misses}}</div></div>
-        </div>
+  const ps  = DATA.prop_stats;
+  const grid = document.getElementById('prop-streak-grid');
+  let gh = '';
+  ['PTS','REB','AST','3PM'].forEach(pt => {{
+    const s = ps[pt]||{{}};
+    if (!s.total) return;
+    const col = propVar(pt);
+    gh += `
+      <div class="prop-streak-card">
+        <div class="psc-label"><span>${{pt}}</span><span style="color:${{col}};font-weight:700">${{s.pct}}%</span></div>
+        <div class="psc-pct" style="color:${{col}}">${{s.last10_hits}}/${{s.last10_total}}</div>
+        <div class="psc-sub">last ${{s.last10_total}} picks</div>
+        ${{s.streak_type ? `<div style="margin-top:6px">${{streakPill(s)}}</div>` : ''}}
       </div>`;
+  }});
+  grid.innerHTML = gh;
 
-    if (a.reinforcements?.length) {{
-      html += `<div class="audit-card"><h3>✓ What Worked</h3><ul class="audit-list">`;
-      a.reinforcements.forEach(r => html += `<li>${{r}}</li>`);
-      html += `</ul></div>`;
-    }}
-
-    if (a.lessons?.length) {{
-      html += `<div class="audit-card"><h3>✗ What Missed</h3><ul class="audit-list">`;
-      a.lessons.forEach(l => html += `<li>${{l}}</li>`);
-      html += `</ul></div>`;
-    }}
-
-    if (a.recommendations?.length) {{
-      html += `<div class="audit-card"><h3>→ Analyst Recommendations</h3><ul class="audit-list">`;
-      a.recommendations.forEach(r => html += `<li>${{r}}</li>`);
-      html += `</ul></div>`;
-    }}
-
-    c.innerHTML = html;
+  const c = document.getElementById('results-container');
+  const results = DATA.recent_results;
+  if (!results.length) {{
+    c.innerHTML = `<div class="empty"><div class="empty-icon">📊</div>No graded results yet.</div>`;
+    return;
   }}
+  let html = `<table class="history-table"><thead><tr>
+    <th>Date</th><th>Player</th><th>Prop</th><th>Pick</th><th>Actual</th><th>Result</th>
+  </tr></thead><tbody>`;
+  results.forEach(p => {{
+    const res = p.result==='HIT'
+      ? `<span class="result-hit">✓ HIT</span>`
+      : p.result==='MISS'
+      ? `<span class="result-miss">✗ MISS</span>`
+      : `<span class="result-nd">—</span>`;
+    const bs = `width:32px;height:18px;border-radius:4px;font-size:9px;display:inline-flex;align-items:center;justify-content:center`;
+    html += `<tr>
+      <td style="white-space:nowrap">${{p.date}}</td>
+      <td><strong>${{p.player_name}}</strong><br><span style="font-size:11px;color:var(--muted)">${{p.team}}</span></td>
+      <td><span class="prop-badge ${{propColor(p.prop_type)}}" style="${{bs}}">${{p.prop_type}}</span></td>
+      <td style="white-space:nowrap">OVER ${{p.pick_value}}</td>
+      <td>${{p.actual_value??'—'}}</td>
+      <td>${{res}}</td>
+    </tr>`;
+  }});
+  html += '</tbody></table>';
+  c.innerHTML = html;
+}}
 
-  // Init
-  renderPicks();
-  renderResults();
-  renderAudit();
+// ── TREND CHART (vanilla canvas, no deps) ──
+let chartDrawn = false;
+function drawTrendChart() {{
+  if (chartDrawn) return;
+  chartDrawn = true;
+  const trend  = DATA.daily_trend;
+  const canvas = document.getElementById('trend-chart');
+  const empty  = document.getElementById('chart-empty');
+  if (!trend || trend.length < 2) {{
+    canvas.style.display = 'none';
+    empty.style.display  = 'block';
+    return;
+  }}
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth - 32;
+  const H = 120;
+  canvas.width  = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const pad = {{t:10, r:10, b:28, l:36}};
+  const cw = W-pad.l-pad.r, ch = H-pad.t-pad.b;
+
+  // Grid + y-axis labels
+  [50,70,100].forEach(pct => {{
+    const y = pad.t + ch - (pct/100)*ch;
+    ctx.strokeStyle='#2a2a32'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+    ctx.fillStyle='#888898'; ctx.font='9px system-ui'; ctx.textAlign='right';
+    ctx.fillText(pct+'%', pad.l-4, y+3);
+  }});
+
+  // 70% target dashed line
+  const ty = pad.t + ch - 0.7*ch;
+  ctx.strokeStyle='rgba(108,99,255,0.45)'; ctx.setLineDash([3,4]); ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.l,ty); ctx.lineTo(pad.l+cw,ty); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(108,99,255,0.6)'; ctx.font='9px system-ui'; ctx.textAlign='left';
+  ctx.fillText('target 70%', pad.l+4, ty-3);
+
+  // Data points
+  const pts = trend.map((d,i) => ({{
+    x: pad.l + (trend.length>1 ? i/(trend.length-1) : 0.5)*cw,
+    y: pad.t + ch - (d.pct/100)*ch,
+    pct: d.pct, date: d.date
+  }}));
+
+  // Fill
+  const grad = ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  grad.addColorStop(0,'rgba(0,212,170,0.2)'); grad.addColorStop(1,'rgba(0,212,170,0)');
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pad.t+ch);
+  pts.forEach(p => ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x, pad.t+ch); ctx.closePath();
+  ctx.fillStyle=grad; ctx.fill();
+
+  // Line
+  ctx.beginPath(); ctx.strokeStyle='#00d4aa'; ctx.lineWidth=2; ctx.lineJoin='round';
+  pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+  ctx.stroke();
+
+  // Dots (green above target, red below)
+  pts.forEach(p => {{
+    ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2);
+    ctx.fillStyle = p.pct>=70 ? '#00d4aa' : '#ef4444';
+    ctx.fill();
+  }});
+
+  // X-axis labels
+  ctx.fillStyle='#888898'; ctx.font='9px system-ui'; ctx.textAlign='center';
+  [0, Math.floor((trend.length-1)/2), trend.length-1].forEach(i => {{
+    ctx.fillText(trend[i].date.slice(5), pts[i].x, H-6);
+  }});
+}}
+
+// ── AUDIT ──
+function renderAudit() {{
+  const c = document.getElementById('audit-container');
+  const a = DATA.last_audit;
+  if (!a) {{
+    c.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div>No audit data yet.<br>The Auditor runs each morning after box scores are ingested.</div>`;
+    return;
+  }}
+  let html = `
+    <div class="audit-card">
+      <h3>Last Audit — ${{a.date}}</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div><div style="font-size:11px;color:var(--muted)">Hit Rate</div><div style="font-size:24px;font-weight:700;color:var(--accent2)">${{a.hit_rate_pct}}%</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Total</div><div style="font-size:24px;font-weight:700">${{a.total_picks}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Hits</div><div style="font-size:24px;font-weight:700;color:var(--hit)">${{a.hits}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Misses</div><div style="font-size:24px;font-weight:700;color:var(--miss)">${{a.misses}}</div></div>
+      </div>
+    </div>`;
+  if (a.reinforcements?.length) {{
+    html += `<div class="audit-card"><h3>✓ What Worked</h3><ul class="audit-list">`;
+    a.reinforcements.forEach(r => html += `<li>${{r}}</li>`);
+    html += `</ul></div>`;
+  }}
+  if (a.lessons?.length) {{
+    html += `<div class="audit-card"><h3>✗ What to Avoid</h3><ul class="audit-list">`;
+    a.lessons.forEach(l => html += `<li>${{l}}</li>`);
+    html += `</ul></div>`;
+  }}
+  if (a.recommendations?.length) {{
+    html += `<div class="audit-card"><h3>→ Analyst Instructions</h3><ul class="audit-list">`;
+    a.recommendations.forEach(r => html += `<li>${{r}}</li>`);
+    html += `</ul></div>`;
+  }}
+  c.innerHTML = html;
+}}
+
+renderPicks();
+renderResults();
+renderAudit();
 </script>
 </body>
 </html>"""
