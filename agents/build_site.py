@@ -282,7 +282,7 @@ def generate_html(d: dict) -> str:
     .picks-grid {{ display: flex; flex-direction: column; gap: 10px; }}
     .pick-card {{ background: var(--surface); border: 1px solid var(--border);
                   border-radius: 12px; padding: 14px 16px;
-                  display: grid; grid-template-columns: auto 1fr auto;
+                  display: grid; grid-template-columns: 1fr auto;
                   gap: 12px; align-items: start; transition: border-color 0.15s; }}
     .pick-card:hover {{ border-color: var(--accent); }}
     .prop-badge {{ width: 44px; height: 44px; border-radius: 10px;
@@ -299,9 +299,10 @@ def generate_html(d: dict) -> str:
                   border-radius: 4px; padding: 1px 6px; color: var(--accent2); white-space: nowrap; }}
     .pick-main .reasoning {{ font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.55; }}
     .pick-right {{ text-align: right; flex-shrink: 0; }}
-    .pick-line {{ font-size: 22px; font-weight: 700; color: var(--accent2); }}
-    .pick-line .direction {{ font-size: 10px; color: var(--muted); font-weight: 400;
-                              display: block; margin-bottom: 1px; }}
+    .pick-line {{ font-size: 22px; font-weight: 700; color: var(--accent2);
+                  display: flex; align-items: baseline; gap: 6px; justify-content: flex-end; }}
+    .pick-line .stat-type {{ font-size: 11px; font-weight: 700; padding: 2px 6px;
+                              border-radius: 5px; line-height: 1; align-self: center; }}
     .confidence {{ margin-top: 5px; font-size: 11px; color: var(--muted); }}
     .conf-bar {{ height: 3px; background: var(--border); border-radius: 99px;
                  overflow: hidden; margin-top: 4px; width: 64px; margin-left: auto; }}
@@ -693,7 +694,6 @@ function renderPicks() {{
       const pill = streakPill(ps[pt]);
       html += `
         <div class="pick-card">
-          <div class="prop-badge ${{propColor(pt)}}">${{pt}}</div>
           <div class="pick-main">
             <div class="player">${{p.player_name}}</div>
             <div class="matchup"><span>${{p.team}} ${{ha}} ${{p.opponent}}</span></div>
@@ -701,7 +701,9 @@ function renderPicks() {{
             ${{pill ? `<div style="margin-top:5px">${{pill}}</div>` : ''}}
           </div>
           <div class="pick-right">
-            <div class="pick-line"><span class="direction">OVER</span>${{p.pick_value}}</div>
+            <div class="pick-line">
+              ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
+            </div>
             <div class="confidence">${{p.confidence_pct}}%
               <div class="conf-bar"><div class="conf-fill" style="width:${{p.confidence_pct}}%"></div></div>
             </div>
