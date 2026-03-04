@@ -31,6 +31,7 @@ DIM_CSV        = DATA / "player_dim.csv"
 INJURIES_JSON  = DATA / "injuries_today.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 PICKS_JSON     = DATA / "picks.json"
+WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
 
 ET = ZoneInfo("America/New_York")
 TODAY = dt.datetime.now(ET).date()
@@ -38,7 +39,7 @@ TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
 # ── Config ───────────────────────────────────────────────────────────
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 8192
+MAX_TOKENS = 16384
 # How many recent games to include per player in the prompt
 RECENT_GAME_WINDOW = 10
 # How many audit log entries to feed back as context (keep lean)
@@ -88,6 +89,22 @@ def load_player_game_log() -> pd.DataFrame:
     return df
 
 
+
+def load_whitelist() -> set:
+    """Returns set of lowercase active player names from whitelist. Empty set = no filtering."""
+    if not WHITELIST_CSV.exists():
+        print(f"[analyst] WARNING: whitelist not found, no player filtering applied.")
+        return set()
+    try:
+        df = pd.read_csv(WHITELIST_CSV, dtype=str)
+        active = df[df["active"].astype(str).str.strip() == "1"]
+        names = set(active["player_name"].str.strip().str.lower().tolist())
+        print(f"[analyst] Whitelist loaded: {len(names)} active players")
+        return names
+    except Exception as e:
+        print(f"[analyst] WARNING: could not load whitelist: {e}")
+        return set()
+
 def load_injuries(teams_today: list[str]) -> dict:
     if not INJURIES_JSON.exists():
         return {}
@@ -115,10 +132,12 @@ def load_audit_feedback() -> list[dict]:
         return []
 
 
-def build_player_context(game_log: pd.DataFrame, teams_today: list[str]) -> str:
+def build_player_context(game_log: pd.DataFrame, teams_today: list[str],
+                          whitelist: set) -> str:
     """
-    For players on teams playing today, build a compact recent-performance
-    summary string to include in the prompt.
+    For whitelisted players on teams playing today, build a compact
+    recent-performance summary to include in the prompt.
+    If whitelist is empty, falls back to all players on today's teams.
     """
     if game_log.empty:
         return "No player game log data available."
@@ -126,6 +145,12 @@ def build_player_context(game_log: pd.DataFrame, teams_today: list[str]) -> str:
     recent = game_log[game_log["team_abbrev"].isin(teams_today)].copy()
     if recent.empty:
         return "No recent game log data for today's teams."
+
+    # Apply whitelist filter if available
+    if whitelist:
+        recent = recent[recent["player_name"].str.strip().str.lower().isin(whitelist)].copy()
+        if recent.empty:
+            return "No whitelisted players found for today's teams."
 
     # Sort by date descending, take last N games per player
     recent = recent.sort_values("game_date", ascending=False)
@@ -331,7 +356,9 @@ def main():
     audit_entries = load_audit_feedback()
     print(f"[analyst] Loaded {len(audit_entries)} audit log entries")
 
-    player_context = build_player_context(game_log, teams_today)
+    whitelist = load_whitelist()
+
+    player_context = build_player_context(game_log, teams_today, whitelist)
 
     audit_context = build_audit_context(audit_entries)
 
