@@ -293,20 +293,26 @@ def generate_html(d: dict) -> str:
     .prop-AST {{ background: rgba(168,85,247,0.15); color: var(--ast); }}
     .prop-3PM {{ background: rgba(234,179,8,0.15);  color: var(--3pm); }}
     .pick-main .player  {{ font-size: 16px; font-weight: 600; }}
-    .pick-main .matchup {{ font-size: 12px; color: var(--muted); margin-top: 3px;
-                           display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
-    .game-time {{ font-size: 11px; background: var(--surface2); border: 1px solid var(--border);
-                  border-radius: 4px; padding: 1px 6px; color: var(--accent2); white-space: nowrap; }}
-    .pick-main .reasoning {{ font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.55; }}
+    .pick-main .reasoning {{ font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.5; font-style: italic; }}
+    .micro-stats {{ display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }}
+    .micro-pill {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px;
+                   background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }}
+    .micro-pill.up    {{ color: var(--hit);  background: rgba(34,197,94,0.08);  border-color: rgba(34,197,94,0.2); }}
+    .micro-pill.down  {{ color: var(--miss); background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.2); }}
+    .micro-pill.soft  {{ color: var(--hit);  background: rgba(34,197,94,0.08);  border-color: rgba(34,197,94,0.2); }}
+    .micro-pill.tough {{ color: var(--miss); background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.2); }}
     .pick-right {{ text-align: right; flex-shrink: 0; }}
-    .pick-line {{ font-size: 22px; font-weight: 700; color: var(--accent2);
-                  display: flex; align-items: baseline; gap: 6px; justify-content: flex-end; }}
+    .pick-line {{ font-size: 26px; font-weight: 800; color: var(--accent2);
+                  display: flex; align-items: baseline; gap: 5px; justify-content: flex-end; }}
     .pick-line .stat-type {{ font-size: 11px; font-weight: 700; padding: 2px 6px;
                               border-radius: 5px; line-height: 1; align-self: center; }}
-    .confidence {{ margin-top: 5px; font-size: 11px; color: var(--muted); }}
-    .conf-bar {{ height: 3px; background: var(--border); border-radius: 99px;
-                 overflow: hidden; margin-top: 4px; width: 64px; margin-left: auto; }}
-    .conf-fill {{ height: 100%; border-radius: 99px; background: var(--accent2); }}
+    .hit-rate-block {{ margin-top: 8px; text-align: right; }}
+    .hit-rate-fraction {{ font-size: 13px; font-weight: 700; color: var(--text); }}
+    .hit-rate-label {{ font-size: 10px; color: var(--muted); margin-left: 2px; }}
+    .hit-bar {{ height: 4px; background: var(--border); border-radius: 99px;
+                overflow: hidden; margin-top: 4px; width: 64px; margin-left: auto; }}
+    .hit-fill {{ height: 100%; border-radius: 99px; }}
+    .conf-line {{ font-size: 10px; color: var(--muted); margin-top: 6px; }}
 
     /* Injury report dropdown */
     .injury-dropdown {{ margin-bottom: 20px; }}
@@ -626,6 +632,35 @@ function renderInjuries() {{
   c.innerHTML = html;
 }}
 
+// ── PICK CARD HELPERS ──
+function buildHitRate(p) {{
+  const frac = p.hit_rate_display || '';
+  if (!frac) return '';
+  // Parse "8/10" → fill %
+  const parts = frac.split('/');
+  const pct = parts.length === 2 ? Math.round(100 * parseInt(parts[0]) / parseInt(parts[1])) : 0;
+  const fillColor = pct >= 80 ? 'var(--hit)' : pct >= 70 ? 'var(--accent2)' : 'var(--muted)';
+  return `
+    <div class="hit-rate-block">
+      <span class="hit-rate-fraction">${{frac}}</span><span class="hit-rate-label">L10</span>
+      <div class="hit-bar"><div class="hit-fill" style="width:${{pct}}%;background:${{fillColor}}"></div></div>
+    </div>`;
+}}
+
+function buildMicroStats(p) {{
+  const pills = [];
+  // Trend
+  if (p.trend === 'up')   pills.push(`<span class="micro-pill up">↑ trending</span>`);
+  if (p.trend === 'down') pills.push(`<span class="micro-pill down">↓ trending</span>`);
+  // Opponent defense
+  const def = p.opp_defense_rating;
+  if (def === 'soft')  pills.push(`<span class="micro-pill soft">soft def</span>`);
+  if (def === 'tough') pills.push(`<span class="micro-pill tough">tough def</span>`);
+  if (def === 'mid')   pills.push(`<span class="micro-pill">mid def</span>`);
+  if (!pills.length) return '';
+  return `<div class="micro-stats">${{pills.join('')}}</div>`;
+}}
+
 // ── TODAY'S PICKS ──
 function renderPicks() {{
   const c = document.getElementById('picks-container');
@@ -696,17 +731,16 @@ function renderPicks() {{
         <div class="pick-card">
           <div class="pick-main">
             <div class="player">${{p.player_name}}</div>
-            <div class="matchup"><span>${{p.team}} ${{ha}} ${{p.opponent}}</span></div>
-            <div class="reasoning">${{p.reasoning}}</div>
-            ${{pill ? `<div style="margin-top:5px">${{pill}}</div>` : ''}}
+            ${{buildMicroStats(p)}}
+            ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
+            ${{pill ? `<div style="margin-top:6px">${{pill}}</div>` : ''}}
           </div>
           <div class="pick-right">
             <div class="pick-line">
               ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
             </div>
-            <div class="confidence">${{p.confidence_pct}}%
-              <div class="conf-bar"><div class="conf-fill" style="width:${{p.confidence_pct}}%"></div></div>
-            </div>
+            ${{buildHitRate(p)}}
+            <div class="conf-line">${{p.confidence_pct}}% conf</div>
           </div>
         </div>`;
     }});
