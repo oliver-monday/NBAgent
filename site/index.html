@@ -307,13 +307,34 @@
     .parlay-rationale { font-size: 12px; color: var(--muted); font-style: italic;
                          border-top: 1px solid var(--border); padding-top: 10px;
                          margin-top: 10px; line-height: 1.5; }
+
+    /* Top Picks section */
+    .top-picks-header { font-size: 11px; font-weight: 700; text-transform: uppercase;
+                         letter-spacing: 1.5px; color: var(--accent); margin-bottom: 10px; }
+    .top-picks-grid { display: flex; flex-direction: column; gap: 8px; }
+    .top-pick-card { background: var(--surface); border: 1px solid var(--border);
+                      border-left-width: 4px;
+                      border-radius: 10px; padding: 16px 18px;
+                      display: grid; grid-template-columns: 1fr auto;
+                      gap: 12px; align-items: start; }
+    .tp-left { min-width: 0; }
+    .tp-player { font-size: 16px; font-weight: 700; }
+    .tp-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+    .tp-iron-badge { display: inline-block; font-size: 10px; font-weight: 700;
+                      padding: 2px 7px; border-radius: 4px; margin-top: 6px;
+                      background: rgba(34,197,94,0.12); color: var(--hit); }
+    .tp-reasoning { font-size: 12px; color: var(--muted); margin-top: 8px;
+                     line-height: 1.5; font-style: italic; }
+    .tp-right { text-align: right; flex-shrink: 0; }
+    .tp-conf { font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 6px; }
+    .top-picks-divider { height: 1px; background: var(--border); margin: 20px 0 16px; }
   </style>
 </head>
 <body>
 
 <header>
   <div class="logo"><span class="logo-nb">NB</span><span class="logo-a">A</span><span class="logo-gent">gent</span></div>
-  <div class="built-at">Updated March 05, 2026 at 2:12 PM ET</div>
+  <div class="built-at">Updated March 05, 2026 at 2:28 PM ET</div>
 </header>
 
 <div class="tabs">
@@ -327,6 +348,7 @@
 
 <div id="tab-picks" class="page active">
   <div id="injury-container"></div>
+  <div id="top-picks-container"></div>
   <div id="picks-container"></div>
 </div>
 <div id="tab-parlays" class="page"><div id="parlays-container"></div></div>
@@ -363,6 +385,7 @@ const DATA = {
   injuries:         {"fetched_at": "1:28 PM PT, Mar 5", "games": [{"away": "UTA", "home": "WAS", "game_time": "4:00 PM PT", "teams": {"UTA": [{"name": "K. George", "status": "OUT", "details": "K. George (Out)"}, {"name": "L. Markkanen", "status": "OUT", "details": "L. Markkanen (Out)"}]}}, {"away": "GSW", "home": "HOU", "game_time": "4:30 PM PT", "teams": {"GSW": [{"name": "S. Curry", "status": "OUT", "details": "S. Curry (Out)"}, {"name": "Seth Curry", "status": "OUT", "details": "Seth Curry (Out)"}], "HOU": [{"name": "A. Sengun", "status": "QUES", "details": "A. Sengun (Ques)"}, {"name": "A. Thompson", "status": "QUES", "details": "A. Thompson (Ques)"}]}}, {"away": "TOR", "home": "MIN", "game_time": "5:00 PM PT", "teams": {"TOR": [{"name": "B. Ingram", "status": "QUES", "details": "B. Ingram (Ques)"}], "MIN": [{"name": "A. Edwards", "status": "QUES", "details": "A. Edwards (Ques)"}]}}, {"away": "CHI", "home": "PHX", "game_time": "6:00 PM PT", "teams": {"CHI": [{"name": "M. Buzelis", "status": "QUES", "details": "M. Buzelis (Ques)"}, {"name": "J. Giddey", "status": "QUES", "details": "J. Giddey (Ques)"}]}}]},
   parlays:          {"today": [{"label": "Thursday Volume Sweep", "type": "mixed", "legs": [{"player_name": "Austin Reaves", "team": "LAL", "opponent": "DEN", "prop_type": "3PM", "pick_value": 1, "direction": "OVER", "confidence_pct": 90, "correlation_role": "scorer"}, {"player_name": "Nikola Jokic", "team": "DEN", "opponent": "LAL", "prop_type": "PTS", "pick_value": 20, "direction": "OVER", "confidence_pct": 85, "correlation_role": "target"}, {"player_name": "Devin Booker", "team": "PHX", "opponent": "CHI", "prop_type": "3PM", "pick_value": 1, "direction": "OVER", "confidence_pct": 85, "correlation_role": "scorer"}, {"player_name": "RJ Barrett", "team": "TOR", "opponent": "MIN", "prop_type": "PTS", "pick_value": 10, "direction": "OVER", "confidence_pct": 90, "correlation_role": "scorer"}, {"player_name": "Desmond Bane", "team": "ORL", "opponent": "DAL", "prop_type": "REB", "pick_value": 2, "direction": "OVER", "confidence_pct": 85, "correlation_role": "rebounder"}], "implied_odds": "+101", "confidence_product": 0.4961, "correlation": "positive", "rationale": "LAL-DEN volume game drives Reaves and Jokic; Barrett's 10/10 hit rate and Booker's upward 3PM trend anchor the parlay.", "date": "2026-03-05", "id": "parlay_2026-03-05_01", "result": null, "legs_hit": null, "legs_total": 5}, {"label": "TOR-MIN Feeder Stack", "type": "mixed", "legs": [{"player_name": "Brandon Ingram", "team": "TOR", "opponent": "MIN", "prop_type": "AST", "pick_value": 2, "direction": "OVER", "confidence_pct": 90, "correlation_role": "feeder"}, {"player_name": "RJ Barrett", "team": "TOR", "opponent": "MIN", "prop_type": "PTS", "pick_value": 10, "direction": "OVER", "confidence_pct": 90, "correlation_role": "target"}, {"player_name": "Julius Randle", "team": "MIN", "opponent": "TOR", "prop_type": "AST", "pick_value": 2, "direction": "OVER", "confidence_pct": 90, "correlation_role": "feeder"}, {"player_name": "Nikola Jokic", "team": "DEN", "opponent": "LAL", "prop_type": "PTS", "pick_value": 20, "direction": "OVER", "confidence_pct": 85, "correlation_role": "scorer"}], "implied_odds": "+104", "confidence_product": 0.6184, "correlation": "positive", "rationale": "Ingram feeding Barrett is a genuine same-game positive correlation; Randle assists and Jokic scoring add independent elite-conf legs.", "date": "2026-03-05", "id": "parlay_2026-03-05_02", "result": null, "legs_hit": null, "legs_total": 4}, {"label": "Booker-Bane-Randle Trio", "type": "multi_game", "legs": [{"player_name": "Devin Booker", "team": "PHX", "opponent": "CHI", "prop_type": "3PM", "pick_value": 1, "direction": "OVER", "confidence_pct": 85, "correlation_role": "scorer"}, {"player_name": "Desmond Bane", "team": "ORL", "opponent": "DAL", "prop_type": "REB", "pick_value": 2, "direction": "OVER", "confidence_pct": 85, "correlation_role": "rebounder"}, {"player_name": "Julius Randle", "team": "MIN", "opponent": "TOR", "prop_type": "AST", "pick_value": 2, "direction": "OVER", "confidence_pct": 90, "correlation_role": "feeder"}], "implied_odds": "+143", "confidence_product": 0.6494, "correlation": "independent", "rationale": "Three independent soft-to-mid matchups across different games; all legs sit at 85\u201390% confidence with strong recent hit rates.", "date": "2026-03-05", "id": "parlay_2026-03-05_03", "result": null, "legs_hit": null, "legs_total": 3}, {"label": "Scorers Across the Slate", "type": "multi_game", "legs": [{"player_name": "RJ Barrett", "team": "TOR", "opponent": "MIN", "prop_type": "PTS", "pick_value": 10, "direction": "OVER", "confidence_pct": 90, "correlation_role": "scorer"}, {"player_name": "Paolo Banchero", "team": "ORL", "opponent": "DAL", "prop_type": "PTS", "pick_value": 15, "direction": "OVER", "confidence_pct": 80, "correlation_role": "scorer"}, {"player_name": "Nikola Jokic", "team": "DEN", "opponent": "LAL", "prop_type": "PTS", "pick_value": 20, "direction": "OVER", "confidence_pct": 85, "correlation_role": "scorer"}, {"player_name": "Cade Cunningham", "team": "DET", "opponent": "SA", "prop_type": "PTS", "pick_value": 15, "direction": "OVER", "confidence_pct": 80, "correlation_role": "scorer"}], "implied_odds": "+104", "confidence_product": 0.4896, "correlation": "positive", "rationale": "Four volume-game scorers across four independent games; spread reduces single-game variance with all legs backed by 8\u201310/10 hit rates.", "date": "2026-03-05", "id": "parlay_2026-03-05_04", "result": null, "legs_hit": null, "legs_total": 4}, {"label": "Doncic-Bane-Randle Edge", "type": "mixed", "legs": [{"player_name": "Luka Doncic", "team": "LAL", "opponent": "DEN", "prop_type": "REB", "pick_value": 4, "direction": "OVER", "confidence_pct": 85, "correlation_role": "rebounder"}, {"player_name": "Desmond Bane", "team": "ORL", "opponent": "DAL", "prop_type": "REB", "pick_value": 2, "direction": "OVER", "confidence_pct": 85, "correlation_role": "rebounder"}, {"player_name": "Julius Randle", "team": "MIN", "opponent": "TOR", "prop_type": "AST", "pick_value": 2, "direction": "OVER", "confidence_pct": 90, "correlation_role": "feeder"}, {"player_name": "Devin Booker", "team": "PHX", "opponent": "CHI", "prop_type": "3PM", "pick_value": 1, "direction": "OVER", "confidence_pct": 85, "correlation_role": "scorer"}, {"player_name": "RJ Barrett", "team": "TOR", "opponent": "MIN", "prop_type": "PTS", "pick_value": 10, "direction": "OVER", "confidence_pct": 90, "correlation_role": "target"}], "implied_odds": "+101", "confidence_product": 0.4961, "correlation": "positive", "rationale": "Doncic and Bane rebound props pair with Randle-Barrett positive TOR-MIN correlation; Booker's trending 3PM adds a clean independent anchor.", "date": "2026-03-05", "id": "parlay_2026-03-05_05", "result": null, "legs_hit": null, "legs_total": 5}], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0},
   ml_odds:          {"ORL": 80, "DAL": 24, "WAS": 59, "UTA": 45, "MIA": 89, "BKN": 15, "HOU": 79, "GSW": 25, "MIN": 70, "TOR": 34, "SAS": 61, "DET": 43, "PHX": 84, "CHI": 20, "DEN": 66, "LAL": 38, "SAC": 37, "NOP": 67},
+  top_picks:        [{"date": "2026-03-05", "player_name": "RJ Barrett", "team": "TOR", "opponent": "MIN", "home_away": "A", "prop_type": "PTS", "pick_value": 10, "direction": "OVER", "confidence_pct": 90, "hit_rate_display": "10/10", "trend": "stable", "opp_defense_rating": "mid", "reasoning": "Perfect 10/10 hit rate; consistent scorer with enough volume to clear 10 regardless of MIN's defense.", "result": null, "actual_value": null, "game_time": "5:00 PM PT"}, {"date": "2026-03-05", "player_name": "Austin Reaves", "team": "LAL", "opponent": "DEN", "home_away": "A", "prop_type": "3PM", "pick_value": 1, "direction": "OVER", "confidence_pct": 90, "hit_rate_display": "9/10", "trend": "stable", "opp_defense_rating": "soft", "reasoning": "Near-automatic at 1 3PM; hits this threshold in virtually every active game this season.", "result": null, "actual_value": null, "game_time": "7:00 PM PT"}, {"date": "2026-03-05", "player_name": "Brandon Ingram", "team": "TOR", "opponent": "MIN", "home_away": "A", "prop_type": "AST", "pick_value": 2, "direction": "OVER", "confidence_pct": 90, "hit_rate_display": "9/10", "trend": "up", "opp_defense_rating": "mid", "reasoning": "High-usage initiator who routinely generates assists as a secondary creator for TOR.", "result": null, "actual_value": null, "game_time": "5:00 PM PT"}, {"date": "2026-03-05", "player_name": "Julius Randle", "team": "MIN", "opponent": "TOR", "home_away": "H", "prop_type": "AST", "pick_value": 2, "direction": "OVER", "confidence_pct": 90, "hit_rate_display": "9/10", "trend": "stable", "opp_defense_rating": "tough", "reasoning": "Facilitating big who consistently generates at minimum 2 assists regardless of defensive context.", "result": null, "actual_value": null, "game_time": "5:00 PM PT"}, {"date": "2026-03-05", "player_name": "Nikola Jokic", "team": "DEN", "opponent": "LAL", "home_away": "H", "prop_type": "PTS", "pick_value": 20, "direction": "OVER", "confidence_pct": 85, "hit_rate_display": "9/10", "trend": "stable", "opp_defense_rating": "mid", "reasoning": "Generational offensive presence; well-rested with 3 days off and home advantage versus mid LAL defense.", "result": null, "actual_value": null, "game_time": "7:00 PM PT"}],
 };
 
 function showTab(name) {
@@ -765,7 +788,52 @@ function toggleGame(gid) {
   }, {passive: true});
 })();
 
+// ── TOP PICKS ──
+function renderTopPicks() {
+  const c = document.getElementById('top-picks-container');
+  const tops = DATA.top_picks || [];
+  if (!tops.length) { c.innerHTML = ''; return; }
+
+  const STAT_COLOR = {
+    PTS: 'var(--pts)', REB: 'var(--reb)',
+    AST: 'var(--ast)', '3PM': 'var(--3pm)'
+  };
+
+  let html = `<div class="top-picks-header">⚡ TOP PICKS TODAY</div>
+              <div class="top-picks-grid">`;
+
+  tops.forEach(p => {
+    const pt        = p.prop_type || '';
+    const color     = STAT_COLOR[pt] || 'var(--muted)';
+    const gameTime  = p.game_time ? ` · ${p.game_time}` : '';
+    const ironBadge = p.iron_floor
+      ? `<div><span class="tp-iron-badge">🔒 Iron Floor</span></div>` : '';
+    const reasoning = p.reasoning
+      ? `<div class="tp-reasoning">${p.reasoning}</div>` : '';
+
+    html += `
+      <div class="top-pick-card" style="border-left-color:${color}">
+        <div class="tp-left">
+          <div class="tp-player">${p.player_name}</div>
+          <div class="tp-meta">${p.team}${gameTime}</div>
+          ${ironBadge}
+          ${reasoning}
+        </div>
+        <div class="tp-right">
+          <div class="pick-line">
+            ${p.pick_value}<span class="stat-type ${propColor(pt)}">${pt}</span>
+          </div>
+          <div class="tp-conf">${p.confidence_pct}% conf</div>
+        </div>
+      </div>`;
+  });
+
+  html += `</div><div class="top-picks-divider"></div>`;
+  c.innerHTML = html;
+}
+
 renderInjuries();
+renderTopPicks();
 renderPicks();
 renderResults();
 renderAudit();

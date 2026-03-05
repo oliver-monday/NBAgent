@@ -347,6 +347,36 @@ def load_todays_parlays() -> dict:
     }
 
 
+def get_top_picks(picks: list, max_picks: int = 5, min_picks: int = 3) -> list:
+    """
+    Deterministically selects the highest-confidence picks for the Top Picks banner.
+    Returns [] if fewer than min_picks candidates qualify (avoids a weak 'Top' label).
+    """
+    STAT_PRIORITY = {"PTS": 0, "3PM": 1, "AST": 2, "REB": 3}
+
+    candidates = [p for p in picks if (
+        p.get("result") is None and
+        not p.get("voided", False) and
+        p.get("lineup_risk") != "high" and
+        p.get("confidence_pct", 0) >= 85
+    )]
+
+    def score(p):
+        hr_str = p.get("hit_rate_display", "0/10")
+        try:
+            hits = int(hr_str.split("/")[0])
+        except Exception:
+            hits = 0
+        iron     = 1 if p.get("iron_floor") else 0
+        stat_pri = STAT_PRIORITY.get(p.get("prop_type", "REB"), 3)
+        conf     = p.get("confidence_pct", 0)
+        # Rank: iron floor first, then confidence desc, then hit rate desc, then stat priority
+        return (iron, conf, hits, -stat_pri)
+
+    ranked = sorted(candidates, key=score, reverse=True)[:max_picks]
+    return ranked if len(ranked) >= min_picks else []
+
+
 def build_site():
     picks     = load_json(PICKS_JSON, [])
     audit_log = load_json(AUDIT_LOG_JSON, [])
@@ -362,6 +392,8 @@ def build_site():
     # Attach game time to today's picks
     for p in today_picks:
         p["game_time"] = game_times.get(str(p.get("team", "")).upper(), "")
+
+    top_picks = get_top_picks(today_picks)
 
     total_hits   = sum(1 for p in past_picks if p["result"] == "HIT")
     total_graded = len(past_picks)
@@ -397,6 +429,7 @@ def build_site():
         "injuries":  injuries_display,
         "parlays":   parlays_data,
         "ml_odds":   ml_odds,
+        "top_picks": top_picks,
         "built_at": dt.datetime.now(ET).strftime("%B %d, %Y at %-I:%M %p ET"),
     }
 
@@ -420,6 +453,7 @@ def generate_html(d: dict) -> str:
     injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "games": []}))
     parlays_json    = json.dumps(d.get("parlays", {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}))
     ml_odds_json    = json.dumps(d.get("ml_odds", {}))
+    top_picks_json  = json.dumps(d.get("top_picks", []))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -730,6 +764,27 @@ def generate_html(d: dict) -> str:
     .parlay-rationale {{ font-size: 12px; color: var(--muted); font-style: italic;
                          border-top: 1px solid var(--border); padding-top: 10px;
                          margin-top: 10px; line-height: 1.5; }}
+
+    /* Top Picks section */
+    .top-picks-header {{ font-size: 11px; font-weight: 700; text-transform: uppercase;
+                         letter-spacing: 1.5px; color: var(--accent); margin-bottom: 10px; }}
+    .top-picks-grid {{ display: flex; flex-direction: column; gap: 8px; }}
+    .top-pick-card {{ background: var(--surface); border: 1px solid var(--border);
+                      border-left-width: 4px;
+                      border-radius: 10px; padding: 16px 18px;
+                      display: grid; grid-template-columns: 1fr auto;
+                      gap: 12px; align-items: start; }}
+    .tp-left {{ min-width: 0; }}
+    .tp-player {{ font-size: 16px; font-weight: 700; }}
+    .tp-meta {{ font-size: 12px; color: var(--muted); margin-top: 3px; }}
+    .tp-iron-badge {{ display: inline-block; font-size: 10px; font-weight: 700;
+                      padding: 2px 7px; border-radius: 4px; margin-top: 6px;
+                      background: rgba(34,197,94,0.12); color: var(--hit); }}
+    .tp-reasoning {{ font-size: 12px; color: var(--muted); margin-top: 8px;
+                     line-height: 1.5; font-style: italic; }}
+    .tp-right {{ text-align: right; flex-shrink: 0; }}
+    .tp-conf {{ font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 6px; }}
+    .top-picks-divider {{ height: 1px; background: var(--border); margin: 20px 0 16px; }}
   </style>
 </head>
 <body>
@@ -750,6 +805,7 @@ def generate_html(d: dict) -> str:
 
 <div id="tab-picks" class="page active">
   <div id="injury-container"></div>
+  <div id="top-picks-container"></div>
   <div id="picks-container"></div>
 </div>
 <div id="tab-parlays" class="page"><div id="parlays-container"></div></div>
@@ -786,6 +842,7 @@ const DATA = {{
   injuries:         {injuries_json},
   parlays:          {parlays_json},
   ml_odds:          {ml_odds_json},
+  top_picks:        {top_picks_json},
 }};
 
 function showTab(name) {{
@@ -1188,7 +1245,52 @@ function toggleGame(gid) {{
   }}, {{passive: true}});
 }})();
 
+// ── TOP PICKS ──
+function renderTopPicks() {{
+  const c = document.getElementById('top-picks-container');
+  const tops = DATA.top_picks || [];
+  if (!tops.length) {{ c.innerHTML = ''; return; }}
+
+  const STAT_COLOR = {{
+    PTS: 'var(--pts)', REB: 'var(--reb)',
+    AST: 'var(--ast)', '3PM': 'var(--3pm)'
+  }};
+
+  let html = `<div class="top-picks-header">⚡ TOP PICKS TODAY</div>
+              <div class="top-picks-grid">`;
+
+  tops.forEach(p => {{
+    const pt        = p.prop_type || '';
+    const color     = STAT_COLOR[pt] || 'var(--muted)';
+    const gameTime  = p.game_time ? ` · ${{p.game_time}}` : '';
+    const ironBadge = p.iron_floor
+      ? `<div><span class="tp-iron-badge">🔒 Iron Floor</span></div>` : '';
+    const reasoning = p.reasoning
+      ? `<div class="tp-reasoning">${{p.reasoning}}</div>` : '';
+
+    html += `
+      <div class="top-pick-card" style="border-left-color:${{color}}">
+        <div class="tp-left">
+          <div class="tp-player">${{p.player_name}}</div>
+          <div class="tp-meta">${{p.team}}${{gameTime}}</div>
+          ${{ironBadge}}
+          ${{reasoning}}
+        </div>
+        <div class="tp-right">
+          <div class="pick-line">
+            ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
+          </div>
+          <div class="tp-conf">${{p.confidence_pct}}% conf</div>
+        </div>
+      </div>`;
+  }});
+
+  html += `</div><div class="top-picks-divider"></div>`;
+  c.innerHTML = html;
+}}
+
 renderInjuries();
+renderTopPicks();
 renderPicks();
 renderResults();
 renderAudit();
