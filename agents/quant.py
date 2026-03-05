@@ -764,6 +764,123 @@ def compute_minutes_trend(games_10: pd.DataFrame, games_5: pd.DataFrame) -> str:
     return "stable"
 
 
+def build_bounce_back_profiles(
+    player_log: pd.DataFrame,
+    whitelist: set,
+) -> dict:
+    """
+    Compute per-player bounce-back profiles at each player's best qualifying tier
+    (≥70% full-season hit rate, strict >) across their full season history.
+
+    Returns:
+        {player_name: {"PTS": {...or None}, "REB": {...or None}, "AST": {...or None}, "3PM": {...or None}}}
+
+    Fields per stat (or None if < 5 post-miss observations):
+        post_miss_hit_rate  — fraction of games player hit tier immediately after a miss
+        lift                — post_miss_hit_rate / overall_hit_rate
+        consecutive_miss_rate — fraction of misses followed by another miss
+        max_consecutive_misses — longest consecutive miss streak
+        iron_floor          — True when max_consecutive_misses == 1 AND n_misses >= 5
+        n_misses            — total misses in full history at this tier
+    """
+    MIN_POST_MISS = 5
+
+    # Filter to whitelisted players using full log (not today-filtered)
+    if whitelist:
+        mask = player_log.apply(
+            lambda r: (
+                r["player_name"].strip().lower(),
+                r["team_abbrev"].strip().upper()
+            ) in whitelist,
+            axis=1,
+        )
+        log = player_log[mask].copy()
+    else:
+        log = player_log.copy()
+
+    log = log[log["dnp"] != "1"].copy()
+    log["game_date"] = pd.to_datetime(log["game_date"])
+
+    profiles: dict = {}
+
+    for player_name, grp in log.groupby("player_name"):
+        grp = grp.sort_values("game_date", ascending=True)
+        player_profile: dict = {}
+
+        for stat, col in STAT_COL.items():
+            tiers = TIERS[stat]
+            values = grp[col].to_numpy(dtype=float)
+            n_total = len(values)
+
+            if n_total < 10:
+                player_profile[stat] = None
+                continue
+
+            # Find best qualifying tier using full-season hit rate (strict >)
+            best_t = None
+            overall_hr = 0.0
+            for t in sorted(tiers, reverse=True):
+                hr = float((values > t).mean())
+                if hr >= CONFIDENCE_FLOOR:
+                    best_t = t
+                    overall_hr = hr
+                    break
+
+            if best_t is None:
+                player_profile[stat] = None
+                continue
+
+            # Build hit sequence at best_t
+            hits = (values > best_t).astype(int).tolist()
+            n = len(hits)
+
+            # Compute bounce-back metrics from the hit sequence
+            post_miss_hits = []
+            consec_misses = 0
+            max_streak = 0
+            cur_streak = 0
+
+            for i in range(n):
+                if hits[i] == 0:  # miss
+                    cur_streak += 1
+                    if i + 1 < n:
+                        post_miss_hits.append(hits[i + 1])
+                else:
+                    if cur_streak > max_streak:
+                        max_streak = cur_streak
+                    cur_streak = 0
+
+            # Close out final streak
+            if cur_streak > max_streak:
+                max_streak = cur_streak
+
+            n_misses = hits.count(0)
+            n_post = len(post_miss_hits)
+
+            if n_post < MIN_POST_MISS:
+                player_profile[stat] = None
+                continue
+
+            post_miss_hr = float(sum(post_miss_hits) / n_post)
+            consec_miss_rate = 1.0 - post_miss_hr  # fraction of misses followed by another miss
+            lift = round(post_miss_hr / overall_hr, 3) if overall_hr > 0 else 1.0
+            iron_floor = (max_streak == 1) and (n_misses >= 5)
+
+            player_profile[stat] = {
+                "tier": best_t,
+                "post_miss_hit_rate": round(post_miss_hr, 3),
+                "lift": lift,
+                "consecutive_miss_rate": round(consec_miss_rate, 3),
+                "max_consecutive_misses": max_streak,
+                "iron_floor": iron_floor,
+                "n_misses": n_misses,
+            }
+
+        profiles[player_name] = player_profile
+
+    return profiles
+
+
 def build_player_stats(
     player_log: pd.DataFrame,
     b2b_teams: set[str],
@@ -776,6 +893,9 @@ def build_player_stats(
     master_df: pd.DataFrame | None = None,
     b2b_game_ids: dict | None = None,
 ) -> dict:
+
+    # Bounce-back profiles use full player_log (all season history, not today-filtered)
+    bounce_back_profiles = build_bounce_back_profiles(player_log, whitelist)
 
     team_to_opp = {}
     team_to_game_key = {}
@@ -883,6 +1003,10 @@ def build_player_stats(
         games_last_7  = rest_ctx.get("games_last_7", 0)
         dense_schedule = rest_ctx.get("dense_schedule", False)
 
+        # Bounce-back profile for this player (full-season, pre-computed)
+        bb_raw = bounce_back_profiles.get(player_name, {})
+        bounce_back = {stat: bb_raw.get(stat) for stat in TIERS}
+
         stats_out[player_name] = {
             "team": team,
             "opponent": opponent,
@@ -908,6 +1032,7 @@ def build_player_stats(
             "opp_defense": opp_context,
             "game_pace": pace_ctx,
             "teammate_correlations": teammate_corr,
+            "bounce_back": bounce_back,
         }
 
     return stats_out

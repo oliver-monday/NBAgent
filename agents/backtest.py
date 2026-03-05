@@ -33,8 +33,11 @@ GAME_LOG_CSV   = DATA / "player_game_log.csv"
 TEAM_LOG_CSV   = DATA / "team_game_log.csv"
 MASTER_CSV     = DATA / "nba_master.csv"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
-RESULTS_JSON       = DATA / "backtest_results.json"
-BOUNCE_BACK_JSON   = DATA / "backtest_bounce_back.json"
+RESULTS_JSON          = DATA / "backtest_results.json"
+BOUNCE_BACK_JSON      = DATA / "backtest_bounce_back.json"
+MEAN_REVERSION_JSON   = DATA / "backtest_mean_reversion.json"
+RECENCY_WEIGHT_JSON        = DATA / "backtest_recency_weight.json"
+PLAYER_BOUNCE_BACK_JSON    = DATA / "bounce_back_players.json"
 
 # ── Tier definitions (mirrors quant.py) ───────────────────────────────
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -1266,6 +1269,1167 @@ def run_bounce_back_analysis(player_log: pd.DataFrame, args) -> None:
     print_bounce_back_report(a1, a2, a3, meta, recs, implies)
 
 
+# ── Mean Reversion Analysis ───────────────────────────────────────────
+
+# Config (mirrors spec)
+MR_BASELINE_WINDOW  = 20   # L20 window for established tier and raw avg baseline
+MR_SHORT_WINDOW     = 5    # L5 window for "current form" assessment
+MR_MIN_PRIOR_GAMES  = 20   # minimum games before a player enters analysis
+MR_MIN_SAMPLE       = 15   # minimum n for Analysis 2/3 cells to report (else flag)
+MR_A1_MIN_VERDICT   = 15   # minimum n per cold streak category for A1 verdict
+
+
+def _cold_streak_category(raw_drop: pd.Series, tier_drop: pd.Series) -> pd.Series:
+    """
+    Vectorized cold streak classification. Inputs are pandas Series.
+
+    raw_drop   = (L20_raw_avg - L5_raw_avg) / L20_raw_avg  (NaN-safe, filled to 0 before call)
+    tier_drop  = L20_tier_hit_rate - L5_tier_hit_rate       (NaN-safe, filled to 0 before call)
+
+    Classification uses the MORE SEVERE of the two dimensions (OR logic), with severity
+    checked in descending order so each row falls into exactly one bucket.
+    Hot-streak rows (both drops < 0) naturally fall into "baseline".
+    """
+    severe   = (raw_drop > 0.30) | (tier_drop > 0.40)
+    moderate = (
+        ((raw_drop >= 0.15) & (raw_drop <= 0.30)) |
+        ((tier_drop >= 0.20) & (tier_drop <= 0.40))
+    ) & ~severe
+    mild = (
+        ((raw_drop >= 0.05) & (raw_drop <= 0.15)) |
+        ((tier_drop >= 0.10) & (tier_drop <= 0.20))
+    ) & ~severe & ~moderate
+    baseline = (raw_drop < 0.05) & (tier_drop < 0.10)
+
+    return pd.Series(
+        np.select(
+            [severe, moderate, mild, baseline],
+            ["severe_cold", "moderate_cold", "mild_cold", "baseline"],
+            default="baseline",   # hot streaks (negative drops) → baseline
+        ),
+        index=raw_drop.index,
+    )
+
+
+def build_mean_reversion_instances(
+    player_log: pd.DataFrame,
+    stat: str,
+    baseline_window: int = MR_BASELINE_WINDOW,
+    short_window: int = MR_SHORT_WINDOW,
+) -> pd.DataFrame:
+    """
+    Build one row per qualified target game (game N+1) for a single stat.
+
+    Columns produced:
+      player_name, game_date, stat, team_abbrev, opp_abbrev,
+      established_tier, l20_raw_avg, l5_raw_avg, l20_hr, l5_hr,
+      raw_avg_drop, tier_rate_drop, cold_streak_cat,
+      is_hit,               # actual >= established_tier at target game
+      future_actual_1,      # stat value 1 game after target (N+2 measurement)
+      future_actual_2       # stat value 2 games after target (N+3 measurement)
+    """
+    col   = STAT_COL[stat]
+    tiers = sorted(TIERS[stat], reverse=True)   # highest first
+
+    df = player_log[
+        ["player_name", "game_date", "team_abbrev", "opp_abbrev", col]
+    ].copy()
+    df = df.sort_values(["player_name", "game_date"]).reset_index(drop=True)
+
+    # Quick pre-filter: skip players with fewer than baseline_window + 1 total games
+    game_counts = df.groupby("player_name")[col].transform("count")
+    df = df[game_counts >= baseline_window + 1].copy()
+    if df.empty:
+        return pd.DataFrame()
+
+    # ── L20 and L5 raw averages (shift=1: no lookahead) ───────────────
+    df["l20_raw_avg"] = df.groupby("player_name")[col].transform(
+        lambda x: x.shift(1).rolling(baseline_window, min_periods=baseline_window).mean()
+    )
+    df["l5_raw_avg"] = df.groupby("player_name")[col].transform(
+        lambda x: x.shift(1).rolling(short_window, min_periods=short_window).mean()
+    )
+
+    # ── Per-tier rolling hit rates (L20 and L5, shift=1) ─────────────
+    for tier in tiers:
+        hit_col = f"_hit_{tier}"
+        df[hit_col] = (df[col] > tier).astype(float)
+        df[f"_l20_hr_{tier}"] = df.groupby("player_name")[hit_col].transform(
+            lambda x: x.shift(1).rolling(baseline_window, min_periods=baseline_window).mean()
+        )
+        df[f"_l5_hr_{tier}"] = df.groupby("player_name")[hit_col].transform(
+            lambda x: x.shift(1).rolling(short_window, min_periods=short_window).mean()
+        )
+
+    # ── Established tier: highest tier with L20 HR >= CONFIDENCE_FLOOR ─
+    df["established_tier"] = np.nan
+    for tier in tiers:
+        qualifies   = df[f"_l20_hr_{tier}"] >= CONFIDENCE_FLOOR
+        no_tier_yet = df["established_tier"].isna()
+        df.loc[qualifies & no_tier_yet, "established_tier"] = float(tier)
+
+    # ── L20 and L5 HR at the established tier (per-row lookup) ────────
+    df["l20_hr"] = np.nan
+    df["l5_hr"]  = np.nan
+    for tier in tiers:
+        mask = df["established_tier"] == float(tier)
+        df.loc[mask, "l20_hr"] = df.loc[mask, f"_l20_hr_{tier}"]
+        df.loc[mask, "l5_hr"]  = df.loc[mask, f"_l5_hr_{tier}"]
+
+    # ── Cold streak metrics ────────────────────────────────────────────
+    # raw_avg_drop: protect against division by zero when L20 avg = 0
+    df["raw_avg_drop"]  = (df["l20_raw_avg"] - df["l5_raw_avg"]) / \
+                           df["l20_raw_avg"].replace(0, np.nan)
+    df["tier_rate_drop"] = df["l20_hr"] - df["l5_hr"]
+
+    # Classify (fillna(0) so NaN drops → baseline, not an error)
+    df["cold_streak_cat"] = _cold_streak_category(
+        df["raw_avg_drop"].fillna(0),
+        df["tier_rate_drop"].fillna(0),
+    )
+
+    # ── Is-hit at target game: actual >= established_tier ─────────────
+    df["is_hit"] = np.nan
+    has_tier = df["established_tier"].notna()
+    df.loc[has_tier, "is_hit"] = (
+        df.loc[has_tier, col] >= df.loc[has_tier, "established_tier"]
+    ).astype(float)
+
+    # ── Forward shifts for Analysis 2 (N+2 and N+3) ──────────────────
+    # shift(-1) = 1 game after target (N+2), shift(-2) = 2 games after (N+3)
+    # DNPs are already excluded from player_log, so shifts skip them correctly.
+    df["future_actual_1"] = df.groupby("player_name")[col].shift(-1)
+    df["future_actual_2"] = df.groupby("player_name")[col].shift(-2)
+
+    # ── Filter to qualified instances ─────────────────────────────────
+    qualified = df[
+        df["established_tier"].notna() &
+        df["l20_raw_avg"].notna() &
+        df["l5_raw_avg"].notna() &
+        df["is_hit"].notna()
+    ].copy()
+
+    # Drop temp columns
+    drop_cols = [c for c in qualified.columns if c.startswith("_")]
+    qualified = qualified.drop(columns=drop_cols)
+    qualified["stat"] = stat
+
+    keep = [
+        "player_name", "stat", "game_date", "team_abbrev", "opp_abbrev",
+        "established_tier", "l20_raw_avg", "l5_raw_avg", "l20_hr", "l5_hr",
+        "raw_avg_drop", "tier_rate_drop", "cold_streak_cat",
+        "is_hit", "future_actual_1", "future_actual_2",
+    ]
+    return qualified[[c for c in keep if c in qualified.columns]].copy()
+
+
+# ── Mean Reversion — Analysis 1 ───────────────────────────────────────
+
+def _mr_verdict_a1(cats: dict) -> str:
+    """
+    Derive verdict from per-category hit rates and lifts.
+
+    cats keys: "baseline", "mild_cold", "moderate_cold", "severe_cold"
+    Each value: {"n": int, "hit_rate": float|None, "lift": float|None}
+
+    Verdict rules (in priority order):
+      insufficient-sample  → any category with n < MR_A1_MIN_VERDICT
+      reversion            → lift increases monotonically mild→mod→severe AND severe lift > 1.10
+      decline              → hit rate decreases monotonically AND severe lift < 0.90
+      mixed-threshold      → moderate shows reversion (lift > 1.0) but severe shows decline (lift < 0.90)
+      independent          → all cold-streak lifts between 0.95 and 1.10
+    """
+    cold_cats = ["mild_cold", "moderate_cold", "severe_cold"]
+    ns    = [cats.get(c, {}).get("n", 0)        for c in cold_cats]
+    lifts = [cats.get(c, {}).get("lift")         for c in cold_cats]
+    hrs   = [cats.get(c, {}).get("hit_rate")     for c in cold_cats]
+
+    baseline_n = cats.get("baseline", {}).get("n", 0)
+    if baseline_n < MR_A1_MIN_VERDICT:
+        return "insufficient-sample"
+
+    # Any cold-streak category with 0 instances → insufficient to judge
+    if any(n == 0 for n in ns):
+        return "insufficient-sample"
+
+    # Work only with categories that have sufficient sample
+    valid = [(l, h, n) for l, h, n in zip(lifts, hrs, ns)
+             if l is not None and h is not None and n >= MR_A1_MIN_VERDICT]
+    if len(valid) < 2:
+        return "insufficient-sample"
+
+    valid_lifts = [v[0] for v in valid]
+    valid_hrs   = [v[1] for v in valid]
+
+    sev_lift = cats.get("severe_cold", {}).get("lift")
+    sev_n    = cats.get("severe_cold", {}).get("n", 0)
+    mod_lift = cats.get("moderate_cold", {}).get("lift") or 0
+
+    is_monotonic_up   = all(valid_lifts[i] <= valid_lifts[i+1]
+                             for i in range(len(valid_lifts)-1))
+    is_monotonic_down = all(valid_hrs[i]   >= valid_hrs[i+1]
+                             for i in range(len(valid_hrs)-1))
+
+    if sev_lift is not None and sev_n >= MR_A1_MIN_VERDICT:
+        if is_monotonic_up and sev_lift > 1.10:
+            return "reversion"
+        if is_monotonic_down and sev_lift < 0.90:
+            return "decline"
+        if mod_lift > 1.0 and sev_lift < 0.90:
+            return "mixed-threshold"
+
+    if all(0.95 <= l <= 1.10 for l in valid_lifts):
+        return "independent"
+
+    return "independent"
+
+
+def mean_reversion_analysis_1(instances: pd.DataFrame) -> dict:
+    """
+    Per stat: next-game hit rate by cold streak severity category.
+    Returns per-stat dicts with n, hit_rate, lift (vs baseline), verdict.
+    """
+    by_stat = {}
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sub = instances[instances["stat"] == stat]
+        if sub.empty:
+            continue
+
+        cat_order = ["baseline", "mild_cold", "moderate_cold", "severe_cold"]
+        cats = {}
+
+        # Baseline hit rate first (needed to compute lifts)
+        baseline_df = sub[sub["cold_streak_cat"] == "baseline"]
+        baseline_n  = len(baseline_df)
+        baseline_hr = round(float(baseline_df["is_hit"].mean()), 4) if baseline_n > 0 else None
+        cats["baseline"] = {"n": baseline_n, "hit_rate": baseline_hr}
+
+        for cat in ("mild_cold", "moderate_cold", "severe_cold"):
+            cat_df = sub[sub["cold_streak_cat"] == cat]
+            n  = len(cat_df)
+            hr = round(float(cat_df["is_hit"].mean()), 4) if n > 0 else None
+            entry: dict = {"n": n, "hit_rate": hr}
+            if hr is not None and baseline_hr and baseline_hr > 0:
+                entry["lift"] = round(hr / baseline_hr, 4)
+            else:
+                entry["lift"] = None
+            cats[cat] = entry
+
+        verdict = _mr_verdict_a1(cats)
+        cats["verdict"] = verdict
+
+        # mixed_threshold: find first cold category with lift < 0.90
+        mixed_threshold = None
+        if verdict == "mixed-threshold":
+            for cat in ("mild_cold", "moderate_cold", "severe_cold"):
+                lift = cats.get(cat, {}).get("lift")
+                if lift is not None and lift < 0.90:
+                    mixed_threshold = cat
+                    break
+        cats["mixed_threshold"] = mixed_threshold
+
+        by_stat[stat] = cats
+
+    return by_stat
+
+
+# ── Mean Reversion — Analysis 2 ───────────────────────────────────────
+
+def mean_reversion_analysis_2(instances: pd.DataFrame) -> dict:
+    """
+    Reversion curve: for players classified in moderate/severe cold, measure
+    hit rate at N+1 (already the target game), N+2, and N+3.
+
+    Uses the established tier from the entry point throughout (no re-classification).
+    N+2 and N+3 are computed from pre-built forward-shift columns future_actual_1/2.
+    """
+    by_stat = {}
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sub = instances[instances["stat"] == stat].copy()
+        if sub.empty:
+            continue
+
+        # Forward-game hits at N+2 and N+3 using entry-point established tier
+        sub["is_hit_n2"] = np.where(
+            sub["future_actual_1"].notna(),
+            (sub["future_actual_1"] >= sub["established_tier"]).astype(float),
+            np.nan,
+        )
+        sub["is_hit_n3"] = np.where(
+            sub["future_actual_2"].notna(),
+            (sub["future_actual_2"] >= sub["established_tier"]).astype(float),
+            np.nan,
+        )
+
+        baseline_df = sub[sub["cold_streak_cat"] == "baseline"]
+        baseline_hr = float(baseline_df["is_hit"].mean()) if len(baseline_df) > 0 else None
+
+        stat_result = {}
+        for cold_cat in ("moderate_cold", "severe_cold"):
+            cat_df = sub[sub["cold_streak_cat"] == cold_cat]
+            n_n1   = int(cat_df["is_hit"].notna().sum())
+            n_n2   = int(cat_df["is_hit_n2"].notna().sum())
+            n_n3   = int(cat_df["is_hit_n3"].notna().sum())
+
+            hr_n1 = round(float(cat_df["is_hit"].mean()), 4) if n_n1 > 0 else None
+            hr_n2 = round(float(cat_df["is_hit_n2"].dropna().mean()), 4) if n_n2 >= MR_MIN_SAMPLE else None
+            hr_n3 = round(float(cat_df["is_hit_n3"].dropna().mean()), 4) if n_n3 >= MR_MIN_SAMPLE else None
+
+            stat_result[cold_cat] = {
+                "baseline":  {"hit_rate": round(baseline_hr, 4) if baseline_hr is not None else None},
+                "n_plus_1":  {"n": n_n1, "hit_rate": hr_n1},
+                "n_plus_2":  {"n": n_n2, "hit_rate": hr_n2,
+                               "flag": "insufficient_sample" if n_n2 < MR_MIN_SAMPLE else None},
+                "n_plus_3":  {"n": n_n3, "hit_rate": hr_n3,
+                               "flag": "insufficient_sample" if n_n3 < MR_MIN_SAMPLE else None},
+            }
+
+        by_stat[stat] = stat_result
+
+    return by_stat
+
+
+# ── Mean Reversion — Analysis 3 ───────────────────────────────────────
+
+def mean_reversion_analysis_3(instances: pd.DataFrame, opp_lookup: dict) -> dict:
+    """
+    Cold streak × opponent defense interaction.
+    Tests whether a favorable matchup accelerates reversion for cold-streak players.
+
+    Requires opp_lookup from build_opp_defense_lookup(). Returns {} if lookup is empty.
+    """
+    if not opp_lookup:
+        return {}
+
+    df = instances.copy()
+    df["_date_str"] = df["game_date"].dt.strftime("%Y-%m-%d")
+    df["_opp_upper"] = df["opp_abbrev"].str.upper().str.strip()
+
+    by_stat = {}
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sub = df[df["stat"] == stat].copy()
+        if sub.empty:
+            continue
+
+        # Attach opp defense rating for each target game
+        sub["opp_def"] = sub.apply(
+            lambda r: opp_lookup.get((r["_opp_upper"], r["_date_str"], stat), "null"),
+            axis=1,
+        )
+
+        stat_result = {}
+        for cold_cat in ("moderate_cold", "severe_cold"):
+            cat_df = sub[sub["cold_streak_cat"] == cold_cat]
+            cat_result: dict = {}
+            soft_hr = tough_hr = None
+
+            for rating in ("soft", "mid", "tough"):
+                rating_df = cat_df[cat_df["opp_def"] == rating]
+                n  = int(len(rating_df))
+                hr = round(float(rating_df["is_hit"].mean()), 4) if n >= MR_MIN_SAMPLE else None
+                cat_result[rating] = {
+                    "n": n,
+                    "hit_rate": hr,
+                    "flag": "insufficient_sample" if n < MR_MIN_SAMPLE else None,
+                }
+                if rating == "soft":
+                    soft_hr = hr
+                elif rating == "tough":
+                    tough_hr = hr
+
+            # matchup_matters: soft vs tough spread > 10pp, both cells sufficient
+            if soft_hr is not None and tough_hr is not None:
+                cat_result["matchup_matters"] = abs(soft_hr - tough_hr) > 0.10
+            else:
+                cat_result["matchup_matters"] = None   # insufficient data both sides
+
+            stat_result[cold_cat] = cat_result
+
+        by_stat[stat] = stat_result
+
+    return by_stat
+
+
+# ── Mean Reversion — Recommendations ──────────────────────────────────
+
+def mean_reversion_recommendations(a1: dict, a2: dict, a3: dict) -> tuple:
+    recs    = []
+    implies = []
+
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd      = a1.get(stat, {})
+        verdict = sd.get("verdict", "")
+        base_hr = sd.get("baseline", {}).get("hit_rate", 0) or 0
+        sev     = sd.get("severe_cold", {})
+        sev_hr  = sev.get("hit_rate", 0) or 0
+        sev_n   = sev.get("n", 0)
+        sev_l   = sev.get("lift", 0) or 0
+        mod     = sd.get("moderate_cold", {})
+        mod_hr  = mod.get("hit_rate", 0) or 0
+        mod_n   = mod.get("n", 0)
+        mod_l   = mod.get("lift", 0) or 0
+
+        if verdict == "reversion":
+            recs.append(
+                f"{stat}: Mean reversion CONFIRMED — severe cold hit rate {sev_hr*100:.1f}% "
+                f"vs baseline {base_hr*100:.1f}% (lift={sev_l:.3f}, n={sev_n})"
+            )
+            implies.append(
+                f"{stat}: When L5 is materially below L20 (severe cold streak), apply +3–5% "
+                f"confidence — mean reversion is predictive (lift={sev_l:.2f}, n={sev_n})"
+            )
+        elif verdict == "decline":
+            recs.append(
+                f"{stat}: Genuine decline signal — severe cold hit rate {sev_hr*100:.1f}% "
+                f"BELOW baseline {base_hr*100:.1f}% (lift={sev_l:.3f}, n={sev_n}). "
+                f"L5 underperformance persists."
+            )
+            implies.append(
+                f"{stat}: Cold-streak players continue to underperform next game. "
+                f"Avoid or down-tier players with severe cold streak (lift={sev_l:.2f})."
+            )
+        elif verdict == "mixed-threshold":
+            threshold = sd.get("mixed_threshold", "severe")
+            recs.append(
+                f"{stat}: Mixed — moderate cold shows partial reversion "
+                f"({mod_hr*100:.1f}%, lift={mod_l:.3f}, n={mod_n}) but "
+                f"severe cold shows decline ({sev_hr*100:.1f}%, lift={sev_l:.3f}, n={sev_n}). "
+                f"Decline threshold at: {threshold}"
+            )
+            implies.append(
+                f"{stat}: Flag severe cold streak — reversion holds for moderate underperformance "
+                f"only; severe cold indicates genuine decline. Avoid severe cold streak picks."
+            )
+        elif verdict == "insufficient-sample":
+            recs.append(
+                f"{stat}: Insufficient sample — mean reversion verdict inconclusive "
+                f"(baseline n={sd.get('baseline', {}).get('n', 0)}, "
+                f"severe n={sev_n})"
+            )
+        else:  # independent
+            recs.append(
+                f"{stat}: Cold streak state → independent. No hit-rate adjustment warranted "
+                f"(baseline {base_hr*100:.1f}%, severe {sev_hr*100:.1f}%, "
+                f"lift={sev_l:.3f}, n={sev_n})"
+            )
+
+    # Analysis 3 — matchup interaction
+    matchup_signals = []
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        for cold_cat in ("moderate_cold", "severe_cold"):
+            cell = a3.get(stat, {}).get(cold_cat, {})
+            if cell.get("matchup_matters") is True:
+                soft_hr  = (cell.get("soft", {}).get("hit_rate") or 0) * 100
+                tough_hr = (cell.get("tough", {}).get("hit_rate") or 0) * 100
+                soft_n   = cell.get("soft", {}).get("n", 0)
+                tough_n  = cell.get("tough", {}).get("n", 0)
+                label    = "moderate" if cold_cat == "moderate_cold" else "severe"
+                matchup_signals.append(
+                    f"{stat} {label} cold: soft opp {soft_hr:.1f}%(n={soft_n}) "
+                    f"vs tough opp {tough_hr:.1f}%(n={tough_n}) — "
+                    f"matchup accelerates reversion (spread > 10pp)"
+                )
+
+    if matchup_signals:
+        recs.extend(matchup_signals)
+        implies.append(
+            "For cold-streak players, prioritize soft matchups — matchup interaction "
+            "confirmed for: " + "; ".join(matchup_signals[:2])
+        )
+    elif a3:  # a3 was built but no signals found
+        recs.append(
+            "Matchup interaction: soft/tough opponent does not reliably accelerate "
+            "cold-streak reversion across any stat (spread ≤ 10pp in all cells)"
+        )
+    else:
+        recs.append("Analysis 3 skipped — no team log available for opp defense lookup")
+
+    if not implies:
+        implies.append(
+            "No prompt changes warranted from mean reversion analysis — "
+            "cold streak state is not consistently predictive"
+        )
+
+    return recs, implies
+
+
+# ── Mean Reversion — Stdout Report ────────────────────────────────────
+
+def print_mean_reversion_report(
+    a1: dict, a2: dict, a3: dict, meta: dict, recs: list, implies: list
+):
+    sep = "─" * 54
+    d   = meta["date_range"]
+    print(f"\n{'═'*54}")
+    print(f"MEAN REVERSION BACKTEST — {d['start']} to {d['end']}")
+    print(f"Rolling window: {meta['rolling_window']} games | "
+          f"Short window: {meta['short_window']} games")
+    print(f"Total instances: {meta['total_instances']:,}")
+    print(f"{'═'*54}")
+
+    # Analysis 1
+    print(f"\nANALYSIS 1 — Next-Game Hit Rate by Cold Streak Severity\n")
+    print(f"  {'Stat':<5} {'Baseline':>10}  {'Mild':>9}  {'Lift':>5}  "
+          f"{'Moderate':>9}  {'Lift':>5}  {'Severe':>9}  {'Lift':>5}  Verdict")
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd = a1.get(stat, {})
+        if not sd:
+            continue
+        b   = sd.get("baseline",      {})
+        mil = sd.get("mild_cold",     {})
+        mod = sd.get("moderate_cold", {})
+        sev = sd.get("severe_cold",   {})
+        def _hr(d):  return f"{(d.get('hit_rate') or 0)*100:.1f}%(n={d.get('n',0)})"
+        def _l(d):   return f"{d.get('lift') or 0:.2f}" if d.get("lift") is not None else "----"
+        v = sd.get("verdict", "?")
+        print(f"  {stat:<5} {_hr(b):>12}  {_hr(mil):>12}  {_l(mil):>5}  "
+              f"{_hr(mod):>12}  {_l(mod):>5}  {_hr(sev):>12}  {_l(sev):>5}  [{v}]")
+
+    # Analysis 2
+    print(f"\n{sep}")
+    print("ANALYSIS 2 — Reversion Curve (moderate + severe cold only)\n")
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd = a2.get(stat, {})
+        if not sd:
+            continue
+        for cold_cat in ("moderate_cold", "severe_cold"):
+            cat_d = sd.get(cold_cat, {})
+            if not cat_d:
+                continue
+            bl = cat_d.get("baseline", {}).get("hit_rate", 0) or 0
+            n1 = cat_d.get("n_plus_1", {})
+            n2 = cat_d.get("n_plus_2", {})
+            n3 = cat_d.get("n_plus_3", {})
+            def _cell(d):
+                if d.get("flag"):
+                    return f"insuff(n={d.get('n',0)})"
+                hr = d.get("hit_rate")
+                return f"{hr*100:.1f}%(n={d.get('n',0)})" if hr is not None else f"---(n={d.get('n',0)})"
+            label = "mod" if cold_cat == "moderate_cold" else "sev"
+            print(f"  {stat} {label} cold: baseline {bl*100:.1f}% | "
+                  f"N+1 {_cell(n1)} | N+2 {_cell(n2)} | N+3 {_cell(n3)}")
+
+    # Analysis 3
+    print(f"\n{sep}")
+    if not a3:
+        print("ANALYSIS 3 — Matchup Interaction: SKIPPED (no team log)\n")
+    else:
+        print("ANALYSIS 3 — Matchup Interaction (cold streak × opponent defense)\n")
+        print(f"  {'':14} {'Soft opp':>14} {'Mid opp':>12} {'Tough opp':>12}  Matchup?")
+        for stat in ("PTS", "REB", "AST", "3PM"):
+            sd = a3.get(stat, {})
+            if not sd:
+                continue
+            for cold_cat in ("moderate_cold", "severe_cold"):
+                cat_d = sd.get(cold_cat, {})
+                if not cat_d:
+                    continue
+                def _m(d):
+                    if d.get("flag"):
+                        return f"---(n={d.get('n',0)})"
+                    hr = d.get("hit_rate")
+                    return f"{hr*100:.1f}%(n={d.get('n',0)})" if hr is not None else f"---(n={d.get('n',0)})"
+                mm     = cat_d.get("matchup_matters")
+                mm_str = "Yes" if mm is True else ("No" if mm is False else "?-insuff")
+                label  = "mod" if cold_cat == "moderate_cold" else "sev"
+                print(f"  {stat} {label:<10} {_m(cat_d.get('soft',{})):>14} "
+                      f"{_m(cat_d.get('mid',{})):>12} {_m(cat_d.get('tough',{})):>12}  {mm_str}")
+
+    print(f"\n{sep}")
+    print("RECOMMENDATIONS")
+    for r in recs:
+        print(f"  → {r}")
+    print(f"\nPROMPT IMPLICATIONS")
+    for i in implies:
+        print(f"  → {i}")
+    print(f"{'═'*54}\n")
+
+
+# ── Mean Reversion — Entry Point ──────────────────────────────────────
+
+def run_mean_reversion_analysis(
+    player_log: pd.DataFrame, team_log: pd.DataFrame, args
+) -> None:
+    window      = args.window if args.window else MR_BASELINE_WINDOW
+    stat_filter = getattr(args, "stat", None)
+    stats_to_run = [stat_filter] if stat_filter else list(STAT_COL.keys())
+
+    print(f"[backtest] Mean-reversion mode | window={window} | "
+          f"short_window={MR_SHORT_WINDOW} | stats={stats_to_run}")
+
+    all_instances = []
+    for stat in stats_to_run:
+        inst = build_mean_reversion_instances(player_log, stat, window, MR_SHORT_WINDOW)
+        if not inst.empty:
+            n_cold     = int((inst["cold_streak_cat"] != "baseline").sum())
+            n_baseline = int((inst["cold_streak_cat"] == "baseline").sum())
+            print(f"[backtest] {stat}: {len(inst):,} instances | "
+                  f"baseline={n_baseline:,} | cold={n_cold:,} "
+                  f"(mild={int((inst['cold_streak_cat']=='mild_cold').sum())} "
+                  f"mod={int((inst['cold_streak_cat']=='moderate_cold').sum())} "
+                  f"sev={int((inst['cold_streak_cat']=='severe_cold').sum())})")
+            all_instances.append(inst)
+        else:
+            print(f"[backtest] {stat}: no instances")
+
+    if not all_instances:
+        print("[backtest] No instances built — cannot run mean reversion analysis.")
+        sys.exit(0)
+
+    instances = pd.concat(all_instances, ignore_index=True)
+    total_instances = int(len(instances))
+    print(f"[backtest] Total instances: {total_instances:,}")
+
+    # Analysis 1 and 2 — fast (vectorized)
+    print("[backtest] Running Analysis 1 (next-game hit rate by cold streak severity)...")
+    a1 = mean_reversion_analysis_1(instances)
+
+    print("[backtest] Running Analysis 2 (reversion curve N+1, N+2, N+3)...")
+    a2 = mean_reversion_analysis_2(instances)
+
+    # Analysis 3 — requires opp defense lookup (slow ~2 min if team_log is large)
+    opp_lookup = {}
+    if not team_log.empty:
+        print("[backtest] Building opp defense lookup for Analysis 3 (this may take ~2 min)...")
+        opp_lookup = build_opp_defense_lookup(team_log)
+    else:
+        print("[backtest] No team log available — skipping Analysis 3 matchup interaction")
+
+    print("[backtest] Running Analysis 3 (cold streak × matchup interaction)...")
+    a3 = mean_reversion_analysis_3(instances, opp_lookup)
+
+    recs, implies = mean_reversion_recommendations(a1, a2, a3)
+
+    date_min = instances["game_date"].min()
+    date_max = instances["game_date"].max()
+    date_min = date_min.strftime("%Y-%m-%d") if hasattr(date_min, "strftime") else str(date_min)
+    date_max = date_max.strftime("%Y-%m-%d") if hasattr(date_max, "strftime") else str(date_max)
+
+    meta = {
+        "generated_at":   dt.date.today().isoformat(),
+        "mode":           "mean-reversion",
+        "rolling_window": window,
+        "short_window":   MR_SHORT_WINDOW,
+        "date_range":     {"start": date_min, "end": date_max},
+        "total_instances": total_instances,
+    }
+
+    output = {
+        **meta,
+        "analysis_1_next_game_by_severity": a1,
+        "analysis_2_reversion_curve":       a2,
+        "analysis_3_matchup_interaction":   a3,
+        "recommendations":                  recs,
+        "prompt_implications":              implies,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else MEAN_REVERSION_JSON
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[backtest] Results written → {out_path}")
+
+    print_mean_reversion_report(a1, a2, a3, meta, recs, implies)
+
+
+# ── Player-Level Bounce-Back Analysis ────────────────────────────────
+
+PBB_MIN_POST_MISS   = 5     # min post-miss observations to include player in rankings
+PBB_MIN_GAMES       = 10    # min total games for a player to be analyzed
+PBB_COMP_WEIGHTS    = (0.50, 0.30, 0.20)   # (post_miss_hr, 1-consecutive_miss_rate, bb_lift)
+PBB_TOP_N           = 10    # players to rank per stat
+
+
+def _pbb_best_tier(values: np.ndarray, tiers: list) -> tuple:
+    """
+    Find highest tier where full-season overall hit rate >= 70%.
+    values: stat values for all non-DNP games, any order.
+    Returns (best_tier, overall_hit_rate) or (None, None) if none qualify.
+    Uses strict > (consistent with production quant.py).
+    """
+    for tier in sorted(tiers, reverse=True):
+        hr = float((values > tier).mean())
+        if hr >= CONFIDENCE_FLOOR:
+            return tier, hr
+    return None, None
+
+
+def _pbb_metrics(hits: list) -> dict | None:
+    """
+    Compute all bounce-back metrics for a player's hit sequence at their best tier.
+    hits: list of booleans (True = hit, False = miss), chronological order.
+    Returns None if fewer than PBB_MIN_POST_MISS post-miss observations.
+    """
+    n = len(hits)
+
+    # ── Post-miss observations ─────────────────────────────────────────
+    post_miss_hits = []     # outcome (True/False) on game N+1 given miss on game N
+    for i in range(n - 1):
+        if not hits[i]:     # game N is a miss and game N+1 exists
+            post_miss_hits.append(hits[i + 1])
+
+    n_post_miss = len(post_miss_hits)
+    if n_post_miss < PBB_MIN_POST_MISS:
+        return None
+
+    post_miss_hr       = float(np.mean(post_miss_hits))
+    consecutive_miss_r = 1.0 - post_miss_hr   # % of misses followed by another miss
+
+    # ── Max consecutive miss streak ────────────────────────────────────
+    max_streak = cur = 0
+    for h in hits:
+        if not h:
+            cur += 1
+            max_streak = max(max_streak, cur)
+        else:
+            cur = 0
+
+    # ── Post-miss recovery streak: consecutive hits following each miss ─
+    # For each miss at position i (i < n-1), count consecutive hits at i+1, i+2, ...
+    recovery_streaks = []
+    for i in range(n - 1):
+        if not hits[i]:
+            streak = 0
+            j = i + 1
+            while j < n and hits[j]:
+                streak += 1
+                j += 1
+            recovery_streaks.append(streak)
+    avg_recovery = float(np.mean(recovery_streaks)) if recovery_streaks else None
+
+    return {
+        "n_post_miss_obs":         n_post_miss,
+        "post_miss_hit_rate":      round(post_miss_hr, 4),
+        "consecutive_miss_rate":   round(consecutive_miss_r, 4),
+        "max_consecutive_miss":    max_streak,
+        "never_missed_twice":      max_streak <= 1,
+        "avg_post_miss_recovery":  round(avg_recovery, 2) if avg_recovery is not None else None,
+    }
+
+
+def run_player_bounce_back(player_log: pd.DataFrame, args) -> None:
+    """
+    Player-level bounce-back analysis.
+    For each whitelisted player × stat, finds best qualifying tier (overall season
+    hit rate >= 70%), then computes post-miss hit rate and related metrics.
+    Rankings are sorted by composite score; iron floor players flagged separately.
+    """
+    out_path = Path(args.output) if getattr(args, "output", None) else PLAYER_BOUNCE_BACK_JSON
+    print(f"[backtest] Player bounce-back mode | min_post_miss_obs={PBB_MIN_POST_MISS}")
+
+    by_stat: dict = {stat: [] for stat in STAT_COL}
+    iron_floor: list = []
+    total_analyzed = 0
+
+    for player, pdf in player_log.groupby("player_name"):
+        pdf = pdf.sort_values("game_date").reset_index(drop=True)
+        if len(pdf) < PBB_MIN_GAMES:
+            continue
+
+        for stat, col in STAT_COL.items():
+            values = pdf[col].values.astype(float)
+            n_games = len(values)
+            if n_games < PBB_MIN_GAMES:
+                continue
+
+            best_tier, overall_hr = _pbb_best_tier(values, TIERS[stat])
+            if best_tier is None:
+                continue
+
+            hits = list(values > best_tier)
+            n_misses = hits.count(False)
+
+            m = _pbb_metrics(hits)
+            if m is None:
+                continue   # < PBB_MIN_POST_MISS post-miss obs
+
+            total_analyzed += 1
+
+            # Bounce-back lift vs overall hit rate
+            bb_lift = round(m["post_miss_hit_rate"] / overall_hr, 4) if overall_hr > 0 else 0.0
+
+            # Composite: 50% post_miss_hr, 30% (1-consecutive_miss_rate), 20% bb_lift
+            composite = round(
+                PBB_COMP_WEIGHTS[0] * m["post_miss_hit_rate"] +
+                PBB_COMP_WEIGHTS[1] * (1.0 - m["consecutive_miss_rate"]) +
+                PBB_COMP_WEIGHTS[2] * bb_lift,
+                4,
+            )
+
+            record = {
+                "player_name":            player,
+                "best_tier":              int(best_tier),
+                "n_games":                n_games,
+                "n_misses":               n_misses,
+                "overall_hit_rate":       round(overall_hr, 4),
+                "n_post_miss_obs":        m["n_post_miss_obs"],
+                "post_miss_hit_rate":     m["post_miss_hit_rate"],
+                "bounce_back_lift":       bb_lift,
+                "consecutive_miss_rate":  m["consecutive_miss_rate"],
+                "max_consecutive_miss":   m["max_consecutive_miss"],
+                "never_missed_twice":     m["never_missed_twice"],
+                "avg_post_miss_recovery": m["avg_post_miss_recovery"],
+                "composite_score":        composite,
+            }
+            by_stat[stat].append(record)
+
+            # Iron floor: never missed twice consecutively (with meaningful miss count)
+            if m["never_missed_twice"] and n_misses >= 2:
+                iron_floor.append({
+                    "player_name": player,
+                    "stat":        stat,
+                    "best_tier":   int(best_tier),
+                    "n_games":     n_games,
+                    "n_misses":    n_misses,
+                    "overall_hit_rate": round(overall_hr, 4),
+                })
+
+    print(f"[backtest] Analyzed {total_analyzed} player-stat combinations")
+
+    # ── Sort by composite score descending, keep top PBB_TOP_N ──────────
+    for stat in STAT_COL:
+        by_stat[stat].sort(key=lambda r: r["composite_score"], reverse=True)
+        by_stat[stat] = [
+            {**r, "rank": i + 1}
+            for i, r in enumerate(by_stat[stat][:PBB_TOP_N])
+        ]
+
+    # Deduplicate iron floor (a player could appear for multiple stats)
+    iron_floor.sort(key=lambda r: (r["player_name"], r["stat"]))
+
+    # ── Write JSON ────────────────────────────────────────────────────
+    output = {
+        "generated_at":       dt.date.today().isoformat(),
+        "mode":               "player-bounce-back",
+        "min_post_miss_obs":  PBB_MIN_POST_MISS,
+        "composite_weights":  {
+            "post_miss_hit_rate":       PBB_COMP_WEIGHTS[0],
+            "1_minus_consec_miss_rate": PBB_COMP_WEIGHTS[1],
+            "bounce_back_lift":         PBB_COMP_WEIGHTS[2],
+        },
+        "by_stat":            by_stat,
+        "iron_floor_players": iron_floor,
+    }
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[backtest] Results written → {out_path}")
+
+    _print_player_bounce_back_report(by_stat, iron_floor)
+
+
+def _print_player_bounce_back_report(by_stat: dict, iron_floor: list) -> None:
+    W   = 82
+    sep = "─" * W
+
+    print(f"\n{'═'*W}")
+    print("PLAYER BOUNCE-BACK ANALYSIS — Top 5 per stat")
+    print("Composite = 50% post-miss HR + 30% (1−consec-miss rate) + 20% BB lift")
+    print(f"{'═'*W}")
+
+    stat_labels = {"PTS": "POINTS", "REB": "REBOUNDS", "AST": "ASSISTS", "3PM": "3-POINTERS"}
+
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        ranked = by_stat.get(stat, [])
+        print(f"\n  {stat_labels[stat]} (T = best tier, n = post-miss obs)")
+        if not ranked:
+            print("  (no players with ≥5 post-miss observations at a qualifying tier)")
+            continue
+
+        hdr = (f"  {'#':<3} {'Player':<26} {'T':>3}  {'Overall':>7}  "
+               f"{'PostMiss':>8}  {'BBLift':>6}  {'MaxStr':>6}  {'Comp':>5}")
+        print(hdr)
+        print(f"  {sep[:78]}")
+
+        for r in ranked[:5]:
+            iron = " ★" if r["never_missed_twice"] else "  "
+            nm_str = f"n={r['n_post_miss_obs']}"
+            print(
+                f"  {r['rank']:<3} {r['player_name']:<26} {r['best_tier']:>3}  "
+                f"{r['overall_hit_rate']*100:>6.1f}%  "
+                f"{r['post_miss_hit_rate']*100:>7.1f}%({nm_str:>5})  "
+                f"{r['bounce_back_lift']:>6.3f}  "
+                f"{r['max_consecutive_miss']:>6}  "
+                f"{r['composite_score']:>5.3f}{iron}"
+            )
+
+    # ── Iron floor players ─────────────────────────────────────────────
+    print(f"\n{'═'*W}")
+    print("IRON FLOOR PLAYERS — Never missed their best tier twice in a row (★)")
+    print("(Shown only when player had ≥2 total misses, so pattern is non-trivial)\n")
+
+    if not iron_floor:
+        print("  None found with ≥2 misses this season.")
+    else:
+        print(f"  {'Player':<26} {'Stat':<5} {'Tier':>4}  {'Games':>5}  "
+              f"{'Misses':>6}  {'Overall':>7}")
+        print(f"  {sep[:72]}")
+        for r in iron_floor:
+            print(
+                f"  {r['player_name']:<26} {r['stat']:<5} {r['best_tier']:>4}  "
+                f"{r['n_games']:>5}  {r['n_misses']:>6}  "
+                f"{r['overall_hit_rate']*100:>6.1f}%"
+            )
+
+    print(f"\n{'═'*W}\n")
+
+
+# ── Recency Weight Analysis ───────────────────────────────────────────
+
+# Fixed train/test split — do not change without re-running
+RW_TRAIN_START   = "2025-10-21"
+RW_TRAIN_END     = "2026-01-31"
+RW_TEST_START    = "2026-02-01"
+RW_TEST_END      = "2026-03-03"
+RW_WINDOWS       = [10, 20]
+RW_DECAYS        = [1.0, 0.95, 0.90, 0.85]
+RW_THRESHOLD     = 0.70
+# Previously flagged miscalibrated tiers (from backtest_results.json)
+RW_PROBLEM_TIERS = [("REB", 8), ("AST", 8), ("3PM", 2), ("3PM", 3)]
+# Primary baseline: deployed production config
+RW_BASELINE_KEY  = "w20_d1.00"
+
+
+def _rw_key(window: int, decay: float) -> str:
+    return f"w{window:02d}_d{decay:.2f}"
+
+
+def _weighted_hit_rate(actuals: np.ndarray, tier: float, decay: float) -> float:
+    """
+    Weighted hit rate at a tier. actuals ordered oldest → most recent.
+    Most recent game (index n-1) gets weight decay^0 = 1.0.
+    Each prior game decays geometrically: oldest (index 0) = decay^(n-1).
+    hit_i = 1 if actual > tier (strict >, consistent with production quant.py).
+    Returns NaN if actuals is empty.
+    """
+    n = len(actuals)
+    if n == 0:
+        return np.nan
+    exponents = np.arange(n - 1, -1, -1, dtype=float)   # [n-1, n-2, ..., 1, 0]
+    weights   = decay ** exponents
+    hits      = (actuals > tier).astype(float)
+    return float(np.dot(weights, hits) / weights.sum())
+
+
+def run_recency_weight_analysis(player_log: pd.DataFrame, args) -> None:
+    test_start = pd.Timestamp(RW_TEST_START)
+    test_end   = pd.Timestamp(RW_TEST_END)
+    combos     = [(w, d) for w in RW_WINDOWS for d in RW_DECAYS]
+    keys       = [_rw_key(w, d) for w, d in combos]
+
+    print(f"[backtest] Recency-weight mode")
+    print(f"[backtest] Train: {RW_TRAIN_START} → {RW_TRAIN_END} (lookback only)")
+    print(f"[backtest] Test:  {RW_TEST_START} → {RW_TEST_END}  (evaluation)")
+    print(f"[backtest] Combos ({len(combos)}): {keys}")
+
+    # Per (combo, stat): list of {"tier": int, "hit": bool}
+    pick_records: dict = {k: {s: [] for s in STAT_COL} for k in keys}
+    # Per (combo, stat): count of test instances with no pick (insufficient lookback OR no qualifying tier)
+    no_pick_count: dict = {k: {s: 0 for s in STAT_COL} for k in keys}
+    # Per stat: total test instances (same for all combos — denominator for selection rate)
+    total_test:  dict = {s: 0 for s in STAT_COL}
+
+    for player, pdf in player_log.groupby("player_name"):
+        pdf = pdf.sort_values("game_date").reset_index(drop=True)
+
+        test_rows = pdf[
+            (pdf["game_date"] >= test_start) & (pdf["game_date"] <= test_end)
+        ]
+        if test_rows.empty:
+            continue
+
+        for _, row in test_rows.iterrows():
+            test_date = row["game_date"]
+            lookback  = pdf[pdf["game_date"] < test_date]
+            lb_len    = len(lookback)
+
+            for stat, col in STAT_COL.items():
+                actual      = float(row[col])
+                tiers_desc  = sorted(TIERS[stat], reverse=True)   # highest first
+                lb_vals     = lookback[col].values                  # oldest → most recent
+
+                total_test[stat] += 1
+
+                for (window, decay), ck in zip(combos, keys):
+                    if lb_len < window:
+                        # Insufficient lookback — no pick
+                        no_pick_count[ck][stat] += 1
+                        continue
+
+                    recent = lb_vals[-window:]   # last `window` games, oldest→most recent
+
+                    # Walk tiers highest→lowest; pick first that meets threshold
+                    selected = None
+                    for tier in tiers_desc:
+                        if _weighted_hit_rate(recent, float(tier), decay) >= RW_THRESHOLD:
+                            selected = tier
+                            break
+
+                    if selected is None:
+                        no_pick_count[ck][stat] += 1
+                    else:
+                        pick_records[ck][stat].append({
+                            "tier": selected,
+                            "hit":  actual > float(selected),   # strict > consistent with production
+                        })
+
+    # ── Aggregate results ─────────────────────────────────────────────
+    def _calibration(records: list) -> tuple:
+        """Returns (hit_rate, n_picks)."""
+        n = len(records)
+        if n == 0:
+            return None, 0
+        return round(sum(r["hit"] for r in records) / n, 4), n
+
+    summary: dict = {}
+    for (window, decay), ck in zip(combos, keys):
+        all_records = [r for s in STAT_COL for r in pick_records[ck][s]]
+        cal, n_picks = _calibration(all_records)
+        n_total = sum(total_test[s] for s in STAT_COL)
+
+        by_stat: dict = {}
+        for stat, col in STAT_COL.items():
+            s_records = pick_records[ck][stat]
+            s_cal, s_n = _calibration(s_records)
+            s_total    = total_test[stat]
+
+            # Per-tier breakdown
+            tier_bucket: dict = {}
+            for r in s_records:
+                tk = str(r["tier"])
+                if tk not in tier_bucket:
+                    tier_bucket[tk] = {"picks": 0, "hits": 0}
+                tier_bucket[tk]["picks"] += 1
+                if r["hit"]:
+                    tier_bucket[tk]["hits"] += 1
+
+            by_tier = {
+                tk: {
+                    "n":           v["picks"],
+                    "calibration": round(v["hits"] / v["picks"], 4) if v["picks"] > 0 else None,
+                }
+                for tk, v in sorted(tier_bucket.items(), key=lambda x: int(x[0]))
+            }
+
+            by_stat[stat] = {
+                "total_instances": s_total,
+                "picks_made":      s_n,
+                "no_pick":         no_pick_count[ck][stat],
+                "selection_rate":  round(s_n / s_total, 4) if s_total > 0 else None,
+                "calibration":     s_cal,
+                "by_tier":         by_tier,
+            }
+
+        summary[ck] = {
+            "window":          window,
+            "decay":           decay,
+            "total_instances": n_total,
+            "picks_made":      n_picks,
+            "selection_rate":  round(n_picks / n_total, 4) if n_total > 0 else None,
+            "calibration":     cal,
+            "by_stat":         by_stat,
+        }
+
+    # ── Problem tiers ─────────────────────────────────────────────────
+    problem_tier_results: dict = {}
+    for (stat, tier) in RW_PROBLEM_TIERS:
+        pt_key = f"{stat}_{tier}"
+        problem_tier_results[pt_key] = {}
+        for ck in keys:
+            tier_records = [r for r in pick_records[ck][stat] if r["tier"] == tier]
+            n    = len(tier_records)
+            hits = sum(1 for r in tier_records if r["hit"])
+            problem_tier_results[pt_key][ck] = {
+                "n":           n,
+                "calibration": round(hits / n, 4) if n > 0 else None,
+            }
+
+    # ── Write JSON ────────────────────────────────────────────────────
+    output = {
+        "generated_at":  dt.date.today().isoformat(),
+        "mode":          "recency-weight",
+        "train_period":  {"start": RW_TRAIN_START, "end": RW_TRAIN_END},
+        "test_period":   {"start": RW_TEST_START,  "end": RW_TEST_END},
+        "baseline_combo": RW_BASELINE_KEY,
+        "combos":        summary,
+        "problem_tiers": problem_tier_results,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else RECENCY_WEIGHT_JSON
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[backtest] Results written → {out_path}")
+
+    _print_recency_weight_report(summary, problem_tier_results, output)
+
+
+def _print_recency_weight_report(summary: dict, problem_tiers: dict, output: dict) -> None:
+    W   = 80
+    sep = "─" * W
+    tp  = output["test_period"]
+    bl  = output["baseline_combo"]
+    baseline_cal = (summary.get(bl, {}).get("calibration") or 0)
+
+    print(f"\n{'═'*W}")
+    print(f"RECENCY WEIGHT BACKTEST — Test period: {tp['start']} to {tp['end']}")
+    print(f"Baseline: {bl} (deployed production config)")
+    print(f"Metric: calibration = actual hit rate on test-period picks")
+    print(f"{'═'*W}")
+
+    # ── Overall calibration table ──────────────────────────────────────
+    print(f"\nOVERALL CALIBRATION (all stats combined)\n")
+    hdr = f"  {'Combo':<14} {'Win':>4} {'Decay':>5}  {'Picks':>6}  {'Sel%':>5}  {'Cal%':>6}  vs baseline"
+    print(hdr)
+    print(f"  {sep[:72]}")
+    for ck, d in summary.items():
+        w     = d["window"]
+        dec   = d["decay"]
+        picks = d["picks_made"]
+        sel   = (d["selection_rate"] or 0) * 100
+        cal   = (d["calibration"] or 0)
+        delta = (cal - baseline_cal) * 100
+        tag   = f"{delta:+.1f}pp" if ck != bl else "(baseline)"
+        print(f"  {ck:<14} {w:>4} {dec:>5.2f}  {picks:>6,}  {sel:>5.1f}%  {cal*100:>5.1f}%  {tag}")
+
+    # ── Per-stat calibration ───────────────────────────────────────────
+    print(f"\n{sep}")
+    print("PER-STAT CALIBRATION\n")
+    stat_hdr = f"  {'Combo':<14} {'Picks':>6}  {'Sel%':>5}  {'Cal%':>6}  vs baseline"
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        print(f"  {stat}:")
+        print(f"  {stat_hdr}")
+        bl_stat_cal = (summary.get(bl, {}).get("by_stat", {}).get(stat, {}).get("calibration") or 0)
+        for ck, d in summary.items():
+            sd  = d["by_stat"].get(stat, {})
+            n   = sd.get("picks_made", 0)
+            sel = (sd.get("selection_rate") or 0) * 100
+            cal = (sd.get("calibration") or 0)
+            delta = (cal - bl_stat_cal) * 100
+            tag = f"{delta:+.1f}pp" if ck != bl else "(baseline)"
+            print(f"  {ck:<14} {n:>6,}  {sel:>5.1f}%  {cal*100:>5.1f}%  {tag}")
+        print()
+
+    # ── Problem tiers table ────────────────────────────────────────────
+    print(f"{sep}")
+    print("PROBLEM TIERS — Calibration by combo")
+    print("(previously flagged: REB T8≈66%, AST T8≈58%, 3PM T2≈61%, 3PM T3≈40%)\n")
+    pt_hdr = f"  {'Combo':<14} {'n':>5}  {'Cal%':>6}  vs baseline"
+    for pt_key, combo_data in problem_tiers.items():
+        print(f"  {pt_key}:")
+        print(f"  {pt_hdr}")
+        bl_pt_cal = (combo_data.get(bl, {}).get("calibration") or 0)
+        for ck, d in combo_data.items():
+            n   = d.get("n", 0)
+            cal = d.get("calibration") or 0
+            if n == 0:
+                print(f"  {ck:<14} {'---':>5}  {'  ---':>6}  (no picks at this tier)")
+            else:
+                delta = (cal - bl_pt_cal) * 100
+                tag   = f"{delta:+.1f}pp" if ck != bl else "(baseline)"
+                print(f"  {ck:<14} {n:>5,}  {cal*100:>5.1f}%  {tag}")
+        print()
+
+    print(f"{'═'*W}\n")
+
+
 # ── Stdout formatting ─────────────────────────────────────────────────
 
 def print_report(signal_results: dict, calibration: dict, meta: dict):
@@ -1344,7 +2508,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' for sequential-game analysis")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -1364,6 +2528,21 @@ def main():
     # ── Bounce-back mode ──────────────────────────────────────────────
     if getattr(args, "mode", None) == "bounce-back":
         run_bounce_back_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── Mean-reversion mode ───────────────────────────────────────────
+    if getattr(args, "mode", None) == "mean-reversion":
+        run_mean_reversion_analysis(player_log, team_log, args)
+        sys.exit(0)
+
+    # ── Recency-weight mode ───────────────────────────────────────────
+    if getattr(args, "mode", None) == "recency-weight":
+        run_recency_weight_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── Player bounce-back mode ───────────────────────────────────────
+    if getattr(args, "mode", None) == "player-bounce-back":
+        run_player_bounce_back(player_log, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

@@ -295,6 +295,7 @@ def build_quant_context(player_stats: dict) -> str:
         b2b_hit_rates    = s.get("b2b_hit_rates") or {}
 
         stat_parts = []
+        bounce_back_all = s.get("bounce_back") or {}
         for stat in ("PTS", "REB", "AST", "3PM"):
             best = best_tiers.get(stat)
             if not best:
@@ -335,11 +336,23 @@ def build_quant_context(player_stats: dict) -> str:
             else:
                 b2b_field = ""
 
+            # Bounce-back annotation: shown when lift > 1.0 or iron_floor
+            bb_data = bounce_back_all.get(stat)
+            if bb_data:
+                if bb_data.get("iron_floor"):
+                    bb_field = " [iron_floor]"
+                elif bb_data.get("lift", 1.0) > 1.0:
+                    bb_field = f" bb_lift={bb_data['lift']:.2f}({bb_data['n_misses']}miss)"
+                else:
+                    bb_field = ""
+            else:
+                bb_field = ""
+
             stat_parts.append(
                 f"  {stat}: tier={tier} overall={overall_pct}% "
                 f"vs_soft={soft_str} vs_tough={tough_str} "
                 f"competitive={comp_str} blowout_games={blow_str} "
-                f"opp_today={opp_rating} trend={trend}{b2b_field}"
+                f"opp_today={opp_rating} trend={trend}{b2b_field}{bb_field}"
             )
 
         if stat_parts:
@@ -409,6 +422,7 @@ A player who averages 21 pts but only clears 20 half the time is a 15-tier pick,
 - Use SEASON CONTEXT to distinguish stable baselines from genuine injury-driven role changes
 - Pick as many qualifying props as there are — don't limit volume artificially
 - Only output picks with confidence_pct ≥ 70
+- Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
 
 ## TIER CEILING RULES — backed by full-season calibration data
 The following tiers are systemically miscalibrated: players selected at these tiers hit
