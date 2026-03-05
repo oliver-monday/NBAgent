@@ -426,6 +426,12 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 - Pick as many qualifying props as there are — don't limit volume artificially
 - Only output picks with confidence_pct ≥ 70
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
+- REB props for offensive-first players: For players whose primary role is scoring or playmaking
+  (PTS avg > 20, or AST avg > 6 across their recent games), set REB pick values at or below their
+  25th-percentile recent output — not their average or median. Elite scorers in high-efficiency game
+  scripts organically see fewer rebound opportunities. Additionally, if the player's REB floor (lowest
+  value in their last 10 games) is within 2 of your intended pick value, skip the REB prop entirely
+  and pick their scoring or assists prop instead. A thin floor at high volume is a trap.
 
 ## TIER CEILING RULES — backed by full-season calibration data
 The following tiers are systemically miscalibrated: players selected at these tiers hit
