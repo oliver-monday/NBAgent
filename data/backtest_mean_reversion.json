@@ -5,100 +5,100 @@
   "short_window": 5,
   "date_range": {
     "start": "2025-11-30",
-    "end": "2026-03-03"
+    "end": "2026-03-04"
   },
-  "total_instances": 4009,
+  "total_instances": 4900,
   "analysis_1_next_game_by_severity": {
     "PTS": {
       "baseline": {
-        "n": 692,
-        "hit_rate": 0.7876
+        "n": 712,
+        "hit_rate": 0.7331
       },
       "mild_cold": {
-        "n": 272,
-        "hit_rate": 0.7831,
-        "lift": 0.9943
+        "n": 257,
+        "hit_rate": 0.7432,
+        "lift": 1.0138
       },
       "moderate_cold": {
-        "n": 239,
-        "hit_rate": 0.7741,
-        "lift": 0.9829
+        "n": 266,
+        "hit_rate": 0.7331,
+        "lift": 1.0
       },
       "severe_cold": {
-        "n": 41,
-        "hit_rate": 0.7317,
-        "lift": 0.929
+        "n": 46,
+        "hit_rate": 0.6957,
+        "lift": 0.949
       },
       "verdict": "independent",
       "mixed_threshold": null
     },
     "REB": {
       "baseline": {
-        "n": 727,
-        "hit_rate": 0.8597
+        "n": 758,
+        "hit_rate": 0.7784
       },
       "mild_cold": {
-        "n": 276,
-        "hit_rate": 0.8297,
-        "lift": 0.9651
+        "n": 278,
+        "hit_rate": 0.7482,
+        "lift": 0.9612
       },
       "moderate_cold": {
-        "n": 244,
-        "hit_rate": 0.8566,
-        "lift": 0.9964
+        "n": 262,
+        "hit_rate": 0.7672,
+        "lift": 0.9856
       },
       "severe_cold": {
-        "n": 98,
-        "hit_rate": 0.7959,
-        "lift": 0.9258
+        "n": 111,
+        "hit_rate": 0.6667,
+        "lift": 0.8565
       },
       "verdict": "independent",
       "mixed_threshold": null
     },
     "AST": {
       "baseline": {
-        "n": 557,
-        "hit_rate": 0.8815
+        "n": 686,
+        "hit_rate": 0.7741
       },
       "mild_cold": {
-        "n": 175,
-        "hit_rate": 0.9029,
-        "lift": 1.0243
+        "n": 208,
+        "hit_rate": 0.774,
+        "lift": 0.9999
       },
       "moderate_cold": {
-        "n": 212,
-        "hit_rate": 0.8491,
-        "lift": 0.9632
+        "n": 249,
+        "hit_rate": 0.8032,
+        "lift": 1.0376
       },
       "severe_cold": {
-        "n": 52,
-        "hit_rate": 0.8462,
-        "lift": 0.96
+        "n": 79,
+        "hit_rate": 0.7468,
+        "lift": 0.9647
       },
       "verdict": "independent",
       "mixed_threshold": null
     },
     "3PM": {
       "baseline": {
-        "n": 226,
-        "hit_rate": 0.9292
+        "n": 501,
+        "hit_rate": 0.7824
       },
       "mild_cold": {
-        "n": 61,
-        "hit_rate": 0.8852,
-        "lift": 0.9526
+        "n": 142,
+        "hit_rate": 0.7746,
+        "lift": 0.99
       },
       "moderate_cold": {
-        "n": 85,
-        "hit_rate": 0.8588,
-        "lift": 0.9242
+        "n": 184,
+        "hit_rate": 0.7391,
+        "lift": 0.9447
       },
       "severe_cold": {
-        "n": 52,
-        "hit_rate": 0.8654,
-        "lift": 0.9313
+        "n": 161,
+        "hit_rate": 0.6832,
+        "lift": 0.8732
       },
-      "verdict": "independent",
+      "verdict": "decline",
       "mixed_threshold": null
     }
   },
@@ -106,39 +106,39 @@
     "PTS": {
       "moderate_cold": {
         "baseline": {
-          "hit_rate": 0.7876
+          "hit_rate": 0.7331
         },
         "n_plus_1": {
-          "n": 239,
-          "hit_rate": 0.7741
+          "n": 266,
+          "hit_rate": 0.7331
         },
         "n_plus_2": {
-          "n": 233,
-          "hit_rate": 0.7296,
+          "n": 259,
+          "hit_rate": 0.6988,
           "flag": null
         },
         "n_plus_3": {
-          "n": 227,
-          "hit_rate": 0.793,
+          "n": 254,
+          "hit_rate": 0.7362,
           "flag": null
         }
       },
       "severe_cold": {
         "baseline": {
-          "hit_rate": 0.7876
+          "hit_rate": 0.7331
         },
         "n_plus_1": {
-          "n": 41,
-          "hit_rate": 0.7317
+          "n": 46,
+          "hit_rate": 0.6957
         },
         "n_plus_2": {
-          "n": 40,
-          "hit_rate": 0.775,
+          "n": 43,
+          "hit_rate": 0.6977,
           "flag": null
         },
         "n_plus_3": {
-          "n": 39,
-          "hit_rate": 0.7949,
+          "n": 42,
+          "hit_rate": 0.7619,
           "flag": null
         }
       }
@@ -146,39 +146,39 @@
     "REB": {
       "moderate_cold": {
         "baseline": {
-          "hit_rate": 0.8597
+          "hit_rate": 0.7784
         },
         "n_plus_1": {
-          "n": 244,
-          "hit_rate": 0.8566
+          "n": 262,
+          "hit_rate": 0.7672
         },
         "n_plus_2": {
-          "n": 238,
-          "hit_rate": 0.8487,
+          "n": 253,
+          "hit_rate": 0.7628,
           "flag": null
         },
         "n_plus_3": {
-          "n": 234,
-          "hit_rate": 0.8462,
+          "n": 245,
+          "hit_rate": 0.7388,
           "flag": null
         }
       },
       "severe_cold": {
         "baseline": {
-          "hit_rate": 0.8597
+          "hit_rate": 0.7784
         },
         "n_plus_1": {
-          "n": 98,
-          "hit_rate": 0.7959
+          "n": 111,
+          "hit_rate": 0.6667
         },
         "n_plus_2": {
-          "n": 95,
-          "hit_rate": 0.8526,
+          "n": 109,
+          "hit_rate": 0.7064,
           "flag": null
         },
         "n_plus_3": {
-          "n": 93,
-          "hit_rate": 0.871,
+          "n": 107,
+          "hit_rate": 0.7664,
           "flag": null
         }
       }
@@ -186,39 +186,39 @@
     "AST": {
       "moderate_cold": {
         "baseline": {
-          "hit_rate": 0.8815
+          "hit_rate": 0.7741
         },
         "n_plus_1": {
-          "n": 212,
-          "hit_rate": 0.8491
+          "n": 249,
+          "hit_rate": 0.8032
         },
         "n_plus_2": {
-          "n": 207,
-          "hit_rate": 0.8841,
+          "n": 240,
+          "hit_rate": 0.7833,
           "flag": null
         },
         "n_plus_3": {
-          "n": 202,
-          "hit_rate": 0.8812,
+          "n": 231,
+          "hit_rate": 0.7965,
           "flag": null
         }
       },
       "severe_cold": {
         "baseline": {
-          "hit_rate": 0.8815
+          "hit_rate": 0.7741
         },
         "n_plus_1": {
-          "n": 52,
-          "hit_rate": 0.8462
+          "n": 79,
+          "hit_rate": 0.7468
         },
         "n_plus_2": {
-          "n": 50,
-          "hit_rate": 0.86,
+          "n": 77,
+          "hit_rate": 0.7792,
           "flag": null
         },
         "n_plus_3": {
-          "n": 48,
-          "hit_rate": 0.8958,
+          "n": 72,
+          "hit_rate": 0.8333,
           "flag": null
         }
       }
@@ -226,39 +226,39 @@
     "3PM": {
       "moderate_cold": {
         "baseline": {
-          "hit_rate": 0.9292
+          "hit_rate": 0.7824
         },
         "n_plus_1": {
-          "n": 85,
-          "hit_rate": 0.8588
+          "n": 184,
+          "hit_rate": 0.7391
         },
         "n_plus_2": {
-          "n": 85,
-          "hit_rate": 0.9059,
+          "n": 181,
+          "hit_rate": 0.768,
           "flag": null
         },
         "n_plus_3": {
-          "n": 83,
-          "hit_rate": 0.8916,
+          "n": 176,
+          "hit_rate": 0.7216,
           "flag": null
         }
       },
       "severe_cold": {
         "baseline": {
-          "hit_rate": 0.9292
+          "hit_rate": 0.7824
         },
         "n_plus_1": {
-          "n": 52,
-          "hit_rate": 0.8654
+          "n": 161,
+          "hit_rate": 0.6832
         },
         "n_plus_2": {
-          "n": 50,
-          "hit_rate": 0.84,
+          "n": 156,
+          "hit_rate": 0.641,
           "flag": null
         },
         "n_plus_3": {
-          "n": 50,
-          "hit_rate": 0.92,
+          "n": 153,
+          "hit_rate": 0.7059,
           "flag": null
         }
       }
@@ -268,18 +268,18 @@
     "PTS": {
       "moderate_cold": {
         "soft": {
-          "n": 82,
-          "hit_rate": 0.8049,
+          "n": 85,
+          "hit_rate": 0.7765,
           "flag": null
         },
         "mid": {
-          "n": 71,
-          "hit_rate": 0.7465,
+          "n": 82,
+          "hit_rate": 0.7317,
           "flag": null
         },
         "tough": {
-          "n": 80,
-          "hit_rate": 0.775,
+          "n": 93,
+          "hit_rate": 0.7097,
           "flag": null
         },
         "matchup_matters": false
@@ -291,13 +291,13 @@
           "flag": "insufficient_sample"
         },
         "mid": {
-          "n": 12,
+          "n": 13,
           "hit_rate": null,
           "flag": "insufficient_sample"
         },
         "tough": {
-          "n": 16,
-          "hit_rate": 0.6875,
+          "n": 20,
+          "hit_rate": 0.6,
           "flag": null
         },
         "matchup_matters": null
@@ -306,36 +306,36 @@
     "REB": {
       "moderate_cold": {
         "soft": {
-          "n": 89,
-          "hit_rate": 0.809,
+          "n": 99,
+          "hit_rate": 0.697,
           "flag": null
         },
         "mid": {
-          "n": 78,
-          "hit_rate": 0.9103,
+          "n": 83,
+          "hit_rate": 0.7952,
           "flag": null
         },
         "tough": {
-          "n": 73,
-          "hit_rate": 0.8493,
+          "n": 76,
+          "hit_rate": 0.8158,
           "flag": null
         },
-        "matchup_matters": false
+        "matchup_matters": true
       },
       "severe_cold": {
         "soft": {
-          "n": 29,
-          "hit_rate": 0.7931,
+          "n": 33,
+          "hit_rate": 0.6364,
           "flag": null
         },
         "mid": {
-          "n": 27,
-          "hit_rate": 0.9259,
+          "n": 32,
+          "hit_rate": 0.7812,
           "flag": null
         },
         "tough": {
-          "n": 40,
-          "hit_rate": 0.7,
+          "n": 44,
+          "hit_rate": 0.6136,
           "flag": null
         },
         "matchup_matters": false
@@ -344,36 +344,36 @@
     "AST": {
       "moderate_cold": {
         "soft": {
-          "n": 80,
-          "hit_rate": 0.825,
+          "n": 91,
+          "hit_rate": 0.7802,
           "flag": null
         },
         "mid": {
-          "n": 63,
-          "hit_rate": 0.873,
+          "n": 77,
+          "hit_rate": 0.8571,
           "flag": null
         },
         "tough": {
-          "n": 62,
-          "hit_rate": 0.8548,
+          "n": 72,
+          "hit_rate": 0.7917,
           "flag": null
         },
         "matchup_matters": false
       },
       "severe_cold": {
         "soft": {
-          "n": 20,
-          "hit_rate": 0.9,
+          "n": 31,
+          "hit_rate": 0.8387,
           "flag": null
         },
         "mid": {
-          "n": 13,
-          "hit_rate": null,
-          "flag": "insufficient_sample"
+          "n": 23,
+          "hit_rate": 0.7391,
+          "flag": null
         },
         "tough": {
-          "n": 19,
-          "hit_rate": 0.7368,
+          "n": 25,
+          "hit_rate": 0.64,
           "flag": null
         },
         "matchup_matters": true
@@ -382,51 +382,52 @@
     "3PM": {
       "moderate_cold": {
         "soft": {
-          "n": 23,
-          "hit_rate": 0.7391,
+          "n": 56,
+          "hit_rate": 0.6607,
           "flag": null
         },
         "mid": {
-          "n": 36,
-          "hit_rate": 0.8889,
+          "n": 73,
+          "hit_rate": 0.8356,
           "flag": null
         },
         "tough": {
-          "n": 25,
-          "hit_rate": 0.92,
+          "n": 52,
+          "hit_rate": 0.6923,
           "flag": null
         },
-        "matchup_matters": true
+        "matchup_matters": false
       },
       "severe_cold": {
         "soft": {
-          "n": 14,
-          "hit_rate": null,
-          "flag": "insufficient_sample"
+          "n": 45,
+          "hit_rate": 0.7111,
+          "flag": null
         },
         "mid": {
-          "n": 15,
-          "hit_rate": 0.8,
+          "n": 46,
+          "hit_rate": 0.5217,
           "flag": null
         },
         "tough": {
-          "n": 22,
-          "hit_rate": 0.9091,
+          "n": 67,
+          "hit_rate": 0.791,
           "flag": null
         },
-        "matchup_matters": null
+        "matchup_matters": false
       }
     }
   },
   "recommendations": [
-    "PTS: Cold streak state \u2192 independent. No hit-rate adjustment warranted (baseline 78.8%, severe 73.2%, lift=0.929, n=41)",
-    "REB: Cold streak state \u2192 independent. No hit-rate adjustment warranted (baseline 86.0%, severe 79.6%, lift=0.926, n=98)",
-    "AST: Cold streak state \u2192 independent. No hit-rate adjustment warranted (baseline 88.1%, severe 84.6%, lift=0.960, n=52)",
-    "3PM: Cold streak state \u2192 independent. No hit-rate adjustment warranted (baseline 92.9%, severe 86.5%, lift=0.931, n=52)",
-    "AST severe cold: soft opp 90.0%(n=20) vs tough opp 73.7%(n=19) \u2014 matchup accelerates reversion (spread > 10pp)",
-    "3PM moderate cold: soft opp 73.9%(n=23) vs tough opp 92.0%(n=25) \u2014 matchup accelerates reversion (spread > 10pp)"
+    "PTS: Cold streak state \u2192 independent. No hit-rate adjustment warranted (baseline 73.3%, severe 69.6%, lift=0.949, n=46)",
+    "REB: Cold streak state \u2192 independent. No hit-rate adjustment warranted (baseline 77.8%, severe 66.7%, lift=0.857, n=111)",
+    "AST: Cold streak state \u2192 independent. No hit-rate adjustment warranted (baseline 77.4%, severe 74.7%, lift=0.965, n=79)",
+    "3PM: Genuine decline signal \u2014 severe cold hit rate 68.3% BELOW baseline 78.2% (lift=0.873, n=161). L5 underperformance persists.",
+    "REB moderate cold: soft opp 69.7%(n=99) vs tough opp 81.6%(n=76) \u2014 matchup accelerates reversion (spread > 10pp)",
+    "AST severe cold: soft opp 83.9%(n=31) vs tough opp 64.0%(n=25) \u2014 matchup accelerates reversion (spread > 10pp)"
   ],
   "prompt_implications": [
-    "For cold-streak players, prioritize soft matchups \u2014 matchup interaction confirmed for: AST severe cold: soft opp 90.0%(n=20) vs tough opp 73.7%(n=19) \u2014 matchup accelerates reversion (spread > 10pp); 3PM moderate cold: soft opp 73.9%(n=23) vs tough opp 92.0%(n=25) \u2014 matchup accelerates reversion (spread > 10pp)"
+    "3PM: Cold-streak players continue to underperform next game. Avoid or down-tier players with severe cold streak (lift=0.87).",
+    "For cold-streak players, prioritize soft matchups \u2014 matchup interaction confirmed for: REB moderate cold: soft opp 69.7%(n=99) vs tough opp 81.6%(n=76) \u2014 matchup accelerates reversion (spread > 10pp); AST severe cold: soft opp 83.9%(n=31) vs tough opp 64.0%(n=25) \u2014 matchup accelerates reversion (spread > 10pp)"
   ]
 }

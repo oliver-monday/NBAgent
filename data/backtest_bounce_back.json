@@ -1,68 +1,68 @@
 {
   "generated_at": "2026-03-05",
   "mode": "bounce-back",
-  "rolling_window": 20,
+  "rolling_window": 10,
   "date_range": {
-    "start": "2025-12-02",
-    "end": "2026-03-03"
+    "start": "2025-11-12",
+    "end": "2026-03-04"
   },
-  "total_consecutive_pairs": 3559,
+  "total_consecutive_pairs": 5231,
   "pairs_by_stat": {
-    "PTS": 1090,
-    "REB": 1176,
-    "AST": 921,
-    "3PM": 372
+    "PTS": 1338,
+    "REB": 1485,
+    "AST": 1380,
+    "3PM": 1028
   },
   "analysis_1_simple_bounce_back": {
     "all_stats": {
-      "baseline_hit_rate": 0.8424,
-      "post_hit_hit_rate": 0.8556,
-      "post_miss_hit_rate": 0.7597,
-      "bounce_back_lift": 0.9018,
-      "hot_hand_lift": 1.0157,
-      "n_post_hit": 3068,
-      "n_post_miss": 491,
-      "verdict": "independent"
+      "baseline_hit_rate": 0.7402,
+      "post_hit_hit_rate": 0.761,
+      "post_miss_hit_rate": 0.6602,
+      "bounce_back_lift": 0.8919,
+      "hot_hand_lift": 1.0281,
+      "n_post_hit": 4151,
+      "n_post_miss": 1080,
+      "verdict": "slump-persistent"
     },
     "by_stat": {
       "PTS": {
-        "baseline_hit_rate": 0.7798,
-        "post_hit_hit_rate": 0.7925,
-        "post_miss_hit_rate": 0.7277,
-        "bounce_back_lift": 0.9332,
+        "baseline_hit_rate": 0.7197,
+        "post_hit_hit_rate": 0.7314,
+        "post_miss_hit_rate": 0.6771,
+        "bounce_back_lift": 0.9408,
         "hot_hand_lift": 1.0163,
-        "n_post_hit": 877,
-        "n_post_miss": 213,
+        "n_post_hit": 1050,
+        "n_post_miss": 288,
         "verdict": "independent"
       },
       "REB": {
-        "baseline_hit_rate": 0.8546,
-        "post_hit_hit_rate": 0.8713,
-        "post_miss_hit_rate": 0.74,
-        "bounce_back_lift": 0.8659,
-        "hot_hand_lift": 1.0195,
-        "n_post_hit": 1026,
-        "n_post_miss": 150,
+        "baseline_hit_rate": 0.7495,
+        "post_hit_hit_rate": 0.7823,
+        "post_miss_hit_rate": 0.62,
+        "bounce_back_lift": 0.8272,
+        "hot_hand_lift": 1.0438,
+        "n_post_hit": 1185,
+        "n_post_miss": 300,
         "verdict": "slump-persistent"
       },
       "AST": {
-        "baseline_hit_rate": 0.8751,
-        "post_hit_hit_rate": 0.8821,
-        "post_miss_hit_rate": 0.8163,
-        "bounce_back_lift": 0.9328,
-        "hot_hand_lift": 1.008,
-        "n_post_hit": 823,
-        "n_post_miss": 98,
+        "baseline_hit_rate": 0.758,
+        "post_hit_hit_rate": 0.776,
+        "post_miss_hit_rate": 0.685,
+        "bounce_back_lift": 0.9037,
+        "hot_hand_lift": 1.0237,
+        "n_post_hit": 1107,
+        "n_post_miss": 273,
         "verdict": "independent"
       },
       "3PM": {
-        "baseline_hit_rate": 0.9059,
-        "post_hit_hit_rate": 0.9064,
-        "post_miss_hit_rate": 0.9,
-        "bounce_back_lift": 0.9935,
-        "hot_hand_lift": 1.0006,
-        "n_post_hit": 342,
-        "n_post_miss": 30,
+        "baseline_hit_rate": 0.7296,
+        "post_hit_hit_rate": 0.7478,
+        "post_miss_hit_rate": 0.6621,
+        "bounce_back_lift": 0.9075,
+        "hot_hand_lift": 1.0249,
+        "n_post_hit": 809,
+        "n_post_miss": 219,
         "verdict": "independent"
       }
     }
@@ -72,41 +72,41 @@
       "PTS": {
         "miss_buckets": {
           "near_miss": {
-            "n": 62,
-            "post_miss_hit_rate": 0.7419,
-            "avg_gap": 1.52,
+            "n": 79,
+            "post_miss_hit_rate": 0.6582,
+            "avg_gap": 1.39,
             "flag": null
           },
           "moderate_miss": {
-            "n": 72,
-            "post_miss_hit_rate": 0.7361,
-            "avg_gap": 3.74,
+            "n": 104,
+            "post_miss_hit_rate": 0.75,
+            "avg_gap": 3.88,
             "flag": null
           },
           "bad_miss": {
-            "n": 79,
-            "post_miss_hit_rate": 0.7089,
-            "avg_gap": 11.49,
+            "n": 105,
+            "post_miss_hit_rate": 0.619,
+            "avg_gap": 10.54,
             "flag": null
           }
         },
         "hit_buckets": {
           "narrow_hit": {
-            "n": 152,
-            "next_hit_rate": 0.7763,
-            "avg_margin": 1.13,
+            "n": 227,
+            "next_hit_rate": 0.7048,
+            "avg_margin": 1.01,
             "flag": null
           },
           "moderate_hit": {
-            "n": 197,
-            "next_hit_rate": 0.7919,
-            "avg_margin": 4.05,
+            "n": 243,
+            "next_hit_rate": 0.6872,
+            "avg_margin": 3.95,
             "flag": null
           },
           "strong_hit": {
-            "n": 528,
-            "next_hit_rate": 0.7973,
-            "avg_margin": 11.89,
+            "n": 580,
+            "next_hit_rate": 0.7603,
+            "avg_margin": 11.66,
             "flag": null
           }
         },
@@ -115,41 +115,41 @@
       "REB": {
         "miss_buckets": {
           "near_miss": {
-            "n": 101,
-            "post_miss_hit_rate": 0.7228,
-            "avg_gap": 1.38,
+            "n": 206,
+            "post_miss_hit_rate": 0.6359,
+            "avg_gap": 1.4,
             "flag": null
           },
           "moderate_miss": {
-            "n": 36,
-            "post_miss_hit_rate": 0.75,
-            "avg_gap": 3.78,
+            "n": 75,
+            "post_miss_hit_rate": 0.5733,
+            "avg_gap": 3.68,
             "flag": null
           },
           "bad_miss": {
-            "n": 13,
-            "post_miss_hit_rate": 0.8462,
-            "avg_gap": 6.92,
+            "n": 19,
+            "post_miss_hit_rate": 0.6316,
+            "avg_gap": 7.11,
             "flag": "insufficient_sample"
           }
         },
         "hit_buckets": {
           "narrow_hit": {
-            "n": 428,
-            "next_hit_rate": 0.8598,
-            "avg_margin": 1.14,
+            "n": 629,
+            "next_hit_rate": 0.7663,
+            "avg_margin": 0.97,
             "flag": null
           },
           "moderate_hit": {
-            "n": 376,
-            "next_hit_rate": 0.8856,
-            "avg_margin": 3.8,
+            "n": 395,
+            "next_hit_rate": 0.7949,
+            "avg_margin": 3.88,
             "flag": null
           },
           "strong_hit": {
-            "n": 222,
-            "next_hit_rate": 0.8694,
-            "avg_margin": 7.48,
+            "n": 161,
+            "next_hit_rate": 0.8137,
+            "avg_margin": 7.56,
             "flag": null
           }
         },
@@ -158,41 +158,41 @@
       "AST": {
         "miss_buckets": {
           "near_miss": {
-            "n": 79,
-            "post_miss_hit_rate": 0.8101,
-            "avg_gap": 1.37,
+            "n": 214,
+            "post_miss_hit_rate": 0.6963,
+            "avg_gap": 1.38,
             "flag": null
           },
           "moderate_miss": {
-            "n": 18,
-            "post_miss_hit_rate": 0.8333,
-            "avg_gap": 3.72,
-            "flag": "insufficient_sample"
+            "n": 55,
+            "post_miss_hit_rate": 0.6364,
+            "avg_gap": 3.64,
+            "flag": null
           },
           "bad_miss": {
-            "n": 1,
-            "post_miss_hit_rate": 1.0,
+            "n": 4,
+            "post_miss_hit_rate": 0.75,
             "avg_gap": 6.0,
             "flag": "insufficient_sample"
           }
         },
         "hit_buckets": {
           "narrow_hit": {
-            "n": 379,
-            "next_hit_rate": 0.8681,
-            "avg_margin": 1.09,
+            "n": 672,
+            "next_hit_rate": 0.7604,
+            "avg_margin": 0.96,
             "flag": null
           },
           "moderate_hit": {
-            "n": 324,
-            "next_hit_rate": 0.8889,
-            "avg_margin": 3.86,
+            "n": 336,
+            "next_hit_rate": 0.7857,
+            "avg_margin": 3.73,
             "flag": null
           },
           "strong_hit": {
-            "n": 120,
-            "next_hit_rate": 0.9083,
-            "avg_margin": 7.31,
+            "n": 99,
+            "next_hit_rate": 0.8485,
+            "avg_margin": 7.17,
             "flag": null
           }
         },
@@ -201,15 +201,15 @@
       "3PM": {
         "miss_buckets": {
           "near_miss": {
-            "n": 30,
-            "post_miss_hit_rate": 0.9,
-            "avg_gap": 1.13,
+            "n": 215,
+            "post_miss_hit_rate": 0.6651,
+            "avg_gap": 1.21,
             "flag": null
           },
           "moderate_miss": {
-            "n": 0,
-            "post_miss_hit_rate": null,
-            "avg_gap": null,
+            "n": 4,
+            "post_miss_hit_rate": 0.5,
+            "avg_gap": 3.0,
             "flag": "insufficient_sample"
           },
           "bad_miss": {
@@ -221,21 +221,21 @@
         },
         "hit_buckets": {
           "narrow_hit": {
-            "n": 215,
-            "next_hit_rate": 0.8744,
-            "avg_margin": 1.04,
+            "n": 668,
+            "next_hit_rate": 0.7395,
+            "avg_margin": 0.73,
             "flag": null
           },
           "moderate_hit": {
-            "n": 111,
-            "next_hit_rate": 0.964,
-            "avg_margin": 3.63,
+            "n": 131,
+            "next_hit_rate": 0.7939,
+            "avg_margin": 3.57,
             "flag": null
           },
           "strong_hit": {
-            "n": 16,
-            "next_hit_rate": 0.9375,
-            "avg_margin": 6.62,
+            "n": 10,
+            "next_hit_rate": 0.7,
+            "avg_margin": 6.5,
             "flag": "insufficient_sample"
           }
         },
@@ -247,95 +247,96 @@
     "by_stat": {
       "PTS": {
         "streak_0": {
-          "n": 877,
-          "next_hit_rate": 0.7925
+          "n": 1050,
+          "next_hit_rate": 0.7314
         },
         "streak_1": {
-          "n": 171,
-          "next_hit_rate": 0.7427,
-          "avg_miss_gap": 5.87
+          "n": 228,
+          "next_hit_rate": 0.6711,
+          "avg_miss_gap": 5.62
         },
         "streak_2": {
-          "n": 31,
-          "next_hit_rate": 0.6774,
-          "avg_miss_gap": 6.13,
+          "n": 54,
+          "next_hit_rate": 0.6852,
+          "avg_miss_gap": 5.7,
           "flag": null
         },
         "streak_3plus": {
-          "n": 11,
-          "next_hit_rate": 0.6364,
-          "avg_miss_gap": 7.09,
+          "n": 6,
+          "next_hit_rate": 0.8333,
+          "avg_miss_gap": 5.0,
           "flag": "insufficient_sample"
         },
         "streak_verdict": "insufficient-sample"
       },
       "REB": {
         "streak_0": {
-          "n": 1026,
-          "next_hit_rate": 0.8713
+          "n": 1185,
+          "next_hit_rate": 0.7823
         },
         "streak_1": {
-          "n": 118,
-          "next_hit_rate": 0.7881,
-          "avg_miss_gap": 2.34
+          "n": 228,
+          "next_hit_rate": 0.6272,
+          "avg_miss_gap": 2.33
         },
         "streak_2": {
-          "n": 22,
-          "next_hit_rate": 0.5909,
-          "avg_miss_gap": 2.77,
+          "n": 50,
+          "next_hit_rate": 0.54,
+          "avg_miss_gap": 2.26,
           "flag": null
         },
         "streak_3plus": {
-          "n": 10,
-          "next_hit_rate": 0.5,
-          "avg_miss_gap": 2.8,
-          "flag": "insufficient_sample"
+          "n": 22,
+          "next_hit_rate": 0.7273,
+          "avg_miss_gap": 2.55,
+          "flag": null
         },
-        "streak_verdict": "insufficient-sample"
+        "streak_verdict": "reversion strengthens"
       },
       "AST": {
         "streak_0": {
-          "n": 823,
-          "next_hit_rate": 0.8821
+          "n": 1107,
+          "next_hit_rate": 0.776
         },
         "streak_1": {
-          "n": 87,
-          "next_hit_rate": 0.8161,
-          "avg_miss_gap": 1.8
+          "n": 217,
+          "next_hit_rate": 0.7051,
+          "avg_miss_gap": 1.86
         },
         "streak_2": {
-          "n": 9,
-          "next_hit_rate": 0.7778,
-          "avg_miss_gap": 2.11,
-          "flag": "insufficient_sample"
+          "n": 43,
+          "next_hit_rate": 0.6047,
+          "avg_miss_gap": 2.14,
+          "flag": null
         },
         "streak_3plus": {
-          "n": 2,
-          "next_hit_rate": 1.0,
-          "avg_miss_gap": 2.5,
+          "n": 13,
+          "next_hit_rate": 0.6154,
+          "avg_miss_gap": 1.77,
           "flag": "insufficient_sample"
         },
         "streak_verdict": "insufficient-sample"
       },
       "3PM": {
         "streak_0": {
-          "n": 342,
-          "next_hit_rate": 0.9064
+          "n": 809,
+          "next_hit_rate": 0.7478
         },
         "streak_1": {
-          "n": 29,
-          "next_hit_rate": 0.8966,
-          "avg_miss_gap": 1.14
+          "n": 165,
+          "next_hit_rate": 0.6545,
+          "avg_miss_gap": 1.26
         },
         "streak_2": {
-          "n": 1,
-          "next_hit_rate": 1.0,
-          "avg_miss_gap": 1.0,
-          "flag": "insufficient_sample"
+          "n": 43,
+          "next_hit_rate": 0.7209,
+          "avg_miss_gap": 1.21,
+          "flag": null
         },
         "streak_3plus": {
-          "n": 0,
-          "next_hit_rate": null,
+          "n": 11,
+          "next_hit_rate": 0.5455,
+          "avg_miss_gap": 1.18,
           "flag": "insufficient_sample"
         },
         "streak_verdict": "insufficient-sample"
@@ -343,9 +344,12 @@
     }
   },
   "recommendations": [
-    "REB: Slumps are persistent \u2014 post-miss hit rate 74.0% BELOW baseline 85.5% (lift=0.866, n=150). Avoid post-miss REB picks."
+    "REB: Slumps are persistent \u2014 post-miss hit rate 62.0% BELOW baseline 75.0% (lift=0.827, n=300). Avoid post-miss REB picks.",
+    "Overall (slump-persistent): post-miss lift=0.892 (n=1080), post-hit lift=1.028 (n=4151)",
+    "REB streak: 2-game miss streak shows STRONGER reversion \u2014 hit rate 54.0% (n=50) after 2 consecutive misses"
   ],
   "prompt_implications": [
-    "REB: Add prompt instruction \u2014 'If player missed REB last game, apply -5% confidence or prefer a lower tier (slump-persistent, lift=0.87 over 150 instances)'"
+    "REB: Add prompt instruction \u2014 'If player missed REB last game, apply -5% confidence or prefer a lower tier (slump-persistent, lift=0.83 over 300 instances)'",
+    "REB: '2-game miss streak \u2192 extra bounce-back confidence' \u2014 add to prompt"
   ]
 }

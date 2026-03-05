@@ -429,22 +429,25 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 
 ## TIER CEILING RULES — backed by full-season calibration data
 The following tiers are systemically miscalibrated: players selected at these tiers hit
-significantly below the 70% confidence floor when measured over a full season (5,368 instances).
+significantly below the 70% confidence floor when measured over a full season (6,437 instances).
 Treat them as requiring exceptional justification — do not pick them by default.
 
-  REB T8+: actual season hit rate 56.7% (n=150). Only select if player has hit 7+/10
-    at this tier in their recent window AND opp_defense is rated soft. Otherwise cap at T6.
+  REB T8+: actual season hit rate 63.2% (n=247) at w10; improves to 71.0% (n=200) at w20 window.
+    Only select if player has hit 7+/10 at this tier in their recent window AND opp_defense is
+    rated soft. Otherwise cap at T6.
 
-  AST T6+: actual season hit rate 63.0% (n=165). Only select if player has hit 7+/10
+  AST T6+: actual season hit rate 65.1% (n=255). Only select if player has hit 7+/10
     at this tier AND their role context explicitly supports elevated assist load today
     (e.g. primary ball handler with multiple creators absent). Otherwise cap at T4.
 
-  3PM T2+: actual season hit rate 58.0% (n=157). Only select if player has hit 7+/10
-    at this tier AND today's game has a high pace tag. Otherwise cap at T1.
+  PTS T25+: actual season hit rate 66.8% (n=253) — below the 70% system threshold. For this
+    tier specifically, require ≥80% hit rate in the player's recent window (8+/10 at the ≥25
+    tier) before selecting. The tier calibrates below floor league-wide; a higher individual bar
+    is needed to compensate. Essentially never select PTS T30 — season hit rate 56.8% (n=81).
 
-  PTS T25+: actual season hit rate 65.7% (n=239). Only select if player has hit 7+/10
-    at this tier in recent window. Essentially never select PTS T30 — season hit rate
-    was 44.4% (n=27), well below any useful threshold.
+  3PM T2: calibrates at 71.4% (n=441) — above the 70% threshold. No ceiling rule needed.
+  3PM T3+: actual season hit rate 58.6% (n=157). Only select if player has hit 7+/10 at this
+    tier in their recent window AND today's game has a high pace tag. Otherwise cap at T2.
 
 Note: trend direction (up/stable/down) and home/away context are available in the data below
 but have not shown predictive value in historical calibration. Do not weight them as primary
@@ -474,15 +477,12 @@ KEY RULES — MATCHUP QUALITY:
 - If vs_soft is significantly higher than overall, you may pick a higher tier than L10 suggests.
 - "n/a" means insufficient sample (<3 games) — fall back to overall rate only.
 
-OPPONENT DEFENSE — 3PM EXCEPTION:
-The opp_defense rating is derived from total points allowed and works conventionally for PTS,
-REB, and AST (soft = favorable matchup, tough = unfavorable). FOR 3PM ONLY, this signal is
-INVERTED. Full-season data (626 instances):
-  - Tough PTS defense → 72.1% 3PM hit rate
-  - Soft PTS defense → 60.9% 3PM hit rate
-Mechanism: paint-oriented defenses suppress interior scoring but generate more kick-out 3-point
-attempts. When selecting 3PM props, treat opp_today="tough" as a mild positive signal, not
-a negative one.
+OPPONENT DEFENSE — APPLIES EQUALLY TO ALL STATS INCLUDING 3PM:
+The opp_defense rating is derived from total points allowed. Treat it conventionally for all stats:
+soft = favorable matchup, tough = unfavorable — for PTS, REB, AST, and 3PM equally.
+Note: 3PM backtest data (6,437 instances, corrected >= grading) shows opp_defense is NOISE for 3PM
+(soft 69.7%, mid 72.3%, tough 73.5% — minimal spread, lift variance 0.053). Do not weight opp_defense
+heavily for 3PM in either direction; it is not predictive.
 
 KEY RULES — REST & FATIGUE:
 - Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),
@@ -496,12 +496,17 @@ KEY RULES — REST & FATIGUE:
 - rest_days ≥ 3 = well-rested; no downward adjustment needed.
 
 KEY RULES — SEQUENTIAL GAME CONTEXT:
-- REB slump-persistent (confirmed signal, n=150, window=20):
-  Post-miss REB hit rate drops from 85.5% → 74.0% (lift=0.866). Rebounds do NOT bounce back
+- REB slump-persistent (confirmed signal, n=300, window=10):
+  Post-miss REB hit rate drops to 62.0% vs baseline 75.0% (lift=0.83). Rebounds do NOT bounce back
   the next game — a miss is predictive of another miss.
   → If a player missed their REB tier last game, apply −5% confidence OR prefer one tier lower.
   → This applies regardless of opponent or home/away. The pattern holds across conditions.
-- PTS, AST, 3PM: insufficient sequential signal. No adjustment needed based on last-game result.
+- 3PM cold-streak decline (confirmed signal, n=161, severe cold = L5 hit rate ≥10pp below L10/L20):
+  Players in a severe 3PM cold streak hit at 68.3% next game (lift=0.87 vs baseline 78.2%).
+  Unlike other stats, 3PM cold streaks do not self-correct at N+1 — the slump persists or deepens.
+  → If a player's recent L5 3PM output is materially below their L10/L20 rate, apply −5% confidence
+    or skip the pick. Prefer cold-streak 3PM players only if facing a soft matchup.
+- PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
 
 KEY RULES — SPREAD / BLOWOUT RISK:
 - "BLOWOUT_RISK=True" means this team is heavily favored (spread_abs > 8). Stars get pulled in

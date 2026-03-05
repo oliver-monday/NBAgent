@@ -4,93 +4,106 @@
   "rolling_window": 20,
   "date_range": {
     "start": "2025-10-21",
-    "end": "2026-03-03"
+    "end": "2026-03-04"
   },
-  "total_instances": 4009,
+  "total_instances": 4900,
   "instances_by_stat": {
-    "PTS": 1244,
-    "REB": 1345,
-    "AST": 996,
-    "3PM": 424
+    "PTS": 1281,
+    "REB": 1409,
+    "AST": 1222,
+    "3PM": 988
   },
   "tier_calibration": {
     "PTS": {
       "10": {
-        "n": 308,
-        "hit_rate": 0.8182
+        "n": 238,
+        "hit_rate": 0.7899
       },
       "15": {
-        "n": 489,
-        "hit_rate": 0.7035
+        "n": 523,
+        "hit_rate": 0.7304
       },
       "20": {
-        "n": 280,
-        "hit_rate": 0.7393
+        "n": 308,
+        "hit_rate": 0.7597
       },
       "25": {
-        "n": 161,
-        "hit_rate": 0.7019
+        "n": 173,
+        "hit_rate": 0.6705,
+        "flag": "threshold_concern"
       },
       "30": {
-        "n": 6,
-        "hit_rate": 0.1667,
+        "n": 39,
+        "hit_rate": 0.5128,
         "flag": "threshold_concern"
       }
     },
     "REB": {
       "2": {
-        "n": 537,
-        "hit_rate": 0.8119
+        "n": 302,
+        "hit_rate": 0.9106
       },
       "4": {
-        "n": 412,
-        "hit_rate": 0.7184
+        "n": 534,
+        "hit_rate": 0.7528
       },
       "6": {
-        "n": 275,
-        "hit_rate": 0.7164
+        "n": 335,
+        "hit_rate": 0.6985
       },
       "8": {
-        "n": 101,
-        "hit_rate": 0.6634,
-        "flag": "threshold_concern"
+        "n": 200,
+        "hit_rate": 0.71
       },
       "10": {
-        "n": 20,
-        "hit_rate": 0.65,
+        "n": 29,
+        "hit_rate": 0.5172,
+        "flag": "threshold_concern"
+      },
+      "12": {
+        "n": 9,
+        "hit_rate": 0.5556,
         "flag": "threshold_concern"
       }
     },
     "AST": {
       "2": {
-        "n": 561,
-        "hit_rate": 0.7932
+        "n": 505,
+        "hit_rate": 0.8436
       },
       "4": {
-        "n": 321,
-        "hit_rate": 0.7196
+        "n": 491,
+        "hit_rate": 0.7576
       },
       "6": {
-        "n": 88,
-        "hit_rate": 0.75
+        "n": 149,
+        "hit_rate": 0.6846
       },
       "8": {
-        "n": 26,
-        "hit_rate": 0.5769,
+        "n": 72,
+        "hit_rate": 0.6806
+      },
+      "10": {
+        "n": 5,
+        "hit_rate": 0.4,
         "flag": "threshold_concern"
       }
     },
     "3PM": {
       "1": {
-        "n": 323,
-        "hit_rate": 0.7709
+        "n": 567,
+        "hit_rate": 0.776
       },
       "2": {
-        "n": 96,
-        "hit_rate": 0.6146,
-        "flag": "threshold_concern"
+        "n": 322,
+        "hit_rate": 0.7733
       },
       "3": {
+        "n": 94,
+        "hit_rate": 0.6064,
+        "flag": "threshold_concern"
+      },
+      "4": {
         "n": 5,
         "hit_rate": 0.4,
         "flag": "threshold_concern"

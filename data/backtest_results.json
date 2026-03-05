@@ -2,871 +2,858 @@
   "generated_at": "2026-03-05",
   "date_range": {
     "start": "2025-10-21",
-    "end": "2026-03-03"
+    "end": "2026-03-04"
   },
-  "total_instances": 5368,
-  "total_player_game_dates": 2320,
+  "total_instances": 6437,
+  "total_player_game_dates": 2335,
   "whitelist_players": 47,
   "signal_analysis": {
     "PTS": {
       "trend": {
-        "baseline_hit_rate": 0.7308,
-        "baseline_n": 1631,
+        "baseline_hit_rate": 0.7263,
+        "baseline_n": 1677,
         "by_value": {
           "down": {
-            "n": 307,
-            "hits": 229,
-            "hit_rate": 0.7459,
-            "lift": 1.0207
+            "n": 321,
+            "hits": 235,
+            "hit_rate": 0.7321,
+            "lift": 1.008
           },
           "stable": {
-            "n": 1053,
-            "hits": 770,
-            "hit_rate": 0.7312,
-            "lift": 1.0005
+            "n": 1066,
+            "hits": 775,
+            "hit_rate": 0.727,
+            "lift": 1.001
           },
           "up": {
-            "n": 271,
-            "hits": 193,
-            "hit_rate": 0.7122,
-            "lift": 0.9745
+            "n": 290,
+            "hits": 208,
+            "hit_rate": 0.7172,
+            "lift": 0.9875
           }
         },
         "verdict": "noise",
-        "verdict_reason": "lift variance 0.046 \u2264 0.08"
+        "verdict_reason": "lift variance 0.021 \u2264 0.08"
       },
       "opp_defense": {
-        "baseline_hit_rate": 0.7319,
-        "baseline_n": 1585,
+        "baseline_hit_rate": 0.7279,
+        "baseline_n": 1628,
         "by_value": {
           "mid": {
-            "n": 492,
-            "hits": 348,
-            "hit_rate": 0.7073,
-            "lift": 0.9664
+            "n": 511,
+            "hits": 363,
+            "hit_rate": 0.7104,
+            "lift": 0.976
           },
           "soft": {
-            "n": 576,
-            "hits": 445,
-            "hit_rate": 0.7726,
-            "lift": 1.0556
+            "n": 588,
+            "hits": 444,
+            "hit_rate": 0.7551,
+            "lift": 1.0374
           },
           "tough": {
-            "n": 517,
-            "hits": 367,
-            "hit_rate": 0.7099,
-            "lift": 0.9699
+            "n": 529,
+            "hits": 378,
+            "hit_rate": 0.7146,
+            "lift": 0.9817
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.061 \u2264 0.08"
+      },
+      "pace_tag": {
+        "baseline_hit_rate": 0.7263,
+        "baseline_n": 1677,
+        "by_value": {
+          "high": {
+            "n": 1556,
+            "hits": 1138,
+            "hit_rate": 0.7314,
+            "lift": 1.007
+          },
+          "mid": {
+            "n": 121,
+            "hits": 80,
+            "hit_rate": 0.6612,
+            "lift": 0.9104
+          }
+        },
+        "verdict": "weak",
+        "verdict_reason": "lift variance 0.097 between 0.08 and 0.15"
+      },
+      "on_b2b": {
+        "baseline_hit_rate": 0.7263,
+        "baseline_n": 1677,
+        "by_value": {
+          "False": {
+            "n": 889,
+            "hits": 656,
+            "hit_rate": 0.7379,
+            "lift": 1.016
+          },
+          "True": {
+            "n": 788,
+            "hits": 562,
+            "hit_rate": 0.7132,
+            "lift": 0.982
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.034 \u2264 0.08"
+      },
+      "home_away": {
+        "baseline_hit_rate": 0.7263,
+        "baseline_n": 1677,
+        "by_value": {
+          "A": {
+            "n": 832,
+            "hits": 607,
+            "hit_rate": 0.7296,
+            "lift": 1.0045
+          },
+          "H": {
+            "n": 845,
+            "hits": 611,
+            "hit_rate": 0.7231,
+            "lift": 0.9956
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.009 \u2264 0.08"
+      },
+      "spread_risk": {
+        "baseline_hit_rate": 0.719,
+        "baseline_n": 1452,
+        "by_value": {
+          "high": {
+            "n": 290,
+            "hits": 216,
+            "hit_rate": 0.7448,
+            "lift": 1.0359
+          },
+          "moderate": {
+            "n": 352,
+            "hits": 245,
+            "hit_rate": 0.696,
+            "lift": 0.968
+          },
+          "none": {
+            "n": 810,
+            "hits": 583,
+            "hit_rate": 0.7198,
+            "lift": 1.0011
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.068 \u2264 0.08"
+      }
+    },
+    "REB": {
+      "trend": {
+        "baseline_hit_rate": 0.7435,
+        "baseline_n": 1848,
+        "by_value": {
+          "down": {
+            "n": 472,
+            "hits": 351,
+            "hit_rate": 0.7436,
+            "lift": 1.0001
+          },
+          "stable": {
+            "n": 898,
+            "hits": 660,
+            "hit_rate": 0.735,
+            "lift": 0.9886
+          },
+          "up": {
+            "n": 478,
+            "hits": 363,
+            "hit_rate": 0.7594,
+            "lift": 1.0214
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.033 \u2264 0.08"
+      },
+      "opp_defense": {
+        "baseline_hit_rate": 0.7426,
+        "baseline_n": 1795,
+        "by_value": {
+          "mid": {
+            "n": 596,
+            "hits": 450,
+            "hit_rate": 0.755,
+            "lift": 1.0167
+          },
+          "soft": {
+            "n": 599,
+            "hits": 447,
+            "hit_rate": 0.7462,
+            "lift": 1.0048
+          },
+          "tough": {
+            "n": 600,
+            "hits": 436,
+            "hit_rate": 0.7267,
+            "lift": 0.9786
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.038 \u2264 0.08"
+      },
+      "pace_tag": {
+        "baseline_hit_rate": 0.7435,
+        "baseline_n": 1848,
+        "by_value": {
+          "high": {
+            "n": 1720,
+            "hits": 1278,
+            "hit_rate": 0.743,
+            "lift": 0.9993
+          },
+          "mid": {
+            "n": 128,
+            "hits": 96,
+            "hit_rate": 0.75,
+            "lift": 1.0087
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.009 \u2264 0.08"
+      },
+      "on_b2b": {
+        "baseline_hit_rate": 0.7435,
+        "baseline_n": 1848,
+        "by_value": {
+          "False": {
+            "n": 989,
+            "hits": 754,
+            "hit_rate": 0.7624,
+            "lift": 1.0254
+          },
+          "True": {
+            "n": 859,
+            "hits": 620,
+            "hit_rate": 0.7218,
+            "lift": 0.9708
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.055 \u2264 0.08"
+      },
+      "home_away": {
+        "baseline_hit_rate": 0.7435,
+        "baseline_n": 1848,
+        "by_value": {
+          "A": {
+            "n": 913,
+            "hits": 665,
+            "hit_rate": 0.7284,
+            "lift": 0.9797
+          },
+          "H": {
+            "n": 935,
+            "hits": 709,
+            "hit_rate": 0.7583,
+            "lift": 1.0199
+          }
+        },
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.040 \u2264 0.08"
+      },
+      "spread_risk": {
+        "baseline_hit_rate": 0.7459,
+        "baseline_n": 1602,
+        "by_value": {
+          "high": {
+            "n": 321,
+            "hits": 249,
+            "hit_rate": 0.7757,
+            "lift": 1.04
+          },
+          "moderate": {
+            "n": 396,
+            "hits": 281,
+            "hit_rate": 0.7096,
+            "lift": 0.9513
+          },
+          "none": {
+            "n": 885,
+            "hits": 665,
+            "hit_rate": 0.7514,
+            "lift": 1.0074
+          }
+        },
+        "verdict": "weak",
+        "verdict_reason": "lift variance 0.089 between 0.08 and 0.15"
+      }
+    },
+    "AST": {
+      "trend": {
+        "baseline_hit_rate": 0.7517,
+        "baseline_n": 1623,
+        "by_value": {
+          "down": {
+            "n": 427,
+            "hits": 315,
+            "hit_rate": 0.7377,
+            "lift": 0.9814
+          },
+          "stable": {
+            "n": 757,
+            "hits": 552,
+            "hit_rate": 0.7292,
+            "lift": 0.9701
+          },
+          "up": {
+            "n": 439,
+            "hits": 353,
+            "hit_rate": 0.8041,
+            "lift": 1.0697
+          }
+        },
+        "verdict": "weak",
+        "verdict_reason": "lift variance 0.100 between 0.08 and 0.15"
+      },
+      "opp_defense": {
+        "baseline_hit_rate": 0.7506,
+        "baseline_n": 1576,
+        "by_value": {
+          "mid": {
+            "n": 500,
+            "hits": 375,
+            "hit_rate": 0.75,
+            "lift": 0.9992
+          },
+          "soft": {
+            "n": 558,
+            "hits": 437,
+            "hit_rate": 0.7832,
+            "lift": 1.0434
+          },
+          "tough": {
+            "n": 518,
+            "hits": 371,
+            "hit_rate": 0.7162,
+            "lift": 0.9542
           }
         },
         "verdict": "weak",
         "verdict_reason": "lift variance 0.089 between 0.08 and 0.15"
       },
       "pace_tag": {
-        "baseline_hit_rate": 0.7308,
-        "baseline_n": 1631,
+        "baseline_hit_rate": 0.7517,
+        "baseline_n": 1623,
         "by_value": {
           "high": {
-            "n": 1510,
-            "hits": 1108,
-            "hit_rate": 0.7338,
-            "lift": 1.0041
+            "n": 1502,
+            "hits": 1127,
+            "hit_rate": 0.7503,
+            "lift": 0.9981
           },
           "mid": {
             "n": 121,
-            "hits": 84,
-            "hit_rate": 0.6942,
-            "lift": 0.9499
+            "hits": 93,
+            "hit_rate": 0.7686,
+            "lift": 1.0225
           }
         },
         "verdict": "noise",
-        "verdict_reason": "lift variance 0.054 \u2264 0.08"
+        "verdict_reason": "lift variance 0.024 \u2264 0.08"
       },
       "on_b2b": {
-        "baseline_hit_rate": 0.7308,
-        "baseline_n": 1631,
+        "baseline_hit_rate": 0.7517,
+        "baseline_n": 1623,
         "by_value": {
           "False": {
-            "n": 876,
-            "hits": 659,
-            "hit_rate": 0.7523,
-            "lift": 1.0294
+            "n": 871,
+            "hits": 664,
+            "hit_rate": 0.7623,
+            "lift": 1.0141
           },
           "True": {
-            "n": 755,
-            "hits": 533,
-            "hit_rate": 0.706,
-            "lift": 0.9661
+            "n": 752,
+            "hits": 556,
+            "hit_rate": 0.7394,
+            "lift": 0.9836
           }
         },
         "verdict": "noise",
-        "verdict_reason": "lift variance 0.063 \u2264 0.08"
+        "verdict_reason": "lift variance 0.030 \u2264 0.08"
       },
       "home_away": {
-        "baseline_hit_rate": 0.7308,
-        "baseline_n": 1631,
+        "baseline_hit_rate": 0.7517,
+        "baseline_n": 1623,
         "by_value": {
           "A": {
-            "n": 802,
-            "hits": 593,
-            "hit_rate": 0.7394,
-            "lift": 1.0118
+            "n": 804,
+            "hits": 600,
+            "hit_rate": 0.7463,
+            "lift": 0.9928
           },
           "H": {
-            "n": 829,
-            "hits": 599,
-            "hit_rate": 0.7226,
-            "lift": 0.9888
+            "n": 819,
+            "hits": 620,
+            "hit_rate": 0.757,
+            "lift": 1.0071
           }
         },
         "verdict": "noise",
-        "verdict_reason": "lift variance 0.023 \u2264 0.08"
+        "verdict_reason": "lift variance 0.014 \u2264 0.08"
       },
       "spread_risk": {
-        "baseline_hit_rate": 0.7254,
-        "baseline_n": 1420,
+        "baseline_hit_rate": 0.7454,
+        "baseline_n": 1402,
         "by_value": {
           "high": {
-            "n": 289,
-            "hits": 223,
-            "hit_rate": 0.7716,
-            "lift": 1.0637
+            "n": 266,
+            "hits": 211,
+            "hit_rate": 0.7932,
+            "lift": 1.0641
           },
           "moderate": {
-            "n": 346,
-            "hits": 247,
-            "hit_rate": 0.7139,
-            "lift": 0.9841
+            "n": 347,
+            "hits": 260,
+            "hit_rate": 0.7493,
+            "lift": 1.0052
           },
           "none": {
-            "n": 785,
-            "hits": 560,
-            "hit_rate": 0.7134,
-            "lift": 0.9835
+            "n": 789,
+            "hits": 574,
+            "hit_rate": 0.7275,
+            "lift": 0.976
           }
         },
         "verdict": "weak",
-        "verdict_reason": "lift variance 0.080 between 0.08 and 0.15"
+        "verdict_reason": "lift variance 0.088 between 0.08 and 0.15"
       }
     },
-    "REB": {
+    "3PM": {
       "trend": {
-        "baseline_hit_rate": 0.7275,
-        "baseline_n": 1754,
+        "baseline_hit_rate": 0.7176,
+        "baseline_n": 1289,
         "by_value": {
           "down": {
-            "n": 437,
-            "hits": 308,
-            "hit_rate": 0.7048,
-            "lift": 0.9688
+            "n": 425,
+            "hits": 303,
+            "hit_rate": 0.7129,
+            "lift": 0.9935
           },
           "stable": {
-            "n": 883,
-            "hits": 654,
-            "hit_rate": 0.7407,
-            "lift": 1.0181
+            "n": 435,
+            "hits": 310,
+            "hit_rate": 0.7126,
+            "lift": 0.993
           },
           "up": {
-            "n": 434,
-            "hits": 314,
-            "hit_rate": 0.7235,
-            "lift": 0.9945
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.049 \u2264 0.08"
-      },
-      "opp_defense": {
-        "baseline_hit_rate": 0.7268,
-        "baseline_n": 1702,
-        "by_value": {
-          "mid": {
-            "n": 566,
-            "hits": 423,
-            "hit_rate": 0.7473,
-            "lift": 1.0282
-          },
-          "soft": {
-            "n": 570,
-            "hits": 414,
-            "hit_rate": 0.7263,
-            "lift": 0.9993
-          },
-          "tough": {
-            "n": 566,
-            "hits": 400,
-            "hit_rate": 0.7067,
-            "lift": 0.9723
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.056 \u2264 0.08"
-      },
-      "pace_tag": {
-        "baseline_hit_rate": 0.7275,
-        "baseline_n": 1754,
-        "by_value": {
-          "high": {
-            "n": 1636,
-            "hits": 1189,
-            "hit_rate": 0.7268,
-            "lift": 0.999
-          },
-          "mid": {
-            "n": 118,
-            "hits": 87,
-            "hit_rate": 0.7373,
+            "n": 429,
+            "hits": 312,
+            "hit_rate": 0.7273,
             "lift": 1.0135
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.015 \u2264 0.08"
-      },
-      "on_b2b": {
-        "baseline_hit_rate": 0.7275,
-        "baseline_n": 1754,
-        "by_value": {
-          "False": {
-            "n": 933,
-            "hits": 690,
-            "hit_rate": 0.7395,
-            "lift": 1.0165
-          },
-          "True": {
-            "n": 821,
-            "hits": 586,
-            "hit_rate": 0.7138,
-            "lift": 0.9812
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.035 \u2264 0.08"
-      },
-      "home_away": {
-        "baseline_hit_rate": 0.7275,
-        "baseline_n": 1754,
-        "by_value": {
-          "A": {
-            "n": 866,
-            "hits": 625,
-            "hit_rate": 0.7217,
-            "lift": 0.992
-          },
-          "H": {
-            "n": 888,
-            "hits": 651,
-            "hit_rate": 0.7331,
-            "lift": 1.0077
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.016 \u2264 0.08"
-      },
-      "spread_risk": {
-        "baseline_hit_rate": 0.7251,
-        "baseline_n": 1528,
-        "by_value": {
-          "high": {
-            "n": 314,
-            "hits": 233,
-            "hit_rate": 0.742,
-            "lift": 1.0233
-          },
-          "moderate": {
-            "n": 386,
-            "hits": 284,
-            "hit_rate": 0.7358,
-            "lift": 1.0148
-          },
-          "none": {
-            "n": 828,
-            "hits": 591,
-            "hit_rate": 0.7138,
-            "lift": 0.9844
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.039 \u2264 0.08"
-      }
-    },
-    "AST": {
-      "trend": {
-        "baseline_hit_rate": 0.7371,
-        "baseline_n": 1339,
-        "by_value": {
-          "down": {
-            "n": 342,
-            "hits": 252,
-            "hit_rate": 0.7368,
-            "lift": 0.9996
-          },
-          "stable": {
-            "n": 658,
-            "hits": 484,
-            "hit_rate": 0.7356,
-            "lift": 0.998
-          },
-          "up": {
-            "n": 339,
-            "hits": 251,
-            "hit_rate": 0.7404,
-            "lift": 1.0045
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.006 \u2264 0.08"
-      },
-      "opp_defense": {
-        "baseline_hit_rate": 0.7408,
-        "baseline_n": 1300,
-        "by_value": {
-          "mid": {
-            "n": 424,
-            "hits": 315,
-            "hit_rate": 0.7429,
-            "lift": 1.0028
-          },
-          "soft": {
-            "n": 459,
-            "hits": 347,
-            "hit_rate": 0.756,
-            "lift": 1.0205
-          },
-          "tough": {
-            "n": 417,
-            "hits": 301,
-            "hit_rate": 0.7218,
-            "lift": 0.9744
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.046 \u2264 0.08"
-      },
-      "pace_tag": {
-        "baseline_hit_rate": 0.7371,
-        "baseline_n": 1339,
-        "by_value": {
-          "high": {
-            "n": 1234,
-            "hits": 908,
-            "hit_rate": 0.7358,
-            "lift": 0.9982
-          },
-          "mid": {
-            "n": 105,
-            "hits": 79,
-            "hit_rate": 0.7524,
-            "lift": 1.0208
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.023 \u2264 0.08"
-      },
-      "on_b2b": {
-        "baseline_hit_rate": 0.7371,
-        "baseline_n": 1339,
-        "by_value": {
-          "False": {
-            "n": 731,
-            "hits": 538,
-            "hit_rate": 0.736,
-            "lift": 0.9985
-          },
-          "True": {
-            "n": 608,
-            "hits": 449,
-            "hit_rate": 0.7385,
-            "lift": 1.0019
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.003 \u2264 0.08"
-      },
-      "home_away": {
-        "baseline_hit_rate": 0.7371,
-        "baseline_n": 1339,
-        "by_value": {
-          "A": {
-            "n": 665,
-            "hits": 485,
-            "hit_rate": 0.7293,
-            "lift": 0.9894
-          },
-          "H": {
-            "n": 674,
-            "hits": 502,
-            "hit_rate": 0.7448,
-            "lift": 1.0104
           }
         },
         "verdict": "noise",
         "verdict_reason": "lift variance 0.021 \u2264 0.08"
       },
-      "spread_risk": {
-        "baseline_hit_rate": 0.7405,
-        "baseline_n": 1156,
-        "by_value": {
-          "high": {
-            "n": 227,
-            "hits": 175,
-            "hit_rate": 0.7709,
-            "lift": 1.0411
-          },
-          "moderate": {
-            "n": 288,
-            "hits": 216,
-            "hit_rate": 0.75,
-            "lift": 1.0128
-          },
-          "none": {
-            "n": 641,
-            "hits": 465,
-            "hit_rate": 0.7254,
-            "lift": 0.9796
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.061 \u2264 0.08"
-      }
-    },
-    "3PM": {
-      "trend": {
-        "baseline_hit_rate": 0.6568,
-        "baseline_n": 644,
-        "by_value": {
-          "down": {
-            "n": 193,
-            "hits": 131,
-            "hit_rate": 0.6788,
-            "lift": 1.0335
-          },
-          "stable": {
-            "n": 251,
-            "hits": 162,
-            "hit_rate": 0.6454,
-            "lift": 0.9826
-          },
-          "up": {
-            "n": 200,
-            "hits": 130,
-            "hit_rate": 0.65,
-            "lift": 0.9896
-          }
-        },
-        "verdict": "noise",
-        "verdict_reason": "lift variance 0.051 \u2264 0.08"
-      },
       "opp_defense": {
-        "baseline_hit_rate": 0.6581,
-        "baseline_n": 626,
+        "baseline_hit_rate": 0.7184,
+        "baseline_n": 1257,
         "by_value": {
           "mid": {
-            "n": 221,
-            "hits": 142,
-            "hit_rate": 0.6425,
-            "lift": 0.9763
+            "n": 429,
+            "hits": 310,
+            "hit_rate": 0.7226,
+            "lift": 1.0058
           },
           "soft": {
-            "n": 197,
-            "hits": 120,
-            "hit_rate": 0.6091,
-            "lift": 0.9255
+            "n": 409,
+            "hits": 285,
+            "hit_rate": 0.6968,
+            "lift": 0.9699
           },
           "tough": {
-            "n": 208,
-            "hits": 150,
-            "hit_rate": 0.7212,
-            "lift": 1.0959
+            "n": 419,
+            "hits": 308,
+            "hit_rate": 0.7351,
+            "lift": 1.0232
           }
         },
-        "verdict": "predictive",
-        "verdict_reason": "lift variance 0.170 > 0.15"
+        "verdict": "noise",
+        "verdict_reason": "lift variance 0.053 \u2264 0.08"
       },
       "pace_tag": {
-        "baseline_hit_rate": 0.6568,
-        "baseline_n": 644,
+        "baseline_hit_rate": 0.7176,
+        "baseline_n": 1289,
         "by_value": {
           "high": {
-            "n": 606,
-            "hits": 405,
-            "hit_rate": 0.6683,
-            "lift": 1.0175
+            "n": 1204,
+            "hits": 873,
+            "hit_rate": 0.7251,
+            "lift": 1.0105
           },
           "mid": {
-            "n": 38,
-            "hits": 18,
-            "hit_rate": 0.4737,
-            "lift": 0.7212
+            "n": 85,
+            "hits": 52,
+            "hit_rate": 0.6118,
+            "lift": 0.8526
           }
         },
         "verdict": "predictive",
-        "verdict_reason": "lift variance 0.296 > 0.15"
+        "verdict_reason": "lift variance 0.158 > 0.15"
       },
       "on_b2b": {
-        "baseline_hit_rate": 0.6568,
-        "baseline_n": 644,
+        "baseline_hit_rate": 0.7176,
+        "baseline_n": 1289,
         "by_value": {
           "False": {
-            "n": 327,
-            "hits": 223,
-            "hit_rate": 0.682,
-            "lift": 1.0384
+            "n": 677,
+            "hits": 495,
+            "hit_rate": 0.7312,
+            "lift": 1.019
           },
           "True": {
-            "n": 317,
-            "hits": 200,
-            "hit_rate": 0.6309,
-            "lift": 0.9606
+            "n": 612,
+            "hits": 430,
+            "hit_rate": 0.7026,
+            "lift": 0.9791
           }
         },
         "verdict": "noise",
-        "verdict_reason": "lift variance 0.078 \u2264 0.08"
+        "verdict_reason": "lift variance 0.040 \u2264 0.08"
       },
       "home_away": {
-        "baseline_hit_rate": 0.6568,
-        "baseline_n": 644,
+        "baseline_hit_rate": 0.7176,
+        "baseline_n": 1289,
         "by_value": {
           "A": {
-            "n": 317,
-            "hits": 213,
-            "hit_rate": 0.6719,
-            "lift": 1.023
+            "n": 631,
+            "hits": 463,
+            "hit_rate": 0.7338,
+            "lift": 1.0226
           },
           "H": {
-            "n": 327,
-            "hits": 210,
-            "hit_rate": 0.6422,
-            "lift": 0.9778
+            "n": 658,
+            "hits": 462,
+            "hit_rate": 0.7021,
+            "lift": 0.9784
           }
         },
         "verdict": "noise",
-        "verdict_reason": "lift variance 0.045 \u2264 0.08"
+        "verdict_reason": "lift variance 0.044 \u2264 0.08"
       },
       "spread_risk": {
-        "baseline_hit_rate": 0.6441,
-        "baseline_n": 562,
+        "baseline_hit_rate": 0.7121,
+        "baseline_n": 1115,
         "by_value": {
           "high": {
-            "n": 102,
-            "hits": 71,
-            "hit_rate": 0.6961,
-            "lift": 1.0807
+            "n": 211,
+            "hits": 162,
+            "hit_rate": 0.7678,
+            "lift": 1.0782
           },
           "moderate": {
-            "n": 145,
-            "hits": 91,
-            "hit_rate": 0.6276,
-            "lift": 0.9744
+            "n": 280,
+            "hits": 191,
+            "hit_rate": 0.6821,
+            "lift": 0.9579
           },
           "none": {
-            "n": 315,
-            "hits": 200,
-            "hit_rate": 0.6349,
-            "lift": 0.9857
+            "n": 624,
+            "hits": 441,
+            "hit_rate": 0.7067,
+            "lift": 0.9924
           }
         },
         "verdict": "weak",
-        "verdict_reason": "lift variance 0.106 between 0.08 and 0.15"
+        "verdict_reason": "lift variance 0.120 between 0.08 and 0.15"
       }
     }
   },
   "tier_calibration": {
     "PTS": {
       "10": {
-        "n": 389,
-        "hit_rate": 0.838
+        "n": 315,
+        "hit_rate": 0.8159
       },
       "15": {
-        "n": 601,
-        "hit_rate": 0.7138
+        "n": 614,
+        "hit_rate": 0.7459
       },
       "20": {
-        "n": 375,
-        "hit_rate": 0.7147
+        "n": 414,
+        "hit_rate": 0.6957
       },
       "25": {
-        "n": 239,
-        "hit_rate": 0.6569,
+        "n": 253,
+        "hit_rate": 0.668,
         "flag": "threshold_concern"
       },
       "30": {
-        "n": 27,
-        "hit_rate": 0.4444,
+        "n": 81,
+        "hit_rate": 0.5679,
         "flag": "threshold_concern"
       }
     },
     "REB": {
       "2": {
-        "n": 617,
-        "hit_rate": 0.8104
+        "n": 351,
+        "hit_rate": 0.9117
       },
       "4": {
-        "n": 585,
-        "hit_rate": 0.7231
+        "n": 687,
+        "hit_rate": 0.7686
       },
       "6": {
-        "n": 350,
-        "hit_rate": 0.6857
+        "n": 466,
+        "hit_rate": 0.6888
       },
       "8": {
-        "n": 150,
-        "hit_rate": 0.5667,
+        "n": 247,
+        "hit_rate": 0.6316,
         "flag": "threshold_concern"
       },
       "10": {
-        "n": 45,
-        "hit_rate": 0.5556,
+        "n": 67,
+        "hit_rate": 0.4478,
         "flag": "threshold_concern"
       },
       "12": {
-        "n": 7,
-        "hit_rate": 0.4286,
+        "n": 30,
+        "hit_rate": 0.6333,
         "flag": "threshold_concern"
       }
     },
     "AST": {
       "2": {
-        "n": 710,
-        "hit_rate": 0.7873
+        "n": 637,
+        "hit_rate": 0.832
       },
       "4": {
-        "n": 408,
-        "hit_rate": 0.7108
+        "n": 615,
+        "hit_rate": 0.7431
       },
       "6": {
-        "n": 165,
-        "hit_rate": 0.6303,
+        "n": 255,
+        "hit_rate": 0.651,
         "flag": "threshold_concern"
       },
       "8": {
-        "n": 55,
-        "hit_rate": 0.6182,
+        "n": 91,
+        "hit_rate": 0.6374,
+        "flag": "threshold_concern"
+      },
+      "10": {
+        "n": 25,
+        "hit_rate": 0.36,
         "flag": "threshold_concern"
       }
     },
     "3PM": {
       "1": {
-        "n": 444,
-        "hit_rate": 0.714
+        "n": 649,
+        "hit_rate": 0.775
       },
       "2": {
-        "n": 157,
-        "hit_rate": 0.5796,
-        "flag": "threshold_concern"
+        "n": 441,
+        "hit_rate": 0.7143
       },
       "3": {
-        "n": 43,
-        "hit_rate": 0.3488,
+        "n": 157,
+        "hit_rate": 0.586,
+        "flag": "threshold_concern"
+      },
+      "4": {
+        "n": 42,
+        "hit_rate": 0.3571,
         "flag": "threshold_concern"
       }
     }
   },
   "top_combinations": {
     "PTS": {
-      "signal_1": "opp_defense",
+      "signal_1": "pace_tag",
       "signal_2": "spread_risk",
       "combinations": {
-        "opp_defense=mid & spread_risk=high": {
-          "n": 59,
-          "hits": 43,
-          "hit_rate": 0.7288
+        "pace_tag=high & spread_risk=high": {
+          "n": 274,
+          "hits": 205,
+          "hit_rate": 0.7482
         },
-        "opp_defense=mid & spread_risk=moderate": {
-          "n": 93,
-          "hits": 60,
-          "hit_rate": 0.6452
+        "pace_tag=high & spread_risk=moderate": {
+          "n": 315,
+          "hits": 220,
+          "hit_rate": 0.6984
         },
-        "opp_defense=mid & spread_risk=none": {
-          "n": 253,
-          "hits": 180,
-          "hit_rate": 0.7115
+        "pace_tag=high & spread_risk=none": {
+          "n": 762,
+          "hits": 556,
+          "hit_rate": 0.7297
         },
-        "opp_defense=soft & spread_risk=high": {
-          "n": 181,
-          "hits": 144,
-          "hit_rate": 0.7956
+        "pace_tag=mid & spread_risk=high": {
+          "n": 16,
+          "hits": 11,
+          "hit_rate": 0.6875
         },
-        "opp_defense=soft & spread_risk=moderate": {
-          "n": 124,
-          "hits": 91,
-          "hit_rate": 0.7339
+        "pace_tag=mid & spread_risk=moderate": {
+          "n": 37,
+          "hits": 25,
+          "hit_rate": 0.6757
         },
-        "opp_defense=soft & spread_risk=none": {
-          "n": 217,
-          "hits": 162,
-          "hit_rate": 0.7465
-        },
-        "opp_defense=tough & spread_risk=high": {
-          "n": 46,
-          "hits": 34,
-          "hit_rate": 0.7391
-        },
-        "opp_defense=tough & spread_risk=moderate": {
-          "n": 110,
-          "hits": 81,
-          "hit_rate": 0.7364
-        },
-        "opp_defense=tough & spread_risk=none": {
-          "n": 291,
-          "hits": 203,
-          "hit_rate": 0.6976
+        "pace_tag=mid & spread_risk=none": {
+          "n": 48,
+          "hits": 27,
+          "hit_rate": 0.5625
         }
       }
     },
     "REB": {
-      "signal_1": "opp_defense",
-      "signal_2": "trend",
+      "signal_1": "spread_risk",
+      "signal_2": "on_b2b",
       "combinations": {
-        "opp_defense=mid & trend=down": {
-          "n": 139,
-          "hits": 103,
-          "hit_rate": 0.741
+        "spread_risk=high & on_b2b=False": {
+          "n": 171,
+          "hits": 136,
+          "hit_rate": 0.7953
         },
-        "opp_defense=mid & trend=stable": {
-          "n": 288,
-          "hits": 217,
-          "hit_rate": 0.7535
+        "spread_risk=high & on_b2b=True": {
+          "n": 150,
+          "hits": 113,
+          "hit_rate": 0.7533
         },
-        "opp_defense=mid & trend=up": {
-          "n": 139,
-          "hits": 103,
-          "hit_rate": 0.741
+        "spread_risk=moderate & on_b2b=False": {
+          "n": 168,
+          "hits": 123,
+          "hit_rate": 0.7321
         },
-        "opp_defense=soft & trend=down": {
-          "n": 147,
-          "hits": 105,
-          "hit_rate": 0.7143
+        "spread_risk=moderate & on_b2b=True": {
+          "n": 228,
+          "hits": 158,
+          "hit_rate": 0.693
         },
-        "opp_defense=soft & trend=stable": {
-          "n": 285,
-          "hits": 207,
-          "hit_rate": 0.7263
+        "spread_risk=none & on_b2b=False": {
+          "n": 445,
+          "hits": 350,
+          "hit_rate": 0.7865
         },
-        "opp_defense=soft & trend=up": {
-          "n": 138,
-          "hits": 102,
-          "hit_rate": 0.7391
-        },
-        "opp_defense=tough & trend=down": {
-          "n": 137,
-          "hits": 93,
-          "hit_rate": 0.6788
-        },
-        "opp_defense=tough & trend=stable": {
-          "n": 283,
-          "hits": 206,
-          "hit_rate": 0.7279
-        },
-        "opp_defense=tough & trend=up": {
-          "n": 146,
-          "hits": 101,
-          "hit_rate": 0.6918
+        "spread_risk=none & on_b2b=True": {
+          "n": 440,
+          "hits": 315,
+          "hit_rate": 0.7159
         }
       }
     },
     "AST": {
-      "signal_1": "spread_risk",
+      "signal_1": "trend",
       "signal_2": "opp_defense",
       "combinations": {
-        "spread_risk=high & opp_defense=mid": {
-          "n": 32,
-          "hits": 24,
-          "hit_rate": 0.75
+        "trend=down & opp_defense=mid": {
+          "n": 116,
+          "hits": 90,
+          "hit_rate": 0.7759
         },
-        "spread_risk=high & opp_defense=soft": {
-          "n": 153,
-          "hits": 123,
-          "hit_rate": 0.8039
+        "trend=down & opp_defense=soft": {
+          "n": 150,
+          "hits": 109,
+          "hit_rate": 0.7267
         },
-        "spread_risk=high & opp_defense=tough": {
-          "n": 39,
-          "hits": 27,
-          "hit_rate": 0.6923
+        "trend=down & opp_defense=tough": {
+          "n": 148,
+          "hits": 107,
+          "hit_rate": 0.723
         },
-        "spread_risk=moderate & opp_defense=mid": {
-          "n": 92,
-          "hits": 69,
-          "hit_rate": 0.75
+        "trend=stable & opp_defense=mid": {
+          "n": 242,
+          "hits": 176,
+          "hit_rate": 0.7273
         },
-        "spread_risk=moderate & opp_defense=soft": {
-          "n": 100,
-          "hits": 76,
-          "hit_rate": 0.76
+        "trend=stable & opp_defense=soft": {
+          "n": 251,
+          "hits": 195,
+          "hit_rate": 0.7769
         },
-        "spread_risk=moderate & opp_defense=tough": {
-          "n": 80,
-          "hits": 61,
-          "hit_rate": 0.7625
+        "trend=stable & opp_defense=tough": {
+          "n": 241,
+          "hits": 163,
+          "hit_rate": 0.6763
         },
-        "spread_risk=none & opp_defense=mid": {
-          "n": 231,
-          "hits": 175,
-          "hit_rate": 0.7576
+        "trend=up & opp_defense=mid": {
+          "n": 142,
+          "hits": 109,
+          "hit_rate": 0.7676
         },
-        "spread_risk=none & opp_defense=soft": {
-          "n": 154,
-          "hits": 113,
-          "hit_rate": 0.7338
+        "trend=up & opp_defense=soft": {
+          "n": 157,
+          "hits": 133,
+          "hit_rate": 0.8471
         },
-        "spread_risk=none & opp_defense=tough": {
-          "n": 236,
-          "hits": 164,
-          "hit_rate": 0.6949
+        "trend=up & opp_defense=tough": {
+          "n": 129,
+          "hits": 101,
+          "hit_rate": 0.7829
         }
       }
     },
     "3PM": {
       "signal_1": "pace_tag",
-      "signal_2": "opp_defense",
+      "signal_2": "spread_risk",
       "combinations": {
-        "pace_tag=high & opp_defense=mid": {
-          "n": 209,
-          "hits": 137,
-          "hit_rate": 0.6555
+        "pace_tag=high & spread_risk=high": {
+          "n": 203,
+          "hits": 156,
+          "hit_rate": 0.7685
         },
-        "pace_tag=high & opp_defense=soft": {
-          "n": 185,
-          "hits": 114,
-          "hit_rate": 0.6162
+        "pace_tag=high & spread_risk=moderate": {
+          "n": 249,
+          "hits": 171,
+          "hit_rate": 0.6867
         },
-        "pace_tag=high & opp_defense=tough": {
-          "n": 195,
-          "hits": 144,
-          "hit_rate": 0.7385
+        "pace_tag=high & spread_risk=none": {
+          "n": 588,
+          "hits": 420,
+          "hit_rate": 0.7143
+        },
+        "pace_tag=mid & spread_risk=moderate": {
+          "n": 31,
+          "hits": 20,
+          "hit_rate": 0.6452
+        },
+        "pace_tag=mid & spread_risk=none": {
+          "n": 36,
+          "hits": 21,
+          "hit_rate": 0.5833
         }
       }
     }
   },
   "recommendations": [
-    "PTS trend: NOISE (lift variance 0.046 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "PTS pace_tag: NOISE (lift variance 0.054 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "PTS on_b2b: NOISE (lift variance 0.063 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "PTS home_away: NOISE (lift variance 0.023 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "REB trend: NOISE (lift variance 0.049 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "REB opp_defense: NOISE (lift variance 0.056 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "REB pace_tag: NOISE (lift variance 0.015 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "REB on_b2b: NOISE (lift variance 0.035 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "REB home_away: NOISE (lift variance 0.016 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "REB spread_risk: NOISE (lift variance 0.039 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "AST trend: NOISE (lift variance 0.006 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "AST opp_defense: NOISE (lift variance 0.046 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "AST pace_tag: NOISE (lift variance 0.023 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "AST on_b2b: NOISE (lift variance 0.003 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "AST home_away: NOISE (lift variance 0.021 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "AST spread_risk: NOISE (lift variance 0.061 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "3PM trend: NOISE (lift variance 0.051 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "3PM opp_defense: PREDICTIVE (lift variance 0.170 > 0.15) \u2014 weight heavily in prompt",
-    "3PM pace_tag: PREDICTIVE (lift variance 0.296 > 0.15) \u2014 weight heavily in prompt",
-    "3PM on_b2b: NOISE (lift variance 0.078 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "3PM home_away: NOISE (lift variance 0.045 \u2264 0.08) \u2014 consider removing or de-emphasizing",
-    "PTS Tier 25: calibration hit rate 65.7% (n=239) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "PTS Tier 30: calibration hit rate 44.4% (n=27) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "REB Tier 8: calibration hit rate 56.7% (n=150) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "REB Tier 10: calibration hit rate 55.6% (n=45) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "REB Tier 12: calibration hit rate 42.9% (n=7) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "AST Tier 6: calibration hit rate 63.0% (n=165) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "AST Tier 8: calibration hit rate 61.8% (n=55) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "3PM Tier 2: calibration hit rate 58.0% (n=157) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
-    "3PM Tier 3: calibration hit rate 34.9% (n=43) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "PTS trend: NOISE (lift variance 0.021 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "PTS opp_defense: NOISE (lift variance 0.061 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "PTS on_b2b: NOISE (lift variance 0.034 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "PTS home_away: NOISE (lift variance 0.009 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "PTS spread_risk: NOISE (lift variance 0.068 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "REB trend: NOISE (lift variance 0.033 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "REB opp_defense: NOISE (lift variance 0.038 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "REB pace_tag: NOISE (lift variance 0.009 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "REB on_b2b: NOISE (lift variance 0.055 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "REB home_away: NOISE (lift variance 0.040 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "AST pace_tag: NOISE (lift variance 0.024 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "AST on_b2b: NOISE (lift variance 0.030 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "AST home_away: NOISE (lift variance 0.014 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "3PM trend: NOISE (lift variance 0.021 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "3PM opp_defense: NOISE (lift variance 0.053 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "3PM pace_tag: PREDICTIVE (lift variance 0.158 > 0.15) \u2014 weight heavily in prompt",
+    "3PM on_b2b: NOISE (lift variance 0.040 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "3PM home_away: NOISE (lift variance 0.044 \u2264 0.08) \u2014 consider removing or de-emphasizing",
+    "PTS Tier 25: calibration hit rate 66.8% (n=253) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "PTS Tier 30: calibration hit rate 56.8% (n=81) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "REB Tier 8: calibration hit rate 63.2% (n=247) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "REB Tier 10: calibration hit rate 44.8% (n=67) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "REB Tier 12: calibration hit rate 63.3% (n=30) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "AST Tier 6: calibration hit rate 65.1% (n=255) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "AST Tier 8: calibration hit rate 63.7% (n=91) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "AST Tier 10: calibration hit rate 36.0% (n=25) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "3PM Tier 3: calibration hit rate 58.6% (n=157) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
+    "3PM Tier 4: calibration hit rate 35.7% (n=42) is below the 70% floor \u2014 consider raising threshold or reviewing tier selection logic",
     "NOTE: Selection bias \u2014 instances are filtered to players with \u226570% hit rate in prior 10 games. This over-selects recent hot streaks; forward-looking calibration rates will naturally be lower than the 70% selection threshold (regression to the mean)."
   ]
 }

@@ -454,7 +454,7 @@ def add_best_tiers(df: pd.DataFrame, window: int = ROLLING_WINDOW) -> pd.DataFra
         hr_cols = {}
         for tier in tiers:
             hit_col = f"_hit_{stat}_{tier}"
-            df[hit_col] = (df[col] > tier).astype(float)
+            df[hit_col] = (df[col] >= tier).astype(float)
             hr_col = f"_hr_{stat}_{tier}"
             df[hr_col] = df.groupby("player_name")[hit_col].transform(
                 lambda x: x.shift(1).rolling(window, min_periods=window).mean()
@@ -470,12 +470,12 @@ def add_best_tiers(df: pd.DataFrame, window: int = ROLLING_WINDOW) -> pd.DataFra
 
         df[f"best_tier_{stat}"] = best
 
-        # Actual hit: actual stat > best_tier_value
+        # Actual hit: actual stat >= best_tier_value
         actual_hit = pd.Series(np.nan, index=df.index, dtype="float64")
         has_tier = best.notna()
         if has_tier.any():
             actual_hit[has_tier] = (
-                df.loc[has_tier, col] > df.loc[has_tier, f"best_tier_{stat}"]
+                df.loc[has_tier, col] >= df.loc[has_tier, f"best_tier_{stat}"]
             ).astype(float)
         df[f"hit_actual_{stat}"] = actual_hit
 
@@ -716,7 +716,7 @@ def build_bounce_back_pairs(player_log: pd.DataFrame, stat: str, window: int) ->
 
     # Rolling hit rates per tier (shift=1 to exclude current game — no lookahead)
     for tier in tiers:
-        df[f"_hit_{tier}"] = (df[col] > tier).astype(float)
+        df[f"_hit_{tier}"] = (df[col] >= tier).astype(float)
         df[f"_hr_{tier}"]  = df.groupby("player_name")[f"_hit_{tier}"].transform(
             lambda x: x.shift(1).rolling(window, min_periods=window).mean()
         )
@@ -1353,7 +1353,7 @@ def build_mean_reversion_instances(
     # ── Per-tier rolling hit rates (L20 and L5, shift=1) ─────────────
     for tier in tiers:
         hit_col = f"_hit_{tier}"
-        df[hit_col] = (df[col] > tier).astype(float)
+        df[hit_col] = (df[col] >= tier).astype(float)
         df[f"_l20_hr_{tier}"] = df.groupby("player_name")[hit_col].transform(
             lambda x: x.shift(1).rolling(baseline_window, min_periods=baseline_window).mean()
         )
@@ -1944,10 +1944,10 @@ def _pbb_best_tier(values: np.ndarray, tiers: list) -> tuple:
     Find highest tier where full-season overall hit rate >= 70%.
     values: stat values for all non-DNP games, any order.
     Returns (best_tier, overall_hit_rate) or (None, None) if none qualify.
-    Uses strict > (consistent with production quant.py).
+    Uses >= (exact threshold = HIT, consistent with production quant.py).
     """
     for tier in sorted(tiers, reverse=True):
-        hr = float((values > tier).mean())
+        hr = float((values >= tier).mean())
         if hr >= CONFIDENCE_FLOOR:
             return tier, hr
     return None, None
@@ -2035,7 +2035,7 @@ def run_player_bounce_back(player_log: pd.DataFrame, args) -> None:
             if best_tier is None:
                 continue
 
-            hits = list(values > best_tier)
+            hits = list(values >= best_tier)
             n_misses = hits.count(False)
 
             m = _pbb_metrics(hits)
@@ -2197,7 +2197,7 @@ def _weighted_hit_rate(actuals: np.ndarray, tier: float, decay: float) -> float:
     Weighted hit rate at a tier. actuals ordered oldest → most recent.
     Most recent game (index n-1) gets weight decay^0 = 1.0.
     Each prior game decays geometrically: oldest (index 0) = decay^(n-1).
-    hit_i = 1 if actual > tier (strict >, consistent with production quant.py).
+    hit_i = 1 if actual >= tier (exact threshold = HIT, consistent with production quant.py).
     Returns NaN if actuals is empty.
     """
     n = len(actuals)
@@ -2205,7 +2205,7 @@ def _weighted_hit_rate(actuals: np.ndarray, tier: float, decay: float) -> float:
         return np.nan
     exponents = np.arange(n - 1, -1, -1, dtype=float)   # [n-1, n-2, ..., 1, 0]
     weights   = decay ** exponents
-    hits      = (actuals > tier).astype(float)
+    hits      = (actuals >= tier).astype(float)
     return float(np.dot(weights, hits) / weights.sum())
 
 
@@ -2268,7 +2268,7 @@ def run_recency_weight_analysis(player_log: pd.DataFrame, args) -> None:
                     else:
                         pick_records[ck][stat].append({
                             "tier": selected,
-                            "hit":  actual > float(selected),   # strict > consistent with production
+                            "hit":  actual >= float(selected),   # >= consistent with production
                         })
 
     # ── Aggregate results ─────────────────────────────────────────────
