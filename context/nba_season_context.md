@@ -16,18 +16,14 @@
 
 ## SEASON FACTS
 
-Jayson Tatum (BOS): OFS all season (Achilles). Jaylen Brown/Derrick White usage reflects this as baseline, not elevated.
+Jayson Tatum (BOS): OFS all season (Achilles). Jaylen Brown/Derrick White usage reflects this as baseline, not elevated. Tatum "absence" should not be used for lineup change reasoning whatsoever, as he has been out entire season.
 Tyrese Haliburton (IND): OFS all season (Achilles). Andrew Nembhard role reflects this as baseline.
-Kyrie Irving (DAL): OFS all season (Knee). Cooper Flagg usage reflects this as baseline.
-Fred VanVleet (HOU): OFS all season (ACL). Kevin Durant/Alperen Sengun usage reflects this as baseline.
-
+Kyrie Irving (DAL): OFS all season (Knee). Anthony Davis traded away from DAL. Cooper Flagg usage reflects these as baseline.
+Fred VanVleet (HOU): OFS all season (ACL). Kevin Durant usage reflects this as baseline.
 James Harden: traded LAC → CLE (Feb 2026). Pre-trade log rows are LAC system; discount for current CLE role projection.
-Kevin Durant: traded PHX → HOU (Jan 2026). Pre-trade log rows are PHX system; discount for current HOU role projection.
-Brandon Ingram: traded NOP → TOR (Jan 2026). Pre-trade log rows are NOP system; discount for current TOR role projection.
 Jalen Green: traded HOU → PHX (Jan 2026). Pre-trade log rows are HOU system; discount for current PHX role projection.
-
 Payton Pritchard (BOS): permanent Sixth Man role as of Feb 2026 following backcourt trades. Weight recent 10 games heavily.
-Jalen Johnson (ATL): permanent primary offensive hub as of Jan 2026. Usage increase is baseline, not situational. Weight recent 10 games heavily.
+Jalen Johnson (ATL): permanent primary offensive hub as of Jan 2026. Usage increase is baseline, not situational.
 Tyrese Maxey (PHI): permanent first-option status as of Nov 2025 with Embiid and George missing significant time. High volume is baseline.
 Matas Buzelis (CHI): expanded starter role permanent for rest of season following mid-season trades. Weight recent 10 games heavily.
 

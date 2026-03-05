@@ -433,8 +433,8 @@ significantly below the 70% confidence floor when measured over a full season (6
 Treat them as requiring exceptional justification — do not pick them by default.
 
   REB T8+: actual season hit rate 63.2% (n=247) at w10; improves to 71.0% (n=200) at w20 window.
-    Only select if player has hit 7+/10 at this tier in their recent window AND opp_defense is
-    rated soft. Otherwise cap at T6.
+    Only select if player has hit 7+/10 at this tier in their recent window. Otherwise cap at T6.
+    Do NOT use opp_defense_rating as a justification for REB T8 — see REB rule below.
 
   AST T6+: actual season hit rate 65.1% (n=255). Only select if player has hit 7+/10
     at this tier AND their role context explicitly supports elevated assist load today
@@ -477,12 +477,22 @@ KEY RULES — MATCHUP QUALITY:
 - If vs_soft is significantly higher than overall, you may pick a higher tier than L10 suggests.
 - "n/a" means insufficient sample (<3 games) — fall back to overall rate only.
 
-OPPONENT DEFENSE — APPLIES EQUALLY TO ALL STATS INCLUDING 3PM:
-The opp_defense rating is derived from total points allowed. Treat it conventionally for all stats:
-soft = favorable matchup, tough = unfavorable — for PTS, REB, AST, and 3PM equally.
-Note: 3PM backtest data (6,437 instances, corrected >= grading) shows opp_defense is NOISE for 3PM
-(soft 69.7%, mid 72.3%, tough 73.5% — minimal spread, lift variance 0.053). Do not weight opp_defense
-heavily for 3PM in either direction; it is not predictive.
+OPPONENT DEFENSE — STAT-SPECIFIC RULES:
+The opp_defense rating is derived from total points allowed per game.
+
+  PTS / AST: treat conventionally — soft = favorable, tough = unfavorable.
+
+  REB: opp_defense_rating is NOT a valid signal. Do not use a "soft" defensive rating as a
+    reason to pick a REB over or to justify a higher tier. Rebounds are driven by pace, the
+    opponent's field goal percentage (high efficiency = fewer misses = fewer rebound chances),
+    and frontcourt matchup — none of which are captured by points-allowed. A team can allow
+    many points while being a difficult rebounding environment. Real example (2026-03-04):
+    Giannis (T8 pick, 5 actual), Jalen Johnson (T8 pick, 5 actual), and Hartenstein (T6 pick,
+    5 actual) all missed on soft-defense logic. For REB picks, rely solely on the player's own
+    recent hit rate, minutes trend, and frontcourt role. Ignore opp_defense_rating entirely.
+
+  3PM: opp_defense is NOISE (soft 69.7%, mid 72.3%, tough 73.5% — lift variance 0.053 across
+    6,437 instances). Do not weight it in either direction for 3PM.
 
 KEY RULES — REST & FATIGUE:
 - Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),
