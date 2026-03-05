@@ -531,6 +531,40 @@ def compute_tier_hit_rates(games: pd.DataFrame, stat: str) -> dict:
     return {str(t): round((games[col] >= t).sum() / n, 3) for t in tiers}
 
 
+def compute_volatility(game_log: list, stat: str, tier: int, window: int = 20) -> dict:
+    """
+    Compute rolling volatility of binary hit outcomes at the given tier.
+    Uses last `window` games where the player was not DNP.
+    Returns volatility label and raw sigma.
+
+    game_log must be sorted oldest→newest so that played[-window:] yields
+    the most recent `window` games.
+    """
+    import statistics as _statistics
+
+    played = [g for g in game_log if not g.get("dnp") and g.get(stat) is not None]
+    recent = played[-window:]
+
+    if len(recent) < 5:
+        return {"label": "insufficient_data", "sigma": None, "n": len(recent)}
+
+    outcomes = [1 if g[stat] >= tier else 0 for g in recent]
+
+    if len(outcomes) < 2:
+        return {"label": "insufficient_data", "sigma": None, "n": len(outcomes)}
+
+    sigma = _statistics.stdev(outcomes)
+
+    if sigma < 0.3:
+        label = "consistent"
+    elif sigma <= 0.4:
+        label = "moderate"
+    else:
+        label = "volatile"
+
+    return {"label": label, "sigma": round(sigma, 3), "n": len(outcomes)}
+
+
 def compute_matchup_tier_hit_rates(
     all_games: pd.DataFrame,
     opp_defense: dict,
@@ -942,6 +976,16 @@ def build_player_stats(
 
         tier_hit_rates = {stat: compute_tier_hit_rates(games_10, stat) for stat in TIERS}
         best_tiers     = {stat: best_tier(tier_hit_rates[stat]) for stat in TIERS}
+
+        # Volatility scores at each stat's best qualifying tier
+        player_games = grp.sort_values("game_date", ascending=True).to_dict("records")
+        volatility = {}
+        for _stat in ["pts", "reb", "ast", "tpm"]:
+            _stat_key = _stat.upper() if _stat != "tpm" else "3PM"
+            _best = best_tiers.get(_stat_key)
+            if _best is not None:
+                volatility[_stat_key] = compute_volatility(player_games, _stat, _best["tier"], window=20)
+
         trend          = {stat: compute_trend(games_10, games_5, stat) for stat in TIERS}
         # Matchup-specific split: full history on current team, split by opp defensive rating
         matchup_tier_hit_rates = {
@@ -1033,6 +1077,7 @@ def build_player_stats(
             "game_pace": pace_ctx,
             "teammate_correlations": teammate_corr,
             "bounce_back": bounce_back,
+            "volatility": volatility,
         }
 
     return stats_out

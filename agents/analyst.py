@@ -296,7 +296,8 @@ def build_quant_context(player_stats: dict) -> str:
         b2b_hit_rates    = s.get("b2b_hit_rates") or {}
 
         stat_parts = []
-        bounce_back_all = s.get("bounce_back") or {}
+        bounce_back_all  = s.get("bounce_back") or {}
+        volatility_all   = s.get("volatility") or {}
         for stat in ("PTS", "REB", "AST", "3PM"):
             best = best_tiers.get(stat)
             if not best:
@@ -349,11 +350,21 @@ def build_quant_context(player_stats: dict) -> str:
             else:
                 bb_field = ""
 
+            # Volatility tag
+            vol = volatility_all.get(stat, {})
+            vol_label = vol.get("label", "")
+            if vol_label == "volatile":
+                vol_tag = " [VOLATILE]"
+            elif vol_label == "consistent":
+                vol_tag = " [consistent]"
+            else:
+                vol_tag = ""  # moderate or missing = baseline, no tag
+
             stat_parts.append(
                 f"  {stat}: tier={tier} overall={overall_pct}% "
                 f"vs_soft={soft_str} vs_tough={tough_str} "
                 f"competitive={comp_str} blowout_games={blow_str} "
-                f"opp_today={opp_rating} trend={trend}{b2b_field}{bb_field}"
+                f"opp_today={opp_rating} trend={trend}{b2b_field}{bb_field}{vol_tag}"
             )
 
         if stat_parts:
@@ -625,6 +636,22 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
     in even when BLOWOUT_RISK is False — the pattern may be real.
 - When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
+
+KEY RULES — VOLATILITY:
+- Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
+- Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
+- Moderate: normal variance. No adjustment needed. This is the baseline.
+- [VOLATILE]: player hits this tier in streaks — long runs of hits followed by cold stretches.
+  A volatile player at 75% hit rate is riskier than a consistent player at 72%.
+  Rules when [VOLATILE] is present:
+    1. Reduce confidence by 5% before applying other adjustments.
+    2. Do not select a volatile prop as a standalone Top Pick unless confidence after
+       reduction still clears 85% AND there is supporting context (iron_floor, soft defense,
+       favorable rest).
+    3. Flag the volatility in the reasoning field so the Auditor can track whether
+       volatile picks underperform over time.
+  Do not apply the volatility penalty if the player has [iron_floor] on this stat —
+  iron floor already captures the consistency signal more precisely.
 
 {quant_context if quant_context else "No quant stats available."}
 
