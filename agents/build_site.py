@@ -286,9 +286,13 @@ def generate_html(d: dict) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NBAgent</title>
   <link rel="icon" href="favicon.ico" />
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0d0d0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="NBAgent" />
   <style>
     :root {{
       --bg: #0d0d0f; --surface: #18181c; --surface2: #202026;
@@ -304,8 +308,25 @@ def generate_html(d: dict) -> str:
     header {{ background: var(--surface); border-bottom: 1px solid var(--border);
               padding: 16px 20px; display: flex; align-items: center;
               justify-content: space-between; position: sticky; top: 0; z-index: 10; }}
-    .logo {{ display: flex; align-items: center; }}
+    .logo {{
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }}
     .logo img {{ height: 36px; width: auto; display: block; }}
+    .logo-nb {{ color: #f0f0f8; }}
+    .logo-a {{
+      background: linear-gradient(90deg, #f0f0f8 0%, #f0f0f8 15%, #E8703A 55%, #E8703A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }}
+    .logo-gent {{ color: #E8703A; }}
     .built-at {{ font-size: 11px; color: var(--muted); }}
 
     .tabs {{ display: flex; gap: 4px; padding: 12px 20px 0;
@@ -573,7 +594,7 @@ def generate_html(d: dict) -> str:
 <body>
 
 <header>
-  <div class="logo"><img src="logo.png" alt="NBAgent" /></div>
+  <div class="logo"><img src="logo.png" alt="" /><span class="logo-nb">NB</span><span class="logo-a">A</span><span class="logo-gent">gent</span></div>
   <div class="built-at">Updated {d["built_at"]}</div>
 </header>
 
