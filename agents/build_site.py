@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-NBAgent — Site Builder v2
+NBAgent — Site Builder v3
 
-Reads data/picks.json, data/audit_log.json, and data/nba_master.csv,
-writes site/index.html for GitHub Pages deployment.
+Reads data/picks.json, data/audit_log.json, data/parlays.json,
+and data/nba_master.csv, writes site/index.html for GitHub Pages deployment.
 
 Features:
   - Game time on each pick card
   - Hit rate trend chart (daily, last 30 days)
   - Per-prop-type streak indicator
+  - Parlays tab with correlated combination cards
 """
 
 from __future__ import annotations
@@ -27,6 +28,7 @@ PICKS_JSON     = DATA / "picks.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 MASTER_CSV     = DATA / "nba_master.csv"
 INJURIES_JSON  = DATA / "injuries_today.json"
+PARLAYS_JSON   = DATA / "parlays.json"
 
 ET = ZoneInfo("America/New_York")
 PT = ZoneInfo("America/Los_Angeles")
@@ -169,10 +171,16 @@ def load_injuries_display() -> dict:
 
 
 def build_site():
-    picks     = load_json(PICKS_JSON, [])
-    audit_log = load_json(AUDIT_LOG_JSON, [])
-    game_times = load_game_times()
+    picks          = load_json(PICKS_JSON, [])
+    audit_log      = load_json(AUDIT_LOG_JSON, [])
+    game_times     = load_game_times()
     injuries_display = load_injuries_display()
+    all_parlay_bundles = load_json(PARLAYS_JSON, [])
+    today_parlays  = []
+    for _b in all_parlay_bundles:
+        if _b.get("date") == TODAY_STR:
+            today_parlays = _b.get("parlays", [])
+            break
 
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
     past_picks  = [p for p in picks if p.get("date") != TODAY_STR
@@ -199,8 +207,20 @@ def build_site():
             **streak,
         }
 
-    daily_trend = compute_daily_trend(past_picks)
-    last_audit  = audit_log[-1] if audit_log else None
+    daily_trend  = compute_daily_trend(past_picks)
+    last_audit   = audit_log[-1] if audit_log else None
+
+    # Parlay hit stats
+    _p_hits = _p_misses = 0
+    for _b in all_parlay_bundles:
+        for _p in _b.get("parlays", []):
+            if _p.get("result") == "HIT": _p_hits += 1
+            elif _p.get("result") == "MISS": _p_misses += 1
+    _p_total = _p_hits + _p_misses
+    parlay_stats = {
+        "hits": _p_hits, "misses": _p_misses, "total": _p_total,
+        "pct": round(100 * _p_hits / _p_total, 1) if _p_total else 0,
+    }
 
     page_data = {
         "today_str":      TODAY_STR,
@@ -213,7 +233,9 @@ def build_site():
         "recent_results": sorted(past_picks,
                                   key=lambda p: p.get("date", ""),
                                   reverse=True)[:40],
-        "injuries":  injuries_display,
+        "injuries":       injuries_display,
+        "today_parlays":   today_parlays,
+        "parlay_stats":    parlay_stats,
         "built_at": dt.datetime.now(ET).strftime("%B %d, %Y at %-I:%M %p ET"),
     }
 
@@ -224,17 +246,20 @@ def build_site():
 
     print(f"[build_site] Wrote site/index.html "
           f"({len(today_picks)} today's picks, "
+          f"{len(today_parlays)} today's parlays, "
           f"{total_graded} graded, "
           f"{len(daily_trend)} trend days)")
 
 
 def generate_html(d: dict) -> str:
-    picks_json      = json.dumps(d["today_picks"])
-    results_json    = json.dumps(d["recent_results"])
-    prop_stats_json = json.dumps(d["prop_stats"])
-    last_audit_json = json.dumps(d["last_audit"])
-    trend_json      = json.dumps(d["daily_trend"])
-    injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "teams": {}}))
+    picks_json        = json.dumps(d["today_picks"])
+    results_json      = json.dumps(d["recent_results"])
+    prop_stats_json   = json.dumps(d["prop_stats"])
+    last_audit_json   = json.dumps(d["last_audit"])
+    trend_json        = json.dumps(d["daily_trend"])
+    injuries_json     = json.dumps(d.get("injuries", {"fetched_at": None, "teams": {}}))
+    parlays_json      = json.dumps(d.get("today_parlays", []))
+    parlay_stats_json = json.dumps(d.get("parlay_stats", {"hits":0,"misses":0,"total":0,"pct":0}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -248,6 +273,7 @@ def generate_html(d: dict) -> str:
       --border: #2a2a32; --accent: #6c63ff; --accent2: #00d4aa;
       --hit: #22c55e; --miss: #ef4444; --text: #e8e8f0; --muted: #888898;
       --pts: #f97316; --reb: #3b82f6; --ast: #a855f7; --3pm: #eab308;
+      --parlay: #f43f8e;
     }}
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
     body {{ background: var(--bg); color: var(--text);
@@ -263,10 +289,11 @@ def generate_html(d: dict) -> str:
 
     .tabs {{ display: flex; gap: 4px; padding: 12px 20px 0;
              border-bottom: 1px solid var(--border); background: var(--surface);
-             position: sticky; top: 53px; z-index: 9; }}
+             position: sticky; top: 53px; z-index: 9; overflow-x: auto; }}
     .tab {{ padding: 8px 16px; border-radius: 6px 6px 0 0; cursor: pointer;
             font-size: 13px; font-weight: 500; color: var(--muted); border: none;
-            background: none; border-bottom: 2px solid transparent; transition: all 0.15s; }}
+            background: none; border-bottom: 2px solid transparent;
+            transition: all 0.15s; white-space: nowrap; }}
     .tab.active {{ color: var(--text); border-bottom-color: var(--accent); }}
     .tab:hover:not(.active) {{ color: var(--text); }}
 
@@ -452,6 +479,61 @@ def generate_html(d: dict) -> str:
     .audit-list li:last-child {{ border-bottom: none; }}
     .audit-list li::before {{ content: "→ "; color: var(--accent); }}
 
+
+    /* ── Parlay cards ── */
+    .parlay-grid {{ display: flex; flex-direction: column; gap: 14px; }}
+    .parlay-card {{ background: var(--surface); border: 1px solid var(--border);
+                    border-radius: 14px; overflow: hidden; transition: border-color 0.15s; }}
+    .parlay-card:hover {{ border-color: var(--parlay); }}
+    .parlay-card.result-HIT  {{ border-color: var(--hit); }}
+    .parlay-card.result-MISS {{ border-color: var(--miss); }}
+    .parlay-header {{ padding: 14px 16px 10px;
+                      display: flex; align-items: flex-start; justify-content: space-between;
+                      gap: 12px; }}
+    .parlay-header-left {{ flex: 1; min-width: 0; }}
+    .parlay-label {{ font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }}
+    .parlay-meta {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; align-items: center; }}
+    .parlay-type-badge {{ font-size: 10px; font-weight: 600; padding: 2px 7px;
+                          border-radius: 99px; background: rgba(244,63,142,0.12);
+                          color: var(--parlay); border: 1px solid rgba(244,63,142,0.25); }}
+    .corr-badge {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; }}
+    .corr-positive  {{ background: rgba(34,197,94,0.1);  color: var(--hit);  border: 1px solid rgba(34,197,94,0.2); }}
+    .corr-independent {{ background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }}
+    .corr-mixed     {{ background: rgba(234,179,8,0.1);  color: #eab308; border: 1px solid rgba(234,179,8,0.2); }}
+    .parlay-rationale {{ font-size: 12px; color: var(--muted); margin-top: 8px;
+                         font-style: italic; line-height: 1.5; }}
+    .parlay-header-right {{ text-align: right; flex-shrink: 0; }}
+    .parlay-odds {{ font-size: 28px; font-weight: 800; color: var(--parlay); line-height: 1; }}
+    .parlay-odds-label {{ font-size: 10px; color: var(--muted); margin-top: 2px; }}
+    .parlay-result-badge {{ display: inline-flex; align-items: center; gap: 4px;
+                            font-size: 11px; font-weight: 700; padding: 3px 8px;
+                            border-radius: 99px; margin-top: 6px; }}
+    .badge-HIT  {{ background: rgba(34,197,94,0.15);  color: var(--hit); }}
+    .badge-MISS {{ background: rgba(239,68,68,0.15);  color: var(--miss); }}
+    .badge-PARTIAL {{ background: rgba(234,179,8,0.15); color: #eab308; }}
+    .parlay-legs {{ border-top: 1px solid var(--border); }}
+    .parlay-leg {{ display: flex; align-items: center; gap: 10px;
+                   padding: 9px 16px; border-bottom: 1px solid var(--border);
+                   font-size: 13px; }}
+    .parlay-leg:last-child {{ border-bottom: none; }}
+    .leg-prop {{ width: 34px; height: 20px; border-radius: 4px;
+                 display: flex; align-items: center; justify-content: center;
+                 font-size: 9px; font-weight: 700; flex-shrink: 0; }}
+    .leg-player {{ font-weight: 600; flex: 1; min-width: 0;
+                   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+    .leg-value {{ font-size: 13px; font-weight: 700; color: var(--accent2); white-space: nowrap; }}
+    .leg-matchup {{ font-size: 11px; color: var(--muted); white-space: nowrap; }}
+    .leg-conf {{ font-size: 10px; color: var(--muted); white-space: nowrap; }}
+    .leg-role {{ font-size: 10px; color: var(--muted); font-style: italic; white-space: nowrap; }}
+    .leg-result-icon {{ font-size: 13px; flex-shrink: 0; }}
+    .parlay-stats-banner {{ background: linear-gradient(135deg,rgba(244,63,142,0.08),rgba(108,99,255,0.08));
+                            border: 1px solid var(--border); border-radius: 12px;
+                            padding: 16px 20px; display: flex; align-items: center;
+                            gap: 24px; margin-bottom: 20px; flex-wrap: wrap; }}
+    .parlay-stat-item {{ text-align: center; }}
+    .parlay-stat-value {{ font-size: 26px; font-weight: 700; color: var(--parlay); line-height: 1; }}
+    .parlay-stat-label {{ font-size: 11px; color: var(--muted); margin-top: 3px; }}
+
     .empty {{ text-align: center; padding: 48px 20px; color: var(--muted); font-size: 14px; }}
     .empty-icon {{ font-size: 36px; margin-bottom: 12px; }}
   </style>
@@ -465,6 +547,7 @@ def generate_html(d: dict) -> str:
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('picks')">Today's Picks</button>
+  <button class="tab" onclick="showTab('parlays')">Parlays</button>
   <button class="tab" onclick="showTab('results')">Results</button>
   <button class="tab" onclick="showTab('audit')">Audit Log</button>
 </div>
@@ -493,6 +576,7 @@ def generate_html(d: dict) -> str:
   <div class="section-header">Pick history</div>
   <div id="results-container"></div>
 </div>
+<div id="tab-parlays" class="page"><div id="parlays-container"></div></div>
 <div id="tab-audit" class="page"><div id="audit-container"></div></div>
 
 <script>
@@ -506,11 +590,14 @@ const DATA = {{
   last_audit:       {last_audit_json},
   recent_results:   {results_json},
   injuries:         {injuries_json},
+  today_parlays:    {parlays_json},
+  parlay_stats:     {parlay_stats_json},
 }};
 
 function showTab(name) {{
+  const tabs = ['picks','parlays','results','audit'];
   document.querySelectorAll('.tab').forEach((t,i) =>
-    t.classList.toggle('active', ['picks','results','audit'][i] === name));
+    t.classList.toggle('active', tabs[i] === name));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   if (name === 'results') drawTrendChart();
@@ -751,6 +838,110 @@ function renderPicks() {{
   c.innerHTML = html;
 }}
 
+
+// ── PARLAYS ──
+function renderParlays() {{
+  const c = document.getElementById('parlays-container');
+  const parlays = DATA.today_parlays;
+  const ps = DATA.parlay_stats;
+
+  let bannerHtml = '';
+  if (ps && ps.total > 0) {{
+    bannerHtml = `
+      <div class="parlay-stats-banner">
+        <div class="parlay-stat-item">
+          <div class="parlay-stat-value">${{ps.pct}}%</div>
+          <div class="parlay-stat-label">parlay hit rate</div>
+        </div>
+        <div class="parlay-stat-item">
+          <div class="parlay-stat-value" style="color:var(--hit)">${{ps.hits}}</div>
+          <div class="parlay-stat-label">hits</div>
+        </div>
+        <div class="parlay-stat-item">
+          <div class="parlay-stat-value" style="color:var(--miss)">${{ps.misses}}</div>
+          <div class="parlay-stat-label">misses</div>
+        </div>
+        <div class="parlay-stat-item">
+          <div class="parlay-stat-value" style="color:var(--muted)">${{ps.total}}</div>
+          <div class="parlay-stat-label">graded</div>
+        </div>
+      </div>`;
+  }}
+
+  if (!parlays || !parlays.length) {{
+    c.innerHTML = bannerHtml + `<div class="empty"><div class="empty-icon">🎰</div>No parlays yet for ${{DATA.today_str}}.<br>Parlays are generated after today's picks are ready.</div>`;
+    return;
+  }}
+
+  let html = bannerHtml;
+  html += `<div class="section-header">${{parlays.length}} parlay${{parlays.length!==1?'s':''}} — ${{DATA.today_str}}</div>`;
+  html += `<div class="parlay-grid">`;
+
+  parlays.forEach(parlay => {{
+    const result   = parlay.result || null;
+    const corr     = parlay.correlation || 'independent';
+    const corrCls  = corr === 'positive' ? 'corr-positive' : corr === 'mixed' ? 'corr-mixed' : 'corr-independent';
+    const typeLabel = (parlay.type||'').replace(/_/g,' ');
+
+    let resultBadge = '';
+    if (result === 'HIT')         resultBadge = `<div class="parlay-result-badge badge-HIT">✓ HIT</div>`;
+    else if (result === 'MISS')   resultBadge = `<div class="parlay-result-badge badge-MISS">✗ MISS</div>`;
+    else if (result === 'PARTIAL')resultBadge = `<div class="parlay-result-badge badge-PARTIAL">~ PARTIAL</div>`;
+
+    const cp = parlay.confidence_product ? Math.round(parlay.confidence_product * 100) : null;
+    const cpStr = cp !== null ? `${{cp}}% combined` : '';
+
+    html += `
+      <div class="parlay-card${{result ? ' result-'+result : ''}}">
+        <div class="parlay-header">
+          <div class="parlay-header-left">
+            <div class="parlay-label">${{parlay.label || 'Parlay'}}</div>
+            <div class="parlay-meta">
+              ${{typeLabel ? `<span class="parlay-type-badge">${{typeLabel}}</span>` : ''}}
+              <span class="corr-badge ${{corrCls}}">${{corr}} corr</span>
+              ${{cpStr ? `<span class="micro-pill">${{cpStr}}</span>` : ''}}
+            </div>
+            ${{parlay.rationale ? `<div class="parlay-rationale">${{parlay.rationale}}</div>` : ''}}
+          </div>
+          <div class="parlay-header-right">
+            <div class="parlay-odds">${{parlay.implied_odds || ''}}</div>
+            <div class="parlay-odds-label">${{(parlay.legs||[]).length}}-leg parlay</div>
+            ${{resultBadge}}
+          </div>
+        </div>
+        <div class="parlay-legs">`;
+
+    (parlay.legs || []).forEach(leg => {{
+      const legResults = parlay.leg_results || [];
+      const legGraded  = legResults.find(r =>
+        r.player_name === leg.player_name && r.prop_type === leg.prop_type);
+      let legIcon = '';
+      if      (legGraded?.result === 'HIT')  legIcon = `<span class="leg-result-icon" style="color:var(--hit)">✓</span>`;
+      else if (legGraded?.result === 'MISS') legIcon = `<span class="leg-result-icon" style="color:var(--miss)">✗</span>`;
+
+      const matchup = leg.opponent ? `${{leg.team}} vs ${{leg.opponent}}` : leg.team;
+      const role = leg.correlation_role && leg.correlation_role !== 'independent'
+        ? `<span class="leg-role">${{leg.correlation_role}}</span>` : '';
+
+      html += `
+        <div class="parlay-leg">
+          <div class="leg-prop ${{propColor(leg.prop_type)}}">${{leg.prop_type}}</div>
+          <div class="leg-player">${{leg.player_name}}</div>
+          <div class="leg-value">OVER ${{leg.pick_value}}</div>
+          <div class="leg-matchup">${{matchup}}</div>
+          ${{role}}
+          <div class="leg-conf">${{leg.confidence_pct}}%</div>
+          ${{legIcon}}
+        </div>`;
+    }});
+
+    html += `</div></div>`;
+  }});
+
+  html += `</div>`;
+  c.innerHTML = html;
+}}
+
 // ── RESULTS ──
 function renderResults() {{
   document.getElementById('overall-pct').textContent =
@@ -934,6 +1125,7 @@ function toggleGame(gid) {{
 
 renderInjuries();
 renderPicks();
+renderParlays();
 renderResults();
 renderAudit();
 </script>
