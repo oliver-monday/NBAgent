@@ -15,7 +15,11 @@ Source: `espn_daily_ingest.py`. One row per game. `game_time_utc` is ISO format.
 
 **Spread convention:** `home_spread` is signed from the home team's perspective. Negative = home team is favored (e.g., `-6.5` means home gives 6.5 points). `away_spread` is the mirror.
 
-**Spread coverage:** ESPN provides spread data via the Core odds API. Spreads are collected for today's pre-game rows only; historical rows before the fix (prior to March 2026) have `null` spreads. Coverage will accumulate going forward.
+**Spread coverage:** 829/935 rows have spreads (88.7%). Sources:
+- ESPN Core odds API — collects spreads for today's pre-game rows going forward (March 2026+)
+- Pinnacle closing lines backfill (`ingest/backfill_spreads.py`) — filled historical rows from Oct 21 2025 through early March 2026
+
+Remaining 106 null rows: ~4 All-Star game entries, ~20 games with no Pinnacle coverage, and ~82 games from mid-Jan through Feb where the Pinnacle scraper stopped collecting before game day and the gap exceeded the 3-day tolerance. Coverage accumulates going forward via ESPN.
 
 ### player_game_log.csv (18 columns)
 ```
