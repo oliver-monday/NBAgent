@@ -32,7 +32,8 @@ INJURIES_JSON  = DATA / "injuries_today.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 PICKS_JSON     = DATA / "picks.json"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
-CONTEXT_MD     = ROOT / "context" / "nba_season_context.md"
+CONTEXT_MD        = ROOT / "context" / "nba_season_context.md"
+PLAYER_STATS_JSON = DATA / "player_stats.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -245,9 +246,69 @@ def load_season_context() -> str:
         return ""
 
 
+def load_player_stats() -> dict:
+    """Load pre-computed quant stats from player_stats.json."""
+    if not PLAYER_STATS_JSON.exists():
+        print("[analyst] WARNING: player_stats.json not found — quant context unavailable.")
+        return {}
+    try:
+        with open(PLAYER_STATS_JSON, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"[analyst] WARNING: could not load player_stats.json: {e}")
+        return {}
+
+
+def build_quant_context(player_stats: dict) -> str:
+    """
+    Build a compact quant stats block for the prompt.
+    Shows pre-computed best tiers and matchup-specific hit rates (vs_soft, vs_tough)
+    at the best qualifying tier for each stat. Only includes players with at least
+    one qualifying best tier.
+    """
+    if not player_stats:
+        return "No quant stats available."
+
+    lines = []
+    for player_name in sorted(player_stats):
+        s = player_stats[player_name]
+        opp         = s.get("opponent", "?")
+        opp_def     = s.get("opp_defense") or {}
+        best_tiers  = s.get("best_tiers") or {}
+        matchup_hrs = s.get("matchup_tier_hit_rates") or {}
+        trends      = s.get("trend") or {}
+
+        stat_parts = []
+        for stat in ("PTS", "REB", "AST", "3PM"):
+            best = best_tiers.get(stat)
+            if not best:
+                continue
+            tier        = best["tier"]
+            overall_pct = int(round(best["hit_rate"] * 100))
+            opp_rating  = (opp_def.get(stat) or {}).get("rating", "unknown")
+            trend       = trends.get(stat, "stable")
+
+            matchup_at_tier = (matchup_hrs.get(stat) or {}).get(str(tier)) or {}
+            soft  = matchup_at_tier.get("soft")
+            tough = matchup_at_tier.get("tough")
+            soft_str  = f"{int(round(soft['hit_rate']*100))}%({soft['n']}g)"  if soft  else "n/a"
+            tough_str = f"{int(round(tough['hit_rate']*100))}%({tough['n']}g)" if tough else "n/a"
+
+            stat_parts.append(
+                f"  {stat}: tier={tier} overall={overall_pct}% "
+                f"vs_soft={soft_str} vs_tough={tough_str} "
+                f"opp_today={opp_rating} trend={trend}"
+            )
+
+        if stat_parts:
+            lines.append(f"{player_name} (vs {opp}):\n" + "\n".join(stat_parts))
+
+    return "\n\n".join(lines) if lines else "No qualifying player quant stats."
+
+
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str) -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -304,6 +365,20 @@ A player who averages 21 pts but only clears 20 half the time is a 15-tier pick,
 
 ## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
+
+## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
+These numbers are computed from the full season game log — larger sample than the L10 above.
+"overall" = hit rate at this tier across last 10 games.
+"vs_soft" / "vs_tough" = hit rate at this tier across the full season, split by opponent defensive quality.
+
+KEY RULES:
+- When opp_today is "soft" or "tough", weight the matchup-specific rate more heavily than overall.
+- If vs_tough drops materially below overall (e.g. 80% overall → 50% vs_tough), downgrade
+  confidence or move to a lower tier — do not pick based on the overall rate alone.
+- If vs_soft is significantly higher than overall, you may pick a higher tier than L10 suggests.
+- "n/a" means insufficient sample (<3 games) — fall back to overall rate only.
+
+{quant_context if quant_context else "No quant stats available."}
 
 ## AUDITOR FEEDBACK FROM PREVIOUS DAYS
 {audit_context}
@@ -432,7 +507,11 @@ def main():
 
     season_context = load_season_context()
 
-    prompt = build_prompt(games, player_context, injuries, audit_context, season_context)
+    player_stats = load_player_stats()
+    print(f"[analyst] Loaded quant stats for {len(player_stats)} players")
+    quant_context = build_quant_context(player_stats)
+
+    prompt = build_prompt(games, player_context, injuries, audit_context, season_context, quant_context)
 
     picks = call_analyst(prompt)
     print(f"[analyst] Claude returned {len(picks)} picks")

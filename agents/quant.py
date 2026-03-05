@@ -56,6 +56,7 @@ CORR_MIN_GAMES       = 8    # minimum shared games for teammate correlation
 CORR_STRONG          = 0.35 # |r| >= this = strong correlation
 CORR_MODERATE        = 0.15 # |r| >= this = moderate correlation
 PACE_WINDOW          = 10   # games for game pace / combined scoring context
+MIN_MATCHUP_GAMES    = 3    # minimum games per opp-rating bucket for matchup splits
 
 # Tier definitions
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -422,6 +423,48 @@ def compute_tier_hit_rates(games: pd.DataFrame, stat: str) -> dict:
     return {str(t): round((games[col] > t).sum() / n, 3) for t in tiers}
 
 
+def compute_matchup_tier_hit_rates(
+    all_games: pd.DataFrame,
+    opp_defense: dict,
+    stat: str,
+) -> dict:
+    """
+    Split a player's full historical game log by today's opponent defensive ratings
+    (soft / mid / tough) and compute tier hit rates within each bucket.
+
+    Uses current opp_defense ratings as a proxy for season-long classification —
+    a valid approximation within a single season.
+
+    Returns: {str(tier): {"soft": {"hit_rate": float, "n": int}, ...}}
+    Only includes rating buckets with >= MIN_MATCHUP_GAMES games.
+    """
+    col = STAT_COL[stat]
+    tiers = TIERS[stat]
+
+    if all_games.empty:
+        return {}
+
+    def get_rating(opp: str):
+        entry = opp_defense.get(opp.upper(), {})
+        return (entry.get(stat) or {}).get("rating")
+
+    games = all_games.copy()
+    games["_opp_rating"] = games["opp_abbrev"].str.upper().apply(get_rating)
+
+    result: dict = {}
+    for t in tiers:
+        bucket: dict = {}
+        for rating in ("soft", "mid", "tough"):
+            subset = games[games["_opp_rating"] == rating]
+            n = len(subset)
+            if n >= MIN_MATCHUP_GAMES:
+                hit_rate = round(float((subset[col] > t).sum()) / n, 3)
+                bucket[rating] = {"hit_rate": hit_rate, "n": n}
+        if bucket:
+            result[str(t)] = bucket
+    return result
+
+
 def best_tier(hit_rates: dict) -> dict | None:
     tiers_sorted = sorted(hit_rates.keys(), key=lambda x: int(x), reverse=True)
     for t in tiers_sorted:
@@ -509,6 +552,11 @@ def build_player_stats(
         tier_hit_rates = {stat: compute_tier_hit_rates(games_10, stat) for stat in TIERS}
         best_tiers     = {stat: best_tier(tier_hit_rates[stat]) for stat in TIERS}
         trend          = {stat: compute_trend(games_10, games_5, stat) for stat in TIERS}
+        # Matchup-specific split: full history on current team, split by opp defensive rating
+        matchup_tier_hit_rates = {
+            stat: compute_matchup_tier_hit_rates(grp, opp_defense, stat)
+            for stat in TIERS
+        }
 
         home_games = grp[grp["home_away"] == "H"].head(PLAYER_WINDOW)
         away_games = grp[grp["home_away"] == "A"].head(PLAYER_WINDOW)
@@ -541,6 +589,7 @@ def build_player_stats(
             "last_updated": TODAY_STR,
             "on_back_to_back": on_b2b,
             "tier_hit_rates": tier_hit_rates,
+            "matchup_tier_hit_rates": matchup_tier_hit_rates,
             "best_tiers": best_tiers,
             "trend": trend,
             "home_away_splits": home_away_splits,

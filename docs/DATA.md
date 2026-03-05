@@ -69,6 +69,13 @@ Quant output. One entry per whitelisted player playing today.
       "PTS": {"10": 1.0, "15": 0.9, "20": 0.7, "25": 0.3, "30": 0.1},
       "REB": {...}, "AST": {...}, "3PM": {...}
     },
+    "matchup_tier_hit_rates": {
+      "PTS": {
+        "20": {"soft": {"hit_rate": 0.91, "n": 11}, "mid": {"hit_rate": 0.72, "n": 18}, "tough": {"hit_rate": 0.58, "n": 12}},
+        "25": {"soft": {"hit_rate": 0.64, "n": 11}}
+      },
+      "REB": {...}, "AST": {...}, "3PM": {...}
+    },
     "best_tiers": {
       "PTS": {"tier": 20, "hit_rate": 0.7},
       "REB": null, "AST": null, "3PM": null

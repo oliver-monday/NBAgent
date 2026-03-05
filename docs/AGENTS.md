@@ -40,6 +40,7 @@ OPP_WINDOW         = 15   # games for opponent defensive context
 CONFIDENCE_FLOOR   = 0.70 # minimum hit rate for a "best tier" pick
 CORR_MIN_GAMES     = 8    # minimum shared games for teammate correlation
 PACE_WINDOW        = 10   # games for game pace context
+MIN_MATCHUP_GAMES  = 3    # minimum games per opp-rating bucket for matchup splits
 ```
 
 **Tier definitions:**
@@ -52,6 +53,7 @@ TPM_TIERS = [1, 2, 3, 4]
 
 **Per-player outputs in `player_stats.json`:**
 - `tier_hit_rates` — hit rate at each tier across last 10 games, per stat
+- `matchup_tier_hit_rates` — hit rate at each tier split by opponent defensive rating (soft/mid/tough) across full season history; only buckets with ≥3 games included
 - `best_tiers` — highest tier with ≥70% hit rate, per stat (null if none qualify)
 - `trend` — up / stable / down (last 5 vs last 10 avg), per stat
 - `home_away_splits` — best qualifying tier split by H/A
@@ -78,6 +80,7 @@ TPM_TIERS = [1, 2, 3, 4]
 **Inputs consumed:**
 - `nba_master.csv` — today's game slate
 - `player_game_log.csv` — raw recent box scores (last 10 per player, filtered to today's whitelisted players)
+- `player_stats.json` — quant output; provides pre-computed best tiers and matchup-specific hit rates injected as a structured prompt section
 - `injuries_today.json` — filtered to today's teams only
 - `audit_log.json` — last 5 entries (reinforcements, lessons, recommendations)
 - `context/nba_season_context.md` — manually maintained NBA context injected into prompt; handles missing file gracefully

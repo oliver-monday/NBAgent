@@ -16,6 +16,7 @@
 | `injuries_today.json` empty on first run | Expected — hourly injuries workflow populates it; all agents handle empty gracefully |
 | Parlays tab missing from live site | `build_site.py` merged with full Parlays tab (session March 5, 2026) |
 | `SyntaxWarning: invalid escape sequence '\d'` in build_site.py | Pre-existing cosmetic warning in JS canvas regex block — does not affect runtime |
+| **Improvement Proposal #2 — Opponent-Specific Tier Hit Rates** | Implemented in `quant.py` (`compute_matchup_tier_hit_rates()`, `MIN_MATCHUP_GAMES=3`) and `analyst.py` (`load_player_stats()`, `build_quant_context()`, new QUANT STATS prompt section). `player_stats.json` now includes `matchup_tier_hit_rates` field; analyst prompt instructs Claude to down/upgrade tiers based on vs_soft/vs_tough deltas. |
 
 ---
 
@@ -45,6 +46,7 @@ These were designed together and are ready for implementation. Listed in recomme
 
 ### #1 — Usage-Share Delta When Teammates Are Out
 **Priority: HIGH — biggest alpha, most underpriced edge**
+**Status: DEFERRED — insufficient DNP sample data mid-season.** Key star pairings (Brunson/KAT, LeBron/Luka, etc.) have 0 absence games; most whitelisted player pairs have <3 shared absence games. Revisit at start of next season with a full year of data.
 
 **What:** For each whitelisted player, compute their average minutes, shot attempts, usage rate, and stat output in games where a given teammate DNP'd vs. games that teammate played. Store as `teammate_absence_delta` in `player_stats.json`.
 
@@ -56,7 +58,7 @@ These were designed together and are ready for implementation. Listed in recomme
 
 ---
 
-### #2 — Opponent-Specific Tier Hit Rates
+### #2 — Opponent-Specific Tier Hit Rates ✅ IMPLEMENTED
 **Priority: HIGH — fixes biggest data conflation in current prompt**
 
 **What:** Split each player's tier hit rates by opponent defensive rating. Output: `{"soft": {"hit_rate": 0.91, "n": 11}, "tough": {"hit_rate": 0.58, "n": 12}}` per tier per stat alongside the existing overall rate.
