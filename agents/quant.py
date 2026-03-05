@@ -57,6 +57,10 @@ CORR_STRONG          = 0.35 # |r| >= this = strong correlation
 CORR_MODERATE        = 0.15 # |r| >= this = moderate correlation
 PACE_WINDOW          = 10   # games for game pace / combined scoring context
 MIN_MATCHUP_GAMES    = 3    # minimum games per opp-rating bucket for matchup splits
+SPREAD_COMPETITIVE   = 6.5  # spread_abs ≤ this = competitive game
+SPREAD_BLOWOUT_RISK  = 8.0  # spread_abs > this for favored team → blowout risk flag
+SPREAD_BIG_FAVORITE  = 13.0 # spread_abs > this → cap analyst confidence at 80%
+MIN_SPREAD_GAMES     = 5    # min games per spread bucket for historical split
 
 # Tier definitions
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -103,10 +107,18 @@ def load_todays_games() -> list[dict]:
     today = df[df["game_date"] == TODAY_STR].copy()
     games = []
     for _, row in today.iterrows():
+        def _spread(val):
+            try:
+                f = float(val)
+                return None if pd.isna(f) else round(f, 1)
+            except Exception:
+                return None
         games.append({
-            "game_date": TODAY_STR,
-            "home": row.get("home_team_abbrev", ""),
-            "away": row.get("away_team_abbrev", ""),
+            "game_date":   TODAY_STR,
+            "home":        row.get("home_team_abbrev", ""),
+            "away":        row.get("away_team_abbrev", ""),
+            "home_spread": _spread(row.get("home_spread")),
+            "away_spread": _spread(row.get("away_spread")),
         })
     return games
 
@@ -156,6 +168,54 @@ def build_b2b_teams(master_df: pd.DataFrame) -> set[str]:
         if a: teams_today.add(a)
 
     return teams_yesterday & teams_today
+
+
+# ── Game spread context ───────────────────────────────────────────────
+
+def build_game_spreads(todays_games: list[dict]) -> dict:
+    """
+    For each team playing today, derive spread context from the home_spread /
+    away_spread already parsed into todays_games by load_todays_games().
+
+    Spread convention: negative = this team is favored.
+      home_spread = -6.5 → home team is giving 6.5 points.
+
+    Returns:
+      {
+        "NYK": {
+          "spread":       -6.5,   # signed from this team's perspective (neg = favored)
+          "spread_abs":    6.5,
+          "is_favorite":   True,
+          "blowout_risk":  False, # True when is_favorite AND spread_abs > SPREAD_BLOWOUT_RISK
+        }, ...
+      }
+    Teams with no spread data get spread=None, blowout_risk=False.
+    """
+    result: dict = {}
+    for g in todays_games:
+        home = (g.get("home") or "").upper()
+        away = (g.get("away") or "").upper()
+        hs   = g.get("home_spread")   # signed for home team
+        as_  = g.get("away_spread")   # signed for away team
+
+        for team, spread in [(home, hs), (away, as_)]:
+            if not team:
+                continue
+            if spread is not None:
+                spread_abs = round(abs(spread), 1)
+                is_fav     = spread < 0
+                blowout    = is_fav and spread_abs > SPREAD_BLOWOUT_RISK
+            else:
+                spread_abs = None
+                is_fav     = None
+                blowout    = False
+            result[team] = {
+                "spread":       spread,
+                "spread_abs":   spread_abs,
+                "is_favorite":  is_fav,
+                "blowout_risk": blowout,
+            }
+    return result
 
 
 # ── Opponent defensive context ────────────────────────────────────────
@@ -465,6 +525,79 @@ def compute_matchup_tier_hit_rates(
     return result
 
 
+def compute_spread_split_hit_rates(
+    player_games: pd.DataFrame,
+    master_df: pd.DataFrame,
+    stat: str,
+) -> dict:
+    """
+    Split a player's historical games into competitive (spread_abs ≤ SPREAD_COMPETITIVE)
+    and blowout (spread_abs > SPREAD_COMPETITIVE) buckets using nba_master.csv spreads.
+
+    player_games: all historical games for one player (pre-filtered to this player, no DNPs).
+    master_df:    nba_master.csv as a DataFrame.
+
+    Returns:
+      {
+        "competitive": {"hit_rates": {str(tier): float, ...}, "n": int},
+        "blowout":     {"hit_rates": {str(tier): float, ...}, "n": int},
+      }
+    Only includes buckets with >= MIN_SPREAD_GAMES games.
+    Note: spread coverage is limited to games where ESPN collected spread data.
+    """
+    if player_games.empty or master_df.empty:
+        return {}
+
+    col   = STAT_COL[stat]
+    tiers = TIERS[stat]
+
+    # Normalize game_id: player_log stores "401809234.0", master stores "401809234"
+    pgl = player_games.copy()
+    pgl["_gid"] = pgl["game_id"].astype(str).str.split(".").str[0].str.strip()
+
+    mdf = master_df.copy()
+    mdf["_gid"] = mdf["game_id"].astype(str).str.split(".").str[0].str.strip()
+
+    spread_cols = ["_gid", "home_spread", "away_spread"]
+    avail = [c for c in spread_cols if c in mdf.columns]
+    merged = pgl.merge(mdf[avail], on="_gid", how="inner")
+
+    if merged.empty:
+        return {}
+
+    # Get this player's signed spread for each game using their home/away designation
+    def _team_spread(row) -> float | None:
+        ha = str(row.get("home_away", "")).upper()
+        try:
+            val = row["home_spread"] if ha == "H" else row["away_spread"]
+            f = float(val)
+            return None if pd.isna(f) else f
+        except (TypeError, ValueError):
+            return None
+
+    merged["_spread"] = merged.apply(_team_spread, axis=1)
+    merged = merged[merged["_spread"].notna()].copy()
+
+    if merged.empty:
+        return {}
+
+    merged["_spread_abs"] = merged["_spread"].abs()
+    merged["_bucket"] = merged["_spread_abs"].apply(
+        lambda x: "competitive" if x <= SPREAD_COMPETITIVE else "blowout"
+    )
+
+    result: dict = {}
+    for bucket in ("competitive", "blowout"):
+        subset = merged[merged["_bucket"] == bucket]
+        n = len(subset)
+        if n < MIN_SPREAD_GAMES:
+            continue
+        rates = {str(t): round(float((subset[col] > t).sum()) / n, 3) for t in tiers}
+        result[bucket] = {"hit_rates": rates, "n": n}
+
+    return result
+
+
 def best_tier(hit_rates: dict) -> dict | None:
     tiers_sorted = sorted(hit_rates.keys(), key=lambda x: int(x), reverse=True)
     for t in tiers_sorted:
@@ -510,6 +643,8 @@ def build_player_stats(
     todays_games: list[dict],
     teammate_correlations: dict,
     whitelist: set,
+    game_spreads: dict | None = None,
+    master_df: pd.DataFrame | None = None,
 ) -> dict:
 
     team_to_opp = {}
@@ -582,14 +717,33 @@ def build_player_stats(
         # Teammate correlations for this player
         teammate_corr = teammate_correlations.get(player_name, {})
 
+        # Spread context for today's game
+        spread_ctx   = (game_spreads or {}).get(team, {})
+        today_spread = spread_ctx.get("spread")        # signed (neg = favored)
+        spread_abs   = spread_ctx.get("spread_abs")
+        blowout_risk = spread_ctx.get("blowout_risk", False)
+
+        # Historical spread split hit rates (competitive vs blowout games)
+        if master_df is not None and not master_df.empty:
+            spread_split_hit_rates = {
+                stat: compute_spread_split_hit_rates(grp, master_df, stat)
+                for stat in TIERS
+            }
+        else:
+            spread_split_hit_rates = {}
+
         stats_out[player_name] = {
             "team": team,
             "opponent": opponent,
             "games_available": len(games_10),
             "last_updated": TODAY_STR,
             "on_back_to_back": on_b2b,
+            "today_spread": today_spread,
+            "spread_abs": spread_abs,
+            "blowout_risk": blowout_risk,
             "tier_hit_rates": tier_hit_rates,
             "matchup_tier_hit_rates": matchup_tier_hit_rates,
+            "spread_split_hit_rates": spread_split_hit_rates,
             "best_tiers": best_tiers,
             "trend": trend,
             "home_away_splits": home_away_splits,
@@ -636,6 +790,10 @@ def main():
     game_pace = build_game_pace(team_log, todays_games)
     print(f"[quant] Game pace computed for {len(game_pace)} matchups")
 
+    game_spreads = build_game_spreads(todays_games)
+    n_with_spread = sum(1 for v in game_spreads.values() if v.get("spread") is not None)
+    print(f"[quant] Game spreads: {len(game_spreads)} teams ({n_with_spread} with spread data)")
+
     teams_today = set()
     for g in todays_games:
         teams_today.add(g["home"].upper())
@@ -646,7 +804,8 @@ def main():
 
     player_stats = build_player_stats(
         player_log, b2b_teams, opp_defense, game_pace,
-        todays_games, teammate_correlations, whitelist
+        todays_games, teammate_correlations, whitelist,
+        game_spreads=game_spreads, master_df=master_df,
     )
     print(f"[quant] Built stats cards for {len(player_stats)} players")
 

@@ -156,10 +156,20 @@ def fetch_scoreboard(date_obj: dt.date) -> Dict[str, Any]:
 # FETCH MONEYLINE ODDS FOR A GAME
 # --------------------------------------------------------------------
 
-def fetch_moneylines_for_game(game_id: str) -> Tuple[Optional[int], Optional[int]]:
+def fetch_moneylines_for_game(
+    game_id: str,
+) -> Tuple[Optional[int], Optional[int], Optional[float], Optional[float]]:
     """
-    Returns (home_ml, away_ml) from ESPN's odds chain.
-    If anything fails, returns (None, None).
+    Returns (home_ml, away_ml, home_spread, away_spread) from ESPN's odds chain.
+
+    Spread convention: negative = this team is favored.
+      home_spread = -6.5 means the home team is favored by 6.5 points.
+
+    Spread extraction tries two patterns from the ESPN Core odds response:
+      Pattern 1 (preferred): homeTeamOdds.spreadLine — signed spread for the home team.
+      Pattern 2 (fallback):  top-level "spread" field + homeTeamOdds.favorite bool.
+
+    If anything fails, returns (None, None, None, None).
     """
     try:
         event_url = f"https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/{game_id}"
@@ -167,18 +177,18 @@ def fetch_moneylines_for_game(game_id: str) -> Tuple[Optional[int], Optional[int
 
         comp_ref = (ev.get("competitions") or [{}])[0].get("$ref")
         if not comp_ref:
-            return None, None
+            return None, None, None, None
 
         comp = requests.get(comp_ref).json()
 
         odds_ref = (comp.get("odds") or {}).get("$ref")
         if not odds_ref:
-            return None, None
+            return None, None, None, None
 
         odds_data = requests.get(odds_ref).json()
         items = odds_data.get("items", [])
         if not items:
-            return None, None
+            return None, None, None, None
 
         # Prefer DraftKings if present
         chosen = None
@@ -196,13 +206,36 @@ def fetch_moneylines_for_game(game_id: str) -> Tuple[Optional[int], Optional[int
             except Exception:
                 return None
 
+        def to_float_safe(x):
+            try:
+                return float(x) if x is not None else None
+            except Exception:
+                return None
+
         home_ml = to_int_safe((chosen.get("homeTeamOdds") or {}).get("moneyLine"))
         away_ml = to_int_safe((chosen.get("awayTeamOdds") or {}).get("moneyLine"))
-        return home_ml, away_ml
+
+        # Extract spread — Pattern 1: homeTeamOdds.spreadLine (signed for home team)
+        home_spread: Optional[float] = None
+        away_spread: Optional[float] = None
+        spread_line = to_float_safe((chosen.get("homeTeamOdds") or {}).get("spreadLine"))
+        if spread_line is not None:
+            home_spread = spread_line
+            away_spread = -spread_line
+        else:
+            # Pattern 2: top-level "spread" (absolute) + favorite flag
+            spread_raw = to_float_safe(chosen.get("spread"))
+            if spread_raw is not None:
+                spread_abs = abs(spread_raw)
+                home_is_fav = bool((chosen.get("homeTeamOdds") or {}).get("favorite", False))
+                home_spread = -spread_abs if home_is_fav else spread_abs
+                away_spread =  spread_abs if home_is_fav else -spread_abs
+
+        return home_ml, away_ml, home_spread, away_spread
 
     except Exception:
         # Any failure → no odds
-        return None, None
+        return None, None, None, None
 
 
 import re
@@ -364,14 +397,14 @@ def parse_scoreboard(date_obj: dt.date, data: Dict[str, Any]) -> List[Dict[str, 
             "home_team_name": home_info["name"],
             "home_team_abbrev": home_info["abbrev"],
             "home_score": home_info["score"],
-            "home_ml": None,        # will be filled later for today's games
-            "home_spread": None,    # we are not pulling spreads from ESPN (yet)
+            "home_ml": None,        # will be filled later for today's pre-game odds
+            "home_spread": None,    # will be filled later for today's pre-game odds
 
             "away_team_name": away_info["name"],
             "away_team_abbrev": away_info["abbrev"],
             "away_score": away_info["score"],
-            "away_ml": None,        # will be filled later for today's games
-            "away_spread": None,    # we are not pulling spreads from ESPN (yet)
+            "away_ml": None,        # will be filled later for today's pre-game odds
+            "away_spread": None,    # will be filled later for today's pre-game odds
 
             "venue_city": venue_city,
             "venue_state": venue_state,
@@ -392,30 +425,38 @@ def parse_scoreboard(date_obj: dt.date, data: Dict[str, Any]) -> List[Dict[str, 
 
 def _preserve_existing_odds(df_new: pd.DataFrame, df_old_subset: pd.DataFrame) -> pd.DataFrame:
     """
-    For overlapping game_ids, keep existing moneyline odds if the new ingest
-    has missing/zero values for that side.
+    For overlapping game_ids, keep existing odds (moneylines + spreads) if the
+    new ingest has missing/zero values for that field.
     """
     if df_old_subset.empty:
         return df_new
 
+    preserve_cols = ["game_id", "home_ml", "away_ml", "home_spread", "away_spread"]
+    avail_cols = [c for c in preserve_cols if c in df_old_subset.columns]
     merged = df_new.merge(
-        df_old_subset[["game_id", "home_ml", "away_ml"]],
+        df_old_subset[avail_cols],
         on="game_id",
         how="left",
         suffixes=("", "_old"),
     )
 
-    for side in ["home", "away"]:
-        ml_col = f"{side}_ml"
-        old_col = f"{ml_col}_old"
-        if ml_col not in merged.columns or old_col not in merged.columns:
+    # Moneylines: keep old if new is NaN or 0
+    for col in ["home_ml", "away_ml"]:
+        old_col = f"{col}_old"
+        if col not in merged.columns or old_col not in merged.columns:
             continue
-
-        # New is NaN/0, old is non-null and non-zero → keep old value
-        mask = merged[ml_col].isna() | (merged[ml_col] == 0)
+        mask = merged[col].isna() | (merged[col] == 0)
         mask &= merged[old_col].notna() & (merged[old_col] != 0)
+        merged.loc[mask, col] = merged.loc[mask, old_col]
+        merged.drop(columns=[old_col], inplace=True)
 
-        merged.loc[mask, ml_col] = merged.loc[mask, old_col]
+    # Spreads: keep old if new is NaN (spreads can be 0.0 legitimately, so no zero-check)
+    for col in ["home_spread", "away_spread"]:
+        old_col = f"{col}_old"
+        if col not in merged.columns or old_col not in merged.columns:
+            continue
+        mask = merged[col].isna() & merged[old_col].notna()
+        merged.loc[mask, col] = merged.loc[mask, old_col]
         merged.drop(columns=[old_col], inplace=True)
 
     return merged
@@ -528,10 +569,11 @@ def main():
             for r in rows:
                 gid = r["game_id"]
                 print(f"Fetching odds for game {gid} ...")
-                home_ml, away_ml = fetch_moneylines_for_game(gid)
-                r["home_ml"] = home_ml
-                r["away_ml"] = away_ml
-                # Spreads remain None for now (per our plan)
+                home_ml, away_ml, home_spread, away_spread = fetch_moneylines_for_game(gid)
+                r["home_ml"]     = home_ml
+                r["away_ml"]     = away_ml
+                r["home_spread"] = home_spread
+                r["away_spread"] = away_spread
 
         # Yesterday's games → scores only; odds fields remain None
         all_rows.extend(rows)

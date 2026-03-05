@@ -66,14 +66,22 @@ def load_todays_games() -> list[dict]:
 
     games = []
     for _, row in today_games.iterrows():
+        def _spread(val):
+            try:
+                f = float(val)
+                return None if pd.isna(f) else round(f, 1)
+            except Exception:
+                return None
         games.append({
-            "game_id": row.get("game_id", ""),
+            "game_id":       row.get("game_id", ""),
             "game_time_utc": row.get("game_time_utc", ""),
-            "home_team": row.get("home_team_name", ""),
-            "home_abbrev": row.get("home_team_abbrev", ""),
-            "away_team": row.get("away_team_name", ""),
-            "away_abbrev": row.get("away_team_abbrev", ""),
-            "venue_city": row.get("venue_city", ""),
+            "home_team":     row.get("home_team_name", ""),
+            "home_abbrev":   row.get("home_team_abbrev", ""),
+            "away_team":     row.get("away_team_name", ""),
+            "away_abbrev":   row.get("away_team_abbrev", ""),
+            "venue_city":    row.get("venue_city", ""),
+            "home_spread":   _spread(row.get("home_spread")),
+            "away_spread":   _spread(row.get("away_spread")),
             "home_injuries": row.get("home_injuries", "") or "",
             "away_injuries": row.get("away_injuries", "") or "",
         })
@@ -272,11 +280,14 @@ def build_quant_context(player_stats: dict) -> str:
     lines = []
     for player_name in sorted(player_stats):
         s = player_stats[player_name]
-        opp         = s.get("opponent", "?")
-        opp_def     = s.get("opp_defense") or {}
-        best_tiers  = s.get("best_tiers") or {}
-        matchup_hrs = s.get("matchup_tier_hit_rates") or {}
-        trends      = s.get("trend") or {}
+        opp              = s.get("opponent", "?")
+        opp_def          = s.get("opp_defense") or {}
+        best_tiers       = s.get("best_tiers") or {}
+        matchup_hrs      = s.get("matchup_tier_hit_rates") or {}
+        trends           = s.get("trend") or {}
+        blowout_risk     = s.get("blowout_risk", False)
+        spread_abs       = s.get("spread_abs")
+        spread_splits    = s.get("spread_split_hit_rates") or {}
 
         stat_parts = []
         for stat in ("PTS", "REB", "AST", "3PM"):
@@ -294,14 +305,33 @@ def build_quant_context(player_stats: dict) -> str:
             soft_str  = f"{int(round(soft['hit_rate']*100))}%({soft['n']}g)"  if soft  else "n/a"
             tough_str = f"{int(round(tough['hit_rate']*100))}%({tough['n']}g)" if tough else "n/a"
 
+            # Spread split at this tier
+            spread_stat = (spread_splits.get(stat) or {})
+            comp_data   = spread_stat.get("competitive")
+            blow_data   = spread_stat.get("blowout")
+            comp_str = (
+                f"{int(round(comp_data['hit_rates'].get(str(tier), 0)*100))}%({comp_data['n']}g)"
+                if comp_data else "n/a"
+            )
+            blow_str = (
+                f"{int(round(blow_data['hit_rates'].get(str(tier), 0)*100))}%({blow_data['n']}g)"
+                if blow_data else "n/a"
+            )
+
             stat_parts.append(
                 f"  {stat}: tier={tier} overall={overall_pct}% "
                 f"vs_soft={soft_str} vs_tough={tough_str} "
+                f"competitive={comp_str} blowout_games={blow_str} "
                 f"opp_today={opp_rating} trend={trend}"
             )
 
         if stat_parts:
-            lines.append(f"{player_name} (vs {opp}):\n" + "\n".join(stat_parts))
+            spread_info  = f"spread_abs={spread_abs:.1f}" if spread_abs is not None else "spread=n/a"
+            blowout_flag = " BLOWOUT_RISK=True" if blowout_risk else ""
+            lines.append(
+                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}):\n"
+                + "\n".join(stat_parts)
+            )
 
     return "\n\n".join(lines) if lines else "No qualifying player quant stats."
 
@@ -371,12 +401,24 @@ These numbers are computed from the full season game log — larger sample than 
 "overall" = hit rate at this tier across last 10 games.
 "vs_soft" / "vs_tough" = hit rate at this tier across the full season, split by opponent defensive quality.
 
-KEY RULES:
+KEY RULES — MATCHUP QUALITY:
 - When opp_today is "soft" or "tough", weight the matchup-specific rate more heavily than overall.
 - If vs_tough drops materially below overall (e.g. 80% overall → 50% vs_tough), downgrade
   confidence or move to a lower tier — do not pick based on the overall rate alone.
 - If vs_soft is significantly higher than overall, you may pick a higher tier than L10 suggests.
 - "n/a" means insufficient sample (<3 games) — fall back to overall rate only.
+
+KEY RULES — SPREAD / BLOWOUT RISK:
+- "BLOWOUT_RISK=True" means this team is heavily favored (spread_abs > 8). Stars get pulled in
+  Q4 garbage time when the game is decided early, killing OVER props on counting stats.
+  → When BLOWOUT_RISK=True: prefer one tier lower than your best tier, OR reduce confidence by
+    10–15 pct. Do not skip the pick entirely unless confidence would drop below 70%.
+  → When spread_abs > 13: cap confidence at 80% for ALL players on the favored team.
+- "competitive" split = historical hit rate in close games (spread_abs ≤ 6.5).
+  "blowout_games" split = historical hit rate in non-competitive games (spread_abs > 6.5).
+  → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
+    in even when BLOWOUT_RISK is False — the pattern may be real.
+- When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
 
 {quant_context if quant_context else "No quant stats available."}
 

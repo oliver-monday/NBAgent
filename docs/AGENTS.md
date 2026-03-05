@@ -41,6 +41,10 @@ CONFIDENCE_FLOOR   = 0.70 # minimum hit rate for a "best tier" pick
 CORR_MIN_GAMES     = 8    # minimum shared games for teammate correlation
 PACE_WINDOW        = 10   # games for game pace context
 MIN_MATCHUP_GAMES  = 3    # minimum games per opp-rating bucket for matchup splits
+SPREAD_COMPETITIVE = 6.5  # spread_abs ≤ this = competitive game
+SPREAD_BLOWOUT_RISK = 8.0 # spread_abs > this for favored team → blowout risk flag
+SPREAD_BIG_FAVORITE = 13.0 # spread_abs > this → cap analyst confidence at 80%
+MIN_SPREAD_GAMES   = 5    # min games per spread bucket for historical split
 ```
 
 **Tier definitions:**
@@ -54,11 +58,15 @@ TPM_TIERS = [1, 2, 3, 4]
 **Per-player outputs in `player_stats.json`:**
 - `tier_hit_rates` — hit rate at each tier across last 10 games, per stat
 - `matchup_tier_hit_rates` — hit rate at each tier split by opponent defensive rating (soft/mid/tough) across full season history; only buckets with ≥3 games included
+- `spread_split_hit_rates` — hit rate at each tier split by game competitiveness (competitive = spread_abs ≤ 6.5 vs blowout = spread_abs > 6.5); only buckets with ≥5 games included; limited by spread data coverage
 - `best_tiers` — highest tier with ≥70% hit rate, per stat (null if none qualify)
 - `trend` — up / stable / down (last 5 vs last 10 avg), per stat
 - `home_away_splits` — best qualifying tier split by H/A
 - `minutes_trend` — increasing / stable / decreasing
 - `on_back_to_back` — bool
+- `today_spread` — this team's signed spread for today's game (negative = favored); null if unavailable
+- `spread_abs` — absolute value of today's spread; null if unavailable
+- `blowout_risk` — bool; True when team is favored AND spread_abs > 8.0
 - `opp_defense` — opponent's allowed avg + rank + rating (soft/mid/tough) per stat, based on last 15 games
 - `game_pace` — combined scoring avg for today's matchup + pace_tag (high/mid/low)
 - `teammate_correlations` — Pearson r + correlation tag for each stat pair with each whitelisted teammate

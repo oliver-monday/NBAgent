@@ -13,6 +13,10 @@ venue_city, venue_state, home_injuries, away_injuries
 ```
 Source: `espn_daily_ingest.py`. One row per game. `game_time_utc` is ISO format.
 
+**Spread convention:** `home_spread` is signed from the home team's perspective. Negative = home team is favored (e.g., `-6.5` means home gives 6.5 points). `away_spread` is the mirror.
+
+**Spread coverage:** ESPN provides spread data via the Core odds API. Spreads are collected for today's pre-game rows only; historical rows before the fix (prior to March 2026) have `null` spreads. Coverage will accumulate going forward.
+
 ### player_game_log.csv (18 columns)
 ```
 season_end_year, game_id, game_date, team_abbrev, opp_abbrev,
@@ -65,6 +69,9 @@ Quant output. One entry per whitelisted player playing today.
     "games_available": 10,
     "last_updated": "YYYY-MM-DD",
     "on_back_to_back": false,
+    "today_spread": -6.5,         // signed for this team (neg = favored); null if unavailable
+    "spread_abs": 6.5,            // absolute value; null if unavailable
+    "blowout_risk": false,        // true when is_favorite AND spread_abs > 8.0
     "tier_hit_rates": {
       "PTS": {"10": 1.0, "15": 0.9, "20": 0.7, "25": 0.3, "30": 0.1},
       "REB": {...}, "AST": {...}, "3PM": {...}
@@ -73,6 +80,13 @@ Quant output. One entry per whitelisted player playing today.
       "PTS": {
         "20": {"soft": {"hit_rate": 0.91, "n": 11}, "mid": {"hit_rate": 0.72, "n": 18}, "tough": {"hit_rate": 0.58, "n": 12}},
         "25": {"soft": {"hit_rate": 0.64, "n": 11}}
+      },
+      "REB": {...}, "AST": {...}, "3PM": {...}
+    },
+    "spread_split_hit_rates": {
+      "PTS": {
+        "competitive": {"hit_rates": {"10": 1.0, "15": 0.85, "20": 0.71, "25": 0.43, "30": 0.14}, "n": 14},
+        "blowout":     {"hit_rates": {"10": 1.0, "15": 0.78, "20": 0.56, "25": 0.22, "30": 0.0},  "n": 9}
       },
       "REB": {...}, "AST": {...}, "3PM": {...}
     },
