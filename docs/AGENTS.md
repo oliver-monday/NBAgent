@@ -32,7 +32,7 @@ injuries.yml (hourly, independent)
 
 **Key config constants:**
 ```python
-PLAYER_WINDOW      = 10   # games for tier hit rates + trend base
+PLAYER_WINDOW      = 20   # games for tier hit rates + trend base (raised from 10; backtest showed REB T8 +9.6pp, AST T6 +12pp, PTS T25 crosses floor)
 TREND_SHORT_WINDOW = 5    # games for "recent" trend comparison
 TREND_THRESHOLD    = 0.10 # >10% delta = up/down
 MIN_GAMES          = 5    # skip players with fewer games

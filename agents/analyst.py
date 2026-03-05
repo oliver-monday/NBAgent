@@ -405,10 +405,33 @@ A player who averages 21 pts but only clears 20 half the time is a 15-tier pick,
 - Weight recent form (last 5–10 games) heavily — season averages are misleading
 - Minimum 5 recent games required to evaluate any player
 - Skip players listed as OUT or DOUBTFUL
-- Factor in teammate injuries (affects usage/role), back-to-back fatigue, home/away splits
+- Factor in teammate injuries (affects usage/role) and back-to-back fatigue
 - Use SEASON CONTEXT to distinguish stable baselines from genuine injury-driven role changes
 - Pick as many qualifying props as there are — don't limit volume artificially
 - Only output picks with confidence_pct ≥ 70
+
+## TIER CEILING RULES — backed by full-season calibration data
+The following tiers are systemically miscalibrated: players selected at these tiers hit
+significantly below the 70% confidence floor when measured over a full season (5,368 instances).
+Treat them as requiring exceptional justification — do not pick them by default.
+
+  REB T8+: actual season hit rate 56.7% (n=150). Only select if player has hit 7+/10
+    at this tier in their recent window AND opp_defense is rated soft. Otherwise cap at T6.
+
+  AST T6+: actual season hit rate 63.0% (n=165). Only select if player has hit 7+/10
+    at this tier AND their role context explicitly supports elevated assist load today
+    (e.g. primary ball handler with multiple creators absent). Otherwise cap at T4.
+
+  3PM T2+: actual season hit rate 58.0% (n=157). Only select if player has hit 7+/10
+    at this tier AND today's game has a high pace tag. Otherwise cap at T1.
+
+  PTS T25+: actual season hit rate 65.7% (n=239). Only select if player has hit 7+/10
+    at this tier in recent window. Essentially never select PTS T30 — season hit rate
+    was 44.4% (n=27), well below any useful threshold.
+
+Note: trend direction (up/stable/down) and home/away context are available in the data below
+but have not shown predictive value in historical calibration. Do not weight them as primary
+selection signals.
 
 ## TODAY'S GAMES
 {games_block}
@@ -433,6 +456,16 @@ KEY RULES — MATCHUP QUALITY:
   confidence or move to a lower tier — do not pick based on the overall rate alone.
 - If vs_soft is significantly higher than overall, you may pick a higher tier than L10 suggests.
 - "n/a" means insufficient sample (<3 games) — fall back to overall rate only.
+
+OPPONENT DEFENSE — 3PM EXCEPTION:
+The opp_defense rating is derived from total points allowed and works conventionally for PTS,
+REB, and AST (soft = favorable matchup, tough = unfavorable). FOR 3PM ONLY, this signal is
+INVERTED. Full-season data (626 instances):
+  - Tough PTS defense → 72.1% 3PM hit rate
+  - Soft PTS defense → 60.9% 3PM hit rate
+Mechanism: paint-oriented defenses suppress interior scoring but generate more kick-out 3-point
+attempts. When selecting 3PM props, treat opp_today="tough" as a mild positive signal, not
+a negative one.
 
 KEY RULES — REST & FATIGUE:
 - Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),

@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-03-05",
+  "mode": "calibration_only",
+  "rolling_window": 20,
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-03"
+  },
+  "total_instances": 4009,
+  "instances_by_stat": {
+    "PTS": 1244,
+    "REB": 1345,
+    "AST": 996,
+    "3PM": 424
+  },
+  "tier_calibration": {
+    "PTS": {
+      "10": {
+        "n": 308,
+        "hit_rate": 0.8182
+      },
+      "15": {
+        "n": 489,
+        "hit_rate": 0.7035
+      },
+      "20": {
+        "n": 280,
+        "hit_rate": 0.7393
+      },
+      "25": {
+        "n": 161,
+        "hit_rate": 0.7019
+      },
+      "30": {
+        "n": 6,
+        "hit_rate": 0.1667,
+        "flag": "threshold_concern"
+      }
+    },
+    "REB": {
+      "2": {
+        "n": 537,
+        "hit_rate": 0.8119
+      },
+      "4": {
+        "n": 412,
+        "hit_rate": 0.7184
+      },
+      "6": {
+        "n": 275,
+        "hit_rate": 0.7164
+      },
+      "8": {
+        "n": 101,
+        "hit_rate": 0.6634,
+        "flag": "threshold_concern"
+      },
+      "10": {
+        "n": 20,
+        "hit_rate": 0.65,
+        "flag": "threshold_concern"
+      }
+    },
+    "AST": {
+      "2": {
+        "n": 561,
+        "hit_rate": 0.7932
+      },
+      "4": {
+        "n": 321,
+        "hit_rate": 0.7196
+      },
+      "6": {
+        "n": 88,
+        "hit_rate": 0.75
+      },
+      "8": {
+        "n": 26,
+        "hit_rate": 0.5769,
+        "flag": "threshold_concern"
+      }
+    },
+    "3PM": {
+      "1": {
+        "n": 323,
+        "hit_rate": 0.7709
+      },
+      "2": {
+        "n": 96,
+        "hit_rate": 0.6146,
+        "flag": "threshold_concern"
+      },
+      "3": {
+        "n": 5,
+        "hit_rate": 0.4,
+        "flag": "threshold_concern"
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ team_game_log.csv, and nba_master.csv to produce data/player_stats.json —
 a pre-computed stats card per player that the Analyst and Parlay agents consume.
 
 Per-player outputs:
-  - Tier hit rates (last 10 games)
+  - Tier hit rates (last 20 games)
   - Best qualifying tier per stat (≥70% hit rate, or null)
   - Trend: up / stable / down (last 5 vs last 10 avg)
   - Home/away splits (best tier per split)
@@ -45,7 +45,7 @@ TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
 # ── Config ────────────────────────────────────────────────────────────
-PLAYER_WINDOW        = 10   # games for tier hit rates + trend base
+PLAYER_WINDOW        = 20   # games for tier hit rates + trend base
 TREND_SHORT_WINDOW   = 5    # games for "recent" trend comparison
 TREND_THRESHOLD      = 0.10 # >10% delta = up/down
 MINUTES_THRESHOLD    = 3.0  # >3 min delta = increasing/decreasing
