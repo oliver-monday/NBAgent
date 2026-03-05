@@ -27,7 +27,7 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     env:
-      TZ: America/New_York
+      TZ: America/Los_Angeles
 
     steps:
       - name: Checkout repository
@@ -46,7 +46,7 @@ jobs:
 
       - name: Refresh Rotowire injuries
         run: |
-          SLATE_DATE="$(TZ=America/New_York date +%Y-%m-%d)"
+          SLATE_DATE="$(TZ=America/Los_Angeles date +%Y-%m-%d)"
           python ingest/rotowire_injuries_only.py --date "$SLATE_DATE"
 
       - name: Commit injuries

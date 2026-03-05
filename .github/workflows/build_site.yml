@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      TZ: America/New_York
+      TZ: America/Los_Angeles
 
     steps:
       - uses: actions/checkout@v4

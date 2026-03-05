@@ -34,7 +34,7 @@ PICKS_JSON     = DATA / "picks.json"
 PARLAYS_JSON   = DATA / "parlays.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 
-ET = ZoneInfo("America/New_York")
+ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 YESTERDAY = TODAY - dt.timedelta(days=1)
 YESTERDAY_STR = YESTERDAY.strftime("%Y-%m-%d")
@@ -232,7 +232,7 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict]) -> 
 
     return f"""You are the Auditor for NBAgent, an NBA player props selection system.
 
-Today is {dt.datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")}.
+Today is {dt.datetime.now(ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d")}.
 You are auditing picks and parlays made for {YESTERDAY_STR}.
 
 ## PICK GRADED RESULTS SUMMARY

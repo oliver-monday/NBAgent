@@ -34,7 +34,7 @@ PICKS_JSON     = DATA / "picks.json"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
 CONTEXT_MD     = ROOT / "context" / "nba_season_context.md"
 
-ET = ZoneInfo("America/New_York")
+ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 

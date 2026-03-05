@@ -16,7 +16,7 @@ jobs:
   ingest:
     runs-on: ubuntu-latest
     env:
-      TZ: America/New_York
+      TZ: America/Los_Angeles
 
     steps:
       - name: Checkout repository

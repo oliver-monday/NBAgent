@@ -29,7 +29,7 @@ AUDIT_LOG_JSON = DATA / "audit_log.json"
 MASTER_CSV     = DATA / "nba_master.csv"
 INJURIES_JSON  = DATA / "injuries_today.json"
 
-ET = ZoneInfo("America/New_York")
+ET = ZoneInfo("America/Los_Angeles")
 PT = ZoneInfo("America/Los_Angeles")
 TODAY_STR = dt.datetime.now(ET).strftime("%Y-%m-%d")
 

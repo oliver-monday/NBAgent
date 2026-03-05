@@ -40,7 +40,7 @@ MASTER_CSV        = DATA / "nba_master.csv"
 WHITELIST_CSV     = ROOT / "playerprops" / "player_whitelist.csv"
 PLAYER_STATS_JSON = DATA / "player_stats.json"
 
-ET = ZoneInfo("America/New_York")
+ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 

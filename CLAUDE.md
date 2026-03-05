@@ -71,7 +71,7 @@ ingest.yml → auditor.yml → analyst.yml (quant → analyst → parlay → dep
 injuries.yml runs independently on hourly schedule
 ```
 
-- All workflows: `TZ: America/New_York`
+- All workflows: `TZ: America/Los_Angeles`
 - Commits: `github-actions[bot]` with `[skip ci]` to prevent loops
 - **Required secret:** `ANTHROPIC_API_KEY`
 - **Model used by all LLM agents:** `claude-sonnet-4-6`

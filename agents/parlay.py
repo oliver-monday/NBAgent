@@ -40,7 +40,7 @@ PICKS_JSON        = DATA / "picks.json"
 PLAYER_STATS_JSON = DATA / "player_stats.json"
 PARLAYS_JSON      = DATA / "parlays.json"
 
-ET = ZoneInfo("America/New_York")
+ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
