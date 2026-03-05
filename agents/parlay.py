@@ -39,6 +39,7 @@ DATA = ROOT / "data"
 PICKS_JSON        = DATA / "picks.json"
 PLAYER_STATS_JSON = DATA / "player_stats.json"
 PARLAYS_JSON      = DATA / "parlays.json"
+AUDIT_LOG_JSON    = DATA / "audit_log.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -54,6 +55,7 @@ TARGET_MIN_ODDS = 100   # +100 American
 TARGET_MAX_ODDS = 600   # soft ceiling — avoid ultra-long shots
 MIN_CONFIDENCE  = 70    # individual leg floor
 TOP_N_TO_CLAUDE = 15    # how many pre-scored combos to send Claude
+AUDIT_CONTEXT_ENTRIES = 3  # keep lean — parlay prompt is already large
 
 # Correlation scoring weights
 CORR_BONUS = {
@@ -110,6 +112,42 @@ def load_player_stats() -> dict:
         return {}
     with open(PLAYER_STATS_JSON) as f:
         return json.load(f)
+
+
+def load_parlay_audit_feedback() -> str:
+    """
+    Load the most recent parlay audit feedback from audit_log.json.
+    Returns a formatted string summarising parlay hits/misses and lessons
+    from the last AUDIT_CONTEXT_ENTRIES days, most-recent first.
+    Returns empty string gracefully if file is missing or no parlay data exists.
+    """
+    if not AUDIT_LOG_JSON.exists():
+        return ""
+    try:
+        with open(AUDIT_LOG_JSON) as f:
+            entries = json.load(f)
+        if not isinstance(entries, list) or not entries:
+            return ""
+        recent = entries[-AUDIT_CONTEXT_ENTRIES:]
+    except Exception:
+        return ""
+
+    lines = ["Recent parlay audit feedback (use to improve combination selection):"]
+    for e in reversed(recent):
+        date = e.get("date", "?")
+        pr = e.get("parlay_results", {})
+        if not pr:
+            continue
+        lines.append(
+            f"\n[{date}] Parlays: {pr.get('hits', 0)} hit / "
+            f"{pr.get('misses', 0)} missed of {pr.get('total', 0)}"
+        )
+        for r in pr.get("parlay_reinforcements", [])[:2]:
+            lines.append(f"  ✓ {r}")
+        for l in pr.get("parlay_lessons", [])[:2]:
+            lines.append(f"  ✗ {l}")
+
+    return "\n".join(lines)
 
 
 # ── Correlation lookup ────────────────────────────────────────────────
@@ -284,7 +322,7 @@ def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
 
 # ── Prompt builder ────────────────────────────────────────────────────
 
-def build_parlay_prompt(candidates: list[dict]) -> str:
+def build_parlay_prompt(candidates: list[dict], audit_feedback: str = "") -> str:
     # Slim down legs for prompt — Claude doesn't need full pick objects
     slim = []
     for i, c in enumerate(candidates):
@@ -340,6 +378,9 @@ Each candidate has already passed:
 - Two parlays that share 3+ identical legs (provide variety)
 - Combos where the rationale would be "all soft matchups" with no deeper logic
 - Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
+
+## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS
+{audit_feedback if audit_feedback else "No prior parlay audit data available."}
 
 ## PRE-SCORED CANDIDATES
 {candidates_block}
@@ -472,7 +513,8 @@ def main():
         print("[parlay] No valid combinations found in target odds range. Exiting.")
         sys.exit(0)
 
-    prompt  = build_parlay_prompt(candidates)
+    audit_feedback = load_parlay_audit_feedback()
+    prompt  = build_parlay_prompt(candidates, audit_feedback)
     parlays = call_parlay_agent(prompt)
     print(f"[parlay] Claude returned {len(parlays)} parlays")
 

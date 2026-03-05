@@ -32,8 +32,9 @@ INJURIES_JSON  = DATA / "injuries_today.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 PICKS_JSON     = DATA / "picks.json"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
-CONTEXT_MD        = ROOT / "context" / "nba_season_context.md"
-PLAYER_STATS_JSON = DATA / "player_stats.json"
+CONTEXT_MD         = ROOT / "context" / "nba_season_context.md"
+PLAYER_STATS_JSON  = DATA / "player_stats.json"
+AUDIT_SUMMARY_JSON = DATA / "audit_summary.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -375,9 +376,98 @@ def build_quant_context(player_stats: dict) -> str:
     return "\n\n".join(lines) if lines else "No qualifying player quant stats."
 
 
+def load_audit_summary() -> str:
+    """Load rolling audit summary and format as readable text for the prompt."""
+    if not AUDIT_SUMMARY_JSON.exists():
+        return ""
+    try:
+        with open(AUDIT_SUMMARY_JSON) as f:
+            s = json.load(f)
+    except Exception:
+        return ""
+
+    n = s.get("entries_included", 0)
+    if n < 3:
+        return ""  # Not enough history to be meaningful yet
+
+    overall = s.get("overall", {})
+    hr      = overall.get("hit_rate_pct", 0)
+    hits    = overall.get("hits",         0)
+    misses  = overall.get("misses",       0)
+
+    lines = [
+        f"Season-to-date: {hits} hits / {misses} misses = {hr}% hit rate across {n} audit days.",
+    ]
+
+    # Per-prop breakdown
+    prop_sum = s.get("prop_type_summary", {})
+    if prop_sum:
+        prop_parts = []
+        for pt in ("PTS", "REB", "AST", "3PM"):
+            d = prop_sum.get(pt)
+            if d and d.get("picks", 0) >= 5:
+                prop_parts.append(f"{pt}: {d['hit_rate_pct']}% ({d['hits']}/{d['picks']})")
+        if prop_parts:
+            lines.append("Per-prop: " + " | ".join(prop_parts))
+
+    # Miss classification breakdown
+    mc = s.get("miss_classification_totals", {})
+    total_mc = sum(mc.values())
+    if total_mc > 0:
+        mc_parts = []
+        for k in ("selection_error", "model_gap", "variance"):
+            v = mc.get(k, 0)
+            if v > 0:
+                pct = round(v / total_mc * 100)
+                mc_parts.append(f"{k}: {v} ({pct}%)")
+        if mc_parts:
+            lines.append("Miss classification: " + " | ".join(mc_parts))
+
+    # Confidence calibration — helps spot over/under-confidence
+    conf = s.get("confidence_calibration_totals", {})
+    if conf:
+        conf_parts = []
+        for band in ("70-75", "76-80", "81-85", "86+"):
+            d = conf.get(band)
+            if d and d.get("picks", 0) >= 5:
+                conf_parts.append(f"{band}%: {d['hit_rate_pct']}% ({d['picks']} picks)")
+        if conf_parts:
+            lines.append("Confidence calibration: " + " | ".join(conf_parts))
+
+    # Parlay summary
+    p = s.get("parlay_summary", {})
+    p_total = p.get("total", 0)
+    if p_total > 0:
+        p_hr = round(p.get("hits", 0) / p_total * 100)
+        lines.append(f"Parlays: {p.get('hits', 0)} hit / {p_total} total ({p_hr}%)")
+
+    # Recent lessons (from last 5 audit days)
+    lessons = s.get("recent_lessons", [])
+    if lessons:
+        lines.append("Recent lessons:")
+        for l in lessons[-5:]:
+            lines.append(f"  - {l}")
+
+    # Recent reinforcements
+    reinforcements = s.get("recent_reinforcements", [])
+    if reinforcements:
+        lines.append("Recent reinforcements:")
+        for r in reinforcements[-5:]:
+            lines.append(f"  + {r}")
+
+    # Carry-forward recommendations
+    recs = s.get("recent_recommendations", [])
+    if recs:
+        lines.append("Carry-forward recommendations:")
+        for r in recs[-3:]:
+            lines.append(f"  → {r}")
+
+    return "\n".join(lines)
+
+
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "") -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -541,6 +631,9 @@ KEY RULES — SPREAD / BLOWOUT RISK:
 ## AUDITOR FEEDBACK FROM PREVIOUS DAYS
 {audit_context}
 
+## ROLLING PERFORMANCE SUMMARY
+{audit_summary if audit_summary else "Insufficient audit history yet (need 3+ days)."}
+
 ## OUTPUT FORMAT
 Respond ONLY with a valid JSON array. No preamble, no explanation outside the JSON.
 Each pick must follow this exact schema:
@@ -669,7 +762,13 @@ def main():
     print(f"[analyst] Loaded quant stats for {len(player_stats)} players")
     quant_context = build_quant_context(player_stats)
 
-    prompt = build_prompt(games, player_context, injuries, audit_context, season_context, quant_context)
+    audit_summary = load_audit_summary()
+    if audit_summary:
+        print(f"[analyst] Loaded rolling audit summary")
+    else:
+        print(f"[analyst] No audit summary yet (need 3+ audit days)")
+
+    prompt = build_prompt(games, player_context, injuries, audit_context, season_context, quant_context, audit_summary)
 
     picks = call_analyst(prompt)
     print(f"[analyst] Claude returned {len(picks)} picks")

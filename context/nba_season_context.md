@@ -16,7 +16,9 @@
 
 ## SEASON FACTS
 
-Jayson Tatum (BOS): OFS all season (Achilles). Jaylen Brown/Derrick White usage reflects this as baseline, not elevated. Tatum "absence" should not be used for lineup change reasoning whatsoever, as he has been out entire season.
+PERMANENT ABSENCES (OFS ALL SEASON): Players marked OFS all season are permanent absences. Their teammates' current roles are baselines, not elevations. No agent should cite these absences as a causal factor in any pick reasoning or audit analysis. Do not attribute teammate performance increases to these players being out — the elevated role is the new normal and has been priced into all statistical baselines from the start of the season.
+
+Jayson Tatum (BOS): OFS all season (Achilles). Brown/White/Pritchard usage reflects this as permanent baseline. Any analysis attributing BOS teammate performance to Tatum's absence is incorrect — treat as if Tatum never existed this season. This is not lineup elevation; it is the only lineup that has ever existed in 2025–26.
 Tyrese Haliburton (IND): OFS all season (Achilles). Andrew Nembhard role reflects this as baseline.
 Kyrie Irving (DAL): OFS all season (Knee). Anthony Davis traded away from DAL. Cooper Flagg usage reflects these as baseline.
 Fred VanVleet (HOU): OFS all season (ACL). Kevin Durant usage reflects this as baseline.
