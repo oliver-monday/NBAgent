@@ -30,6 +30,12 @@ MASTER_CSV     = DATA / "nba_master.csv"
 INJURIES_JSON  = DATA / "injuries_today.json"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
 
+# Team abbreviation normalization — nba_master.csv sometimes uses legacy short forms
+_ABBR_NORM = {
+    "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
+    "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
+}
+
 ET = ZoneInfo("America/Los_Angeles")
 PT = ZoneInfo("America/Los_Angeles")
 TODAY_STR = dt.datetime.now(ET).strftime("%Y-%m-%d")
@@ -74,6 +80,40 @@ def load_game_times() -> dict:
                 if abbrev and str(abbrev) != "nan":
                     times[str(abbrev).upper()] = label
         return times
+    except Exception:
+        return {}
+
+
+def load_game_ml_odds() -> dict:
+    """
+    Returns {canonical_team_abbrev: implied_win_pct_int} for today's games.
+    Converts American ML to implied probability (raw, not vig-removed).
+    """
+    if not MASTER_CSV.exists():
+        return {}
+    try:
+        import pandas as pd
+        df = pd.read_csv(MASTER_CSV, dtype=str)
+        df["game_date"] = df["game_date"].astype(str).str[:10]
+        today = df[df["game_date"] == TODAY_STR]
+        odds: dict = {}
+        for _, row in today.iterrows():
+            for abbrev_col, ml_col in [("home_team_abbrev", "home_ml"),
+                                        ("away_team_abbrev", "away_ml")]:
+                raw_abbrev = str(row.get(abbrev_col, "") or "").strip()
+                ml_raw     = str(row.get(ml_col, "") or "").strip()
+                if not raw_abbrev or raw_abbrev.lower() == "nan":
+                    continue
+                if not ml_raw or ml_raw.lower() == "nan":
+                    continue
+                try:
+                    canonical = _ABBR_NORM.get(raw_abbrev.upper(), raw_abbrev.upper())
+                    ml = float(ml_raw)
+                    prob = (-ml) / (-ml + 100) * 100 if ml < 0 else 100 / (ml + 100) * 100
+                    odds[canonical] = round(prob)
+                except Exception:
+                    pass
+        return odds
     except Exception:
         return {}
 
@@ -197,13 +237,9 @@ def load_injuries_display() -> dict:
         except Exception:
             pass
 
-    # Static fallback for known variants not always present in whitelist alt column
-    _STATIC_NORM = {"GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
-                    "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA"}
-
     def normalize(abbr: str) -> str:
         a = str(abbr).strip().upper()
-        return abbr_alt_map.get(a) or _STATIC_NORM.get(a, a)
+        return abbr_alt_map.get(a) or _ABBR_NORM.get(a, a)
 
     def extract_last(raw_name: str) -> str:
         """Extract last name from Rotowire format ('C. Flagg' or 'Seth Curry')."""
@@ -316,6 +352,7 @@ def build_site():
     audit_log = load_json(AUDIT_LOG_JSON, [])
     game_times = load_game_times()
     injuries_display = load_injuries_display()
+    ml_odds = load_game_ml_odds()
     parlays_data = load_todays_parlays()
 
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
@@ -359,6 +396,7 @@ def build_site():
                                   reverse=True)[:40],
         "injuries":  injuries_display,
         "parlays":   parlays_data,
+        "ml_odds":   ml_odds,
         "built_at": dt.datetime.now(ET).strftime("%B %d, %Y at %-I:%M %p ET"),
     }
 
@@ -381,6 +419,7 @@ def generate_html(d: dict) -> str:
     trend_json      = json.dumps(d["daily_trend"])
     injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "games": []}))
     parlays_json    = json.dumps(d.get("parlays", {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}))
+    ml_odds_json    = json.dumps(d.get("ml_odds", {}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -399,7 +438,7 @@ def generate_html(d: dict) -> str:
   <style>
     :root {{
       --bg: #0d0d0f; --surface: #18181c; --surface2: #202026;
-      --border: #2a2a32; --accent: #6c63ff; --accent2: #00d4aa;
+      --border: #2a2a32; --accent: #E8703A; --accent2: #00d4aa;
       --hit: #22c55e; --miss: #ef4444; --text: #e8e8f0; --muted: #888898;
       --pts: #f97316; --reb: #3b82f6; --ast: #a855f7; --3pm: #eab308;
     }}
@@ -554,6 +593,7 @@ def generate_html(d: dict) -> str:
     .game-group-header:hover {{ border-color: var(--accent); }}
     .game-group-header.open {{ border-radius: 10px 10px 0 0; border-bottom-color: transparent; }}
     .game-matchup {{ font-size: 14px; font-weight: 700; letter-spacing: -0.3px; }}
+    .ml-pct {{ font-size: 11px; font-weight: 400; color: var(--muted); letter-spacing: 0; }}
     .game-tip {{ font-size: 11px; color: var(--accent2); background: var(--surface2);
                  border: 1px solid var(--border); border-radius: 4px;
                  padding: 2px 7px; white-space: nowrap; }}
@@ -575,14 +615,14 @@ def generate_html(d: dict) -> str:
                     opacity: 0; pointer-events: none;
                     transition: opacity 0.25s, transform 0.25s;
                     transform: translateY(8px); z-index: 100;
-                    box-shadow: 0 4px 12px rgba(108,99,255,0.4); }}
+                    box-shadow: 0 4px 12px rgba(232,112,58,0.4); }}
     #back-to-top.visible {{ opacity: 1; pointer-events: auto; transform: translateY(0); }}
-    #back-to-top:hover {{ background: #7c74ff; }}
+    #back-to-top:hover {{ background: #cf622f; }}
 
     /* Streak pill */
     .streak-pill {{ display: inline-flex; align-items: center; gap: 4px;
                     font-size: 10px; font-weight: 600; padding: 2px 7px;
-                    border-radius: 99px; margin-top: 5px; }}
+                    border-radius: 99px; }}
     .streak-hit  {{ background: rgba(34,197,94,0.15);  color: var(--hit); }}
     .streak-miss {{ background: rgba(239,68,68,0.15);  color: var(--miss); }}
 
@@ -599,7 +639,7 @@ def generate_html(d: dict) -> str:
     .psc-sub {{ font-size: 11px; color: var(--muted); margin-top: 2px; }}
 
     /* Overall banner */
-    .overall-banner {{ background: linear-gradient(135deg,rgba(108,99,255,0.12),rgba(0,212,170,0.12));
+    .overall-banner {{ background: linear-gradient(135deg,rgba(232,112,58,0.12),rgba(0,212,170,0.12));
                        border: 1px solid var(--border); border-radius: 12px;
                        padding: 18px 20px; display: flex; align-items: flex-start;
                        justify-content: space-between; margin-bottom: 20px;
@@ -640,7 +680,7 @@ def generate_html(d: dict) -> str:
     .empty-icon {{ font-size: 36px; margin-bottom: 12px; }}
 
     /* Parlays */
-    .parlay-stats-banner {{ background: linear-gradient(135deg,rgba(108,99,255,0.10),rgba(234,179,8,0.08));
+    .parlay-stats-banner {{ background: linear-gradient(135deg,rgba(232,112,58,0.10),rgba(234,179,8,0.08));
                             border: 1px solid var(--border); border-radius: 12px;
                             padding: 16px 20px; display: flex; gap: 24px; flex-wrap: wrap;
                             margin-bottom: 20px; align-items: center; }}
@@ -745,6 +785,7 @@ const DATA = {{
   recent_results:   {results_json},
   injuries:         {injuries_json},
   parlays:          {parlays_json},
+  ml_odds:          {ml_odds_json},
 }};
 
 function showTab(name) {{
@@ -762,7 +803,7 @@ function propVar(pt) {{
   return {{PTS:'var(--pts)',REB:'var(--reb)',AST:'var(--ast)','3PM':'var(--3pm)'}}[pt]||'var(--muted)';
 }}
 function streakPill(s) {{
-  if (!s || !s.streak_type) return '';
+  if (!s || !s.streak_type || s.streak_count < 5) return '';
   const cls  = s.streak_type==='HIT' ? 'streak-hit' : 'streak-miss';
   const icon = s.streak_type==='HIT' ? '🔥' : '❄️';
   return `<span class="streak-pill ${{cls}}">${{icon}} ${{s.streak_count}} ${{s.streak_type.toLowerCase()}} streak</span>`;
@@ -846,7 +887,7 @@ function buildHitRate(p) {{
     </div>`;
 }}
 
-function buildMicroStats(p) {{
+function buildMicroStats(p, streakSpan) {{
   const pills = [];
   // Trend
   if (p.trend === 'up')   pills.push(`<span class="micro-pill up">↑ trending</span>`);
@@ -856,6 +897,8 @@ function buildMicroStats(p) {{
   if (def === 'soft')  pills.push(`<span class="micro-pill soft">soft def</span>`);
   if (def === 'tough') pills.push(`<span class="micro-pill tough">tough def</span>`);
   if (def === 'mid')   pills.push(`<span class="micro-pill">mid def</span>`);
+  // Streak pill (only if ≥5 — threshold enforced in streakPill())
+  if (streakSpan) pills.push(streakSpan);
   if (!pills.length) return '';
   return `<div class="micro-stats">${{pills.join('')}}</div>`;
 }}
@@ -907,12 +950,15 @@ function renderPicks() {{
   let html = `<div class="section-header">${{activeCount}} pick${{activeCount!==1?'s':''}}${{voidedNote}} — ${{DATA.today_str}}</div>`;
 
   games.forEach((g, gi) => {{
-    const timeTag = g.game_time ? `<span class="game-tip">⏰ ${{g.game_time}}</span>` : '';
+    const timeTag  = g.game_time ? `<span class="game-tip">⏰ ${{g.game_time}}</span>` : '';
+    const ml = DATA.ml_odds || {{}};
+    const awayPct = ml[g.away] !== undefined ? ` <span class="ml-pct">(${{ml[g.away]}}%)</span>` : '';
+    const homePct = ml[g.home] !== undefined ? ` <span class="ml-pct">(${{ml[g.home]}}%)</span>` : '';
     const gid = `game-${{gi}}`;
     html += `
       <div class="game-group">
         <div class="game-group-header open" id="hdr-${{gid}}" onclick="toggleGame('${{gid}}')">
-          <span class="game-matchup">${{g.away}} @ ${{g.home}}</span>
+          <span class="game-matchup">${{g.away}}${{awayPct}} @ ${{g.home}}${{homePct}}</span>
           ${{timeTag}}
           <span class="game-pick-count">${{g.picks.length}} pick${{g.picks.length!==1?'s':''}}</span>
           <span class="game-chevron open" id="chv-${{gid}}">▼</span>
@@ -928,7 +974,7 @@ function renderPicks() {{
     ).forEach(p => {{
       const pt         = p.prop_type;
       const ha         = p.home_away === 'H' ? 'vs' : '@';
-      const pill       = streakPill(ps[pt]);
+      const streakSpan = streakPill(ps[pt]);
       const voidedCls  = p.voided ? ' voided' : '';
       const statusBadge = p.voided
         ? `<div style="margin-top:4px"><span class="void-badge">VOIDED — Player OUT</span></div>`
@@ -942,9 +988,8 @@ function renderPicks() {{
           <div class="pick-main">
             <div class="player">${{p.player_name}}</div>
             ${{statusBadge}}
-            ${{buildMicroStats(p)}}
+            ${{buildMicroStats(p, streakSpan)}}
             ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
-            ${{pill ? `<div style="margin-top:6px">${{pill}}</div>` : ''}}
           </div>
           <div class="pick-right">
             <div class="pick-line">
@@ -1006,7 +1051,7 @@ function renderResults() {{
       <td style="white-space:nowrap">${{p.date}}</td>
       <td><strong>${{p.player_name}}</strong><br><span style="font-size:11px;color:var(--muted)">${{p.team}}</span></td>
       <td><span class="prop-badge ${{propColor(p.prop_type)}}" style="${{bs}}">${{p.prop_type}}</span></td>
-      <td style="white-space:nowrap">OVER ${{p.pick_value}}</td>
+      <td style="white-space:nowrap">${{p.pick_value}}</td>
       <td>${{p.actual_value??'—'}}</td>
       <td>${{res}}</td>
     </tr>`;
@@ -1049,10 +1094,10 @@ function drawTrendChart() {{
 
   // 70% target dashed line
   const ty = pad.t + ch - 0.7*ch;
-  ctx.strokeStyle='rgba(108,99,255,0.45)'; ctx.setLineDash([3,4]); ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(232,112,58,0.45)'; ctx.setLineDash([3,4]); ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(pad.l,ty); ctx.lineTo(pad.l+cw,ty); ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle='rgba(108,99,255,0.6)'; ctx.font='9px system-ui'; ctx.textAlign='left';
+  ctx.fillStyle='rgba(232,112,58,0.6)'; ctx.font='9px system-ui'; ctx.textAlign='left';
   ctx.fillText('target 70%', pad.l+4, ty-3);
 
   // Data points
