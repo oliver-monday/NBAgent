@@ -282,7 +282,6 @@ def build_quant_context(player_stats: dict) -> str:
     for player_name in sorted(player_stats):
         s = player_stats[player_name]
         opp              = s.get("opponent", "?")
-        opp_def          = s.get("opp_defense") or {}
         best_tiers       = s.get("best_tiers") or {}
         matchup_hrs      = s.get("matchup_tier_hit_rates") or {}
         trends           = s.get("trend") or {}
@@ -295,6 +294,19 @@ def build_quant_context(player_stats: dict) -> str:
         dense_schedule   = s.get("dense_schedule", False)
         b2b_hit_rates    = s.get("b2b_hit_rates") or {}
 
+        # DvP line — one line per player showing positional defense ratings for all stats
+        dvp         = s.get("positional_dvp") or {}
+        source_tag  = "" if dvp.get("source") == "positional" else " (team-lvl)"
+        dvp_pos     = dvp.get("position", "")
+        defense_line = (
+            f"  DvP [{dvp_pos}]{source_tag}: "
+            f"PTS={dvp.get('pts_rating', '?')} "
+            f"REB={dvp.get('reb_rating', '?')} "
+            f"AST={dvp.get('ast_rating', '?')} "
+            f"3PM={dvp.get('tpm_rating', '?')} "
+            f"(n={dvp.get('n', 0)})"
+        ) if dvp else ""
+
         stat_parts = []
         bounce_back_all  = s.get("bounce_back") or {}
         volatility_all   = s.get("volatility") or {}
@@ -304,7 +316,6 @@ def build_quant_context(player_stats: dict) -> str:
                 continue
             tier        = best["tier"]
             overall_pct = int(round(best["hit_rate"] * 100))
-            opp_rating  = (opp_def.get(stat) or {}).get("rating", "unknown")
             trend       = trends.get(stat, "stable")
 
             matchup_at_tier = (matchup_hrs.get(stat) or {}).get(str(tier)) or {}
@@ -364,7 +375,7 @@ def build_quant_context(player_stats: dict) -> str:
                 f"  {stat}: tier={tier} overall={overall_pct}% "
                 f"vs_soft={soft_str} vs_tough={tough_str} "
                 f"competitive={comp_str} blowout_games={blow_str} "
-                f"opp_today={opp_rating} trend={trend}{b2b_field}{bb_field}{vol_tag}"
+                f"trend={trend}{b2b_field}{bb_field}{vol_tag}"
             )
 
         if stat_parts:
@@ -381,6 +392,7 @@ def build_quant_context(player_stats: dict) -> str:
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             lines.append(
                 f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}):\n"
+                + (defense_line + "\n" if defense_line else "")
                 + "\n".join(stat_parts)
             )
 
@@ -578,28 +590,42 @@ These numbers are computed from the full season game log — larger sample than 
 "vs_soft" / "vs_tough" = hit rate at this tier across the full season, split by opponent defensive quality.
 
 KEY RULES — MATCHUP QUALITY:
-- When opp_today is "soft" or "tough", weight the matchup-specific rate more heavily than overall.
-- If vs_tough drops materially below overall (e.g. 80% overall → 50% vs_tough), downgrade
-  confidence or move to a lower tier — do not pick based on the overall rate alone.
-- If vs_soft is significantly higher than overall, you may pick a higher tier than L10 suggests.
-- "n/a" means insufficient sample (<3 games) — fall back to overall rate only.
+- The DvP line shows today's opponent's defense rating for this player's position.
+  Use the DvP PTS rating (when source=positional) as the primary signal for matchup quality.
+- vs_soft / vs_tough on each stat line show this player's historical hit rate split by
+  opponent defensive quality — use these together with the DvP rating for confirmation.
+- If the DvP rating is "tough" AND vs_tough drops materially below overall (e.g. 80% → 50%),
+  downgrade confidence or move to a lower tier.
+- If the DvP rating is "soft" AND vs_soft is significantly higher than overall, you may pick
+  a higher tier than the overall rate alone suggests.
+- "n/a" on vs_soft/vs_tough means insufficient sample (<3 games) — fall back to DvP line only.
 
-OPPONENT DEFENSE — STAT-SPECIFIC RULES:
-The opp_defense rating is derived from total points allowed per game.
+OPPONENT DEFENSE — POSITIONAL DvP:
+Each player has a "DvP [POS]" line showing position-specific allowed averages for PTS/REB/AST/3PM
+against today's opponent. Ratings are soft/mid/tough, ranked within that position group across
+all 30 teams (not team-level overall).
 
-  PTS / AST: treat conventionally — soft = favorable, tough = unfavorable.
+  When source is positional (no "team-lvl" tag): use the per-stat rating directly — it reflects
+  how that opponent defends this player's specific position group. More precise than team-level.
 
-  REB: opp_defense_rating is NOT a valid signal. Do not use a "soft" defensive rating as a
-    reason to pick a REB over or to justify a higher tier. Rebounds are driven by pace, the
-    opponent's field goal percentage (high efficiency = fewer misses = fewer rebound chances),
-    and frontcourt matchup — none of which are captured by points-allowed. A team can allow
-    many points while being a difficult rebounding environment. Real example (2026-03-04):
-    Giannis (T8 pick, 5 actual), Jalen Johnson (T8 pick, 5 actual), and Hartenstein (T6 pick,
-    5 actual) all missed on soft-defense logic. For REB picks, rely solely on the player's own
-    recent hit rate, minutes trend, and frontcourt role. Ignore opp_defense_rating entirely.
+  When source is team-level fallback (tagged "team-lvl"): the positional sample was too small
+  (<10 games). Treat with normal weight as before.
 
-  3PM: opp_defense is NOISE (soft 69.7%, mid 72.3%, tough 73.5% — lift variance 0.053 across
-    6,437 instances). Do not weight it in either direction for 3PM.
+  The (n=) value is the number of player-game observations behind the rating.
+  Weight more heavily when n ≥ 20. Treat n < 15 with mild skepticism even if source=positional.
+
+Stat-specific rules remain unchanged:
+
+  PTS / AST: use the positional DvP rating as the primary defense signal when source=positional.
+    Soft = favorable (upgrade bias or higher confidence).
+    Tough = unfavorable (downgrade one tier or reduce confidence by 5–10%).
+
+  REB: positional DvP does NOT make REB a valid defense signal. Do not use REB rating as
+    justification for a REB over. Rebounds are driven by pace, opponent FG%, and frontcourt
+    competition — none captured by allowed-per-position averages. Ignore REB rating entirely.
+
+  3PM: opp_defense is NOISE regardless of positional granularity (lift variance 0.053 across
+    6,437 instances, corrected grading). Do not weight 3PM rating in either direction.
 
 KEY RULES — REST & FATIGUE:
 - Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),

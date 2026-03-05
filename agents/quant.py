@@ -146,6 +146,21 @@ def load_whitelist() -> set:
         return set()
 
 
+def load_whitelist_positions() -> dict:
+    """Returns {lowercase_player_name: position} for active players."""
+    if not WHITELIST_CSV.exists():
+        return {}
+    try:
+        df = pd.read_csv(WHITELIST_CSV, dtype=str)
+        active = df[df["active"].astype(str).str.strip() == "1"]
+        return {
+            row["player_name"].strip().lower(): row.get("position", "").strip()
+            for _, row in active.iterrows()
+        }
+    except Exception:
+        return {}
+
+
 # ── Back-to-back detection ─────────────────────────────────────────────
 
 def build_b2b_teams(master_df: pd.DataFrame) -> set[str]:
@@ -328,6 +343,103 @@ def build_opp_defense(team_log: pd.DataFrame) -> dict:
                 "n_teams": n_teams,
                 "rating": rating,
             }
+
+    return result
+
+
+def compute_positional_dvp(player_log: pd.DataFrame, position_map: dict) -> dict:
+    """
+    For each team, compute average allowed PTS/REB/AST/3PM broken down by
+    opponent player position (PG/SG/SF/PF/C).
+
+    Returns:
+    {
+      "BOS": {
+        "PG": {"pts_allowed_avg": 18.2, "reb_allowed_avg": 3.1,
+               "ast_allowed_avg": 6.4, "tpm_allowed_avg": 2.1,
+               "pts_rating": "soft", "reb_rating": "mid",
+               "ast_rating": "tough", "tpm_rating": "soft", "n": 42},
+        ...
+      },
+      ...
+    }
+
+    Minimum 10 player-game observations per (team, position) cell.
+    Ratings are percentile-ranked within each position group across all teams
+    (not globally), using the same 33/67 thresholds as build_opp_defense().
+    """
+    POSITIONS = ["PG", "SG", "SF", "PF", "C"]
+    MIN_OBS   = 10
+
+    if player_log.empty or not position_map:
+        return {}
+
+    # Exclude DNP rows
+    df = player_log[player_log["dnp"].astype(str).str.strip() != "1"].copy()
+
+    # Attach position from whitelist
+    df["position"] = df["player_name"].str.strip().str.lower().map(position_map)
+    df = df[df["position"].notna() & (df["position"].str.strip() != "")]
+
+    # Convert stat columns to numeric
+    for col in ["pts", "reb", "ast", "tpm"]:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    df = df.dropna(subset=["pts", "reb", "ast", "tpm"])
+
+    # opp_abbrev = the defending team; group by (defending_team, position)
+    grouped = df.groupby(["opp_abbrev", "position"])
+
+    # Build per-cell averages; enforce minimum observations
+    cell_data = {}  # {(team_upper, pos): {avg data}}
+    for (team, pos), grp in grouped:
+        n = len(grp)
+        if n < MIN_OBS:
+            continue
+        cell_data[(team.upper(), pos)] = {
+            "pts_allowed_avg": round(grp["pts"].mean(), 1),
+            "reb_allowed_avg": round(grp["reb"].mean(), 1),
+            "ast_allowed_avg": round(grp["ast"].mean(), 1),
+            "tpm_allowed_avg": round(grp["tpm"].mean(), 1),
+            "n": n,
+        }
+
+    if not cell_data:
+        return {}
+
+    # Assign soft/mid/tough ratings per position group per stat.
+    # Within each position group, rank teams lowest-to-highest allowed avg;
+    # lowest = toughest defense (same direction as build_opp_defense).
+    result = {}
+
+    stat_specs = [
+        ("pts_rating", "pts_allowed_avg"),
+        ("reb_rating", "reb_allowed_avg"),
+        ("ast_rating", "ast_allowed_avg"),
+        ("tpm_rating", "tpm_allowed_avg"),
+    ]
+
+    for pos in POSITIONS:
+        pos_cells = [(team, data) for (team, p), data in cell_data.items() if p == pos]
+        if not pos_cells:
+            continue
+        n_pos_teams = len(pos_cells)
+
+        for rating_key, avg_key in stat_specs:
+            sorted_cells = sorted(pos_cells, key=lambda x: x[1][avg_key])
+            for rank, (team, data) in enumerate(sorted_cells, 1):
+                if rank <= max(1, round(n_pos_teams * 0.33)):
+                    rating = "tough"
+                elif rank <= max(1, round(n_pos_teams * 0.67)):
+                    rating = "mid"
+                else:
+                    rating = "soft"
+
+                if team not in result:
+                    result[team] = {}
+                if pos not in result[team]:
+                    # Copy all base avg fields on first write for this cell
+                    result[team][pos] = dict(cell_data[(team, pos)])
+                result[team][pos][rating_key] = rating
 
     return result
 
@@ -926,6 +1038,8 @@ def build_player_stats(
     game_spreads: dict | None = None,
     master_df: pd.DataFrame | None = None,
     b2b_game_ids: dict | None = None,
+    positional_dvp_data: dict | None = None,
+    position_map: dict | None = None,
 ) -> dict:
 
     # Bounce-back profiles use full player_log (all season history, not today-filtered)
@@ -1010,6 +1124,20 @@ def build_player_stats(
         on_b2b            = team in b2b_teams
         opp_context       = opp_defense.get(opponent) if opponent else None
 
+        # Positional DvP — position-specific opponent defense rating
+        player_position = (position_map or {}).get(player_name.lower(), "")
+        _pos_dvp  = ((positional_dvp_data or {}).get(opponent) or {}).get(player_position, {}) if opponent else {}
+        _opp_ctx  = opp_context or {}
+        positional_dvp_entry = {
+            "position": player_position,
+            "pts_rating": _pos_dvp.get("pts_rating", (_opp_ctx.get("PTS") or {}).get("rating", "mid")),
+            "reb_rating": _pos_dvp.get("reb_rating", (_opp_ctx.get("REB") or {}).get("rating", "mid")),
+            "ast_rating": _pos_dvp.get("ast_rating", (_opp_ctx.get("AST") or {}).get("rating", "mid")),
+            "tpm_rating": _pos_dvp.get("tpm_rating", (_opp_ctx.get("3PM") or {}).get("rating", "mid")),
+            "n": _pos_dvp.get("n", 0),
+            "source": "positional" if _pos_dvp.get("n", 0) >= 10 else "team_fallback",
+        }
+
         # Game pace for this player's matchup
         game_key   = team_to_game_key.get(team, "")
         pace_ctx   = game_pace.get(game_key)
@@ -1078,6 +1206,7 @@ def build_player_stats(
             "teammate_correlations": teammate_corr,
             "bounce_back": bounce_back,
             "volatility": volatility,
+            "positional_dvp": positional_dvp_entry,
         }
 
     return stats_out
@@ -1115,6 +1244,10 @@ def main():
     opp_defense = build_opp_defense(team_log)
     print(f"[quant] Opponent defense computed for {len(opp_defense)} teams")
 
+    position_map = load_whitelist_positions()
+    positional_dvp_data = compute_positional_dvp(player_log, position_map)
+    print(f"[quant] Positional DvP computed for {len(positional_dvp_data)} teams")
+
     game_pace = build_game_pace(team_log, todays_games)
     print(f"[quant] Game pace computed for {len(game_pace)} matchups")
 
@@ -1135,6 +1268,8 @@ def main():
         todays_games, teammate_correlations, whitelist,
         game_spreads=game_spreads, master_df=master_df,
         b2b_game_ids=b2b_game_ids,
+        positional_dvp_data=positional_dvp_data,
+        position_map=position_map,
     )
     print(f"[quant] Built stats cards for {len(player_stats)} players")
 
