@@ -318,5 +318,295 @@
         "legs_total": 6
       }
     ]
+  },
+  {
+    "date": "2026-03-05",
+    "parlays": [
+      {
+        "label": "Thursday Volume Sweep",
+        "type": "mixed",
+        "legs": [
+          {
+            "player_name": "Austin Reaves",
+            "team": "LAL",
+            "opponent": "DEN",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "LAL",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "target"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "CHI",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "MIN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "DAL",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.4961,
+        "correlation": "positive",
+        "rationale": "LAL-DEN volume game drives Reaves and Jokic; Barrett's 10/10 hit rate and Booker's upward 3PM trend anchor the parlay.",
+        "date": "2026-03-05",
+        "id": "parlay_2026-03-05_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 5
+      },
+      {
+        "label": "TOR-MIN Feeder Stack",
+        "type": "mixed",
+        "legs": [
+          {
+            "player_name": "Brandon Ingram",
+            "team": "TOR",
+            "opponent": "MIN",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "MIN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "target"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "TOR",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "LAL",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+104",
+        "confidence_product": 0.6184,
+        "correlation": "positive",
+        "rationale": "Ingram feeding Barrett is a genuine same-game positive correlation; Randle assists and Jokic scoring add independent elite-conf legs.",
+        "date": "2026-03-05",
+        "id": "parlay_2026-03-05_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      },
+      {
+        "label": "Booker-Bane-Randle Trio",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "CHI",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "DAL",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "TOR",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "feeder"
+          }
+        ],
+        "implied_odds": "+143",
+        "confidence_product": 0.6494,
+        "correlation": "independent",
+        "rationale": "Three independent soft-to-mid matchups across different games; all legs sit at 85\u201390% confidence with strong recent hit rates.",
+        "date": "2026-03-05",
+        "id": "parlay_2026-03-05_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Scorers Across the Slate",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "MIN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "DAL",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "LAL",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Cade Cunningham",
+            "team": "DET",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+104",
+        "confidence_product": 0.4896,
+        "correlation": "positive",
+        "rationale": "Four volume-game scorers across four independent games; spread reduces single-game variance with all legs backed by 8\u201310/10 hit rates.",
+        "date": "2026-03-05",
+        "id": "parlay_2026-03-05_04",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      },
+      {
+        "label": "Doncic-Bane-Randle Edge",
+        "type": "mixed",
+        "legs": [
+          {
+            "player_name": "Luka Doncic",
+            "team": "LAL",
+            "opponent": "DEN",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "DAL",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "TOR",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "CHI",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 85,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "MIN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "target"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.4961,
+        "correlation": "positive",
+        "rationale": "Doncic and Bane rebound props pair with Randle-Barrett positive TOR-MIN correlation; Booker's trending 3PM adds a clean independent anchor.",
+        "date": "2026-03-05",
+        "id": "parlay_2026-03-05_05",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 5
+      }
+    ]
   }
 ]
