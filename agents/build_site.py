@@ -28,6 +28,7 @@ PARLAYS_JSON   = DATA / "parlays.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 MASTER_CSV     = DATA / "nba_master.csv"
 INJURIES_JSON  = DATA / "injuries_today.json"
+WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
 
 ET = ZoneInfo("America/Los_Angeles")
 PT = ZoneInfo("America/Los_Angeles")
@@ -135,27 +136,33 @@ def compute_daily_trend(picks: list) -> list:
 
 def load_injuries_display() -> dict:
     """
-    Load injuries_today.json and return a display-ready dict:
+    Build injury display data grouped by today's games from nba_master.csv.
+    Only whitelisted active players are shown. No 'Other Teams' bucket.
+
+    Returns:
       {
-        "fetched_at": "3:05 PM PT",
-        "teams": {
-          "LAL": [{"name": "LeBron James", "status": "QUESTIONABLE", "reason": "Ankle"},...]
-        }
+        "fetched_at": "3:05 PM PT, Mar 5",
+        "games": [
+          {
+            "away": "LAL", "home": "GSW", "game_time": "7:30 PM PT",
+            "teams": {
+              "LAL": [{"player_name": "...", "status": "OUT", "reason": "..."}, ...],
+              "GSW": [...]
+            }
+          }, ...
+        ]
       }
-    Non-list keys (metadata) are extracted; list keys are team rosters.
     """
     raw = load_json(INJURIES_JSON, {})
     if not raw:
-        return {"fetched_at": None, "teams": {}}
+        return {"fetched_at": None, "games": []}
 
-    # Extract timestamp — try common key names
+    # ── Format timestamp ────────────────────────────────────────────────
     fetched_at = None
     for key in ("fetched_at", "as_of", "timestamp", "updated_at", "scraped_at"):
         if key in raw and isinstance(raw[key], str):
             fetched_at = raw[key]
             break
-
-    # Format timestamp to PT if it looks like an ISO string
     if fetched_at:
         try:
             ts = dt.datetime.fromisoformat(fetched_at.replace("Z", "+00:00"))
@@ -163,10 +170,88 @@ def load_injuries_display() -> dict:
                 ts = ts.replace(tzinfo=dt.timezone.utc)
             fetched_at = ts.astimezone(PT).strftime("%-I:%M %p PT, %b %-d")
         except Exception:
-            pass  # keep raw string if parsing fails
+            pass
 
-    teams = {k: v for k, v in raw.items() if isinstance(v, list)}
-    return {"fetched_at": fetched_at, "teams": teams}
+    # ── Raw injury data: team_abbrev → player list ──────────────────────
+    inj_teams = {k: v for k, v in raw.items() if isinstance(v, list)}
+
+    # ── Whitelist: active player names + abbrev alt map ─────────────────
+    whitelist_names = set()   # lowercased player names
+    abbr_alt_map    = {}      # alt_abbr.upper() → canonical_abbr.upper()
+    if WHITELIST_CSV.exists():
+        try:
+            import pandas as pd
+            wl = pd.read_csv(WHITELIST_CSV, dtype=str)
+            wl["active"] = wl["active"].fillna("1")
+            active = wl[wl["active"].str.strip() == "1"]
+            for _, row in active.iterrows():
+                whitelist_names.add(str(row["player_name"]).strip().lower())
+                canonical = str(row["team_abbr"]).strip().upper()
+                alt = str(row.get("team_abbr_alt", "") or "").strip().upper()
+                if alt:
+                    abbr_alt_map[alt] = canonical
+        except Exception:
+            pass
+
+    def normalize(abbr: str) -> str:
+        a = str(abbr).strip().upper()
+        return abbr_alt_map.get(a, a)
+
+    def whitelisted_injuries(team_abbr: str) -> list:
+        """Injuries for a team, filtered to whitelisted players only."""
+        norm = normalize(team_abbr)
+        players = inj_teams.get(norm) or inj_teams.get(team_abbr) or []
+        if not whitelist_names:
+            return players
+        return [
+            p for p in players
+            if str(p.get("player_name") or p.get("name") or "").strip().lower()
+               in whitelist_names
+        ]
+
+    # ── Today's games from nba_master.csv ───────────────────────────────
+    games = []
+    if not MASTER_CSV.exists():
+        return {"fetched_at": fetched_at, "games": games}
+    try:
+        import pandas as pd
+        df = pd.read_csv(MASTER_CSV, dtype=str)
+        df["game_date"] = df["game_date"].astype(str).str[:10]
+        today_rows = df[df["game_date"] == TODAY_STR]
+        for _, row in today_rows.iterrows():
+            away = str(row.get("away_team_abbrev", "") or "").strip().upper()
+            home = str(row.get("home_team_abbrev", "") or "").strip().upper()
+            if not away or not home or away == "NAN" or home == "NAN":
+                continue
+
+            raw_time = str(row.get("game_time_utc", "") or "").strip()
+            if not raw_time or raw_time == "nan":
+                time_label = "TBD"
+            else:
+                try:
+                    utc = dt.datetime.fromisoformat(raw_time.replace("Z", "+00:00"))
+                    if utc.tzinfo is None:
+                        utc = utc.replace(tzinfo=dt.timezone.utc)
+                    time_label = utc.astimezone(PT).strftime("%-I:%M %p PT")
+                except Exception:
+                    time_label = "TBD"
+
+            away_inj = whitelisted_injuries(away)
+            home_inj = whitelisted_injuries(home)
+            if not away_inj and not home_inj:
+                continue  # no whitelisted injuries in this game — skip entirely
+
+            team_blocks = {}
+            if away_inj:
+                team_blocks[away] = away_inj
+            if home_inj:
+                team_blocks[home] = home_inj
+            games.append({"away": away, "home": home,
+                          "game_time": time_label, "teams": team_blocks})
+    except Exception:
+        pass
+
+    return {"fetched_at": fetched_at, "games": games}
 
 
 def load_todays_parlays() -> dict:
@@ -276,7 +361,7 @@ def generate_html(d: dict) -> str:
     prop_stats_json = json.dumps(d["prop_stats"])
     last_audit_json = json.dumps(d["last_audit"])
     trend_json      = json.dumps(d["daily_trend"])
-    injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "teams": {}}))
+    injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "games": []}))
     parlays_json    = json.dumps(d.get("parlays", {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}))
 
     return f"""<!DOCTYPE html>
@@ -688,44 +773,7 @@ function toggleInjuries() {{
 function renderInjuries() {{
   const c = document.getElementById('injury-container');
   const inj = DATA.injuries;
-  if (!inj || !inj.teams || !Object.keys(inj.teams).length) {{
-    c.innerHTML = '';
-    return;
-  }}
-
-  // Group teams by game using today's picks to map team → opponent
-  const teamToGame = {{}};
-  const gameOrder  = [];
-  DATA.today_picks.forEach(p => {{
-    const home = p.home_away === 'H' ? p.team : p.opponent;
-    const away = p.home_away === 'A' ? p.team : p.opponent;
-    const key  = `${{away}}@${{home}}`;
-    const gt   = p.game_time || '';
-    [p.team, p.opponent].forEach(t => {{
-      if (!teamToGame[t]) {{
-        teamToGame[t] = {{key, home, away, game_time: gt}};
-        if (!gameOrder.find(g => g.key === key))
-          gameOrder.push({{key, home, away, game_time: gt}});
-      }}
-    }});
-  }});
-
-  // Teams in injuries but not in picks go into an "Other" bucket
-  const coveredTeams = new Set(Object.keys(teamToGame));
-  const otherTeams   = Object.keys(inj.teams).filter(t => !coveredTeams.has(t));
-
-  // Build game buckets
-  const gameBuckets = gameOrder.map(g => ({{
-    ...g,
-    teams: [g.away, g.home].filter(t => inj.teams[t]?.length)
-  }})).filter(g => g.teams.length);
-
-  if (otherTeams.filter(t => inj.teams[t]?.length).length) {{
-    gameBuckets.push({{key:'other', home:'', away:'', game_time:'',
-                       teams: otherTeams.filter(t => inj.teams[t]?.length)}});
-  }}
-
-  if (!gameBuckets.length) {{ c.innerHTML = ''; return; }}
+  if (!inj || !inj.games || !inj.games.length) {{ c.innerHTML = ''; return; }}
 
   const asOf = inj.fetched_at ? `as of ${{inj.fetched_at}}` : 'latest data';
   let html = `
@@ -739,13 +787,10 @@ function renderInjuries() {{
       </div>
       <div class="injury-body" id="injury-body">`;
 
-  gameBuckets.forEach(g => {{
-    const gameLabel = g.key === 'other' ? 'Other Teams'
-      : `${{g.away}} @ ${{g.home}}${{g.game_time ? ' — ' + g.game_time : ''}}`;
+  inj.games.forEach(g => {{
+    const gameLabel = `${{g.away}} @ ${{g.home}}${{g.game_time ? ' — ' + g.game_time : ''}}`;
     html += `<div class="injury-game"><div class="injury-game-header">${{gameLabel}}</div>`;
-
-    g.teams.forEach(team => {{
-      const players = inj.teams[team] || [];
+    Object.entries(g.teams).forEach(([team, players]) => {{
       html += `<div class="injury-team-block"><div class="injury-team-name">${{team}}</div>`;
       players.forEach(p => {{
         const name   = p.player_name || p.name || p.player || '?';
