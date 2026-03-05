@@ -41,7 +41,7 @@ YESTERDAY_STR = YESTERDAY.strftime("%Y-%m-%d")
 
 # ── Config ───────────────────────────────────────────────────────────
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 2048
+MAX_TOKENS = 8192
 
 
 # ── Data loaders ─────────────────────────────────────────────────────
@@ -127,7 +127,7 @@ def grade_picks(picks: list[dict], game_log: pd.DataFrame) -> list[dict]:
 
             if p["actual_value"] is None:
                 p["result"] = "NO_DATA"
-            elif p["actual_value"] > float(pick_value):
+            elif p["actual_value"] >= float(pick_value):
                 p["result"] = "HIT"
             else:
                 p["result"] = "MISS"
@@ -234,6 +234,10 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict]) -> 
 
 Today is {dt.datetime.now(ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d")}.
 You are auditing picks and parlays made for {YESTERDAY_STR}.
+
+## GRADING RULE — READ FIRST
+A pick is a HIT if actual_value >= pick_value. Exact threshold matches are HITs, not misses.
+Do not flag exact-threshold results as near-misses or line-value problems in your analysis.
 
 ## PICK GRADED RESULTS SUMMARY
 - Total picks: {len(graded_picks)}

@@ -528,7 +528,7 @@ def compute_tier_hit_rates(games: pd.DataFrame, stat: str) -> dict:
     n = len(games)
     if n == 0:
         return {}
-    return {str(t): round((games[col] > t).sum() / n, 3) for t in tiers}
+    return {str(t): round((games[col] >= t).sum() / n, 3) for t in tiers}
 
 
 def compute_matchup_tier_hit_rates(
@@ -566,7 +566,7 @@ def compute_matchup_tier_hit_rates(
             subset = games[games["_opp_rating"] == rating]
             n = len(subset)
             if n >= MIN_MATCHUP_GAMES:
-                hit_rate = round(float((subset[col] > t).sum()) / n, 3)
+                hit_rate = round(float((subset[col] >= t).sum()) / n, 3)
                 bucket[rating] = {"hit_rate": hit_rate, "n": n}
         if bucket:
             result[str(t)] = bucket
@@ -640,7 +640,7 @@ def compute_spread_split_hit_rates(
         n = len(subset)
         if n < MIN_SPREAD_GAMES:
             continue
-        rates = {str(t): round(float((subset[col] > t).sum()) / n, 3) for t in tiers}
+        rates = {str(t): round(float((subset[col] >= t).sum()) / n, 3) for t in tiers}
         result[bucket] = {"hit_rates": rates, "n": n}
 
     return result
@@ -673,7 +673,7 @@ def compute_b2b_hit_rates(
 
     col   = STAT_COL[stat]
     tiers = TIERS[stat]
-    hit_rates = {str(t): round(float((b2b_games[col] > t).sum()) / n, 3) for t in tiers}
+    hit_rates = {str(t): round(float((b2b_games[col] >= t).sum()) / n, 3) for t in tiers}
     return {"hit_rates": hit_rates, "n": n}
 
 
@@ -816,11 +816,11 @@ def build_bounce_back_profiles(
                 player_profile[stat] = None
                 continue
 
-            # Find best qualifying tier using full-season hit rate (strict >)
+            # Find best qualifying tier using full-season hit rate (>=)
             best_t = None
             overall_hr = 0.0
             for t in sorted(tiers, reverse=True):
-                hr = float((values > t).mean())
+                hr = float((values >= t).mean())
                 if hr >= CONFIDENCE_FLOOR:
                     best_t = t
                     overall_hr = hr
@@ -831,7 +831,7 @@ def build_bounce_back_profiles(
                 continue
 
             # Build hit sequence at best_t
-            hits = (values > best_t).astype(int).tolist()
+            hits = (values >= best_t).astype(int).tolist()
             n = len(hits)
 
             # Compute bounce-back metrics from the hit sequence

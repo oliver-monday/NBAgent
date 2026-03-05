@@ -401,18 +401,21 @@ Do NOT pick arbitrary lines. Only use values from these tiers:
   AST tiers:  2 / 4 / 6 / 8 / 10 / 12
   3PM tiers:  1 / 2 / 3 / 4
 
+**Hit definition:** A pick is a HIT if actual_value >= pick_value. Exactly hitting the threshold counts
+as a hit — a player scoring exactly 20 pts on a 20-tier pick is a HIT, not a miss.
+
 For each player/stat, your job is to find the highest tier where their hit rate across recent games
 is strong enough to justify ≥70% confidence. Work DOWN from the player's ceiling until you find
 a tier with a reliable floor.
 
 Example reasoning process for PTS:
   - Player averages 21 pts but has inconsistent games (14, 22, 18, 28, 16, 24, 12, 19, 21, 17)
-  - At the 20+ tier: hit rate = 4/10 = 40% → skip
-  - At the 15+ tier: hit rate = 8/10 = 80% → this is the pick
+  - At the ≥20 tier: games with pts≥20: 22,28,24,21 = 4/10 = 40% → skip
+  - At the ≥15 tier: games with pts≥15: 22,18,28,16,24,19,21,17 = 8/10 = 80% → this is the pick
   - pick_value = 15, confidence = 80%
 
 The edge is in finding floors the market undervalues. Season averages overstate consistency.
-A player who averages 21 pts but only clears 20 half the time is a 15-tier pick, not a 20-tier pick.
+A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick, not a 20-tier pick.
 
 ## SELECTION RULES
 - Weight recent form (last 5–10 games) heavily — season averages are misleading
