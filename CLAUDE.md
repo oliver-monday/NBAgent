@@ -11,7 +11,7 @@ A self-improving multi-agent system that runs entirely via GitHub Actions. Every
 1. Ingests fresh ESPN box scores and game data
 2. Scrapes Rotowire for injury updates (hourly)
 3. **Auditor** grades yesterday's picks + parlays, writes structured feedback
-4. **Quant** computes deterministic per-player stats cards from raw game logs
+4. **Quant** computes deterministic per-player stats cards from raw game logs — tier hit rates, best qualifying tier per stat, trend (L5 vs L20), home/away splits, B2B flag and quantified B2B hit rates, opponent defense rating, spread context, matchup-specific tier hit rates, teammate correlations (Pearson r + correlation tags), game pace context, and bounce-back profiles per player per stat
 5. **Analyst** reads today's slate + Quant output + Auditor feedback → calls Claude API → generates prop picks
 6. **Parlay** reads today's picks → builds scored combinations → calls Claude API → generates 3–5 curated parlays
 7. Builds and deploys a static frontend to GitHub Pages
@@ -25,10 +25,11 @@ Picks: **PTS / REB / AST / 3PM** — OVER only, ≥70% confidence.
 ```
 NBAgent/
 ├── agents/
-│   ├── quant.py            # Deterministic stats cards — runs before analyst
+│   ├── quant.py            # Deterministic stats cards — tier hit rates, best tier, trend, B2B, opp defense, matchup splits, spread context, teammate correlations, game pace, bounce-back profiles
 │   ├── analyst.py          # Analyst agent — calls Claude, generates picks
 │   ├── parlay.py           # Parlay agent — calls Claude, generates parlays
 │   ├── auditor.py          # Auditor agent — grades picks + parlays, writes feedback
+│   ├── backtest.py         # Standalone retrospective signal analysis — 5 modes (see docs/BACKTESTS.md)
 │   └── build_site.py       # Static site generator (v3 — 4-tab)
 ├── ingest/
 │   ├── espn_daily_ingest.py
@@ -53,7 +54,8 @@ NBAgent/
 ├── docs/
 │   ├── AGENTS.md               # Agent logic, config, schemas
 │   ├── DATA.md                 # All data schemas + whitelist
-│   └── ROADMAP.md              # Resolved issues, open items, improvement proposals
+│   ├── ROADMAP.md              # Resolved issues, open items, improvement proposals
+│   └── BACKTESTS.md            # Completed backtest log — findings, verdicts, and implementation status
 ├── .github/workflows/
 │   ├── ingest.yml              # 8 AM ET daily
 │   ├── injuries.yml            # Hourly 9 AM–6 PM ET
@@ -120,4 +122,5 @@ Site rebuilds automatically at end of every Analyst workflow run, and after ever
 
 - **@docs/AGENTS.md** — Quant computations, Analyst prompt design, Parlay scoring logic, Auditor grading, all output schemas
 - **@docs/DATA.md** — All CSV/JSON schemas, player whitelist with current roster, team abbreviation notes
-- **@docs/ROADMAP.md** — Resolved bugs, open items, 5 queued improvement proposals with implementation priority
+- **@docs/ROADMAP.md** — Resolved bugs, open items, improvement proposals with implementation priority
+- **@docs/BACKTESTS.md** — Completed backtest log — findings, verdicts, and implementation status for all hypotheses tested
