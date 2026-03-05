@@ -40,6 +40,8 @@
 | **Team abbrev normalization — systematic fix (March 2026)** | Root cause identified: `analyst.py` copies opponent abbrevs from `nba_master.csv` (which uses legacy 2-char forms `GS`, `SA`, `NO`, `UTAH`, `WSH`) directly into `picks.json`. When only opponent-side players are whitelisted for a game, JS builds game groups from those raw abbrevs, causing ML odds lookup misses and display inconsistency. Fix: (1) `_ABBR_NORM` module-level dict added to `build_site.py` — shared by Python functions; (2) `load_game_ml_odds()` now stores both raw AND canonical keys (`GS: 25` and `GSW: 25`) so lookups succeed regardless of source form; (3) `normAbbr()` JS helper added (mirrors `_ABBR_NORM`), applied in `renderPicks()` to both the matchup display label and ml odds lookup — `GS @ HOU` now renders as `GSW @ HOU`. Resolves permanently for all known variant pairs. |
 | **Top Picks section (March 2026)** | `build_site.py`: `get_top_picks(picks, max_picks=5, min_picks=3)` added — deterministic Python selector filtering today's picks to `conf ≥ 85%`, ungraded, not voided, not high-lineup-risk; ranks by `(iron_floor, confidence, hit_rate_hits, stat_priority)` descending; returns `[]` if fewer than 3 qualify to avoid a misleading "Top" label on thin days. Result passed through `page_data → generate_html() → DATA.top_picks`. `renderTopPicks()` JS function renders above game groups: orange `⚡ TOP PICKS TODAY` header; cards with 4px left border in stat type color (PTS=orange, REB=blue, AST=purple, 3PM=yellow); shows player name, team, game time, prop value, confidence %, reasoning, and `🔒 Iron Floor` badge when applicable. `top-picks-divider` separates section from main game groups. Standard pick cards below unchanged — Top Picks are additive. |
 | **Picks tab cosmetic refinements (March 2026)** | `build_site.py`: (1) Streak pills threshold raised from any streak → ≥5 consecutive, moved inline into micro-stats flex row (alongside trend/defense pills) — reduces noise on typical days; `margin-top: 5px` removed from `.streak-pill` CSS since flex gap handles spacing. (2) Results tab Pick column: `"OVER "` prefix removed from every row — prop badge + value is self-explanatory. |
+| **P2 — Rolling Volatility Score (March 2026)** | `quant.py`: `compute_volatility(game_log, stat, tier, window=20)` added after `compute_tier_hit_rates()` — computes `stdev()` of binary hit/miss outcomes over last 20 non-DNP games; labels `consistent` (σ < 0.3), `moderate` (0.3–0.4), or `volatile` (> 0.4); `insufficient_data` when n < 5. Volatility block added in `build_player_stats()` after `best_tiers` — iterates pts/reb/ast/tpm → PTS/REB/AST/3PM at each stat's best qualifying tier; `player_games` sorted oldest→newest (fixes `[-window:]` direction). `"volatility"` key added to `player_stats.json`. `analyst.py`: `volatility_all` extracted in `build_quant_context()`; `vol_tag` computed per stat — `[VOLATILE]` (uppercase) or `[consistent]` (lowercase); appended at end of each stat line. `KEY RULES — VOLATILITY` block added to `build_prompt()`: −5% confidence for VOLATILE, Top Pick gate at 85% post-reduction, reasoning flag, iron_floor override. |
+| **P1 — Positional DvP (March 2026)** | `player_whitelist.csv`: `position` column (PG/SG/SF/PF/C) added for all ~57 active players. `quant.py`: `load_whitelist_positions()` added — returns `{lowercase_name: position}` dict alongside the existing set-returning `load_whitelist()` (no existing callers touched). `compute_positional_dvp(player_log, position_map)` added after `build_opp_defense()` — groups player_game_log by `(opp_abbrev, position)`, enforces 10-game minimum per cell, assigns soft/mid/tough ratings percentile-ranked within each position group across all teams (same 33/67 thresholds). `build_player_stats()` extended with `positional_dvp_data` and `position_map` optional params; per-player `positional_dvp_entry` built with 4 per-stat ratings + `n` + `source` (`"positional"` if n≥10, `"team_fallback"` otherwise — always falls back to team-level, never null). `"positional_dvp"` key added to `player_stats.json`. `main()` calls both new functions and passes results to `build_player_stats()`. `analyst.py`: `build_quant_context()` replaced per-stat `opp_today=` field with a single `DvP [POS]` line per player covering all 4 stats — `DvP [PG]: PTS=soft REB=mid AST=tough 3PM=soft (n=47)` or `DvP [C] (team-lvl): ...` for fallback. `KEY RULES — MATCHUP QUALITY` updated to reference DvP line. `OPPONENT DEFENSE — POSITIONAL DvP` section replaced old stat-specific rules: positional source = primary signal; REB still excluded; 3PM still noise; weight by n≥20. |
 
 ---
 
@@ -80,33 +82,18 @@
 - `quant.py` — `compute_matchup_tier_hit_rates()`. Full season history split by opponent defensive rating (soft/mid/tough). Stored as `matchup_tier_hit_rates` in `player_stats.json`.
 - `analyst.py` — `build_quant_context()` injects per-player `vs_soft`/`vs_tough` rates into prompt. Prompt instructs Claude to weight matchup-specific rate over overall when opp is rated soft or tough.
 
+**P2 — Rolling Volatility Score ✅ IMPLEMENTED**
+- `quant.py` — `compute_volatility()` alongside `compute_tier_hit_rates()`. 20-game window; σ < 0.3 = consistent, 0.3–0.4 = moderate, > 0.4 = volatile. `"volatility"` key in `player_stats.json`.
+- `analyst.py` — `[VOLATILE]` / `[consistent]` tags on stat lines; KEY RULES — VOLATILITY block with −5% confidence penalty, Top Pick gate, iron_floor override.
+
+**P1 — Positional DvP ✅ IMPLEMENTED**
+- `player_whitelist.csv` — `position` column (PG/SG/SF/PF/C) added for all active players.
+- `quant.py` — `load_whitelist_positions()` + `compute_positional_dvp()` added. Per-player `positional_dvp` field in `player_stats.json` with 4 per-stat ratings, `n`, and `source` (`positional` / `team_fallback`).
+- `analyst.py` — `DvP [POS]` line per player replaces per-stat `opp_today=`; positional prompt instructions with REB/3PM exclusions preserved.
+
 ---
 
 ### Active Queue — In Priority Order
-
----
-
-#### P1 — Positional DvP (Defense vs. Position)
-**Priority: MEDIUM — upgrades opp_defense from team-level to position-aware**
-
-**What:** Split opponent's allowed stats by the position of the player who scored/rebounded/assisted. Add a `position` column (PG/SG/SF/PF/C) to `player_whitelist.csv`. Compute allowed PTS/REB/AST per position group per opposing team. Replaces or supplements the current team-level `opp_defense_rating`.
-
-**Why:** Team-level allowed averages miss positional targeting. The Thunder may allow 110 pts/game overall but suppress guards completely while being soft on centers — the current rating would show "mid" for both. A position-aware rating directly improves the opp_defense signal for every pick.
-
-**Where:** `player_whitelist.csv` — add `position` column (manual, ~5 minutes). `quant.py` — extend `build_opp_defense()` to join on position. `player_stats.json` — `opp_defense` gains `position_rating` field. `analyst.py` — prompt uses position-specific rating when available.
-
-**Data dependency:** Requires manual `position` column addition to whitelist before implementation.
-
----
-
-#### P2 — Rolling Volatility Score Per Player Per Stat
-**Priority: MEDIUM — prevents overconfidence in streaky players**
-
-**What:** Standard deviation of binary hit outcomes over the last 20 games at the best tier for each stat. Express as `"consistent"` (σ < 0.3), `"moderate"` (0.3–0.4), or `"volatile"` (σ > 0.4).
-
-**Why:** Hit rate is an average — it hides whether a player is a reliable 80% hitter or a streaky player who goes 10/10 then 2/10. A volatile player at 75% is a worse prop bet than a consistent player at 72%.
-
-**Where:** `quant.py` — `compute_volatility()` alongside `compute_tier_hit_rates()`. 20-game window for stability. `analyst.py` — instruction: "Prefer consistent or moderate volatility players when confidence is otherwise similar. Flag volatile players in reasoning."
 
 ---
 
@@ -179,9 +166,9 @@ Original morning values are preserved in `morning_pick` — never overwritten.
 
 ## Implementation Notes
 
-- **P1 (Positional DvP)** — requires adding `position` column to `player_whitelist.csv` before coding begins. Manual step, ~5 minutes.
-- **P2 (Volatility) and P4 (Tier-Walk)** — fully independent of each other and all other proposals. Can be implemented in any order. P4 (Tier-Walk) now has better downstream utility: `miss_classification` data accumulating in `audit_log.json` means the Auditor can eventually cross-reference tier-walk decisions against `selection_error` classifications.
+- **P4 (Tier-Walk)** — fully independent of all other proposals. Has better downstream utility now that `miss_classification` data is accumulating in `audit_log.json` — Auditor can cross-reference tier-walk decisions against `selection_error` classifications over time.
 - **P3 (Shooting Regression)** — requires `espn_player_ingest.py` schema change. Plan as a standalone session; do not bundle with quant-only changes.
 - **P5 (Afternoon Re-Reasoning)** — requires `lineup_watch.py` already live (✅). Key open design question: change-detection mechanism for "new absence since last run" — simplest approach is comparing the current `injuries_today.json` against a prior-run snapshot cached to `data/injuries_prev.json` by `lineup_watch.py`. Revisit after 7 days of lineup_watch data to confirm voiding frequency and feasibility. Do not build until audit data confirms lineup_watch is functioning correctly.
 - **#1 (Teammate Absence Delta)** — highest long-run alpha; revisit at season start when full-year DNP data exists.
-- **Confidence calibration tracking (new, no proposal needed)** — `audit_summary.json` now accumulates per-band hit rates (70–75 / 76–80 / 81–85 / 86+). After 20+ audit days, compare actual hit rates to stated confidence bands. If a band systematically underperforms (e.g., 86%+ picks hit at 70%), tighten prompt confidence guidance for that band directly. This is a maintenance task, not a new feature — revisit when the season has 3+ weeks of post-March audit data.
+- **Confidence calibration tracking (no proposal needed)** — `audit_summary.json` now accumulates per-band hit rates (70–75 / 76–80 / 81–85 / 86+). After 20+ audit days, compare actual hit rates to stated confidence bands. If a band systematically underperforms (e.g., 86%+ picks hit at 70%), tighten prompt confidence guidance for that band directly. Maintenance task — revisit when the season has 3+ weeks of post-March audit data.
+- **Positional DvP — backtest candidate** — now that positional defense ratings are live and accumulating in `player_stats.json`, a future backtest (H8) could validate whether the positional rating is a stronger predictor than the team-level rating for PTS/AST. Run after 30+ days of data.
