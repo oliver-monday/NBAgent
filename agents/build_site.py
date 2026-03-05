@@ -151,7 +151,7 @@ def load_injuries_display() -> dict:
 
     # Extract timestamp — try common key names
     fetched_at = None
-    for key in ("fetched_at", "as_of", "timestamp", "updated_at", "scraped_at"):
+    for key in ("fetched_at", "built_at_utc", "as_of", "timestamp", "updated_at", "scraped_at"):
         if key in raw and isinstance(raw[key], str):
             fetched_at = raw[key]
             break
@@ -383,6 +383,12 @@ def generate_html(d: dict) -> str:
     .status-PROBABLE {{ background: rgba(34,197,94,0.15); color: #22c55e;
                         font-size: 10px; font-weight: 700; padding: 2px 6px;
                         border-radius: 4px; white-space: nowrap; }}
+    .status-OFS   {{ background: rgba(148,163,184,0.12); color: #94a3b8;
+                     font-size: 10px; font-weight: 700; padding: 2px 6px;
+                     border-radius: 4px; white-space: nowrap; }}
+    .status-DTD   {{ background: rgba(234,179,8,0.12); color: #eab308;
+                     font-size: 10px; font-weight: 700; padding: 2px 6px;
+                     border-radius: 4px; white-space: nowrap; }}
     .status-OTHER {{ background: var(--surface2); color: var(--muted);
                      font-size: 10px; font-weight: 700; padding: 2px 6px;
                      border-radius: 4px; white-space: nowrap; }}
@@ -619,11 +625,13 @@ function streakPill(s) {{
 // ── INJURY REPORT ──
 function statusClass(s) {{
   if (!s) return 'status-OTHER';
-  const u = s.toUpperCase();
-  if (u.includes('OUT'))          return 'status-OUT';
-  if (u.includes('DOUBT'))        return 'status-DOUBTFUL';
-  if (u.includes('QUEST'))        return 'status-QUESTIONABLE';
-  if (u.includes('PROB'))         return 'status-PROBABLE';
+  const u = s.toUpperCase().trim();
+  if (u === 'OFS')                              return 'status-OFS';
+  if (u.includes('OUT'))                        return 'status-OUT';
+  if (u.includes('DOUBT'))                      return 'status-DOUBTFUL';
+  if (u.includes('QUEST') || u === 'QUES')      return 'status-QUESTIONABLE';
+  if (u.includes('PROB'))                       return 'status-PROBABLE';
+  if (u === 'DTD' || u === 'GTD')               return 'status-DTD';
   return 'status-OTHER';
 }}
 
@@ -701,7 +709,7 @@ function renderInjuries() {{
       players.forEach(p => {{
         const name   = p.player_name || p.name || p.player || '?';
         const status = p.status || p.designation || '?';
-        const reason = p.reason || p.injury || p.description || '';
+        const reason = p.reason || p.injury || p.description || p.details || '';
         const cls    = statusClass(status);
         html += `
           <div class="injury-player-row">
