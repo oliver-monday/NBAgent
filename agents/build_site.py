@@ -107,10 +107,13 @@ def load_game_ml_odds() -> dict:
                 if not ml_raw or ml_raw.lower() == "nan":
                     continue
                 try:
-                    canonical = _ABBR_NORM.get(raw_abbrev.upper(), raw_abbrev.upper())
+                    raw       = raw_abbrev.upper()
+                    canonical = _ABBR_NORM.get(raw, raw)
                     ml = float(ml_raw)
                     prob = (-ml) / (-ml + 100) * 100 if ml < 0 else 100 / (ml + 100) * 100
-                    odds[canonical] = round(prob)
+                    val = round(prob)
+                    odds[raw]       = val  # keep raw key (e.g. GS, SA)
+                    odds[canonical] = val  # also canonical key (e.g. GSW, SAS)
                 except Exception:
                     pass
         return odds
@@ -859,6 +862,13 @@ function propColor(pt) {{
 function propVar(pt) {{
   return {{PTS:'var(--pts)',REB:'var(--reb)',AST:'var(--ast)','3PM':'var(--3pm)'}}[pt]||'var(--muted)';
 }}
+// Normalize legacy 2-char team abbrevs (e.g. GS→GSW, SA→SAS) that can appear
+// in picks.json when analyst.py reads opponent names from nba_master.csv.
+// Mirrors _ABBR_NORM in Python — must be kept in sync.
+const _ABBR_NORM_JS = {{
+  GS:'GSW', NY:'NYK', SA:'SAS', NO:'NOP', UTAH:'UTA', WSH:'WAS', UTH:'UTA'
+}};
+function normAbbr(a) {{ return _ABBR_NORM_JS[a] || a; }}
 function streakPill(s) {{
   if (!s || !s.streak_type || s.streak_count < 5) return '';
   const cls  = s.streak_type==='HIT' ? 'streak-hit' : 'streak-miss';
@@ -1008,14 +1018,16 @@ function renderPicks() {{
 
   games.forEach((g, gi) => {{
     const timeTag  = g.game_time ? `<span class="game-tip">⏰ ${{g.game_time}}</span>` : '';
-    const ml = DATA.ml_odds || {{}};
-    const awayPct = ml[g.away] !== undefined ? ` <span class="ml-pct">(${{ml[g.away]}}%)</span>` : '';
-    const homePct = ml[g.home] !== undefined ? ` <span class="ml-pct">(${{ml[g.home]}}%)</span>` : '';
+    const ml       = DATA.ml_odds || {{}};
+    const awayLabel = normAbbr(g.away);
+    const homeLabel = normAbbr(g.home);
+    const awayPct  = ml[awayLabel] !== undefined ? ` <span class="ml-pct">(${{ml[awayLabel]}}%)</span>` : '';
+    const homePct  = ml[homeLabel] !== undefined ? ` <span class="ml-pct">(${{ml[homeLabel]}}%)</span>` : '';
     const gid = `game-${{gi}}`;
     html += `
       <div class="game-group">
         <div class="game-group-header open" id="hdr-${{gid}}" onclick="toggleGame('${{gid}}')">
-          <span class="game-matchup">${{g.away}}${{awayPct}} @ ${{g.home}}${{homePct}}</span>
+          <span class="game-matchup">${{awayLabel}}${{awayPct}} @ ${{homeLabel}}${{homePct}}</span>
           ${{timeTag}}
           <span class="game-pick-count">${{g.picks.length}} pick${{g.picks.length!==1?'s':''}}</span>
           <span class="game-chevron open" id="chv-${{gid}}">▼</span>
