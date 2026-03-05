@@ -285,8 +285,9 @@ def generate_html(d: dict) -> str:
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NBAgent</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzExMTExNCIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzMlIgogICAgICAgIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EgTmV1ZSwgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiIKICAgICAgICBmb250LXdlaWdodD0iOTAwIgogICAgICAgIGZvbnQtc2l6ZT0iMjAiCiAgICAgICAgdGV4dC1hbmNob3I9Im1pZGRsZSIKICAgICAgICBkb21pbmFudC1iYXNlbGluZT0iYXV0byIKICAgICAgICBmaWxsPSIjRTg3MDNBIj5BPC90ZXh0Pgo8L3N2Zz4=" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzExMTExNCIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzMlIgogICAgICAgIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EgTmV1ZSwgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiIKICAgICAgICBmb250LXdlaWdodD0iOTAwIgogICAgICAgIGZvbnQtc2l6ZT0iMjAiCiAgICAgICAgdGV4dC1hbmNob3I9Im1pZGRsZSIKICAgICAgICBkb21pbmFudC1iYXNlbGluZT0iYXV0byIKICAgICAgICBmaWxsPSIjRTg3MDNBIj5BPC90ZXh0Pgo8L3N2Zz4=" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
   <meta name="theme-color" content="#0d0d0f" />
   <style>
     :root {{
@@ -303,23 +304,8 @@ def generate_html(d: dict) -> str:
     header {{ background: var(--surface); border-bottom: 1px solid var(--border);
               padding: 16px 20px; display: flex; align-items: center;
               justify-content: space-between; position: sticky; top: 0; z-index: 10; }}
-    .logo {{
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      display: flex;
-      align-items: baseline;
-    }}
-    .logo-nb {{ color: #f0f0f8; }}
-    .logo-a {{
-      background: linear-gradient(90deg, #f0f0f8 0%, #f0f0f8 15%, #E8703A 55%, #E8703A 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }}
-    .logo-gent {{ color: #E8703A; }}
+    .logo {{ display: flex; align-items: center; }}
+    .logo img {{ height: 36px; width: auto; display: block; }}
     .built-at {{ font-size: 11px; color: var(--muted); }}
 
     .tabs {{ display: flex; gap: 4px; padding: 12px 20px 0;
@@ -587,7 +573,7 @@ def generate_html(d: dict) -> str:
 <body>
 
 <header>
-  <div class="logo"><span class="logo-nb">NB</span><span class="logo-a">A</span><span class="logo-gent">gent</span></div>
+  <div class="logo"><img src="logo.png" alt="NBAgent" /></div>
   <div class="built-at">Updated {d["built_at"]}</div>
 </header>
 
