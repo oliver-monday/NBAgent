@@ -346,6 +346,21 @@ def generate_html(d: dict) -> str:
                   display: grid; grid-template-columns: 1fr auto;
                   gap: 12px; align-items: start; transition: border-color 0.15s; }}
     .pick-card:hover {{ border-color: var(--accent); }}
+    .pick-card.voided {{ opacity: 0.55; border-color: rgba(239,68,68,0.3); }}
+    .pick-card.voided .player {{ text-decoration: line-through; color: var(--muted); }}
+    .void-badge {{ display: inline-block; font-size: 10px; font-weight: 700;
+                   padding: 2px 7px; border-radius: 4px;
+                   background: rgba(239,68,68,0.15); color: #ef4444; }}
+    .risk-badge-high {{ display: inline-block; font-size: 10px; font-weight: 700;
+                        padding: 2px 7px; border-radius: 4px;
+                        background: rgba(249,115,22,0.15); color: #f97316; }}
+    .risk-badge-moderate {{ display: inline-block; font-size: 10px; font-weight: 700;
+                            padding: 2px 7px; border-radius: 4px;
+                            background: rgba(234,179,8,0.15); color: #eab308; }}
+    .parlay-risk-banner {{ font-size: 11px; font-weight: 600; color: #f97316;
+                           padding: 5px 8px; margin-top: 6px;
+                           background: rgba(249,115,22,0.08);
+                           border-radius: 4px; border-left: 3px solid #f97316; }}
     .prop-badge {{ width: 44px; height: 44px; border-radius: 10px;
                    display: flex; align-items: center; justify-content: center;
                    font-size: 11px; font-weight: 700; flex-shrink: 0; }}
@@ -818,7 +833,10 @@ function renderPicks() {{
     timeToMinutes(a.game_time) - timeToMinutes(b.game_time));
 
   const ps = DATA.prop_stats;
-  let html = `<div class="section-header">${{picks.length}} pick${{picks.length!==1?'s':''}} — ${{DATA.today_str}}</div>`;
+  const voidedCount = picks.filter(p => p.voided).length;
+  const activeCount = picks.length - voidedCount;
+  const voidedNote  = voidedCount > 0 ? ` <span style="color:var(--miss);font-size:12px">(${{voidedCount}} voided)</span>` : '';
+  let html = `<div class="section-header">${{activeCount}} pick${{activeCount!==1?'s':''}}${{voidedNote}} — ${{DATA.today_str}}</div>`;
 
   games.forEach((g, gi) => {{
     const timeTag = g.game_time ? `<span class="game-tip">⏰ ${{g.game_time}}</span>` : '';
@@ -840,13 +858,22 @@ function renderPicks() {{
       (propOrder[a.prop_type]??9) - (propOrder[b.prop_type]??9) ||
       b.confidence_pct - a.confidence_pct
     ).forEach(p => {{
-      const pt  = p.prop_type;
-      const ha  = p.home_away === 'H' ? 'vs' : '@';
-      const pill = streakPill(ps[pt]);
+      const pt         = p.prop_type;
+      const ha         = p.home_away === 'H' ? 'vs' : '@';
+      const pill       = streakPill(ps[pt]);
+      const voidedCls  = p.voided ? ' voided' : '';
+      const statusBadge = p.voided
+        ? `<div style="margin-top:4px"><span class="void-badge">VOIDED — Player OUT</span></div>`
+        : p.lineup_risk === 'high'
+          ? `<div style="margin-top:4px"><span class="risk-badge-high">⚠ DOUBTFUL</span></div>`
+          : p.lineup_risk === 'moderate'
+            ? `<div style="margin-top:4px"><span class="risk-badge-moderate">QUESTIONABLE</span></div>`
+            : '';
       html += `
-        <div class="pick-card">
+        <div class="pick-card${{voidedCls}}">
           <div class="pick-main">
             <div class="player">${{p.player_name}}</div>
+            ${{statusBadge}}
             ${{buildMicroStats(p)}}
             ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
             ${{pill ? `<div style="margin-top:6px">${{pill}}</div>` : ''}}
@@ -1083,6 +1110,13 @@ function renderParlays() {{
 
   html += `<div class="section-header">${{today.length}} parlay${{today.length !== 1 ? 's' : ''}} — ${{DATA.today_str}}</div>`;
 
+  // Build set of voided player names from today's picks for leg-risk detection
+  const voidedPlayerNames = new Set(
+    (DATA.today_picks || [])
+      .filter(pk => pk.voided)
+      .map(pk => (pk.player_name || '').toLowerCase())
+  );
+
   today.forEach(p => {{
     const legs  = p.legs || [];
     const corr  = p.correlation || 'independent';
@@ -1096,6 +1130,13 @@ function renderParlays() {{
     else if (p.result === 'MISS') resultBadge = `<span class="parlay-result-miss">✗ MISS</span>`;
     else if (p.result === 'PARTIAL') resultBadge = `<span class="parlay-result-partial">~ PARTIAL</span>`;
 
+    const voidedLegs = legs.filter(leg =>
+      voidedPlayerNames.has((leg.player_name || '').toLowerCase())
+    );
+    const riskBanner = voidedLegs.length > 0
+      ? `<div class="parlay-risk-banner">⚠ ${{voidedLegs.map(l => l.player_name).join(', ')}} listed OUT — parlay affected</div>`
+      : '';
+
     html += `
       <div class="parlay-card">
         <div class="parlay-card-header">
@@ -1107,6 +1148,7 @@ function renderParlays() {{
               <span class="type-badge">${{legs.length}} legs</span>
               ${{resultBadge}}
             </div>
+            ${{riskBanner}}
           </div>
           <div class="parlay-odds">${{p.implied_odds || ''}}</div>
         </div>

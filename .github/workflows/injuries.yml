@@ -73,6 +73,26 @@ jobs:
           git commit -m "Injuries refresh [skip ci]"
           git push origin HEAD:main
 
+      - name: Run lineup watch
+        run: |
+          python agents/lineup_watch.py
+
+      - name: Commit picks status
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase --autostash origin/main
+
+          if [ -n "$(git status --porcelain -- data/picks.json)" ]; then
+            git add data/picks.json
+            git commit -m "Lineup watch: picks status updated [skip ci]"
+            git push origin HEAD:main
+          else
+            echo "No picks status changes to commit."
+          fi
+
       - name: Rebuild frontend with updated injuries
         run: |
           pip install pandas
