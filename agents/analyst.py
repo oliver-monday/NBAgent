@@ -91,16 +91,24 @@ def load_player_game_log() -> pd.DataFrame:
 
 
 def load_whitelist() -> set:
-    """Returns set of lowercase active player names from whitelist. Empty set = no filtering."""
+    """
+    Returns set of (lowercase_name, uppercase_team) tuples for active players.
+    Filtering on both name AND team prevents traded players from appearing
+    under their old team when game log rows for both teams exist.
+    Empty set = no filtering.
+    """
     if not WHITELIST_CSV.exists():
         print(f"[analyst] WARNING: whitelist not found, no player filtering applied.")
         return set()
     try:
         df = pd.read_csv(WHITELIST_CSV, dtype=str)
         active = df[df["active"].astype(str).str.strip() == "1"]
-        names = set(active["player_name"].str.strip().str.lower().tolist())
-        print(f"[analyst] Whitelist loaded: {len(names)} active players")
-        return names
+        pairs = set(zip(
+            active["player_name"].str.strip().str.lower(),
+            active["team_abbr"].str.strip().str.upper()
+        ))
+        print(f"[analyst] Whitelist loaded: {len(pairs)} active player-team pairs")
+        return pairs
     except Exception as e:
         print(f"[analyst] WARNING: could not load whitelist: {e}")
         return set()
@@ -146,9 +154,17 @@ def build_player_context(game_log: pd.DataFrame, teams_today: list[str],
     if recent.empty:
         return "No recent game log data for today's teams."
 
-    # Apply whitelist filter if available
+    # Apply whitelist filter: match on both player name AND current team
+    # This prevents traded players from appearing under their old team
     if whitelist:
-        recent = recent[recent["player_name"].str.strip().str.lower().isin(whitelist)].copy()
+        mask = recent.apply(
+            lambda r: (
+                r["player_name"].strip().lower(),
+                r["team_abbrev"].strip().upper()
+            ) in whitelist,
+            axis=1
+        )
+        recent = recent[mask].copy()
         if recent.empty:
             return "No whitelisted players found for today's teams."
 

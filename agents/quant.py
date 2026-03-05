@@ -111,12 +111,21 @@ def load_todays_games() -> list[dict]:
 
 
 def load_whitelist() -> set:
+    """
+    Returns set of (lowercase_name, uppercase_team) tuples for active players.
+    Filtering on both name AND team prevents traded players from appearing
+    under their old team when game log rows for both teams exist.
+    """
     if not WHITELIST_CSV.exists():
         return set()
     try:
         df = pd.read_csv(WHITELIST_CSV, dtype=str)
         active = df[df["active"].astype(str).str.strip() == "1"]
-        return set(active["player_name"].str.strip().str.lower().tolist())
+        pairs = set(zip(
+            active["player_name"].str.strip().str.lower(),
+            active["team_abbr"].str.strip().str.upper()
+        ))
+        return pairs
     except Exception:
         return set()
 
@@ -347,7 +356,14 @@ def build_teammate_correlations(
     """
     log = player_log[player_log["team_abbrev"].str.upper().isin(teams_today)].copy()
     if whitelist:
-        log = log[log["player_name"].str.strip().str.lower().isin(whitelist)].copy()
+        mask = log.apply(
+            lambda r: (
+                r["player_name"].strip().lower(),
+                r["team_abbrev"].strip().upper()
+            ) in whitelist,
+            axis=1
+        )
+        log = log[mask].copy()
 
     result: dict = {}
 
@@ -468,7 +484,14 @@ def build_player_stats(
 
     log = player_log[player_log["team_abbrev"].str.upper().isin(teams_today)].copy()
     if whitelist:
-        log = log[log["player_name"].str.strip().str.lower().isin(whitelist)].copy()
+        mask = log.apply(
+            lambda r: (
+                r["player_name"].strip().lower(),
+                r["team_abbrev"].strip().upper()
+            ) in whitelist,
+            axis=1
+        )
+        log = log[mask].copy()
 
     stats_out = {}
 
@@ -544,7 +567,7 @@ def main():
     print(f"[quant] Loaded {len(team_log)} team game log rows")
 
     whitelist = load_whitelist()
-    print(f"[quant] Whitelist: {len(whitelist)} active players")
+    print(f"[quant] Whitelist: {len(whitelist)} active player-team pairs")
 
     todays_games = load_todays_games()
     print(f"[quant] Today's games: {len(todays_games)}")
