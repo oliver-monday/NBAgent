@@ -33,7 +33,8 @@ GAME_LOG_CSV   = DATA / "player_game_log.csv"
 TEAM_LOG_CSV   = DATA / "team_game_log.csv"
 MASTER_CSV     = DATA / "nba_master.csv"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
-RESULTS_JSON   = DATA / "backtest_results.json"
+RESULTS_JSON       = DATA / "backtest_results.json"
+BOUNCE_BACK_JSON   = DATA / "backtest_bounce_back.json"
 
 # ── Tier definitions (mirrors quant.py) ───────────────────────────────
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -680,6 +681,591 @@ def build_recommendations(
     return recs
 
 
+# ── Bounce-Back Analysis ──────────────────────────────────────────────
+
+BOUNCE_BACK_MIN_PAIRS   = 15   # min n for streak / severity cells
+BOUNCE_BACK_MIN_VERDICT = 30   # min n_post_hit and n_post_miss for A1 verdict
+
+
+def build_bounce_back_pairs(player_log: pd.DataFrame, stat: str, window: int) -> pd.DataFrame:
+    """
+    Build consecutive-game pairs for a single stat.
+
+    For each player, sort non-DNP games chronologically and pair each
+    game N with game N+1. Only retain pairs where:
+      - Both games have an established tier (rolling HR ≥ 0.70 over prior `window` games)
+      - The established tier is the same in both games (tier stability)
+
+    Returns one row per valid pair with hit/miss labels, miss_gap, hit_margin,
+    and streak state (streak_0 through streak_3plus) for game N+1.
+    """
+    col   = STAT_COL[stat]
+    tiers = sorted(TIERS[stat], reverse=True)   # highest first
+
+    df = player_log[["player_name", "game_date", col]].copy()
+    df = df.sort_values(["player_name", "game_date"]).reset_index(drop=True)
+
+    # Skip players with < 15 total games in the log
+    game_counts = df.groupby("player_name")[col].transform("count")
+    df = df[game_counts >= 15].copy()
+    if df.empty:
+        return pd.DataFrame()
+
+    # Rolling hit rates per tier (shift=1 to exclude current game — no lookahead)
+    for tier in tiers:
+        df[f"_hit_{tier}"] = (df[col] > tier).astype(float)
+        df[f"_hr_{tier}"]  = df.groupby("player_name")[f"_hit_{tier}"].transform(
+            lambda x: x.shift(1).rolling(window, min_periods=window).mean()
+        )
+
+    # Established tier: highest tier with rolling HR ≥ CONFIDENCE_FLOOR
+    df["established_tier"] = np.nan
+    for tier in tiers:
+        qualifies   = df[f"_hr_{tier}"] >= CONFIDENCE_FLOOR
+        no_tier_yet = df["established_tier"].isna()
+        df.loc[qualifies & no_tier_yet, "established_tier"] = float(tier)
+
+    # Is-hit indicator at the established tier
+    df["is_hit"] = np.nan
+    has_tier = df["established_tier"].notna()
+    df.loc[has_tier, "is_hit"] = (
+        df.loc[has_tier, col] >= df.loc[has_tier, "established_tier"]
+    ).astype(float)
+
+    # Shift within each player's sequence to build "prior game" columns
+    grp = df.groupby("player_name")
+    df["prior_tier"]     = grp["established_tier"].shift(1)
+    df["prior_is_hit"]   = grp["is_hit"].shift(1)
+    df["prior_actual"]   = grp[col].shift(1)
+    df["prior_is_hit_2"] = grp["is_hit"].shift(2)   # N-1 (for streak)
+    df["prior_is_hit_3"] = grp["is_hit"].shift(3)   # N-2 (for streak)
+
+    # Valid pairs: both games have established tier AND same tier
+    valid = df[
+        df["established_tier"].notna() &
+        df["prior_tier"].notna() &
+        df["is_hit"].notna() &
+        df["prior_is_hit"].notna() &
+        (df["established_tier"] == df["prior_tier"])
+    ].copy()
+
+    if valid.empty:
+        return pd.DataFrame()
+
+    # miss_gap = tier - prior_actual  (when prior was a MISS; miss_gap=0 → near-miss bucket)
+    valid["miss_gap"] = np.where(
+        valid["prior_is_hit"] == 0.0,
+        valid["prior_tier"] - valid["prior_actual"],
+        np.nan,
+    )
+    # hit_margin = prior_actual - tier  (when prior was a HIT)
+    valid["hit_margin"] = np.where(
+        valid["prior_is_hit"] == 1.0,
+        valid["prior_actual"] - valid["prior_tier"],
+        np.nan,
+    )
+
+    # Streak state at game N+1, based on outcomes of games N, N-1, N-2
+    cond_s0   = (valid["prior_is_hit"] == 1.0)
+    cond_s1   = (valid["prior_is_hit"] == 0.0) & (
+                    (valid["prior_is_hit_2"] != 0.0) | valid["prior_is_hit_2"].isna()
+                )
+    cond_s2   = (valid["prior_is_hit"] == 0.0) & (valid["prior_is_hit_2"] == 0.0) & (
+                    (valid["prior_is_hit_3"] != 0.0) | valid["prior_is_hit_3"].isna()
+                )
+    cond_s3p  = (valid["prior_is_hit"] == 0.0) & (valid["prior_is_hit_2"] == 0.0) & (
+                    valid["prior_is_hit_3"] == 0.0
+                )
+    valid["streak_state"] = np.select(
+        [cond_s0, cond_s1, cond_s2, cond_s3p],
+        ["streak_0", "streak_1", "streak_2", "streak_3plus"],
+        default="unknown",
+    )
+
+    valid["stat"]        = stat
+    valid["next_actual"] = valid[col]
+
+    keep = [
+        "player_name", "stat", "game_date", "established_tier",
+        "next_actual", "is_hit",
+        "prior_actual", "prior_is_hit", "miss_gap", "hit_margin",
+        "streak_state",
+    ]
+    # Cleanup temp columns
+    drop = [c for c in valid.columns if c.startswith("_")]
+    valid = valid.drop(columns=drop)
+    return valid[[c for c in keep if c in valid.columns]].copy()
+
+
+# ── Analysis 1 — Simple Bounce-Back ──────────────────────────────────
+
+def _verdict_a1(bb_lift: float, hh_lift: float, n_miss: int, n_hit: int) -> str:
+    if n_miss < BOUNCE_BACK_MIN_VERDICT or n_hit < BOUNCE_BACK_MIN_VERDICT:
+        return "insufficient-sample"
+    if bb_lift > 1.10 and hh_lift > 1.10:
+        return "both"
+    if bb_lift > 1.10:
+        return "bounce-back"
+    if hh_lift > 1.10 and bb_lift < 1.05:
+        return "hot-hand"
+    if bb_lift < 0.90:
+        return "slump-persistent"
+    return "independent"
+
+
+def _stat_a1(df: pd.DataFrame) -> dict:
+    if df.empty:
+        return {}
+    baseline = round(float(df["is_hit"].mean()), 4)
+    ph_df    = df[df["prior_is_hit"] == 1.0]
+    pm_df    = df[df["prior_is_hit"] == 0.0]
+    n_hit    = len(ph_df)
+    n_miss   = len(pm_df)
+    ph_rate  = round(float(ph_df["is_hit"].mean()), 4) if n_hit  > 0 else None
+    pm_rate  = round(float(pm_df["is_hit"].mean()), 4) if n_miss > 0 else None
+    bb_lift  = round(pm_rate / baseline, 4) if (pm_rate is not None and baseline > 0) else None
+    hh_lift  = round(ph_rate / baseline, 4) if (ph_rate is not None and baseline > 0) else None
+    return {
+        "baseline_hit_rate":  baseline,
+        "post_hit_hit_rate":  ph_rate,
+        "post_miss_hit_rate": pm_rate,
+        "bounce_back_lift":   bb_lift,
+        "hot_hand_lift":      hh_lift,
+        "n_post_hit":         n_hit,
+        "n_post_miss":        n_miss,
+        "verdict":            _verdict_a1(bb_lift or 0, hh_lift or 0, n_miss, n_hit),
+    }
+
+
+def bounce_back_analysis_1(pairs: pd.DataFrame) -> dict:
+    by_stat = {}
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sub = pairs[pairs["stat"] == stat]
+        if not sub.empty:
+            by_stat[stat] = _stat_a1(sub)
+    return {
+        "all_stats": _stat_a1(pairs),
+        "by_stat":   by_stat,
+    }
+
+
+# ── Analysis 2 — Miss Severity ────────────────────────────────────────
+
+def _miss_bucket(gap: float) -> str:
+    # miss_gap > 0 always (hit = actual >= tier, so misses are strictly below tier)
+    if gap <= 2.0:
+        return "near_miss"
+    if gap <= 5.0:
+        return "moderate_miss"
+    return "bad_miss"
+
+
+def _hit_bucket(margin: float) -> str:
+    if margin <= 2.0:
+        return "narrow_hit"
+    if margin <= 5.0:
+        return "moderate_hit"
+    return "strong_hit"
+
+
+def _severity_verdict(rates: dict, ns: dict) -> str:
+    near = rates.get("near_miss", 0)
+    mod  = rates.get("moderate_miss", 0)
+    bad  = rates.get("bad_miss", 0)
+    if any(ns.get(k, 0) < 20 for k in ("near_miss", "moderate_miss", "bad_miss")):
+        return "insufficient-sample"
+    if bad > mod > near and bad - near > 0.08:
+        return "stronger reversion with larger miss"
+    if near > bad and near - bad > 0.08:
+        return "inverted"
+    if abs(bad - near) <= 0.05:
+        return "flat"
+    return "flat"
+
+
+def bounce_back_analysis_2(pairs: pd.DataFrame) -> dict:
+    by_stat = {}
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sub = pairs[pairs["stat"] == stat]
+        if sub.empty:
+            continue
+
+        # Miss severity buckets
+        miss_df = sub[sub["prior_is_hit"] == 0.0].copy()
+        miss_df["bucket"] = miss_df["miss_gap"].apply(
+            lambda g: _miss_bucket(g) if pd.notna(g) else None
+        )
+        miss_buckets, miss_rates, miss_ns = {}, {}, {}
+        for bn in ("near_miss", "moderate_miss", "bad_miss"):
+            bdf = miss_df[miss_df["bucket"] == bn]
+            n   = len(bdf)
+            hr  = round(float(bdf["is_hit"].mean()), 4) if n > 0 else None
+            miss_buckets[bn] = {
+                "n": n,
+                "post_miss_hit_rate": hr,
+                "avg_gap": round(float(bdf["miss_gap"].mean()), 2) if n > 0 else None,
+                "flag": "insufficient_sample" if n < 20 else None,
+            }
+            miss_rates[bn] = hr or 0
+            miss_ns[bn]    = n
+
+        # Hit margin buckets
+        hit_df = sub[sub["prior_is_hit"] == 1.0].copy()
+        hit_df["bucket"] = hit_df["hit_margin"].apply(
+            lambda m: _hit_bucket(m) if pd.notna(m) else None
+        )
+        hit_buckets = {}
+        for bn in ("narrow_hit", "moderate_hit", "strong_hit"):
+            bdf = hit_df[hit_df["bucket"] == bn]
+            n   = len(bdf)
+            hit_buckets[bn] = {
+                "n": n,
+                "next_hit_rate": round(float(bdf["is_hit"].mean()), 4) if n > 0 else None,
+                "avg_margin":    round(float(bdf["hit_margin"].mean()), 2) if n > 0 else None,
+                "flag": "insufficient_sample" if n < 20 else None,
+            }
+
+        by_stat[stat] = {
+            "miss_buckets":             miss_buckets,
+            "hit_buckets":              hit_buckets,
+            "severity_gradient_verdict": _severity_verdict(miss_rates, miss_ns),
+        }
+    return {"by_stat": by_stat}
+
+
+# ── Analysis 3 — Streak Analysis ─────────────────────────────────────
+
+def _streak_verdict(s1: float, s2: float, s3p: float, n_s2: int, n_s3p: int) -> str:
+    if n_s2 < 15 or n_s3p < 15:
+        return "insufficient-sample"
+    max_streak = max(s2, s3p)
+    min_streak = min(s2, s3p)
+    if max_streak > s1 + 0.08:
+        return "reversion strengthens"
+    if min_streak < s1 - 0.08:
+        return "slump persists"
+    return "independent"
+
+
+def bounce_back_analysis_3(pairs: pd.DataFrame) -> dict:
+    by_stat = {}
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sub = pairs[pairs["stat"] == stat]
+        if sub.empty:
+            continue
+
+        stat_result = {}
+        s1_rate = s2_rate = s3p_rate = 0.0
+        n_s2 = n_s3p = 0
+
+        for state in ("streak_0", "streak_1", "streak_2", "streak_3plus"):
+            sdf = sub[sub["streak_state"] == state]
+            n   = len(sdf)
+            hr  = round(float(sdf["is_hit"].mean()), 4) if n > 0 else None
+            entry: dict = {"n": n, "next_hit_rate": hr}
+
+            if state in ("streak_1", "streak_2", "streak_3plus") and n > 0:
+                avg_gap = round(float(sdf["miss_gap"].mean()), 2) if sdf["miss_gap"].notna().any() else None
+                entry["avg_miss_gap"] = avg_gap
+
+            if state in ("streak_2", "streak_3plus"):
+                entry["flag"] = "insufficient_sample" if n < 15 else None
+
+            if state == "streak_1":
+                s1_rate = hr or 0.0
+            elif state == "streak_2":
+                s2_rate = hr or 0.0
+                n_s2    = n
+            elif state == "streak_3plus":
+                s3p_rate = hr or 0.0
+                n_s3p    = n
+
+            stat_result[state] = entry
+
+        stat_result["streak_verdict"] = _streak_verdict(s1_rate, s2_rate, s3p_rate, n_s2, n_s3p)
+        by_stat[stat] = stat_result
+
+    return {"by_stat": by_stat}
+
+
+# ── Bounce-Back Recommendations ───────────────────────────────────────
+
+def bounce_back_recommendations(a1: dict, a2: dict, a3: dict) -> tuple:
+    recs    = []
+    implies = []
+
+    # Analysis 1 — per stat
+    for stat, d in a1.get("by_stat", {}).items():
+        verdict  = d.get("verdict", "")
+        bb_lift  = d.get("bounce_back_lift") or 0
+        hh_lift  = d.get("hot_hand_lift") or 0
+        baseline = d.get("baseline_hit_rate") or 0
+        pm_rate  = d.get("post_miss_hit_rate") or 0
+        ph_rate  = d.get("post_hit_hit_rate") or 0
+        n_miss   = d.get("n_post_miss", 0)
+        n_hit    = d.get("n_post_hit", 0)
+
+        if verdict == "bounce-back":
+            recs.append(
+                f"{stat}: Post-miss hit rate {pm_rate*100:.1f}% vs baseline {baseline*100:.1f}% "
+                f"(lift={bb_lift:.3f}, n={n_miss}) — bounce-back signal confirmed"
+            )
+            implies.append(
+                f"{stat}: Add prompt instruction — 'If player missed their established "
+                f"{stat} tier last game, apply +3–5% confidence boost (bounce-back lift="
+                f"{bb_lift:.2f} confirmed over {n_miss} instances)'"
+            )
+        elif verdict == "hot-hand":
+            recs.append(
+                f"{stat}: Hot-hand effect confirmed — post-hit rate {ph_rate*100:.1f}% "
+                f"vs baseline {baseline*100:.1f}% (lift={hh_lift:.3f}, n={n_hit})"
+            )
+            implies.append(
+                f"{stat}: Post-hit momentum — player who hit {stat} tier last game has "
+                f"elevated hit rate next game (lift={hh_lift:.2f}); factor into confidence"
+            )
+        elif verdict == "slump-persistent":
+            recs.append(
+                f"{stat}: Slumps are persistent — post-miss hit rate {pm_rate*100:.1f}% "
+                f"BELOW baseline {baseline*100:.1f}% (lift={bb_lift:.3f}, n={n_miss}). "
+                f"Avoid post-miss {stat} picks."
+            )
+            implies.append(
+                f"{stat}: Add prompt instruction — 'If player missed {stat} last game, "
+                f"apply -5% confidence or prefer a lower tier (slump-persistent, lift="
+                f"{bb_lift:.2f} over {n_miss} instances)'"
+            )
+        elif verdict == "both":
+            recs.append(
+                f"{stat}: Sequential dependency in both directions — post-hit lift={hh_lift:.3f} "
+                f"(n={n_hit}), post-miss lift={bb_lift:.3f} (n={n_miss})"
+            )
+
+    # Analysis 1 — all-stats combined
+    all_d = a1.get("all_stats", {})
+    av    = all_d.get("verdict", "")
+    if av not in ("insufficient-sample", "independent", ""):
+        recs.append(
+            f"Overall ({av}): post-miss lift={all_d.get('bounce_back_lift',0):.3f} "
+            f"(n={all_d.get('n_post_miss',0)}), "
+            f"post-hit lift={all_d.get('hot_hand_lift',0):.3f} "
+            f"(n={all_d.get('n_post_hit',0)})"
+        )
+
+    # Analysis 2 — severity gradient
+    for stat, d in a2.get("by_stat", {}).items():
+        sv = d.get("severity_gradient_verdict", "")
+        if sv == "stronger reversion with larger miss":
+            bad  = d.get("miss_buckets", {}).get("bad_miss", {})
+            near = d.get("miss_buckets", {}).get("near_miss", {})
+            recs.append(
+                f"{stat} severity: bad misses (gap>5) show stronger bounce-back — "
+                f"bad {(bad.get('post_miss_hit_rate') or 0)*100:.1f}% (n={bad.get('n',0)}) "
+                f"vs near-miss {(near.get('post_miss_hit_rate') or 0)*100:.1f}% (n={near.get('n',0)})"
+            )
+            implies.append(
+                f"{stat}: Use miss severity in reasoning — a player who badly missed "
+                f"(>5 units below tier) deserves higher bounce-back confidence than a near-miss"
+            )
+
+    # Analysis 3 — streak verdicts
+    for stat, d in a3.get("by_stat", {}).items():
+        sv = d.get("streak_verdict", "")
+        if sv == "reversion strengthens":
+            s2 = d.get("streak_2", {})
+            recs.append(
+                f"{stat} streak: 2-game miss streak shows STRONGER reversion — "
+                f"hit rate {(s2.get('next_hit_rate') or 0)*100:.1f}% (n={s2.get('n',0)}) "
+                f"after 2 consecutive misses"
+            )
+            implies.append(
+                f"{stat}: '2-game miss streak → extra bounce-back confidence' — add to prompt"
+            )
+        elif sv == "slump persists":
+            recs.append(
+                f"{stat} streak: multi-game miss streaks are PERSISTENT — "
+                f"avoid players on 2+ consecutive {stat} misses"
+            )
+
+    if not recs:
+        recs.append(
+            "All signals are independent — prior game outcome does not predict next game "
+            "at currently measurable confidence levels across any stat."
+        )
+    if not implies:
+        implies.append(
+            "No prompt changes warranted — no confirmed sequential dependencies detected."
+        )
+
+    return recs, implies
+
+
+# ── Bounce-Back Stdout Report ─────────────────────────────────────────
+
+def print_bounce_back_report(a1: dict, a2: dict, a3: dict, meta: dict, recs: list, implies: list):
+    sep = "─" * 54
+    d   = meta["date_range"]
+    print(f"\n{'═'*54}")
+    print(f"BOUNCE-BACK BACKTEST — {d['start']} to {d['end']}")
+    print(f"Rolling window: {meta['rolling_window']} games | "
+          f"Total pairs: {meta['total_consecutive_pairs']:,}")
+    print(f"{'═'*54}")
+
+    # Analysis 1
+    all_d    = a1.get("all_stats", {})
+    baseline = all_d.get("baseline_hit_rate") or 0
+    ph_rate  = all_d.get("post_hit_hit_rate") or 0
+    pm_rate  = all_d.get("post_miss_hit_rate") or 0
+    hh_lift  = all_d.get("hot_hand_lift") or 0
+    bb_lift  = all_d.get("bounce_back_lift") or 0
+    n_hit    = all_d.get("n_post_hit", 0)
+    n_miss   = all_d.get("n_post_miss", 0)
+    verdict  = all_d.get("verdict", "?")
+
+    print(f"\nANALYSIS 1 — Simple Bounce-Back (all stats combined)")
+    print(f"  Baseline hit rate:    {baseline*100:.1f}%  (n={n_hit+n_miss:,})")
+    print(f"  Post-HIT hit rate:    {ph_rate*100:.1f}%  (n={n_hit:,})  "
+          f"lift: {hh_lift:.3f}  [{verdict}]")
+    print(f"  Post-MISS hit rate:   {pm_rate*100:.1f}%  (n={n_miss:,})  "
+          f"lift: {bb_lift:.3f}  [{verdict}]")
+    print(f"\n  By stat:")
+    hdr = f"  {'Stat':<5} {'Baseline':>9} {'Post-HIT':>9} {'Lift':>6} {'Post-MISS':>10} {'Lift':>6}  Verdict"
+    print(hdr)
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd = a1.get("by_stat", {}).get(stat)
+        if not sd:
+            continue
+        b  = sd.get("baseline_hit_rate") or 0
+        ph = sd.get("post_hit_hit_rate") or 0
+        pm = sd.get("post_miss_hit_rate") or 0
+        hl = sd.get("hot_hand_lift") or 0
+        bl = sd.get("bounce_back_lift") or 0
+        v  = sd.get("verdict", "?")
+        print(f"  {stat:<5} {b*100:>8.1f}%  {ph*100:>8.1f}%  {hl:>5.2f}"
+              f"  {pm*100:>9.1f}%  {bl:>5.2f}  [{v}]")
+
+    # Analysis 2
+    print(f"\n{sep}")
+    print("ANALYSIS 2 — Miss Severity (post-miss next-game hit rate)")
+    print()
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd = a2.get("by_stat", {}).get(stat)
+        if not sd:
+            continue
+        mb  = sd.get("miss_buckets", {})
+        nm  = mb.get("near_miss", {})
+        mo  = mb.get("moderate_miss", {})
+        bd  = mb.get("bad_miss", {})
+        nmr = (nm.get("post_miss_hit_rate") or 0) * 100
+        mor = (mo.get("post_miss_hit_rate") or 0) * 100
+        bdr = (bd.get("post_miss_hit_rate") or 0) * 100
+        v   = sd.get("severity_gradient_verdict", "?")
+        print(f"  {stat}:  near-miss {nmr:.1f}% (n={nm.get('n',0)}) | "
+              f"moderate {mor:.1f}% (n={mo.get('n',0)}) | "
+              f"bad {bdr:.1f}% (n={bd.get('n',0)}) → [{v}]")
+
+    # Analysis 3
+    print(f"\n{sep}")
+    print("ANALYSIS 3 — Streak Analysis (next-game hit rate by streak state)")
+    print()
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd = a3.get("by_stat", {}).get(stat)
+        if not sd:
+            continue
+        s0  = sd.get("streak_0",    {})
+        s1  = sd.get("streak_1",    {})
+        s2  = sd.get("streak_2",    {})
+        s3p = sd.get("streak_3plus",{})
+        r0  = (s0.get("next_hit_rate")  or 0) * 100
+        r1  = (s1.get("next_hit_rate")  or 0) * 100
+        r2  = (s2.get("next_hit_rate")  or 0) * 100
+        r3p = (s3p.get("next_hit_rate") or 0) * 100
+        f2  = "* " if (s2.get("n",  0) < 15) else ""
+        f3  = "* " if (s3p.get("n", 0) < 15) else ""
+        v   = sd.get("streak_verdict", "?")
+        print(f"  {stat}:  0-miss {r0:.1f}%(n={s0.get('n',0)}) | "
+              f"1-miss {r1:.1f}%(n={s1.get('n',0)}) | "
+              f"2-miss {f2}{r2:.1f}%(n={s2.get('n',0)}) | "
+              f"3+ {f3}{r3p:.1f}%(n={s3p.get('n',0)}) → [{v}]")
+    print("  (* = n < 15, insufficient sample)")
+
+    print(f"\n{sep}")
+    print("RECOMMENDATIONS")
+    for r in recs:
+        print(f"  → {r}")
+    print(f"\nPROMPT IMPLICATIONS (if signals confirmed)")
+    for i in implies:
+        print(f"  → {i}")
+    print(f"{'═'*54}\n")
+
+
+# ── Bounce-Back Entry Point ───────────────────────────────────────────
+
+def run_bounce_back_analysis(player_log: pd.DataFrame, args) -> None:
+    window      = args.window if args.window else ROLLING_WINDOW
+    stat_filter = getattr(args, "stat", None)
+    stats_to_run = [stat_filter] if stat_filter else list(STAT_COL.keys())
+
+    print(f"[backtest] Bounce-back mode | window={window} | stats={stats_to_run}")
+
+    all_pairs = []
+    for stat in stats_to_run:
+        stat_pairs = build_bounce_back_pairs(player_log, stat, window)
+        if not stat_pairs.empty:
+            all_pairs.append(stat_pairs)
+            print(f"[backtest] {stat}: {len(stat_pairs):,} valid consecutive pairs")
+        else:
+            print(f"[backtest] {stat}: no valid pairs")
+
+    if not all_pairs:
+        print("[backtest] No valid pairs built — cannot run bounce-back analysis.")
+        sys.exit(0)
+
+    pairs = pd.concat(all_pairs, ignore_index=True)
+    print(f"[backtest] Total pairs: {len(pairs):,}")
+
+    print("[backtest] Running Analysis 1 (simple bounce-back)...")
+    a1 = bounce_back_analysis_1(pairs)
+
+    print("[backtest] Running Analysis 2 (miss severity)...")
+    a2 = bounce_back_analysis_2(pairs)
+
+    print("[backtest] Running Analysis 3 (streak analysis)...")
+    a3 = bounce_back_analysis_3(pairs)
+
+    recs, implies = bounce_back_recommendations(a1, a2, a3)
+
+    date_min = pairs["game_date"].min()
+    date_max = pairs["game_date"].max()
+    date_min = date_min.strftime("%Y-%m-%d") if hasattr(date_min, "strftime") else str(date_min)
+    date_max = date_max.strftime("%Y-%m-%d") if hasattr(date_max, "strftime") else str(date_max)
+
+    meta = {
+        "generated_at":            dt.date.today().isoformat(),
+        "mode":                    "bounce-back",
+        "rolling_window":          window,
+        "date_range":              {"start": date_min, "end": date_max},
+        "total_consecutive_pairs": int(len(pairs)),
+        "pairs_by_stat":           {s: int((pairs["stat"] == s).sum()) for s in STAT_COL},
+    }
+
+    output = {
+        **meta,
+        "analysis_1_simple_bounce_back": a1,
+        "analysis_2_miss_severity":      a2,
+        "analysis_3_streak":             a3,
+        "recommendations":               recs,
+        "prompt_implications":           implies,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else BOUNCE_BACK_JSON
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[backtest] Results written → {out_path}")
+
+    print_bounce_back_report(a1, a2, a3, meta, recs, implies)
+
+
 # ── Stdout formatting ─────────────────────────────────────────────────
 
 def print_report(signal_results: dict, calibration: dict, meta: dict):
@@ -757,6 +1343,10 @@ def main():
                         help="Skip signal computation — only report tier calibration. Fast.")
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
+    parser.add_argument("--mode", type=str, default=None,
+                        help="Analysis mode: 'bounce-back' for sequential-game analysis")
+    parser.add_argument("--stat", type=str, default=None,
+                        help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
 
     print("[backtest] Loading data...")
@@ -770,6 +1360,11 @@ def main():
         sys.exit(0)
 
     window = args.window if args.window else ROLLING_WINDOW
+
+    # ── Bounce-back mode ──────────────────────────────────────────────
+    if getattr(args, "mode", None) == "bounce-back":
+        run_bounce_back_analysis(player_log, args)
+        sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────
     if args.calibration_only:

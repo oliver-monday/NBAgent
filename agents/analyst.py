@@ -478,6 +478,14 @@ KEY RULES — REST & FATIGUE:
   → Reduce confidence by 5–10% across all stats for that player.
 - rest_days ≥ 3 = well-rested; no downward adjustment needed.
 
+KEY RULES — SEQUENTIAL GAME CONTEXT:
+- REB slump-persistent (confirmed signal, n=150, window=20):
+  Post-miss REB hit rate drops from 85.5% → 74.0% (lift=0.866). Rebounds do NOT bounce back
+  the next game — a miss is predictive of another miss.
+  → If a player missed their REB tier last game, apply −5% confidence OR prefer one tier lower.
+  → This applies regardless of opponent or home/away. The pattern holds across conditions.
+- PTS, AST, 3PM: insufficient sequential signal. No adjustment needed based on last-game result.
+
 KEY RULES — SPREAD / BLOWOUT RISK:
 - "BLOWOUT_RISK=True" means this team is heavily favored (spread_abs > 8). Stars get pulled in
   Q4 garbage time when the game is decided early, killing OVER props on counting stats.
