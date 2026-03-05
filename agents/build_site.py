@@ -518,19 +518,22 @@ def generate_html(d: dict) -> str:
     .badge-MISS {{ background: rgba(239,68,68,0.15);  color: var(--miss); }}
     .badge-PARTIAL {{ background: rgba(234,179,8,0.15); color: #eab308; }}
     .parlay-legs {{ border-top: 1px solid var(--border); }}
-    .parlay-leg {{ display: flex; align-items: center; gap: 10px;
-                   padding: 9px 16px; border-bottom: 1px solid var(--border);
+    .parlay-leg {{ display: flex; align-items: center; gap: 8px;
+                   padding: 8px 14px; border-bottom: 1px solid var(--border);
                    font-size: 13px; }}
     .parlay-leg:last-child {{ border-bottom: none; }}
-    .leg-prop {{ width: 34px; height: 20px; border-radius: 4px;
-                 display: flex; align-items: center; justify-content: center;
-                 font-size: 9px; font-weight: 700; flex-shrink: 0; }}
-    .leg-player {{ font-weight: 600; flex: 1; min-width: 0;
-                   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
-    .leg-value {{ font-size: 13px; font-weight: 700; color: var(--accent2); white-space: nowrap; }}
-    .leg-matchup {{ font-size: 11px; color: var(--muted); white-space: nowrap; }}
-    .leg-conf {{ font-size: 10px; color: var(--muted); white-space: nowrap; }}
-    .leg-role {{ font-size: 10px; color: var(--muted); font-style: italic; white-space: nowrap; }}
+    .leg-main {{ flex: 1; min-width: 0; }}
+    .leg-name {{ font-weight: 600; font-size: 13px;
+                 white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+    .leg-sub {{ font-size: 11px; color: var(--muted); margin-top: 1px;
+                white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+    .leg-stat {{ display: flex; align-items: baseline; gap: 4px;
+                 flex-shrink: 0; }}
+    .leg-stat-value {{ font-size: 18px; font-weight: 800; color: var(--accent2); line-height: 1; }}
+    .leg-stat-type {{ font-size: 9px; font-weight: 700; padding: 2px 5px;
+                      border-radius: 4px; align-self: center; }}
+    .leg-conf {{ font-size: 10px; color: var(--muted); white-space: nowrap;
+                 flex-shrink: 0; margin-left: 2px; }}
     .leg-result-icon {{ font-size: 13px; flex-shrink: 0; }}
     .parlay-stats-banner {{ background: linear-gradient(135deg,rgba(244,63,142,0.08),rgba(108,99,255,0.08));
                             border: 1px solid var(--border); border-radius: 12px;
@@ -927,17 +930,19 @@ function renderParlays() {{
       if      (legGraded?.result === 'HIT')  legIcon = `<span class="leg-result-icon" style="color:var(--hit)">✓</span>`;
       else if (legGraded?.result === 'MISS') legIcon = `<span class="leg-result-icon" style="color:var(--miss)">✗</span>`;
 
-      const matchup = leg.opponent ? `${{leg.team}} vs ${{leg.opponent}}` : leg.team;
-      const role = leg.correlation_role && leg.correlation_role !== 'independent'
-        ? `<span class="leg-role">${{leg.correlation_role}}</span>` : '';
+      const ha      = leg.home_away === 'H' ? 'vs' : '@';
+      const matchup = leg.opponent ? `${{leg.team}} ${{ha}} ${{leg.opponent}}` : leg.team;
 
       html += `
         <div class="parlay-leg">
-          <div class="leg-prop ${{propColor(leg.prop_type)}}">${{leg.prop_type}}</div>
-          <div class="leg-player">${{leg.player_name}}</div>
-          <div class="leg-value">OVER ${{leg.pick_value}}</div>
-          <div class="leg-matchup">${{matchup}}</div>
-          ${{role}}
+          <div class="leg-main">
+            <div class="leg-name">${{leg.player_name}}</div>
+            <div class="leg-sub">${{matchup}}</div>
+          </div>
+          <div class="leg-stat">
+            <span class="leg-stat-value">${{leg.pick_value}}</span>
+            <span class="leg-stat-type ${{propColor(leg.prop_type)}}">${{leg.prop_type}}</span>
+          </div>
           <div class="leg-conf">${{leg.confidence_pct}}%</div>
           ${{legIcon}}
         </div>`;
