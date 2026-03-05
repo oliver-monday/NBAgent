@@ -310,15 +310,13 @@ def generate_html(d: dict) -> str:
               justify-content: space-between; position: sticky; top: 0; z-index: 10; }}
     .logo {{
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 22px;
+      font-size: 29px;
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      align-items: baseline;
     }}
-    .logo img {{ height: 36px; width: auto; display: block; }}
     .logo-nb {{ color: #f0f0f8; }}
     .logo-a {{
       background: linear-gradient(90deg, #f0f0f8 0%, #f0f0f8 15%, #E8703A 55%, #E8703A 100%);
@@ -594,7 +592,7 @@ def generate_html(d: dict) -> str:
 <body>
 
 <header>
-  <div class="logo"><img src="logo.png" alt="" /><span class="logo-nb">NB</span><span class="logo-a">A</span><span class="logo-gent">gent</span></div>
+  <div class="logo"><span class="logo-nb">NB</span><span class="logo-a">A</span><span class="logo-gent">gent</span></div>
   <div class="built-at">Updated {d["built_at"]}</div>
 </header>
 
