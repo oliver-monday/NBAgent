@@ -38,12 +38,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas anthropic
+          pip install pandas numpy anthropic
+
+      - name: Run Quant agent
+        run: python agents/quant.py
 
       - name: Run Analyst agent
         run: python agents/analyst.py
 
-      - name: Commit picks
+      - name: Run Parlay agent
+        run: python agents/parlay.py
+
+      - name: Commit picks and parlays
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -51,12 +57,19 @@ jobs:
           git fetch origin main
           git rebase --autostash origin/main
 
-          if [ -f "data/picks.json" ] && [ -n "$(git status --porcelain -- data/picks.json)" ]; then
-            git add data/picks.json
-            git commit -m "Analyst picks $(TZ=America/New_York date +%Y-%m-%d) [skip ci]"
-            git push origin HEAD:main
+          CHANGED=0
+          for f in "data/picks.json" "data/parlays.json" "data/player_stats.json"; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
+          if [ "$CHANGED" -eq 0 ]; then
+            echo "No changes to commit."
           else
-            echo "No pick changes to commit."
+            git commit -m "Analyst + Parlay picks $(TZ=America/New_York date +%Y-%m-%d) [skip ci]"
+            git push origin HEAD:main
           fi
 
       - name: Build and deploy frontend

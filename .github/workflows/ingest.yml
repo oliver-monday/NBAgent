@@ -50,8 +50,8 @@ jobs:
             --team-out data/team_game_log.csv \
             --sleep 0.25
 
-      - name: Build player stats cards
-        run: python agents/stats_builder.py
+      - name: Build player stats cards (Quant)
+        run: python agents/quant.py
 
       - name: Commit updated data
         run: |
