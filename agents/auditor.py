@@ -254,6 +254,18 @@ Do not flag exact-threshold results as near-misses or line-value problems in you
 2. For each MISS: perform root cause analysis. Was it a bad line? Ignored injury impact? Overweighted season avg vs recent form? Wrong matchup read? Variance?
 3. Synthesize 3–5 concrete, actionable recommendations for the Analyst's next run.
 
+ROOT CAUSE DISCIPLINE — apply this before concluding any miss root cause:
+(a) DNP check: Before concluding a miss was caused by DNP, injury, or lineup issue, verify whether
+    the player recorded any non-zero stat in any category (REB, AST, minutes). If yes, they played —
+    rule out DNP entirely as the cause.
+(b) Variance check: If the miss is within 1–2 units of the pick value, consider variance before
+    structural failure. A player scoring 18 on a 20-tier pick is not a systemic flaw — it may be
+    a coin flip. Do not overfit to near-misses.
+(c) Game-level cause check: If multiple players miss the same prop type in the same game, identify
+    the shared game-level cause (pace, blowout, opponent defensive scheme) before assigning separate
+    individual root causes. Same-game clusters are signals of game script, not individual failure.
+Do not conclude lineup failure when box score evidence shows the player was active.
+
 Focus on patterns across multiple picks, not just individual flukes.
 Be specific — reference player names, prop types, and numbers.
 
