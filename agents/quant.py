@@ -61,6 +61,9 @@ SPREAD_COMPETITIVE   = 6.5  # spread_abs ≤ this = competitive game
 SPREAD_BLOWOUT_RISK  = 8.0  # spread_abs > this for favored team → blowout risk flag
 SPREAD_BIG_FAVORITE  = 13.0 # spread_abs > this → cap analyst confidence at 80%
 MIN_SPREAD_GAMES     = 5    # min games per spread bucket for historical split
+B2B_MIN_GAMES        = 5    # min B2B games to compute b2b_hit_rates (else → one-tier-down flag)
+REST_DENSE_DAYS      = 5    # look-back window (days) for dense schedule detection
+REST_DENSE_THRESHOLD = 4    # games in REST_DENSE_DAYS window = dense schedule
 
 # Tier definitions
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -168,6 +171,51 @@ def build_b2b_teams(master_df: pd.DataFrame) -> set[str]:
         if a: teams_today.add(a)
 
     return teams_yesterday & teams_today
+
+
+def build_b2b_game_ids(master_df: pd.DataFrame) -> dict:
+    """
+    For each team, identify which historical game_ids represent a back-to-back
+    second night (the team played the previous calendar day).
+
+    Returns: {TEAM_ABBREV_UPPER: set_of_normalized_game_id_strings}
+
+    Used by compute_b2b_hit_rates() to split a player's game log into
+    B2B vs normal-rest games for quantified tier analysis.
+    """
+    df = master_df.copy()
+    df["_date"] = pd.to_datetime(df["game_date"], errors="coerce").dt.date
+    df["_gid"]  = df["game_id"].astype(str).str.split(".").str[0].str.strip()
+
+    # Build flat list of (team, date, game_id)
+    records = []
+    for _, row in df.iterrows():
+        gid   = row["_gid"]
+        gdate = row["_date"]
+        if pd.isna(gdate):
+            continue
+        h = str(row.get("home_team_abbrev", "") or "").upper().strip()
+        a = str(row.get("away_team_abbrev", "") or "").upper().strip()
+        if h: records.append((h, gdate, gid))
+        if a: records.append((a, gdate, gid))
+
+    if not records:
+        return {}
+
+    rdf = pd.DataFrame(records, columns=["team", "date", "game_id"])
+    rdf = rdf.sort_values(["team", "date"]).reset_index(drop=True)
+
+    b2b: dict = {}
+    for team, grp in rdf.groupby("team"):
+        grp = grp.sort_values("date").reset_index(drop=True)
+        for i in range(1, len(grp)):
+            prev_date = grp.loc[i - 1, "date"]
+            curr_date = grp.loc[i, "date"]
+            if isinstance(prev_date, dt.date) and isinstance(curr_date, dt.date):
+                if (curr_date - prev_date).days == 1:
+                    b2b.setdefault(team, set()).add(grp.loc[i, "game_id"])
+
+    return b2b
 
 
 # ── Game spread context ───────────────────────────────────────────────
@@ -598,6 +646,87 @@ def compute_spread_split_hit_rates(
     return result
 
 
+def compute_b2b_hit_rates(
+    player_games: pd.DataFrame,
+    b2b_game_ids: dict,
+    team: str,
+    stat: str,
+) -> dict | None:
+    """
+    Compute tier hit rates specifically on back-to-back second-night games
+    for this player.
+
+    Returns {"hit_rates": {str(tier): float}, "n": int} when sample ≥ B2B_MIN_GAMES.
+    Returns None when sample is too small — caller should apply one-tier-down fallback.
+    """
+    team_b2bs = b2b_game_ids.get(team.upper(), set())
+    if not team_b2bs or player_games.empty:
+        return None
+
+    pgl = player_games.copy()
+    pgl["_gid"] = pgl["game_id"].astype(str).str.split(".").str[0].str.strip()
+
+    b2b_games = pgl[pgl["_gid"].isin(team_b2bs)]
+    n = len(b2b_games)
+    if n < B2B_MIN_GAMES:
+        return None
+
+    col   = STAT_COL[stat]
+    tiers = TIERS[stat]
+    hit_rates = {str(t): round(float((b2b_games[col] > t).sum()) / n, 3) for t in tiers}
+    return {"hit_rates": hit_rates, "n": n}
+
+
+def compute_rest_context(team_abbrev: str, master_df: pd.DataFrame) -> dict:
+    """
+    Compute rest and schedule-density context for a team relative to TODAY.
+
+    Looks at all games before today to determine:
+      - rest_days:      int — days since the team's last game
+                        (0 = back-to-back, 1 = one day rest, etc.)
+      - games_last_7:   int — games played in the 7 days before today
+      - dense_schedule: bool — True if REST_DENSE_THRESHOLD+ games in REST_DENSE_DAYS days
+
+    Returns: {"rest_days": int | None, "games_last_7": int, "dense_schedule": bool}
+    """
+    if master_df.empty:
+        return {"rest_days": None, "games_last_7": 0, "dense_schedule": False}
+
+    team = team_abbrev.upper().strip()
+    df   = master_df.copy()
+    df["_date"] = pd.to_datetime(df["game_date"], errors="coerce")
+
+    today_ts = pd.Timestamp(TODAY)
+
+    # All past games for this team
+    team_games = df[
+        (
+            (df["home_team_abbrev"].astype(str).str.upper().str.strip() == team) |
+            (df["away_team_abbrev"].astype(str).str.upper().str.strip() == team)
+        ) &
+        (df["_date"] < today_ts)
+    ].sort_values("_date", ascending=False)
+
+    if team_games.empty:
+        return {"rest_days": None, "games_last_7": 0, "dense_schedule": False}
+
+    last_date  = team_games.iloc[0]["_date"]
+    rest_days  = int((today_ts - last_date).days)
+
+    cutoff_7   = today_ts - pd.Timedelta(days=7)
+    cutoff_den = today_ts - pd.Timedelta(days=REST_DENSE_DAYS)
+
+    games_last_7   = int((team_games["_date"] >= cutoff_7).sum())
+    games_last_den = int((team_games["_date"] >= cutoff_den).sum())
+    dense          = games_last_den >= REST_DENSE_THRESHOLD
+
+    return {
+        "rest_days":      rest_days,
+        "games_last_7":   games_last_7,
+        "dense_schedule": dense,
+    }
+
+
 def best_tier(hit_rates: dict) -> dict | None:
     tiers_sorted = sorted(hit_rates.keys(), key=lambda x: int(x), reverse=True)
     for t in tiers_sorted:
@@ -645,6 +774,7 @@ def build_player_stats(
     whitelist: set,
     game_spreads: dict | None = None,
     master_df: pd.DataFrame | None = None,
+    b2b_game_ids: dict | None = None,
 ) -> dict:
 
     team_to_opp = {}
@@ -659,6 +789,12 @@ def build_player_stats(
         team_to_game_key[a] = key
 
     teams_today = set(team_to_opp.keys())
+
+    # Pre-compute rest context per team (avoid recomputing for every player)
+    _rest_cache: dict = {}
+    if master_df is not None and not master_df.empty:
+        for _team in teams_today:
+            _rest_cache[_team] = compute_rest_context(_team, master_df)
 
     log = player_log[player_log["team_abbrev"].str.upper().isin(teams_today)].copy()
     if whitelist:
@@ -732,12 +868,31 @@ def build_player_stats(
         else:
             spread_split_hit_rates = {}
 
+        # B2B quantified hit rates — per stat, using historical B2B second-night games
+        if b2b_game_ids is not None:
+            b2b_hit_rates = {
+                stat: compute_b2b_hit_rates(grp, b2b_game_ids, team, stat)
+                for stat in TIERS
+            }
+        else:
+            b2b_hit_rates = {stat: None for stat in TIERS}
+
+        # Rest / schedule density context for today
+        rest_ctx      = _rest_cache.get(team, {})
+        rest_days     = rest_ctx.get("rest_days")
+        games_last_7  = rest_ctx.get("games_last_7", 0)
+        dense_schedule = rest_ctx.get("dense_schedule", False)
+
         stats_out[player_name] = {
             "team": team,
             "opponent": opponent,
             "games_available": len(games_10),
             "last_updated": TODAY_STR,
             "on_back_to_back": on_b2b,
+            "rest_days": rest_days,
+            "games_last_7": games_last_7,
+            "dense_schedule": dense_schedule,
+            "b2b_hit_rates": b2b_hit_rates,
             "today_spread": today_spread,
             "spread_abs": spread_abs,
             "blowout_risk": blowout_risk,
@@ -784,6 +939,9 @@ def main():
     if b2b_teams:
         print(f"[quant] Back-to-back teams: {', '.join(sorted(b2b_teams))}")
 
+    b2b_game_ids = build_b2b_game_ids(master_df)
+    print(f"[quant] B2B game IDs built for {len(b2b_game_ids)} teams")
+
     opp_defense = build_opp_defense(team_log)
     print(f"[quant] Opponent defense computed for {len(opp_defense)} teams")
 
@@ -806,6 +964,7 @@ def main():
         player_log, b2b_teams, opp_defense, game_pace,
         todays_games, teammate_correlations, whitelist,
         game_spreads=game_spreads, master_df=master_df,
+        b2b_game_ids=b2b_game_ids,
     )
     print(f"[quant] Built stats cards for {len(player_stats)} players")
 
@@ -820,12 +979,14 @@ def main():
         picks = [f"{stat}≥{b[stat]['tier']}({int(b[stat]['hit_rate']*100)}%)"
                  for stat in b if b[stat]]
         b2b_flag  = " [B2B]" if s["on_back_to_back"] else ""
+        rest_info = f" rest={s.get('rest_days', '?')}d" if not s["on_back_to_back"] else ""
+        dense_flag = " [DENSE]" if s.get("dense_schedule") else ""
         opp       = s.get("opp_defense") or {}
         opp_pts   = opp.get("PTS", {}).get("rating", "?")
         pace      = s.get("game_pace") or {}
         pace_tag  = pace.get("pace_tag", "?")
         n_corr    = len(s.get("teammate_correlations", {}))
-        print(f"  {name} ({s['team']} vs {s['opponent']}{b2b_flag}) "
+        print(f"  {name} ({s['team']} vs {s['opponent']}{b2b_flag}{rest_info}{dense_flag}) "
               f"opp-PTS:{opp_pts} pace:{pace_tag} corr-partners:{n_corr} | "
               f"{' '.join(picks) if picks else 'no qualifying tiers'}")
 

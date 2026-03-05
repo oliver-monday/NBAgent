@@ -73,6 +73,15 @@ Quant output. One entry per whitelisted player playing today.
     "games_available": 10,
     "last_updated": "YYYY-MM-DD",
     "on_back_to_back": false,
+    "rest_days": 2,               // days since team's last game (0=B2B, 1=1 day rest, etc.); null if no history
+    "games_last_7": 4,            // games played in the 7 days before today
+    "dense_schedule": false,      // true when 4+ games played in the last 5 days
+    "b2b_hit_rates": {
+      "PTS": {"hit_rates": {"10": 1.0, "15": 0.9, "20": 0.7, "25": 0.5, "30": 0.2}, "n": 8},
+      "REB": null,                // null = fewer than 5 B2B games (Analyst applies one-tier-down)
+      "AST": {"hit_rates": {...}, "n": 6},
+      "3PM": null
+    },
     "today_spread": -6.5,         // signed for this team (neg = favored); null if unavailable
     "spread_abs": 6.5,            // absolute value; null if unavailable
     "blowout_risk": false,        // true when is_favorite AND spread_abs > 8.0

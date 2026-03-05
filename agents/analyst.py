@@ -288,6 +288,11 @@ def build_quant_context(player_stats: dict) -> str:
         blowout_risk     = s.get("blowout_risk", False)
         spread_abs       = s.get("spread_abs")
         spread_splits    = s.get("spread_split_hit_rates") or {}
+        on_b2b           = s.get("on_back_to_back", False)
+        rest_days        = s.get("rest_days")
+        games_last_7     = s.get("games_last_7", 0)
+        dense_schedule   = s.get("dense_schedule", False)
+        b2b_hit_rates    = s.get("b2b_hit_rates") or {}
 
         stat_parts = []
         for stat in ("PTS", "REB", "AST", "3PM"):
@@ -318,18 +323,39 @@ def build_quant_context(player_stats: dict) -> str:
                 if blow_data else "n/a"
             )
 
+            # B2B hit rate at this tier (only shown when player is on B2B today)
+            b2b_stat = b2b_hit_rates.get(stat)
+            if on_b2b:
+                if b2b_stat is not None:
+                    b2b_pct = int(round(b2b_stat["hit_rates"].get(str(tier), 0) * 100))
+                    b2b_str = f"{b2b_pct}%({b2b_stat['n']}g)"
+                else:
+                    b2b_str = "<5g"  # signal to apply one-tier-down fallback
+                b2b_field = f" b2b={b2b_str}"
+            else:
+                b2b_field = ""
+
             stat_parts.append(
                 f"  {stat}: tier={tier} overall={overall_pct}% "
                 f"vs_soft={soft_str} vs_tough={tough_str} "
                 f"competitive={comp_str} blowout_games={blow_str} "
-                f"opp_today={opp_rating} trend={trend}"
+                f"opp_today={opp_rating} trend={trend}{b2b_field}"
             )
 
         if stat_parts:
             spread_info  = f"spread_abs={spread_abs:.1f}" if spread_abs is not None else "spread=n/a"
             blowout_flag = " BLOWOUT_RISK=True" if blowout_risk else ""
+            # Rest/fatigue flags in header
+            if on_b2b:
+                rest_flag = " B2B"
+            elif rest_days is not None:
+                rest_flag = f" rest={rest_days}d"
+            else:
+                rest_flag = ""
+            dense_flag = " DENSE" if dense_schedule else ""
+            l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             lines.append(
-                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}):\n"
+                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}):\n"
                 + "\n".join(stat_parts)
             )
 
@@ -407,6 +433,17 @@ KEY RULES — MATCHUP QUALITY:
   confidence or move to a lower tier — do not pick based on the overall rate alone.
 - If vs_soft is significantly higher than overall, you may pick a higher tier than L10 suggests.
 - "n/a" means insufficient sample (<3 games) — fall back to overall rate only.
+
+KEY RULES — REST & FATIGUE:
+- Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),
+  "DENSE" (4+ games in 5 nights), and "L7:Xg" (games played in last 7 days).
+- When "B2B" is shown:
+  → Use "b2b=" rate instead of overall hit rate for tier selection.
+  → If b2b="<5g" (fewer than 5 B2B games in history), apply a conservative one-tier-down
+    adjustment from your normal best tier. Do not pick the same tier as non-B2B.
+- When "DENSE" is shown (even without B2B): cumulative fatigue is likely.
+  → Reduce confidence by 5–10% across all stats for that player.
+- rest_days ≥ 3 = well-rested; no downward adjustment needed.
 
 KEY RULES — SPREAD / BLOWOUT RISK:
 - "BLOWOUT_RISK=True" means this team is heavily favored (spread_abs > 8). Stars get pulled in

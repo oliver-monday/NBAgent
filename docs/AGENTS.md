@@ -45,6 +45,9 @@ SPREAD_COMPETITIVE = 6.5  # spread_abs ≤ this = competitive game
 SPREAD_BLOWOUT_RISK = 8.0 # spread_abs > this for favored team → blowout risk flag
 SPREAD_BIG_FAVORITE = 13.0 # spread_abs > this → cap analyst confidence at 80%
 MIN_SPREAD_GAMES   = 5    # min games per spread bucket for historical split
+B2B_MIN_GAMES      = 5    # min B2B games to produce b2b_hit_rates (else → one-tier-down flag)
+REST_DENSE_DAYS    = 5    # look-back window (days) for dense schedule detection
+REST_DENSE_THRESHOLD = 4  # games in REST_DENSE_DAYS window = dense_schedule=True
 ```
 
 **Tier definitions:**
@@ -64,6 +67,10 @@ TPM_TIERS = [1, 2, 3, 4]
 - `home_away_splits` — best qualifying tier split by H/A
 - `minutes_trend` — increasing / stable / decreasing
 - `on_back_to_back` — bool
+- `rest_days` — int; days since team's last game (0 = B2B, 1 = 1 day rest, etc.); null if no history
+- `games_last_7` — int; games played in the 7 days before today
+- `dense_schedule` — bool; True when team played 4+ games in the last 5 days
+- `b2b_hit_rates` — per stat: `{"hit_rates": {tier: float}, "n": int}` computed from historical B2B second-night games; null per stat when fewer than 5 B2B games exist (Analyst falls back to one-tier-down)
 - `today_spread` — this team's signed spread for today's game (negative = favored); null if unavailable
 - `spread_abs` — absolute value of today's spread; null if unavailable
 - `blowout_risk` — bool; True when team is favored AND spread_abs > 8.0

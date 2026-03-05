@@ -18,6 +18,7 @@
 | `SyntaxWarning: invalid escape sequence '\d'` in build_site.py | Pre-existing cosmetic warning in JS canvas regex block — does not affect runtime |
 | **Improvement Proposal #2 — Opponent-Specific Tier Hit Rates** | Implemented in `quant.py` (`compute_matchup_tier_hit_rates()`, `MIN_MATCHUP_GAMES=3`) and `analyst.py` (`load_player_stats()`, `build_quant_context()`, new QUANT STATS prompt section). `player_stats.json` now includes `matchup_tier_hit_rates` field; analyst prompt instructs Claude to down/upgrade tiers based on vs_soft/vs_tough deltas. |
 | **P1 — Game Script Filter (Spread-Adjusted Blowout Risk)** | Implemented across `espn_daily_ingest.py` (spreads collected from ESPN Core odds API via `fetch_moneylines_for_game()`), `quant.py` (`build_game_spreads()`, `compute_spread_split_hit_rates()`, `today_spread`/`spread_abs`/`blowout_risk`/`spread_split_hit_rates` in player output), `analyst.py` (`build_quant_context()` shows spread + blowout flag per player, prompt rules: down one tier when BLOWOUT_RISK=True, cap confidence at 80% when spread_abs > 13). Historical coverage limited to Oct 21–Nov 13, 2025; accumulates from March 2026 forward. |
+| **P1 (formerly) — B2B Quantified Tier Adjustment + P3 (formerly) — Days of Rest / Schedule Density** | Implemented together in `quant.py`: `build_b2b_game_ids()` builds historical B2B game ID set per team; `compute_b2b_hit_rates()` computes tier hit rates on B2B second-night games per player (null when <5 games); `compute_rest_context()` computes `rest_days`, `games_last_7`, `dense_schedule` from nba_master dates. `build_player_stats()` extended with `b2b_hit_rates`, `rest_days`, `games_last_7`, `dense_schedule` in output. `analyst.py`: `build_quant_context()` shows `B2B`, `rest=Xd`, `DENSE`, `L7:Xg` flags per player header and `b2b=` rate per stat line when on B2B. Prompt adds KEY RULES — REST & FATIGUE block: use b2b= rates when B2B, one-tier-down fallback when <5g, 5-10% confidence reduction for DENSE. |
 
 ---
 
@@ -58,20 +59,7 @@
 
 ---
 
-#### P1 — Back-to-Back Quantified Tier Adjustment
-**Priority: MEDIUM — known hole, currently handled qualitatively only**
-
-**What:** Compute each player's tier hit rate specifically on B2B second nights vs. normal rest. Store as `b2b_hit_rates` alongside normal `tier_hit_rates` in `player_stats.json`.
-
-**Why:** B2B fatigue is a real effect but currently a soft warning in the prompt. If a player's PTS tier 20 drops from 78% normally to 45% on B2Bs, the correct pick is tier 15 — this correction only happens if Claude reasons about it unprompted, which is inconsistent.
-
-**Where:** `quant.py` — filter historical games where the player's team played the night before (reuses `build_b2b_teams()` logic applied retroactively using `nba_master.csv` date pairs). Analyst prompt: "When `on_back_to_back = true`, use `b2b_hit_rates` instead of `tier_hit_rates`. If B2B sample <5 games, apply a conservative one-tier-down adjustment."
-
-**Note:** Implement together with P2 (Days of Rest) — both use `nba_master.csv` date logic and extend the same player_stats.json rest/fatigue context block.
-
----
-
-#### P2 — Positional DvP (Defense vs. Position)
+#### P1 — Positional DvP (Defense vs. Position)
 **Priority: MEDIUM — upgrades opp_defense from team-level to position-aware**
 
 **What:** Split opponent's allowed stats by the position of the player who scored/rebounded/assisted. Add a `position` column (PG/SG/SF/PF/C) to `player_whitelist.csv`. Compute allowed PTS/REB/AST per position group per opposing team. Replaces or supplements the current team-level `opp_defense_rating`.
@@ -84,20 +72,7 @@
 
 ---
 
-#### P3 — Days of Rest / Schedule Density
-**Priority: MEDIUM — light lift, more precise than binary B2B flag**
-
-**What:** Per player: `days_since_last_game`, `games_last_7_days`, `dense_schedule` bool (4+ games in 5 nights). All derived from `nba_master.csv` game dates — no new data sources.
-
-**Why:** The current `on_back_to_back` flag is binary and misses softer fatigue signals. A player on 1 day rest after 3 games in 4 nights is meaningfully different from a player on 3 days rest, even if neither is a true B2B. Schedule density captures cumulative fatigue that the binary flag cannot.
-
-**Where:** `quant.py` — ~20 lines of date arithmetic on `nba_master.csv`. Adds `rest_days`, `games_last_7`, `dense_schedule` to `player_stats.json`. `analyst.py` — brief prompt instruction for rest context alongside existing B2B flag.
-
-**Note:** Implement together with P1 (B2B Quantified) as a combined rest/fatigue block.
-
----
-
-#### P4 — Rolling Volatility Score Per Player Per Stat
+#### P2 — Rolling Volatility Score Per Player Per Stat
 **Priority: MEDIUM — prevents overconfidence in streaky players**
 
 **What:** Standard deviation of binary hit outcomes over the last 20 games at the best tier for each stat. Express as `"consistent"` (σ < 0.3), `"moderate"` (0.3–0.4), or `"volatile"` (σ > 0.4).
@@ -108,7 +83,7 @@
 
 ---
 
-#### P5 — Shooting Efficiency Regression Flag
+#### P3 — Shooting Efficiency Regression Flag
 **Priority: LOWER — high signal for PTS props, requires ingest schema change**
 
 **What:** L5 vs. L20 shooting % delta per player. Flag players shooting materially above/below season FG% over the last 5 games as regression candidates. Applied specifically as a PTS confidence modifier, not universal.
@@ -121,7 +96,7 @@
 
 ---
 
-#### P6 — Tier-Walk Audit Trail in Pick Output
+#### P4 — Tier-Walk Audit Trail in Pick Output
 **Priority: LOWER — improves feedback loop, compounds over time**
 
 **What:** Add a `tier_walk` field to the Analyst output schema documenting Claude's walk-down reasoning, e.g. `"30:3/10 25:5/10 20:8/10→pick"`.
@@ -134,8 +109,7 @@
 
 ## Implementation Notes
 
-- **P1 (B2B + Days of Rest)** — implement together in one session; both use `nba_master.csv` date logic and populate the same rest/fatigue context block in `player_stats.json`.
-- **P2 (Positional DvP)** — requires adding `position` column to `player_whitelist.csv` before coding begins. Manual step, ~5 minutes.
-- **P4 (Volatility) and P6 (Tier-Walk)** — fully independent of each other and all other proposals. Can be implemented in any order.
-- **P5 (Shooting Regression)** — requires `espn_player_ingest.py` schema change. Plan as a standalone session; do not bundle with quant-only changes.
+- **P1 (Positional DvP)** — requires adding `position` column to `player_whitelist.csv` before coding begins. Manual step, ~5 minutes.
+- **P2 (Volatility) and P4 (Tier-Walk)** — fully independent of each other and all other proposals. Can be implemented in any order.
+- **P3 (Shooting Regression)** — requires `espn_player_ingest.py` schema change. Plan as a standalone session; do not bundle with quant-only changes.
 - **#1 (Teammate Absence Delta)** — highest long-run alpha; revisit at season start when full-year DNP data exists.
