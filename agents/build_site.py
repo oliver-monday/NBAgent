@@ -159,7 +159,7 @@ def load_injuries_display() -> dict:
 
     # ── Format timestamp ────────────────────────────────────────────────
     fetched_at = None
-    for key in ("fetched_at", "as_of", "timestamp", "updated_at", "scraped_at"):
+    for key in ("fetched_at", "built_at_utc", "as_of", "timestamp", "updated_at", "scraped_at"):
         if key in raw and isinstance(raw[key], str):
             fetched_at = raw[key]
             break
@@ -175,9 +175,11 @@ def load_injuries_display() -> dict:
     # ── Raw injury data: team_abbrev → player list ──────────────────────
     inj_teams = {k: v for k, v in raw.items() if isinstance(v, list)}
 
-    # ── Whitelist: active player names + abbrev alt map ─────────────────
-    whitelist_names = set()   # lowercased player names
-    abbr_alt_map    = {}      # alt_abbr.upper() → canonical_abbr.upper()
+    # ── Whitelist: (canonical_team, last_name) pairs + abbrev alt map ───
+    # Rotowire uses abbreviated names ("C. Flagg", "M. Buzelis") so we
+    # match on last name scoped to the canonical team abbreviation.
+    whitelist_team_last = set()   # {(canonical_abbr, last_name_lower)}
+    abbr_alt_map        = {}      # alt_abbr.upper() → canonical_abbr.upper()
     if WHITELIST_CSV.exists():
         try:
             import pandas as pd
@@ -185,28 +187,44 @@ def load_injuries_display() -> dict:
             wl["active"] = wl["active"].fillna("1")
             active = wl[wl["active"].str.strip() == "1"]
             for _, row in active.iterrows():
-                whitelist_names.add(str(row["player_name"]).strip().lower())
                 canonical = str(row["team_abbr"]).strip().upper()
                 alt = str(row.get("team_abbr_alt", "") or "").strip().upper()
                 if alt:
                     abbr_alt_map[alt] = canonical
+                full_name = str(row["player_name"]).strip()
+                last = full_name.rsplit(" ", 1)[-1].lower()
+                whitelist_team_last.add((canonical, last))
         except Exception:
             pass
 
+    # Static fallback for known variants not always present in whitelist alt column
+    _STATIC_NORM = {"GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
+                    "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA"}
+
     def normalize(abbr: str) -> str:
         a = str(abbr).strip().upper()
-        return abbr_alt_map.get(a, a)
+        return abbr_alt_map.get(a) or _STATIC_NORM.get(a, a)
+
+    def extract_last(raw_name: str) -> str:
+        """Extract last name from Rotowire format ('C. Flagg' or 'Seth Curry')."""
+        n = str(raw_name).strip()
+        # "F. LastName" abbreviated format
+        if len(n) >= 3 and n[1] == "." and n[2] == " ":
+            return n[3:]
+        # Full name — everything after first space
+        parts = n.split(" ", 1)
+        return parts[1] if len(parts) > 1 else n
 
     def whitelisted_injuries(team_abbr: str) -> list:
-        """Injuries for a team, filtered to whitelisted players only."""
+        """Return injuries for a team filtered to whitelisted players only."""
         norm = normalize(team_abbr)
         players = inj_teams.get(norm) or inj_teams.get(team_abbr) or []
-        if not whitelist_names:
+        if not whitelist_team_last:
             return players
         return [
             p for p in players
-            if str(p.get("player_name") or p.get("name") or "").strip().lower()
-               in whitelist_names
+            if (norm, extract_last(p.get("player_name") or p.get("name") or "").lower())
+               in whitelist_team_last
         ]
 
     # ── Today's games from nba_master.csv ───────────────────────────────
@@ -219,8 +237,8 @@ def load_injuries_display() -> dict:
         df["game_date"] = df["game_date"].astype(str).str[:10]
         today_rows = df[df["game_date"] == TODAY_STR]
         for _, row in today_rows.iterrows():
-            away = str(row.get("away_team_abbrev", "") or "").strip().upper()
-            home = str(row.get("home_team_abbrev", "") or "").strip().upper()
+            away = normalize(str(row.get("away_team_abbrev", "") or "").strip())
+            home = normalize(str(row.get("home_team_abbrev", "") or "").strip())
             if not away or not home or away == "NAN" or home == "NAN":
                 continue
 
