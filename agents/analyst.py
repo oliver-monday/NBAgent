@@ -32,6 +32,7 @@ INJURIES_JSON  = DATA / "injuries_today.json"
 AUDIT_LOG_JSON = DATA / "audit_log.json"
 PICKS_JSON     = DATA / "picks.json"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
+CONTEXT_MD     = ROOT / "context" / "nba_season_context.md"
 
 ET = ZoneInfo("America/New_York")
 TODAY = dt.datetime.now(ET).date()
@@ -219,9 +220,34 @@ def build_audit_context(audit_entries: list[dict]) -> str:
     return "\n".join(lines)
 
 
+
+def load_season_context() -> str:
+    """
+    Load the manually-maintained NBA season context document.
+    Injected into the prompt between the injury report and player game logs
+    so the Analyst can correctly interpret both before making picks.
+    Returns empty string gracefully if file is missing — never blocks a run.
+    """
+    if not CONTEXT_MD.exists():
+        print("[analyst] WARNING: context/nba_season_context.md not found, skipping.")
+        return ""
+    try:
+        text = CONTEXT_MD.read_text(encoding="utf-8").strip()
+        # Strip HTML comment header block if present
+        if text.startswith("<!--"):
+            end = text.find("-->")
+            if end != -1:
+                text = text[end + 3:].strip()
+        print(f"[analyst] Season context loaded ({len(text.split())} words)")
+        return text
+    except Exception as e:
+        print(f"[analyst] WARNING: could not load season context: {e}")
+        return ""
+
+
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str) -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str) -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -263,6 +289,7 @@ A player who averages 21 pts but only clears 20 half the time is a 15-tier pick,
 - Minimum 5 recent games required to evaluate any player
 - Skip players listed as OUT or DOUBTFUL
 - Factor in teammate injuries (affects usage/role), back-to-back fatigue, home/away splits
+- Use SEASON CONTEXT to distinguish stable baselines from genuine injury-driven role changes
 - Pick as many qualifying props as there are — don't limit volume artificially
 - Only output picks with confidence_pct ≥ 70
 
@@ -271,6 +298,9 @@ A player who averages 21 pts but only clears 20 half the time is a 15-tier pick,
 
 ## CURRENT INJURY REPORT
 {injuries_block}
+
+## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
+{season_context if season_context else "No season context file found."}
 
 ## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
@@ -400,7 +430,9 @@ def main():
 
     audit_context = build_audit_context(audit_entries)
 
-    prompt = build_prompt(games, player_context, injuries, audit_context)
+    season_context = load_season_context()
+
+    prompt = build_prompt(games, player_context, injuries, audit_context, season_context)
 
     picks = call_analyst(prompt)
     print(f"[analyst] Claude returned {len(picks)} picks")
