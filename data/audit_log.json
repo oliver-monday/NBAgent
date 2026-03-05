@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "date": "2026-03-04",
+    "total_picks": 32,
+    "hits": 25,
+    "misses": 7,
+    "no_data": 0,
+    "hit_rate_pct": 78.1,
+    "reinforcements": [
+      "Elite scorer floors held: SGA (26 PTS vs 25 line), Kawhi (29 PTS vs 20 line), and Maxey (25 PTS exact hit vs 25 line) all validated. When a player posts 10/10 recent hit rates on a scoring prop against soft-to-mid defenses, the model's confidence in the 90-95% range was well-calibrated. These picks formed the reliable backbone of four out of five parlays.",
+      "Injury-elevated usage reads were accurate: With Tatum out, Derrick White scored 29 PTS (vs 10 line) and Jaylen Brown scored 20 PTS and grabbed 11 REB. The logic of redistributing primary usage to secondary options in injury-impacted games produced reliable returns, particularly on conservative lines like White PTS o10.",
+      "Charlotte's young scorers (Miller, Knueppel) held their floors against a tough Boston defense: Miller hit 18 PTS (vs 15 line) and Knueppel exploded for 20 PTS (vs 10 line) and 4 REB (vs 4 line, exact). Setting conservative thresholds for developing volume scorers facing tough defenses \u2014 rather than projecting ceiling \u2014 was the correct approach and yielded consistent results.",
+      "Low-threshold 3PM props were highly reliable: Brandon Miller (2 threes made, 2 line), LaMelo Ball (4 threes made, 2 line), Derrick White (3 threes made, 2 line), and Kon Knueppel (4 threes made, 1 line) all hit comfortably. Setting 3PM lines at 1 or 2 for high-volume shooters is a strong, repeatable strategy with minimal variance exposure.",
+      "Giannis PTS over 20 hit (24 actual) while his REB over 8 missed badly (5 actual). This reinforces that scoring props for dominant offensive players are more reliable than rebounding props, where game flow, foul trouble, and opponent boxing-out schemes introduce far greater variance."
+    ],
+    "lessons": [
+      "Payton Pritchard DNP or severe restriction (0 PTS, 0 AST actual) suggests a late injury scratch or load management decision was not captured in the pre-game assessment. Two picks were placed on Pritchard at 75% confidence with meaningful thresholds (10 PTS, 4 AST), and both missed entirely with 0 production. This is a lineup-confirmation failure \u2014 picks on players with known health uncertainty or limited rotational security must be contingent on confirmed active status.",
+      "LaMelo Ball's AST prop (6 line, 4 actual) failed because the threshold was set at the high end of his assist range against a tough Boston defense. Boston's defensive scheme likely pressured CHA's half-court sets, reducing clean passing lanes. Using Boston's ranking as 'tough' on defense should have flagged this as a suppression game for assist totals, not just scoring. The feeder-target correlation logic (LaMelo feeds Miller) did not account for defensive disruption to the assist column specifically.",
+      "Giannis REB (8 line, 5 actual) missed by 3 boards despite an 8/10 recent hit rate and an 'up' trend. ATL's defense being rated 'soft' was applied primarily to scoring suppression but does not inherently mean high rebounding opportunities. Rebounding volume is more dependent on game pace, shooting efficiency, and box-out schemes than defensive softness. The 'soft defense = more rebounds' assumption is flawed logic that needs to be decoupled.",
+      "Derrick White AST (4 line, 3 actual) missed despite the reasoning that Tatum's absence would elevate White's playmaking. In practice, Brown absorbed the primary offensive hub role, and White's assists did not rise commensurately with his scoring (which exploded to 29). This shows that usage redistribution is not uniform across all stat categories \u2014 a player can score more without a proportional assist increase if another teammate is the primary initiator.",
+      "Jalen Johnson REB (8 line, 5 actual) missed by 3 boards despite a 'stable' trend and 7/9 hit rate framing. Milwaukee, while lacking a dominant center, may have had enough frontcourt presence and shot efficiency to limit available offensive rebound opportunities for Johnson. The high assist total (9) suggests Johnson was operating more as a playmaker than a rebounder in this game \u2014 a game-flow dynamic that wasn't anticipated."
+    ],
+    "recommendations": [
+      "Implement a confirmed-active gate for all picks: any player flagged as questionable, game-time decision, or with a recent injury history must have confirmed active status before a pick is finalized. Pritchard's 0/0 performance on two picks signals this protocol gap is costing the system meaningful pick equity. Unconfirmed players should be removed from the slate entirely.",
+      "Decouple defensive rating from rebounding prop logic: 'soft defense' should inform scoring and assist prop projections but must not be used as a positive signal for rebounding over. Rebounds are primarily a function of pace, opponent shooting percentage (fewer misses = fewer rebound opportunities), and physical matchup at the frontcourt position. Create a separate rebounding context score using opponent pace, opponent FG%, and frontcourt size data.",
+      "Apply a hard ceiling adjustment for assist props when facing elite defenses: LaMelo Ball's 6 AST line against Boston's 'tough' defense was too aggressive. For assist props, introduce a defense-adjusted suppression factor \u2014 if a team is rated 'tough,' reduce the expected assist midpoint by 1-1.5 and set lines accordingly. Boston specifically excels at disrupting guard-level playmaking.",
+      "When modeling injury-elevation effects (e.g., Tatum out), distribute the usage gain across the most likely primary beneficiary only \u2014 do not assume all adjacent teammates benefit equally across all stat types. Brown inherited Tatum's scoring and rebounding role; White inherited Tatum's scoring but not his playmaking role. A hierarchical usage-redistribution model would have avoided the White AST miss while still capturing the White PTS hit.",
+      "Limit rebounding props to players where the pick value is at or below their established floor (not their average). Giannis averages 10+ rebounds but his floor in adverse game scripts can be as low as 5. Set rebounding lines at the 25th-percentile outcome of their recent sample rather than the median, especially for players in high-usage scoring roles where game-flow can reduce rebounding opportunities organically."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Derrick White",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3.0,
+        "root_cause": "Tatum's absence was assumed to elevate White's playmaking uniformly, but Brown absorbed the primary offensive hub role. White's assist total did not rise with his scoring \u2014 he scored 29 PTS but generated only 3 assists, indicating he was operating as a scorer-off-ball, not a playmaker. Usage redistribution logic must differentiate between scoring role elevation and playmaking role elevation."
+      },
+      {
+        "player_name": "Payton Pritchard",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 0.0,
+        "root_cause": "Pritchard recorded 0 points and 0 assists, indicating a DNP, severe restriction, or late scratch that was not captured in the pre-game model. Both Pritchard picks were placed without confirmed active-status verification. This is a lineup confirmation failure, not an analytical error \u2014 the pick should never have been issued without confirmed participation."
+      },
+      {
+        "player_name": "Payton Pritchard",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 0.0,
+        "root_cause": "Same root cause as PTS miss \u2014 Pritchard did not play or played negligible minutes. The 0 across both stat categories confirms this is a roster availability issue, not a variance outcome. Pre-game lineup lock confirmation is required before issuing any prop on a player with uncertain status."
+      },
+      {
+        "player_name": "LaMelo Ball",
+        "prop_type": "AST",
+        "pick_value": 6,
+        "actual_value": 4.0,
+        "root_cause": "The 6 AST threshold was set at the high end of LaMelo's assist range against a tough Boston defense. Boston's defensive scheme disrupted CHA's half-court offensive flow, limiting clean passing opportunities for LaMelo. The positive correlation logic (LaMelo feeds Miller) did not account for the defensive suppression of the assist column \u2014 Miller scored 18 but LaMelo's facilitating role was constrained by Boston's pressure. Line was 1-2 assists too aggressive for a tough defense road game."
+      },
+      {
+        "player_name": "Isaiah Hartenstein",
+        "prop_type": "REB",
+        "pick_value": 6,
+        "actual_value": 5.0,
+        "root_cause": "Hartenstein grabbed 5 rebounds versus a 6 line in a game where Chet Holmgren dominated the frontcourt (8 REB, 28 PTS). Holmgren's dominant performance likely absorbed the majority of OKC's available rebounding opportunities, cannibalizing Hartenstein's total. Internal team rebounding competition between Holmgren and Hartenstein was not weighted adequately in the model."
+      },
+      {
+        "player_name": "Jalen Johnson",
+        "prop_type": "REB",
+        "pick_value": 8,
+        "actual_value": 5.0,
+        "root_cause": "Johnson posted 9 assists and 20 points but only 5 rebounds, missing the 8 line by 3. His game script skewed heavily toward playmaking rather than rebounding \u2014 likely due to Milwaukee's defensive structure and shooting efficiency limiting available rebound opportunities. The 'soft defense = rebounding opportunity' assumption was misapplied. A player operating as a primary playmaker (9 AST) in a particular game will naturally see reduced rebounding involvement."
+      },
+      {
+        "player_name": "Giannis Antetokounmpo",
+        "prop_type": "REB",
+        "pick_value": 8,
+        "actual_value": 5.0,
+        "root_cause": "Giannis grabbed only 5 rebounds despite an 8/10 recent hit rate and an 'up' trend, missing by 3. ATL's 'soft defense' rating was incorrectly used as a positive rebounding signal. Rebounding is heavily influenced by pace and opponent shooting efficiency \u2014 a soft defense can actually mean fewer missed shots to rebound. Additionally, Giannis scored 24 points suggesting high scoring efficiency, which often correlates with fewer rebound opportunities in a game where MIL's offense ran smoothly without extra possessions."
+      }
+    ],
+    "parlay_results": {
+      "total": 5,
+      "hits": 3,
+      "misses": 2,
+      "partial": 0,
+      "parlay_lessons": [
+        "Avoid including rebounding props for high-usage offensive stars (Giannis, Jalen Johnson) in parlays: both the 'Giannis Boards Builder' and individual picks showed that elite scorers in high-efficiency offensive games frequently under-deliver on rebounding lines. REB props for offensive-first stars carry game-flow tail risk that is too volatile to anchor a parlay leg, especially when set at or above median expectations. If REB props must be included, use them only for players whose primary role is defensive rebounding (centers, power forwards with limited offensive usage).",
+        "The LaMelo Ball AST leg was the wrong correlation choice for the 'CHA-BOS Feeder Play' parlay: the feeder-target logic (LaMelo feeds Miller \u2192 both hit props) is sound in theory but requires the assist threshold to be achievable independently of Miller's scoring. Miller scored 18 without LaMelo needing 6+ assists to enable it \u2014 Miller's scoring was self-created, not fed. When a feeder's assist prop is set at the upper range and the game is on the road vs a tough defense, the correlation benefit does not offset the elevated individual miss risk. Use feeder-target correlation only when the assist line is set conservatively (at or below median).",
+        "The SGA-Maxey-Kawhi PTS core proved to be an extremely reliable parlay anchor across all five parlays: all three hit in every single parlay they appeared in. Future parlay construction should treat this type of 'elite scorer vs soft/mid defense with 10/10 hit rate' cluster as the primary anchor layer, with legs 4-6 selected only if they carry lower individual risk than the legs that sank Parlays 3 and 4 (Giannis REB, LaMelo AST).",
+        "Parlay diversification across stat types increases bust risk when secondary stat types (REB, AST) are added at aggressive thresholds: Parlays 3 and 4 both fell to exactly one non-scoring prop miss (Giannis REB, LaMelo AST). When expanding a parlay beyond pure scoring props, ensure that non-scoring legs are set at highly conservative thresholds with clear structural justification \u2014 not just trend data \u2014 to compensate for their higher variance."
+      ],
+      "parlay_reinforcements": [
+        "The three-leg 'Elite Scorers Sweep' (SGA PTS, Maxey PTS, Kawhi PTS) was the cleanest parlay structure: three independent games, three elite volume scorers, each with 10/10 or near-perfect hit rates, all facing favorable defensive matchups. The independence of the games eliminated correlated bust risk while the high individual confidence levels produced a strong confidence product (0.8123). Tight, focused parlays with 3 elite independent legs outperformed larger, diversified 5-6 leg parlays on a per-leg reliability basis.",
+        "The 'Hornets Volume Stack' succeeded because both CHA scoring legs (Miller PTS 15, Knueppel PTS 10) were set at conservative floors for their respective players, and the positive correlation between them (both benefit from CHA's offensive volume in the same game) was genuinely additive rather than cannibalistic. Miller and Knueppel operate in separate offensive actions \u2014 Miller as a wing scorer, Knueppel as a stretch option \u2014 meaning their scoring totals are not zero-sum within CHA's offense. This is the correct model for positive correlation stacking: two players from the same team whose props do not compete for the same possessions.",
+        "The 'Wednesday Prop Sweeper' six-leg parlay hit because it combined four independent-game scoring anchors (SGA, Maxey, Kawhi, White) with two conservative alternative props (Miller 3PM over 2, Giannis PTS over 20) that had wide margins of safety. Critically, it excluded the volatile rebounding and high-assist legs that sank Parlays 3 and 4. Selecting the safer prop type for each player (PTS instead of REB for Giannis, 3PM instead of AST for Miller) was the decisive structural advantage of this parlay."
+      ]
+    }
+  }
+]
