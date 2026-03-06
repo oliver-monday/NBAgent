@@ -177,6 +177,65 @@ def compute_daily_trend(picks: list) -> list:
     return trend[-30:]
 
 
+def build_rotation_lookup(top_n: int = 9, window: int = 15) -> dict[str, set[str]]:
+    """
+    Returns {team_abbrev_upper: {last_name_lower, ...}} for the top N players
+    by average minutes per game over the last `window` games in player_game_log.csv.
+    Used to filter non-whitelisted injury entries to key rotation players only.
+    Falls back to empty dict on any error — never blocks site build.
+    """
+    try:
+        game_log_csv = DATA / "player_game_log.csv"
+        if not game_log_csv.exists():
+            return {}
+        import pandas as pd
+        df = pd.read_csv(game_log_csv, dtype={"game_id": str, "player_id": str})
+
+        # Filter out DNP rows
+        if "dnp" in df.columns:
+            df = df[df["dnp"].astype(str).str.strip() != "1"]
+
+        # Filter out rows where minutes is null or zero
+        df["minutes_num"] = pd.to_numeric(df["minutes"], errors="coerce")
+        df = df[df["minutes_num"].fillna(0) > 0]
+
+        if df.empty:
+            return {}
+
+        # Convert game_date to datetime, sort descending
+        df["game_date"] = pd.to_datetime(df["game_date"], errors="coerce")
+        df = df.dropna(subset=["game_date"])
+        df = df.sort_values("game_date", ascending=False)
+
+        # Keep last `window` played games per player-team pair
+        df = df.groupby(["player_name", "team_abbrev"], group_keys=False).head(window)
+
+        # Mean minutes per player-team pair
+        avg_min = (
+            df.groupby(["team_abbrev", "player_name"])["minutes_num"]
+            .mean()
+            .reset_index()
+            .rename(columns={"minutes_num": "avg_min"})
+        )
+
+        def _extract_last(raw_name: str) -> str:
+            n = str(raw_name).strip()
+            if len(n) >= 3 and n[1] == "." and n[2] == " ":
+                return n[3:]
+            parts = n.split(" ", 1)
+            return parts[1] if len(parts) > 1 else n
+
+        result: dict[str, set[str]] = {}
+        for team_abbrev, group in avg_min.groupby("team_abbrev"):
+            top = group.nlargest(top_n, "avg_min")
+            team_key = _ABBR_NORM.get(str(team_abbrev).upper(), str(team_abbrev).upper())
+            result[team_key] = {_extract_last(name).lower() for name in top["player_name"]}
+
+        return result
+    except Exception:
+        return {}
+
+
 def load_injuries_display() -> dict:
     """
     Build injury display data grouped by today's games from nba_master.csv.
@@ -240,6 +299,8 @@ def load_injuries_display() -> dict:
         except Exception:
             pass
 
+    rotation_lookup = build_rotation_lookup()
+
     def normalize(abbr: str) -> str:
         a = str(abbr).strip().upper()
         return abbr_alt_map.get(a) or _ABBR_NORM.get(a, a)
@@ -254,17 +315,25 @@ def load_injuries_display() -> dict:
         parts = n.split(" ", 1)
         return parts[1] if len(parts) > 1 else n
 
-    def whitelisted_injuries(team_abbr: str) -> list:
-        """Return injuries for a team filtered to whitelisted players only."""
+    def filtered_injuries(team_abbr: str) -> list:
+        """Return injuries: all whitelisted players + top-rotation non-whitelisted (OUT/DOUBTFUL only)."""
         norm = normalize(team_abbr)
         players = inj_teams.get(norm) or inj_teams.get(team_abbr) or []
-        if not whitelist_team_last:
-            return players
-        return [
-            p for p in players
-            if (norm, extract_last(p.get("player_name") or p.get("name") or "").lower())
-               in whitelist_team_last
-        ]
+        rotation_set = rotation_lookup.get(norm, set())
+        result = []
+        for p in players:
+            raw_name = p.get("player_name") or p.get("name") or ""
+            last = extract_last(raw_name).lower()
+            status = (p.get("status") or p.get("designation") or "").upper().strip()
+            is_whitelisted = (norm, last) in whitelist_team_last
+            in_rotation = last in rotation_set
+            if is_whitelisted:
+                p["is_whitelisted"] = True
+                result.append(p)
+            elif in_rotation and status in ("OUT", "DOUBTFUL"):
+                p["is_whitelisted"] = False
+                result.append(p)
+        return result
 
     # ── Today's games from nba_master.csv ───────────────────────────────
     games = []
@@ -293,8 +362,8 @@ def load_injuries_display() -> dict:
                 except Exception:
                     time_label = "TBD"
 
-            away_inj = whitelisted_injuries(away)
-            home_inj = whitelisted_injuries(home)
+            away_inj = filtered_injuries(away)
+            home_inj = filtered_injuries(home)
             if not away_inj and not home_inj:
                 continue  # no whitelisted injuries in this game — skip entirely
 
@@ -602,6 +671,7 @@ def generate_html(d: dict) -> str:
                           padding: 4px 0; border-bottom: 1px solid var(--border);
                           font-size: 12px; }}
     .injury-player-row:last-child {{ border-bottom: none; }}
+    .injury-player-rotation {{ opacity: 0.6; font-style: italic; }}
     .injury-player-name {{ flex: 1; }}
     .injury-reason {{ color: var(--muted); font-size: 11px; flex: 2; }}
     .status-OUT  {{ background: rgba(239,68,68,0.15);  color: #ef4444;
@@ -923,9 +993,11 @@ function renderInjuries() {{
         const status = p.status || p.designation || '?';
         const reason = p.reason || p.injury || p.description || '';
         const cls    = statusClass(status);
+        const rotCls = p.is_whitelisted === false ? ' injury-player-rotation' : '';
+        const rotTag = p.is_whitelisted === false ? ' <span style="font-size:10px;color:var(--muted)">(rotation)</span>' : '';
         html += `
-          <div class="injury-player-row">
-            <span class="injury-player-name">${{name}}</span>
+          <div class="injury-player-row${{rotCls}}">
+            <span class="injury-player-name">${{name}}${{rotTag}}</span>
             <span class="injury-reason">${{reason}}</span>
             <span class="${{cls}}">${{status.toUpperCase()}}</span>
           </div>`;
