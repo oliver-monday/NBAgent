@@ -38,10 +38,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas numpy anthropic
+          pip install pandas numpy anthropic requests
 
       - name: Run Quant agent
         run: python agents/quant.py
+
+      - name: Run Pre-Game Reporter
+        run: python agents/pre_game_reporter.py
 
       - name: Run Analyst agent
         run: python agents/analyst.py

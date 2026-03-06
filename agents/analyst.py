@@ -35,6 +35,7 @@ WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
 CONTEXT_MD         = ROOT / "context" / "nba_season_context.md"
 PLAYER_STATS_JSON  = DATA / "player_stats.json"
 AUDIT_SUMMARY_JSON = DATA / "audit_summary.json"
+PRE_GAME_NEWS_JSON = DATA / "pre_game_news.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -253,6 +254,49 @@ def load_season_context() -> str:
     except Exception as e:
         print(f"[analyst] WARNING: could not load season context: {e}")
         return ""
+
+
+def load_pre_game_news() -> str:
+    """
+    Load pre_game_news.json written by pre_game_reporter.py.
+    Formats player_notes and game_notes as a readable text block for prompt injection.
+    Returns empty string gracefully if file missing or empty — never blocks a run.
+    """
+    if not PRE_GAME_NEWS_JSON.exists():
+        print("[analyst] pre_game_news.json not found — proceeding without news context.")
+        return ""
+    try:
+        with open(PRE_GAME_NEWS_JSON) as f:
+            data = json.load(f)
+    except Exception as e:
+        print(f"[analyst] WARNING: could not load pre_game_news.json: {e}")
+        return ""
+
+    player_notes = data.get("player_notes") or {}
+    game_notes   = data.get("game_notes")   or {}
+
+    if not player_notes and not game_notes:
+        print("[analyst] Pre-game news: no notable items today.")
+        return ""
+
+    lines = []
+    if player_notes:
+        lines.append("PLAYER NEWS:")
+        for name, note in player_notes.items():
+            lines.append(f"- {name.title()}: {note}")
+
+    if game_notes:
+        if lines:
+            lines.append("")  # blank line between sections
+        lines.append("GAME NOTES:")
+        for game, note in game_notes.items():
+            lines.append(f"- {game}: {note}")
+
+    print(
+        f"[analyst] Pre-game news loaded: {len(player_notes)} player notes, "
+        f"{len(game_notes)} game notes"
+    )
+    return "\n".join(lines)
 
 
 def load_player_stats() -> dict:
@@ -490,9 +534,18 @@ def load_audit_summary() -> str:
 
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "") -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
+
+    pre_game_section = (
+        "## PRE-GAME NEWS\n"
+        "The following news items were published in the last 48 hours and are material to "
+        "today's picks. These supplement — do not replace — the structured injury report "
+        "above. Cross-reference player availability and role notes here before finalizing "
+        "confidence levels.\n\n"
+        f"{pre_game_news}\n\n"
+    ) if pre_game_news else ""
 
     return f"""You are the Analyst for NBAgent, an NBA player props selection system.
 
@@ -578,7 +631,7 @@ selection signals.
 ## CURRENT INJURY REPORT
 {injuries_block}
 
-## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
+{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
 {season_context if season_context else "No season context file found."}
 
 ## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
@@ -821,7 +874,13 @@ def main():
     else:
         print(f"[analyst] No audit summary yet (need 3+ audit days)")
 
-    prompt = build_prompt(games, player_context, injuries, audit_context, season_context, quant_context, audit_summary)
+    pre_game_news = load_pre_game_news()
+
+    prompt = build_prompt(
+        games, player_context, injuries, audit_context,
+        season_context, quant_context, audit_summary,
+        pre_game_news=pre_game_news,
+    )
 
     picks = call_analyst(prompt)
     print(f"[analyst] Claude returned {len(picks)} picks")
