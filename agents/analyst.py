@@ -595,6 +595,11 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 - REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
 - REB props — pick value gate: The pick value must be at or below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. If the intended tier exceeds this floor, move down one tier. If no valid tier exists at or below the floor, skip the REB prop entirely.
 - REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 78% confidence minimum AND the floor gate must pass before any REB pick is output.
+- Tier walk-down discipline: Always evaluate tiers from highest to lowest for the stat.
+  Never select a tier if the tier immediately above it also qualifies (≥70% hit rate in
+  recent window). The tier_walk field must document every tier evaluated — if you skipped
+  tiers without checking them, that is a selection error the Auditor will flag. Show your
+  work.
 
 ## TIER CEILING RULES — backed by full-season calibration data
 The following tiers are systemically miscalibrated: players selected at these tiers hit
@@ -760,7 +765,8 @@ Each pick must follow this exact schema:
     "hit_rate_display": "string — fraction from last 10 games at this tier, e.g. '8/10'",
     "trend": "up | stable | down — direction of last 5 vs last 10 avg for this stat",
     "opp_defense_rating": "soft | mid | tough | unknown",
-    "reasoning": "One tight sentence: the key reason this floor holds today — matchup, role, usage, or form. No restating hit rate or tier (already shown). Max 15 words."
+    "reasoning": "One tight sentence: the key reason this floor holds today — matchup, role, usage, or form. No restating hit rate or tier (already shown). Max 15 words.",
+    "tier_walk": "string — compact walk-down log, e.g. 'PTS: 30→3/10 25→5/10 20→8/10✓' or 'REB: 8→4/10 6→8/10✓'"
   }}
 ]
 

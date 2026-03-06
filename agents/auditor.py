@@ -514,6 +514,20 @@ STEP 4 — REFERENCE HIT RATE DATA: Every pick includes hit_rate_display (e.g. "
 trend ("up"/"stable"/"down"). Reference these explicitly in your root cause. A miss on an
 8/10 hit rate pick is different from a miss on a 5/10 pick.
 
+STEP 5 — INSPECT TIER WALK: Every pick includes a "tier_walk" field documenting the
+analyst's walk-down (e.g. "PTS: 30→3/10 25→5/10 20→8/10✓"). For misses classified as
+"selection_error", check whether:
+  (a) A higher tier also qualified (≥70% hit rate) but was skipped — flag as tier_skip_error
+      in root_cause
+  (b) The selected tier's hit rate in tier_walk contradicts the hit_rate_display field —
+      flag as data_conflict in root_cause
+  (c) Only one tier was evaluated and it was marginal (≤72%) — flag as insufficient_walk
+      in root_cause
+For variance and model_gap misses, note the tier_walk only if it reveals something
+unexpected (e.g. the selected tier was the only viable option, confirming the pick was
+sound despite the miss).
+If the pick has no tier_walk field (older picks pre-dating this feature), skip STEP 5.
+
 For hits: identify what the Analyst got right — specific statistical patterns, matchup reads,
 or reasoning that proved correct.
 
@@ -543,6 +557,7 @@ Respond ONLY with valid JSON. No preamble.
       "pick_value": number,
       "actual_value": number,
       "miss_classification": "selection_error | model_gap | variance | injury_event | workflow_gap",
+      "tier_walk_flag": "tier_skip_error | data_conflict | insufficient_walk | null",
       "root_cause": "string"
     }}
   ],

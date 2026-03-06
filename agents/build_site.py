@@ -646,6 +646,7 @@ def generate_html(d: dict) -> str:
     .prop-3PM {{ background: rgba(234,179,8,0.15);  color: var(--3pm); }}
     .pick-main .player  {{ font-size: 16px; font-weight: 600; }}
     .pick-main .reasoning {{ font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.5; font-style: italic; }}
+    .tier-walk {{ font-size: 10px; color: var(--muted); margin-top: 4px; font-family: monospace; opacity: 0.7; }}
     .micro-stats {{ display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }}
     .micro-pill {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px;
                    background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }}
@@ -1202,6 +1203,7 @@ function renderPicks() {{
             ${{statusBadge}}
             ${{buildMicroStats(p, streakSpan)}}
             ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
+            ${{p.tier_walk ? `<div class="tier-walk">${{p.tier_walk}}</div>` : ''}}
           </div>
           <div class="pick-right">
             <div class="pick-line">
@@ -1499,6 +1501,8 @@ function renderTopPicks() {{
       ? `<div><span class="tp-iron-badge">🔒 Iron Floor</span></div>` : '';
     const reasoning = p.reasoning
       ? `<div class="tp-reasoning">${{p.reasoning}}</div>` : '';
+    const tierWalk = p.tier_walk
+      ? `<div class="tier-walk">${{p.tier_walk}}</div>` : '';
 
     html += `
       <div class="top-pick-card" style="border-left-color:${{color}}">
@@ -1507,6 +1511,7 @@ function renderTopPicks() {{
           <div class="tp-meta">${{p.team}}${{gameTime}}</div>
           ${{ironBadge}}
           ${{reasoning}}
+          ${{tierWalk}}
         </div>
         <div class="tp-right">
           <div class="pick-line">
