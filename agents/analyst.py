@@ -592,12 +592,9 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 - Pick as many qualifying props as there are — don't limit volume artificially
 - Only output picks with confidence_pct ≥ 70
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
-- REB props for offensive-first players: For players whose primary role is scoring or playmaking
-  (PTS avg > 20, or AST avg > 6 across their recent games), set REB pick values at or below their
-  25th-percentile recent output — not their average or median. Elite scorers in high-efficiency game
-  scripts organically see fewer rebound opportunities. Additionally, if the player's REB floor (lowest
-  value in their last 10 games) is within 2 of your intended pick value, skip the REB prop entirely
-  and pick their scoring or assists prop instead. A thin floor at high volume is a trap.
+- REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
+- REB props — pick value gate: The pick value must be at or below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. If the intended tier exceeds this floor, move down one tier. If no valid tier exists at or below the floor, skip the REB prop entirely.
+- REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 78% confidence minimum AND the floor gate must pass before any REB pick is output.
 
 ## TIER CEILING RULES — backed by full-season calibration data
 The following tiers are systemically miscalibrated: players selected at these tiers hit
@@ -731,6 +728,11 @@ KEY RULES — VOLATILITY:
        volatile picks underperform over time.
   Do not apply the volatility penalty if the player has [iron_floor] on this stat —
   iron floor already captures the consistency signal more precisely.
+
+KEY RULES — HIGH CONFIDENCE GATE (81%+): Before assigning confidence_pct of 81 or higher, all three of the following conditions must be met. If any condition fails, cap confidence at 80% or lower — do not round up.
+Condition A — Rest/availability: Player is NOT on a back-to-back (on_back_to_back = false), OR player averages ≥30 minutes per game in their last 10 games as a confirmed starter. Non-stars on B2B nights have demonstrated DNP and minutes-restriction risk that makes 81%+ confidence structurally unsound regardless of historical hit rate.
+Condition B — Defense signal quality: The opp_defense or DvP rating used to justify the pick must come from the quant data (positional DvP with n ≥ 15, or team-level opp_defense rank). Do not assign 81%+ based on a general "soft/tough" label alone — require the underlying rank and allowed average to confirm it. If the quant data is unavailable or contradicts the label, treat the matchup as neutral and remove it as a confidence-boosting factor.
+Condition C — Confirming signals: At least two independent signals must support the pick beyond hit rate alone. Qualifying signals: favorable DvP rating (confirmed by quant rank), iron_floor tag, consistent volatility tag, soft blowout_risk context, rest advantage (≥2 rest days), or a pre-game news note confirming full availability and normal role. Hit rate alone — even 9/10 or 10/10 — does not satisfy Condition C by itself.
 
 {quant_context if quant_context else "No quant stats available."}
 
