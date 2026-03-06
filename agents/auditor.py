@@ -36,7 +36,8 @@ PARLAYS_JSON      = DATA / "parlays.json"
 AUDIT_LOG_JSON    = DATA / "audit_log.json"
 CONTEXT_MD         = ROOT / "context" / "nba_season_context.md"
 PLAYER_STATS_JSON  = DATA / "player_stats.json"
-AUDIT_SUMMARY_JSON = DATA / "audit_summary.json"
+AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
+POST_GAME_NEWS_JSON = DATA / "post_game_news.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -148,6 +149,26 @@ def load_season_context() -> str:
     except Exception as e:
         print(f"[auditor] WARNING: could not load season context: {e}")
         return ""
+
+
+def load_post_game_news() -> dict:
+    """
+    Load post_game_news.json written by post_game_reporter.py.
+    Returns player event dict keyed by player_name.lower().
+    Returns empty dict gracefully if file missing — never blocks a run.
+    """
+    if not POST_GAME_NEWS_JSON.exists():
+        print("[auditor] post_game_news.json not found — proceeding without news context.")
+        return {}
+    try:
+        with open(POST_GAME_NEWS_JSON) as f:
+            data = json.load(f)
+        players = data.get("players", {})
+        print(f"[auditor] Post-game news loaded: {len(players)} player events")
+        return players
+    except Exception as e:
+        print(f"[auditor] WARNING: could not load post_game_news.json: {e}")
+        return {}
 
 
 # ── Grading ──────────────────────────────────────────────────────────
@@ -265,7 +286,7 @@ def grade_parlays(parlays: list[dict], graded_picks: list[dict]) -> list[dict]:
 
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", player_stats_context: dict | None = None) -> str:
+def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", player_stats_context: dict | None = None, post_game_news: dict | None = None) -> str:
     hits    = [p for p in graded_picks if p["result"] == "HIT"]
     misses  = [p for p in graded_picks if p["result"] == "MISS"]
     no_data = [p for p in graded_picks if p["result"] == "NO_DATA"]
@@ -354,6 +375,26 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
     picks_block   = json.dumps(graded_picks, indent=2)
     parlays_block = json.dumps(graded_parlays, indent=2) if graded_parlays else "[]"
 
+    # ── Post-game news block ──────────────────────────────────────────
+    news_block = ""
+    if post_game_news:
+        news_lines = []
+        for name, event in post_game_news.items():
+            et      = event.get("event_type", "no_data").upper().replace("_", " ")
+            detail  = event.get("detail", "")
+            mins    = event.get("minutes_played", "?")
+            conf    = event.get("confidence", "unknown")
+            news_lines.append(f"{name}: {et} — {detail} ({mins} min played) [{conf}]")
+        news_block = (
+            "## POST-GAME NEWS CONTEXT\n"
+            "The following post-game facts were confirmed or inferred for yesterday's players.\n"
+            "Use this section as ground truth when classifying misses. Do NOT guess at DNP/injury\n"
+            "status for any player listed here — treat these facts as definitive.\n\n"
+            + "\n".join(news_lines)
+            + "\n\nPlayers NOT listed above: no notable post-game event detected."
+              " Standard box score analysis applies.\n"
+        )
+
     parlay_section = ""
     if graded_parlays:
         parlay_section = f"""
@@ -424,7 +465,7 @@ Key fields to use in audit reasoning:
 - on_back_to_back: flag whether fatigue context was available and used correctly
 - game_pace: check whether pace context supported or contradicted the pick thesis
 
-## PICK ANALYSIS TASK
+{news_block}## PICK ANALYSIS TASK
 
 For every miss, perform analysis in this exact order before writing root_cause:
 
@@ -770,9 +811,12 @@ def main():
         p_hits = sum(1 for p in graded_parlays if p["result"] == "HIT")
         print(f"[auditor] Parlays graded: {p_hits}/{len(graded_parlays)} hit")
 
-    season_context      = load_season_context()
+    season_context       = load_season_context()
     player_stats_context = load_player_stats_for_audit(graded_picks)
-    prompt      = build_audit_prompt(graded_picks, graded_parlays, season_context, player_stats_context)
+    post_game_news       = load_post_game_news()
+    prompt = build_audit_prompt(
+        graded_picks, graded_parlays, season_context, player_stats_context, post_game_news
+    )
     audit_entry = call_auditor(prompt)
 
     save_audit(audit_entry, graded_picks, graded_parlays)

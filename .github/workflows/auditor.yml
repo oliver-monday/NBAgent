@@ -35,7 +35,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas anthropic
+          pip install pandas anthropic requests
+
+      - name: Run Post-Game Reporter
+        run: python agents/post_game_reporter.py
 
       - name: Run Auditor agent
         run: python agents/auditor.py
