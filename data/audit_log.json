@@ -95,5 +95,196 @@
         "The 'Wednesday Prop Sweeper' six-leg parlay hit because it combined four independent-game scoring anchors (SGA, Maxey, Kawhi, White) with two conservative alternative props (Miller 3PM over 2, Giannis PTS over 20) that had wide margins of safety. Critically, it excluded the volatile rebounding and high-assist legs that sank Parlays 3 and 4. Selecting the safer prop type for each player (PTS instead of REB for Giannis, 3PM instead of AST for Miller) was the decisive structural advantage of this parlay."
       ]
     }
+  },
+  {
+    "date": "2026-03-05",
+    "total_picks": 52,
+    "hits": 40,
+    "misses": 12,
+    "no_data": 0,
+    "hit_rate_pct": 76.9,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 14,
+        "hits": 12,
+        "hit_rate_pct": 85.7
+      },
+      "REB": {
+        "picks": 15,
+        "hits": 10,
+        "hit_rate_pct": 66.7
+      },
+      "AST": {
+        "picks": 14,
+        "hits": 10,
+        "hit_rate_pct": 71.4
+      },
+      "3PM": {
+        "picks": 9,
+        "hits": 8,
+        "hit_rate_pct": 88.9
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 24,
+        "hits": 18,
+        "hit_rate_pct": 75.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 10,
+        "hits": 8,
+        "hit_rate_pct": 80.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 14,
+        "hits": 10,
+        "hit_rate_pct": 71.4,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "3PM picks were the strongest prop type at 88.9% (8/9), anchored by Luka Doncic's iron-floor 3PM tier (0.90 hit rate at T3), Jamal Murray's upward trend materializing with 5 makes, and Austin Reaves hitting his near-automatic T1 floor. Low-threshold 3PM picks on high-volume shooters in soft or mid defensive environments are the system's most reliable output.",
+      "PTS picks performed at 85.7% (12/14), with the strongest results coming from elite scorers at conservative tiers relative to their maximums \u2014 Nikola Jokic T20 (actual: 28), Cade Cunningham T15 (actual: 26), RJ Barrett T10 (actual: 25), and Luka Doncic T25 (actual: 27). Stepping down one tier from projected ceiling, especially for players with 8\u201310/10 recent hit rates, consistently produced high-confidence floors that held.",
+      "The 86+ confidence band was perfectly calibrated at 100% (4/4): Austin Reaves 3PM T1, Brandon Ingram AST T2, Julius Randle AST T2, and RJ Barrett PTS T10 all hit. These shared a common profile \u2014 low absolute threshold, 9\u201310/10 recent hit rate, and a player in a defined offensive role. This band should continue to anchor parlay selection.",
+      "Matchup reads on DEN as a soft defensive context for wing guards (Austin Reaves PTS, Luka Doncic PTS/REB/AST/3PM) proved correct, with LAL players consistently outperforming their thresholds in a competitive, high-pace game. The DEN-LAL game script generated ideal conditions across multiple player profiles simultaneously.",
+      "Jamal Murray's 3-day rest and home advantage framing was well-executed \u2014 he delivered 28 PTS and 5 3PM against what the stats showed as a tough LAL defense. The rest and home edge correctly overrode the defensive concern. Contextual game-script factors (rest days, home advantage, competitive spread) proved meaningful modifiers when layered on top of hit rate data."
+    ],
+    "lessons": [
+      "REB props had the worst hit rate at 66.7% (10/15), and the misses clustered around two failure modes: (1) DNP or heavily-reduced-minutes situations producing zero-stat lines (Ausar Thompson REB 0, Josh Giddey REB 0, Matas Buzelis REB 0) and (2) overestimating rebound floors for players in tight road games against elite rim protection (Scottie Barnes REB 2 vs MIN/Gobert, Cooper Flagg REB 5 vs ORL). REB props are the highest-variance category and need a higher confidence threshold to appear in the system.",
+      "The 81-85 confidence band significantly underperformed expectations at 71.4% actual vs 83.0% expected \u2014 a 11.6-point gap. Five of the six misses in this session occurred in this band (Ausar Thompson REB, Ausar Thompson AST, Matas Buzelis REB, Matas Buzelis 3PM, RJ Barrett AST). Picks in this band need additional validation criteria, particularly a check for injury risk, DNP history, or back-to-back fatigue before confidence is elevated into the 81-85 range.",
+      "Ausar Thompson (DET) produced 0 REB and 0 AST, consistent with a DNP or severe minutes restriction. Both picks were rated 82% confidence with 9/10 hit rates. The system did not account for the possibility of a lineup scratch in a road game against SAS. Before assigning 9/10 hit rates to non-star players on road back-to-back situations, the system should flag DNP risk for players without guaranteed starter status.",
+      "Matas Buzelis produced 0 REB and 0 3PM against PHX \u2014 a near-complete statistical shutdown suggesting either a DNP or extreme minutes restriction. The 3PM pick at T2 was rated 82% with a '9/10' hit rate display. However, the hit rate display represents recent performance when active; if the player did not dress, this is a lineup availability gap, not a model failure. The system needs an injury/availability check gate before assigning high confidence to borderline-roster players.",
+      "Devin Booker AST T4 missed badly (actual: 2) despite an 80% historical hit rate at T4 per the stats context. The analyst's reasoning cited CHI's soft defense allowing 'clean playmaking lanes,' but the stats data showed Booker's AST trend as 'down' and his opponent's AST allowed rank as only 14th (mid, not soft). The 'soft' opp_defense_rating in the pick object contradicted the actual quant data showing mid AST rank. Mismatches between the stated opp_defense_rating and the actual quant opp_defense data must be flagged as selection errors."
+    ],
+    "recommendations": [
+      "Implement a minimum confidence threshold of 78% for all REB props. Given REB's 66.7% hit rate this session and its structural volatility (DNP wipeouts, Gobert/elite-rim-protection suppression, blowout-pace compression), any REB pick below 78% confidence should be excluded from the output. For players not classified as primary rebounders (i.e., non-centers), consider requiring an 80%+ historical hit rate at the selected tier before inclusion.",
+      "Add a mandatory back-to-back DNP risk gate for all non-star players (defined as players not averaging 30+ minutes per game). Before any pick on a player like Ausar Thompson or Matas Buzelis on a B2B game, the system must check: (a) recent DNP/minutes-restriction history, and (b) whether the player is a locked starter. If either flag triggers, cap confidence at 72% regardless of historical hit rate. This directly addresses today's Thompson and Buzelis wipeouts.",
+      "Cross-validate the opp_defense_rating field in every pick against the actual quant opp_defense data from player stats context before finalizing. Today's Booker AST pick listed opp_defense_rating as 'soft' but the actual data showed CHI's AST allowed rank as 14th (mid). This mismatch elevated confidence incorrectly. The Analyst must use the quant AST allowed rank, not a general defensive label, when assessing assist-specific matchups.",
+      "For the 81-85 confidence band specifically, require at least two independent confirming signals before assigning confidence in this range: (1) hit rate at tier >= 85% in last 10 games AND (2) favorable opp_defense rating confirmed by quant rank data AND (3) player is not on a back-to-back. Today's 81-85 band underperformed by 11.6 points \u2014 the band needs stricter entry criteria, not just a strong recent hit rate display.",
+      "Continue prioritizing low-threshold 3PM picks (T1 or T2) for high-volume shooters as parlay anchors. Today's 3PM category hit 88.9% and all five 3PM picks used in parlays converted. Specifically: Austin Reaves T1 (0.90 hist), Devin Booker T1 (0.95 hist), Luka Doncic T3 (0.90 hist), Cade Cunningham T1, and Jamal Murray T1 (0.85 hist) all hit. These props have the highest floor reliability and lowest variance of any category in the system and should be the preferred parlay-leg type when building 4-5 leg combinations."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Anthony Edwards",
+        "prop_type": "PTS",
+        "pick_value": 25,
+        "actual_value": 22.0,
+        "miss_classification": "variance",
+        "root_cause": "Edwards scored 22, missing the T25 threshold by 3 points. Step 1: He clearly played \u2014 22 PTS confirms full activity. Step 2: The 7/10 hit rate at a 70% confidence pick represents a known 30% miss probability; this outcome is within normal variance. Step 3: The analyst's reasoning correctly identified him as an elite home scorer and noted TOR's mid defense. The reasoning was sound \u2014 TOR's switching scheme can suppress big-man usage but Edwards operates on the perimeter. Step 4: A 7/10 hit rate means missing 3 in 10 games; this is a statistically expected miss. No data signal available at pick time would have clearly overridden the selection. The ORL-suppression effect on SF scoring noted in the team context was not factored in for MIN's opponent, but MIN was the home team. Outcome within expected variance range."
+      },
+      {
+        "player_name": "Ausar Thompson",
+        "prop_type": "REB",
+        "pick_value": 4,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap",
+        "root_cause": "Thompson recorded 0 REB and 0 AST (see companion miss), strongly indicating a DNP or a near-zero-minutes game. Step 1: Both tracked stats are zero, consistent with either DNP or scratching from the rotation in a road game. Step 2: The pick carried 82% confidence and a 9/10 hit rate display \u2014 both derived from games when Thompson was active and playing normal minutes. The system has no mechanism to gate out lineup availability risk for non-star players on road back-to-backs. Step 3: The analyst's reasoning cited SAS's weak rebounding unit as the opportunity source, which is valid when the player plays. The reasoning did not address availability risk at all, which is the core gap. Step 4: A 9/10 hit rate on an active player is strong, but the system treated it as a universal floor rather than a conditional-on-playing floor. This is a model gap: the system needs a DNP-risk gate before assigning 80%+ confidence to borderline-rotation players on road games."
+      },
+      {
+        "player_name": "Ausar Thompson",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap",
+        "root_cause": "Companion to the REB miss \u2014 0 AST alongside 0 REB confirms Thompson did not contribute meaningfully in this game, consistent with DNP or extreme minutes restriction. Step 1: Zero across both tracked stats with no evidence of active play. Step 2: Same root cause as the REB miss: the system assigned 82% confidence to a player whose availability was not confirmed. Step 3: The reasoning cited DET's guard group creating an 'elevated playmaking role' with a 'well-established floor at this threshold.' That floor only holds when the player is active, which was not verified. Step 4: The 9/10 hit rate display is conditional on player availability. The system does not currently discount hit rate displays for DNP-risk scenarios. This is the same model gap as the REB companion pick \u2014 a road back-to-back availability check would have flagged this."
+      },
+      {
+        "player_name": "Brandon Ingram",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 14.0,
+        "miss_classification": "variance",
+        "root_cause": "Ingram scored 14, missing the T15 threshold by exactly 1 point. Step 1: He clearly played \u2014 14 PTS and companion picks (REB: 5, AST: 2) all confirm active participation. Step 2: This is a one-point variance miss on an 8/10 pick at 80% confidence \u2014 well within the expected 20% miss range. Step 3: The analyst correctly identified MIN's low pace as a suppression risk, stepping down to T15 for that reason. The reasoning was conservative and appropriate. MIN's ORL-level elite rim protection (Gobert) likely compressed Ingram's mid-range paint attempts. Step 4: The 8/10 hit rate at 80% confidence means one in five games is expected to miss. A 1-point margin miss on a pace-suppressed road game is a textbook variance outcome. No selection error or model gap identified."
+      },
+      {
+        "player_name": "Cooper Flagg",
+        "prop_type": "REB",
+        "pick_value": 6,
+        "actual_value": 5.0,
+        "miss_classification": "variance",
+        "root_cause": "Flagg grabbed 5 rebounds, missing T6 by exactly 1. Step 1: He played and scored 18 PTS, confirming full activity. Step 2: The stats context shows Flagg's REB trend as 'down' and his T6 hit rate at 70% \u2014 meaning a miss here is a 30% expected event. Step 3: The analyst's reasoning noted DAL's vulnerable frontcourt inflating opponent boards, which is a valid structural edge. However, ORL's low-pace system suppresses total possessions and therefore limits rebound opportunities \u2014 this was not addressed in the reasoning. The pace suppression was a legitimate unaddressed factor. Step 4: The 7/10 hit rate with a downward trend means the underlying probability was closer to 65-68% at pick time. The miss is within variance but the downward trend signal should have depressed confidence below the assigned 72%."
+      },
+      {
+        "player_name": "Devin Booker",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 2.0,
+        "miss_classification": "selection_error",
+        "root_cause": "Booker recorded only 2 AST against CHI, missing T4 by 2. Step 1: He played \u2014 27 PTS and 2 3PM confirm full activity and a heavy scoring night. Step 2: This is a selection error. The stats context shows Booker's AST trend as 'down' and CHI's AST allowed rank as 14th (mid), not soft \u2014 yet the pick object listed opp_defense_rating as 'soft' for AST. The actual quant data showed mid AST defensive context. Additionally, when Booker enters a heavy scoring mode (27 PTS), his assist opportunities compress as the ball usage shifts to personal shot creation. Step 3: The analyst's reasoning cited CHI's 'soft defense allowing clean playmaking lanes' \u2014 this was contradicted by the actual AST rank data (14th/mid). The reasoning used an incorrectly applied defensive label. Step 4: The 8/10 historical hit rate at T4 is real, but that rate was achieved with Booker averaging his normal usage split. A 27-point scoring game structurally compresses his assist output. The system should recognize that high-scoring outcomes and high-assist outcomes are partially competing states for ball-dominant scorers."
+      },
+      {
+        "player_name": "Josh Giddey",
+        "prop_type": "REB",
+        "pick_value": 4,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap",
+        "root_cause": "Giddey recorded 0 REB in this game. Step 1: The single pick on Giddey shows 0 actual value. Without companion stat data, a DNP cannot be fully confirmed, but 0 rebounds for a player with a 7/10 recent hit rate at T4 strongly suggests either DNP or severe minutes restriction. Step 2: Similar to the Ausar Thompson pattern \u2014 a non-star rotation player on a road game (CHI at PHX) with no documented availability confirmation. PHX's strong interior rebounding suppression was acknowledged in the reasoning but noted as only partial offset. The actual result of 0 indicates the player either did not play or played essentially no meaningful minutes. Step 3: The analyst's reasoning correctly identified PHX's interior rebounding as a partial negative, but the pick proceeded at 75% confidence regardless. The reasoning did not address lineup availability risk. Step 4: The 7/10 hit rate display is conditional on the player being active. A 75% confidence pick on a non-star road player without availability confirmation represents the same model gap as the Thompson picks."
+      },
+      {
+        "player_name": "Matas Buzelis",
+        "prop_type": "REB",
+        "pick_value": 4,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap",
+        "root_cause": "Buzelis recorded 0 REB and 0 3PM (see companion miss), indicating DNP or near-zero minutes in this road game at PHX. Step 1: Zero across both tracked stats strongly implies no meaningful game contribution. Step 2: Even accounting for his permanent expanded starter role designation (noted in season context), road back-to-back games represent a known DNP risk for developing players in expanded roles. The model does not currently gate availability risk for such players. Step 3: The analyst's reasoning cited the 'expanded starter role with consistent boards' and rated the matchup as soft. This reasoning treats the role designation as unconditional, but lineup decisions on any given night \u2014 particularly on the road \u2014 can override season-level role assignments. Step 4: The 8/10 hit rate display on the REB pick and the '9/10' on the 3PM pick both assume the player suits up. Without a pre-game availability check, both picks carried inflated confidence. This is a repeated model gap this session: availability verification is missing from the pre-pick workflow."
+      },
+      {
+        "player_name": "Matas Buzelis",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap",
+        "root_cause": "Companion to the Buzelis REB miss. Zero 3PM alongside zero REB confirms the same DNP or extreme minutes-restriction scenario. Step 1: No meaningful statistical output in either tracked category. Step 2: The 9/10 hit rate display and 82% confidence were both derived from games when Buzelis was active and shooting. The '2+ 3PM in nearly every game' claim in the reasoning is true only when he plays. Step 3: The analyst's reasoning described this as a 'high volume floor regardless of matchup,' which is an unconditional statement that does not account for the conditional nature of all per-game stats (conditional on playing). Step 4: The PHX matchup was rated tough for 3PM suppression, which the reasoning flagged but dismissed. In retrospect, even if Buzelis had played, PHX suppresses opponent SF 3P% \u2014 the 82% confidence may have been inflated versus the actual expected probability. The DNP compounds what may have been a mild overconfidence even in the active scenario."
+      },
+      {
+        "player_name": "RJ Barrett",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 0.0,
+        "miss_classification": "variance",
+        "root_cause": "Barrett recorded 0 AST despite scoring 25 PTS, confirming full activity. Step 1: 25 PTS in companion pick confirms Barrett played major minutes. Step 2: Barrett going scoreless on assists despite a 25-point performance is unusual but explainable \u2014 a high-scoring game where he operated as a primary scorer rather than a facilitator. MIN's elite rim protection and low-pace system creates fewer transition and secondary creation opportunities, which compresses assist generation for secondary creators. Step 3: The analyst's reasoning cited 'consistent secondary playmaker' status with an 8/10 hit rate. The 8/10 rate is valid historically, but MIN's elite defensive scheme (ORL-level positional suppression per the defense profile) specifically reduces opponent assist rates. Step 4: An 8/10 miss at 82% confidence is a 20% expected miss; Barrett getting locked into a pure scoring role (25 PTS, 0 AST) represents the tail scenario where MIN's defensive scheme channeled him into isolation rather than facilitation. This is primarily variance, though the MIN AST suppression context was slightly underweighted in the reasoning."
+      },
+      {
+        "player_name": "Scottie Barnes",
+        "prop_type": "REB",
+        "pick_value": 6,
+        "actual_value": 2.0,
+        "miss_classification": "selection_error",
+        "root_cause": "Barnes grabbed only 2 rebounds \u2014 a severe miss of 4 below the T6 threshold. Step 1: He played \u2014 16 PTS and 3 AST (from companion picks) confirm full activity. Step 2: This is a selection error. MIN's defensive profile includes Gobert as elite rim protection and the team is designated with 'low pace / elite rim protection suppresses opponent FG%.' The analyst's reasoning acknowledged 'Gobert presence slightly competes but Barnes floor holds' \u2014 but the actual result shows this underestimated the Gobert competition effect dramatically. Barnes is not a primary rebounder; at 6/10 historical hit rate and a downward trend, the T6 threshold was already borderline. Against the league's most elite rim protector who directly competes for defensive boards on the same possessions, this tier was too aggressive. Step 4: A 7/10 hit rate with a downward trend in this matchup should have been rated below 70% confidence and likely excluded from the output. The Gobert suppression of opposing big-man and forward boards was a concrete, quantifiable negative factor that the reasoning acknowledged but insufficiently weighted."
+      },
+      {
+        "player_name": "Scottie Barnes",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3.0,
+        "miss_classification": "variance",
+        "root_cause": "Barnes recorded 3 AST, missing T4 by 1. Step 1: Confirmed active \u2014 16 PTS, 2 REB, 3 AST. Step 2: Missing a 4-assist threshold by exactly 1 on an 8/10 pick is a variance outcome. Step 3: The analyst's reasoning cited Barnes as a 'secondary creator alongside Ingram' with consistent usage share. This is structurally correct \u2014 TOR does run Barnes in a dual-creator role. However, Ingram's own 2 AST in the same game suggests MIN's defense was suppressing the overall assist generation for TOR's offense, compressing both creators simultaneously. Step 4: The 8/10 hit rate at 75% confidence represents a 25% expected miss rate. A 1-point miss in a pace-suppressed road game against MIN's elite defense is within normal variance, though the MIN team defense profile notes it 'suppresses opponent assists' \u2014 a factor the reasoning did not address. The AST suppression context was a mild selection concern but the outcome is primarily variance."
+      }
+    ],
+    "parlay_results": {
+      "total": 5,
+      "hits": 5,
+      "misses": 0,
+      "partial": 0,
+      "parlay_lessons": [
+        "The parlay slate went 5-for-5 with a perfect hit rate, validating the core construction principles used this session. However, a structural risk exists: three of the five parlays (Thursday Volume Sweep, Doncic-Bane-Randle Edge, Scorers Across the Slate) each contained RJ Barrett PTS T10, Nikola Jokic PTS T20, and/or Devin Booker 3PM T1 as shared legs. This cross-parlay leg reuse means a single unexpected miss on any shared leg would have simultaneously busted multiple parlays. Future parlay construction should track cross-parlay leg overlap and flag when the same player-prop appears in more than two parlays simultaneously \u2014 reducing correlated parlay bust risk.",
+        "The Booker AST T4 pick was not included in any parlay \u2014 this was the correct decision, as it ultimately missed badly (actual: 2). However, Booker's 3PM T1 was included in three parlays and hit. The system correctly distinguished between Booker's iron-floor 3PM prop (0.95 historical hit rate) and his riskier AST prop (downward trend). This distinction should be formalized: within a parlay, only use a player's single highest-confidence prop type. Do not stack multiple props from the same player across different parlays unless each individual prop clears 85% confidence independently.",
+        "The TOR-MIN Feeder Stack used Ingram AST feeding Barrett PTS as a same-game positive correlation anchor \u2014 and this is theoretically valid (Ingram passing to Barrett is a real play-type). However, Barrett ended with 25 PTS and 0 AST while Ingram had 14 PTS and 2 AST. The parlay hit because Barrett scored heavily independently, but the actual correlation mechanism (Ingram feeding Barrett) did not drive the result. The parlay survived due to the low absolute thresholds (AST T2 for Ingram, PTS T10 for Barrett), not because the correlation thesis played out as designed. Correlation logic in parlay rationale should be treated as a tie-breaker, not a primary thesis \u2014 the individual prop floors must be strong enough to hit independently."
+      ],
+      "parlay_reinforcements": [
+        "Low-threshold iron-floor props (3PM T1, AST T2, PTS T10) were the most reliable parlay legs across all five parlays. Austin Reaves 3PM T1, Devin Booker 3PM T1, Brandon Ingram AST T2, Julius Randle AST T2, and RJ Barrett PTS T10 all appeared in multiple parlays and hit every time. These props provide the structural floor reliability that allows 4-5 leg parlays to survive even when the higher-variance legs are borderline. Always anchor parlays with at least two of these sub-T2/T10 iron-floor props.",
+        "The cross-game spread strategy worked effectively in the multi-game parlays (Booker-Bane-Randle Trio, Scorers Across the Slate). Using four independent games with elite-confidence props reduces single-game variance (one bad game script cannot bust the parlay) while still achieving meaningful implied odds (+101 to +143 range). The four-scorer parlay (Barrett/Banchero/Jokic/Cunningham) hitting at +104 with all legs clearing 80% confidence is the ideal template: spread across independent games, all props at conservative tiers with 8-9/10 hit rates.",
+        "The same-game Ingram-Barrett feeder correlation in the TOR-MIN Feeder Stack is a legitimate positive correlation structure \u2014 Ingram's AST volume and Barrett's PTS volume are positively linked when TOR scores freely. This same-game stacking approach adds correlation uplift to what would otherwise be independent props, and it survived the session cleanly. Continue identifying legitimate feeder-target relationships (Doncic AST \u2192 Reaves PTS is another confirmed feeder_target tag) as same-game parlay anchors, particularly when the feeder's assist floor and the target's scoring floor are both at low conservative thresholds."
+      ]
+    }
   }
 ]
