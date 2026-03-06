@@ -608,5 +608,265 @@
         "legs_total": 5
       }
     ]
+  },
+  {
+    "date": "2026-03-06",
+    "parlays": [
+      {
+        "label": "Elite Scorers Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "NY",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+102",
+        "confidence_product": 0.6347,
+        "correlation": "independent",
+        "rationale": "Three elite scorers across independent games, all with 9-10/10 hit rates and stable trends.",
+        "date": "2026-03-06",
+        "id": "parlay_2026-03-06_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Friday Iron Floor",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "NY",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "NO",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+106",
+        "confidence_product": 0.5332,
+        "correlation": "independent",
+        "rationale": "Four-game spread anchored by two 10/10 iron-floor scorers plus Booker's high-floor 3PM prop vs soft NO defense.",
+        "date": "2026-03-06",
+        "id": "parlay_2026-03-06_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      },
+      {
+        "label": "Scorers Plus Reaves",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "NY",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Austin Reaves",
+            "team": "LAL",
+            "opponent": "IND",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+106",
+        "confidence_product": 0.5332,
+        "correlation": "independent",
+        "rationale": "Miller and Kawhi iron-floor anchors combined with Jokic volume and Reaves' sub-T2 3PM across four independent games.",
+        "date": "2026-03-06",
+        "id": "parlay_2026-03-06_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      },
+      {
+        "label": "Murray-Brown Trend Ride",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Jamal Murray",
+            "team": "DEN",
+            "opponent": "NY",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Jaylen Brown",
+            "team": "BOS",
+            "opponent": "DAL",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+102",
+        "confidence_product": 0.5509,
+        "correlation": "independent",
+        "rationale": "Two iron-floor anchors plus Murray upward-trending 3PM and Brown's conservative AST floor across four games.",
+        "date": "2026-03-06",
+        "id": "parlay_2026-03-06_04",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      },
+      {
+        "label": "Kawhi-Jokic-Doncic Trio",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "NY",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Luka Doncic",
+            "team": "LAL",
+            "opponent": "IND",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+102",
+        "confidence_product": 0.5773,
+        "correlation": "independent",
+        "rationale": "Three-leg tighter parlay: two elite volume scorers plus Doncic's conservative rebound floor vs soft IND.",
+        "date": "2026-03-06",
+        "id": "parlay_2026-03-06_05",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
