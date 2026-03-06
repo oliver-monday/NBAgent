@@ -114,14 +114,28 @@ def run() -> None:
         print("[lineup_watch] No picks — exiting.")
         return
 
-    # Only touch today's ungraded picks
-    open_today = [
-        p for p in picks
-        if p.get("date") == TODAY_STR and p.get("result") is None
-    ]
+    # Snapshot timestamp for this run
+    now_ts = dt.datetime.now(ET).isoformat()
+
+    # Write injury snapshot fields to ALL of today's picks (including voided)
+    all_today = [p for p in picks if p.get("date") == TODAY_STR]
+    for p in all_today:
+        name = (p.get("player_name") or "").strip().lower()
+        inj  = injury_lookup.get(name)
+        if inj is None:
+            status_str = "NOT_LISTED"
+        else:
+            raw = inj["status"]
+            status_str = raw if raw in ("OUT", "DOUBTFUL", "QUESTIONABLE") else "NOT_LISTED"
+        p["injury_status_at_check"] = status_str
+        p["injury_check_time"]      = now_ts
+
+    # Only touch today's ungraded picks for voiding/flagging
+    open_today = [p for p in all_today if p.get("result") is None]
 
     if not open_today:
-        print(f"[lineup_watch] No open picks for {TODAY_STR} — nothing to do.")
+        print(f"[lineup_watch] No open picks for {TODAY_STR} — saving snapshot updates.")
+        save_picks(picks)
         return
 
     print(f"[lineup_watch] Checking {len(open_today)} open picks...")

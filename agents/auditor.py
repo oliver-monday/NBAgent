@@ -433,7 +433,20 @@ minutes implied by any non-zero output)? If actual_value is 0 for the picked sta
 other stat fields before concluding DNP. Do not conclude DNP or lineup failure unless ALL stats
 are zero AND no minutes evidence exists.
 
-STEP 2 — CLASSIFY THE MISS as exactly one of:
+STEP 2 — CHECK INJURY STATUS, THEN CLASSIFY THE MISS as exactly one of:
+  First, inspect the pick object's injury_status_at_check and voided fields before
+  choosing any classification. Prefer injury_event or workflow_gap when the evidence
+  supports them — these take priority over selection_error, model_gap, or variance.
+
+  - "injury_event": player was confirmed active at pick time (injury_status_at_check
+    was NOT_LISTED or QUESTIONABLE) but exited the game mid-game due to injury.
+    Evidence: non-zero minutes logged but near-zero stats across ALL categories,
+    and/or actual output near-zero despite no pre-game red flag. Use this when an
+    in-game injury exit explains the miss, not a pre-game availability failure.
+  - "workflow_gap": player was listed OUT or DOUBTFUL pre-game (injury_status_at_check
+    = "OUT" or "DOUBTFUL" on the pick object) but voided = false. This is a timing
+    or workflow failure — lineup_watch did not void the pick before game time. Use
+    this whenever pre-game OUT/DOUBTFUL status explains the miss.
   - "selection_error": the pick was wrong given data available at pick time
     (bad hit rate, wrong tier, ignored injury context, etc.)
   - "model_gap": pick was reasonable but system lacks a signal that would
@@ -441,6 +454,14 @@ STEP 2 — CLASSIFY THE MISS as exactly one of:
     by defense type, usage redistribution nuance)
   - "variance": pick was sound, player had an off night. Hit rate and context
     supported the pick; outcome was within normal variance range.
+
+IMPORTANT — INJURY AND WORKFLOW MISSES: For any miss classified as injury_event or
+workflow_gap, do NOT write a lesson or recommendation targeting the Analyst's pick
+selection logic. These are not analytical errors. Instead, write a single neutral
+note in root_cause only (e.g. "Workflow gap: player listed OUT pre-game, pick not
+voided in time" or "Injury event: player exited mid-game, near-zero output despite
+active pre-game status"). Exclude these picks entirely from the lessons and
+recommendations arrays — they must not pollute the Analyst's feedback loop.
 
 STEP 3 — CRITIQUE THE ORIGINAL REASONING: The pick object includes a "reasoning" field
 containing the analyst's original thesis. Read it. If the pick missed, identify specifically
@@ -479,7 +500,7 @@ Respond ONLY with valid JSON. No preamble.
       "prop_type": "string",
       "pick_value": number,
       "actual_value": number,
-      "miss_classification": "selection_error | model_gap | variance",
+      "miss_classification": "selection_error | model_gap | variance | injury_event | workflow_gap",
       "root_cause": "string"
     }}
   ],
@@ -611,7 +632,7 @@ def save_audit_summary(audit_log: list[dict]):
     for entry in audit_log:
         for miss in entry.get("miss_details", []):
             mc = miss.get("miss_classification", "")
-            if mc in ("selection_error", "model_gap", "variance"):
+            if mc in ("selection_error", "model_gap", "variance", "injury_event", "workflow_gap"):
                 miss_classes[mc] += 1
 
     # ── Confidence calibration aggregation ────────────────────────────
