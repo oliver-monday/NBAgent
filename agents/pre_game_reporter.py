@@ -38,10 +38,12 @@ import requests
 ROOT           = Path(__file__).resolve().parent.parent
 DATA           = ROOT / "data"
 
-MASTER_CSV     = DATA / "nba_master.csv"
-WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
-PLAYER_DIM_CSV = DATA / "player_dim.csv"
-PRE_GAME_JSON  = DATA / "pre_game_news.json"
+MASTER_CSV       = DATA / "nba_master.csv"
+WHITELIST_CSV    = ROOT / "playerprops" / "player_whitelist.csv"
+PLAYER_DIM_CSV   = DATA / "player_dim.csv"
+PRE_GAME_JSON    = DATA / "pre_game_news.json"
+CONTEXT_MD       = ROOT / "context" / "nba_season_context.md"
+CONTEXT_FLAGS_MD = DATA / "context_flags.md"
 
 # ── Time ──────────────────────────────────────────────────────────────
 ET        = ZoneInfo("America/Los_Angeles")
@@ -357,6 +359,198 @@ def call_claude_summarize(
         return {}, {}
 
 
+# ── Context staleness check ───────────────────────────────────────────
+
+def call_claude_staleness_check(
+    context_text: str,
+    news_items: list[dict],
+) -> list[dict]:
+    """
+    Single Claude call to detect conflicts between the season context doc and today's news.
+    Returns list of flag dicts, or [] on any failure. Never crashes.
+    """
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        print("[pre_game_reporter] WARNING: ANTHROPIC_API_KEY not set — skipping staleness check.")
+        return []
+
+    system_prompt = (
+        "You are a fact-checker for an NBA player props system. Your job is to identify "
+        "conflicts between a season context document and today's breaking news. The season "
+        "context contains facts that agents rely on daily — stale facts cause bad picks. "
+        "Be conservative: only flag clear, direct conflicts or confirmed new developments. "
+        "Do not flag speculative items or rumors. Return only JSON — no preamble."
+    )
+
+    user_message = (
+        f"Today's date: {TODAY_STR}\n\n"
+        f"SEASON CONTEXT DOCUMENT:\n{context_text}\n\n"
+        f"TODAY'S NEWS ITEMS:\n{json.dumps(news_items, indent=2)}\n\n"
+        "Identify any conflicts between the season context facts and today's news. "
+        "Return a JSON object in this exact format:\n"
+        "{\n"
+        '  "flags": [\n'
+        "    {\n"
+        '      "player_or_team": "string",\n'
+        '      "current_context_fact": "string — quote the relevant fact from the context doc",\n'
+        '      "conflict": "string — what today\'s news says that contradicts or updates it",\n'
+        '      "urgency": "critical | monitor",\n'
+        '      "suggested_action": "string — what to change in the context doc"\n'
+        "    }\n"
+        "  ]\n"
+        "}\n\n"
+        "urgency values:\n"
+        "  critical — fact is directly wrong today (player returning, trade reversed, role completely changed)\n"
+        "  monitor — fact may be becoming stale (player ramping up, role shifting, minutes changing)\n"
+        'If no conflicts found, return {"flags": []}.'
+    )
+
+    try:
+        client  = anthropic.Anthropic(api_key=api_key)
+        message = client.messages.create(
+            model=MODEL,
+            max_tokens=1024,
+            system=system_prompt,
+            messages=[{"role": "user", "content": user_message}],
+        )
+        raw = message.content[0].text.strip()
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+        raw = raw.strip()
+        result = json.loads(raw)
+        return result.get("flags") or []
+    except json.JSONDecodeError as e:
+        print(f"[pre_game_reporter] WARNING: staleness check JSON parse failed: {e}")
+        return []
+    except Exception as e:
+        print(f"[pre_game_reporter] WARNING: staleness check Claude call failed: {e}")
+        return []
+
+
+def write_context_flags_md(flags: list[dict]) -> None:
+    """Write data/context_flags.md. Always writes — even when no flags."""
+    now_str = NOW.strftime("%H:%M")
+    lines = [
+        "# NBAgent — Season Context Flags",
+        f"Generated: {TODAY_STR} at {now_str} PT",
+        "",
+    ]
+
+    if not flags:
+        lines.append("✅ No conflicts detected. Season context appears current.")
+        CONTEXT_FLAGS_MD.write_text("\n".join(lines))
+        return
+
+    lines += [
+        "Review each flag below and update `context/nba_season_context.md` before the "
+        "next workflow run. Commit the updated file to trigger a clean Analyst run with "
+        "correct context.",
+        "",
+        "---",
+        "",
+    ]
+
+    critical_flags = [f for f in flags if f.get("urgency") == "critical"]
+    monitor_flags  = [f for f in flags if f.get("urgency") == "monitor"]
+
+    if critical_flags:
+        lines.append("## ⚠ CRITICAL — Action required before today's picks")
+        lines.append("")
+        for flag in critical_flags:
+            lines.append(f"### {flag.get('player_or_team', 'Unknown')}")
+            lines.append(f"**Current context:** {flag.get('current_context_fact', '')}")
+            lines.append(f"**Conflict:** {flag.get('conflict', '')}")
+            lines.append(f"**Suggested action:** {flag.get('suggested_action', '')}")
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+
+    if monitor_flags:
+        lines.append("## 👀 MONITOR — Review when convenient")
+        lines.append("")
+        for flag in monitor_flags:
+            lines.append(f"### {flag.get('player_or_team', 'Unknown')}")
+            lines.append(f"**Current context:** {flag.get('current_context_fact', '')}")
+            lines.append(f"**Conflict:** {flag.get('conflict', '')}")
+            lines.append(f"**Suggested action:** {flag.get('suggested_action', '')}")
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+
+    lines.append("_This file is overwritten daily. If no flags appear tomorrow, context is current._")
+    CONTEXT_FLAGS_MD.write_text("\n".join(lines))
+
+
+def run_context_staleness_check(
+    filtered_items: list[dict],
+    all_raw_items: list[dict],
+) -> list[dict]:
+    """
+    Orchestrates the context staleness check after the summarization step.
+    Runs if filtered_item_count > 0 OR the context file's Last updated date != TODAY.
+    Always writes context_flags.md. Returns list of flag dicts (may be []).
+    Never crashes — gracefully skips on any file/API error.
+    """
+    # Load context file
+    if not CONTEXT_MD.exists():
+        print("[pre_game_reporter] Context staleness check skipped — context file not found.")
+        write_context_flags_md([])
+        return []
+    try:
+        context_text_raw = CONTEXT_MD.read_text(encoding="utf-8").strip()
+    except Exception as e:
+        print(f"[pre_game_reporter] Context staleness check skipped — unreadable: {e}")
+        write_context_flags_md([])
+        return []
+
+    # Parse Last updated: date from HTML comment header
+    last_updated: dt.date | None = None
+    for line in context_text_raw.splitlines():
+        if "Last updated:" in line:
+            try:
+                date_str = line.split("Last updated:")[-1].strip()
+                last_updated = dt.date.fromisoformat(date_str)
+            except Exception:
+                pass
+            break
+
+    context_is_stale = (last_updated is not None and last_updated != TODAY)
+    has_news         = len(filtered_items) > 0
+
+    if not has_news and not context_is_stale:
+        print("[pre_game_reporter] Context staleness check skipped — no news items and context is current")
+        write_context_flags_md([])
+        return []
+
+    # Strip HTML comment header before sending to Claude
+    context_text = context_text_raw
+    if context_text.startswith("<!--"):
+        end = context_text.find("-->")
+        if end != -1:
+            context_text = context_text[end + 3:].strip()
+
+    # Use filtered items if available; fall back to all raw items
+    items_for_check = filtered_items if filtered_items else all_raw_items
+
+    print("[pre_game_reporter] Running context staleness check...")
+    flags = call_claude_staleness_check(context_text, items_for_check)
+    write_context_flags_md(flags)
+
+    n_critical = sum(1 for f in flags if f.get("urgency") == "critical")
+    n_monitor  = sum(1 for f in flags if f.get("urgency") == "monitor")
+    if flags:
+        print(
+            f"[pre_game_reporter] Context flags: {n_critical} critical, "
+            f"{n_monitor} monitor → data/context_flags.md"
+        )
+    else:
+        print("[pre_game_reporter] Context staleness check: no conflicts found")
+
+    return flags
+
+
 # ── Output writers ────────────────────────────────────────────────────
 
 def write_output(
@@ -365,15 +559,17 @@ def write_output(
     raw_count:      int,
     filtered_count: int,
     fetch_errors:   list[str],
+    context_flags:  list | None = None,
 ) -> None:
     output = {
-        "date":                TODAY_STR,
-        "generated_at":        NOW.isoformat(),
-        "player_notes":        player_notes,
-        "game_notes":          game_notes,
-        "raw_item_count":      raw_count,
-        "filtered_item_count": filtered_count,
-        "fetch_errors":        fetch_errors,
+        "date":                      TODAY_STR,
+        "generated_at":              NOW.isoformat(),
+        "player_notes":              player_notes,
+        "game_notes":                game_notes,
+        "raw_item_count":            raw_count,
+        "filtered_item_count":       filtered_count,
+        "fetch_errors":              fetch_errors,
+        "suggested_context_updates": context_flags if context_flags is not None else [],
     }
     with open(PRE_GAME_JSON, "w") as f:
         json.dump(output, f, indent=2)
@@ -448,16 +644,19 @@ def main() -> None:
 
     print(f"[pre_game_reporter] Raw news items: {raw_count} | After filter: {filtered_count}")
 
-    if not filtered_items:
-        print("[pre_game_reporter] No prop-relevant items after filtering — writing empty output.")
-        write_output({}, {}, raw_count, filtered_count, fetch_errors)
-        return
+    # Step 4 — single Claude batch summarization call (only when filtered items exist)
+    player_notes: dict = {}
+    game_notes:   dict = {}
+    if filtered_items:
+        player_notes, game_notes = call_claude_summarize(filtered_items, target_names_lower)
+    else:
+        print("[pre_game_reporter] No prop-relevant items after filtering — skipping summarization.")
 
-    # Step 4 — single Claude batch summarization call
-    player_notes, game_notes = call_claude_summarize(filtered_items, target_names_lower)
+    # Step 5 — context staleness check (runs after summarization; always writes context_flags.md)
+    context_flags = run_context_staleness_check(filtered_items, all_raw_items)
 
-    # Step 5 — write output
-    write_output(player_notes, game_notes, raw_count, filtered_count, fetch_errors)
+    # Step 6 — write output
+    write_output(player_notes, game_notes, raw_count, filtered_count, fetch_errors, context_flags)
 
 
 if __name__ == "__main__":

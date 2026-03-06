@@ -259,7 +259,9 @@ def load_season_context() -> str:
 def load_pre_game_news() -> str:
     """
     Load pre_game_news.json written by pre_game_reporter.py.
-    Formats player_notes and game_notes as a readable text block for prompt injection.
+    Formats player_notes, game_notes, and context flags as a readable text block.
+    Critical context flags are prepended with high-visibility formatting.
+    Monitor flags are appended as a light note at the end.
     Returns empty string gracefully if file missing or empty — never blocks a run.
     """
     if not PRE_GAME_NEWS_JSON.exists():
@@ -274,29 +276,61 @@ def load_pre_game_news() -> str:
 
     player_notes = data.get("player_notes") or {}
     game_notes   = data.get("game_notes")   or {}
+    flags        = data.get("suggested_context_updates") or []
 
-    if not player_notes and not game_notes:
+    critical_flags = [f for f in flags if f.get("urgency") == "critical"]
+    monitor_flags  = [f for f in flags if f.get("urgency") == "monitor"]
+
+    if not player_notes and not game_notes and not critical_flags and not monitor_flags:
         print("[analyst] Pre-game news: no notable items today.")
         return ""
 
-    lines = []
+    sections = []
+
+    # Critical context flags — prepended before PLAYER NEWS with high visibility
+    if critical_flags:
+        flag_lines = [
+            "⚠ SEASON CONTEXT FLAGS — REVIEW BEFORE PICKING:",
+            "These facts in the season context file may be outdated. Do not rely on the "
+            "flagged entries below until the context file is manually updated. Use today's "
+            "news items as the more reliable source for these players.",
+            "",
+        ]
+        for flag in critical_flags:
+            player   = flag.get("player_or_team", "Unknown")
+            conflict = flag.get("conflict", "")
+            flag_lines.append(f"CRITICAL: {player} — {conflict}")
+        sections.append("\n".join(flag_lines))
+
     if player_notes:
-        lines.append("PLAYER NEWS:")
+        note_lines = ["PLAYER NEWS:"]
         for name, note in player_notes.items():
-            lines.append(f"- {name.title()}: {note}")
+            note_lines.append(f"- {name.title()}: {note}")
+        sections.append("\n".join(note_lines))
 
     if game_notes:
-        if lines:
-            lines.append("")  # blank line between sections
-        lines.append("GAME NOTES:")
+        note_lines = ["GAME NOTES:"]
         for game, note in game_notes.items():
-            lines.append(f"- {game}: {note}")
+            note_lines.append(f"- {game}: {note}")
+        sections.append("\n".join(note_lines))
 
+    # Monitor flags — lighter note appended at end
+    if monitor_flags:
+        monitor_lines = ["👀 MONITOR — context may be becoming stale:"]
+        for flag in monitor_flags:
+            player   = flag.get("player_or_team", "Unknown")
+            conflict = flag.get("conflict", "")
+            monitor_lines.append(f"- {player}: {conflict}")
+        sections.append("\n".join(monitor_lines))
+
+    n_crit      = len(critical_flags)
+    n_all_flags = len(flags)
+    flag_suffix = f", {n_all_flags} context flags (⚠ {n_crit} critical)" if critical_flags else ""
     print(
         f"[analyst] Pre-game news loaded: {len(player_notes)} player notes, "
-        f"{len(game_notes)} game notes"
+        f"{len(game_notes)} game notes{flag_suffix}"
     )
-    return "\n".join(lines)
+    return "\n\n".join(sections)
 
 
 def load_player_stats() -> dict:
