@@ -328,16 +328,15 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
         }
     prop_schema_str = json.dumps(prop_schema, indent=2)
 
-    conf_schema = []
+    conf_schema = {}
     for band in ["70-75", "76-80", "81-85", "86+"]:
         d = conf_breakdown[band]
-        conf_schema.append({
-            "band": band,
+        conf_schema[band] = {
             "picks": d["picks"],
             "hits": d["hits"],
             "hit_rate_pct": d["hit_rate_pct"],
             "expected_hit_rate_pct": d["expected_hit_rate_pct"],
-        })
+        }
     conf_schema_str = json.dumps(conf_schema, indent=2)
 
     # Player stats context block (pre-serialized for the f-string)
