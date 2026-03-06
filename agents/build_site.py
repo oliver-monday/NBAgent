@@ -36,9 +36,8 @@ _ABBR_NORM = {
     "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
 }
 
-ET = ZoneInfo("America/Los_Angeles")
 PT = ZoneInfo("America/Los_Angeles")
-TODAY_STR = dt.datetime.now(ET).strftime("%Y-%m-%d")
+TODAY_STR = dt.datetime.now(PT).strftime("%Y-%m-%d")
 
 
 def load_json(path: Path, default):
@@ -53,7 +52,7 @@ def load_json(path: Path, default):
 
 def load_game_times() -> dict:
     """
-    Returns {team_abbrev: "7:30 PM ET"} for today's games from nba_master.csv.
+    Returns {team_abbrev: "7:30 PM PT"} for today's games from nba_master.csv.
     """
     if not MASTER_CSV.exists():
         return {}
@@ -394,10 +393,12 @@ def load_todays_parlays() -> dict:
 
     today_parlays = []
     hits = misses = 0
+    past_parlays: list = []
 
     for bundle in raw:
         parlays = bundle.get("parlays", [])
-        if bundle.get("date") == TODAY_STR:
+        bundle_date = bundle.get("date", "")
+        if bundle_date == TODAY_STR:
             today_parlays = parlays
         else:
             for p in parlays:
@@ -406,9 +407,18 @@ def load_todays_parlays() -> dict:
                     hits += 1
                 elif r == "MISS":
                     misses += 1
+                if r in ("HIT", "MISS"):
+                    past_parlays.append({
+                        "date": bundle_date,
+                        "label": p.get("label"),
+                        "result": r,
+                        "implied_odds": p.get("implied_odds"),
+                        "leg_results": p.get("leg_results", []),
+                    })
 
     total = hits + misses
     hit_rate = round(100 * hits / total, 1) if total else 0
+    past_parlays_sorted = sorted(past_parlays, key=lambda x: x.get("date", ""), reverse=True)
 
     return {
         "today": today_parlays,
@@ -416,6 +426,7 @@ def load_todays_parlays() -> dict:
         "misses": misses,
         "total": total,
         "hit_rate_pct": hit_rate,
+        "history": past_parlays_sorted[:60],
     }
 
 
@@ -461,6 +472,11 @@ def build_site():
     past_picks  = [p for p in picks if p.get("date") != TODAY_STR
                    and p.get("result") in ("HIT", "MISS")]
 
+    past_top_picks = [p for p in past_picks if p.get("confidence_pct", 0) >= 85]
+    tp_hits   = sum(1 for p in past_top_picks if p["result"] == "HIT")
+    tp_total  = len(past_top_picks)
+    tp_pct    = round(100 * tp_hits / tp_total, 1) if tp_total else 0
+
     # Attach game time to today's picks
     for p in today_picks:
         p["game_time"] = game_times.get(str(p.get("team", "")).upper(), "")
@@ -502,7 +518,13 @@ def build_site():
         "parlays":   parlays_data,
         "ml_odds":   ml_odds,
         "top_picks": top_picks,
-        "built_at": dt.datetime.now(ET).strftime("%B %d, %Y at %-I:%M %p ET"),
+        "top_picks_history": {
+            "hits": tp_hits,
+            "total": tp_total,
+            "pct": tp_pct,
+            "picks": sorted(past_top_picks, key=lambda p: p.get("date", ""), reverse=True)[:40],
+        },
+        "built_at": dt.datetime.now(PT).strftime("%B %d, %Y at %-I:%M %p PT"),
     }
 
     html = generate_html(page_data)
@@ -525,7 +547,8 @@ def generate_html(d: dict) -> str:
     injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "games": []}))
     parlays_json    = json.dumps(d.get("parlays", {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}))
     ml_odds_json    = json.dumps(d.get("ml_odds", {}))
-    top_picks_json  = json.dumps(d.get("top_picks", []))
+    top_picks_json         = json.dumps(d.get("top_picks", []))
+    top_picks_history_json = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -858,6 +881,16 @@ def generate_html(d: dict) -> str:
     .tp-right {{ text-align: right; flex-shrink: 0; }}
     .tp-conf {{ font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 6px; }}
     .top-picks-divider {{ height: 1px; background: var(--border); margin: 20px 0 16px; }}
+
+    /* History drawers */
+    .history-drawer {{ margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }}
+    .drawer-header {{ background: var(--surface); padding: 12px 16px; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; font-weight: 600; user-select: none; }}
+    .drawer-header:hover {{ border-color: var(--accent); }}
+    .drawer-body {{ padding: 12px 16px; background: var(--bg); }}
+    .drawer-chevron {{ font-size: 12px; color: var(--muted); transition: transform 0.2s; }}
+    .drawer-chevron.open {{ transform: rotate(180deg); }}
   </style>
 </head>
 <body>
@@ -890,6 +923,13 @@ def generate_html(d: dict) -> str:
     </div>
     <div id="prop-streak-grid" class="prop-streak-grid" style="flex:1;max-width:440px"></div>
   </div>
+  <div id="top-picks-banner" class="overall-banner" style="margin-top:12px;display:none">
+    <div>
+      <div class="big" id="tp-pct">—</div>
+      <div class="sub" id="tp-sub">⚡ top picks hit rate</div>
+    </div>
+    <div style="flex:1;max-width:300px;font-size:13px;color:var(--muted);padding-left:16px" id="tp-detail"></div>
+  </div>
   <div class="chart-wrap">
     <div class="chart-title">Daily hit rate — last 30 days</div>
     <canvas id="trend-chart"></canvas>
@@ -897,8 +937,30 @@ def generate_html(d: dict) -> str:
       Not enough data yet — check back after a few days of picks.
     </div>
   </div>
-  <div class="section-header">Pick history</div>
-  <div id="results-container"></div>
+  <div class="history-drawer">
+    <div class="drawer-header" onclick="toggleDrawer('top-picks-drawer')">
+      <span>⚡ Top Picks History</span><span class="drawer-chevron" id="top-picks-drawer-chevron">▼</span>
+    </div>
+    <div class="drawer-body" id="top-picks-drawer" style="display:none">
+      <div id="top-picks-history-container"></div>
+    </div>
+  </div>
+  <div class="history-drawer">
+    <div class="drawer-header" onclick="toggleDrawer('pick-history-drawer')">
+      <span>📋 Pick History</span><span class="drawer-chevron" id="pick-history-drawer-chevron">▼</span>
+    </div>
+    <div class="drawer-body" id="pick-history-drawer" style="display:none">
+      <div id="results-container"></div>
+    </div>
+  </div>
+  <div class="history-drawer">
+    <div class="drawer-header" onclick="toggleDrawer('parlay-history-drawer')">
+      <span>🎰 Parlay History</span><span class="drawer-chevron" id="parlay-history-drawer-chevron">▼</span>
+    </div>
+    <div class="drawer-body" id="parlay-history-drawer" style="display:none">
+      <div id="parlay-history-container"></div>
+    </div>
+  </div>
 </div>
 <div id="tab-audit" class="page"><div id="audit-container"></div></div>
 
@@ -916,6 +978,7 @@ const DATA = {{
   parlays:          {parlays_json},
   ml_odds:          {ml_odds_json},
   top_picks:        {top_picks_json},
+  top_picks_history: {top_picks_history_json},
 }};
 
 function showTab(name) {{
@@ -955,6 +1018,14 @@ function statusClass(s) {{
   if (u.includes('QUEST'))        return 'status-QUESTIONABLE';
   if (u.includes('PROB'))         return 'status-PROBABLE';
   return 'status-OTHER';
+}}
+
+function toggleDrawer(id) {{
+  const body    = document.getElementById(id);
+  const chevron = document.getElementById(id + '-chevron');
+  const open    = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  if (chevron) chevron.classList.toggle('open', open);
 }}
 
 function toggleInjuries() {{
@@ -1047,7 +1118,7 @@ function renderPicks() {{
   const c = document.getElementById('picks-container');
   const picks = DATA.today_picks;
   if (!picks.length) {{
-    c.innerHTML = `<div class="empty"><div class="empty-icon">🏀</div>No picks yet for ${{DATA.today_str}}.<br>Check back after 11 AM ET.</div>`;
+    c.innerHTML = `<div class="empty"><div class="empty-icon">🏀</div>No picks yet for ${{DATA.today_str}}.<br>Check back after 11 AM PT.</div>`;
     return;
   }}
 
@@ -1172,6 +1243,15 @@ function renderResults() {{
   }});
   grid.innerHTML = gh;
 
+  const tph = DATA.top_picks_history;
+  if (tph && tph.total >= 3) {{
+    document.getElementById('top-picks-banner').style.display = 'flex';
+    document.getElementById('tp-pct').textContent = tph.pct + '%';
+    document.getElementById('tp-sub').textContent = '⚡ top picks hit rate';
+    document.getElementById('tp-detail').textContent =
+      `${{tph.hits}}/${{tph.total}} picks at 85%+ confidence`;
+  }}
+
   const c = document.getElementById('results-container');
   const results = DATA.recent_results;
   if (!results.length) {{
@@ -1188,8 +1268,10 @@ function renderResults() {{
       ? `<span class="result-miss">✗ MISS</span>`
       : `<span class="result-nd">—</span>`;
     const bs = `width:32px;height:18px;border-radius:4px;font-size:9px;display:inline-flex;align-items:center;justify-content:center`;
+    const d = p.date ? p.date.split('-') : ['','',''];
+    const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}/${{d[0].slice(2)}}` : p.date;
     html += `<tr>
-      <td style="white-space:nowrap">${{p.date}}</td>
+      <td style="white-space:nowrap">${{fmt}}</td>
       <td><strong>${{p.player_name}}</strong><br><span style="font-size:11px;color:var(--muted)">${{p.team}}</span></td>
       <td><span class="prop-badge ${{propColor(p.prop_type)}}" style="${{bs}}">${{p.prop_type}}</span></td>
       <td style="white-space:nowrap">${{p.pick_value}}</td>
@@ -1199,6 +1281,72 @@ function renderResults() {{
   }});
   html += '</tbody></table>';
   c.innerHTML = html;
+
+  // Top Picks History drawer
+  const tpContainer = document.getElementById('top-picks-history-container');
+  if (tpContainer) {{
+    const tpPicks = (DATA.top_picks_history || {{}}).picks || [];
+    if (!tpPicks.length) {{
+      tpContainer.innerHTML = '<div class="empty">No graded Top Picks yet.</div>';
+    }} else {{
+      let tpHtml = `<table class="history-table"><thead><tr>
+        <th>Date</th><th>Player</th><th>Prop</th><th>Pick</th><th>Actual</th><th>Conf</th><th>Result</th>
+      </tr></thead><tbody>`;
+      tpPicks.forEach(p => {{
+        const d = p.date ? p.date.split('-') : ['','',''];
+        const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}/${{d[0].slice(2)}}` : p.date;
+        const res = p.result==='HIT'
+          ? `<span class="result-hit">✓ HIT</span>`
+          : `<span class="result-miss">✗ MISS</span>`;
+        const bs = `width:32px;height:18px;border-radius:4px;font-size:9px;display:inline-flex;align-items:center;justify-content:center`;
+        tpHtml += `<tr>
+          <td style="white-space:nowrap">${{fmt}}</td>
+          <td><strong>⚡ ${{p.player_name}}</strong><br><span style="font-size:11px;color:var(--muted)">${{p.team}}</span></td>
+          <td><span class="prop-badge ${{propColor(p.prop_type)}}" style="${{bs}}">${{p.prop_type}}</span></td>
+          <td style="white-space:nowrap">${{p.pick_value}}</td>
+          <td>${{p.actual_value??'—'}}</td>
+          <td style="font-size:11px;color:var(--muted)">${{p.confidence_pct}}%</td>
+          <td>${{res}}</td>
+        </tr>`;
+      }});
+      tpHtml += '</tbody></table>';
+      tpContainer.innerHTML = tpHtml;
+    }}
+  }}
+
+  // Parlay History drawer
+  const phContainer = document.getElementById('parlay-history-container');
+  if (phContainer) {{
+    const parlayHistory = (DATA.parlays || {{}}).history || [];
+    if (!parlayHistory.length) {{
+      phContainer.innerHTML = '<div class="empty">No graded parlays yet.</div>';
+    }} else {{
+      let phHtml = '';
+      parlayHistory.forEach(p => {{
+        const d = p.date ? p.date.split('-') : ['','',''];
+        const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}/${{d[0].slice(2)}}` : p.date;
+        let resultBadge = '';
+        if (p.result==='HIT')       resultBadge = `<span class="parlay-result-hit">✓ HIT</span>`;
+        else if (p.result==='MISS') resultBadge = `<span class="parlay-result-miss">✗ MISS</span>`;
+        const legs = (p.leg_results || []).map(l => {{
+          const lr = l.result==='HIT' ? `<span class="result-hit">✓</span>` : `<span class="result-miss">✗</span>`;
+          return `<div style="font-size:11px;padding:2px 0">${{lr}} ${{l.player_name}} ${{l.prop_type}} OVER ${{l.pick_value}} → ${{l.actual_value??'—'}}</div>`;
+        }}).join('');
+        phHtml += `
+          <div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-size:12px;font-weight:600">${{p.label||'Parlay'}}</span>
+              <span style="display:flex;gap:8px;align-items:center">
+                <span style="font-size:11px;color:var(--muted)">${{fmt}} · ${{p.implied_odds||''}}</span>
+                ${{resultBadge}}
+              </span>
+            </div>
+            ${{legs}}
+          </div>`;
+      }});
+      phContainer.innerHTML = phHtml;
+    }}
+  }}
 }}
 
 // ── TREND CHART (vanilla canvas, no deps) ──
