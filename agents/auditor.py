@@ -646,7 +646,7 @@ def save_audit_summary(audit_log: list[dict]):
     p_partial = sum(e.get("parlay_results", {}).get("partial", 0) for e in audit_log)
 
     summary = {
-        "generated_at":    TODAY_STR,
+        "generated_at":    TODAY.strftime("%Y-%m-%d"),
         "entries_included": len(audit_log),
         "overall": {
             "total_picks":  total_picks,
