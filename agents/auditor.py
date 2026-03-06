@@ -37,6 +37,7 @@ AUDIT_LOG_JSON    = DATA / "audit_log.json"
 CONTEXT_MD         = ROOT / "context" / "nba_season_context.md"
 PLAYER_STATS_JSON  = DATA / "player_stats.json"
 AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
+AUDIT_REPORTS_DIR   = DATA / "audit_reports"
 POST_GAME_NEWS_JSON = DATA / "post_game_news.json"
 
 ET = ZoneInfo("America/Los_Angeles")
@@ -637,6 +638,7 @@ def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list
     print(f"[auditor] Saved audit entry for {YESTERDAY_STR} → {AUDIT_LOG_JSON}")
 
     save_audit_summary(existing_log)
+    save_audit_report(audit_entry, graded_picks, graded_parlays)
 
 
 def save_audit_summary(audit_log: list[dict]):
@@ -733,6 +735,160 @@ def save_audit_summary(audit_log: list[dict]):
     with open(AUDIT_SUMMARY_JSON, "w") as f:
         json.dump(summary, f, indent=2)
     print(f"[auditor] Saved rolling audit summary ({len(audit_log)} entries) → {AUDIT_SUMMARY_JSON}")
+
+
+def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlays: list[dict]) -> None:
+    """
+    Write a human-readable markdown audit report to data/audit_reports/YYYY-MM-DD.md.
+    One file per day, generated at end of auditor run. Permanent archive — never overwritten
+    once written (idempotent: skip if file already exists for this date).
+    """
+    try:
+        AUDIT_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        output_path = AUDIT_REPORTS_DIR / f"{YESTERDAY_STR}.md"
+
+        if output_path.exists():
+            print(f"[auditor] Audit report already exists for {YESTERDAY_STR} — skipping")
+            return
+
+        # Pull top-level stats
+        total_picks    = audit_entry.get("total_picks", 0)
+        hits           = audit_entry.get("hits", 0)
+        misses         = audit_entry.get("misses", 0)
+        hit_rate_pct   = audit_entry.get("hit_rate_pct", 0)
+        parlay_results = audit_entry.get("parlay_results", {})
+        p_hits         = parlay_results.get("hits", 0)
+        p_total        = parlay_results.get("total", 0)
+
+        md_lines: list[str] = []
+
+        # ── Title ─────────────────────────────────────────────────────
+        md_lines.append(f"# Audit Report — {YESTERDAY_STR}")
+        md_lines.append("")
+
+        # ── Summary ───────────────────────────────────────────────────
+        md_lines.append("## Summary")
+        md_lines.append(
+            f"- Total picks: {total_picks} | Hits: {hits} | Misses: {misses}"
+            f" | Hit rate: {hit_rate_pct}%"
+        )
+        md_lines.append(f"- Parlays: {p_hits}/{p_total} hit")
+        md_lines.append("")
+
+        # ── Prop Type Breakdown ───────────────────────────────────────
+        md_lines.append("## Prop Type Breakdown")
+        ptb = audit_entry.get("prop_type_breakdown", {})
+        if ptb:
+            md_lines.append("| Prop | Picks | Hits | Hit Rate |")
+            md_lines.append("|------|-------|------|----------|")
+            for prop in ["PTS", "REB", "AST", "3PM"]:
+                d  = ptb.get(prop, {})
+                p  = d.get("picks", 0)
+                h  = d.get("hits", 0)
+                hr = d.get("hit_rate_pct", 0)
+                md_lines.append(f"| {prop} | {p} | {h} | {hr}% |")
+        else:
+            md_lines.append("_No prop breakdown available._")
+        md_lines.append("")
+
+        # ── Confidence Calibration ────────────────────────────────────
+        ccb = audit_entry.get("confidence_calibration", {})
+        if isinstance(ccb, dict) and ccb:
+            md_lines.append("## Confidence Calibration")
+            md_lines.append("| Band | Picks | Hits | Actual HR% | Expected HR% |")
+            md_lines.append("|------|-------|------|------------|--------------|")
+            for band in ["70-75", "76-80", "81-85", "86+"]:
+                d           = ccb.get(band, {})
+                p           = d.get("picks", 0)
+                h           = d.get("hits", 0)
+                actual_hr   = d.get("hit_rate_pct", 0)
+                expected_hr = d.get("expected_hit_rate_pct", 0)
+                md_lines.append(f"| {band}% | {p} | {h} | {actual_hr}% | {expected_hr}% |")
+            md_lines.append("")
+
+        # ── Miss Details ──────────────────────────────────────────────
+        miss_details = audit_entry.get("miss_details", [])
+        if miss_details:
+            md_lines.append("## Miss Details")
+            for miss in miss_details:
+                player    = miss.get("player_name", "Unknown")
+                prop_type = miss.get("prop_type", "?")
+                pick_val  = miss.get("pick_value", "?")
+                actual    = miss.get("actual_value", "?")
+                md_lines.append(f"### {player} — {prop_type} OVER {pick_val} (actual: {actual})")
+                mc = miss.get("miss_classification", "unclassified")
+                md_lines.append(f"- **Classification:** {mc}")
+                md_lines.append(f"- **Root cause:** {miss.get('root_cause', '')}")
+                md_lines.append("")
+
+        # ── Reinforcements ────────────────────────────────────────────
+        reinforcements = audit_entry.get("reinforcements", [])
+        md_lines.append("## Reinforcements")
+        if reinforcements:
+            for item in reinforcements:
+                md_lines.append(f"- {item}")
+        else:
+            md_lines.append("_None._")
+        md_lines.append("")
+
+        # ── Lessons ───────────────────────────────────────────────────
+        lessons = audit_entry.get("lessons", [])
+        md_lines.append("## Lessons")
+        if lessons:
+            for item in lessons:
+                md_lines.append(f"- {item}")
+        else:
+            md_lines.append("_None._")
+        md_lines.append("")
+
+        # ── Recommendations for Analyst ───────────────────────────────
+        recommendations = audit_entry.get("recommendations", [])
+        md_lines.append("## Recommendations for Analyst")
+        if recommendations:
+            for i, item in enumerate(recommendations, 1):
+                md_lines.append(f"{i}. {item}")
+        else:
+            md_lines.append("_None._")
+        md_lines.append("")
+
+        # ── Parlay Results ────────────────────────────────────────────
+        md_lines.append("## Parlay Results")
+        md_lines.append(f"- Result: {p_hits}/{p_total} hit")
+        md_lines.append("")
+        for parlay in graded_parlays:
+            label  = parlay.get("label", "Parlay")
+            result = parlay.get("result", "?")
+            odds   = parlay.get("implied_odds", "n/a")
+            md_lines.append(f"### {label} — {result}")
+            md_lines.append(f"- Implied odds: {odds}")
+            leg_parts = []
+            for leg in parlay.get("leg_results", []):
+                pname   = leg.get("player_name", "?")
+                ptype   = leg.get("prop_type", "?")
+                pval    = leg.get("pick_value", "?")
+                lresult = leg.get("result", "?")
+                leg_parts.append(f"{pname} {ptype} OVER {pval} ({lresult})")
+            md_lines.append(f"- Legs: {', '.join(leg_parts)}")
+            md_lines.append("")
+
+        parlay_lessons        = parlay_results.get("parlay_lessons", [])
+        parlay_reinforcements = parlay_results.get("parlay_reinforcements", [])
+        if parlay_lessons:
+            md_lines.append("**Parlay lessons:**")
+            for item in parlay_lessons:
+                md_lines.append(f"- {item}")
+            md_lines.append("")
+        if parlay_reinforcements:
+            md_lines.append("**Parlay reinforcements:**")
+            for item in parlay_reinforcements:
+                md_lines.append(f"- {item}")
+            md_lines.append("")
+
+        output_path.write_text("\n".join(md_lines), encoding="utf-8")
+        print(f"[auditor] Saved audit report → {output_path}")
+
+    except Exception as e:
+        print(f"[auditor] WARNING: could not save audit report: {e}")
 
 
 def print_summary(graded_picks: list[dict], graded_parlays: list[dict], audit_entry: dict):
