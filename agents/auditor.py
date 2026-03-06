@@ -619,6 +619,8 @@ def save_audit_summary(audit_log: list[dict]):
     conf_agg: dict = defaultdict(lambda: {"picks": 0, "hits": 0})
     for entry in audit_log:
         ccb = entry.get("confidence_calibration") or {}
+        if not isinstance(ccb, dict):
+            continue
         for band, d in ccb.items():
             conf_agg[band]["picks"] += d.get("picks", 0)
             conf_agg[band]["hits"]  += d.get("hits",  0)
