@@ -781,10 +781,24 @@ Condition C — Confirming signals: At least two independent signals must suppor
 ## ROLLING PERFORMANCE SUMMARY
 {audit_summary if audit_summary else "Insufficient audit history yet (need 3+ days)."}
 
-## OUTPUT FORMAT
-Respond ONLY with a valid JSON array. No preamble, no explanation outside the JSON.
-Each pick must follow this exact schema:
+## ANALYSIS APPROACH
+Work through each player mentally before writing output. Keep your per-player reasoning
+to 3 lines maximum:
+  Line 1: Best qualifying tier + hit rate (e.g. "PTS T20: 9/10 ✓")
+  Line 2: Key adjustment applied if any (e.g. "VOLATILE -5%, B2B rate used, BLOWOUT -10%")
+  Line 3: Final confidence + pick or skip decision (e.g. "→ 80% PICK" or "→ 65% SKIP")
+Do not narrate every rule check. Do not recalculate L10 averages in writing — work from
+the quant data provided. Brief internal notes only; the JSON output is what matters.
 
+## OUTPUT FORMAT — EMIT THIS FIRST, BEFORE ANY OTHER TEXT
+Your response MUST begin with the JSON array on the very first line. No preamble.
+No "I'll analyze..." No game context review block. No markdown headers before the JSON.
+The JSON array starts at character 0 of your response.
+
+After the closing ] of the JSON array, you may include a brief optional summary
+(3–5 lines maximum) noting any notable skips or edge cases. Nothing more.
+
+JSON schema — each pick:
 [
   {{
     "date": "{TODAY_STR}",
@@ -797,10 +811,10 @@ Each pick must follow this exact schema:
     "direction": "OVER",
     "confidence_pct": number (70-99),
     "hit_rate_display": "string — fraction from last 10 games at this tier, e.g. '8/10'",
-    "trend": "up | stable | down — direction of last 5 vs last 10 avg for this stat",
+    "trend": "up | stable | down",
     "opp_defense_rating": "soft | mid | tough | unknown",
-    "reasoning": "One tight sentence: the key reason this floor holds today — matchup, role, usage, or form. No restating hit rate or tier (already shown). Max 15 words.",
-    "tier_walk": "string — compact walk-down log, e.g. 'PTS: 30→3/10 25→5/10 20→8/10✓' or 'REB: 8→4/10 6→8/10✓'"
+    "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
+    "reasoning": "One tight sentence: key reason this floor holds today. Max 15 words."
   }}
 ]
 
@@ -836,6 +850,16 @@ def call_analyst(prompt: str) -> list[dict]:
             raw = raw[4:]
     raw = raw.strip()
 
+    # Fallback: if response has prose before the JSON array, find the array start
+    bracket_idx = raw.find('[')
+    if bracket_idx > 0:
+        print(f"[analyst] WARNING: response had {bracket_idx} chars of prose before JSON — extracting array")
+        raw = raw[bracket_idx:]
+    # Also handle case where response ends after ] with trailing prose
+    last_bracket = raw.rfind(']')
+    if last_bracket != -1 and last_bracket < len(raw) - 1:
+        raw = raw[:last_bracket + 1]
+
     try:
         picks = json.loads(raw)
         if not isinstance(picks, list):
@@ -843,7 +867,7 @@ def call_analyst(prompt: str) -> list[dict]:
         return picks
     except Exception as e:
         print(f"[analyst] ERROR parsing Claude response: {e}")
-        print(f"[analyst] Raw response:\n{raw}")
+        print(f"[analyst] Raw response (first 500 chars):\n{raw[:500]}")
         sys.exit(1)
 
 
