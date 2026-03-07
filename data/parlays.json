@@ -868,5 +868,235 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-07",
+    "parlays": [
+      {
+        "label": "Volume Scorers Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "GS",
+            "prop_type": "PTS",
+            "pick_value": 25,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "MIN",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Cade Cunningham",
+            "team": "DET",
+            "opponent": "BKN",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.512,
+        "correlation": "independent",
+        "rationale": "Three elite volume scorers across independent games; Banchero 10/10 hit rate anchors, BKN soft defense gifts Cunningham.",
+        "date": "2026-03-07",
+        "id": "parlay_2026-03-07_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Kawhi-SGA-Maxey Edge",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "MEM",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "GS",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Tyrese Maxey",
+            "team": "PHI",
+            "opponent": "ATL",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Three separate games, three different prop types; Kawhi's soft MEM matchup and Maxey's 9/10 iron-floor 3PM diversify risk cleanly.",
+        "date": "2026-03-07",
+        "id": "parlay_2026-03-07_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "SGA-Banchero-Edwards Triple",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "GS",
+            "prop_type": "PTS",
+            "pick_value": 25,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "MIN",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Anthony Edwards",
+            "team": "MIN",
+            "opponent": "ORL",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.512,
+        "correlation": "positive",
+        "rationale": "Banchero PTS and Edwards AST span the same ORL-MIN game with non-competing roles; SGA adds independent volume-game upside.",
+        "date": "2026-03-07",
+        "id": "parlay_2026-03-07_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Kawhi-SGA-Randle Boards",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "MEM",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "GS",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "ORL",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Three independent games; Kawhi and Randle both trending up on conservative REB floors, SGA AST adds cross-game diversity.",
+        "date": "2026-03-07",
+        "id": "parlay_2026-03-07_04",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Banchero-Bane-Cunningham Mix",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "MIN",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "MIN",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Cade Cunningham",
+            "team": "DET",
+            "opponent": "BKN",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.512,
+        "correlation": "positive",
+        "rationale": "Banchero and Bane operate non-competitively in ORL's offense; Cunningham exploits BKN's soft defense for a safe 15-point floor.",
+        "date": "2026-03-07",
+        "id": "parlay_2026-03-07_05",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
