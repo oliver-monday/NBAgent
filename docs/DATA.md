@@ -36,7 +36,7 @@ Source: `espn_player_ingest.py`. One row per player per game.
 game_id, game_date, team_abbrev, opp_abbrev, home_away,
 team_pts, team_reb, team_ast, team_tpm
 ```
-Source: `espn_player_ingest.py`. Aggregated from player rows. Used by Quant for opponent defense and game pace.
+Source: `espn_player_ingest.py`. Aggregated from player rows. Used by Quant for opponent defense, game pace, and team defense narratives.
 
 ### player_dim.csv
 ```
@@ -70,7 +70,7 @@ Quant output. One entry per whitelisted player playing today.
   "Player Name": {
     "team": "abbrev",
     "opponent": "abbrev",
-    "games_available": 10,
+    "games_available": 20,
     "last_updated": "YYYY-MM-DD",
     "on_back_to_back": false,
     "rest_days": 2,               // days since team's last game (0=B2B, 1=1 day rest, etc.); null if no history
@@ -113,6 +113,11 @@ Quant output. One entry per whitelisted player playing today.
     },
     "minutes_trend": "stable",
     "avg_minutes_last5": 34.2,
+    "minutes_floor": {            // null if insufficient data
+      "floor_minutes": 29.4,      // lower bound below which player is unlikely to play
+      "avg_minutes": 34.1,        // season avg minutes (non-DNP games)
+      "n": 18                     // games used in computation
+    },
     "raw_avgs": {"PTS": 22.1, "REB": 5.4, "AST": 6.1, "3PM": 1.8},
     "opp_defense": {
       "PTS": {"allowed_pg": 112.4, "rank": 28, "n_teams": 30, "rating": "soft"},
@@ -127,10 +132,113 @@ Quant output. One entry per whitelisted player playing today.
           "PTS_PTS": {"r": -0.08, "tag": "independent"}
         }
       }
-    }
+    },
+    "bounce_back": {
+      "PTS": {
+        "post_miss_hit_rate": 0.71,   // hit rate in game immediately following a miss
+        "lift": 0.12,                 // pp delta vs baseline hit rate
+        "iron_floor": false,          // true if hit rate never drops below floor after a miss
+        "n_misses": 7,                // total misses at best tier in window
+        "near_miss_rate": 0.43,       // fraction of misses within 2 units of tier; null if n_misses < 5
+        "blowup_rate": 0.57,          // fraction of misses 3+ units below tier; null if n_misses < 5
+        "typical_miss": 3.0           // median shortfall on miss games (units); null if n_misses < 5
+      },
+      "REB": {...}, "AST": {...}, "3PM": {...}
+    },
+    "volatility": {
+      "PTS": "consistent|moderate|volatile",   // per stat classification
+      "REB": {...}, "AST": {...}, "3PM": {...}
+    },
+    "positional_dvp": {
+      "PTS": {"allowed_pg": 24.1, "rank": 22, "rating": "soft"},
+      "REB": {...}, "AST": {...}, "3PM": {...}
+    },
+    "ft_safety_margin": {         // null if insufficient FT data (H11)
+      "label": "FT-dependent",    // FT-dependent | FT-contributor | FG-dependent | balanced
+      "margin": 3.2,              // pp headroom before FT contribution fails to cover FG drop
+      "breakeven_fg_pct": 0.41,   // FG% at which FT contribution exactly compensates
+      "season_fg_pct": 0.47,      // season baseline FG% for reference
+      "n": 22                     // games used
+    },
+    "shooting_regression": {      // null if insufficient data (P3)
+      "fg_hot": 0.54,             // FG% in top-tercile scoring games (last 20)
+      "fg_cold": 0.38,            // FG% in bottom-tercile scoring games (last 20)
+      "fg_pct_l5": 0.51,          // FG% over last 5 games
+      "fg_pct_l20": 0.46,         // FG% over last 20 games
+      "n_l5": 5,
+      "n_l20": 20
+    },
+    "profile_narrative": "string | null"  // null if player doesn't meet eligibility threshold
+                                          // (≥10 non-DNP games + qualifying PTS best tier)
   }
 }
 ```
+
+### standings_today.json
+Written daily by `espn_daily_ingest.py`. Source: ESPN standings endpoint.
+```json
+{
+  "as_of": "YYYY-MM-DD",
+  "east": [
+    {
+      "seed": 1,
+      "abbr": "CLE",
+      "wins": 49,
+      "losses": 14,
+      "gb_from_8th": -35.0,       // negative = ahead of 8th seed; positive = behind
+      "gb_from_playin": -37.0,    // negative = ahead of 10th seed
+      "bucket": "safe"            // safe | contending | playin | bubble | eliminated
+    }
+  ],
+  "west": [...]
+}
+```
+
+**Bucket definitions:**
+- `safe` — seed 1–8, 5+ game cushion on 9th seed
+- `contending` — seed 1–8, within 3 games of losing playoff spot
+- `playin` — seed 9–10
+- `bubble` — seed 11–12, within 3 games of play-in cutoff
+- `eliminated` — 15+ games back of play-in
+
+Teams outside all buckets (between bubble and eliminated) are stored in the JSON but omitted from the analyst prompt snapshot — clutter without narrative value.
+
+Consumed by: `analyst.py` and `auditor.py` (injected as `## PLAYOFF PICTURE` block).
+
+### team_defense_narratives.json
+Written daily by `build_team_defense_narratives()` in `quant.py`. Computed from `team_game_log.csv` last 15 games.
+```json
+{
+  "as_of": "YYYY-MM-DD",
+  "narratives": {
+    "UTA": "UTA (last 15g): Allows 118.4 PPG (rank: 29th). Weak perimeter defense — opponents shooting 42.1% from 3 (rank: 28th). High pace (103.2 poss/g). Inflates all counting stats.",
+    "CLE": "CLE (last 15g): Allows 106.2 PPG (rank: 3rd). Strong perimeter defense — opponents shooting 33.1% from 3 (rank: 2nd).",
+    "...": "..."
+  }
+}
+```
+
+All 30 teams present. Narrative components: PPG allowed + league rank (always); 3P% allowed + rank (if column available in `team_game_log.csv`); pace classification (if column available and noteworthy — only high/low pace included, average omitted).
+
+Replaces the static `## TEAM DEFENSIVE PROFILES` section in `nba_season_context.md` for analyst prompt injection. The static section remains in the file as a reference but is not read by any agent.
+
+Consumed by: `analyst.py` only (injected as `## TEAM DEFENSIVE PROFILES` block).
+
+### pre_game_news.json
+Written by `pre_game_reporter.py`. Contains ESPN news headlines cross-referenced against season context, plus deterministic staleness flags.
+```json
+{
+  "fetched_at": "ISO timestamp",
+  "headlines": [...],
+  "context_conflicts": ["string"],   // from Claude news cross-reference pass
+  "staleness_flags": [               // from deterministic date-parsing pass
+    "⚠ CONTEXT FLAG: Jayson Tatum — Return/injury note is 8 days old. Verify current status before picking this player.",
+    "..."
+  ]
+}
+```
+
+All flags (both passes) also written to `context/context_flags.md` as `⚠ CONTEXT FLAG: ...` lines. Picked up by `analyst.py` via existing context flag mechanism.
 
 ### picks.json
 Flat list of all picks, all dates. `result` and `actual_value` are null until Auditor runs.
@@ -193,7 +301,7 @@ List of daily bundles. Each bundle contains the day's parlays.
 ```
 
 ### audit_log.json
-List of daily audit entries. See `@docs/AGENTS.md` for full schema.
+List of daily audit entries. See `AGENTS.md` for full schema.
 
 ---
 

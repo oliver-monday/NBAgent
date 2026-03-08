@@ -28,6 +28,7 @@ import csv
 import datetime as dt
 import json
 import os
+import re
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -361,6 +362,144 @@ def call_claude_summarize(
 
 # ── Context staleness check ───────────────────────────────────────────
 
+def detect_staleness_flags(context_path: Path, today: dt.date) -> list[str]:
+    """
+    Deterministic (no LLM) Pass 1 staleness detection.
+    Parses the ## SEASON FACTS section of the context file for explicit dates
+    and flags facts that have exceeded their expected shelf life.
+
+    Three rules applied independently per line:
+      1. Return/injury note older than 7 days  → verify current status flag
+      2. Specific ISO-dated fact (not return/injury) older than 5 days → verify accuracy flag
+      3. Trade/role note older than 60 days → may be redundant flag
+
+    Returns a list of '⚠ CONTEXT FLAG: ...' strings (may be empty).
+    Never crashes.
+    """
+    ISO_RE   = re.compile(r'\b(\d{4}-\d{2}-\d{2})\b')
+    MONTH_RE = re.compile(
+        r'\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?'
+        r'|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?'
+        r'|Dec(?:ember)?)\s+(\d{4})\b',
+        re.IGNORECASE,
+    )
+    MONTH_MAP = {
+        'jan': 1, 'january': 1,   'feb': 2, 'february': 2,
+        'mar': 3, 'march': 3,     'apr': 4, 'april': 4,
+        'may': 5, 'jun': 6,       'june': 6, 'jul': 7, 'july': 7,
+        'aug': 8, 'august': 8,    'sep': 9, 'september': 9,
+        'oct': 10, 'october': 10, 'nov': 11, 'november': 11,
+        'dec': 12, 'december': 12,
+    }
+    RETURN_KW = {
+        'return', 'returned', 'returning', 'back from', 'recovery',
+        'questionable', 'day-to-day', 'week-to-week', 'out indefinitely',
+    }
+    TRADE_KW = {'trade', 'traded', 'acquired', 'new role', 'moved to', 'signed'}
+
+    try:
+        text = context_path.read_text(encoding='utf-8')
+    except Exception as e:
+        print(f"[pre_game_reporter] WARNING: detect_staleness_flags could not read context: {e}")
+        return []
+
+    # Extract only the ## SEASON FACTS section
+    facts_start = text.find('## SEASON FACTS')
+    if facts_start == -1:
+        return []
+    stop_pos = len(text)
+    for marker in ('## TEAM DEFENSIVE PROFILES', '## PERMANENT ABSENCES'):
+        idx = text.find(marker, facts_start + 1)
+        if idx != -1 and idx < stop_pos:
+            stop_pos = idx
+    section = text[facts_start:stop_pos]
+
+    flags: list[str] = []
+    for line in section.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith('#'):
+            continue
+
+        # Extract a token (text before the first '(' or ':')
+        token = stripped
+        for sep in ('(', ':'):
+            idx_sep = token.find(sep)
+            if idx_sep != -1:
+                token = token[:idx_sep]
+        token = token.lstrip('-*•0123456789. ').strip()
+        if not token:
+            token = 'Season context entry'
+
+        # Find all dates on this line
+        dated: list[tuple[dt.date, bool]] = []  # (date, is_iso)
+        for m in ISO_RE.finditer(stripped):
+            try:
+                dated.append((dt.date.fromisoformat(m.group(1)), True))
+            except ValueError:
+                pass
+        for m in MONTH_RE.finditer(stripped):
+            month_key = m.group(1).lower()[:3]
+            month_num = MONTH_MAP.get(month_key)
+            if month_num:
+                try:
+                    dated.append((dt.date(int(m.group(2)), month_num, 1), False))
+                except ValueError:
+                    pass
+
+        if not dated:
+            continue
+
+        # Use the most recent date found
+        ref_date, is_iso = max(dated, key=lambda x: x[0])
+        age = (today - ref_date).days
+        if age < 0:
+            continue
+
+        line_lower = stripped.lower()
+        is_return  = any(kw in line_lower for kw in RETURN_KW)
+        is_trade   = any(kw in line_lower for kw in TRADE_KW)
+
+        # Rule 1 — return/injury note older than 7 days
+        if age > 7 and is_return:
+            flags.append(
+                f"⚠ CONTEXT FLAG: {token} — Return/injury note is {age} days old. "
+                f"Verify current status before picking this player."
+            )
+
+        # Rule 2 — ISO-dated fact (not return/injury) older than 5 days
+        if age > 5 and is_iso and not is_return:
+            flags.append(
+                f"⚠ CONTEXT FLAG: {token} — Dated fact is {age} days old "
+                f"(from {ref_date}). Verify still accurate."
+            )
+
+        # Rule 3 — trade/role note older than 60 days
+        if age > 60 and is_trade:
+            already = any(token in f and "Return/injury" in f for f in flags)
+            if not already:
+                flags.append(
+                    f"⚠ CONTEXT FLAG: {token} — Trade/role note is {age} days old. "
+                    f"Game log now has sufficient data; this note may be redundant."
+                )
+
+    return flags
+
+
+def _append_staleness_flags_to_md(staleness_flags: list[str]) -> None:
+    """Append deterministic staleness flags to context_flags.md as plain lines."""
+    try:
+        existing = CONTEXT_FLAGS_MD.read_text(encoding="utf-8") if CONTEXT_FLAGS_MD.exists() else ""
+        block = [
+            "",
+            "---",
+            "",
+            "## 🕐 DATE-BASED STALENESS FLAGS (auto-detected)",
+        ] + staleness_flags
+        CONTEXT_FLAGS_MD.write_text(existing + "\n".join(block))
+    except Exception as e:
+        print(f"[pre_game_reporter] WARNING: could not append staleness flags to context_flags.md: {e}")
+
+
 def call_claude_staleness_check(
     context_text: str,
     news_items: list[dict],
@@ -486,24 +625,38 @@ def write_context_flags_md(flags: list[dict]) -> None:
 def run_context_staleness_check(
     filtered_items: list[dict],
     all_raw_items: list[dict],
-) -> list[dict]:
+) -> tuple[list[dict], list[str]]:
     """
     Orchestrates the context staleness check after the summarization step.
-    Runs if filtered_item_count > 0 OR the context file's Last updated date != TODAY.
-    Always writes context_flags.md. Returns list of flag dicts (may be []).
+
+    Pass 1 (deterministic): detect_staleness_flags() — parses explicit dates in the
+    SEASON FACTS section and flags stale facts without an LLM call. Always runs.
+
+    Pass 2 (Claude): call_claude_staleness_check() — cross-references season context
+    against today's news headlines. Runs if filtered_item_count > 0 OR context is stale.
+
+    Deduplication: Pass 1 flags for tokens already covered by Pass 2 flags are dropped.
+    Always writes context_flags.md. Returns (claude_flags, staleness_flags).
     Never crashes — gracefully skips on any file/API error.
     """
     # Load context file
     if not CONTEXT_MD.exists():
         print("[pre_game_reporter] Context staleness check skipped — context file not found.")
         write_context_flags_md([])
-        return []
+        return [], []
     try:
         context_text_raw = CONTEXT_MD.read_text(encoding="utf-8").strip()
     except Exception as e:
         print(f"[pre_game_reporter] Context staleness check skipped — unreadable: {e}")
         write_context_flags_md([])
-        return []
+        return [], []
+
+    # Pass 1 — deterministic staleness detection (always runs, no LLM)
+    staleness_flags_raw = detect_staleness_flags(CONTEXT_MD, TODAY)
+    if staleness_flags_raw:
+        print(f"[pre_game_reporter] Pass 1 staleness flags: {len(staleness_flags_raw)} candidate(s)")
+    else:
+        print("[pre_game_reporter] Pass 1 staleness flags: none")
 
     # Parse Last updated: date from HTML comment header
     last_updated: dt.date | None = None
@@ -520,9 +673,13 @@ def run_context_staleness_check(
     has_news         = len(filtered_items) > 0
 
     if not has_news and not context_is_stale:
-        print("[pre_game_reporter] Context staleness check skipped — no news items and context is current")
+        print("[pre_game_reporter] Context staleness check (Pass 2) skipped — no news and context is current")
         write_context_flags_md([])
-        return []
+        staleness_flags = staleness_flags_raw
+        if staleness_flags:
+            _append_staleness_flags_to_md(staleness_flags)
+            print(f"[pre_game_reporter] Appended {len(staleness_flags)} staleness flag(s) to context_flags.md")
+        return [], staleness_flags
 
     # Strip HTML comment header before sending to Claude
     context_text = context_text_raw
@@ -534,32 +691,49 @@ def run_context_staleness_check(
     # Use filtered items if available; fall back to all raw items
     items_for_check = filtered_items if filtered_items else all_raw_items
 
-    print("[pre_game_reporter] Running context staleness check...")
-    flags = call_claude_staleness_check(context_text, items_for_check)
-    write_context_flags_md(flags)
+    # Pass 2 — Claude news cross-reference
+    print("[pre_game_reporter] Running context staleness check (Pass 2 — Claude)...")
+    claude_flags = call_claude_staleness_check(context_text, items_for_check)
+    write_context_flags_md(claude_flags)
 
-    n_critical = sum(1 for f in flags if f.get("urgency") == "critical")
-    n_monitor  = sum(1 for f in flags if f.get("urgency") == "monitor")
-    if flags:
+    n_critical = sum(1 for f in claude_flags if f.get("urgency") == "critical")
+    n_monitor  = sum(1 for f in claude_flags if f.get("urgency") == "monitor")
+    if claude_flags:
         print(
-            f"[pre_game_reporter] Context flags: {n_critical} critical, "
+            f"[pre_game_reporter] Context flags (Pass 2): {n_critical} critical, "
             f"{n_monitor} monitor → data/context_flags.md"
         )
     else:
-        print("[pre_game_reporter] Context staleness check: no conflicts found")
+        print("[pre_game_reporter] Context staleness check (Pass 2): no conflicts found")
 
-    return flags
+    # Deduplicate Pass 1 flags against Pass 2 player_or_team tokens
+    claude_tokens = {f.get("player_or_team", "").lower() for f in claude_flags}
+    staleness_flags = [
+        flag for flag in staleness_flags_raw
+        if not any(tok and tok in flag.lower() for tok in claude_tokens)
+    ]
+    dropped = len(staleness_flags_raw) - len(staleness_flags)
+    if dropped:
+        print(f"[pre_game_reporter] {dropped} staleness flag(s) deduplicated (already covered by Pass 2)")
+
+    # Append remaining staleness flags to context_flags.md (after the Claude report)
+    if staleness_flags:
+        _append_staleness_flags_to_md(staleness_flags)
+        print(f"[pre_game_reporter] Appended {len(staleness_flags)} staleness flag(s) to context_flags.md")
+
+    return claude_flags, staleness_flags
 
 
 # ── Output writers ────────────────────────────────────────────────────
 
 def write_output(
-    player_notes:   dict,
-    game_notes:     dict,
-    raw_count:      int,
-    filtered_count: int,
-    fetch_errors:   list[str],
-    context_flags:  list | None = None,
+    player_notes:    dict,
+    game_notes:      dict,
+    raw_count:       int,
+    filtered_count:  int,
+    fetch_errors:    list[str],
+    context_flags:   list | None = None,
+    staleness_flags: list[str] | None = None,
 ) -> None:
     output = {
         "date":                      TODAY_STR,
@@ -569,7 +743,8 @@ def write_output(
         "raw_item_count":            raw_count,
         "filtered_item_count":       filtered_count,
         "fetch_errors":              fetch_errors,
-        "suggested_context_updates": context_flags if context_flags is not None else [],
+        "suggested_context_updates": context_flags   if context_flags   is not None else [],
+        "staleness_flags":           staleness_flags if staleness_flags is not None else [],
     }
     with open(PRE_GAME_JSON, "w") as f:
         json.dump(output, f, indent=2)
@@ -653,10 +828,10 @@ def main() -> None:
         print("[pre_game_reporter] No prop-relevant items after filtering — skipping summarization.")
 
     # Step 5 — context staleness check (runs after summarization; always writes context_flags.md)
-    context_flags = run_context_staleness_check(filtered_items, all_raw_items)
+    context_flags, staleness_flags = run_context_staleness_check(filtered_items, all_raw_items)
 
     # Step 6 — write output
-    write_output(player_notes, game_notes, raw_count, filtered_count, fetch_errors, context_flags)
+    write_output(player_notes, game_notes, raw_count, filtered_count, fetch_errors, context_flags, staleness_flags)
 
 
 if __name__ == "__main__":

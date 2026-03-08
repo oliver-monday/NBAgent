@@ -6,9 +6,12 @@
 
 ```
 ingest.yml (8 AM ET)
-  └─ espn_daily_ingest.py    → nba_master.csv
+  └─ espn_daily_ingest.py    → nba_master.csv, standings_today.json
   └─ espn_player_ingest.py   → player_game_log.csv, player_dim.csv, team_game_log.csv
-  └─ quant.py                → player_stats.json
+  └─ quant.py                → player_stats.json, team_defense_narratives.json
+
+pre_game_reporter.yml (chains off ingest, before analyst)
+  └─ pre_game_reporter.py    → pre_game_news.json, context/context_flags.md
 
 auditor.yml (chains off ingest)
   └─ auditor.py              → audit_log.json, updates picks.json + parlays.json
@@ -59,13 +62,15 @@ TPM_TIERS = [1, 2, 3, 4]
 ```
 
 **Per-player outputs in `player_stats.json`:**
-- `tier_hit_rates` — hit rate at each tier across last 10 games, per stat
+- `tier_hit_rates` — hit rate at each tier across last 20 games, per stat
 - `matchup_tier_hit_rates` — hit rate at each tier split by opponent defensive rating (soft/mid/tough) across full season history; only buckets with ≥3 games included
 - `spread_split_hit_rates` — hit rate at each tier split by game competitiveness (competitive = spread_abs ≤ 6.5 vs blowout = spread_abs > 6.5); only buckets with ≥5 games included; limited by spread data coverage
 - `best_tiers` — highest tier with ≥70% hit rate, per stat (null if none qualify)
-- `trend` — up / stable / down (last 5 vs last 10 avg), per stat
+- `trend` — up / stable / down (last 5 vs last 20 avg), per stat
 - `home_away_splits` — best qualifying tier split by H/A
 - `minutes_trend` — increasing / stable / decreasing
+- `avg_minutes_last5` — float; average minutes over last 5 non-DNP games
+- `minutes_floor` — `{floor_minutes, avg_minutes, n}`; computed floor based on recent minutes distribution; null if insufficient data
 - `on_back_to_back` — bool
 - `rest_days` — int; days since team's last game (0 = B2B, 1 = 1 day rest, etc.); null if no history
 - `games_last_7` — int; games played in the 7 days before today
@@ -77,6 +82,20 @@ TPM_TIERS = [1, 2, 3, 4]
 - `opp_defense` — opponent's allowed avg + rank + rating (soft/mid/tough) per stat, based on last 15 games
 - `game_pace` — combined scoring avg for today's matchup + pace_tag (high/mid/low)
 - `teammate_correlations` — Pearson r + correlation tag for each stat pair with each whitelisted teammate
+- `raw_avgs` — season averages per stat (PTS/REB/AST/3PM)
+- `volatility` — per-stat volatility classification
+- `positional_dvp` — positional defense vs. position rating per stat
+- `ft_safety_margin` — `{label, margin, breakeven_fg_pct, season_fg_pct, n}`; H11 feature; FT contribution safety buffer for PTS props; null if insufficient FT data
+- `shooting_regression` — `{fg_hot, fg_cold, fg_pct_l5, fg_pct_l20, n_l5, n_l20}`; P3 feature; recent FG% vs season baseline for regression context
+- `bounce_back` — per stat: `{post_miss_hit_rate, lift, iron_floor, n_misses, near_miss_rate, blowup_rate, typical_miss}`; Miss Anatomy fields (`near_miss_rate`, `blowup_rate`, `typical_miss`) are null if fewer than 5 misses; `near_miss_rate + blowup_rate == 1.0` when both non-null (they partition all misses)
+- `profile_narrative` — string or null; live statistical portrait rendered for players with ≥10 non-DNP games and a qualifying PTS best tier; computed fresh daily by `build_player_profiles()`; injected into analyst prompt as `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS`
+
+**Additional quant output — `team_defense_narratives.json`:**
+- Written by `build_team_defense_narratives()`, called as part of the daily quant run
+- One auto-generated narrative line per team, computed from `team_game_log.csv` last 15 games
+- Replaces the static `## TEAM DEFENSIVE PROFILES` section from `nba_season_context.md` in the analyst prompt; static section is no longer injected
+- Format: `{ABBR} (last 15g): Allows {ppg:.1f} PPG (rank: Nth). [perimeter clause if data available]. [pace clause if noteworthy].`
+- See DATA.md for full schema
 
 **Correlation tags used:**
 `feeder_target`, `volume_game`, `pace_beneficiary`, `positively_correlated`, `independent`, `insufficient_data`, `board_rivals`, `scoring_rivals`, `negatively_correlated`
@@ -85,11 +104,42 @@ TPM_TIERS = [1, 2, 3, 4]
 
 ---
 
+## espn_daily_ingest.py — Game + Standings Ingest
+
+Fetches today's game slate (`nba_master.csv`) and, via `fetch_standings()`, live NBA standings. Standings are written to `data/standings_today.json` with per-team bucket assignments (`safe / contending / playin / bubble / eliminated`). See DATA.md for full schema.
+
+---
+
+## pre_game_reporter.py — Context Freshness Monitor
+
+**Purpose:** Detects stale or conflicting information in `context/nba_season_context.md` before the analyst runs. Writes flags to `context/context_flags.md` and `pre_game_news.json`. Analyst picks up flags via the existing `⚠ CONTEXT FLAG` injection mechanism — no analyst.py changes required.
+
+**Two-pass design:**
+
+**Pass 1 — Deterministic staleness detection (Python only, no LLM):**
+Runs first. Parses explicit dates from the `## SEASON FACTS` section of `nba_season_context.md` and applies three staleness rules:
+- Return/injury notes older than 7 days → `⚠ CONTEXT FLAG: [player] — Return/injury note is N days old. Verify current status before picking this player.`
+- Specific ISO-dated facts older than 5 days → `⚠ CONTEXT FLAG: [player] — Dated fact is N days old (from DATE). Verify still accurate.`
+- Trade/role notes older than 60 days → `⚠ CONTEXT FLAG: [player] — Trade/role note is N days old. Game log now has sufficient data; note may be redundant.`
+
+Deduplicates: if the same player token already appears in a Pass 2 flag, no staleness flag is emitted for that player. Uses stdlib `re` + `datetime` only — no third-party date libraries.
+
+**Pass 2 — ESPN news cross-reference (Claude call):**
+Existing behavior unchanged. Fetches ESPN headlines and cross-references against the full context file. Writes conflict flags for direct contradictions detected in recent news.
+
+**Output written to:**
+- `context/context_flags.md` — Pass 1 flags appended after Pass 2 flags; existing flags preserved
+- `pre_game_news.json` — `"staleness_flags": [...]` key added (empty list `[]` if none)
+
+**Does not modify:** `context/nba_season_context.md` — read only.
+
+---
+
 ## analyst.py — Pick Generator
 
-**Model:** `claude-sonnet-4-6`  
-**MAX_TOKENS:** `16384` (large slates can produce 30+ picks)  
-**RECENT_GAME_WINDOW:** `10` games per player  
+**Model:** `claude-sonnet-4-6`
+**MAX_TOKENS:** `16384` (large slates can produce 30+ picks)
+**RECENT_GAME_WINDOW:** `10` games per player
 **AUDIT_CONTEXT_ENTRIES:** `5` most recent entries
 
 **Inputs consumed:**
@@ -98,15 +148,37 @@ TPM_TIERS = [1, 2, 3, 4]
 - `player_stats.json` — quant output; provides pre-computed best tiers and matchup-specific hit rates injected as a structured prompt section
 - `injuries_today.json` — filtered to today's teams only
 - `audit_log.json` — last 5 entries (reinforcements, lessons, recommendations)
-- `context/nba_season_context.md` — manually maintained NBA context injected into prompt; handles missing file gracefully
+- `context/nba_season_context.md` — SEASON FACTS section only; static `## TEAM DEFENSIVE PROFILES` section no longer injected; handles missing file gracefully
+- `context/context_flags.md` — staleness and conflict flags from pre_game_reporter; injected as `⚠ CONTEXT FLAG` prefixed lines
+- `data/standings_today.json` — live standings snapshot; formatted by `format_playoff_picture()` and injected as `## PLAYOFF PICTURE` section
+- `data/team_defense_narratives.json` — auto-generated team defense profiles; formatted by `format_team_defense_section()` and injected as `## TEAM DEFENSIVE PROFILES` section
 - `playerprops/player_whitelist.csv` — (name, team) tuple filter
+
+**Prompt section order (canonical):**
+1. Task framing + tier system intro
+2. Hit definition
+3. Tier ceiling rules with backtest evidence
+4. `## TODAY'S GAMES`
+5. `## CURRENT INJURY REPORT`
+6. `## PRE-GAME NEWS` (conditional)
+7. `## SEASON CONTEXT` — SEASON FACTS only (from `nba_season_context.md`)
+8. `## PLAYOFF PICTURE` — auto-generated from `standings_today.json`
+9. `## TEAM DEFENSIVE PROFILES` — auto-generated from `team_defense_narratives.json` (last 15g, updates daily)
+10. `## PLAYER RECENT GAME LOGS`
+11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` (with all KEY RULES blocks)
+12. `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS`
+13. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS`
+14. `## ROLLING PERFORMANCE SUMMARY`
+15. `## ANALYSIS APPROACH`
+16. `## OUTPUT FORMAT`
 
 **Prompt design principles:**
 - Tier system explicitly taught: walk down from ceiling until ≥70% hit rate found
 - Example reasoning pattern included in prompt
-- Season context injected between injury report and player logs sections
 - Audit feedback framed as "use this to refine your selections"
 - Output schema enforced strictly: `pick_value` must be a valid tier value
+- Player profiles are live statistical portraits (evidence), not hardcoded flags or verdicts — analyst reasons from them
+- Standings snapshot and team defense narratives are situational awareness only — no hard rules attached
 
 **Output schema (appended to `picks.json`):**
 ```json
@@ -120,7 +192,7 @@ TPM_TIERS = [1, 2, 3, 4]
   "pick_value": number,          // must be a valid tier value
   "direction": "OVER",
   "confidence_pct": 70–99,
-  "hit_rate_display": "8/10",    // fraction at this tier from last 10 games
+  "hit_rate_display": "8/10",    // fraction at this tier from last 20 games
   "trend": "up|stable|down",
   "opp_defense_rating": "soft|mid|tough|unknown",
   "reasoning": "string",         // max 15 words, no restating hit rate
@@ -133,7 +205,7 @@ TPM_TIERS = [1, 2, 3, 4]
 
 ## parlay.py — Parlay Builder
 
-**Model:** `claude-sonnet-4-6`  
+**Model:** `claude-sonnet-4-6`
 **MAX_TOKENS:** `4096`
 
 **Logic flow:**
@@ -207,9 +279,12 @@ CORR_BONUS = {
 
 ## auditor.py — Results Grader + Feedback Writer
 
-**Model:** `claude-sonnet-4-6`  
-**MAX_TOKENS:** `2048`  
+**Model:** `claude-sonnet-4-6`
+**MAX_TOKENS:** `2048`
 **Runs for:** yesterday's date
+
+**Inputs consumed (in addition to picks.json / parlays.json):**
+- `data/standings_today.json` — auditor receives the same playoff picture snapshot as the analyst, since it grades picks made with that information available
 
 **Grading logic:**
 - Matches picks to `player_game_log.csv` by `(player_name.lower(), team_abbrev)` for yesterday's date

@@ -286,15 +286,15 @@ None. The problems were `>` grading artifacts largely resolved by the w20 deploy
 
 ---
 
-## Open Hypotheses (Not Yet Backtested)
+## Backtest 6 — Post-Blowout Bounce-Back (H6)
 
-### H6 — Post-Blowout Bounce-Back
-**Verdict: NOISE**
+**Verdict: NOISE — hypothesis closed**
+**Mode:** `--mode post-blowout`
 **Output:** `data/backtest_post_blowout.json`
 **Instances:** 4,446 qualified player-game instances (Oct 21, 2025 – Mar 6, 2026)
 **Blowout threshold:** ≥15 point margin
 
-**Results by stat:**
+### Results
 
 | Stat | Baseline | Post-Blowout Loss | Lift | Post-Close-Loss | Post-Win | Verdict |
 |------|----------|-------------------|------|-----------------|----------|---------|
@@ -310,16 +310,18 @@ None. The problems were `>` grading artifacts largely resolved by the w20 deploy
 - Post-close-loss is the weakly elevated bucket (lift 1.014–1.033) — players may respond more to close losses than blowouts, but this is also below threshold
 - Lift variance across all three categories is ≤ 0.08 for every stat → noise verdict confirmed
 
-**Implementation applied:** None. Hypothesis closed.
+**Implementation applied:** None.
 
 ---
 
-### H7 — Opponent Schedule Fatigue
-**Verdict: NOISE**
+## Backtest 7 — Opponent Schedule Fatigue (H7)
+
+**Verdict: NOISE — hypothesis closed**
+**Mode:** `--mode opp-fatigue`
 **Output:** `data/backtest_opp_fatigue.json`
 **Instances:** 4,610 qualified player-game instances (Oct 21, 2025 – Mar 6, 2026)
 
-**Results by stat:**
+### Results
 
 | Stat | Baseline | Opp B2B | Lift | Opp Moderate | Opp Rested | Verdict |
 |------|----------|---------|------|--------------|------------|---------|
@@ -333,10 +335,99 @@ None. The problems were `>` grading artifacts largely resolved by the w20 deploy
 - Opponent B2B lift is essentially flat (0.977–1.025) — no defensive softening effect detectable
 - `dense` bucket had 0 instances across the full season: among whitelisted player matchups, no opponent ever reached the 4-in-5 games threshold. This is structurally expected — true dense schedules for playoff-caliber teams are rare in the NBA schedule
 - Lift variance across b2b/moderate/rested is ≤ 0.05 for every stat → well below even the LIFT_WEAK threshold
-- For comparison, own-team B2B is directionally negative (consistent with prior backtests) but opponent B2B shows no corresponding positive signal on the other side of the matchup
 - The "fatigued defense → elevated props" mechanism is not supported in this dataset
 
-**Implementation applied:** None. Hypothesis closed.
+**Implementation applied:** None.
+
+---
+
+## Backtest 8 — FG% Safety Margin (H11)
+
+**Verdict: IMPLEMENTED — shipped without backtest (structural feature)**
+**Mode:** N/A — no backtest mode; validates naturally via audit log
+**Output:** `ft_safety_margin` field in `player_stats.json`
+
+FG% Safety Margin is a structural explainability feature, not a directional signal. It identifies players whose FT volume provides a meaningful floor under PTS production even when FG% dips — and those for whom it does not. The prompt annotation surfaces this as context for the analyst rather than a confidence modifier.
+
+**Rationale for shipping without backtest:** The feature adds explainability (why a player's PTS hit rate is stable despite FG variance) rather than a new prediction. The prompt rule is observational, not directive. Audit log validates naturally within 2–3 weeks.
+
+**Implementation applied:** `ft_safety_margin` computed in `quant.py` and annotated in `analyst.py`. See `DATA.md` for field schema.
+
+---
+
+## Backtest 9 — Shot Volume / Regression to Mean (H13)
+
+**Verdict: NOISE / CONFOUNDED — hypothesis closed**
+**Mode:** `--mode shot-volume`
+**Output:** `data/backtest_shot_volume.json`
+
+**Closure reason:** Median FGA sanity check failed — the computed median FGA values were implausible, indicating the input data or computation was confounded. Results not interpretable. Hypothesis closed without actionable finding.
+
+**Implementation applied:** None.
+
+---
+
+## Open Hypotheses (Pending Backtest)
+
+### H8 — Positional DvP vs. Team-Level DvP Predictive Validity
+
+**Status: QUEUED — data accumulating, run ~early April 2026**
+**Mode:** `--mode positional-dvp`
+**Output:** `data/backtest_positional_dvp.json` (not yet run)
+
+**Question:** Is positional defense rating (DvP) a stronger predictor of PTS/AST tier hit rates than the existing team-level opponent defense rating?
+
+**Mechanism:** A PG facing a team that allows a lot of points to opposing PGs is a more precise signal than "this team allows a lot of points overall." Positional DvP was added to `quant.py` and `analyst.py` in March 2026 but has not been validated against actual outcomes.
+
+**Test design:**
+- For each player-game instance where a pick was made, compare hit rates when positional DvP rating (soft/mid/tough) differs from the team-level opp_defense rating
+- Measure whether positional DvP lift variance exceeds team-level lift variance for PTS and AST
+- Minimum: 30+ days of positional DvP data in `player_stats.json` (approximately early April 2026)
+
+**Data dependency:** Requires ~30 days of live production data with positional DvP computed. Cannot be backtested against historical data — the positional data was not collected before March 2026.
+
+**Priority:** Medium. If positional DvP is not meaningfully stronger than team-level, consider reverting to team-level only to simplify the prompt.
+
+---
+
+### H9 — Player × Opponent H2H Splits
+
+**Status: QUEUED — data accumulating, run ~mid-April 2026**
+**Mode:** `--mode h2h-splits`
+**Output:** `data/backtest_h2h_splits.json` (not yet run)
+
+**Question:** Does a player's historical performance specifically against today's opponent predict hit rates better than their overall tier hit rate?
+
+**Mechanism:** Some players consistently over- or under-perform against specific teams regardless of defensive rating bucket. A player who has faced a particular opponent 4+ times in the season may have a reliable H2H pattern worth surfacing.
+
+**Test design:**
+- For each player-game instance, compare hit rate at best tier when player has ≥4 prior games vs this specific opponent vs overall season hit rate
+- Measure lift variance between H2H-adjusted and non-adjusted predictions
+- Requires full-season sample to have sufficient H2H instances (most opponents appear 2–4× per season)
+
+**Data dependency:** Requires near-complete season sample (~mid-April 2026).
+
+**Priority:** Medium-low. H2H samples are small by design (NBA schedule) — expect high variance, may close as NOISE.
+
+---
+
+### Miss Anatomy — Near-Miss vs. Blowup Next-Game Prediction
+
+**Status: QUEUED — data accumulating, run ~late March 2026**
+**Mode:** `--mode miss-anatomy`
+**Output:** `data/backtest_miss_anatomy.json` (not yet run)
+
+**Question:** Does the severity of a miss (near-miss within 2 units vs. blowup 3+ units below tier) predict next-game hit rate differently?
+
+**Mechanism:** If a player narrowly missed a tier (near-miss), the underlying performance level is close to the threshold and a hit the next game is plausible. If a player was blown out (3+ units below tier), the miss may reflect a structural bad game rather than variance, and the next-game outlook may be worse.
+
+**Relationship to Backtest 3 (Miss Severity):** Backtest 3 tested miss severity as a league-wide signal and found it flat or insufficiently sampled. Miss Anatomy tests the same hypothesis at the player level, using the `near_miss_rate` and `blowup_rate` fields now computed in `quant.py` (`build_bounce_back_profiles()`). The quant fields are live and feeding Player Profiles; the directive prompt rule (confidence modifier or tier-drop on high `blowup_rate`) is deferred until this backtest validates the signal.
+
+**Data dependency:** `near_miss_rate` and `blowup_rate` fields are live in `player_stats.json` as of March 2026. Requires ~2 weeks of accumulation for meaningful per-player samples (~late March 2026).
+
+**Priority:** High — quant fields already live. If signal validates, analyst wiring (annotation + prompt rule) ships immediately after.
+
+**Deferred scope:** `analyst.py` annotation and directive confidence rule are explicitly NOT shipped until this backtest completes. See `miss_anatomy_quant_only.md` for rationale.
 
 ---
 
@@ -358,23 +449,10 @@ None. The problems were `>` grading artifacts largely resolved by the w20 deploy
 | Bounce-back (player-level) | Strong for specific players | 16 iron floor combos; post-miss profiles in quant output | ✅ bb_lift / iron_floor in quant + prompt |
 | Cold streak → mean reversion | **3PM: decline; others: null** | 3PM severe cold 68.3%(lift=0.87, n=161); PTS/REB/AST independent | ⚠️ 3PM finding actionable — prompt rule candidate |
 | Recency decay weighting | Marginal | w20_d0.95 +2.1pp over 31 test days | ❌ Within noise; no change |
-| Post-Blowout Bounce-Back (H6) | NOISE | Post-blowout lift 0.955–0.988; lift variance ≤ 0.08 across all stats | ❌ No signal; hypothesis closed |
-| Opponent Schedule Fatigue (H7) | NOISE | Opp B2B lift 0.977–1.025; dense bucket = 0 instances in full season | ❌ No signal; hypothesis closed |
-
----
-
-## Open Hypotheses (Not Yet Backtested)
-
-### H8 — Positional DvP vs. Team-Level DvP Predictive Validity
-**Question:** Is the positional defense rating (DvP) a stronger predictor of PTS/AST tier hit rates than the existing team-level opponent defense rating?
-
-**Mechanism:** A PG facing a team that allows a lot of points to opposing PGs is a more precise signal than "this team allows a lot of points overall." Positional DvP was added to quant.py and analyst.py in March 2026 but has not been validated against actual outcomes.
-
-**Test design:**
-- For each player-game instance where a pick was made, compare hit rates when positional DvP rating (soft/mid/tough) differs from the team-level opp_defense rating
-- Measure whether positional DvP lift variance exceeds team-level lift variance for PTS and AST
-- Minimum: 30+ days of positional DvP data accumulating in player_stats.json (approximately early April 2026)
-
-**Data dependency:** Requires ~30 days of live production data with positional DvP computed. Cannot be backtested against historical data — the positional data was not collected before March 2026.
-
-**Priority:** Medium — run in early April 2026. If positional DvP is not meaningfully stronger than team-level, consider reverting to team-level only to simplify the prompt.
+| Post-Blowout Bounce-Back (H6) | NOISE | Post-blowout lift 0.955–0.988; lift variance ≤ 0.08 | ❌ Closed |
+| Opponent Schedule Fatigue (H7) | NOISE | Opp B2B lift 0.977–1.025; dense bucket = 0 instances | ❌ Closed |
+| FG% Safety Margin (H11) | Structural — shipped without backtest | Explainability feature; validates via audit log | ✅ ft_safety_margin in quant + analyst |
+| Shot Volume / H13 | NOISE / CONFOUNDED | Median FGA sanity check failed | ❌ Closed |
+| Positional DvP (H8) | QUEUED | — | ⏳ ~early April 2026 |
+| Player × Opponent H2H (H9) | QUEUED | — | ⏳ ~mid-April 2026 |
+| Miss Anatomy (player-level) | QUEUED — quant fields live | near_miss_rate / blowup_rate in player_stats.json | ⏳ ~late March 2026; analyst wiring deferred |

@@ -2,6 +2,251 @@
 
 ---
 
+## Open Items
+
+### Operational
+- **Whitelist maintenance** — review and update `active` flags as the season evolves, especially post-trade-deadline role changes
+- **Season end handling** — workflows need to be paused/disabled in the off-season (roughly late June). Simplest approach: disable the cron schedules in each `.yml`, re-enable in October.
+- **`context/nba_season_context.md` — manual restructure pending** — restructure SEASON FACTS into three decay tiers (PERMANENT / SEMI-STABLE / VOLATILE) as designed in Season Context Improvement 3. Code prompts for Improvements 0–2 are written and queued; this is a manual file edit, no code required. Do after Improvements 0–2 land.
+
+### Untested Hypotheses (backtest designs documented in `docs/BACKTESTS.md`)
+- **H8 — Positional DvP Validity** — Does the positional defense rating predict PTS/AST hit rates more accurately than the team-level opp_defense rating? Requires ~30 days of live positional DvP data accumulating in `player_stats.json`. Run approximately early April 2026. If positional DvP shows no meaningful lift over team-level, consider reverting to team-level to simplify the prompt. Design documented in `docs/BACKTESTS.md`.
+- **H9 — Player × Opponent H2H Splits** — Does a player's historical hit rate against today's specific opponent predict next-game performance better than the population-level opp_defense rating? Requires near-complete season sample (~mid-April 2026). See Active Queue entry M1 for implementation design.
+
+### Closed Hypotheses
+- **H6 — Post-Blowout Bounce-Back** ❌ NOISE — post-blowout lift 0.955–0.988 across all stats; lift variance ≤ 0.08. Closed March 7, 2026. Full results in `docs/BACKTESTS.md`.
+- **H7 — Opponent Schedule Fatigue** ❌ NOISE — opponent B2B lift 0.977–1.025; dense bucket had 0 instances in full season. Closed March 7, 2026. Full results in `docs/BACKTESTS.md`.
+- **H11 — FG% Safety Margin** ✅ IMPLEMENTED — structural explainability feature shipped without backtest. `ft_safety_margin` live in `quant.py` + `analyst.py`. Validates naturally via audit log accumulation.
+- **H13 — Shot Volume** ❌ NOISE / CONFOUNDED — median FGA sanity check failed; results not interpretable. Closed March 2026. Full results in `docs/BACKTESTS.md`.
+
+### Technical Debt
+- **Prompt caching** — system prompt and player context in `analyst.py` are strong candidates for Anthropic's prompt caching feature. Will meaningfully reduce cost once daily volume grows.
+- **`quant.py` runs twice** — once in `ingest.yml` and once in `analyst.yml`. This is intentional (ensures freshness) but adds ~10s to runtime. Low priority.
+- **`data/audit_summary.json` not yet seeded** — `save_audit_summary()` only runs going forward. Historical `audit_log.json` entries will be aggregated incrementally — the summary will be meaningfully populated after 3+ audit runs. `load_audit_summary()` returns empty string until then. No manual action needed.
+- **`prop_type_breakdown` / `confidence_calibration` absent from pre-March audit entries** — older entries in `audit_log.json` won't have these fields; `save_audit_summary()` handles missing fields with `.get()` defaults. Per-prop and calibration totals in `audit_summary.json` will undercount until all historical entries are replaced by new runs. Acceptable accumulation behavior.
+
+### Frontend
+- **Parlays tab historical stats banner** — hidden until graded parlay history exists. Once data accumulates (1–2 weeks), evaluate whether to add a rolling chart similar to the picks trend chart.
+- **Mobile layout** — current pick cards are readable but not optimized for small screens. Low priority until real users request it.
+
+---
+
+## Active Queue — In Priority Order
+
+### Season Context Improvements (Code prompts written — ready to send)
+
+#### Season Context Improvement 0 — Standings Snapshot
+**Status: PROMPT WRITTEN — ready to send to Code**
+**Prompt file:** `season_context_improvement_0_standings.md`
+**Priority: HIGH — send first, self-contained, highest immediate value as March deepens**
+
+**What:** Ingest live NBA standings daily and inject a compact `## PLAYOFF PICTURE` snapshot into the analyst and auditor prompts. Pure situational awareness — no hard rules. Analyst and auditor infer implications (star rest decisions, tanking rotations, desperation defense).
+
+**Implementation scope:**
+- `ingest/espn_daily_ingest.py` — `fetch_standings()` added; writes `data/standings_today.json`
+- Shared formatter — `format_playoff_picture()` generates compact bucketed snapshot string
+- `analyst.py` — injected between `## SEASON CONTEXT` and `## TEAM DEFENSIVE PROFILES`
+- `auditor.py` — injected at equivalent position (grading is contextually aware of standings at time picks were made)
+
+**Bucket logic:** `safe` (seed 1–8, 5+ game cushion) / `contending` (within 3 of losing spot) / `playin` (9th–10th) / `bubble` (11th–12th, within 3 of play-in) / `eliminated` (15+ back). Teams in no meaningful bucket omitted from snapshot.
+
+**Design principle:** Spread tells you this game's line; standings tell you the season-level motivation context that explains why teams are playing the way they are. These are complementary, not redundant.
+
+---
+
+#### Season Context Improvement 1 — Auto-Generated Team Defense Narratives
+**Status: PROMPT WRITTEN — ready to send to Code**
+**Prompt file:** `season_context_improvement_1_team_defense.md`
+**Priority: HIGH — send after Improvement 0 (no dependency)**
+
+**What:** Replace the static `## TEAM DEFENSIVE PROFILES` section in `nba_season_context.md` with auto-generated per-team narratives computed daily from `team_game_log.csv` last 15 games. The static file goes stale silently — a tanking Utah in March looks nothing like a competitive Utah in November.
+
+**Implementation scope:**
+- `quant.py` — `build_team_defense_narratives()` added; writes `data/team_defense_narratives.json`
+- Shared formatter — `format_team_defense_section()` generates dated narrative block
+- `analyst.py` — static TEAM DEFENSIVE PROFILES section replaced with formatter call
+
+**Narrative format:** `UTA (last 15g): Allows 118.4 PPG (rank: 29th). Weak perimeter defense — opponents shooting 42.1% from 3 (rank: 28th). High pace (103.2 poss/g). Inflates all counting stats.`
+
+**Note:** Static `## TEAM DEFENSIVE PROFILES` section remains in `nba_season_context.md` as a reference — Code just stops injecting it. Clean rollback path.
+
+---
+
+#### Season Context Improvement 2 — Staleness Detection in `pre_game_reporter.py`
+**Status: PROMPT WRITTEN — ready to send to Code**
+**Prompt file:** `season_context_improvement_2_staleness.md`
+**Priority: MEDIUM — send after Improvements 0 and 1**
+
+**What:** Extend `pre_game_reporter.py` with a deterministic, Python-only staleness detection pass that fires before the existing Claude call. Parses `context/nba_season_context.md` SEASON FACTS section for explicit dates and flags facts that have exceeded their expected shelf life.
+
+**Three rules:**
+- Return/injury note older than 7 days → `⚠ CONTEXT FLAG`
+- Specific dated fact (full ISO date) older than 5 days → `⚠ CONTEXT FLAG`
+- Trade/role note older than 60 days (≈14 games) → `⚠ CONTEXT FLAG` (note likely redundant — game log has sufficient data)
+
+**Implementation scope:** `pre_game_reporter.py` only. Flags write to existing `context/context_flags.md` and `pre_game_news.json`. No changes to `analyst.py` — picks up via existing `⚠ CONTEXT FLAG` mechanism.
+
+---
+
+#### Season Context Improvement 3 — Restructure SEASON FACTS into Decay Tiers
+**Status: MANUAL — no Code prompt needed**
+**Priority: LOW — do after Improvements 0–2 land**
+
+**What:** Edit `context/nba_season_context.md` manually to add three explicit decay tiers to the SEASON FACTS section header: PERMANENT, SEMI-STABLE, VOLATILE. VOLATILE entries are explicitly dated and get the most scrutiny from the staleness detection added in Improvement 2. When a volatile fact stabilizes (e.g., Tatum's minutes settle after 10+ games), promote to SEMI-STABLE or remove entirely.
+
+---
+
+### P5 — Afternoon Lineup Re-Reasoning Pass (`agents/lineup_update.py`)
+**Priority: MEDIUM — targeted Claude call when a key player goes OUT after morning picks are set**
+**Prerequisite: `lineup_watch.py` must be live first (✅ done as of March 2026)**
+**Revisit: once 7+ days of amendment data accumulated in audit_log.json**
+
+**What:** A focused LLM re-evaluation pass that triggers only when something meaningful has changed. Not a full analyst re-run — a minimal prompt scoped to the picks that are genuinely affected by a new absence.
+
+**Trigger conditions (both must be true):**
+- At least one player crossed to OUT or DOUBTFUL since the previous injury refresh
+- Current time is before 5 PM ET (post-tip-off amendments are not actionable)
+
+**Scope:** Identifies today's open picks where the picked player is a teammate or opponent of a player who just went OUT/DOUBTFUL. Builds a minimal context block from `player_stats.json` for the newly-absent player.
+
+**Claude call:** Single focused prompt returning only picks where assessment changes, with revised `confidence_pct` and one-sentence `updated_reasoning`. Original morning values preserved in `morning_pick` — never overwritten.
+
+**Output schema additions to each amended pick in `picks.json`:**
+```json
+{
+  "lineup_updated": true,
+  "updated_at": "ISO timestamp",
+  "morning_pick": {
+    "confidence_pct": "<original>",
+    "reasoning": "<original reasoning>"
+  },
+  "confidence_pct": "<revised>",
+  "reasoning": "<revised reasoning>"
+}
+```
+
+**Audit integration:** After ~20 audit entries with amendments, evaluate whether re-reasoned picks outperform their morning originals. If no improvement, cut the feature.
+
+**Frontend:** Amended pick cards display a small `↻ Updated [time]` badge with expandable morning vs. revised reasoning comparison.
+
+**Where:** `agents/lineup_update.py` (new), `injuries.yml`, `auditor.py`, `build_site.py`.
+
+---
+
+### Matchup Signals Queue
+
+Design philosophy: the Analyst already has a solid quantitative matchup foundation (positional DvP, vs_soft/vs_tough splits, game pace, spread context). The following proposals address gaps where rolling averages give a misleading picture because something material has changed that the numbers alone cannot capture.
+
+#### M1 — Player × Opponent H2H Splits
+**Priority: MEDIUM — backtest-ready mid-April 2026**
+**Prerequisite: sufficient per-player-opponent sample sizes (~8+ games)**
+
+**What:** For each player today, compute their hit rate at their best tier specifically against today's opponent (full season history). Surface as `h2h_hit_rate` and `h2h_n` alongside the existing `vs_soft`/`vs_tough` population-level rates.
+
+**Why:** The system knows "Brunson hits PTS T25 80% of the time vs soft defenses." It does not know "Brunson hits PTS T25 in 7 of his last 8 games specifically against BOS." Those are different signals — a player may systematically over- or under-perform against a specific defensive scheme that the population-level soft/mid/tough rating smooths over.
+
+**Design:**
+- `quant.py` — `compute_h2h_splits(player_log, stat)`: per player × opponent, compute tier hit rate at best qualifying tier. Minimum n=5 to surface; null otherwise. New `h2h_splits` key in `player_stats.json`.
+- `analyst.py` — `h2h=XX%(Ng)` appended to stat line when n≥5 and today's opponent matches. Prompt rule: weight h2h rate over vs_soft/vs_tough when n≥8; supporting context only when n=5–7.
+
+**Validation gate:** After 30+ days of flagged h2h picks, run backtest H9. **Where:** `agents/quant.py`, `agents/analyst.py` only.
+
+---
+
+#### M2 — Defensive Recency Split
+**Priority: LOW-MEDIUM — cheap quant addition, no backtest required to ship**
+
+**What:** A recency flag on opponent defense: compare opponent's allowed average over last 5 games vs. last 15 games (the existing `opp_defense` window). Flag when L5 diverges materially from L15 — indicating the defense has changed recently (injury to key defender, scheme change, fatigue stretch).
+
+**Design:**
+- `quant.py` — extend `build_opp_defense()` or add `compute_opp_defense_recency()`. Flag `def_trending_soft` when L5 allowed avg ≥8% above L15; `def_trending_tough` when ≥8% below. Minimum 3 games in L5 window. New `def_recency` field per player in `player_stats.json`.
+- `analyst.py` — `DEF↑` (trending soft) or `DEF↓` (trending tough) per-player header annotation. Prompt rule: mild modifier, same weight as pace_tag — not tier-changing until backtested.
+
+**Validation gate:** After 30+ flagged instances, evaluate whether `def_trending_soft` picks outperform baseline. **Where:** `agents/quant.py`, `agents/analyst.py` only.
+
+---
+
+### Pending Backtests
+
+| ID | Name | Status | Mode | ETA |
+|----|------|--------|------|-----|
+| H8 | Positional DvP Validity | Queued — data accumulating | `--mode positional-dvp` | ~early April 2026 |
+| H9 | Player × Opponent H2H | Queued — data accumulating | `--mode h2h-splits` | ~mid-April 2026 |
+| Miss Anatomy | Near-miss vs. blowup next-game | Queued — quant fields live | `--mode miss-anatomy` | ~late March 2026 |
+
+**Miss Anatomy — analyst wiring deferred:** `near_miss_rate` and `blowup_rate` fields are live in `player_stats.json` and feeding Player Profiles. The directive prompt rule (confidence modifier or tier-drop on high `blowup_rate`) is explicitly NOT shipped until the backtest validates the signal. See `miss_anatomy_quant_only.md`.
+
+---
+
+## Implementation Notes
+
+- **Season Context Improvements 0–2** — Code prompts written and ready. Send order: 0 → 1 → 2. Improvements 0 and 1 have no dependency on each other but both should land before doing the manual Improvement 3 restructure.
+- **Miss Anatomy** — quant fields live and feeding Player Profiles conditional rendering. Analyst wiring deferred until backtest (~late March). See `miss_anatomy_quant_only.md` for deferred scope rationale.
+- **Minutes Floor** — structural feature, ships without backtest. Validates naturally via audit log accumulation within 2–3 weeks.
+- **P4 (Tier-Walk)** — ✅ IMPLEMENTED (March 6, 2026). `tier_walk_flag` in `miss_details` accumulates going forward — expect meaningful patterns after 20+ audit days.
+- **P3 (Shooting Regression)** — ✅ FULLY IMPLEMENTED (March 8, 2026). Signal threshold (±8%) is an untested prior — validate via audit accumulation after 30+ days of flagged picks. HOT misses should cluster in `model_gap` to confirm mechanism; if they cluster in `variance`, the penalty is overcorrecting.
+- **P5 (Afternoon Re-Reasoning)** — requires `lineup_watch.py` already live (✅). Key open design question: change-detection for "new absence since last run" — simplest approach is comparing `injuries_today.json` against a prior-run snapshot cached to `data/injuries_prev.json` by `lineup_watch.py`. Revisit after 7 days of lineup_watch data.
+- **#1 (Teammate Absence Delta)** — highest long-run alpha; revisit at season start when full-year DNP data exists.
+- **Confidence calibration tracking** — `audit_summary.json` accumulates per-band hit rates (70–75 / 76–80 / 81–85 / 86+). After 20+ audit days, compare actual hit rates to stated confidence bands. If a band systematically underperforms, tighten prompt guidance for that band directly.
+- **Positional DvP backtest (H8)** — data accumulating in `player_stats.json` since March 2026. Run early April. If not meaningfully stronger than team-level, consider reverting to simplify the prompt.
+
+---
+
+## Improvement Proposals
+
+### Completed
+
+**#2 — Opponent-Specific Tier Hit Rates ✅ IMPLEMENTED**
+- `quant.py` — `compute_matchup_tier_hit_rates()`. Full season history split by opponent defensive rating (soft/mid/tough). Stored as `matchup_tier_hit_rates` in `player_stats.json`.
+- `analyst.py` — `build_quant_context()` injects per-player `vs_soft`/`vs_tough` rates into prompt.
+
+**P2 — Rolling Volatility Score ✅ IMPLEMENTED**
+- `quant.py` — `compute_volatility()`. 20-game window; σ < 0.3 = consistent, 0.3–0.4 = moderate, > 0.4 = volatile. `"volatility"` key in `player_stats.json`.
+- `analyst.py` — `[VOLATILE]` / `[consistent]` tags on stat lines; KEY RULES — VOLATILITY block.
+
+**P1 — Positional DvP ✅ IMPLEMENTED**
+- `player_whitelist.csv` — `position` column added for all active players.
+- `quant.py` — `load_whitelist_positions()` + `compute_positional_dvp()`. `"positional_dvp"` key in `player_stats.json`.
+- `analyst.py` — `DvP [POS]` line per player; positional prompt instructions with REB/3PM exclusions.
+
+**P3 — Shooting Efficiency Regression ✅ IMPLEMENTED (March 7–8, 2026)**
+- `espn_player_ingest.py` — `fgm/fga/fg3m/fg3a` collected on all new daily rows. `player_game_log.csv` backfilled to 7,584 rows (22 columns).
+- `quant.py` — `compute_shooting_regression()`. L5 vs L20 FG%/3P% delta; ±8% threshold; `hot/cold/neutral` flag. `"shooting_regression"` key in `player_stats.json`.
+- `analyst.py` — `[FG_HOT:+X%]` / `[FG_COLD:−X%]` on PTS stat lines; KEY RULES — SHOOTING EFFICIENCY REGRESSION block.
+- **First live run (March 8, 2026):** HOT flags: Ausar Thompson (+26%), Paolo Banchero (+14%), Isaiah Hartenstein (+11%), Kawhi Leonard (+8%). COLD flags: Tyrese Maxey (−13%), Giannis (−12%), Julius Randle (−12%), Jalen Johnson (−10%), Desmond Bane (−9%).
+
+**P4 — Tier-Walk Audit Trail ✅ IMPLEMENTED (March 6, 2026)**
+- `analyst.py` — `tier_walk` field in output schema; walk-down discipline in SELECTION RULES.
+- `auditor.py` — STEP 5 (INSPECT TIER WALK); `tier_walk_flag` in `miss_details`.
+- `build_site.py` — tier-walk displayed on pick cards and Top Picks cards.
+
+**H11 — FG% Safety Margin ✅ IMPLEMENTED (shipped without backtest — structural feature)**
+- `quant.py` — `ft_safety_margin` computed and added to `player_stats.json`.
+- `analyst.py` — annotated in `build_quant_context()`.
+
+**Miss Anatomy (quant fields) ✅ IMPLEMENTED**
+- `quant.py` — `build_bounce_back_profiles()` extended with `near_miss_rate`, `blowup_rate`, `typical_miss` per stat × best tier. Fields null when fewer than 5 misses.
+- `analyst.py` — **DO NOT TOUCH** pending backtest validation. Fields feed Player Profiles conditional rendering only.
+
+**Minutes Floor ✅ IMPLEMENTED (shipped without backtest — structural feature)**
+- `quant.py` — `minutes_floor` computed and added to `player_stats.json`: `{floor_minutes, avg_minutes, n}`.
+- `analyst.py` — annotation in `build_quant_context()`; conditional line in Player Profiles portrait.
+
+**Player Profiles ✅ IMPLEMENTED**
+- `quant.py` — `build_player_profiles()` computes fresh daily PTS-only statistical portraits. `profile_narrative` key in `player_stats.json`.
+- `analyst.py` — `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS` injected between QUANT STATS and AUDITOR FEEDBACK.
+- Eligibility: ≥10 non-DNP games + qualifying PTS best tier. Portrait includes hit sequence, scoring channels, B2B sensitivity, blowout context, and conditional miss anatomy and minutes floor lines.
+- **Guiding principle:** Profiles are live statistical portraits, not hardcoded flags or static labels. Analyst reads evidence, not verdicts.
+
+### Deferred
+
+**#1 — Usage-Share Delta When Teammates Are Out**
+**Status: DEFERRED** — insufficient DNP sample data mid-season. Key star pairings have 0 absence games; most whitelisted player pairs have <3 shared absence games. Highest-alpha proposal — revisit at start of next season with a full year of data.
+- `quant.py` — `build_teammate_absence_deltas()`. Joins `player_game_log.csv` DNP rows to compute per-player stat delta when each teammate is absent vs. present.
+- `analyst.py` — instruction to factor absence delta ≥+2 pts or ≥+1 reb/ast into tier selection.
+
+---
+
 ## Resolved Issues
 
 | Issue | Fix Applied |
@@ -16,226 +261,53 @@
 | `injuries_today.json` empty on first run | Expected — hourly injuries workflow populates it; all agents handle empty gracefully |
 | Parlays tab missing from live site | `build_site.py` merged with full Parlays tab (session March 5, 2026) |
 | `SyntaxWarning: invalid escape sequence '\d'` in build_site.py | Pre-existing cosmetic warning in JS canvas regex block — does not affect runtime |
-| **Improvement Proposal #2 — Opponent-Specific Tier Hit Rates** | Implemented in `quant.py` (`compute_matchup_tier_hit_rates()`, `MIN_MATCHUP_GAMES=3`) and `analyst.py` (`load_player_stats()`, `build_quant_context()`, new QUANT STATS prompt section). `player_stats.json` now includes `matchup_tier_hit_rates` field; analyst prompt instructs Claude to down/upgrade tiers based on vs_soft/vs_tough deltas. |
-| **P1 — Game Script Filter (Spread-Adjusted Blowout Risk)** | Implemented across `espn_daily_ingest.py` (spreads collected from ESPN Core odds API via `fetch_moneylines_for_game()`), `quant.py` (`build_game_spreads()`, `compute_spread_split_hit_rates()`, `today_spread`/`spread_abs`/`blowout_risk`/`spread_split_hit_rates` in player output), `analyst.py` (`build_quant_context()` shows spread + blowout flag per player, prompt rules: down one tier when BLOWOUT_RISK=True, cap confidence at 80% when spread_abs > 13). Historical coverage limited to Oct 21–Nov 13, 2025; accumulates from March 2026 forward. |
-| **P1 (formerly) — B2B Quantified Tier Adjustment + P3 (formerly) — Days of Rest / Schedule Density** | Implemented together in `quant.py`: `build_b2b_game_ids()` builds historical B2B game ID set per team; `compute_b2b_hit_rates()` computes tier hit rates on B2B second-night games per player (null when <5 games); `compute_rest_context()` computes `rest_days`, `games_last_7`, `dense_schedule` from nba_master dates. `build_player_stats()` extended with `b2b_hit_rates`, `rest_days`, `games_last_7`, `dense_schedule` in output. `analyst.py`: `build_quant_context()` shows `B2B`, `rest=Xd`, `DENSE`, `L7:Xg` flags per player header and `b2b=` rate per stat line when on B2B. Prompt adds KEY RULES — REST & FATIGUE block: use b2b= rates when B2B, one-tier-down fallback when <5g, 5-10% confidence reduction for DENSE. |
-| **Backtest-driven prompt + quant calibration (March 2026)** | `agents/backtest.py` added (5,368 instances, Oct 21–Mar 3). Findings applied: (1) Tier ceiling rules added to analyst.py prompt with full-season evidence bars — REB T8+, AST T6+, 3PM T2+, PTS T25+ flagged as requiring exceptional justification. (2) 3PM opp_defense instruction inverted — tough PTS defense is a mild positive signal for 3PM (72.1% vs 60.9% hit rate); mechanism documented in prompt. (3) Trend and home/away removed as directive signals — confirmed noise across all 4 stats (5,368 instances); data retained, instruction weight removed. (4) `PLAYER_WINDOW` raised 10→20 in `quant.py` — backtest calibration showed REB T6 63%→72%, AST T6 63%→75%, PTS T25 65.7%→70.2% at window=20; REB T8 improved 9.6pp to 66.3% (above ≥65% deploy threshold); pick volume −25% but estimated ≥8 picks/day, above parlay minimum. |
-| **Bounce-back analysis + player-level integration (March 2026)** | League-wide bounce-back backtest (Backtest 3, 3,559 consecutive pairs) confirmed null signal — all stats independent (lift 0.90–0.93), no next-game mean reversion from cold streaks (Backtest 4). Player-level analysis (`--mode player-bounce-back`) identified 19 iron-floor player-stat combinations and strong individual bounce-back profiles (e.g., Luka Doncic 3PM T2 100% post-miss n=12, Jaylen Brown PTS T20 100% n=11). Integrated into production pipeline: `build_bounce_back_profiles()` added to `quant.py` (full-season computation per player × stat × best tier; `post_miss_hit_rate`, `lift`, `iron_floor`, `n_misses`); `bounce_back` key added to `player_stats.json`; `build_quant_context()` in `analyst.py` annotates stat lines with `bb_lift=X.XX` or `[iron_floor]`; SELECTION RULES updated to treat post-miss picks neutrally when bb_lift > 1.15 and with no negative weight when iron_floor. |
-| **Grading correction + full backtest re-run (March 2026)** | All production code and backtests corrected from strict `>` to `>=` grading (exact threshold = HIT). Changes applied across `auditor.py` (grade_picks), `quant.py` (all 4 hit rate functions + bounce-back profiles), `analyst.py` (prompt language), and `backtest.py` (9 locations). All 5 backtests re-run; JSON outputs regenerated. Key findings: 3PM T2 now 71.4% (above threshold — never miscalibrated, only misgraded); 3PM opp_defense verdict changed from PREDICTIVE → NOISE (inverted prompt instruction removed); PTS T20 now 69.6% (new borderline concern); total instances increased 5,368 → 6,437. `docs/BACKTESTS.md` rewritten with corrected numbers and correction note. |
-| **Prompt calibration from corrected backtests (March 2026)** | Three analyst.py prompt changes from corrected findings: (1) 3PM opp_defense inversion removed — signal is NOISE under correct grading; replaced with neutral language applying opp_defense conventionally for all stats. (2) 3PM cold-streak decline rule added to KEY RULES — SEQUENTIAL GAME CONTEXT (lift=0.87, n=161; severe cold streak → −5% confidence or skip). (3) PTS T25 now requires ≥80% individual hit rate (8+/10) before selection. Tier ceiling instance counts and hit rates updated to corrected values throughout. |
-| **REB opp_defense decoupled (March 2026)** | Auditor confirmed that opp_defense_rating is not a valid signal for REB props (Giannis, Jalen Johnson, Hartenstein all missed T8/T6 REB on soft-defense logic, 2026-03-04). `analyst.py` prompt updated: stat-specific OPPONENT DEFENSE block added; REB explicitly excluded with mechanism explanation (points-allowed doesn't capture pace, opponent FG%, or frontcourt competition). REB T8 ceiling rule updated to remove opp_defense as a qualifying condition. |
-| **Offensive-first player REB floor rule (March 2026)** | Added to analyst.py SELECTION RULES: players with PTS avg > 20 or AST avg > 6 should be targeted at or below their 25th-percentile recent REB output; if the player's REB floor (lowest L10 value) is within 2 of the intended pick value, skip the REB prop and pick scoring/assists instead. |
-| **Auditor root cause discipline (March 2026)** | Added ROOT CAUSE DISCIPLINE block to `auditor.py` `build_audit_prompt()`: three pre-flight checks required before assigning any miss root cause — (a) DNP check via non-zero stats, (b) variance check for near-misses within 1–2 units, (c) game-level cause check for same-game prop-type clusters. Prevents false "lineup failure" attribution when box score shows the player was active. |
-| **Lineup watch script (March 2026)** | `agents/lineup_watch.py` added — deterministic post-processing pass that runs after each Rotowire injury refresh. Reads today's open picks and mutates them in-place: OUT → `voided=True` + `void_reason`; DOUBTFUL → `lineup_risk="high"`; QUESTIONABLE → `lineup_risk="moderate"`. Team abbrev mismatches (NYK/NY, GS/GSW, etc.) avoided by flattening injury lookup to `player_name.lower()` across all teams. Severity sticky upward — picks are never downgraded. `injuries.yml` updated with two new steps (run lineup_watch, commit picks.json). `build_site.py` updated: voided picks display with strikethrough + VOIDED badge; DOUBTFUL/QUESTIONABLE picks show risk pills; parlay cards show "⚠ Leg at risk" banner when any leg player is voided. |
-| **Auditor season context injection (March 2026)** | `auditor.py`: Added `load_season_context()` (identical logic to `analyst.py`); season context injected into `build_audit_prompt()` with explicit OFS framing — the auditor is instructed not to cite permanent-absence players as causal factors in miss root causes. `context/nba_season_context.md`: Added PERMANENT ABSENCES rule block at top of SEASON FACTS section; strengthened Tatum line to "treat as if Tatum never existed this season." |
-| **Auditor pre-computed statistics (March 2026)** | `auditor.py` `build_audit_prompt()`: Added Python pre-computation of `prop_type_breakdown` (picks + hits per prop type) and `confidence_calibration` (picks + hits per confidence band: 70–75 / 76–80 / 81–85 / 86+) before f-string injection — Claude copies values, does no arithmetic. Both fields added to `audit_log.json` OUTPUT FORMAT schema. `## PRE-COMPUTED STATISTICS` prompt section added so Claude has full numeric context before analysis. |
-| **Auditor 4-step miss analysis + miss_classification (March 2026)** | `auditor.py` PICK ANALYSIS TASK block replaced with structured 4-step protocol: STEP 1 (CHECK ACTIVITY — DNP guard), STEP 2 (CLASSIFY THE MISS as exactly one of `selection_error` / `model_gap` / `variance`), STEP 3 (CRITIQUE THE ORIGINAL REASONING field), STEP 4 (REFERENCE HIT RATE DATA — must cite `hit_rate_display` and `trend` from the pick). `miss_classification` field added to `miss_details` schema in `audit_log.json`. Enables downstream aggregation of error taxonomy. |
-| **Auditor player stats context injection (March 2026)** | `auditor.py`: `load_player_stats_for_audit(graded_picks)` added — filters `player_stats.json` to only picked players, slims each entry to 9 fields (`team`, `opponent`, `on_back_to_back`, `best_tiers`, `tier_hit_rates`, `trend`, `opp_defense`, `game_pace`, `teammate_correlations`). `## PLAYER STATS CONTEXT` section injected into `build_audit_prompt()` after FULL GRADED PICKS — gives auditor the quant baseline at pick time so root cause analysis can reference what the data actually showed. |
-| **Parlay agent reads audit feedback (March 2026)** | `parlay.py`: `load_parlay_audit_feedback()` added — reads last 3 `audit_log.json` entries, formats each as one block with parlay hit/miss summary line plus bullet-point `parlay_reinforcements` (✓) and `parlay_lessons` (✗). `build_parlay_prompt()` updated to accept and inject `## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS` section before PRE-SCORED CANDIDATES. `main()` wired up. Closes the parlay feedback loop — agent now sees what correlation types and leg structures have historically succeeded or failed. |
-| **Longitudinal audit summary (March 2026)** | `auditor.py`: `save_audit_summary(audit_log)` added — after every audit run, rolls up entire `audit_log.json` history into `data/audit_summary.json` containing: overall season hit rate, per-prop hit rates (aggregated from `prop_type_breakdown`), miss classification totals (`selection_error`/`model_gap`/`variance` counts), confidence calibration totals (aggregated from `confidence_calibration`), parlay season totals, and last 5 days of lessons/reinforcements/recommendations. Called from `save_audit()` after log write. `auditor.yml` commit loop extended to include `data/audit_summary.json`. `analyst.py`: `load_audit_summary()` added — reads summary, returns `""` if file missing or fewer than 3 entries, otherwise formats a readable multi-line text block. `build_prompt()` signature updated; `## ROLLING PERFORMANCE SUMMARY` section injected between AUDITOR FEEDBACK and OUTPUT FORMAT. `main()` wired up. |
-| **Injury report display overhaul (March 2026)** | `build_site.py` `load_injuries_display()` fully rewritten. Logic moved from JS to Python: game grouping uses `nba_master.csv` as canonical source (eliminates JS-side abbrev mismatches and "Other Teams" bucket); whitelist filtering uses `(canonical_team, last_name)` tuple matching to handle Rotowire's abbreviated name format (`"C. Flagg"` vs `"Cooper Flagg"`); abbrev normalization via whitelist `team_abbr_alt` column + `_ABBR_NORM` static fallback (`SA→SAS`, `NO→NOP`, etc.); timestamp key search includes `"built_at_utc"` (actual field name). Returns `{"fetched_at":..., "games":[...]}` structure; JS `renderInjuries()` simplified to pure renderer. Cross-team duplicate entries (e.g., `A. Sengun` appearing in both GSW and HOU lists) naturally filtered by team-scoped matching. |
-| **PWA start_url fix (March 2026)** | `site/manifest.json`: `"start_url": "/"` changed to `"start_url": "."` and `"scope": "."` added. Root cause: GitHub Pages project repos serve from a subpath (`/NBAgent/`), not the bare domain root. `"/"` resolved to `https://user.github.io/` (404); `"."` resolves relative to manifest location → correct subpath. Browsers navigate to the full URL directly so were unaffected; only the PWA launcher uses `start_url`. |
-| **Site accent color → orange (March 2026)** | `build_site.py`: all purple accent instances replaced with `#E8703A` to match wordmark orange. Changes: `--accent: #6c63ff → #E8703A` (CSS variable, auto-propagates to tab underlines, card hover borders, audit arrows, back-to-top button); `rgba(108,99,255,...)` hardcoded values replaced in back-to-top box-shadow, overall-banner gradient, parlay-stats-banner gradient, and trend chart 70%-target dashed line + label. |
-| **ML win probability odds on game headers (March 2026)** | `build_site.py`: `load_game_ml_odds()` added — reads `home_ml`/`away_ml` from `nba_master.csv`, converts American odds to implied win probability (`(-ml)/(-ml+100)*100` for negative, `100/(ml+100)*100` for positive), rounds to integer, normalizes abbrevs via `_ABBR_NORM`. Result exposed as `DATA.ml_odds` in JS. `renderPicks()` updated to show `DAL (24%) @ ORL (80%)` inline in game group headers using `.ml-pct` CSS class (muted grey, 11px). |
-| **Team abbrev normalization — systematic fix (March 2026)** | Root cause identified: `analyst.py` copies opponent abbrevs from `nba_master.csv` (which uses legacy 2-char forms `GS`, `SA`, `NO`, `UTAH`, `WSH`) directly into `picks.json`. When only opponent-side players are whitelisted for a game, JS builds game groups from those raw abbrevs, causing ML odds lookup misses and display inconsistency. Fix: (1) `_ABBR_NORM` module-level dict added to `build_site.py` — shared by Python functions; (2) `load_game_ml_odds()` now stores both raw AND canonical keys (`GS: 25` and `GSW: 25`) so lookups succeed regardless of source form; (3) `normAbbr()` JS helper added (mirrors `_ABBR_NORM`), applied in `renderPicks()` to both the matchup display label and ml odds lookup — `GS @ HOU` now renders as `GSW @ HOU`. Resolves permanently for all known variant pairs. |
-| **Top Picks section (March 2026)** | `build_site.py`: `get_top_picks(picks, max_picks=5, min_picks=3)` added — deterministic Python selector filtering today's picks to `conf ≥ 85%`, ungraded, not voided, not high-lineup-risk; ranks by `(iron_floor, confidence, hit_rate_hits, stat_priority)` descending; returns `[]` if fewer than 3 qualify to avoid a misleading "Top" label on thin days. Result passed through `page_data → generate_html() → DATA.top_picks`. `renderTopPicks()` JS function renders above game groups: orange `⚡ TOP PICKS TODAY` header; cards with 4px left border in stat type color (PTS=orange, REB=blue, AST=purple, 3PM=yellow); shows player name, team, game time, prop value, confidence %, reasoning, and `🔒 Iron Floor` badge when applicable. `top-picks-divider` separates section from main game groups. Standard pick cards below unchanged — Top Picks are additive. |
-| **Picks tab cosmetic refinements (March 2026)** | `build_site.py`: (1) Streak pills threshold raised from any streak → ≥5 consecutive, moved inline into micro-stats flex row (alongside trend/defense pills) — reduces noise on typical days; `margin-top: 5px` removed from `.streak-pill` CSS since flex gap handles spacing. (2) Results tab Pick column: `"OVER "` prefix removed from every row — prop badge + value is self-explanatory. |
-| **P2 — Rolling Volatility Score (March 2026)** | `quant.py`: `compute_volatility(game_log, stat, tier, window=20)` added after `compute_tier_hit_rates()` — computes `stdev()` of binary hit/miss outcomes over last 20 non-DNP games; labels `consistent` (σ < 0.3), `moderate` (0.3–0.4), or `volatile` (> 0.4); `insufficient_data` when n < 5. Volatility block added in `build_player_stats()` after `best_tiers` — iterates pts/reb/ast/tpm → PTS/REB/AST/3PM at each stat's best qualifying tier; `player_games` sorted oldest→newest (fixes `[-window:]` direction). `"volatility"` key added to `player_stats.json`. `analyst.py`: `volatility_all` extracted in `build_quant_context()`; `vol_tag` computed per stat — `[VOLATILE]` (uppercase) or `[consistent]` (lowercase); appended at end of each stat line. `KEY RULES — VOLATILITY` block added to `build_prompt()`: −5% confidence for VOLATILE, Top Pick gate at 85% post-reduction, reasoning flag, iron_floor override. |
-| **P1 — Positional DvP (March 2026)** | `player_whitelist.csv`: `position` column (PG/SG/SF/PF/C) added for all ~57 active players. `quant.py`: `load_whitelist_positions()` added — returns `{lowercase_name: position}` dict alongside the existing set-returning `load_whitelist()` (no existing callers touched). `compute_positional_dvp(player_log, position_map)` added after `build_opp_defense()` — groups player_game_log by `(opp_abbrev, position)`, enforces 10-game minimum per cell, assigns soft/mid/tough ratings percentile-ranked within each position group across all teams (same 33/67 thresholds). `build_player_stats()` extended with `positional_dvp_data` and `position_map` optional params; per-player `positional_dvp_entry` built with 4 per-stat ratings + `n` + `source` (`"positional"` if n≥10, `"team_fallback"` otherwise — always falls back to team-level, never null). `"positional_dvp"` key added to `player_stats.json`. `main()` calls both new functions and passes results to `build_player_stats()`. `analyst.py`: `build_quant_context()` replaced per-stat `opp_today=` field with a single `DvP [POS]` line per player covering all 4 stats — `DvP [PG]: PTS=soft REB=mid AST=tough 3PM=soft (n=47)` or `DvP [C] (team-lvl): ...` for fallback. `KEY RULES — MATCHUP QUALITY` updated to reference DvP line. `OPPONENT DEFENSE — POSITIONAL DvP` section replaced old stat-specific rules: positional source = primary signal; REB still excluded; 3PM still noise; weight by n≥20. |
-| **Auditor crash bug fixes — three sequential bugs in `save_audit_summary()` (March 6, 2026)** | **Bug 1:** `AttributeError: 'list' object has no attribute 'items'` — old audit entries stored `confidence_calibration` as a list; `save_audit_summary()` iterated it with `.items()`. Fix: added `if not isinstance(ccb, dict): continue` guard to skip non-dict entries. **Bug 2 (root cause of Bug 1):** `conf_schema` was built as a list `[]` with `.append()` calls in `build_audit_prompt()`, causing all new entries to also serialize as lists. Fix: rebuilt `conf_schema` as a dict keyed by band name (`{"70-75": {...}, ...}`) so future entries write the correct format. **Bug 3:** `NameError: name 'TODAY_STR' is not defined` in `save_audit_summary()` — module-level variable is `TODAY` (date object), not `TODAY_STR`. Fix: replaced `TODAY_STR` with `TODAY.strftime("%Y-%m-%d")`. All three bugs caused `save_audit_summary()` to crash AFTER the Claude API call, wasting API spend on every failed run. |
-| **Lineup Watch — injury snapshot fields on all picks (March 6, 2026)** | `agents/lineup_watch.py`: added `now_ts` timestamp and `all_today` loop that runs before the existing `open_today` voiding logic. Every run now writes `injury_status_at_check` (OUT / DOUBTFUL / QUESTIONABLE / NOT_LISTED) and `injury_check_time` (ISO 8601, PT) to ALL of today's picks — including picks already voided. `open_today` is now derived from `all_today` (not re-filtered from `picks`). Early return path (no open picks) now calls `save_picks(picks)` before returning to persist the snapshot data. Existing voiding/flagging logic unchanged. Gives the Auditor a reliable pre-game status field to distinguish `injury_event` misses (player was active at pick time) from `workflow_gap` misses (player was already OUT when picks were set). |
-| **Auditor — expanded miss classifications + injury lesson exclusion (March 6, 2026)** | `auditor.py` STEP 2 expanded with two new priority classifications checked before `selection_error` / `model_gap` / `variance`: **`injury_event`** — player confirmed active at pick time (`injury_status_at_check` was NOT_LISTED or QUESTIONABLE) but exited mid-game (detectable from post_game_news or non-zero stats alongside low totals); **`workflow_gap`** — player was listed OUT or DOUBTFUL pre-game (`injury_status_at_check` = OUT/DOUBTFUL) but `voided` is false (lineup_watch either hadn't run yet or had a miss). New instruction block added between STEP 2 and STEP 3: injury_event and workflow_gap misses must NOT generate lessons or recommendations targeting Analyst pick selection — only a neutral root_cause note. `miss_classification` field in `miss_details` schema updated to show all 5 valid values. `miss_classification_totals` in `save_audit_summary()` extended to track `injury_event` and `workflow_gap` alongside the existing three. |
-| **Post-Game Reporter — new agent + auditor wiring (March 6, 2026)** | **`agents/post_game_reporter.py` (new file):** Runs before `auditor.py` in the auditor workflow. Loads yesterday's picks from `picks.json`, loads game log from `player_game_log.csv`. Only fetches ESPN news for players meeting one of: dnp flag set, 0 minutes logged, <15 minutes played, or any zero stat at <20 minutes — skips normal players entirely. Loads `player_dim.csv` for `player_name_norm → player_id` mapping. Classifies each player event as `injury_exit`, `dnp`, `minutes_restriction`, or `no_data` — first from ESPN news keyword matching, then from box score inference. Writes `data/post_game_news.json` with `players` dict keyed by `player_name.lower()`, `confidence` (confirmed/inferred), `event_type`, `detail`, `minutes_played`, `source_url`, and `fetch_errors` list. Always writes the file (including empty via `_write_empty()`) so `auditor.py` never sees a missing file. **`auditor.py`:** Added `POST_GAME_NEWS_JSON` path constant, `load_post_game_news()` function, `post_game_news: dict | None = None` parameter to `build_audit_prompt()`, news block builder that formats events into a `## POST-GAME NEWS CONTEXT` section injected before `## PICK ANALYSIS TASK`. `main()` wired: loads news and passes to prompt. **`auditor.yml`:** `requests` added to pip install; "Run Post-Game Reporter" step added before "Run Auditor agent". |
-| **Frontend enhancements — Results tab + timezone labels (March 6, 2026)** | `build_site.py`: (1) All ET timezone labels corrected to PT — removed `ET = ZoneInfo(...)`, all `built_at` strftime labels and docstrings updated to PT. (2) Pick History table date format changed from raw ISO string to M/D/YY using JS split/parseInt. (3) `load_todays_parlays()` extended with `"history"` key — sorted desc, capped at 60 past graded parlays with `date`, `label`, `result`, `implied_odds`, `leg_results`. (4) Top Picks stats banner added to Results tab: `build_site()` computes `tp_hits`/`tp_total`/`tp_pct` from confidence ≥ 85 graded picks; `#top-picks-banner` div renders when data exists with hit rate display. (5) Static "Pick history" section replaced with three collapsible drawers — Top Picks History, Pick History, Parlay History — all collapsed by default; `toggleDrawer(id)` JS function added; drawers rendered by `renderResults()`. CSS: `.history-drawer`, `.drawer-header`, `.drawer-body`, `.drawer-chevron` block added. |
-| **Pre-Game Reporter — new agent + analyst wiring (March 6, 2026)** | **`agents/pre_game_reporter.py` (new file):** Runs after `quant.py` and before `analyst.py` in the analyst workflow. Step 1: loads `nba_master.csv` (csv module, no pandas) to get today's team abbrevs; loads `player_whitelist.csv` to get active players on today's teams only — typically 20–35 players. Step 2: loads `player_dim.csv` for athlete_id lookup (prefers `player_name_norm` column, falls back to lowercasing `player_name`); fetches ESPN athlete news per player (10s timeout, graceful on failure); fetches league-wide news once and matches to tracked players by name substring. Discards items older than 48 hours. Step 3: filters to prop-relevant items — drops items that contain a noise keyword (contract, fine, trade rumor, etc.) AND lack any prop-relevant keyword (out, questionable, minutes, injury, rotation, etc.). Step 4: if filtered items exist, makes ONE Claude call (`claude-sonnet-4-6`, 2048 tokens) to summarize all items into `player_notes` and `game_notes` dicts. Step 5: writes `data/pre_game_news.json`. Always writes the file; skips Claude call entirely if no filtered items. **`analyst.py`:** Added `PRE_GAME_NEWS_JSON` path constant; `load_pre_game_news()` function after `load_season_context()` — returns formatted `PLAYER NEWS` / `GAME NOTES` text block or empty string; `build_prompt()` signature updated with `pre_game_news: str = ""`; `pre_game_section` conditional builder (empty string when no news); `{pre_game_section}` injected between `## CURRENT INJURY REPORT` and `## SEASON CONTEXT`; `main()` wired. **`analyst.yml`:** `requests` added to pip install; "Run Pre-Game Reporter" step inserted between "Run Quant agent" and "Run Analyst agent". |
-| **P4 — Tier-Walk Audit Trail (March 6, 2026)** | **`analyst.py`:** `tier_walk` field added to OUTPUT FORMAT schema immediately after `reasoning` — format `"PTS: 30→3/10 25→5/10 20→8/10✓"` where ✓ marks the selected tier. Tier walk-down discipline bullet added as final SELECTION RULE: always evaluate tiers highest→lowest; never select a tier if the tier immediately above it also qualifies; `tier_walk` must document every tier evaluated. **`auditor.py`:** STEP 5 (INSPECT TIER WALK) added after STEP 4 — for `selection_error` misses, checks for (a) tier_skip_error (higher tier also qualified but was skipped), (b) data_conflict (tier_walk hit rate contradicts `hit_rate_display`), (c) insufficient_walk (only one marginal tier evaluated); variance/model_gap misses reference tier_walk only when it reveals something unexpected; skips STEP 5 entirely for older picks without the field. `tier_walk_flag` field added to `miss_details` schema after `miss_classification` with values `tier_skip_error | data_conflict | insufficient_walk | null`. **`build_site.py`:** `.tier-walk` CSS class added (10px monospace, muted color, 70% opacity); `p.tier_walk` div injected after reasoning div in `renderPicks()`; `tierWalk` variable + injection added after reasoning in `renderTopPicks()` — gracefully renders nothing when field is absent (backward-compatible with pre-P4 picks). |
-| **JSON-first analyst output enforcement (March 7, 2026)** | `analyst.py` `build_prompt()`: `## OUTPUT FORMAT — EMIT THIS FIRST, BEFORE ANY OTHER TEXT` header added with explicit instruction that the JSON array must start at character 0 of the response — no preamble, no markdown headers, no "I'll analyze..." prose. `call_analyst()`: `bracket_idx` extraction fallback added — if Claude emits prose before the JSON array, the function detects the offset, logs a WARNING, and slices to the `[` start. Also trims trailing prose after the final `]`. Prevents silent parse failures on large slates where Claude occasionally front-loads a summary paragraph. |
-| **Post-Game Reporter — broadened injury detection (March 7, 2026)** | `agents/post_game_reporter.py`: (1) `INJURY_SCAN_TERMS` constant added (26 terms: injur\*, body-part names, exit/restriction language) — broader than `_INJURY_EXIT_TERMS` used for classification; used for detection only. (2) `load_yesterdays_missed_pick_names()` added — returns players whose `result == "MISS"` or `None` from yesterday's picks, regardless of box score minutes. (3) `should_fetch()` extended with `is_missed_pick: bool = False` param — early-returns `True, "missed_pick"` before any box score logic when a player is a missed pick. (4) `news_contains_injury_language(news_items) -> tuple[bool, str]` added — scans headline + description of all items, returns `(detected, matched_term)`. (5) `main()` rewritten to use universal fetch: ALL yesterday's pick players are now fetched regardless of box score criteria; `should_fetch()` output is used only for logging labels (missed_count / box_score_count / rest_count). (6) `injury_language_detected` and `injury_scan_term` fields added to each player entry in `post_game_news.json`. (7) ⚠ warning log emitted when `event_type == "no_data"` but injury language was detected — signals a classification gap for manual review. |
-| **Auditor — absence context block + ⚠ injury news flag (March 7, 2026)** | `agents/auditor.py`: (1) `build_absence_context(graded_picks: list[dict]) -> str` added — collects players from yesterday's graded picks where `voided=True` or `injury_status_at_check == "OUT"`; returns a `## YESTERDAY'S NOTABLE ABSENCES` formatted block or empty string. (2) `build_audit_prompt()` updated: `absence_block` computed before `news_block` and injected as `{absence_block}{news_block}` before `## PICK ANALYSIS TASK` — gives the auditor structured context on who was absent before it reads ESPN news or grades picks. (3) `inj_flag = " ⚠ INJURY LANGUAGE IN NEWS"` appended to `news_lines` entries where `injury_language_detected` is true — highlights which players had injury-relevant ESPN coverage even when classification was `no_data`. |
-| **Auditor — injury_event hit rate exclusion from audit_summary (March 7, 2026)** | `agents/auditor.py` `save_audit_summary()`: `injury_event_by_prop` defaultdict computed after `prop_agg` pass — counts `injury_event` miss_classification entries per prop type across all audit history. Per-prop `adjusted_denom` subtracts injury exclusions from total picks before computing `hit_rate_pct`, preventing injury-driven misses from dragging down the statistical baseline. `injury_exclusions` key added to each prop entry in `prop_type_summary` and to the `"overall"` dict. `total_injury_exclusions`, `gradeable_adjusted`, and `overall_hr` computed as a dedicated block and written to summary. Keeps the audit signal clean — injury exits are a workflow fact, not a model failure. |
-| **Auditor — parlay summary field + PARLAY ANALYSIS TASK rewrite (March 7, 2026)** | `agents/auditor.py`: (1) PARLAY ANALYSIS TASK section rewritten with items 4–8: generate a one-line `parlay_summary`; write per-hit and per-miss sentences; enforce min 1 item always for `parlay_reinforcements` and `parlay_lessons`. (2) `parlay_summary` field added to OUTPUT FORMAT `parlay_results` schema — one-line plain-English summary of today's parlay card result. (3) `save_audit_report()` extended: `parlay_summary_line` extracted from `parlay_results` and appended to the markdown audit report when non-empty. Gives the frontend a structured one-liner for the parlay card and gives the parlay agent richer daily feedback. |
-| **Parlay audit feedback card on frontend (March 7, 2026)** | `agents/build_site.py`: (1) `renderAudit()` JS function extended with a parlay card block rendered below the recommendations block — visible only when `parlayTotal > 0`. Card shows hit rate header (`parlayHits / parlayTotal`), italic `parlaySummary` line, "✓ What worked" list from `parlay_reinforcements`, and "✗ Notes for next card" list from `parlay_lessons`. (2) `load_todays_parlays()` updated: filter now includes `"PARTIAL"` alongside `"HIT"` and `"MISS"` for past parlay history; `"legs"` field added to each `past_parlays.append()` dict. |
-| **3PM trend=down mandatory step-down rule (March 7, 2026)** | `agents/analyst.py` `build_prompt()`: New bullet added to `KEY RULES — SEQUENTIAL GAME CONTEXT` immediately after the 3PM cold-streak decline rule — `3PM trend=down mandatory step-down (live rule, motivated by observed miss pattern)`. Rule: if the `trend` field for a player's 3PM stat is `"down"`, Claude MUST step down exactly one full tier from the analytically selected floor before finalizing the pick (e.g. T2 with 9/10 hit rate → pick T1 instead). Aggregate hit rate cannot override this step-down. If stepping below T1, the 3PM pick must be skipped entirely. Rule explicitly scoped to 3PM only — trend has shown no sequential signal for PTS or AST. |
-| **Parlay concentration cap (March 7, 2026)** | `agents/parlay.py` `build_parlay_prompt()`: New bullet added as the first item in `## AVOID` — prohibits any single player-prop combination (same player + same prop_type + same pick_value) from appearing in more than 2 of today's parlays. Rule applies even to iron-floor or 86%+ confidence legs; specifically calls out high-confidence PTS legs as the most common violation. Prevents correlated exposure across the full daily card where one bad performance simultaneously kills multiple parlays. |
-| **iron_floor field propagated to picks.json (March 7, 2026)** | `agents/analyst.py`: (1) `"iron_floor": "true | false"` added to OUTPUT FORMAT JSON schema immediately after `tier_walk`. (2) Instruction added after `direction is always OVER`: `iron_floor must be true if and only if the quant stat line for this pick showed [iron_floor]. Otherwise false.` (3) `save_picks()` extended: `if "iron_floor" not in p: p["iron_floor"] = False` in the `for p in picks:` loop — defensive default ensures the field is always present even if Claude omits it. The `🔒 Iron Floor` badge in `build_site.py` Top Picks cards was already wired; it now fires correctly since the field is present in `picks.json`. |
-
----
-
-## Open Items
-
-### Operational
-- **Whitelist maintenance** — review and update `active` flags as the season evolves, especially post-trade-deadline role changes
-- **Season end handling** — workflows need to be paused/disabled in the off-season (roughly late June). Simplest approach: disable the cron schedules in each `.yml`, re-enable in October.
-
-### Untested Hypotheses (backtest designs documented in docs/BACKTESTS.md)
-- **H8 — Positional DvP Validity** — Does the positional defense rating predict PTS/AST hit rates more accurately than the team-level opp_defense rating? Requires ~30 days of live positional DvP data accumulating in `player_stats.json`. Run approximately early April 2026. If positional DvP shows no meaningful lift over team-level, consider reverting to team-level to simplify the prompt. Design documented in `docs/BACKTESTS.md`.
-- **H9 — Player × Opponent H2H Splits** — Does a player's historical hit rate against today's specific opponent (this season) predict next-game performance better than the population-level opp_defense rating? Computable from existing `player_game_log.csv` — requires sufficient per-player-opponent sample sizes (~mid-April with a full season). See Active Queue entry M1 for implementation design.
-
-### Closed Hypotheses
-- **H6 — Post-Blowout Bounce-Back** ❌ NOISE — post-blowout lift 0.955–0.988 across all stats; lift variance ≤ 0.08. Hypothesis closed March 7, 2026. Full results in `docs/BACKTESTS.md`.
-- **H7 — Opponent Schedule Fatigue** ❌ NOISE — opponent B2B lift 0.977–1.025; dense bucket had 0 instances in full season. Hypothesis closed March 7, 2026. Full results in `docs/BACKTESTS.md`.
-
-### Technical Debt
-- **`context/nba_season_context.md`** — manually maintained; needs periodic updates as roster/role changes accumulate. Consider adding a maintenance reminder to the repo README.
-- **Prompt caching** — system prompt and player context in `analyst.py` are strong candidates for Anthropic's prompt caching feature. Will meaningfully reduce cost once daily volume grows.
-- **`quant.py` runs twice** — once in `ingest.yml` and once in `analyst.yml`. This is intentional (ensures freshness) but adds ~10s to runtime. Low priority.
-- **`data/audit_summary.json` not yet seeded** — `save_audit_summary()` only runs going forward. Historical `audit_log.json` entries will be aggregated incrementally — the summary will be meaningfully populated after 3+ audit runs. `load_audit_summary()` returns empty string until then and the analyst prompt shows the placeholder message. No manual action needed.
-- **`prop_type_breakdown` / `confidence_calibration` absent from pre-March audit entries** — older entries in `audit_log.json` won't have these fields; `save_audit_summary()` handles missing fields with `.get()` defaults. Per-prop and calibration totals in `audit_summary.json` will undercount until all historical entries are replaced by new runs. Acceptable accumulation behavior.
-
-### Frontend
-- **Parlays tab historical stats banner** — hidden until graded parlay history exists. Once data accumulates (1–2 weeks), evaluate whether to add a rolling chart similar to the picks trend chart.
-- **Mobile layout** — current pick cards are readable but not optimized for small screens. Low priority until real users request it.
-
----
-
-## Improvement Proposals
-
-### Completed / Deferred
-
-**#1 — Usage-Share Delta When Teammates Are Out**
-**Status: DEFERRED** — insufficient DNP sample data mid-season. Key star pairings (Brunson/KAT, LeBron/Luka, etc.) have 0 absence games; most whitelisted player pairs have <3 shared absence games. Highest-alpha proposal — revisit at start of next season with a full year of data.
-- `quant.py` — `build_teammate_absence_deltas()`. Joins `player_game_log.csv` DNP rows to compute per-player stat delta when each teammate is absent vs. present. Stores as `teammate_absence_delta` in `player_stats.json`.
-- `analyst.py` — instruction: "If a key teammate is listed as OUT today and their absence delta is ≥+2 pts or ≥+1 reb/ast, factor this into tier selection."
-
-**#2 — Opponent-Specific Tier Hit Rates ✅ IMPLEMENTED**
-- `quant.py` — `compute_matchup_tier_hit_rates()`. Full season history split by opponent defensive rating (soft/mid/tough). Stored as `matchup_tier_hit_rates` in `player_stats.json`.
-- `analyst.py` — `build_quant_context()` injects per-player `vs_soft`/`vs_tough` rates into prompt. Prompt instructs Claude to weight matchup-specific rate over overall when opp is rated soft or tough.
-
-**P2 — Rolling Volatility Score ✅ IMPLEMENTED**
-- `quant.py` — `compute_volatility()` alongside `compute_tier_hit_rates()`. 20-game window; σ < 0.3 = consistent, 0.3–0.4 = moderate, > 0.4 = volatile. `"volatility"` key in `player_stats.json`.
-- `analyst.py` — `[VOLATILE]` / `[consistent]` tags on stat lines; KEY RULES — VOLATILITY block with −5% confidence penalty, Top Pick gate, iron_floor override.
-
-**P1 — Positional DvP ✅ IMPLEMENTED**
-- `player_whitelist.csv` — `position` column (PG/SG/SF/PF/C) added for all active players.
-- `quant.py` — `load_whitelist_positions()` + `compute_positional_dvp()` added. Per-player `positional_dvp` field in `player_stats.json` with 4 per-stat ratings, `n`, and `source` (`positional` / `team_fallback`).
-- `analyst.py` — `DvP [POS]` line per player replaces per-stat `opp_today=`; positional prompt instructions with REB/3PM exclusions preserved.
-
-**P3 — Shooting Efficiency Regression ✅ IMPLEMENTED (March 7–8, 2026)**
-- `espn_player_ingest.py` — `fgm/fga/fg3m/fg3a` collected on all new daily rows. `player_game_log.csv` backfilled to 7,584 rows (22 columns).
-- `quant.py` — `compute_shooting_regression()`. L5 vs L20 FG%/3P% delta; ±8% threshold; `hot/cold/neutral` flag. `"shooting_regression"` key in `player_stats.json`.
-- `analyst.py` — `[FG_HOT:+X%]` / `[FG_COLD:−X%]` on PTS stat lines; KEY RULES — SHOOTING EFFICIENCY REGRESSION block with −3% penalty for HOT (iron_floor exempt).
-
----
-
-### Active Queue — In Priority Order
-
----
-
-#### P3 — Shooting Efficiency Regression Flag ✅ IMPLEMENTED (March 8, 2026)
-
-**What:** L5 vs. L20 FG%/3P% delta per player. Flags players shooting materially above/below their season baseline over the last 5 games as regression candidates. Applied as a PTS confidence modifier only (−3% for FG_HOT, mild caution for FG_COLD). Threshold: ±8% normalized delta.
-
-**Implementation:**
-- `agents/quant.py` — `compute_shooting_regression(grp)` added after `compute_volatility()`. Computes L5 vs L20 FG% and 3P% delta from newest→oldest sorted DataFrame. Returns `fg_flag` (`hot`/`cold`/`neutral`) when delta ≥ ±8% relative. Wired into `build_player_stats()` per-player loop; `"shooting_regression"` key added to `player_stats.json` output between `"volatility"` and `"positional_dvp"`.
-- `agents/analyst.py` — `shooting_reg` extracted in `build_quant_context()`; `[FG_HOT:+X%]` / `[FG_COLD:−X%]` appended to PTS stat lines only. `KEY RULES — SHOOTING EFFICIENCY REGRESSION` block added after VOLATILITY section: −3% confidence for HOT (iron_floor exempt), mild caution for COLD.
-- Ingest (Phase 1, March 7): `espn_player_ingest.py` collects `fgm/fga/fg3m/fg3a` on all new daily rows. `player_game_log.csv` backfilled to 7,584 rows (7,136 with shooting stats; 448 empty = preseason/All-Star exclusions + DNPs). Schema: 22 columns, shooting stats inserted after `tpm`, before `dnp`.
-
-**First live run (March 8, 2026):**
-- HOT flags: Ausar Thompson (+26%), Paolo Banchero (+14%), Isaiah Hartenstein (+11%), Kawhi Leonard (+8%)
-- COLD flags: Tyrese Maxey (−13%), Giannis (−12%), Julius Randle (−12%), Jalen Johnson (−10%), Desmond Bane (−9%)
-
-**Validation gate (open):** Signal threshold (±8%) is an untested prior. After 30+ days of flagged picks accumulate in audit data, evaluate whether FG_HOT picks underperform their tier baseline. If lift is not meaningfully negative, relax the confidence penalty or widen the threshold. Track via `miss_classification` — HOT misses should cluster in `model_gap`, not `variance`, to confirm the mechanism.
-
----
-
-#### P5 — Afternoon Lineup Re-Reasoning Pass (`agents/lineup_update.py`)
-**Priority: MEDIUM — targeted Claude call when a key player goes OUT after morning picks are set**
-**Prerequisite: `lineup_watch.py` must be live first (✅ done as of March 2026)**
-**Revisit: once 7+ days of amendment data accumulated in audit_log.json**
-
-**What:** A focused LLM re-evaluation pass that triggers only when something meaningful has changed. Not a full analyst re-run — a minimal prompt scoped to the picks that are genuinely affected by a new absence.
-
-**Trigger conditions (both must be true):**
-- At least one player crossed to OUT or DOUBTFUL since the previous injury refresh (detected by comparing current `injuries_today.json` to a cached snapshot from the prior run, or by checking for new `voided=True` picks added by `lineup_watch.py`)
-- Current time is before 5 PM ET (post-tip-off amendments are not actionable)
-
-**Scope:** Does not re-pick from scratch. Identifies today's open picks (`result == null`, not voided) where the picked player is a teammate or opponent of a player who just went OUT/DOUBTFUL. Builds a minimal context block from `player_stats.json` for the newly-absent player: team, role descriptor, `avg_minutes_last5`, primary stat averages.
-
-**Claude call:** Single focused prompt:
-> "Given that [Player] is now OUT, does this meaningfully change the confidence or reasoning on any of these picks? Return only picks where your assessment changes, with revised `confidence_pct` and a one-sentence `updated_reasoning`. If no picks are materially affected, return an empty array []."
-
-**Output schema additions to each amended pick in `picks.json`:**
-```json
-{
-  "lineup_updated": true,
-  "updated_at": "ISO timestamp",
-  "morning_pick": {
-    "confidence_pct": <original>,
-    "reasoning": "<original reasoning>"
-  },
-  "confidence_pct": <revised>,
-  "reasoning": "<revised reasoning>"
-}
-```
-Original morning values are preserved in `morning_pick` — never overwritten.
-
-**Audit integration:** `auditor.py` should detect `lineup_updated: true` picks and compare morning vs. afternoon confidence against actual outcomes. After ~20 audit entries with amendments, evaluate whether re-reasoned picks outperform their morning originals. Track as a separate signal in `audit_log.json`. If no improvement after 20 samples, cut the feature.
-
-**Frontend:** Amended pick cards display a small `↻ Updated [time]` badge. Clicking/hovering the badge expands a comparison showing morning reasoning vs. revised reasoning side-by-side.
-
-**Where:**
-- `agents/lineup_update.py` — new script (~150 lines)
-- `injuries.yml` — add step after `lineup_watch`, conditioned on time check and new-absence detection
-- `auditor.py` — add `lineup_updated` pick tracking to grading and audit output
-- `build_site.py` — `↻ Updated` badge and expandable reasoning comparison on pick cards
-
----
-
-#### P4 — Tier-Walk Audit Trail in Pick Output ✅ IMPLEMENTED
-
-**What:** `tier_walk` field added to Analyst output schema documenting Claude's walk-down, e.g. `"PTS: 30→3/10 25→5/10 20→8/10✓"`. Walk-down discipline bullet added to SELECTION RULES. STEP 5 added to Auditor grading protocol with `tier_walk_flag` in `miss_details`. Tier-walk displayed on pick cards and Top Picks cards in the frontend.
-
----
-
-## Implementation Notes
-
-- **P4 (Tier-Walk)** — ✅ IMPLEMENTED (March 6, 2026). `tier_walk_flag` in `miss_details` accumulates alongside `miss_classification` going forward — expect meaningful patterns after 20+ audit days. When `tier_skip_error` flags concentrate on specific stats or players, that is a signal to tighten the walk-down instruction or ceiling rules.
-- **P3 (Shooting Regression)** — ✅ FULLY IMPLEMENTED (March 8, 2026). Both phases complete. Signal threshold (±8%) is an untested prior — validate via audit accumulation after 30+ days of flagged picks. HOT misses should cluster in `model_gap` to confirm the mechanism; if they cluster in `variance` instead, the penalty is overcorrecting.
-- **P5 (Afternoon Re-Reasoning)** — requires `lineup_watch.py` already live (✅). Key open design question: change-detection mechanism for "new absence since last run" — simplest approach is comparing the current `injuries_today.json` against a prior-run snapshot cached to `data/injuries_prev.json` by `lineup_watch.py`. Revisit after 7 days of lineup_watch data to confirm voiding frequency and feasibility. Do not build until audit data confirms lineup_watch is functioning correctly.
-- **#1 (Teammate Absence Delta)** — highest long-run alpha; revisit at season start when full-year DNP data exists.
-- **M1 (H2H Splits) / M2 (Defensive Recency)** — see Matchup Signals section below. Both queued for mid-April once sufficient sample sizes exist.
-- **Confidence calibration tracking (no proposal needed)** — `audit_summary.json` now accumulates per-band hit rates (70–75 / 76–80 / 81–85 / 86+). After 20+ audit days, compare actual hit rates to stated confidence bands. If a band systematically underperforms (e.g., 86%+ picks hit at 70%), tighten prompt confidence guidance for that band directly. Maintenance task — revisit when the season has 3+ weeks of post-March audit data.
-- **Positional DvP — backtest candidate (H8)** — now that positional defense ratings are live and accumulating in `player_stats.json`, a future backtest (H8) could validate whether the positional rating is a stronger predictor than the team-level rating for PTS/AST. Run after 30+ days of data (~early April 2026).
-
----
-
-## Matchup Signals Queue
-
-Design philosophy: the Analyst already has a solid quantitative matchup foundation (positional DvP, vs_soft/vs_tough splits, game pace, spread context). The following proposals address two real gaps identified in a March 7, 2026 architectural review — situations where rolling averages give a misleading picture because something material has changed that the numbers alone cannot capture. Both are deterministic quant extensions feeding the existing Analyst; neither requires a new LLM agent.
-
----
-
-#### M1 — Player × Opponent H2H Splits
-**Priority: MEDIUM — backtest-ready mid-April 2026**
-**Prerequisite: sufficient per-player-opponent sample sizes (~8+ games)**
-
-**What:** For each player today, compute their hit rate at their best tier specifically against today's opponent (full season history). Surface as `h2h_hit_rate` and `h2h_n` alongside the existing `vs_soft`/`vs_tough` population-level rates.
-
-**Why:** The system currently knows "Brunson hits PTS T25 80% of the time vs soft defenses." It does not know "Brunson hits PTS T25 in 7 of his last 8 games specifically against BOS." Those are different signals — a player may systematically over- or under-perform against a specific defensive scheme that the population-level soft/mid/tough rating smooths over.
-
-**Design:**
-- `quant.py` — `compute_h2h_splits(player_log, stat)`: for each player × opponent pair, compute tier hit rate at best qualifying tier. Return `{opponent_abbrev: {stat: {hit_rate, n}}}` per player. Minimum n=5 to surface; null otherwise.
-- `player_stats.json` — new `h2h_splits` key per player.
-- `analyst.py` — `build_quant_context()`: append `h2h=XX%(Ng)` to stat line when n≥5 and today's opponent matches. Prompt rule: weight h2h rate over vs_soft/vs_tough when n≥8; treat as supporting context only when n=5–7.
-
-**Validation gate:** After 30+ days of flagged h2h picks, run backtest H9 — does h2h lift variance exceed vs_soft/vs_tough lift variance for PTS/AST? If not predictive, surface as informational context only (no directive prompt weight).
-
-**Where:** `agents/quant.py`, `agents/analyst.py` only.
-
----
-
-#### M2 — Defensive Recency Split
-**Priority: LOW-MEDIUM — cheap quant addition, no backtest required to ship**
-
-**What:** A recency flag on opponent defense: compare the opponent's allowed average over the last 5 games vs. their last 15 games (the window used by the existing `opp_defense` computation). Flag when the L5 allowed average diverges materially from the L15 baseline — indicating the defense has changed recently (injury to key defender, scheme change, fatigue stretch).
-
-**Why:** The existing opp_defense rating uses a 15-game rolling window. A team that lost their best defender 5 games ago is still rated on data that's 67% stale. The pre-game reporter may catch this via news, but only if ESPN publishes a story. A computed recency split catches it automatically from box scores — no text parsing required.
-
-**Design:**
-- `quant.py` — extend `build_opp_defense()` or add `compute_opp_defense_recency()`: compute allowed avg L5 vs L15 per stat per opponent. Flag `def_trending_soft` when L5 allowed avg is ≥8% above L15 (defense has gotten worse recently); `def_trending_tough` when ≥8% below (defense has tightened up). Minimum 3 games in L5 window.
-- `player_stats.json` — add `def_recency` field per player: `{stat: {l5_allowed, l15_allowed, delta_pct, flag}}`.
-- `analyst.py` — surface as a per-player header annotation: `DEF↑` (trending soft) or `DEF↓` (trending tough) when flag fires. Prompt rule: treat as a mild modifier (same weight as pace_tag) — not a tier-changing signal until backtested.
-
-**Validation gate:** After 30+ flagged instances accumulate in audit data, evaluate whether `def_trending_soft` picks outperform baseline. If lift < 0.08, demote to informational display only.
-
-**Where:** `agents/quant.py`, `agents/analyst.py` only.
+| **Improvement Proposal #2 — Opponent-Specific Tier Hit Rates** | Implemented in `quant.py` (`compute_matchup_tier_hit_rates()`, `MIN_MATCHUP_GAMES=3`) and `analyst.py` (`load_player_stats()`, `build_quant_context()`, new QUANT STATS prompt section). `player_stats.json` now includes `matchup_tier_hit_rates` field. |
+| **P1 — Game Script Filter (Spread-Adjusted Blowout Risk)** | Implemented across `espn_daily_ingest.py`, `quant.py`, `analyst.py`. Spread + blowout_risk flag + spread_split_hit_rates in player output; prompt rules for BLOWOUT_RISK and spread_abs > 13. |
+| **P1 (formerly) — B2B Quantified Tier Adjustment + P3 (formerly) — Days of Rest / Schedule Density** | `build_b2b_game_ids()`, `compute_b2b_hit_rates()`, `compute_rest_context()` in `quant.py`. `b2b_hit_rates`, `rest_days`, `games_last_7`, `dense_schedule` in `player_stats.json`. KEY RULES — REST & FATIGUE block in analyst prompt. |
+| **Backtest-driven prompt + quant calibration (March 2026)** | `agents/backtest.py` added. Findings: tier ceiling rules, 3PM opp_defense inversion, trend/home-away removed as directive signals, `PLAYER_WINDOW` raised 10→20. |
+| **Bounce-back analysis + player-level integration (March 2026)** | `build_bounce_back_profiles()` in `quant.py`; `bounce_back` key in `player_stats.json`; `bb_lift` / `[iron_floor]` annotations in analyst; SELECTION RULES updated. |
+| **Grading correction + full backtest re-run (March 2026)** | All code corrected from `>` to `>=` grading. All 5 backtests re-run. 3PM T2 now above threshold; 3PM opp_defense changed to NOISE; `BACKTESTS.md` rewritten. |
+| **Prompt calibration from corrected backtests (March 2026)** | 3PM opp_defense inversion removed; 3PM cold-streak decline rule added; PTS T25 requires ≥80% individual hit rate. |
+| **REB opp_defense decoupled (March 2026)** | Stat-specific OPPONENT DEFENSE block in analyst prompt; REB explicitly excluded; REB T8 ceiling rule updated. |
+| **Offensive-first player REB floor rule (March 2026)** | Added to analyst SELECTION RULES: players with PTS avg > 20 or AST avg > 6 targeted at or below 25th-percentile recent REB output. |
+| **Auditor root cause discipline (March 2026)** | ROOT CAUSE DISCIPLINE block added to `auditor.py`: three pre-flight checks before any miss root cause assignment. |
+| **Lineup watch script (March 2026)** | `agents/lineup_watch.py` added. OUT → `voided=True`; DOUBTFUL → `lineup_risk="high"`; QUESTIONABLE → `lineup_risk="moderate"`. `injuries.yml` updated; `build_site.py` updated with voided/risk display. |
+| **Auditor season context injection (March 2026)** | `load_season_context()` in `auditor.py`; OFS framing injected into audit prompt. PERMANENT ABSENCES rule block added to `nba_season_context.md`. |
+| **Auditor pre-computed statistics (March 2026)** | `prop_type_breakdown` and `confidence_calibration` pre-computed in Python before Claude call. `## PRE-COMPUTED STATISTICS` section added to audit prompt. Both fields added to `audit_log.json`. |
+| **Auditor 4-step miss analysis + miss_classification (March 2026)** | PICK ANALYSIS TASK replaced with 4-step protocol. `miss_classification` field added to `miss_details` schema. |
+| **Auditor player stats context injection (March 2026)** | `load_player_stats_for_audit()` added. `## PLAYER STATS CONTEXT` injected into audit prompt. |
+| **Parlay agent reads audit feedback (March 2026)** | `load_parlay_audit_feedback()` added to `parlay.py`. `## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS` injected into parlay prompt. |
+| **Longitudinal audit summary (March 2026)** | `save_audit_summary()` in `auditor.py` writes `data/audit_summary.json`. `load_audit_summary()` in `analyst.py` injects `## ROLLING PERFORMANCE SUMMARY`. |
+| **Injury report display overhaul (March 2026)** | `build_site.py` `load_injuries_display()` rewritten. Game grouping from `nba_master.csv`; whitelist filtering by `(canonical_team, last_name)` tuple; abbrev normalization via `_ABBR_NORM`. |
+| **PWA start_url fix (March 2026)** | `site/manifest.json`: `"start_url": "."` and `"scope": "."`. Fixes GitHub Pages subpath resolution for PWA launcher. |
+| **Site accent color → orange (March 2026)** | All purple accent instances replaced with `#E8703A` in `build_site.py`. |
+| **ML win probability odds on game headers (March 2026)** | `load_game_ml_odds()` added to `build_site.py`. `DAL (24%) @ ORL (80%)` inline in game group headers. |
+| **Team abbrev normalization — systematic fix (March 2026)** | `_ABBR_NORM` dict in `build_site.py`; `normAbbr()` JS helper; both Python and JS lookups handle legacy 2-char forms (`GS`, `SA`, `NO`, `UTAH`, `WSH`). |
+| **Top Picks section (March 2026)** | `get_top_picks()` in `build_site.py`. `⚡ TOP PICKS TODAY` header above game groups; conf ≥ 85%, ranked by iron_floor + confidence + hit rate + stat priority; min 3 to display. |
+| **Picks tab cosmetic refinements (March 2026)** | Streak pills threshold raised to ≥5 consecutive; moved inline. Results tab "OVER " prefix removed from Pick column. |
+| **P2 — Rolling Volatility Score (March 2026)** | `compute_volatility()` in `quant.py`. `[VOLATILE]` / `[consistent]` in analyst. KEY RULES — VOLATILITY block. |
+| **P1 — Positional DvP (March 2026)** | `position` column in whitelist. `compute_positional_dvp()` in `quant.py`. `DvP [POS]` line per player in analyst prompt. |
+| **Auditor crash bug fixes — three sequential bugs in `save_audit_summary()` (March 6, 2026)** | Bug 1: `.items()` on list — added `isinstance` guard. Bug 2: `conf_schema` built as list — rebuilt as dict. Bug 3: `TODAY_STR` NameError — replaced with `TODAY.strftime(...)`. |
+| **Lineup Watch — injury snapshot fields on all picks (March 6, 2026)** | `lineup_watch.py` writes `injury_status_at_check` and `injury_check_time` to ALL of today's picks on every run. |
+| **Auditor — expanded miss classifications + injury lesson exclusion (March 6, 2026)** | Two new classifications: `injury_event` and `workflow_gap`. Injury/workflow misses excluded from lesson generation. `miss_classification` updated to 5 valid values. |
+| **Post-Game Reporter — new agent + auditor wiring (March 6, 2026)** | `agents/post_game_reporter.py` added. Fetches ESPN news for flagged players (DNP, <15 min, zero stats). Classifies as `injury_exit` / `dnp` / `minutes_restriction` / `no_data`. Writes `data/post_game_news.json`. `auditor.py` and `auditor.yml` wired. |
+| **Frontend enhancements — Results tab + timezone labels (March 6, 2026)** | ET → PT labels; pick history date format M/D/YY; parlay history key added; Top Picks stats banner on Results tab; collapsible drawers (Top Picks / Pick History / Parlay History). |
+| **Pre-Game Reporter — new agent + analyst wiring (March 6, 2026)** | `agents/pre_game_reporter.py` added. Fetches ESPN player + league news; filters to prop-relevant items; single Claude call to summarize. `## PRE-GAME NEWS` injected into analyst prompt. `analyst.yml` wired. |
+| **P4 — Tier-Walk Audit Trail (March 6, 2026)** | `tier_walk` field in analyst output. STEP 5 in auditor grading. `tier_walk_flag` in `miss_details`. Tier-walk displayed on pick cards. |
+| **JSON-first analyst output enforcement (March 7, 2026)** | `## OUTPUT FORMAT — EMIT THIS FIRST` header in analyst prompt. `bracket_idx` fallback extraction in `call_analyst()`. |
+| **Post-Game Reporter — broadened injury detection (March 7, 2026)** | `INJURY_SCAN_TERMS` constant; universal fetch for all missed picks; `injury_language_detected` field in `post_game_news.json`. |
+| **Auditor — absence context block + ⚠ injury news flag (March 7, 2026)** | `build_absence_context()` added. `## YESTERDAY'S NOTABLE ABSENCES` injected before pick analysis. `⚠ INJURY LANGUAGE IN NEWS` flag on relevant entries. |
+| **Auditor — injury_event hit rate exclusion from audit_summary (March 7, 2026)** | `injury_event` misses excluded from per-prop and overall hit rate denominators in `audit_summary.json`. `injury_exclusions` key added. |
+| **Auditor — parlay summary field + PARLAY ANALYSIS TASK rewrite (March 7, 2026)** | PARLAY ANALYSIS TASK rewritten with items 4–8. `parlay_summary` field added to `parlay_results` schema. Markdown audit report extended. |
+| **Parlay audit feedback card on frontend (March 7, 2026)** | Parlay card added to `renderAudit()` in `build_site.py`. `parlay_reinforcements` / `parlay_lessons` displayed. Parlay history filter includes `PARTIAL`. |
+| **3PM trend=down mandatory step-down rule (March 7, 2026)** | New bullet in KEY RULES — SEQUENTIAL GAME CONTEXT: 3PM trend=down → step down one full tier before finalizing. Scoped to 3PM only. |
+| **Parlay concentration cap (March 7, 2026)** | `parlay.py`: no single player-prop combination in more than 2 of today's parlays. |
+| **iron_floor field propagated to picks.json (March 7, 2026)** | `"iron_floor"` added to analyst OUTPUT FORMAT schema. `save_picks()` extended with defensive default. |
+| **P3 — Shooting Efficiency Regression (March 7–8, 2026)** | `espn_player_ingest.py` collects FG/3P shooting stats. `compute_shooting_regression()` in `quant.py`. `[FG_HOT]`/`[FG_COLD]` annotations in analyst. KEY RULES — SHOOTING EFFICIENCY REGRESSION block. |
+| **H11 — FG% Safety Margin (March 2026)** | `ft_safety_margin` in `quant.py` and `analyst.py`. Structural feature, no backtest. |
+| **Miss Anatomy quant fields (March 2026)** | `near_miss_rate`, `blowup_rate`, `typical_miss` added to `build_bounce_back_profiles()` in `quant.py`. Analyst wiring deferred pending backtest. |
+| **Minutes Floor (March 2026)** | `minutes_floor` in `quant.py` and `analyst.py`. Structural feature, no backtest. |
+| **Player Profiles (March 2026)** | `build_player_profiles()` in `quant.py`. `## PLAYER PROFILES` injected into analyst prompt. Live statistical portraits computed fresh daily. |
+| **Season Context Improvement 0 — Standings Snapshot** | Code prompt written (`season_context_improvement_0_standings.md`). Ready to send. |
+| **Season Context Improvement 1 — Auto-Generated Team Defense Narratives** | Code prompt written (`season_context_improvement_1_team_defense.md`). Ready to send. |
+| **Season Context Improvement 2 — Staleness Detection** | Code prompt written (`season_context_improvement_2_staleness.md`). Ready to send. |
