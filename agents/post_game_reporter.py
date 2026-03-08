@@ -62,6 +62,19 @@ MINUTES_DNP_THRESHOLD    = 0    # zero minutes → DNP candidate
 MINUTES_LOW_THRESHOLD    = 15   # < 15 min → potential injury exit or restriction
 MINUTES_STAT_THRESHOLD   = 20   # < 20 min AND any zero stat → investigate
 
+# Injury language scan terms — broader than _INJURY_EXIT_TERMS, for detection only
+INJURY_SCAN_TERMS = [
+    "injur", "injured", "injury",          # covers 'injury', 'injured', 'injuries'
+    "left the game", "left early",
+    "did not return", "did not finish",
+    "exited", "forced out", "helped off",
+    "knee", "ankle", "hamstring", "calf", "shoulder", "wrist", "hand",
+    "groin", "back", "hip", "foot", "achilles",
+    "sprain", "strain", "soreness", "tightness",
+    "bruised", "bruise", "contusion",
+    "concussion", "head",
+]
+
 
 # ── Data loaders ──────────────────────────────────────────────────────
 
@@ -81,6 +94,30 @@ def load_yesterdays_player_names() -> set[str]:
         return names
     except Exception as e:
         print(f"[post_game_reporter] ERROR loading picks.json: {e}")
+        return set()
+
+
+def load_yesterdays_missed_pick_names() -> set[str]:
+    """
+    Return lowercase player names from yesterday's picks where result == MISS
+    or result is None (ungraded at reporter run time).
+    These players get fetched regardless of box score minutes.
+    """
+    if not PICKS_JSON.exists():
+        return set()
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+        names = {
+            p["player_name"].strip().lower()
+            for p in all_picks
+            if p.get("date") == YESTERDAY_STR
+            and p.get("player_name")
+            and p.get("result") in ("MISS", None)
+        }
+        return names
+    except Exception as e:
+        print(f"[post_game_reporter] ERROR loading picks for miss check: {e}")
         return set()
 
 
@@ -169,11 +206,14 @@ def is_dnp_row(row: dict) -> bool:
         return False
 
 
-def should_fetch(game_row: dict | None) -> tuple[bool, str]:
+def should_fetch(game_row: dict | None, is_missed_pick: bool = False) -> tuple[bool, str]:
     """
     Determine whether to fetch ESPN news for a player based on their box score.
     Returns (fetch: bool, reason: str).
     """
+    if is_missed_pick:
+        return True, "missed_pick"
+
     if game_row is None:
         # No game log row at all — can't infer anything; skip
         return False, "no_game_row"
@@ -200,6 +240,25 @@ def should_fetch(game_row: dict | None) -> tuple[bool, str]:
                 pass
 
     return False, "normal"
+
+
+# ── Injury language scanner ───────────────────────────────────────────
+
+def news_contains_injury_language(news_items: list[dict]) -> tuple[bool, str]:
+    """
+    Scan all news items for injury-related language.
+    Returns (found: bool, matched_term: str).
+    Checks headline + description of each item.
+    First match wins.
+    """
+    for item in news_items:
+        headline    = (item.get("headline") or "").lower()
+        description = (item.get("description") or "").lower()
+        text        = headline + " " + description
+        for term in INJURY_SCAN_TERMS:
+            if term in text:
+                return True, term
+    return False, ""
 
 
 # ── ESPN news fetch ───────────────────────────────────────────────────
@@ -303,29 +362,40 @@ def main() -> None:
 
     print(f"[post_game_reporter] Yesterday's picks: {len(player_names)} unique players")
 
-    athlete_ids = load_athlete_id_map()
-    game_rows   = load_yesterday_game_rows(player_names)
+    athlete_ids      = load_athlete_id_map()
+    game_rows        = load_yesterday_game_rows(player_names)
+    missed_pick_names = load_yesterdays_missed_pick_names()
 
-    # Determine which players need a news fetch
-    to_fetch: list[tuple[str, str]] = []  # (name, flag_reason)
+    # Classify each player's fetch reason for logging, but fetch ALL players
+    missed_count    = 0
+    box_score_count = 0
+    rest_count      = 0
+    fetch_reasons: dict[str, str] = {}
     for name in sorted(player_names):
         row = game_rows.get(name)
-        flag, reason = should_fetch(row)
-        if flag:
-            to_fetch.append((name, reason))
+        _flag, reason = should_fetch(row, is_missed_pick=(name in missed_pick_names))
+        fetch_reasons[name] = reason
+        if reason == "missed_pick":
+            missed_count += 1
+        elif reason == "normal":
+            rest_count += 1
+        else:
+            box_score_count += 1
 
     print(
-        f"[post_game_reporter] Players flagged for news fetch: {len(to_fetch)}"
-        f" (low minutes or zero stats)"
+        f"[post_game_reporter] Fetching news for {len(player_names)} players"
+        f" ({missed_count} missed picks, {box_score_count} box score flags,"
+        f" {rest_count} routine checks)"
     )
 
     players_out: dict[str, dict] = {}
     fetch_errors: list[str] = []
 
-    for name, flag_reason in to_fetch:
-        game_row = game_rows.get(name)
-        minutes  = parse_minutes(game_row) if game_row else None
-        aid      = athlete_ids.get(name)
+    for name in sorted(player_names):
+        flag_reason = fetch_reasons[name]
+        game_row    = game_rows.get(name)
+        minutes     = parse_minutes(game_row) if game_row else None
+        aid         = athlete_ids.get(name)
 
         news_items: list[dict] = []
         if aid:
@@ -338,21 +408,32 @@ def main() -> None:
             news_items, minutes, game_row
         )
 
-        confidence = "confirmed" if from_news else "inferred"
+        inj_detected, inj_term = news_contains_injury_language(news_items)
+
+        confidence   = "confirmed" if from_news else "inferred"
         mins_display = round(minutes, 1) if minutes is not None else 0
 
         players_out[name] = {
-            "event_type":    event_type,
-            "detail":        detail,
-            "minutes_played": mins_display,
-            "source_url":    source_url,
-            "confidence":    confidence,
+            "event_type":               event_type,
+            "detail":                   detail,
+            "minutes_played":           mins_display,
+            "source_url":               source_url,
+            "confidence":               confidence,
+            "injury_language_detected": inj_detected,
+            "injury_scan_term":         inj_term if inj_detected else None,
         }
 
         mins_str = f"{minutes:.0f}" if minutes is not None else "?"
         print(
             f"[post_game_reporter] {name} → {event_type} ({confidence}, {mins_str} min)"
+            f" [reason: {flag_reason}]"
         )
+
+        if inj_detected and event_type == "no_data":
+            print(
+                f"[post_game_reporter] ⚠ {name}: injury language detected"
+                f" ('{inj_term}') but event_type=no_data — check manually"
+            )
 
     output = {
         "date":         YESTERDAY_STR,

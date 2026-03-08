@@ -287,6 +287,41 @@ def grade_parlays(parlays: list[dict], graded_picks: list[dict]) -> list[dict]:
 
 # ── Prompt builder ───────────────────────────────────────────────────
 
+def build_absence_context(graded_picks: list[dict]) -> str:
+    """
+    Build a plain-text block listing players confirmed OUT yesterday.
+    Sources:
+      1. Picks with voided=True (lineup_watch confirmed OUT pre-game)
+      2. Picks with injury_status_at_check == "OUT"
+    Deduplicates by player name. Returns empty string if none found.
+    """
+    absent: dict[str, str] = {}  # player_name -> team
+    for p in graded_picks:
+        name = p.get("player_name", "")
+        team = p.get("team", "")
+        if not name:
+            continue
+        if p.get("voided") is True:
+            absent[name] = team
+        elif p.get("injury_status_at_check") == "OUT":
+            absent[name] = team
+    if not absent:
+        return ""
+    lines = [
+        f"  - {name} ({team}): confirmed OUT pre-game"
+        for name, team in sorted(absent.items())
+    ]
+    return (
+        "## YESTERDAY'S NOTABLE ABSENCES\n"
+        "These players were confirmed OUT yesterday. When evaluating hits and misses,\n"
+        "check whether a teammate or opponent absence amplified or suppressed usage.\n"
+        "A pick overperforming its tier may reflect absence-driven usage expansion.\n"
+        "A pick missing despite favorable signals may have been undermined by an\n"
+        "unexpected absence that reduced pace, possessions, or role definition.\n\n"
+        + "\n".join(lines) + "\n"
+    )
+
+
 def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", player_stats_context: dict | None = None, post_game_news: dict | None = None) -> str:
     hits    = [p for p in graded_picks if p["result"] == "HIT"]
     misses  = [p for p in graded_picks if p["result"] == "MISS"]
@@ -376,16 +411,20 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
     picks_block   = json.dumps(graded_picks, indent=2)
     parlays_block = json.dumps(graded_parlays, indent=2) if graded_parlays else "[]"
 
+    # ── Absence context block ─────────────────────────────────────────
+    absence_block = build_absence_context(graded_picks)
+
     # ── Post-game news block ──────────────────────────────────────────
     news_block = ""
     if post_game_news:
         news_lines = []
         for name, event in post_game_news.items():
-            et      = event.get("event_type", "no_data").upper().replace("_", " ")
-            detail  = event.get("detail", "")
-            mins    = event.get("minutes_played", "?")
-            conf    = event.get("confidence", "unknown")
-            news_lines.append(f"{name}: {et} — {detail} ({mins} min played) [{conf}]")
+            et       = event.get("event_type", "no_data").upper().replace("_", " ")
+            detail   = event.get("detail", "")
+            mins     = event.get("minutes_played", "?")
+            conf     = event.get("confidence", "unknown")
+            inj_flag = " ⚠ INJURY LANGUAGE IN NEWS" if event.get("injury_language_detected") else ""
+            news_lines.append(f"{name}: {et} — {detail} ({mins} min played) [{conf}]{inj_flag}")
         news_block = (
             "## POST-GAME NEWS CONTEXT\n"
             "The following post-game facts were confirmed or inferred for yesterday's players.\n"
@@ -466,7 +505,7 @@ Key fields to use in audit reasoning:
 - on_back_to_back: flag whether fatigue context was available and used correctly
 - game_pace: check whether pace context supported or contradicted the pick thesis
 
-{news_block}## PICK ANALYSIS TASK
+{absence_block}{news_block}## PICK ANALYSIS TASK
 
 For every miss, perform analysis in this exact order before writing root_cause:
 
@@ -666,7 +705,6 @@ def save_audit_summary(audit_log: list[dict]):
     total_hits   = sum(e.get("hits",        0) for e in audit_log)
     total_misses = sum(e.get("misses",      0) for e in audit_log)
     gradeable    = total_hits + total_misses
-    overall_hr   = round(total_hits / gradeable * 100, 1) if gradeable > 0 else 0.0
 
     # ── Per-prop aggregation (from prop_type_breakdown in each entry) ──
     prop_agg: dict = defaultdict(lambda: {"picks": 0, "hits": 0})
@@ -675,14 +713,27 @@ def save_audit_summary(audit_log: list[dict]):
         for pt, d in ptb.items():
             prop_agg[pt]["picks"] += d.get("picks", 0)
             prop_agg[pt]["hits"]  += d.get("hits",  0)
+
+    # injury_event exclusions — these misses are not predictive failures
+    injury_event_by_prop: dict = defaultdict(int)
+    for entry in audit_log:
+        for miss in entry.get("miss_details", []):
+            if miss.get("miss_classification") == "injury_event":
+                pt = miss.get("prop_type", "")
+                if pt:
+                    injury_event_by_prop[pt] += 1
+
     prop_summary = {}
     for pt, d in prop_agg.items():
-        p = d["picks"]
-        h = d["hits"]
+        p    = d["picks"]
+        h    = d["hits"]
+        excl = injury_event_by_prop.get(pt, 0)
+        adjusted_denom = p - excl
         prop_summary[pt] = {
-            "picks":        p,
-            "hits":         h,
-            "hit_rate_pct": round(h / p * 100, 1) if p > 0 else 0.0,
+            "picks":             p,
+            "hits":              h,
+            "injury_exclusions": excl,
+            "hit_rate_pct":      round(h / adjusted_denom * 100, 1) if adjusted_denom > 0 else 0.0,
         }
 
     # ── Miss classification breakdown ──────────────────────────────────
@@ -718,6 +769,11 @@ def save_audit_summary(audit_log: list[dict]):
     recent_reinforcements = [r for e in recent_entries for r in e.get("reinforcements",  [])]
     recent_recommendations = [r for e in recent_entries for r in e.get("recommendations", [])]
 
+    # ── Overall hit rate (injury_event exclusions applied) ────────────
+    total_injury_exclusions = sum(injury_event_by_prop.values())
+    gradeable_adjusted      = gradeable - total_injury_exclusions
+    overall_hr              = round(total_hits / gradeable_adjusted * 100, 1) if gradeable_adjusted > 0 else 0.0
+
     # ── Parlay totals ──────────────────────────────────────────────────
     p_total   = sum(e.get("parlay_results", {}).get("total",   0) for e in audit_log)
     p_hits    = sum(e.get("parlay_results", {}).get("hits",    0) for e in audit_log)
@@ -728,10 +784,11 @@ def save_audit_summary(audit_log: list[dict]):
         "generated_at":    TODAY.strftime("%Y-%m-%d"),
         "entries_included": len(audit_log),
         "overall": {
-            "total_picks":  total_picks,
-            "hits":         total_hits,
-            "misses":       total_misses,
-            "hit_rate_pct": overall_hr,
+            "total_picks":       total_picks,
+            "hits":              total_hits,
+            "misses":            total_misses,
+            "injury_exclusions": total_injury_exclusions,
+            "hit_rate_pct":      overall_hr,
         },
         "prop_type_summary":             prop_summary,
         "miss_classification_totals":    dict(miss_classes),

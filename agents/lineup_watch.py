@@ -23,9 +23,12 @@ and renders cards with strikethrough badges or risk pills.
 
 from __future__ import annotations
 
+import argparse
 import datetime as dt
+import difflib
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -102,12 +105,34 @@ def save_picks(picks: list[dict]) -> None:
 # ── Main logic ───────────────────────────────────────────────────────
 
 def run() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", action="store_true", help="Diagnostic mode — read only, no writes")
+    args = parser.parse_args()
+    debug = args.debug
+    if debug:
+        print("[lineup_watch] *** DEBUG MODE — read only, no picks.json writes ***\n")
+
     print(f"[lineup_watch] Running for {TODAY_STR}")
 
     injury_lookup = load_injury_lookup()
     if not injury_lookup:
         print("[lineup_watch] No injury data — exiting.")
         return
+
+    if debug:
+        print(f"[debug] injuries_today.json: {len(injury_lookup)} players listed")
+        print(f"[debug] Injury statuses present:")
+        status_counts = Counter(v["status"] for v in injury_lookup.values())
+        for status, count in sorted(status_counts.items()):
+            print(f"         {status}: {count}")
+        flagged_in_report = {
+            name: v for name, v in injury_lookup.items()
+            if v["status"] in ("OUT", "DOUBTFUL", "QUESTIONABLE")
+        }
+        print(f"\n[debug] Players with notable injury status ({len(flagged_in_report)}):")
+        for name, v in sorted(flagged_in_report.items()):
+            print(f"         {v['status']:12s} {name}  ({v['reason']})")
+        print()
 
     picks = load_picks()
     if not picks:
@@ -119,6 +144,54 @@ def run() -> None:
 
     # Write injury snapshot fields to ALL of today's picks (including voided)
     all_today = [p for p in picks if p.get("date") == TODAY_STR]
+
+    if debug:
+        pick_names = sorted({(p.get("player_name") or "").strip().lower() for p in all_today})
+        print(f"[debug] Today's pick players ({len(pick_names)}):")
+        for name in pick_names:
+            inj = injury_lookup.get(name)
+            if inj:
+                status = inj["status"]
+                reason = inj["reason"]
+                marker = "⚠ MATCH" if status in ("OUT", "DOUBTFUL", "QUESTIONABLE") else "  listed"
+                print(f"         {marker:10s} {name}  → {status} ({reason})")
+            else:
+                print(f"         no match   {name}")
+        print()
+
+        injury_names = list(injury_lookup.keys())
+        print(f"[debug] Fuzzy near-miss check (pick players with no exact injury match):")
+        found_nearmiss = False
+        for name in pick_names:
+            if injury_lookup.get(name):
+                continue  # already matched exactly
+            close = difflib.get_close_matches(name, injury_names, n=3, cutoff=0.7)
+            if close:
+                found_nearmiss = True
+                print(f"         NEAR-MISS: '{name}' ≈ {close}")
+                for c in close:
+                    print(f"                   injury report has: '{c}' → {injury_lookup[c]['status']}")
+        if not found_nearmiss:
+            print("         No near-misses found — name formats appear consistent")
+        print()
+
+        print(f"[debug] Current pick state in picks.json:")
+        for p in all_today:
+            name    = p.get("player_name", "")
+            prop    = p.get("prop_type", "")
+            val     = p.get("pick_value", "")
+            voided  = p.get("voided", False)
+            risk    = p.get("lineup_risk", "none")
+            status  = p.get("injury_status_at_check", "not_recorded")
+            checked = p.get("injury_check_time", "never")
+            flag = ""
+            if voided:
+                flag = "  ← VOIDED"
+            elif risk in ("high", "moderate"):
+                flag = f"  ← {risk.upper()} RISK"
+            print(f"         {name} {prop} {val}  |  voided={voided}  risk={risk}  last_status={status}  checked={checked}{flag}")
+        print()
+
     for p in all_today:
         name = (p.get("player_name") or "").strip().lower()
         inj  = injury_lookup.get(name)
@@ -135,7 +208,11 @@ def run() -> None:
 
     if not open_today:
         print(f"[lineup_watch] No open picks for {TODAY_STR} — saving snapshot updates.")
-        save_picks(picks)
+        if not debug:
+            save_picks(picks)
+        else:
+            print("[debug] Skipping picks.json write (debug mode)")
+            print("[lineup_watch] Debug run complete — no files modified")
         return
 
     print(f"[lineup_watch] Checking {len(open_today)} open picks...")
@@ -193,7 +270,11 @@ def run() -> None:
             # PROBABLE or anything else — no action
             unchanged += 1
 
-    save_picks(picks)
+    if not debug:
+        save_picks(picks)
+    else:
+        print("[debug] Skipping picks.json write (debug mode)")
+        print("[lineup_watch] Debug run complete — no files modified")
     print(
         f"[lineup_watch] Done — "
         f"{voided_count} voided, {flagged_count} flagged, {unchanged} unchanged"
