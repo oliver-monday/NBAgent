@@ -1,0 +1,234 @@
+{
+  "generated_at": "2026-03-07T21:04:54",
+  "mode": "shooting-regression",
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-06"
+  },
+  "total_instances": 521,
+  "instances_by_flag": {
+    "hot": 98,
+    "cold": 108,
+    "neutral": 315,
+    "insufficient": 0
+  },
+  "core_analysis": {
+    "neutral": {
+      "n": 315,
+      "hits": 225,
+      "hit_rate": 0.7143,
+      "lift": 1.0
+    },
+    "cold": {
+      "n": 108,
+      "hits": 87,
+      "hit_rate": 0.8056,
+      "lift": 1.128
+    },
+    "hot": {
+      "n": 98,
+      "hits": 71,
+      "hit_rate": 0.7245,
+      "lift": 1.014
+    }
+  },
+  "threshold_sweep": [
+    {
+      "threshold_pct": 5,
+      "hot_n": 154,
+      "hot_hr": 0.7208,
+      "hot_lift": 0.991,
+      "cold_n": 158,
+      "cold_hr": 0.7595,
+      "cold_lift": 1.044
+    },
+    {
+      "threshold_pct": 6,
+      "hot_n": 129,
+      "hot_hr": 0.7287,
+      "hot_lift": 1.0,
+      "cold_n": 138,
+      "cold_hr": 0.7536,
+      "cold_lift": 1.035
+    },
+    {
+      "threshold_pct": 7,
+      "hot_n": 109,
+      "hot_hr": 0.7156,
+      "hot_lift": 0.99,
+      "cold_n": 123,
+      "cold_hr": 0.7805,
+      "cold_lift": 1.079
+    },
+    {
+      "threshold_pct": 8,
+      "hot_n": 98,
+      "hot_hr": 0.7245,
+      "hot_lift": 1.014,
+      "cold_n": 108,
+      "cold_hr": 0.8056,
+      "cold_lift": 1.128
+    },
+    {
+      "threshold_pct": 9,
+      "hot_n": 84,
+      "hot_hr": 0.7381,
+      "hot_lift": 1.038,
+      "cold_n": 91,
+      "cold_hr": 0.8242,
+      "cold_lift": 1.159
+    },
+    {
+      "threshold_pct": 10,
+      "hot_n": 69,
+      "hot_hr": 0.7246,
+      "hot_lift": 1.006,
+      "cold_n": 80,
+      "cold_hr": 0.8125,
+      "cold_lift": 1.128
+    },
+    {
+      "threshold_pct": 11,
+      "hot_n": 58,
+      "hot_hr": 0.7241,
+      "hot_lift": 0.991,
+      "cold_n": 62,
+      "cold_hr": 0.7742,
+      "cold_lift": 1.06
+    },
+    {
+      "threshold_pct": 12,
+      "hot_n": 48,
+      "hot_hr": 0.75,
+      "hot_lift": 1.027,
+      "cold_n": 47,
+      "cold_hr": 0.766,
+      "cold_lift": 1.049
+    },
+    {
+      "threshold_pct": 13,
+      "hot_n": 35,
+      "hot_hr": 0.7143,
+      "hot_lift": 0.968,
+      "cold_n": 39,
+      "cold_hr": 0.7179,
+      "cold_lift": 0.972
+    },
+    {
+      "threshold_pct": 14,
+      "hot_n": 27,
+      "hot_hr": 0.7778,
+      "hot_lift": 1.064,
+      "cold_n": 26,
+      "cold_hr": 0.7692,
+      "cold_lift": 1.053
+    },
+    {
+      "threshold_pct": 15,
+      "hot_n": 19,
+      "hot_hr": 0.7368,
+      "hot_lift": 0.999,
+      "cold_n": 18,
+      "cold_hr": 0.6667,
+      "cold_lift": 0.904
+    },
+    {
+      "threshold_pct": 16,
+      "hot_n": 16,
+      "hot_hr": 0.75,
+      "hot_lift": 1.022,
+      "cold_n": 16,
+      "cold_hr": 0.75,
+      "cold_lift": 1.022
+    },
+    {
+      "threshold_pct": 17,
+      "hot_n": 14,
+      "hot_hr": 0.7143,
+      "hot_lift": 0.97,
+      "cold_n": 14,
+      "cold_hr": 0.7143,
+      "cold_lift": 0.97
+    },
+    {
+      "threshold_pct": 18,
+      "hot_n": 11,
+      "hot_hr": 0.7273,
+      "hot_lift": 0.988,
+      "cold_n": 10,
+      "cold_hr": 0.7,
+      "cold_lift": 0.951
+    },
+    {
+      "threshold_pct": 19,
+      "hot_n": 7,
+      "hot_hr": 0.8571,
+      "hot_lift": 1.169,
+      "cold_n": 8,
+      "cold_hr": 0.75,
+      "cold_lift": 1.023
+    },
+    {
+      "threshold_pct": 20,
+      "hot_n": 4,
+      "hot_hr": 1.0,
+      "hot_lift": 1.369,
+      "cold_n": 5,
+      "cold_hr": 1.0,
+      "cold_lift": 1.369
+    }
+  ],
+  "tier_split": {
+    "T20": {
+      "hot": {
+        "n": 63,
+        "hit_rate": 0.746
+      },
+      "neutral": {
+        "n": 175,
+        "hit_rate": 0.7829
+      },
+      "cold": {
+        "n": 74,
+        "hit_rate": 0.8243
+      }
+    },
+    "T25": {
+      "hot": {
+        "n": 26,
+        "hit_rate": 0.7692
+      },
+      "neutral": {
+        "n": 113,
+        "hit_rate": 0.6372
+      },
+      "cold": {
+        "n": 31,
+        "hit_rate": 0.8387
+      }
+    },
+    "T30": {
+      "hot": {
+        "n": 9,
+        "note": "n<10"
+      },
+      "neutral": {
+        "n": 27,
+        "hit_rate": 0.5926
+      },
+      "cold": {
+        "n": 3,
+        "note": "n<10"
+      }
+    }
+  },
+  "verdict": {
+    "signal_verdict": "noise",
+    "cold_signal_verdict": "weak",
+    "threshold_verdict": "14% maximizes hot_lift (1.064) with n=27",
+    "recommendations": [
+      "FG_HOT signal is not predictive at the population level. Consider relaxing the -3% penalty or raising the threshold before removing.",
+      "FG_COLD is weak (lift=1.128). No change recommended \u2014 maintain 'mild caution' framing in prompt."
+    ]
+  }
+}

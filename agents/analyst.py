@@ -789,20 +789,12 @@ KEY RULES — VOLATILITY:
   iron floor already captures the consistency signal more precisely.
 
 KEY RULES — SHOOTING EFFICIENCY REGRESSION:
-- PTS stat lines may show [FG_HOT:+X%] or [FG_COLD:-X%] based on L5 vs L20 FG% delta.
-  This reflects whether a player is shooting materially above or below their season baseline
-  over the last 5 games with shot attempts vs their last 20 games with shot attempts.
-  Threshold: ≥8% relative delta = HOT or COLD.
-- [FG_HOT:+X%]: player is in a shooting hot streak — counting stats (PTS) are inflated
-  relative to their tier baseline. Apply a regression-to-mean adjustment:
-    → Reduce PTS confidence by 3% before applying other modifiers.
-    → The PTS hit rate reflects normal shooting; hot-streak inflated games skew the baseline.
-    → Do NOT skip the pick — just apply the adjustment and document it in reasoning.
-  Exception: if the stat line shows [iron_floor], the FG_HOT penalty does NOT apply.
-- [FG_COLD:-X%]: player is shooting below their season baseline.
-  No mandatory adjustment — cold shooting may represent variance, not regression. Treat as
-  a mild caution flag. Note it in reasoning if confidence is borderline (70–74%).
-- If the flag is absent or the stat is not PTS, ignore this rule entirely.
+- [FG_HOT:+X%] and [FG_COLD:-X%] annotations are informational only. Do not apply any confidence
+  adjustment in either direction based on these flags.
+- Rationale: backtested across 521 instances — FG_HOT lift=1.014 (noise); FG_COLD lift=1.128
+  (counterintuitively positive). Tier selection is based on counting-stat hit rates, not FG%, so
+  shooting efficiency fluctuations do not predict next-game PTS tier outcomes. Treat both flags
+  as context only — visible in the quant block for transparency, not directive.
 
 KEY RULES — HIGH CONFIDENCE GATE (81%+): Before assigning confidence_pct of 81 or higher, all three of the following conditions must be met. If any condition fails, cap confidence at 80% or lower — do not round up.
 Condition A — Rest/availability: Player is NOT on a back-to-back (on_back_to_back = false), OR player averages ≥30 minutes per game in their last 10 games as a confirmed starter. Non-stars on B2B nights have demonstrated DNP and minutes-restriction risk that makes 81%+ confidence structurally unsound regardless of historical hit rate.

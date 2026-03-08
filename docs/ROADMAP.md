@@ -68,8 +68,12 @@
 - **Season end handling** — workflows need to be paused/disabled in the off-season (roughly late June). Simplest approach: disable the cron schedules in each `.yml`, re-enable in October.
 
 ### Untested Hypotheses (backtest designs documented in docs/BACKTESTS.md)
-- **Post-Blowout Bounce-Back** — Do players on teams that suffered a blowout loss (opponent margin ≥15 pts) show elevated prop hit rates in their next game as a corrective response? Testable with `nba_master.csv` score differentials + next-game player performance. Expected signal: players facing a humiliating loss may have higher usage and motivation next game; or the effect is noise (same as league-wide bounce-back). Low data cost — all fields already available.
-- **Opponent Schedule Fatigue** — Do player prop hit rates increase when the opposing team is playing their second game in two nights or coming off a dense 4-in-5 schedule? Testable with opponent B2B flags and schedule density computed from `nba_master.csv`. Extends the existing rest-context logic from self (own fatigue) to opponent (opponent fatigue = potential edge). Rest data already computed in `quant.py`'s `compute_rest_context()` — needs to be applied to the opposing team at backtest time.
+- **H8 — Positional DvP Validity** — Does the positional defense rating predict PTS/AST hit rates more accurately than the team-level opp_defense rating? Requires ~30 days of live positional DvP data accumulating in `player_stats.json`. Run approximately early April 2026. If positional DvP shows no meaningful lift over team-level, consider reverting to team-level to simplify the prompt. Design documented in `docs/BACKTESTS.md`.
+- **H9 — Player × Opponent H2H Splits** — Does a player's historical hit rate against today's specific opponent (this season) predict next-game performance better than the population-level opp_defense rating? Computable from existing `player_game_log.csv` — requires sufficient per-player-opponent sample sizes (~mid-April with a full season). See Active Queue entry M1 for implementation design.
+
+### Closed Hypotheses
+- **H6 — Post-Blowout Bounce-Back** ❌ NOISE — post-blowout lift 0.955–0.988 across all stats; lift variance ≤ 0.08. Hypothesis closed March 7, 2026. Full results in `docs/BACKTESTS.md`.
+- **H7 — Opponent Schedule Fatigue** ❌ NOISE — opponent B2B lift 0.977–1.025; dense bucket had 0 instances in full season. Hypothesis closed March 7, 2026. Full results in `docs/BACKTESTS.md`.
 
 ### Technical Debt
 - **`context/nba_season_context.md`** — manually maintained; needs periodic updates as roster/role changes accumulate. Consider adding a maintenance reminder to the repo README.
@@ -106,22 +110,31 @@
 - `quant.py` — `load_whitelist_positions()` + `compute_positional_dvp()` added. Per-player `positional_dvp` field in `player_stats.json` with 4 per-stat ratings, `n`, and `source` (`positional` / `team_fallback`).
 - `analyst.py` — `DvP [POS]` line per player replaces per-stat `opp_today=`; positional prompt instructions with REB/3PM exclusions preserved.
 
+**P3 — Shooting Efficiency Regression ✅ IMPLEMENTED (March 7–8, 2026)**
+- `espn_player_ingest.py` — `fgm/fga/fg3m/fg3a` collected on all new daily rows. `player_game_log.csv` backfilled to 7,584 rows (22 columns).
+- `quant.py` — `compute_shooting_regression()`. L5 vs L20 FG%/3P% delta; ±8% threshold; `hot/cold/neutral` flag. `"shooting_regression"` key in `player_stats.json`.
+- `analyst.py` — `[FG_HOT:+X%]` / `[FG_COLD:−X%]` on PTS stat lines; KEY RULES — SHOOTING EFFICIENCY REGRESSION block with −3% penalty for HOT (iron_floor exempt).
+
 ---
 
 ### Active Queue — In Priority Order
 
 ---
 
-#### P3 — Shooting Efficiency Regression Flag
-**Priority: LOWER — high signal for PTS props, requires ingest schema change**
+#### P3 — Shooting Efficiency Regression Flag ✅ IMPLEMENTED (March 8, 2026)
 
-**What:** L5 vs. L20 shooting % delta per player. Flag players shooting materially above/below season FG% over the last 5 games as regression candidates. Applied specifically as a PTS confidence modifier, not universal.
+**What:** L5 vs. L20 FG%/3P% delta per player. Flags players shooting materially above/below their season baseline over the last 5 games as regression candidates. Applied as a PTS confidence modifier only (−3% for FG_HOT, mild caution for FG_COLD). Threshold: ±8% normalized delta.
 
-**Why:** A player hitting 8% above their season FG% over 5 games has a more fragile counting stat floor than their hit rate suggests — mean reversion is real and predictable from shooting data. Currently invisible to the system.
+**Implementation:**
+- `agents/quant.py` — `compute_shooting_regression(grp)` added after `compute_volatility()`. Computes L5 vs L20 FG% and 3P% delta from newest→oldest sorted DataFrame. Returns `fg_flag` (`hot`/`cold`/`neutral`) when delta ≥ ±8% relative. Wired into `build_player_stats()` per-player loop; `"shooting_regression"` key added to `player_stats.json` output between `"volatility"` and `"positional_dvp"`.
+- `agents/analyst.py` — `shooting_reg` extracted in `build_quant_context()`; `[FG_HOT:+X%]` / `[FG_COLD:−X%]` appended to PTS stat lines only. `KEY RULES — SHOOTING EFFICIENCY REGRESSION` block added after VOLATILITY section: −3% confidence for HOT (iron_floor exempt), mild caution for COLD.
+- Ingest (Phase 1, March 7): `espn_player_ingest.py` collects `fgm/fga/fg3m/fg3a` on all new daily rows. `player_game_log.csv` backfilled to 7,584 rows (7,136 with shooting stats; 448 empty = preseason/All-Star exclusions + DNPs). Schema: 22 columns, shooting stats inserted after `tpm`, before `dnp`.
 
-**Where:** `espn_player_ingest.py` — add `fga`, `fgm`, `fg3a`, `fg3m` columns (ESPN provides these). `player_game_log.csv` schema change. `quant.py` — `compute_shooting_regression()`. `analyst.py` — regression flag in quant context block.
+**First live run (March 8, 2026):**
+- HOT flags: Ausar Thompson (+26%), Paolo Banchero (+14%), Isaiah Hartenstein (+11%), Kawhi Leonard (+8%)
+- COLD flags: Tyrese Maxey (−13%), Giannis (−12%), Julius Randle (−12%), Jalen Johnson (−10%), Desmond Bane (−9%)
 
-**Data dependency:** Requires ingest schema change — coordinate as a standalone session. Do not mix with other quant.py changes until ingest is updated.
+**Validation gate (open):** Signal threshold (±8%) is an untested prior. After 30+ days of flagged picks accumulate in audit data, evaluate whether FG_HOT picks underperform their tier baseline. If lift is not meaningfully negative, relax the confidence penalty or widen the threshold. Track via `miss_classification` — HOT misses should cluster in `model_gap`, not `variance`, to confirm the mechanism.
 
 ---
 
@@ -177,8 +190,52 @@ Original morning values are preserved in `morning_pick` — never overwritten.
 ## Implementation Notes
 
 - **P4 (Tier-Walk)** — ✅ IMPLEMENTED (March 6, 2026). `tier_walk_flag` in `miss_details` accumulates alongside `miss_classification` going forward — expect meaningful patterns after 20+ audit days. When `tier_skip_error` flags concentrate on specific stats or players, that is a signal to tighten the walk-down instruction or ceiling rules.
-- **P3 (Shooting Regression)** — requires `espn_player_ingest.py` schema change. Plan as a standalone session; do not bundle with quant-only changes.
+- **P3 (Shooting Regression)** — ✅ FULLY IMPLEMENTED (March 8, 2026). Both phases complete. Signal threshold (±8%) is an untested prior — validate via audit accumulation after 30+ days of flagged picks. HOT misses should cluster in `model_gap` to confirm the mechanism; if they cluster in `variance` instead, the penalty is overcorrecting.
 - **P5 (Afternoon Re-Reasoning)** — requires `lineup_watch.py` already live (✅). Key open design question: change-detection mechanism for "new absence since last run" — simplest approach is comparing the current `injuries_today.json` against a prior-run snapshot cached to `data/injuries_prev.json` by `lineup_watch.py`. Revisit after 7 days of lineup_watch data to confirm voiding frequency and feasibility. Do not build until audit data confirms lineup_watch is functioning correctly.
 - **#1 (Teammate Absence Delta)** — highest long-run alpha; revisit at season start when full-year DNP data exists.
+- **M1 (H2H Splits) / M2 (Defensive Recency)** — see Matchup Signals section below. Both queued for mid-April once sufficient sample sizes exist.
 - **Confidence calibration tracking (no proposal needed)** — `audit_summary.json` now accumulates per-band hit rates (70–75 / 76–80 / 81–85 / 86+). After 20+ audit days, compare actual hit rates to stated confidence bands. If a band systematically underperforms (e.g., 86%+ picks hit at 70%), tighten prompt confidence guidance for that band directly. Maintenance task — revisit when the season has 3+ weeks of post-March audit data.
-- **Positional DvP — backtest candidate** — now that positional defense ratings are live and accumulating in `player_stats.json`, a future backtest (H8) could validate whether the positional rating is a stronger predictor than the team-level rating for PTS/AST. Run after 30+ days of data.
+- **Positional DvP — backtest candidate (H8)** — now that positional defense ratings are live and accumulating in `player_stats.json`, a future backtest (H8) could validate whether the positional rating is a stronger predictor than the team-level rating for PTS/AST. Run after 30+ days of data (~early April 2026).
+
+---
+
+## Matchup Signals Queue
+
+Design philosophy: the Analyst already has a solid quantitative matchup foundation (positional DvP, vs_soft/vs_tough splits, game pace, spread context). The following proposals address two real gaps identified in a March 7, 2026 architectural review — situations where rolling averages give a misleading picture because something material has changed that the numbers alone cannot capture. Both are deterministic quant extensions feeding the existing Analyst; neither requires a new LLM agent.
+
+---
+
+#### M1 — Player × Opponent H2H Splits
+**Priority: MEDIUM — backtest-ready mid-April 2026**
+**Prerequisite: sufficient per-player-opponent sample sizes (~8+ games)**
+
+**What:** For each player today, compute their hit rate at their best tier specifically against today's opponent (full season history). Surface as `h2h_hit_rate` and `h2h_n` alongside the existing `vs_soft`/`vs_tough` population-level rates.
+
+**Why:** The system currently knows "Brunson hits PTS T25 80% of the time vs soft defenses." It does not know "Brunson hits PTS T25 in 7 of his last 8 games specifically against BOS." Those are different signals — a player may systematically over- or under-perform against a specific defensive scheme that the population-level soft/mid/tough rating smooths over.
+
+**Design:**
+- `quant.py` — `compute_h2h_splits(player_log, stat)`: for each player × opponent pair, compute tier hit rate at best qualifying tier. Return `{opponent_abbrev: {stat: {hit_rate, n}}}` per player. Minimum n=5 to surface; null otherwise.
+- `player_stats.json` — new `h2h_splits` key per player.
+- `analyst.py` — `build_quant_context()`: append `h2h=XX%(Ng)` to stat line when n≥5 and today's opponent matches. Prompt rule: weight h2h rate over vs_soft/vs_tough when n≥8; treat as supporting context only when n=5–7.
+
+**Validation gate:** After 30+ days of flagged h2h picks, run backtest H9 — does h2h lift variance exceed vs_soft/vs_tough lift variance for PTS/AST? If not predictive, surface as informational context only (no directive prompt weight).
+
+**Where:** `agents/quant.py`, `agents/analyst.py` only.
+
+---
+
+#### M2 — Defensive Recency Split
+**Priority: LOW-MEDIUM — cheap quant addition, no backtest required to ship**
+
+**What:** A recency flag on opponent defense: compare the opponent's allowed average over the last 5 games vs. their last 15 games (the window used by the existing `opp_defense` computation). Flag when the L5 allowed average diverges materially from the L15 baseline — indicating the defense has changed recently (injury to key defender, scheme change, fatigue stretch).
+
+**Why:** The existing opp_defense rating uses a 15-game rolling window. A team that lost their best defender 5 games ago is still rated on data that's 67% stale. The pre-game reporter may catch this via news, but only if ESPN publishes a story. A computed recency split catches it automatically from box scores — no text parsing required.
+
+**Design:**
+- `quant.py` — extend `build_opp_defense()` or add `compute_opp_defense_recency()`: compute allowed avg L5 vs L15 per stat per opponent. Flag `def_trending_soft` when L5 allowed avg is ≥8% above L15 (defense has gotten worse recently); `def_trending_tough` when ≥8% below (defense has tightened up). Minimum 3 games in L5 window.
+- `player_stats.json` — add `def_recency` field per player: `{stat: {l5_allowed, l15_allowed, delta_pct, flag}}`.
+- `analyst.py` — surface as a per-player header annotation: `DEF↑` (trending soft) or `DEF↓` (trending tough) when flag fires. Prompt rule: treat as a mild modifier (same weight as pace_tag) — not a tier-changing signal until backtested.
+
+**Validation gate:** After 30+ flagged instances accumulate in audit data, evaluate whether `def_trending_soft` picks outperform baseline. If lift < 0.08, demote to informational display only.
+
+**Where:** `agents/quant.py`, `agents/analyst.py` only.

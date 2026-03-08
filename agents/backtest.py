@@ -40,6 +40,7 @@ RECENCY_WEIGHT_JSON        = DATA / "backtest_recency_weight.json"
 PLAYER_BOUNCE_BACK_JSON    = DATA / "bounce_back_players.json"
 POST_BLOWOUT_JSON          = DATA / "backtest_post_blowout.json"
 OPP_FATIGUE_JSON           = DATA / "backtest_opp_fatigue.json"
+SHOOTING_REGRESSION_JSON   = DATA / "backtest_shooting_regression.json"
 
 # ── Tier definitions (mirrors quant.py) ───────────────────────────────
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -68,6 +69,14 @@ POST_BLOWOUT_THRESHOLD = 15   # points margin to classify as blowout
 OPP_DENSE_THRESHOLD    = 4    # games in OPP_DENSE_WINDOW days = dense
 OPP_DENSE_WINDOW       = 5    # days window for dense schedule check (mirrors quant.py)
 
+# Shooting regression mode constants (mirrors quant.py compute_shooting_regression)
+SR_L5_WINDOW   = 5     # games for "recent" FG%
+SR_L20_WINDOW  = 20    # games for "baseline" FG%
+SR_MIN_GAMES   = 10    # min valid shooting games to qualify (mirrors quant.py)
+SR_HOT_THRESH  = 0.08  # relative delta >= +8% → FG_HOT
+SR_COLD_THRESH = 0.08  # relative delta <= -8% → FG_COLD
+SR_MIN_N       = 20    # min instances per flag bucket for a verdict
+
 
 # ── Loaders ───────────────────────────────────────────────────────────
 
@@ -92,6 +101,12 @@ def load_player_log(whitelist: set, args) -> pd.DataFrame:
     df = df[df["dnp"].astype(str).str.strip() != "1"].copy()
     for col in ["pts", "reb", "ast", "tpm", "minutes_raw"]:
         df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
+    # Shooting columns: keep NaN where data is absent — do NOT fill with 0
+    for col in ["fgm", "fga", "fg3m", "fg3a"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+        else:
+            df[col] = np.nan
 
     # Optional date / season filters
     if getattr(args, "season", None):
@@ -3237,6 +3252,331 @@ def print_report(signal_results: dict, calibration: dict, meta: dict):
     print(f"{'='*72}")
 
 
+# ── Shooting Regression Mode ──────────────────────────────────────────
+
+def compute_fg_pct_flag(player_log: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add fg_flag, fg3_flag, and _fg_delta_pct columns to player_log.
+
+    Computed per-player using only prior games (shift=1 before rolling)
+    so the flag reflects what the system would have seen on game morning.
+    player_log must be sorted oldest→newest per player (load_player_log default).
+
+    fga == 0 → treated as missing data (NaN), not 0% shooting.
+    Requires SR_MIN_GAMES non-NaN fg_pct values in the L20 window to assign a flag.
+    """
+    df = player_log.copy()
+
+    # Per-row FG% and 3P% — NaN when no shot attempts
+    df["_fg_pct"]  = df["fgm"] / df["fga"].replace(0, np.nan)
+    df["_fg3_pct"] = df["fg3m"] / df["fg3a"].replace(0, np.nan)
+
+    # Per-player rolling L20 and L5, shifted so current game is excluded
+    grp_fg  = df.groupby("player_name")["_fg_pct"]
+    grp_fg3 = df.groupby("player_name")["_fg3_pct"]
+
+    l20_fg  = grp_fg.transform(
+        lambda x: x.shift(1).rolling(SR_L20_WINDOW, min_periods=SR_MIN_GAMES).mean()
+    )
+    l5_fg   = grp_fg.transform(
+        lambda x: x.shift(1).rolling(SR_L5_WINDOW, min_periods=3).mean()
+    )
+    l20_fg3 = grp_fg3.transform(
+        lambda x: x.shift(1).rolling(SR_L20_WINDOW, min_periods=SR_MIN_GAMES).mean()
+    )
+    l5_fg3  = grp_fg3.transform(
+        lambda x: x.shift(1).rolling(SR_L5_WINDOW, min_periods=3).mean()
+    )
+
+    # Relative deltas
+    fg_delta  = (l5_fg  - l20_fg)  / l20_fg.replace(0, np.nan)
+    fg3_delta = (l5_fg3 - l20_fg3) / l20_fg3.replace(0, np.nan)
+
+    def _flag_series(delta: pd.Series, l20: pd.Series, hot_thresh: float, cold_thresh: float) -> pd.Series:
+        flags = pd.Series("insufficient", index=delta.index, dtype=str)
+        valid = l20.notna() & delta.notna()
+        flags[valid] = "neutral"
+        flags[valid & (delta >= hot_thresh)]   = "hot"
+        flags[valid & (delta <= -cold_thresh)] = "cold"
+        return flags
+
+    df["fg_flag"]       = _flag_series(fg_delta,  l20_fg,  SR_HOT_THRESH, SR_COLD_THRESH)
+    df["fg3_flag"]      = _flag_series(fg3_delta, l20_fg3, SR_HOT_THRESH, SR_COLD_THRESH)
+    df["_fg_delta_pct"] = fg_delta   # raw delta preserved for threshold sweep
+
+    df = df.drop(columns=["_fg_pct", "_fg3_pct"])
+    return df
+
+
+def build_shooting_regression_instances(player_log: pd.DataFrame) -> pd.DataFrame:
+    """
+    Build the evaluation instance DataFrame for the shooting regression backtest.
+
+    Each row represents a game where:
+    - The player had a qualifying PTS tier (≥ T20) based on prior 20 games
+    - FG% data existed pre-game (fg_flag != 'insufficient')
+    - FG attempts data was present (fga not NaN)
+
+    Returns DataFrame with columns:
+      player_name, game_date, fg_flag, fg3_flag, pts, best_tier_pts,
+      pts_tier_hit (bool), fgm, fga, fg3m, fg3a, _fg_delta_pct
+    """
+    print("[sr-backtest] Computing FG% flags per player...")
+    df = compute_fg_pct_flag(player_log)
+
+    print("[sr-backtest] Computing best PTS tiers (window=20)...")
+    df = add_best_tiers(df, window=20)
+
+    qualified = df[
+        (df["fg_flag"] != "insufficient") &
+        (df["best_tier_PTS"].notna()) &
+        (df["best_tier_PTS"] >= 20) &
+        (df["fga"].notna())
+    ].copy()
+
+    qualified["pts_tier_hit"] = (qualified["hit_actual_PTS"] == 1.0)
+
+    return qualified[[
+        "player_name", "game_date", "fg_flag", "fg3_flag",
+        "pts", "best_tier_PTS", "pts_tier_hit",
+        "fgm", "fga", "fg3m", "fg3a", "_fg_delta_pct",
+    ]].rename(columns={"best_tier_PTS": "best_tier_pts"})
+
+
+def run_shooting_regression_analysis(player_log: pd.DataFrame, args) -> None:
+    """H10 — Shooting Efficiency Regression backtest."""
+    sep = "─" * 60
+
+    print(f"\n{'='*72}")
+    print("  BACKTEST H10: SHOOTING EFFICIENCY REGRESSION")
+    print(f"  Date range: {player_log['game_date'].min().date()} → {player_log['game_date'].max().date()}")
+    print(f"{'='*72}\n")
+
+    # ── Step 1: Build instances ────────────────────────────────────────
+    instances = build_shooting_regression_instances(player_log)
+    total = len(instances)
+    counts = instances["fg_flag"].value_counts().to_dict()
+
+    print(f"  Instance counts by FG flag (qualifying rows: best_tier_pts ≥ T20, fg data present):")
+    for flag in ["hot", "cold", "neutral", "insufficient"]:
+        n = counts.get(flag, 0)
+        pct = f"  ({n/total*100:.1f}%)" if total > 0 else ""
+        print(f"    {flag:<14} n={n:,}{pct}")
+    print(f"    {'TOTAL':<14} n={total:,}\n")
+
+    if total == 0:
+        print("[sr-backtest] No qualified instances — check that fgm/fga columns exist in player_game_log.csv.")
+        return
+
+    # ── Step 2: Core analysis ──────────────────────────────────────────
+    print(f"  FG FLAG → PTS TIER HIT RATE")
+    print(f"  {sep}")
+
+    neutral_bucket = instances[instances["fg_flag"] == "neutral"]
+    neutral_n    = len(neutral_bucket)
+    neutral_hits = int(neutral_bucket["pts_tier_hit"].sum())
+    neutral_hr   = neutral_hits / neutral_n if neutral_n > 0 else None
+
+    core_analysis: dict = {}
+    for flag in ["neutral", "cold", "hot"]:
+        bucket = instances[instances["fg_flag"] == flag]
+        n    = len(bucket)
+        hits = int(bucket["pts_tier_hit"].sum())
+        hr   = round(hits / n, 4) if n > 0 else None
+        lift = round(hr / neutral_hr, 3) if (hr is not None and neutral_hr) else None
+
+        if flag == "neutral":
+            lift_str = "lift=1.000 (baseline)"
+        else:
+            lift_str = f"lift={lift:.3f}" if lift is not None else "n/a"
+        hr_str = f"{hr*100:.1f}%" if hr is not None else "n/a"
+
+        bar = ""
+        if lift is not None and flag != "neutral":
+            if lift > 1.10:   bar = "  ▲▲"
+            elif lift > 1.05: bar = "  ▲"
+            elif lift < 0.90: bar = "  ▼▼"
+            elif lift < 0.95: bar = "  ▼"
+
+        note = ""
+        if n < SR_MIN_N:
+            note = f"  ⚠ n < {SR_MIN_N} (insufficient for verdict)"
+
+        print(f"  {flag:<10} n={n:<6} hits={hits:<6} hr={hr_str:<8} {lift_str}{bar}{note}")
+        core_analysis[flag] = {"n": n, "hits": hits, "hit_rate": hr, "lift": lift if flag != "neutral" else 1.0}
+
+    # ── Step 3: Threshold sensitivity sweep ───────────────────────────
+    print(f"\n  THRESHOLD SENSITIVITY — delta required to flag HOT or COLD")
+    print(f"  {sep}")
+    header = f"  {'thresh':<8} {'hot_n':<8} {'hot_hr':<10} {'hot_lift':<12} {'cold_n':<8} {'cold_hr':<10} {'cold_lift'}"
+    print(header)
+
+    sweep_results: list = []
+    for thresh_pct in range(5, 21):
+        t = thresh_pct / 100.0
+        hot_mask  = instances["_fg_delta_pct"] >= t
+        cold_mask = instances["_fg_delta_pct"] <= -t
+        # neutral: everything in-between (among rows with non-null delta)
+        neutral_mask = (
+            instances["_fg_delta_pct"].notna() &
+            ~hot_mask & ~cold_mask
+        )
+
+        hot_bucket  = instances[hot_mask]
+        cold_bucket = instances[cold_mask]
+        neut_bucket = instances[neutral_mask]
+
+        neut_n = len(neut_bucket)
+        neut_hr = neut_bucket["pts_tier_hit"].sum() / neut_n if neut_n > 0 else None
+
+        def _bucket_stats(b):
+            bn = len(b)
+            bh = int(b["pts_tier_hit"].sum())
+            bhr = round(bh / bn, 4) if bn > 0 else None
+            blift = round(bhr / neut_hr, 3) if (bhr is not None and neut_hr) else None
+            return bn, bh, bhr, blift
+
+        hot_n, hot_hits, hot_hr, hot_lift   = _bucket_stats(hot_bucket)
+        cold_n, cold_hits, cold_hr, cold_lift = _bucket_stats(cold_bucket)
+
+        marker = "  ← current" if thresh_pct == int(SR_HOT_THRESH * 100) else ""
+        hot_hr_str  = f"{hot_hr*100:.1f}%"  if hot_hr  is not None else "n/a"
+        cold_hr_str = f"{cold_hr*100:.1f}%" if cold_hr is not None else "n/a"
+        hot_lift_str  = f"{hot_lift:.3f}"  if hot_lift  is not None else "n/a"
+        cold_lift_str = f"{cold_lift:.3f}" if cold_lift is not None else "n/a"
+
+        print(f"  {str(thresh_pct)+'%':<8} {hot_n:<8} {hot_hr_str:<10} {hot_lift_str:<12} {cold_n:<8} {cold_hr_str:<10} {cold_lift_str}{marker}")
+
+        sweep_results.append({
+            "threshold_pct": thresh_pct,
+            "hot_n":  hot_n,  "hot_hr":  hot_hr,  "hot_lift":  hot_lift,
+            "cold_n": cold_n, "cold_hr": cold_hr, "cold_lift": cold_lift,
+        })
+
+    # ── Step 4: Tier split ─────────────────────────────────────────────
+    print(f"\n  PER-TIER SPLIT (best_tier_pts × fg_flag)")
+    print(f"  {sep}")
+    tier_split: dict = {}
+    for tier_val in [20, 25, 30]:
+        tier_key = f"T{tier_val}"
+        tier_bucket = instances[instances["best_tier_pts"] == float(tier_val)]
+        tier_split[tier_key] = {}
+        parts = []
+        for flag in ["hot", "neutral", "cold"]:
+            fb = tier_bucket[tier_bucket["fg_flag"] == flag]
+            n  = len(fb)
+            if n < 10:
+                parts.append(f"{flag}=n<10")
+                tier_split[tier_key][flag] = {"n": n, "note": "n<10"}
+            else:
+                hr = round(fb["pts_tier_hit"].sum() / n, 4)
+                parts.append(f"{flag}={hr*100:.1f}%(n={n})")
+                tier_split[tier_key][flag] = {"n": n, "hit_rate": hr}
+        print(f"  {tier_key}: {' | '.join(parts)}")
+
+    # ── Step 5: Verdict ────────────────────────────────────────────────
+    print(f"\n  VERDICT")
+    print(f"  {sep}")
+
+    hot_lift_base  = core_analysis["hot"]["lift"]
+    cold_lift_base = core_analysis["cold"]["lift"]
+    hot_n_base     = core_analysis["hot"]["n"]
+    cold_n_base    = core_analysis["cold"]["n"]
+
+    def _signal_verdict(lift, n) -> str:
+        if n < SR_MIN_N or lift is None:
+            return "insufficient_data"
+        if lift > 1 + LIFT_PREDICTIVE or lift < 1 - LIFT_PREDICTIVE:
+            return "predictive"
+        if lift > 1 + LIFT_WEAK or lift < 1 - LIFT_WEAK:
+            return "weak"
+        return "noise"
+
+    signal_verdict      = _signal_verdict(hot_lift_base,  hot_n_base)
+    cold_signal_verdict = _signal_verdict(cold_lift_base, cold_n_base)
+
+    # Best threshold for HOT: maximize hot_lift while hot_n >= SR_MIN_N
+    best_thresh_entry = max(
+        (r for r in sweep_results if r["hot_n"] >= SR_MIN_N and r["hot_lift"] is not None),
+        key=lambda r: r["hot_lift"],
+        default=None,
+    )
+    if best_thresh_entry:
+        threshold_verdict = (
+            f"{best_thresh_entry['threshold_pct']}% maximizes hot_lift "
+            f"({best_thresh_entry['hot_lift']:.3f}) with n={best_thresh_entry['hot_n']}"
+        )
+    else:
+        threshold_verdict = f"No threshold with hot_n >= {SR_MIN_N} found"
+
+    # Recommendations
+    recommendations: list[str] = []
+    if signal_verdict == "predictive" and hot_lift_base is not None and hot_lift_base < 1.0:
+        recommendations.append(
+            f"FG_HOT reduces PTS hit rate (lift={hot_lift_base:.3f}). "
+            "Confirm -3% confidence penalty in analyst.py is calibrated correctly."
+        )
+    elif signal_verdict == "noise" or signal_verdict == "insufficient_data":
+        recommendations.append(
+            "FG_HOT signal is not predictive at the population level. "
+            "Consider relaxing the -3% penalty or raising the threshold before removing."
+        )
+    else:
+        recommendations.append(
+            f"FG_HOT signal shows {signal_verdict} lift={hot_lift_base:.3f}. "
+            "Current -3% penalty directionally supported; monitor accumulation."
+        )
+
+    if cold_signal_verdict == "predictive":
+        recommendations.append(
+            f"FG_COLD is predictive (lift={cold_lift_base:.3f}). "
+            "Consider adding a confidence adjustment for cold-shooting players."
+        )
+    else:
+        recommendations.append(
+            f"FG_COLD is {cold_signal_verdict} (lift={cold_lift_base:.3f}). "
+            "No change recommended — maintain 'mild caution' framing in prompt."
+        )
+
+    print(f"  signal_verdict (HOT):  {signal_verdict}")
+    print(f"  signal_verdict (COLD): {cold_signal_verdict}")
+    print(f"  threshold_verdict:     {threshold_verdict}")
+    for rec in recommendations:
+        print(f"  → {rec}")
+
+    # ── Step 6: Write JSON ─────────────────────────────────────────────
+    date_min = player_log["game_date"].min().strftime("%Y-%m-%d")
+    date_max = player_log["game_date"].max().strftime("%Y-%m-%d")
+
+    output = {
+        "generated_at":       dt.datetime.now().isoformat(timespec="seconds"),
+        "mode":               "shooting-regression",
+        "date_range":         {"start": date_min, "end": date_max},
+        "total_instances":    total,
+        "instances_by_flag":  {
+            "hot":         counts.get("hot", 0),
+            "cold":        counts.get("cold", 0),
+            "neutral":     counts.get("neutral", 0),
+            "insufficient": counts.get("insufficient", 0),
+        },
+        "core_analysis":      core_analysis,
+        "threshold_sweep":    sweep_results,
+        "tier_split":         tier_split,
+        "verdict": {
+            "signal_verdict":      signal_verdict,
+            "cold_signal_verdict": cold_signal_verdict,
+            "threshold_verdict":   threshold_verdict,
+            "recommendations":     recommendations,
+        },
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else SHOOTING_REGRESSION_JSON
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"\n[sr-backtest] Results written → {out_path}")
+    print(f"\n{'='*72}\n")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -3251,7 +3591,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -3296,6 +3636,11 @@ def main():
     # ── Opponent fatigue mode ─────────────────────────────────────────
     if getattr(args, "mode", None) == "opp-fatigue":
         run_opp_fatigue_analysis(player_log, master_df, args)
+        sys.exit(0)
+
+    # ── Shooting regression mode ───────────────────────────────────────
+    if getattr(args, "mode", None) == "shooting-regression":
+        run_shooting_regression_analysis(player_log, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────
