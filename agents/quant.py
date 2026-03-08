@@ -677,6 +677,89 @@ def compute_volatility(game_log: list, stat: str, tier: int, window: int = 20) -
     return {"label": label, "sigma": round(sigma, 3), "n": len(outcomes)}
 
 
+def compute_shooting_regression(grp: pd.DataFrame) -> dict:
+    """
+    Compute L5 vs L20 FG% and 3P% delta for a player.
+
+    grp is sorted newest→oldest (descending game_date), so head(N) = most recent N games.
+    Requires fgm/fga/fg3m/fg3a columns; returns empty-flag dict if columns are absent or
+    insufficient data exists.
+
+    Returns:
+      flag         — "hot" | "cold" | "neutral" | "insufficient_data"
+      fg_flag      — same enum, FG-specific
+      fg_delta_pct — (l5_fg_pct - l20_fg_pct) / l20_fg_pct; positive = shooting hotter
+      l20_fg_pct   — season FG% baseline (last 20 games with shots)
+      l5_fg_pct    — recent FG% (last 5 games with shots)
+      l20_3p_pct   — season 3P% baseline (last 20 games with 3PA > 0)
+      l5_3p_pct    — recent 3P% (last 5 games with 3PA > 0)
+      3p_delta_pct — relative delta for 3P%; None when insufficient
+      games_with_shots — count of non-DNP games with fga > 0
+    """
+    # Ensure numeric types for shooting columns
+    g = grp.copy()
+    for col in ("fgm", "fga", "fg3m", "fg3a"):
+        if col in g.columns:
+            g[col] = pd.to_numeric(g[col], errors="coerce")
+        else:
+            g[col] = float("nan")
+
+    # Exclude DNP rows
+    dnp_mask = pd.to_numeric(g["dnp"], errors="coerce").fillna(0) == 1
+    valid = g[~dnp_mask & (g["fga"].fillna(0) > 0)].copy()
+    n_valid = len(valid)
+
+    if n_valid < 10:
+        return {"flag": "insufficient_data", "games_with_shots": n_valid}
+
+    # grp is newest→oldest; head(N) = most recent N rows
+    l20_rows = valid.head(20)
+    l5_rows  = valid.head(5)
+
+    if len(l5_rows) < 3:
+        return {"flag": "insufficient_data", "games_with_shots": n_valid}
+
+    # FG%
+    l20_fga = l20_rows["fga"].sum()
+    l5_fga  = l5_rows["fga"].sum()
+    l20_fg_pct = (l20_rows["fgm"].sum() / l20_fga) if l20_fga > 0 else None
+    l5_fg_pct  = (l5_rows["fgm"].sum()  / l5_fga)  if l5_fga  > 0 else None
+
+    fg_delta_pct: float | None = None
+    fg_flag: str = "neutral"
+    if l20_fg_pct and l5_fg_pct is not None and l20_fg_pct > 0:
+        fg_delta_pct = (l5_fg_pct - l20_fg_pct) / l20_fg_pct
+        if fg_delta_pct >= 0.08:
+            fg_flag = "hot"
+        elif fg_delta_pct <= -0.08:
+            fg_flag = "cold"
+
+    # 3P% — only on games where player attempted 3s
+    valid_3p   = g[~dnp_mask & (g["fg3a"].fillna(0) > 0)].copy()
+    l20_3p = valid_3p.head(20)
+    l5_3p  = valid_3p.head(5)
+    l20_3pa = l20_3p["fg3a"].sum() if len(l20_3p) >= 5 else 0
+    l5_3pa  = l5_3p["fg3a"].sum()  if len(l5_3p)  >= 3 else 0
+    l20_3p_pct = (l20_3p["fg3m"].sum() / l20_3pa) if l20_3pa > 0 else None
+    l5_3p_pct  = (l5_3p["fg3m"].sum()  / l5_3pa)  if l5_3pa  > 0 else None
+
+    _3p_delta_pct: float | None = None
+    if l20_3p_pct and l5_3p_pct is not None and l20_3p_pct > 0:
+        _3p_delta_pct = (l5_3p_pct - l20_3p_pct) / l20_3p_pct
+
+    return {
+        "flag":          fg_flag,
+        "fg_flag":       fg_flag,
+        "fg_delta_pct":  round(fg_delta_pct, 3) if fg_delta_pct is not None else None,
+        "l20_fg_pct":    round(l20_fg_pct,   3) if l20_fg_pct  is not None else None,
+        "l5_fg_pct":     round(l5_fg_pct,    3) if l5_fg_pct   is not None else None,
+        "l20_3p_pct":    round(l20_3p_pct,   3) if l20_3p_pct  is not None else None,
+        "l5_3p_pct":     round(l5_3p_pct,    3) if l5_3p_pct   is not None else None,
+        "3p_delta_pct":  round(_3p_delta_pct, 3) if _3p_delta_pct is not None else None,
+        "games_with_shots": n_valid,
+    }
+
+
 def compute_matchup_tier_hit_rates(
     all_games: pd.DataFrame,
     opp_defense: dict,
@@ -1100,6 +1183,10 @@ def build_player_stats(
             if _best is not None:
                 volatility[_stat_key] = compute_volatility(player_games, _stat, _best["tier"], window=20)
 
+        # Shooting efficiency regression (L5 vs L20 FG%/3P% delta)
+        # grp is already newest→oldest; compute_shooting_regression uses .head(N)
+        shooting_regression = compute_shooting_regression(grp)
+
         trend          = {stat: compute_trend(games_10, games_5, stat) for stat in TIERS}
         # Matchup-specific split: full history on current team, split by opp defensive rating
         matchup_tier_hit_rates = {
@@ -1206,6 +1293,7 @@ def build_player_stats(
             "teammate_correlations": teammate_corr,
             "bounce_back": bounce_back,
             "volatility": volatility,
+            "shooting_regression": shooting_regression,
             "positional_dvp": positional_dvp_entry,
         }
 

@@ -316,6 +316,29 @@ def parse_boxscore_players(summary_json: Dict[str, Any]) -> List[Dict[str, Any]]
                         print(f"[DEBUG_TPM] {athlete_name} 3PT raw={tpm_raw!r} parsed={tpm_val}")
                         DEBUG_TPM_SAMPLES += 1
 
+                # Shooting efficiency: FG and 3PT in "made-attempted" format
+                fg_raw  = get_stat(stats_list, "FG")
+                tpt_raw = get_stat(stats_list, "3PT")
+
+                def parse_shooting(raw: Optional[str]) -> Tuple[str, str]:
+                    if raw is None:
+                        return "", ""
+                    s = str(raw).strip()
+                    if s in ("", "--"):
+                        return "", ""
+                    for ch in ("\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2212"):
+                        s = s.replace(ch, "-")
+                    if "-" in s:
+                        parts = s.split("-", 1)
+                        try:
+                            return str(int(parts[0].strip())), str(int(parts[1].strip()))
+                        except (ValueError, IndexError):
+                            return "", ""
+                    return "", ""
+
+                fgm_val,  fga_val  = parse_shooting(fg_raw)
+                fg3m_val, fg3a_val = parse_shooting(tpt_raw)
+
                 row = {
                     "team_id": team_id,
                     "team_abbrev": team_abbrev,
@@ -328,6 +351,10 @@ def parse_boxscore_players(summary_json: Dict[str, Any]) -> List[Dict[str, Any]]
                     "reb": to_int(reb_raw),
                     "ast": to_int(ast_raw),
                     "tpm": tpm_val,
+                    "fgm": fgm_val,
+                    "fga": fga_val,
+                    "fg3m": fg3m_val,
+                    "fg3a": fg3a_val,
                     "dnp": dnp,
                 }
                 # Filter out empty athlete ids (rare)
@@ -765,6 +792,10 @@ def ingest_events(
                 "reb": int(r["reb"]),
                 "ast": int(r["ast"]),
                 "tpm": int(r.get("tpm", 0)),
+                "fgm": r.get("fgm", ""),
+                "fga": r.get("fga", ""),
+                "fg3m": r.get("fg3m", ""),
+                "fg3a": r.get("fg3a", ""),
                 "dnp": int(r["dnp"]),
                 "ingested_at": ingested_at,
                 "team_hint_ok": "" if team_hint_ok is None else int(team_hint_ok),
@@ -891,8 +922,8 @@ def main():
             # Stable column order
             col_order = [
                 "season_end_year","game_id","game_date","team_abbrev","opp_abbrev","home_away",
-                "player_id","player_name","started","minutes","minutes_raw","pts","reb","ast","tpm","dnp",
-                "team_hint_ok","ingested_at"
+                "player_id","player_name","started","minutes","minutes_raw","pts","reb","ast","tpm",
+                "fgm","fga","fg3m","fg3a","dnp","team_hint_ok","ingested_at"
             ]
             for c in col_order:
                 if c not in df_merged.columns:

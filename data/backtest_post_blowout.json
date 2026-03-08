@@ -1,0 +1,122 @@
+{
+  "generated_at": "2026-03-07",
+  "mode": "post-blowout",
+  "rolling_window": 10,
+  "blowout_threshold_pts": 15,
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-06"
+  },
+  "total_instances": 4446,
+  "by_stat": {
+    "PTS": {
+      "baseline_hit_rate": 0.7259,
+      "baseline_n": 1153,
+      "blowout_loss": {
+        "n": 137,
+        "hit_rate": 0.6934,
+        "lift": 0.9552
+      },
+      "close_loss": {
+        "n": 332,
+        "hit_rate": 0.75,
+        "lift": 1.0332
+      },
+      "win": {
+        "n": 684,
+        "hit_rate": 0.7208,
+        "lift": 0.993
+      },
+      "verdict": "noise"
+    },
+    "REB": {
+      "baseline_hit_rate": 0.7406,
+      "baseline_n": 1280,
+      "blowout_loss": {
+        "n": 151,
+        "hit_rate": 0.7152,
+        "lift": 0.9657
+      },
+      "close_loss": {
+        "n": 370,
+        "hit_rate": 0.7378,
+        "lift": 0.9962
+      },
+      "win": {
+        "n": 759,
+        "hit_rate": 0.747,
+        "lift": 1.0086
+      },
+      "verdict": "noise"
+    },
+    "AST": {
+      "baseline_hit_rate": 0.76,
+      "baseline_n": 1125,
+      "blowout_loss": {
+        "n": 134,
+        "hit_rate": 0.7388,
+        "lift": 0.9721
+      },
+      "close_loss": {
+        "n": 320,
+        "hit_rate": 0.7719,
+        "lift": 1.0157
+      },
+      "win": {
+        "n": 671,
+        "hit_rate": 0.7586,
+        "lift": 0.9982
+      },
+      "verdict": "noise"
+    },
+    "3PM": {
+      "baseline_hit_rate": 0.7286,
+      "baseline_n": 888,
+      "blowout_loss": {
+        "n": 107,
+        "hit_rate": 0.7196,
+        "lift": 0.9876
+      },
+      "close_loss": {
+        "n": 261,
+        "hit_rate": 0.7395,
+        "lift": 1.015
+      },
+      "win": {
+        "n": 520,
+        "hit_rate": 0.725,
+        "lift": 0.9951
+      },
+      "verdict": "noise"
+    }
+  },
+  "all_stats": {
+    "baseline_hit_rate": 0.7393,
+    "baseline_n": 4446,
+    "blowout_loss": {
+      "n": 529,
+      "hit_rate": 0.7164,
+      "lift": 0.969
+    },
+    "close_loss": {
+      "n": 1283,
+      "hit_rate": 0.7498,
+      "lift": 1.0142
+    },
+    "win": {
+      "n": 2634,
+      "hit_rate": 0.7388,
+      "lift": 0.9993
+    },
+    "verdict": "noise"
+  },
+  "recommendations": [
+    "PTS: Post-blowout signal NOISE \u2014 team's prior game result does not predict next-game PTS tier hit rate",
+    "REB: Post-blowout signal NOISE \u2014 team's prior game result does not predict next-game REB tier hit rate",
+    "AST: Post-blowout signal NOISE \u2014 team's prior game result does not predict next-game AST tier hit rate",
+    "3PM: Post-blowout signal NOISE \u2014 team's prior game result does not predict next-game 3PM tier hit rate"
+  ],
+  "prompt_implications": [
+    "No prompt changes warranted \u2014 post-blowout bounce-back is not confirmed."
+  ]
+}

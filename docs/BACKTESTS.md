@@ -289,36 +289,54 @@ None. The problems were `>` grading artifacts largely resolved by the w20 deploy
 ## Open Hypotheses (Not Yet Backtested)
 
 ### H6 — Post-Blowout Bounce-Back
-**Question:** Do players on teams that suffered a blowout loss (margin ≥15 pts) show elevated tier hit rates in their next game?
+**Verdict: NOISE**
+**Output:** `data/backtest_post_blowout.json`
+**Instances:** 4,446 qualified player-game instances (Oct 21, 2025 – Mar 6, 2026)
+**Blowout threshold:** ≥15 point margin
 
-**Mechanism:** Blowout losses may increase team motivation and coaching emphasis on performance correction. Alternatively, the loss signals genuine quality mismatch and the effect is noise.
+**Results by stat:**
 
-**Test design:**
-- For each player-game instance (game N+1), look at their team's result in game N
-- Classify game N result: win / close_loss (margin < 15) / blowout_loss (margin ≥ 15)
-- Measure tier hit rate at game N+1 for each category
-- Minimum n=15 per category; lift threshold > 0.10 for actionable signal
+| Stat | Baseline | Post-Blowout Loss | Lift | Post-Close-Loss | Post-Win | Verdict |
+|------|----------|-------------------|------|-----------------|----------|---------|
+| PTS | 72.6% | 69.3% (n=137) | 0.955 | 75.0% (n=332) | 72.1% (n=684) | noise |
+| REB | 74.1% | 71.5% (n=151) | 0.966 | 73.8% (n=370) | 74.7% (n=759) | noise |
+| AST | 76.0% | 73.9% (n=134) | 0.972 | 77.2% (n=320) | 75.9% (n=671) | noise |
+| 3PM | 72.9% | 72.0% (n=107) | 0.988 | 73.9% (n=261) | 72.5% (n=520) | noise |
+| All | 73.9% | 71.6% (n=529) | 0.969 | 75.0% (n=1,283) | 73.9% (n=2,634) | noise |
 
-**Data availability:** `nba_master.csv` has home_score and away_score for all games. All other fields already exist.
+**Key findings:**
+- Post-blowout loss lift ranges 0.955–0.988 across all stats — mildly negative, not elevated
+- The "motivation response" hypothesis is not supported; if anything, blowout losses are a slight negative predictor (but well below actionable threshold)
+- Post-close-loss is the weakly elevated bucket (lift 1.014–1.033) — players may respond more to close losses than blowouts, but this is also below threshold
+- Lift variance across all three categories is ≤ 0.08 for every stat → noise verdict confirmed
 
-**Priority:** Medium — testable with no new data collection.
+**Implementation applied:** None. Hypothesis closed.
 
 ---
 
 ### H7 — Opponent Schedule Fatigue
-**Question:** Do player prop hit rates increase when the opposing team is on a B2B or coming off a dense schedule (4+ games in 5 days)?
+**Verdict: NOISE**
+**Output:** `data/backtest_opp_fatigue.json`
+**Instances:** 4,610 qualified player-game instances (Oct 21, 2025 – Mar 6, 2026)
 
-**Mechanism:** Opponent fatigue → softer defense → higher prop production. Mirror of the own-team fatigue signal already tracked in quant.py.
+**Results by stat:**
 
-**Test design:**
-- For each player-game instance, compute the opponent's rest context using `compute_rest_context()` logic from quant.py
-- Classify opponent: rested (≥2 days rest, no dense) / moderate (1 day rest) / fatigued (B2B) / dense (4+ in 5)
-- Measure tier hit rate per opponent fatigue category, by stat
-- Compare to own-team rest signal for relative effect size
+| Stat | Baseline | Opp B2B | Lift | Opp Moderate | Opp Rested | Verdict |
+|------|----------|---------|------|--------------|------------|---------|
+| PTS | 73.6% | 75.5% (n=294) | 1.025 | 73.4% (n=706) | 71.8% (n=195) | noise |
+| REB | 74.4% | 72.7% (n=322) | 0.977 | 75.2% (n=787) | 74.1% (n=216) | noise |
+| AST | 75.2% | 75.5% (n=286) | 1.004 | 75.9% (n=686) | 72.1% (n=197) | noise |
+| 3PM | 72.0% | 71.2% (n=229) | 0.989 | 71.6% (n=542) | 74.7% (n=150) | noise |
+| All | 73.9% | 73.8% (n=1,131) | 0.999 | 74.2% (n=2,721) | 73.1% (n=758) | noise |
 
-**Data availability:** All fields in `nba_master.csv`. Logic mirrors existing `build_b2b_game_ids()` in quant.py — apply to the opposing team at test time.
+**Key findings:**
+- Opponent B2B lift is essentially flat (0.977–1.025) — no defensive softening effect detectable
+- `dense` bucket had 0 instances across the full season: among whitelisted player matchups, no opponent ever reached the 4-in-5 games threshold. This is structurally expected — true dense schedules for playoff-caliber teams are rare in the NBA schedule
+- Lift variance across b2b/moderate/rested is ≤ 0.05 for every stat → well below even the LIFT_WEAK threshold
+- For comparison, own-team B2B is directionally negative (consistent with prior backtests) but opponent B2B shows no corresponding positive signal on the other side of the matchup
+- The "fatigued defense → elevated props" mechanism is not supported in this dataset
 
-**Priority:** Medium — natural complement to existing own-team fatigue signals.
+**Implementation applied:** None. Hypothesis closed.
 
 ---
 
@@ -340,5 +358,23 @@ None. The problems were `>` grading artifacts largely resolved by the w20 deploy
 | Bounce-back (player-level) | Strong for specific players | 16 iron floor combos; post-miss profiles in quant output | ✅ bb_lift / iron_floor in quant + prompt |
 | Cold streak → mean reversion | **3PM: decline; others: null** | 3PM severe cold 68.3%(lift=0.87, n=161); PTS/REB/AST independent | ⚠️ 3PM finding actionable — prompt rule candidate |
 | Recency decay weighting | Marginal | w20_d0.95 +2.1pp over 31 test days | ❌ Within noise; no change |
-| Post-Blowout Bounce-Back | Not tested | — | H6 queued |
-| Opponent Schedule Fatigue | Not tested | — | H7 queued |
+| Post-Blowout Bounce-Back (H6) | NOISE | Post-blowout lift 0.955–0.988; lift variance ≤ 0.08 across all stats | ❌ No signal; hypothesis closed |
+| Opponent Schedule Fatigue (H7) | NOISE | Opp B2B lift 0.977–1.025; dense bucket = 0 instances in full season | ❌ No signal; hypothesis closed |
+
+---
+
+## Open Hypotheses (Not Yet Backtested)
+
+### H8 — Positional DvP vs. Team-Level DvP Predictive Validity
+**Question:** Is the positional defense rating (DvP) a stronger predictor of PTS/AST tier hit rates than the existing team-level opponent defense rating?
+
+**Mechanism:** A PG facing a team that allows a lot of points to opposing PGs is a more precise signal than "this team allows a lot of points overall." Positional DvP was added to quant.py and analyst.py in March 2026 but has not been validated against actual outcomes.
+
+**Test design:**
+- For each player-game instance where a pick was made, compare hit rates when positional DvP rating (soft/mid/tough) differs from the team-level opp_defense rating
+- Measure whether positional DvP lift variance exceeds team-level lift variance for PTS and AST
+- Minimum: 30+ days of positional DvP data accumulating in player_stats.json (approximately early April 2026)
+
+**Data dependency:** Requires ~30 days of live production data with positional DvP computed. Cannot be backtested against historical data — the positional data was not collected before March 2026.
+
+**Priority:** Medium — run in early April 2026. If positional DvP is not meaningfully stronger than team-level, consider reverting to team-level only to simplify the prompt.

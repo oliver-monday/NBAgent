@@ -1,0 +1,148 @@
+{
+  "generated_at": "2026-03-07",
+  "mode": "opp-fatigue",
+  "rolling_window": 10,
+  "dense_schedule_threshold": 4,
+  "dense_schedule_window_days": 5,
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-06"
+  },
+  "total_instances": 4610,
+  "by_stat": {
+    "PTS": {
+      "baseline_hit_rate": 0.7364,
+      "baseline_n": 1195,
+      "b2b": {
+        "n": 294,
+        "hit_rate": 0.7551,
+        "lift": 1.0254
+      },
+      "dense": {
+        "n": 0,
+        "hit_rate": null,
+        "lift": null
+      },
+      "moderate": {
+        "n": 706,
+        "hit_rate": 0.7337,
+        "lift": 0.9963
+      },
+      "rested": {
+        "n": 195,
+        "hit_rate": 0.7179,
+        "lift": 0.9749
+      },
+      "verdict": "noise"
+    },
+    "REB": {
+      "baseline_hit_rate": 0.7442,
+      "baseline_n": 1325,
+      "b2b": {
+        "n": 322,
+        "hit_rate": 0.7267,
+        "lift": 0.9765
+      },
+      "dense": {
+        "n": 0,
+        "hit_rate": null,
+        "lift": null
+      },
+      "moderate": {
+        "n": 787,
+        "hit_rate": 0.7522,
+        "lift": 1.0107
+      },
+      "rested": {
+        "n": 216,
+        "hit_rate": 0.7407,
+        "lift": 0.9953
+      },
+      "verdict": "noise"
+    },
+    "AST": {
+      "baseline_hit_rate": 0.7519,
+      "baseline_n": 1169,
+      "b2b": {
+        "n": 286,
+        "hit_rate": 0.7552,
+        "lift": 1.0044
+      },
+      "dense": {
+        "n": 0,
+        "hit_rate": null,
+        "lift": null
+      },
+      "moderate": {
+        "n": 686,
+        "hit_rate": 0.7595,
+        "lift": 1.0101
+      },
+      "rested": {
+        "n": 197,
+        "hit_rate": 0.7208,
+        "lift": 0.9586
+      },
+      "verdict": "noise"
+    },
+    "3PM": {
+      "baseline_hit_rate": 0.7199,
+      "baseline_n": 921,
+      "b2b": {
+        "n": 229,
+        "hit_rate": 0.7118,
+        "lift": 0.9887
+      },
+      "dense": {
+        "n": 0,
+        "hit_rate": null,
+        "lift": null
+      },
+      "moderate": {
+        "n": 542,
+        "hit_rate": 0.7159,
+        "lift": 0.9944
+      },
+      "rested": {
+        "n": 150,
+        "hit_rate": 0.7467,
+        "lift": 1.0372
+      },
+      "verdict": "noise"
+    }
+  },
+  "all_stats": {
+    "baseline_hit_rate": 0.7393,
+    "baseline_n": 4610,
+    "b2b": {
+      "n": 1131,
+      "hit_rate": 0.7383,
+      "lift": 0.9986
+    },
+    "dense": {
+      "n": 0,
+      "hit_rate": null,
+      "lift": null
+    },
+    "moderate": {
+      "n": 2721,
+      "hit_rate": 0.742,
+      "lift": 1.0037
+    },
+    "rested": {
+      "n": 758,
+      "hit_rate": 0.7309,
+      "lift": 0.9886
+    },
+    "verdict": "noise"
+  },
+  "recommendations": [
+    "PTS: Opp-fatigue signal NOISE \u2014 opponent rest state does not predict PTS hit rate",
+    "REB: Opp-fatigue signal NOISE \u2014 opponent rest state does not predict REB hit rate",
+    "AST: Opp-fatigue signal NOISE \u2014 opponent rest state does not predict AST hit rate",
+    "3PM: Opp-fatigue signal NOISE \u2014 opponent rest state does not predict 3PM hit rate"
+  ],
+  "prompt_implications": [
+    "No prompt changes warranted \u2014 opponent fatigue is not confirmed as a prop predictor at current sample sizes."
+  ]
+}

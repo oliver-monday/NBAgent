@@ -38,6 +38,8 @@ BOUNCE_BACK_JSON      = DATA / "backtest_bounce_back.json"
 MEAN_REVERSION_JSON   = DATA / "backtest_mean_reversion.json"
 RECENCY_WEIGHT_JSON        = DATA / "backtest_recency_weight.json"
 PLAYER_BOUNCE_BACK_JSON    = DATA / "bounce_back_players.json"
+POST_BLOWOUT_JSON          = DATA / "backtest_post_blowout.json"
+OPP_FATIGUE_JSON           = DATA / "backtest_opp_fatigue.json"
 
 # ── Tier definitions (mirrors quant.py) ───────────────────────────────
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -61,6 +63,10 @@ LIFT_WEAK           = 0.08  # > this → weak
 CALIBRATION_CONCERN = 0.68  # actual hit rate below this → threshold_concern
 SPREAD_HIGH         = 10.0  # abs(spread) > this → "high" risk
 SPREAD_MODERATE     = 6.5   # abs(spread) > this → "moderate" risk
+
+POST_BLOWOUT_THRESHOLD = 15   # points margin to classify as blowout
+OPP_DENSE_THRESHOLD    = 4    # games in OPP_DENSE_WINDOW days = dense
+OPP_DENSE_WINDOW       = 5    # days window for dense schedule check (mirrors quant.py)
 
 
 # ── Loaders ───────────────────────────────────────────────────────────
@@ -2430,6 +2436,743 @@ def _print_recency_weight_report(summary: dict, problem_tiers: dict, output: dic
     print(f"{'═'*W}\n")
 
 
+# ── H6: Post-Blowout Bounce-Back ─────────────────────────────────────
+
+def build_game_result_lookup(master_df: pd.DataFrame) -> dict:
+    """
+    Build lookup: {(team_upper, game_date_str): result_type}
+    result_type: "blowout_loss" / "close_loss" / "win" / "neutral"
+
+    blowout_loss: team lost by >= POST_BLOWOUT_THRESHOLD points
+    close_loss:   team lost by <  POST_BLOWOUT_THRESHOLD points
+    win:          team won
+    neutral:      missing scores — cannot determine
+    """
+    lookup: dict = {}
+    for _, row in master_df.iterrows():
+        home = str(row.get("home_team_abbrev", "")).upper().strip()
+        away = str(row.get("away_team_abbrev", "")).upper().strip()
+        game_date = row.get("game_date")
+        if pd.isna(game_date):
+            continue
+        date_str = pd.Timestamp(game_date).strftime("%Y-%m-%d")
+
+        home_score = pd.to_numeric(row.get("home_score"), errors="coerce")
+        away_score = pd.to_numeric(row.get("away_score"), errors="coerce")
+
+        if pd.isna(home_score) or pd.isna(away_score):
+            if home:
+                lookup[(home, date_str)] = "neutral"
+            if away:
+                lookup[(away, date_str)] = "neutral"
+            continue
+
+        home_margin = float(home_score) - float(away_score)
+
+        # Home team result
+        if home_margin > 0:
+            home_result = "win"
+        elif home_margin > -POST_BLOWOUT_THRESHOLD:
+            home_result = "close_loss"
+        else:
+            home_result = "blowout_loss"
+
+        # Away team result (mirror)
+        if home_margin < 0:
+            away_result = "win"
+        elif home_margin < POST_BLOWOUT_THRESHOLD:
+            away_result = "close_loss"
+        else:
+            away_result = "blowout_loss"
+
+        if home:
+            lookup[(home, date_str)] = home_result
+        if away:
+            lookup[(away, date_str)] = away_result
+
+    print(f"[backtest] Game result lookup: {len(lookup):,} entries")
+    return lookup
+
+
+def add_prior_game_result(player_log: pd.DataFrame, result_lookup: dict) -> pd.DataFrame:
+    """
+    Add prior_game_result column (blowout_loss / close_loss / win / neutral / null).
+
+    For each player-game row, looks up the team's result in their immediately
+    preceding game (shift(1) within each player's chronological game history).
+    "null" = no prior game (first game in log).
+    """
+    df = player_log.copy()
+    df = df.sort_values(["player_name", "game_date"]).reset_index(drop=True)
+
+    df["_prior_date"] = df.groupby("player_name")["game_date"].shift(1)
+    df["_team_upper"] = df["team_abbrev"].str.upper().str.strip()
+
+    def _get_result(row) -> str:
+        prior = row["_prior_date"]
+        if pd.isna(prior):
+            return "null"
+        prior_str = pd.Timestamp(prior).strftime("%Y-%m-%d")
+        return result_lookup.get((row["_team_upper"], prior_str), "null")
+
+    df["prior_game_result"] = df.apply(_get_result, axis=1)
+    df = df.drop(columns=["_prior_date", "_team_upper"])
+    return df
+
+
+def _post_blowout_compute(qualified_df: pd.DataFrame, hit_col: str = "is_hit") -> dict:
+    """
+    Core computation: hit rates by prior_game_result.
+    qualified_df must already be filtered to valid instances
+    (prior_game_result not in null/neutral, best tier not null).
+    Returns dict with baseline, per-category rates, and verdict.
+    """
+    if qualified_df.empty:
+        return {
+            "baseline_hit_rate": None, "baseline_n": 0,
+            "blowout_loss": {"n": 0, "hit_rate": None, "lift": None},
+            "close_loss":   {"n": 0, "hit_rate": None, "lift": None},
+            "win":          {"n": 0, "hit_rate": None, "lift": None},
+            "verdict": "insufficient_data",
+        }
+
+    baseline_n  = len(qualified_df)
+    baseline_hr = round(float(qualified_df[hit_col].mean()), 4)
+    result: dict = {"baseline_hit_rate": baseline_hr, "baseline_n": baseline_n}
+
+    valid_lifts: list = []
+    for cat in ("blowout_loss", "close_loss", "win"):
+        sub  = qualified_df[qualified_df["prior_game_result"] == cat]
+        n    = len(sub)
+        hr   = round(float(sub[hit_col].mean()), 4) if n > 0 else None
+        lift = round(hr / baseline_hr, 4) if (hr is not None and baseline_hr > 0) else None
+        entry: dict = {"n": n, "hit_rate": hr, "lift": lift}
+        if 0 < n < MIN_SIGNAL_N:
+            entry["flag"] = "insufficient_sample"
+        result[cat] = entry
+        if lift is not None and n >= MIN_SIGNAL_N:
+            valid_lifts.append(lift)
+
+    if len(valid_lifts) < 2:
+        verdict = "insufficient_data"
+    else:
+        lift_var = max(valid_lifts) - min(valid_lifts)
+        if lift_var > LIFT_PREDICTIVE:
+            verdict = "predictive"
+        elif lift_var > LIFT_WEAK:
+            verdict = "weak"
+        else:
+            verdict = "noise"
+
+    result["verdict"] = verdict
+    return result
+
+
+def _post_blowout_recommendations(by_stat: dict) -> tuple:
+    recs: list    = []
+    implies: list = []
+
+    for stat, d in by_stat.items():
+        verdict  = d.get("verdict", "")
+        baseline = d.get("baseline_hit_rate") or 0
+        bl       = d.get("blowout_loss", {})
+        bl_hr    = bl.get("hit_rate") or 0
+        bl_lift  = bl.get("lift")
+        bl_n     = bl.get("n", 0)
+
+        if verdict == "predictive" and bl_lift is not None:
+            recs.append(
+                f"{stat}: Post-blowout signal PREDICTIVE — "
+                f"blowout_loss hit rate {bl_hr*100:.1f}% vs baseline {baseline*100:.1f}% "
+                f"(lift={bl_lift:.3f}, n={bl_n})"
+            )
+            if bl_lift > 1.08:
+                implies.append(
+                    f"{stat}: Post-blowout bounce-back confirmed (lift={bl_lift:.2f}, n={bl_n}) — "
+                    f"add prompt signal: team coming off blowout loss → mild confidence boost"
+                )
+            elif bl_lift < 0.92:
+                implies.append(
+                    f"{stat}: Post-blowout suppression confirmed (lift={bl_lift:.2f}, n={bl_n}) — "
+                    f"consider reducing confidence when team lost by ≥{POST_BLOWOUT_THRESHOLD}pts last game"
+                )
+        elif verdict == "weak" and bl_lift is not None:
+            recs.append(
+                f"{stat}: Post-blowout signal WEAK — blowout_loss hit rate {bl_hr*100:.1f}% "
+                f"(lift={bl_lift:.3f}, n={bl_n}) — directional but not conclusive"
+            )
+        elif verdict == "noise":
+            recs.append(
+                f"{stat}: Post-blowout signal NOISE — team's prior game result "
+                f"does not predict next-game {stat} tier hit rate"
+            )
+        elif verdict == "insufficient_data":
+            recs.append(
+                f"{stat}: Insufficient data for post-blowout verdict "
+                f"(blowout_loss n={bl_n}, need ≥{MIN_SIGNAL_N})"
+            )
+
+    if not recs:
+        recs.append(
+            "No post-blowout signal detected across any stat — "
+            "team's prior game result does not predict individual prop hit rates."
+        )
+    if not implies:
+        implies.append(
+            "No prompt changes warranted — post-blowout bounce-back is not confirmed."
+        )
+
+    return recs, implies
+
+
+def _print_post_blowout_report(
+    by_stat: dict, all_stats: dict, meta: dict, recs: list, implies: list
+) -> None:
+    W   = 70
+    sep = "─" * W
+    d   = meta["date_range"]
+
+    print(f"\n{'═'*W}")
+    print(f"POST-BLOWOUT BOUNCE-BACK BACKTEST — {d['start']} to {d['end']}")
+    print(f"Rolling window: {meta['rolling_window']} games | "
+          f"Blowout threshold: ≥{meta['blowout_threshold_pts']} pts margin")
+    print(f"Total instances: {meta['total_instances']:,}")
+    print(f"{'═'*W}")
+
+    def _cell(entry: dict) -> str:
+        hr = entry.get("hit_rate")
+        n  = entry.get("n", 0)
+        if hr is None:
+            return f"---(n={n})"
+        flag = "*" if entry.get("flag") else ""
+        return f"{hr*100:.1f}%{flag}(n={n})"
+
+    def _lift(entry: dict) -> str:
+        l = entry.get("lift")
+        return f"{l:.3f}" if l is not None else "----"
+
+    print(f"\n  {'Stat':<5} {'Baseline':>14}  {'blowout_loss':>14}  {'Lift':>5}  "
+          f"{'close_loss':>14}  {'Lift':>5}  {'win':>12}  {'Lift':>5}  Verdict")
+    print(f"  {sep}")
+
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd = by_stat.get(stat, {})
+        if not sd:
+            continue
+        base = f"{(sd.get('baseline_hit_rate') or 0)*100:.1f}%(n={sd.get('baseline_n', 0)})"
+        bl   = sd.get("blowout_loss", {})
+        cl   = sd.get("close_loss",   {})
+        wn   = sd.get("win",          {})
+        v    = sd.get("verdict", "?")
+        print(f"  {stat:<5} {base:>14}  {_cell(bl):>14}  {_lift(bl):>5}  "
+              f"{_cell(cl):>14}  {_lift(cl):>5}  {_cell(wn):>12}  {_lift(wn):>5}  [{v}]")
+
+    if all_stats:
+        base = f"{(all_stats.get('baseline_hit_rate') or 0)*100:.1f}%(n={all_stats.get('baseline_n', 0)})"
+        bl   = all_stats.get("blowout_loss", {})
+        cl   = all_stats.get("close_loss",   {})
+        wn   = all_stats.get("win",          {})
+        v    = all_stats.get("verdict", "?")
+        print(f"  {'ALL':<5} {base:>14}  {_cell(bl):>14}  {_lift(bl):>5}  "
+              f"{_cell(cl):>14}  {_lift(cl):>5}  {_cell(wn):>12}  {_lift(wn):>5}  [{v}]")
+
+    print(f"\n  (* = n < {MIN_SIGNAL_N}, insufficient sample)")
+    print(f"\n{sep}")
+    print("RECOMMENDATIONS")
+    for r in recs:
+        print(f"  → {r}")
+    print(f"\nPROMPT IMPLICATIONS")
+    for i in implies:
+        print(f"  → {i}")
+    print(f"{'═'*W}\n")
+
+
+def run_post_blowout_analysis(
+    player_log: pd.DataFrame, master_df: pd.DataFrame, args
+) -> None:
+    if master_df.empty:
+        print("[backtest] WARNING: master_df is empty — cannot run post-blowout analysis.")
+        sys.exit(0)
+
+    window       = args.window if args.window else ROLLING_WINDOW
+    stat_filter  = getattr(args, "stat", None)
+    stats_to_run = [stat_filter] if stat_filter else list(STAT_COL.keys())
+
+    print(f"[backtest] Post-blowout mode | window={window} | stats={stats_to_run} | "
+          f"blowout_threshold={POST_BLOWOUT_THRESHOLD}pts")
+
+    print("[backtest] Building game result lookup...")
+    result_lookup = build_game_result_lookup(master_df)
+
+    print("[backtest] Adding best tiers...")
+    df = add_best_tiers(player_log, window=window)
+
+    print("[backtest] Adding prior game result signal...")
+    df = add_prior_game_result(df, result_lookup)
+
+    for cat in ("blowout_loss", "close_loss", "win", "neutral", "null"):
+        n = int((df["prior_game_result"] == cat).sum())
+        print(f"[backtest] Prior game result — {cat}: {n:,} player-games")
+
+    by_stat:       dict = {}
+    all_qualified: list = []
+
+    for stat in stats_to_run:
+        best_col = f"best_tier_{stat}"
+        hit_col  = f"hit_actual_{stat}"
+        q = df[
+            df[best_col].notna() &
+            df[hit_col].notna() &
+            ~df["prior_game_result"].isin(["null", "neutral"])
+        ].copy()
+        q["is_hit"] = q[hit_col]
+        by_stat[stat] = _post_blowout_compute(q)
+        print(f"[backtest] {stat}: {len(q):,} qualified instances "
+              f"(baseline_hr={by_stat[stat].get('baseline_hit_rate') or 0:.3f} "
+              f"verdict={by_stat[stat].get('verdict')})")
+        all_qualified.append(q[["prior_game_result", "is_hit"]])
+
+    if all_qualified:
+        combined  = pd.concat(all_qualified, ignore_index=True)
+        all_stats = _post_blowout_compute(combined)
+    else:
+        all_stats = {}
+
+    recs, implies = _post_blowout_recommendations(by_stat)
+
+    date_min = player_log["game_date"].min()
+    date_max = player_log["game_date"].max()
+    date_min = date_min.strftime("%Y-%m-%d") if hasattr(date_min, "strftime") else str(date_min)
+    date_max = date_max.strftime("%Y-%m-%d") if hasattr(date_max, "strftime") else str(date_max)
+    total_instances = int(sum(r.get("baseline_n", 0) for r in by_stat.values()))
+
+    meta = {
+        "generated_at":          dt.date.today().isoformat(),
+        "mode":                  "post-blowout",
+        "rolling_window":        window,
+        "blowout_threshold_pts": POST_BLOWOUT_THRESHOLD,
+        "date_range":            {"start": date_min, "end": date_max},
+        "total_instances":       total_instances,
+    }
+    output = {
+        **meta,
+        "by_stat":             by_stat,
+        "all_stats":           all_stats,
+        "recommendations":     recs,
+        "prompt_implications": implies,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else POST_BLOWOUT_JSON
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[backtest] Results written → {out_path}")
+
+    _print_post_blowout_report(by_stat, all_stats, meta, recs, implies)
+
+
+# ── H7: Opponent Schedule Fatigue ─────────────────────────────────────
+
+def build_opp_fatigue_lookup(master_df: pd.DataFrame) -> dict:
+    """
+    Build lookup: {(team_upper, game_date_str): fatigue_tag}
+
+    fatigue_tag: "b2b" / "dense" / "rested" / "moderate" / "null"
+
+    b2b:      team played yesterday
+    dense:    team played >= OPP_DENSE_THRESHOLD games in the OPP_DENSE_WINDOW
+              calendar days immediately before this game
+    moderate: exactly 1 day rest (played 2 days ago) — not b2b, not dense
+    rested:   2+ days rest — not b2b, not dense
+    null:     no prior games found (first game in log)
+
+    b2b takes priority over dense — if both are true, tag as b2b.
+    """
+    if master_df.empty:
+        return {}
+
+    home_df = master_df[["game_date", "home_team_abbrev"]].rename(
+        columns={"home_team_abbrev": "team"}
+    )
+    away_df = master_df[["game_date", "away_team_abbrev"]].rename(
+        columns={"away_team_abbrev": "team"}
+    )
+    all_games = pd.concat([home_df, away_df]).dropna()
+    all_games["team"]      = all_games["team"].str.upper().str.strip()
+    all_games["game_date"] = pd.to_datetime(all_games["game_date"], errors="coerce")
+    all_games = all_games.dropna(subset=["game_date"]).drop_duplicates()
+
+    # Per-team set of game date objects (for O(1) lookup)
+    team_date_sets: dict = {}
+    for _, row in all_games.iterrows():
+        team = row["team"]
+        d    = row["game_date"].date()
+        if team not in team_date_sets:
+            team_date_sets[team] = set()
+        team_date_sets[team].add(d)
+
+    lookup: dict = {}
+    for team, date_set in team_date_sets.items():
+        for game_date in sorted(date_set):
+            date_str = game_date.strftime("%Y-%m-%d")
+
+            # B2B: played yesterday
+            yesterday = game_date - dt.timedelta(days=1)
+            if yesterday in date_set:
+                lookup[(team, date_str)] = "b2b"
+                continue
+
+            # Dense: >= OPP_DENSE_THRESHOLD games in the OPP_DENSE_WINDOW days before
+            games_in_window = sum(
+                1 for i in range(1, OPP_DENSE_WINDOW + 1)
+                if (game_date - dt.timedelta(days=i)) in date_set
+            )
+            if games_in_window >= OPP_DENSE_THRESHOLD:
+                lookup[(team, date_str)] = "dense"
+                continue
+
+            # Days since last game
+            prior_dates = [d for d in date_set if d < game_date]
+            if not prior_dates:
+                lookup[(team, date_str)] = "null"
+                continue
+            last_game = max(prior_dates)
+            days_rest = (game_date - last_game).days - 1  # 0 = B2B, 1 = 1-day rest
+
+            if days_rest == 0:
+                lookup[(team, date_str)] = "b2b"   # guard — already caught above
+            elif days_rest == 1:
+                lookup[(team, date_str)] = "moderate"
+            else:
+                lookup[(team, date_str)] = "rested"
+
+    print(f"[backtest] Opp fatigue lookup: {len(lookup):,} entries")
+    return lookup
+
+
+def add_opp_fatigue_signal(player_log: pd.DataFrame, fatigue_lookup: dict) -> pd.DataFrame:
+    """Add opp_fatigue column (b2b / dense / rested / moderate / null)."""
+    df = player_log.copy()
+    df["_date_str"]  = df["game_date"].dt.strftime("%Y-%m-%d")
+    df["_opp_upper"] = df["opp_abbrev"].str.upper().str.strip()
+
+    df["opp_fatigue"] = df.apply(
+        lambda r: fatigue_lookup.get((r["_opp_upper"], r["_date_str"]), "null"),
+        axis=1,
+    )
+    df = df.drop(columns=["_date_str", "_opp_upper"])
+    return df
+
+
+def _opp_fatigue_compute(qualified_df: pd.DataFrame, hit_col: str = "is_hit") -> dict:
+    """
+    Core computation: hit rates by opp_fatigue.
+    qualified_df must already be filtered to valid instances
+    (opp_fatigue != null, best tier not null).
+    """
+    if qualified_df.empty:
+        return {
+            "baseline_hit_rate": None, "baseline_n": 0,
+            "b2b":      {"n": 0, "hit_rate": None, "lift": None},
+            "dense":    {"n": 0, "hit_rate": None, "lift": None},
+            "moderate": {"n": 0, "hit_rate": None, "lift": None},
+            "rested":   {"n": 0, "hit_rate": None, "lift": None},
+            "verdict": "insufficient_data",
+        }
+
+    baseline_n  = len(qualified_df)
+    baseline_hr = round(float(qualified_df[hit_col].mean()), 4)
+    result: dict = {"baseline_hit_rate": baseline_hr, "baseline_n": baseline_n}
+
+    valid_lifts: list = []
+    for cat in ("b2b", "dense", "moderate", "rested"):
+        sub  = qualified_df[qualified_df["opp_fatigue"] == cat]
+        n    = len(sub)
+        hr   = round(float(sub[hit_col].mean()), 4) if n > 0 else None
+        lift = round(hr / baseline_hr, 4) if (hr is not None and baseline_hr > 0) else None
+        entry: dict = {"n": n, "hit_rate": hr, "lift": lift}
+        if 0 < n < MIN_SIGNAL_N:
+            entry["flag"] = "insufficient_sample"
+        result[cat] = entry
+        if lift is not None and n >= MIN_SIGNAL_N:
+            valid_lifts.append(lift)
+
+    if len(valid_lifts) < 2:
+        verdict = "insufficient_data"
+    else:
+        lift_var = max(valid_lifts) - min(valid_lifts)
+        if lift_var > LIFT_PREDICTIVE:
+            verdict = "predictive"
+        elif lift_var > LIFT_WEAK:
+            verdict = "weak"
+        else:
+            verdict = "noise"
+
+    result["verdict"] = verdict
+    return result
+
+
+def _opp_fatigue_recommendations(by_stat: dict) -> tuple:
+    recs: list    = []
+    implies: list = []
+
+    for stat, d in by_stat.items():
+        verdict  = d.get("verdict", "")
+        baseline = d.get("baseline_hit_rate") or 0
+        b2b_d    = d.get("b2b", {})
+        b2b_hr   = b2b_d.get("hit_rate") or 0
+        b2b_lift = b2b_d.get("lift")
+        b2b_n    = b2b_d.get("n", 0)
+
+        if verdict == "predictive" and b2b_lift is not None:
+            recs.append(
+                f"{stat}: Opp-fatigue signal PREDICTIVE — "
+                f"opp B2B hit rate {b2b_hr*100:.1f}% vs baseline {baseline*100:.1f}% "
+                f"(lift={b2b_lift:.3f}, n={b2b_n}) — lift variance confirms spread"
+            )
+            if b2b_lift > 1.08:
+                implies.append(
+                    f"{stat}: Opponent B2B confirmed as prop boost (lift={b2b_lift:.2f}, n={b2b_n}) — "
+                    f"when opp is on B2B, treat as mild positive signal for {stat}"
+                )
+            elif b2b_lift < 0.92:
+                implies.append(
+                    f"{stat}: Opponent B2B suppresses prop (lift={b2b_lift:.2f}, n={b2b_n}) — "
+                    f"unexpected; review methodology before applying to prompt"
+                )
+        elif verdict == "weak":
+            recs.append(
+                f"{stat}: Opp-fatigue signal WEAK — directional but below predictive threshold"
+            )
+        elif verdict == "noise":
+            recs.append(
+                f"{stat}: Opp-fatigue signal NOISE — opponent rest state does not predict {stat} hit rate"
+            )
+        elif verdict == "insufficient_data":
+            recs.append(
+                f"{stat}: Insufficient data for opp-fatigue verdict "
+                f"(opp B2B n={b2b_n}, need ≥{MIN_SIGNAL_N})"
+            )
+
+    if not recs:
+        recs.append(
+            "No opponent fatigue signal detected across any stat — "
+            "opponent rest context does not predict individual prop hit rates."
+        )
+    if not implies:
+        implies.append(
+            "No prompt changes warranted — opponent fatigue is not confirmed as a "
+            "prop predictor at current sample sizes."
+        )
+
+    return recs, implies
+
+
+def _print_opp_fatigue_report(
+    by_stat: dict,
+    all_stats: dict,
+    meta: dict,
+    recs: list,
+    implies: list,
+    own_b2b_data: dict,
+) -> None:
+    W   = 72
+    sep = "─" * W
+    d   = meta["date_range"]
+
+    print(f"\n{'═'*W}")
+    print(f"OPPONENT FATIGUE BACKTEST — {d['start']} to {d['end']}")
+    print(f"Rolling window: {meta['rolling_window']} games | "
+          f"Dense threshold: ≥{meta['dense_schedule_threshold']} games / "
+          f"{meta['dense_schedule_window_days']} days")
+    print(f"Total instances: {meta['total_instances']:,}")
+    print(f"{'═'*W}")
+
+    def _cell(entry: dict) -> str:
+        hr = entry.get("hit_rate")
+        n  = entry.get("n", 0)
+        if hr is None:
+            return f"---(n={n})"
+        flag = "*" if entry.get("flag") else ""
+        return f"{hr*100:.1f}%{flag}(n={n})"
+
+    def _lift(entry: dict) -> str:
+        l = entry.get("lift")
+        return f"{l:.3f}" if l is not None else "----"
+
+    print(f"\n  {'Stat':<5} {'Baseline':>14}  {'b2b':>12}  {'Lift':>5}  "
+          f"{'dense':>12}  {'Lift':>5}  {'moderate':>14}  {'Lift':>5}  "
+          f"{'rested':>12}  {'Lift':>5}  Verdict")
+    print(f"  {sep}")
+
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        sd = by_stat.get(stat, {})
+        if not sd:
+            continue
+        base = f"{(sd.get('baseline_hit_rate') or 0)*100:.1f}%(n={sd.get('baseline_n', 0)})"
+        b2   = sd.get("b2b",      {})
+        dn   = sd.get("dense",    {})
+        mo   = sd.get("moderate", {})
+        rs   = sd.get("rested",   {})
+        v    = sd.get("verdict", "?")
+        print(f"  {stat:<5} {base:>14}  {_cell(b2):>12}  {_lift(b2):>5}  "
+              f"{_cell(dn):>12}  {_lift(dn):>5}  {_cell(mo):>14}  {_lift(mo):>5}  "
+              f"{_cell(rs):>12}  {_lift(rs):>5}  [{v}]")
+
+    if all_stats:
+        base = f"{(all_stats.get('baseline_hit_rate') or 0)*100:.1f}%(n={all_stats.get('baseline_n', 0)})"
+        b2   = all_stats.get("b2b",      {})
+        dn   = all_stats.get("dense",    {})
+        mo   = all_stats.get("moderate", {})
+        rs   = all_stats.get("rested",   {})
+        v    = all_stats.get("verdict", "?")
+        print(f"  {'ALL':<5} {base:>14}  {_cell(b2):>12}  {_lift(b2):>5}  "
+              f"{_cell(dn):>12}  {_lift(dn):>5}  {_cell(mo):>14}  {_lift(mo):>5}  "
+              f"{_cell(rs):>12}  {_lift(rs):>5}  [{v}]")
+
+    print(f"\n  (* = n < {MIN_SIGNAL_N}, insufficient sample)")
+
+    # Own-team B2B comparison for context
+    if own_b2b_data:
+        print(f"\n{sep}")
+        print("OWN-TEAM B2B COMPARISON (for context)")
+        print(f"  {'Stat':<5} {'Baseline':>14}  {'Own B2B':>12}  {'Lift':>5}  "
+              f"{'Non-B2B':>12}  {'Lift':>5}")
+        print(f"  {sep[:62]}")
+        for stat in ("PTS", "REB", "AST", "3PM"):
+            ob = own_b2b_data.get(stat, {})
+            if not ob:
+                continue
+            base_hr = ob.get("baseline_hr") or 0
+            b2b_hr  = ob.get("b2b_hr")  or 0
+            nb_hr   = ob.get("non_b2b_hr") or 0
+            b2b_n   = ob.get("b2b_n", 0)
+            nb_n    = ob.get("non_b2b_n", 0)
+            bn      = ob.get("baseline_n", 0)
+            b2b_lift = round(b2b_hr / base_hr, 3) if base_hr > 0 and b2b_hr > 0 else None
+            nb_lift  = round(nb_hr  / base_hr, 3) if base_hr > 0 and nb_hr  > 0 else None
+            base_str  = f"{base_hr*100:.1f}%(n={bn})"
+            b2b_str   = f"{b2b_hr*100:.1f}%(n={b2b_n})"
+            nb_str    = f"{nb_hr*100:.1f}%(n={nb_n})"
+            b2b_l_str = f"{b2b_lift:.3f}" if b2b_lift is not None else "----"
+            nb_l_str  = f"{nb_lift:.3f}"  if nb_lift  is not None else "----"
+            print(f"  {stat:<5} {base_str:>14}  {b2b_str:>12}  {b2b_l_str:>5}  "
+                  f"{nb_str:>12}  {nb_l_str:>5}")
+
+    print(f"\n{sep}")
+    print("RECOMMENDATIONS")
+    for r in recs:
+        print(f"  → {r}")
+    print(f"\nPROMPT IMPLICATIONS")
+    for i in implies:
+        print(f"  → {i}")
+    print(f"{'═'*W}\n")
+
+
+def run_opp_fatigue_analysis(
+    player_log: pd.DataFrame, master_df: pd.DataFrame, args
+) -> None:
+    if master_df.empty:
+        print("[backtest] WARNING: master_df is empty — cannot run opp-fatigue analysis.")
+        sys.exit(0)
+
+    window       = args.window if args.window else ROLLING_WINDOW
+    stat_filter  = getattr(args, "stat", None)
+    stats_to_run = [stat_filter] if stat_filter else list(STAT_COL.keys())
+
+    print(f"[backtest] Opp-fatigue mode | window={window} | stats={stats_to_run} | "
+          f"dense_threshold={OPP_DENSE_THRESHOLD}/{OPP_DENSE_WINDOW}d")
+
+    print("[backtest] Building opponent fatigue lookup...")
+    fatigue_lookup = build_opp_fatigue_lookup(master_df)
+
+    print("[backtest] Adding best tiers...")
+    df = add_best_tiers(player_log, window=window)
+
+    print("[backtest] Adding opponent fatigue signal...")
+    df = add_opp_fatigue_signal(df, fatigue_lookup)
+
+    for cat in ("b2b", "dense", "moderate", "rested", "null"):
+        n = int((df["opp_fatigue"] == cat).sum())
+        print(f"[backtest] Opp fatigue — {cat}: {n:,} player-games")
+
+    # Own-team B2B comparison (add signal on a copy; does not affect df)
+    df_b2b = add_b2b_signal(df.copy(), master_df)
+    own_b2b_data: dict = {}
+    for stat in stats_to_run:
+        best_col = f"best_tier_{stat}"
+        hit_col  = f"hit_actual_{stat}"
+        q_b2b = df_b2b[df_b2b[best_col].notna() & df_b2b[hit_col].notna()].copy()
+        if q_b2b.empty:
+            continue
+        base_hr = float(q_b2b[hit_col].mean())
+        b2b_sub = q_b2b[q_b2b["on_b2b"] == True]   # noqa: E712
+        nb_sub  = q_b2b[q_b2b["on_b2b"] == False]   # noqa: E712
+        own_b2b_data[stat] = {
+            "baseline_hr":  round(base_hr, 4),
+            "baseline_n":   len(q_b2b),
+            "b2b_hr":       round(float(b2b_sub[hit_col].mean()), 4) if len(b2b_sub) > 0 else None,
+            "b2b_n":        len(b2b_sub),
+            "non_b2b_hr":   round(float(nb_sub[hit_col].mean()),  4) if len(nb_sub)  > 0 else None,
+            "non_b2b_n":    len(nb_sub),
+        }
+
+    by_stat:       dict = {}
+    all_qualified: list = []
+
+    for stat in stats_to_run:
+        best_col = f"best_tier_{stat}"
+        hit_col  = f"hit_actual_{stat}"
+        q = df[
+            df[best_col].notna() &
+            df[hit_col].notna() &
+            (df["opp_fatigue"] != "null")
+        ].copy()
+        q["is_hit"] = q[hit_col]
+        by_stat[stat] = _opp_fatigue_compute(q)
+        print(f"[backtest] {stat}: {len(q):,} qualified instances "
+              f"(baseline_hr={by_stat[stat].get('baseline_hit_rate') or 0:.3f} "
+              f"verdict={by_stat[stat].get('verdict')})")
+        all_qualified.append(q[["opp_fatigue", "is_hit"]])
+
+    if all_qualified:
+        combined  = pd.concat(all_qualified, ignore_index=True)
+        all_stats = _opp_fatigue_compute(combined)
+    else:
+        all_stats = {}
+
+    recs, implies = _opp_fatigue_recommendations(by_stat)
+
+    date_min = player_log["game_date"].min()
+    date_max = player_log["game_date"].max()
+    date_min = date_min.strftime("%Y-%m-%d") if hasattr(date_min, "strftime") else str(date_min)
+    date_max = date_max.strftime("%Y-%m-%d") if hasattr(date_max, "strftime") else str(date_max)
+    total_instances = int(sum(r.get("baseline_n", 0) for r in by_stat.values()))
+
+    meta = {
+        "generated_at":              dt.date.today().isoformat(),
+        "mode":                      "opp-fatigue",
+        "rolling_window":            window,
+        "dense_schedule_threshold":  OPP_DENSE_THRESHOLD,
+        "dense_schedule_window_days": OPP_DENSE_WINDOW,
+        "date_range":                {"start": date_min, "end": date_max},
+        "total_instances":           total_instances,
+    }
+    output = {
+        **meta,
+        "by_stat":             by_stat,
+        "all_stats":           all_stats,
+        "recommendations":     recs,
+        "prompt_implications": implies,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else OPP_FATIGUE_JSON
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[backtest] Results written → {out_path}")
+
+    _print_opp_fatigue_report(by_stat, all_stats, meta, recs, implies, own_b2b_data)
+
+
 # ── Stdout formatting ─────────────────────────────────────────────────
 
 def print_report(signal_results: dict, calibration: dict, meta: dict):
@@ -2508,7 +3251,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -2543,6 +3286,16 @@ def main():
     # ── Player bounce-back mode ───────────────────────────────────────
     if getattr(args, "mode", None) == "player-bounce-back":
         run_player_bounce_back(player_log, args)
+        sys.exit(0)
+
+    # ── Post-blowout mode ─────────────────────────────────────────────
+    if getattr(args, "mode", None) == "post-blowout":
+        run_post_blowout_analysis(player_log, master_df, args)
+        sys.exit(0)
+
+    # ── Opponent fatigue mode ─────────────────────────────────────────
+    if getattr(args, "mode", None) == "opp-fatigue":
+        run_opp_fatigue_analysis(player_log, master_df, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

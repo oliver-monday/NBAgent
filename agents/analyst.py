@@ -386,8 +386,9 @@ def build_quant_context(player_stats: dict) -> str:
         ) if dvp else ""
 
         stat_parts = []
-        bounce_back_all  = s.get("bounce_back") or {}
-        volatility_all   = s.get("volatility") or {}
+        bounce_back_all    = s.get("bounce_back") or {}
+        volatility_all     = s.get("volatility") or {}
+        shooting_reg       = s.get("shooting_regression") or {}
         for stat in ("PTS", "REB", "AST", "3PM"):
             best = best_tiers.get(stat)
             if not best:
@@ -449,11 +450,21 @@ def build_quant_context(player_stats: dict) -> str:
             else:
                 vol_tag = ""  # moderate or missing = baseline, no tag
 
+            # Shooting efficiency regression tag — PTS only
+            shoot_flag = ""
+            if stat == "PTS":
+                sr_flag      = shooting_reg.get("fg_flag")
+                sr_delta_pct = shooting_reg.get("fg_delta_pct")
+                if sr_flag == "hot" and sr_delta_pct is not None:
+                    shoot_flag = f" [FG_HOT:+{int(round(sr_delta_pct * 100))}%]"
+                elif sr_flag == "cold" and sr_delta_pct is not None:
+                    shoot_flag = f" [FG_COLD:{int(round(sr_delta_pct * 100))}%]"
+
             stat_parts.append(
                 f"  {stat}: tier={tier} overall={overall_pct}% "
                 f"vs_soft={soft_str} vs_tough={tough_str} "
                 f"competitive={comp_str} blowout_games={blow_str} "
-                f"trend={trend}{b2b_field}{bb_field}{vol_tag}"
+                f"trend={trend}{b2b_field}{bb_field}{vol_tag}{shoot_flag}"
             )
 
         if stat_parts:
@@ -776,6 +787,22 @@ KEY RULES — VOLATILITY:
        volatile picks underperform over time.
   Do not apply the volatility penalty if the player has [iron_floor] on this stat —
   iron floor already captures the consistency signal more precisely.
+
+KEY RULES — SHOOTING EFFICIENCY REGRESSION:
+- PTS stat lines may show [FG_HOT:+X%] or [FG_COLD:-X%] based on L5 vs L20 FG% delta.
+  This reflects whether a player is shooting materially above or below their season baseline
+  over the last 5 games with shot attempts vs their last 20 games with shot attempts.
+  Threshold: ≥8% relative delta = HOT or COLD.
+- [FG_HOT:+X%]: player is in a shooting hot streak — counting stats (PTS) are inflated
+  relative to their tier baseline. Apply a regression-to-mean adjustment:
+    → Reduce PTS confidence by 3% before applying other modifiers.
+    → The PTS hit rate reflects normal shooting; hot-streak inflated games skew the baseline.
+    → Do NOT skip the pick — just apply the adjustment and document it in reasoning.
+  Exception: if the stat line shows [iron_floor], the FG_HOT penalty does NOT apply.
+- [FG_COLD:-X%]: player is shooting below their season baseline.
+  No mandatory adjustment — cold shooting may represent variance, not regression. Treat as
+  a mild caution flag. Note it in reasoning if confidence is borderline (70–74%).
+- If the flag is absent or the stat is not PTS, ignore this rule entirely.
 
 KEY RULES — HIGH CONFIDENCE GATE (81%+): Before assigning confidence_pct of 81 or higher, all three of the following conditions must be met. If any condition fails, cap confidence at 80% or lower — do not round up.
 Condition A — Rest/availability: Player is NOT on a back-to-back (on_back_to_back = false), OR player averages ≥30 minutes per game in their last 10 games as a confirmed starter. Non-stars on B2B nights have demonstrated DNP and minutes-restriction risk that makes 81%+ confidence structurally unsound regardless of historical hit rate.
