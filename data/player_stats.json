@@ -701,6 +701,41 @@
       "3p_delta_pct": 0.119,
       "games_with_shots": 53
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.489,
+      "season_ftm_avg": 5.25,
+      "season_fta_avg": 6.7,
+      "season_fga_avg": 22.1,
+      "season_3pm_avg": 3.75,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.023,
+          "margin": 0.466
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.136,
+          "margin": 0.353
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.249,
+          "margin": 0.24
+        },
+        "25": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.362,
+          "margin": 0.127
+        },
+        "30": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.475,
+          "margin": 0.014
+        }
+      }
+    },
     "positional_dvp": {
       "position": "SG",
       "pts_rating": "tough",
@@ -1376,6 +1411,41 @@
       "l5_3p_pct": 0.2,
       "3p_delta_pct": -0.267,
       "games_with_shots": 56
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.551,
+      "season_ftm_avg": 1.15,
+      "season_fta_avg": 1.8,
+      "season_fga_avg": 7.35,
+      "season_3pm_avg": 0.05,
+      "tiers": {
+        "10": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.599,
+          "margin": -0.048
+        },
+        "15": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.939,
+          "margin": -0.388
+        },
+        "20": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.279,
+          "margin": -0.728
+        },
+        "25": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.619,
+          "margin": -1.068
+        },
+        "30": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.959,
+          "margin": -1.408
+        }
+      }
     },
     "positional_dvp": {
       "position": "SF",
@@ -2094,6 +2164,41 @@
       "3p_delta_pct": -0.009,
       "games_with_shots": 54
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.45,
+      "season_ftm_avg": 4.25,
+      "season_fta_avg": 5.45,
+      "season_fga_avg": 19.65,
+      "season_3pm_avg": 1.95,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.097,
+          "margin": 0.354
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.224,
+          "margin": 0.226
+        },
+        "20": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.351,
+          "margin": 0.099
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.478,
+          "margin": -0.028
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.606,
+          "margin": -0.155
+        }
+      }
+    },
     "positional_dvp": {
       "position": "PG",
       "pts_rating": "tough",
@@ -2806,6 +2911,41 @@
       "3p_delta_pct": 0.176,
       "games_with_shots": 55
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.509,
+      "season_ftm_avg": 3.6,
+      "season_fta_avg": 4.55,
+      "season_fga_avg": 11.3,
+      "season_3pm_avg": 1.15,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.232,
+          "margin": 0.277
+        },
+        "15": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.454,
+          "margin": 0.055
+        },
+        "20": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.675,
+          "margin": -0.166
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.896,
+          "margin": -0.387
+        },
+        "30": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.117,
+          "margin": -0.608
+        }
+      }
+    },
     "positional_dvp": {
       "position": "C",
       "pts_rating": "mid",
@@ -3501,6 +3641,41 @@
       "3p_delta_pct": -0.088,
       "games_with_shots": 61
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.559,
+      "season_ftm_avg": 3.65,
+      "season_fta_avg": 4.1,
+      "season_fga_avg": 14.4,
+      "season_3pm_avg": 2.95,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.118,
+          "margin": 0.441
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.292,
+          "margin": 0.267
+        },
+        "20": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.465,
+          "margin": 0.094
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.639,
+          "margin": -0.08
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.812,
+          "margin": -0.253
+        }
+      }
+    },
     "positional_dvp": {
       "position": "SG",
       "pts_rating": "tough",
@@ -4139,6 +4314,41 @@
       "l5_3p_pct": 0.25,
       "3p_delta_pct": -0.227,
       "games_with_shots": 31
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.64,
+      "season_ftm_avg": 6.15,
+      "season_fta_avg": 9.2,
+      "season_fga_avg": 14.85,
+      "season_3pm_avg": 0.3,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.12,
+          "margin": 0.52
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.288,
+          "margin": 0.352
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.456,
+          "margin": 0.184
+        },
+        "25": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.625,
+          "margin": 0.015
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.793,
+          "margin": -0.153
+        }
+      }
     },
     "positional_dvp": {
       "position": "PF",
@@ -4809,6 +5019,41 @@
       "l5_3p_pct": 0.0,
       "3p_delta_pct": null,
       "games_with_shots": 34
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.582,
+      "season_ftm_avg": 1.5,
+      "season_fta_avg": 2.7,
+      "season_fga_avg": 6.1,
+      "season_3pm_avg": 0.0,
+      "tiers": {
+        "10": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.697,
+          "margin": -0.115
+        },
+        "15": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.107,
+          "margin": -0.525
+        },
+        "20": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.516,
+          "margin": -0.934
+        },
+        "25": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.926,
+          "margin": -1.344
+        },
+        "30": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 2.336,
+          "margin": -1.754
+        }
+      }
     },
     "positional_dvp": {
       "position": "C",
@@ -5486,6 +5731,41 @@
       "3p_delta_pct": null,
       "games_with_shots": 51
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.627,
+      "season_ftm_avg": 4.3,
+      "season_fta_avg": 5.9,
+      "season_fga_avg": 11.8,
+      "season_3pm_avg": 0.0,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.242,
+          "margin": 0.386
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.453,
+          "margin": 0.174
+        },
+        "20": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.665,
+          "margin": -0.038
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.877,
+          "margin": -0.25
+        },
+        "30": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.089,
+          "margin": -0.462
+        }
+      }
+    },
     "positional_dvp": {
       "position": "C",
       "pts_rating": "soft",
@@ -6136,6 +6416,41 @@
       "3p_delta_pct": -0.448,
       "games_with_shots": 56
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.433,
+      "season_ftm_avg": 4.4,
+      "season_fta_avg": 5.85,
+      "season_fga_avg": 17.55,
+      "season_3pm_avg": 1.3,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.123,
+          "margin": 0.311
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.265,
+          "margin": 0.168
+        },
+        "20": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.407,
+          "margin": 0.026
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.55,
+          "margin": -0.117
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.692,
+          "margin": -0.259
+        }
+      }
+    },
     "positional_dvp": {
       "position": "PF",
       "pts_rating": "tough",
@@ -6753,6 +7068,41 @@
       "3p_delta_pct": 0.559,
       "games_with_shots": 26
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.48,
+      "season_ftm_avg": 3.25,
+      "season_fta_avg": 4.1,
+      "season_fga_avg": 14.05,
+      "season_3pm_avg": 0.8,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.212,
+          "margin": 0.269
+        },
+        "15": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.39,
+          "margin": 0.091
+        },
+        "20": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.568,
+          "margin": -0.087
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.746,
+          "margin": -0.265
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.923,
+          "margin": -0.443
+        }
+      }
+    },
     "positional_dvp": {
       "position": "SG",
       "pts_rating": "soft",
@@ -7358,6 +7708,41 @@
       "l5_3p_pct": 0.429,
       "3p_delta_pct": 0.175,
       "games_with_shots": 33
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.523,
+      "season_ftm_avg": 8.0,
+      "season_fta_avg": 9.2,
+      "season_fga_avg": 19.5,
+      "season_3pm_avg": 1.35,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.017,
+          "margin": 0.506
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.145,
+          "margin": 0.378
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.273,
+          "margin": 0.25
+        },
+        "25": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.401,
+          "margin": 0.122
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.529,
+          "margin": -0.006
+        }
+      }
     },
     "positional_dvp": {
       "position": "C",
@@ -8068,6 +8453,41 @@
       "3p_delta_pct": -0.524,
       "games_with_shots": 63
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.461,
+      "season_ftm_avg": 4.65,
+      "season_fta_avg": 5.55,
+      "season_fga_avg": 14.75,
+      "season_3pm_avg": 1.1,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.144,
+          "margin": 0.317
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.314,
+          "margin": 0.147
+        },
+        "20": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.483,
+          "margin": -0.022
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.653,
+          "margin": -0.192
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.822,
+          "margin": -0.361
+        }
+      }
+    },
     "positional_dvp": {
       "position": "PF",
       "pts_rating": "tough",
@@ -8712,6 +9132,41 @@
       "l5_3p_pct": 0.303,
       "3p_delta_pct": -0.182,
       "games_with_shots": 48
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.495,
+      "season_ftm_avg": 6.0,
+      "season_fta_avg": 6.95,
+      "season_fga_avg": 19.7,
+      "season_3pm_avg": 2.5,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.038,
+          "margin": 0.457
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.165,
+          "margin": 0.33
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.292,
+          "margin": 0.203
+        },
+        "25": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.419,
+          "margin": 0.076
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.546,
+          "margin": -0.051
+        }
+      }
     },
     "positional_dvp": {
       "position": "SF",
@@ -9394,6 +9849,41 @@
       "3p_delta_pct": -0.312,
       "games_with_shots": 51
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.46,
+      "season_ftm_avg": 6.45,
+      "season_fta_avg": 8.15,
+      "season_fga_avg": 16.85,
+      "season_3pm_avg": 1.4,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.064,
+          "margin": 0.396
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.212,
+          "margin": 0.248
+        },
+        "20": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.361,
+          "margin": 0.099
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.509,
+          "margin": -0.049
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.657,
+          "margin": -0.197
+        }
+      }
+    },
     "positional_dvp": {
       "position": "PF",
       "pts_rating": "mid",
@@ -10050,6 +10540,41 @@
       "l5_3p_pct": 0.0,
       "3p_delta_pct": null,
       "games_with_shots": 60
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.677,
+      "season_ftm_avg": 2.5,
+      "season_fta_avg": 5.25,
+      "season_fga_avg": 6.2,
+      "season_3pm_avg": 0.0,
+      "tiers": {
+        "10": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.605,
+          "margin": 0.073
+        },
+        "15": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.008,
+          "margin": -0.331
+        },
+        "20": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.411,
+          "margin": -0.734
+        },
+        "25": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.815,
+          "margin": -1.137
+        },
+        "30": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 2.218,
+          "margin": -1.54
+        }
+      }
     },
     "positional_dvp": {
       "position": "C",
@@ -10780,6 +11305,41 @@
       "3p_delta_pct": -0.065,
       "games_with_shots": 51
     },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.539,
+      "season_ftm_avg": 8.5,
+      "season_fta_avg": 9.35,
+      "season_fga_avg": 19.85,
+      "season_3pm_avg": 1.1,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.01,
+          "margin": 0.529
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.136,
+          "margin": 0.403
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.262,
+          "margin": 0.277
+        },
+        "25": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.388,
+          "margin": 0.151
+        },
+        "30": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.514,
+          "margin": 0.025
+        }
+      }
+    },
     "positional_dvp": {
       "position": "PG",
       "pts_rating": "mid",
@@ -11466,6 +12026,41 @@
       "l5_3p_pct": 0.319,
       "3p_delta_pct": -0.009,
       "games_with_shots": 60
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.439,
+      "season_ftm_avg": 5.6,
+      "season_fta_avg": 6.1,
+      "season_fga_avg": 20.95,
+      "season_3pm_avg": 2.85,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.037,
+          "margin": 0.402
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.156,
+          "margin": 0.283
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.276,
+          "margin": 0.163
+        },
+        "25": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.395,
+          "margin": 0.044
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.514,
+          "margin": -0.075
+        }
+      }
     },
     "positional_dvp": {
       "position": "PG",

@@ -389,6 +389,7 @@ def build_quant_context(player_stats: dict) -> str:
         bounce_back_all    = s.get("bounce_back") or {}
         volatility_all     = s.get("volatility") or {}
         shooting_reg       = s.get("shooting_regression") or {}
+        ft_safety          = s.get("ft_safety_margin") or {}
         for stat in ("PTS", "REB", "AST", "3PM"):
             best = best_tiers.get(stat)
             if not best:
@@ -459,6 +460,18 @@ def build_quant_context(player_stats: dict) -> str:
                     shoot_flag = f" [FG_HOT:+{int(round(sr_delta_pct * 100))}%]"
                 elif sr_flag == "cold" and sr_delta_pct is not None:
                     shoot_flag = f" [FG_COLD:{int(round(sr_delta_pct * 100))}%]"
+
+                # FG% safety margin annotation (H11) — PTS only, at player's best qualifying tier
+                fsm_tier_data = (ft_safety.get("tiers") or {}).get(str(tier), {})
+                fsm_flag_val  = fsm_tier_data.get("flag", "")
+                fsm_margin    = fsm_tier_data.get("margin")
+                if fsm_flag_val == "ft_dominant":
+                    pass  # no annotation needed — FTs + 3s cover the tier alone
+                elif fsm_flag_val == "borderline" and fsm_margin is not None:
+                    shoot_flag += f" [FG_MARGIN_THIN:{int(round(fsm_margin * 100))}%]"
+                elif fsm_flag_val == "fragile" and fsm_margin is not None:
+                    shoot_flag += f" [FG_MARGIN_NEG:{int(round(fsm_margin * 100))}%]"
+                # safe or missing: no annotation — baseline, don't clutter
 
             stat_parts.append(
                 f"  {stat}: tier={tier} overall={overall_pct}% "
@@ -795,6 +808,26 @@ KEY RULES — SHOOTING EFFICIENCY REGRESSION:
   (counterintuitively positive). Tier selection is based on counting-stat hit rates, not FG%, so
   shooting efficiency fluctuations do not predict next-game PTS tier outcomes. Treat both flags
   as context only — visible in the quant block for transparency, not directive.
+
+KEY RULES — FG% SAFETY MARGIN (H11 — backtested, 537 instances):
+- PTS stat lines may show [FG_MARGIN_THIN:X%] based on the player's structural shooting margin.
+  This is the gap between their season FG% and the minimum FG% needed to reliably hit their
+  best PTS tier at typical volume (accounting for free throw and 3PM contributions).
+  A thin margin means the player needs near-baseline shooting to hit the tier; any cold game
+  risks a miss.
+- [FG_MARGIN_THIN:X%]: margin is X% — below the 10% safety floor.
+  Backtested hit rate at this margin: 57.6% across 165 instances (19.8pp below safe picks).
+  57.6% is below the system's 70% pick threshold.
+  → DO NOT pick at the flagged tier. Drop exactly one tier and re-evaluate.
+  → If the lower tier also qualifies (≥70% hit rate), pick there instead.
+  → If no lower tier qualifies, skip the PTS prop and consider REB/AST instead.
+  → Document the tier drop in tier_walk and reasoning fields.
+  This rule overrides positive signals at the same tier (iron_floor, soft defense, etc.).
+  A FG_MARGIN_THIN player with iron_floor is still a borderline shooter — drop the tier.
+- [FG_MARGIN_NEG:X%]: margin is negative — player's season FG% is below breakeven.
+  Apply the same tier-drop rule. This flag is rare for whitelisted players.
+- If the flag is absent: player has a safe margin (≥10%). No adjustment needed.
+- This rule applies to PTS props only. REB/AST/3PM are unaffected.
 
 KEY RULES — HIGH CONFIDENCE GATE (81%+): Before assigning confidence_pct of 81 or higher, all three of the following conditions must be met. If any condition fails, cap confidence at 80% or lower — do not round up.
 Condition A — Rest/availability: Player is NOT on a back-to-back (on_back_to_back = false), OR player averages ≥30 minutes per game in their last 10 games as a confirmed starter. Non-stars on B2B nights have demonstrated DNP and minutes-restriction risk that makes 81%+ confidence structurally unsound regardless of historical hit rate.

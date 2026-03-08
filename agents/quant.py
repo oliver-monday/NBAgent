@@ -770,10 +770,10 @@ def compute_ft_safety_margin(grp: pd.DataFrame) -> dict:
     Breakeven FG% = (tier - season_ftm_avg - season_3pm_avg) / (season_fga_avg * 2)
     Safety margin  = season_fg_pct - breakeven_fg_pct
 
-    Fragility classification:
-      margin >= 0.05 → "safe"        (player can miss shots freely and still hit tier)
-      margin >= 0.00 → "borderline"  (player needs near-baseline FG% to hit tier)
-      margin <  0.00 → "fragile"     (player needs above-baseline FG% — any cold game kills it)
+    Fragility classification (backtest-validated, 537 instances):
+      margin >= 0.10 → "safe"        (hit rate 72.6%; baseline noise — no adjustment)
+      margin >= 0.00 → "borderline"  (hit rate 56.1% / 57.6% at <0.10; PREDICTIVE → drop one tier)
+      margin <  0.00 → "fragile"     (player needs above-baseline FG% — rare for whitelisted players)
 
     ft_dominant: when (season_ftm_avg + season_3pm_avg * 1) >= tier, the player
       can reach the tier from FTs and 3s alone — FG% becomes irrelevant for that tier.
@@ -861,7 +861,7 @@ def compute_ft_safety_margin(grp: pd.DataFrame) -> dict:
             continue
 
         margin = season_fg_pct - breakeven_fg_pct
-        if margin >= 0.05:
+        if margin >= 0.10:
             flag = "safe"
         elif margin >= 0.00:
             flag = "borderline"

@@ -1,0 +1,151 @@
+{
+  "mode": "ft-safety-margin",
+  "date_range": "2025-11-30 \u2192 2026-03-06",
+  "total_instances": 537,
+  "ft_dominant_excluded": true,
+  "baseline_hit_rate": 0.713,
+  "results_by_fragility": {
+    "safe": {
+      "n": 496,
+      "hit_rate": 0.726,
+      "lift": 1.018,
+      "verdict": "noise"
+    },
+    "borderline": {
+      "n": 41,
+      "hit_rate": 0.561,
+      "lift": 0.787,
+      "verdict": "PREDICTIVE"
+    },
+    "fragile": {
+      "n": 0,
+      "hit_rate": null,
+      "lift": null,
+      "verdict": "no_data"
+    }
+  },
+  "tier_split": {
+    "20": {
+      "safe": {
+        "n": 301,
+        "hit_rate": 0.767,
+        "lift": 1.009
+      },
+      "borderline": {
+        "n": 21,
+        "hit_rate": 0.667,
+        "lift": 0.876
+      },
+      "fragile": {
+        "n": 0,
+        "hit_rate": null
+      }
+    },
+    "25": {
+      "safe": {
+        "n": 174,
+        "hit_rate": 0.678,
+        "lift": 1.011
+      },
+      "borderline": {
+        "n": 2,
+        "hit_rate": null
+      },
+      "fragile": {
+        "n": 0,
+        "hit_rate": null
+      }
+    },
+    "30": {
+      "safe": {
+        "n": 21,
+        "hit_rate": 0.524,
+        "lift": 1.021
+      },
+      "borderline": {
+        "n": 18,
+        "hit_rate": 0.5,
+        "lift": 0.975
+      },
+      "fragile": {
+        "n": 0,
+        "hit_rate": null
+      }
+    }
+  },
+  "threshold_sweep": {
+    "0.05": {
+      "fragile": {
+        "n": 40,
+        "hit_rate": 0.55
+      },
+      "safe": {
+        "n": 497,
+        "hit_rate": 0.726
+      },
+      "delta": 0.176
+    },
+    "0.06": {
+      "fragile": {
+        "n": 59,
+        "hit_rate": 0.61
+      },
+      "safe": {
+        "n": 478,
+        "hit_rate": 0.726
+      },
+      "delta": 0.116
+    },
+    "0.07": {
+      "fragile": {
+        "n": 74,
+        "hit_rate": 0.595
+      },
+      "safe": {
+        "n": 463,
+        "hit_rate": 0.732
+      },
+      "delta": 0.138
+    },
+    "0.08": {
+      "fragile": {
+        "n": 98,
+        "hit_rate": 0.571
+      },
+      "safe": {
+        "n": 439,
+        "hit_rate": 0.745
+      },
+      "delta": 0.173
+    },
+    "0.09": {
+      "fragile": {
+        "n": 127,
+        "hit_rate": 0.575
+      },
+      "safe": {
+        "n": 410,
+        "hit_rate": 0.756
+      },
+      "delta": 0.181
+    },
+    "0.10": {
+      "fragile": {
+        "n": 165,
+        "hit_rate": 0.576
+      },
+      "safe": {
+        "n": 372,
+        "hit_rate": 0.774
+      },
+      "delta": 0.198
+    }
+  },
+  "verdict": "insufficient data for verdict",
+  "constants": {
+    "FSM_L20_WINDOW": 20,
+    "FSM_MIN_GAMES": 10,
+    "FSM_SAFE_THRESH": 0.05,
+    "FSM_FRAG_THRESH": 0.0
+  }
+}
