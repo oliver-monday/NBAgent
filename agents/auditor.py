@@ -35,7 +35,6 @@ PICKS_JSON        = DATA / "picks.json"
 PARLAYS_JSON      = DATA / "parlays.json"
 AUDIT_LOG_JSON    = DATA / "audit_log.json"
 CONTEXT_MD         = ROOT / "context" / "nba_season_context.md"
-PLAYER_STATS_JSON  = DATA / "player_stats.json"
 AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
 AUDIT_REPORTS_DIR   = DATA / "audit_reports"
 POST_GAME_NEWS_JSON = DATA / "post_game_news.json"
@@ -86,45 +85,6 @@ def load_game_log() -> pd.DataFrame:
     df = pd.read_csv(GAME_LOG_CSV, dtype={"game_id": str, "player_id": str})
     df["game_date"] = pd.to_datetime(df["game_date"], errors="coerce").dt.strftime("%Y-%m-%d")
     return df
-
-
-def load_player_stats_for_audit(graded_picks: list[dict]) -> dict:
-    """
-    Load player_stats.json and return only entries for players in yesterday's picks.
-    Slimmed to fields relevant to audit reasoning — raw game logs dropped to keep
-    prompt lean. player_stats.json reflects today's computed data; close enough for
-    audit purposes since rosters and roles are stable game-to-game.
-    """
-    if not PLAYER_STATS_JSON.exists():
-        print("[auditor] player_stats.json not found — skipping stats context.")
-        return {}
-    try:
-        with open(PLAYER_STATS_JSON) as f:
-            all_stats = json.load(f)
-    except Exception as e:
-        print(f"[auditor] WARNING: could not load player_stats.json: {e}")
-        return {}
-
-    players_needed = {p["player_name"] for p in graded_picks}
-    slim: dict = {}
-    for name in players_needed:
-        s = all_stats.get(name)
-        if not s:
-            continue
-        slim[name] = {
-            "team":                  s.get("team"),
-            "opponent":              s.get("opponent"),
-            "on_back_to_back":       s.get("on_back_to_back"),
-            "best_tiers":            s.get("best_tiers"),
-            "tier_hit_rates":        s.get("tier_hit_rates"),
-            "trend":                 s.get("trend"),
-            "opp_defense":           s.get("opp_defense"),
-            "game_pace":             s.get("game_pace"),
-            "teammate_correlations": s.get("teammate_correlations"),
-        }
-
-    print(f"[auditor] Player stats context loaded for {len(slim)} players")
-    return slim
 
 
 # ── Season context ───────────────────────────────────────────────────
@@ -409,7 +369,7 @@ def build_absence_context(graded_picks: list[dict]) -> str:
     )
 
 
-def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", player_stats_context: dict | None = None, post_game_news: dict | None = None, playoff_picture: str = "") -> str:
+def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", post_game_news: dict | None = None, playoff_picture: str = "") -> str:
     hits    = [p for p in graded_picks if p["result"] == "HIT"]
     misses  = [p for p in graded_picks if p["result"] == "MISS"]
     no_data = [p for p in graded_picks if p["result"] == "NO_DATA"]
@@ -485,19 +445,14 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
         }
     conf_schema_str = json.dumps(conf_schema, indent=2)
 
-    # Player stats context block (pre-serialized for the f-string)
-    player_stats_block_str = (
-        json.dumps(player_stats_context, indent=2)
-        if player_stats_context
-        else "No player stats available for this audit run."
-    )
-
     # Parlay summary
     p_hits    = sum(1 for p in graded_parlays if p["result"] == "HIT")
     p_misses  = sum(1 for p in graded_parlays if p["result"] == "MISS")
     p_partial = sum(1 for p in graded_parlays if p["result"] == "PARTIAL")
 
-    picks_block   = json.dumps(graded_picks, indent=2)
+    hits_and_misses = [p for p in graded_picks if p["result"] in ("HIT", "MISS")]
+    picks_block   = json.dumps(hits_and_misses, indent=2)
+    no_data_block_str = json.dumps(no_data, indent=2) if no_data else "[]"
     parlays_block = json.dumps(graded_parlays, indent=2) if graded_parlays else "[]"
 
     # ── Absence context block ─────────────────────────────────────────
@@ -577,26 +532,55 @@ By prop type (HITs + MISSes only, excluding NO_DATA):
 By confidence band (HITs + MISSes only):
 {conf_stats_block}
 
-## FULL GRADED PICKS
+## FULL GRADED PICKS (HIT and MISS only)
 {picks_block}
+
+## NO_DATA PICKS (box score not found — player may have DNP'd)
+These picks returned no box score data. They are NOT misses — do not classify them as
+selection_error, model_gap, or variance. Handle them exclusively in the NO_DATA ANALYSIS
+TASK below.
+
+{no_data_block_str}
 {parlay_section}
-## PLAYER STATS CONTEXT (at time of pick)
-The following pre-computed data was available to the Analyst when picks were made.
-Use this to evaluate whether picks were well-founded, and to identify model gaps where
-available data should have changed the selection.
+## QUANT CONTEXT — READ FROM PICK OBJECTS
+Each pick object in FULL GRADED PICKS contains the quant data that was live at pick time:
+- "reasoning": the analyst's original thesis — read this for every miss
+- "hit_rate_display": e.g. "8/10" — reference this explicitly in root cause
+- "trend": up/stable/down at pick time
+- "tier_walk": the analyst's walk-down, e.g. "PTS: 30→3/10 25→5/10 20→8/10✓"
+- "opponent": yesterday's opponent (correct at pick time)
+- "confidence_pct", "prop_type", "pick_value": as set by the analyst
 
-{player_stats_block_str}
+Do NOT attempt to load or reference external player stats data. The pick objects are the
+authoritative record of what the system knew at pick time.
 
-Key fields to use in audit reasoning:
-- tier_hit_rates: the actual hit rates at each tier threshold across last 20 games
-- teammate_correlations: Pearson r and tag between teammates — check if board_rivals
-  or scoring_rivals flags existed for players who cannibalized each other's stats
-- opp_defense: what the quant data said about the opponent — verify this matched
-  the analyst's opp_defense_rating on each pick
-- on_back_to_back: flag whether fatigue context was available and used correctly
-- game_pace: check whether pace context supported or contradicted the pick thesis
+{absence_block}{news_block}## NO_DATA ANALYSIS TASK
 
-{absence_block}{news_block}## PICK ANALYSIS TASK
+For each pick in NO_DATA PICKS above, perform this analysis:
+
+PRE-CHECK — POST-GAME NEWS: First look up the player's name (lowercase) in the POST-GAME
+NEWS CONTEXT section. If an entry exists:
+  - Use its event_type and detail as the authoritative explanation.
+  - A "dnp" entry = player did not play. A "injury_exit" entry = player exited mid-game.
+  - Set no_data_classification to the event_type value from that entry.
+  - Set no_data_explanation to the detail string from that entry.
+  - If confidence = "confirmed", state this in your explanation.
+
+If NO post-game news entry exists for this player:
+  - Look at their injury_status_at_check field on the pick object.
+  - "OUT" or "DOUBTFUL" at pick time → no_data_classification = "workflow_gap"
+  - "QUESTIONABLE" → no_data_classification = "dnp_unconfirmed" and note the ambiguity.
+  - NOT_LISTED with no news → no_data_classification = "data_gap" and note this is
+    unexplained — the post-game reporter may not have had an ESPN entry for this player.
+
+DO NOT generate lessons, recommendations, or analytical critique for NO_DATA picks. These
+are availability or data pipeline events, not analytical failures. The only exception: if
+no_data_classification = "workflow_gap" (player was OUT pre-game but not voided), write one
+sentence in no_data_explanation noting the workflow timing gap.
+
+Add each NO_DATA pick to the "no_data_details" array in your output (see OUTPUT FORMAT).
+
+## PICK ANALYSIS TASK
 
 For every miss, perform analysis in this exact order before writing root_cause:
 
@@ -689,6 +673,15 @@ Respond ONLY with valid JSON. No preamble.
       "miss_classification": "selection_error | model_gap | variance | injury_event | workflow_gap",
       "tier_walk_flag": "tier_skip_error | data_conflict | insufficient_walk | null",
       "root_cause": "string"
+    }}
+  ],
+  "no_data_details": [
+    {{
+      "player_name": "string",
+      "prop_type": "string",
+      "pick_value": number,
+      "no_data_classification": "dnp | injury_exit | minutes_restriction | workflow_gap | dnp_unconfirmed | data_gap",
+      "no_data_explanation": "string — one sentence, sourced from post_game_news or pick object fields"
     }}
   ],
   "parlay_results": {{
@@ -1134,12 +1127,11 @@ def main():
         p_hits = sum(1 for p in graded_parlays if p["result"] == "HIT")
         print(f"[auditor] Parlays graded: {p_hits}/{len(graded_parlays)} hit")
 
-    season_context       = load_season_context()
-    playoff_picture      = render_playoff_picture()
-    player_stats_context = load_player_stats_for_audit(graded_picks)
-    post_game_news       = load_post_game_news()
+    season_context  = load_season_context()
+    playoff_picture = render_playoff_picture()
+    post_game_news  = load_post_game_news()
     prompt = build_audit_prompt(
-        graded_picks, graded_parlays, season_context, player_stats_context, post_game_news,
+        graded_picks, graded_parlays, season_context, post_game_news,
         playoff_picture=playoff_picture,
     )
     audit_entry = call_auditor(prompt)

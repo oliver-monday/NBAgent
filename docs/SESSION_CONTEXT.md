@@ -4,7 +4,8 @@
 and `@docs/AGENTS.md` at session start. Covers current implementation state, design decisions,
 non-obvious gotchas, and live prompt format — things that take time to re-derive from source.
 
-**Last updated:** March 7, 2026 (post-game reporter broadening, auditor absence context, iron_floor propagation, 3PM step-down rule, parlay concentration cap)
+**Last updated:** March 8, 2026 (Season Context Improvements 0, 1, 2 complete — standings
+snapshot, auto-generated team defense narratives, staleness detection in pre_game_reporter)
 
 ---
 
@@ -13,8 +14,12 @@ non-obvious gotchas, and live prompt format — things that take time to re-deri
 ```
 player_game_log.csv + team_game_log.csv + nba_master.csv
     ↓ quant.py
-player_stats.json  (one entry per whitelisted player playing today)
-    ↓ pre_game_reporter.py     → pre_game_news.json (ESPN athlete news, prop-filtered, Claude-summarised)
+player_stats.json          (one entry per whitelisted player playing today)
+team_defense_narratives.json  (per-team last-15g PPG allowed + rank, auto-generated daily)
+    ↓ pre_game_reporter.py → pre_game_news.json
+         player_notes, game_notes (Claude-summarised ESPN news)
+         suggested_context_updates (Claude conflict flags)
+         staleness_flags (deterministic date-based stale fact flags — Pass 1, no LLM)
     ↓ analyst.py               → picks.json (appended, result=null until auditor runs)
     ↓ parlay.py                → parlays.json (appended)
     ↓ lineup_watch.py          → picks.json (injury_status_at_check + voided/risk fields, hourly)
@@ -40,17 +45,26 @@ on_back_to_back, rest_days, games_last_7, dense_schedule,
 b2b_hit_rates, today_spread, spread_abs, blowout_risk,
 tier_hit_rates, matchup_tier_hit_rates, spread_split_hit_rates,
 best_tiers, trend, home_away_splits,
-minutes_trend, avg_minutes_last5, raw_avgs,
+minutes_trend, avg_minutes_last5, minutes_floor,   ← {floor_minutes, avg_minutes, n}; null if <5 games
+raw_avgs,
 opp_defense,          ← team-level, kept for auditor context injection
 game_pace, teammate_correlations,
-bounce_back,          ← player-level post-miss profiles + iron_floor flag
-volatility,           ← NEW (P2): {PTS/REB/AST/3PM: {label, sigma, n}}
-positional_dvp        ← NEW (P1): {position, pts_rating, reb_rating, ast_rating, tpm_rating, n, source}
+bounce_back,          ← player-level post-miss profiles + iron_floor + miss anatomy fields
+volatility,           ← {PTS/REB/AST/3PM: {label, sigma, n}}
+positional_dvp,       ← {position, pts_rating, reb_rating, ast_rating, tpm_rating, n, source}
+ft_safety_margin,     ← {label, margin, breakeven_fg_pct, season_fg_pct, n}; null if insufficient FT data
+shooting_regression,  ← {fg_hot, fg_cold, fg_pct_l5, fg_pct_l20, n_l5, n_l20}; null if insufficient data
+profile_narrative     ← string or null; live portrait for ≥10 non-DNP games + qualifying PTS best tier
 ```
 
 `opp_defense` is still written to `player_stats.json` even though the analyst no longer reads
 `opp_today=` from the quant context block — the auditor's `load_player_stats_for_audit()` slims
 entries to 9 fields including `opp_defense`, so it must stay.
+
+`bounce_back` per-stat fields: `{post_miss_hit_rate, lift, iron_floor, n_misses,
+near_miss_rate, blowup_rate, typical_miss}`. The Miss Anatomy fields (`near_miss_rate`,
+`blowup_rate`, `typical_miss`) are null when fewer than 5 misses — they feed Player Profiles
+conditional rendering. Analyst wiring for directive rules is **deferred** pending backtest.
 
 ---
 
@@ -68,6 +82,7 @@ Jalen Brunson (vs BOS | spread_abs=5.5 rest=1d L7:4g):
 the positional sample had < 10 games. `n=` is the number of player-game observations.
 **Stat line fields (in order):** `tier` · `overall` · `vs_soft` · `vs_tough` · `competitive` ·
 `blowout_games` · `trend` · `b2b=` (only when B2B) · `bb_lift=` or `[iron_floor]` · `[VOLATILE]` or `[consistent]`
+**PTS stat line may also show:** `[FG_HOT:+X%]` or `[FG_COLD:−X%]` (shooting regression flag)
 
 ---
 
@@ -79,22 +94,25 @@ the positional sample had < 10 games. `n=` is the number of player-game observat
 4. `## TODAY'S GAMES` (JSON array)
 5. `## CURRENT INJURY REPORT` (filtered to today's teams only)
 6. `## PRE-GAME NEWS` (conditional — only injected when `pre_game_news.json` has content; critical context flags prepended with ⚠ warning)
-7. `## SEASON CONTEXT` (from `context/nba_season_context.md` — manually maintained)
-8. `## PLAYER RECENT GAME LOGS` (last 10 games per whitelisted player)
-9. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS`
-   - KEY RULES — MATCHUP QUALITY (DvP + vs_soft/vs_tough interaction)
-   - OPPONENT DEFENSE — POSITIONAL DvP (stat-specific rules, REB/3PM exclusions)
-   - SELECTION RULES (offensive-first REB floor rule, tier ceiling conditions, tier walk-down discipline)
-   - KEY RULES — REST & FATIGUE (B2B, DENSE, rest_days)
-   - KEY RULES — SEQUENTIAL GAME CONTEXT (REB slump-persistent, 3PM cold streak, **3PM trend=down mandatory step-down**)
-   - KEY RULES — SPREAD / BLOWOUT RISK (BLOWOUT_RISK flag, spread_abs > 13 cap)
-   - KEY RULES — VOLATILITY (−5% for VOLATILE, Top Pick gate, iron_floor override)
-   - KEY RULES — HIGH CONFIDENCE GATE 81%+ (Conditions A/B/C)
-   - `{quant_context}` — the per-player blocks
-10. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS` (last 5 entries)
-11. `## ROLLING PERFORMANCE SUMMARY` (from `audit_summary.json`, blank < 3 days)
-12. `## ANALYSIS APPROACH` (3-line per-player reasoning format)
-13. `## OUTPUT FORMAT` (strict JSON schema — includes `tier_walk` and `iron_floor` fields)
+7. `## SEASON CONTEXT` (SEASON FACTS only — `## TEAM DEFENSIVE PROFILES` section is stripped from the file at load time; manually maintained)
+8. `## PLAYOFF PICTURE` — auto-generated from `data/standings_today.json` (bucketed: safe / contending / playin / bubble / eliminated)
+9. `## TEAM DEFENSIVE PROFILES` — auto-generated from `data/team_defense_narratives.json` (last 15g PPG allowed + rank, updates daily via quant.py)
+10. `## PLAYER RECENT GAME LOGS` (last 10 games per whitelisted player)
+11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS`
+    - KEY RULES — MATCHUP QUALITY (DvP + vs_soft/vs_tough interaction)
+    - OPPONENT DEFENSE — POSITIONAL DvP (stat-specific rules, REB/3PM exclusions)
+    - SELECTION RULES (offensive-first REB floor rule, tier ceiling conditions, tier walk-down discipline)
+    - KEY RULES — REST & FATIGUE (B2B, DENSE, rest_days)
+    - KEY RULES — SEQUENTIAL GAME CONTEXT (REB slump-persistent, 3PM cold streak, **3PM trend=down mandatory step-down**)
+    - KEY RULES — SPREAD / BLOWOUT RISK (BLOWOUT_RISK flag, spread_abs > 13 cap)
+    - KEY RULES — VOLATILITY (−5% for VOLATILE, Top Pick gate, iron_floor override)
+    - KEY RULES — HIGH CONFIDENCE GATE 81%+ (Conditions A/B/C)
+    - `{quant_context}` — the per-player blocks
+12. `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS` (from `profile_narrative` fields in `player_stats.json`)
+13. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS` (last 5 entries)
+14. `## ROLLING PERFORMANCE SUMMARY` (from `audit_summary.json`, blank < 3 days)
+15. `## ANALYSIS APPROACH` (3-line per-player reasoning format)
+16. `## OUTPUT FORMAT` (strict JSON schema — includes `tier_walk` and `iron_floor` fields)
 
 ---
 
@@ -149,6 +167,23 @@ Backtest 2 showed w20 improved REB T8 by +7.8pp (to 71.0%), crossing the 70% thr
 makes it a valid pick. The tradeoff was ~25% fewer total selections — estimated ≥8 picks/day on
 typical slates, above the parlay minimum.
 
+**Why does `build_team_defense_narratives()` omit perimeter and pace clauses?**
+The current `team_game_log.csv` schema lacks `fg3_pct_allowed` and `possessions` columns.
+`build_team_defense_narratives()` checks `has_3p` and `has_pace` boolean flags at runtime and
+omits those clauses when the columns are absent. All 30 teams still get the PPG rank line. The
+function is structured to add these clauses automatically if/when the schema expands.
+
+**Why do staleness flags go into both `data/context_flags.md` AND `pre_game_news.json`?**
+`context_flags.md` is a human-readable daily report for manual review. `pre_game_news.json`
+carries the same flags structured as a list under `"staleness_flags"` for programmatic access
+if needed. The analyst reads `pre_game_news.json` (via `load_pre_game_news()`) — not the .md
+file directly — so both formats serve different consumers.
+
+**Why is `data/context_flags.md` NOT in `context/context_flags.md`?**
+The `CONTEXT_FLAGS_MD = DATA / "context_flags.md"` constant was established when the file was
+first created. The flags file lives in `data/`, not `context/`. `analyst.py` reads flags via
+`load_pre_game_news()` which reads `pre_game_news.json` — the `.md` file is human-readable only.
+
 ---
 
 ## Key Backtest Verdicts (applied to production)
@@ -168,6 +203,8 @@ typical slates, above the parlay minimum.
 | REB T8 | 63.2%(w10) → 71.0%(w20) | Requires w20 to be valid |
 | AST T6 | 65.1% — below threshold | Ceiling rule in prompt |
 | 3PM T2 | 71.4%(w10) → 77.3%(w20) | Valid pick tier |
+| Post-blowout bounce-back (H6) | NOISE — lift 0.955–0.988 across all stats | Closed March 7, 2026 |
+| Opponent schedule fatigue (H7) | NOISE — opp B2B lift 0.977–1.025; dense=0 instances | Closed March 7, 2026 |
 
 ---
 
@@ -176,22 +213,30 @@ typical slates, above the parlay minimum.
 ### `quant.py`
 - `load_whitelist()` → `set` of `(name_lower, team_upper)` — unchanged, used for mask filtering
 - `load_whitelist_positions()` → `{name_lower: position}` — new, used only by positional DvP
+- `_ordinal(n)` → `str` — converts int to ordinal string (`1→"1st"`, `11→"11th"`, `21→"21st"`); handles 11th/12th/13th exception
 - `compute_tier_hit_rates(games_df, stat)` → `{str(tier): float}` — uses `>=` grading
 - `compute_volatility(game_log_list, stat, tier, window=20)` → `{label, sigma, n}` — takes records NOT DataFrame; must be sorted oldest→newest at call site
 - `compute_matchup_tier_hit_rates(all_games_df, opp_defense_dict, stat)` → matchup splits
 - `compute_spread_split_hit_rates(player_log_df, game_spreads_dict, stat)` → competitive/blowout splits
 - `compute_b2b_hit_rates(player_log_df, b2b_game_ids_dict, stat)` → B2B tier hit rates
 - `compute_positional_dvp(player_log_df, position_map_dict)` → `{team: {position: {avgs + ratings}}}`
-- `build_bounce_back_profiles(player_log_df, whitelist_set)` → `{player: {stat: {post_miss_hit_rate, lift, iron_floor, n_misses}}}`
+- `compute_shooting_regression(grp)` → `{fg_hot, fg_cold, fg_pct_l5, fg_pct_l20, n_l5, n_l20}` — P3 feature; ±8% threshold for HOT/COLD flag
+- `compute_ft_safety_margin(grp)` → `{label, margin, breakeven_fg_pct, season_fg_pct, n}` — H11 feature; null if insufficient FT data
+- `compute_minutes_floor(grp, window=10)` → `{floor_minutes, avg_minutes, n}` or `None` — lower bound on expected minutes
+- `build_bounce_back_profiles(player_log_df, whitelist_set)` → `{player: {stat: {post_miss_hit_rate, lift, iron_floor, n_misses, near_miss_rate, blowup_rate, typical_miss}}}`
+- `build_team_defense_narratives(team_log)` → `dict[str, str]`; writes `data/team_defense_narratives.json`; one auto-generated narrative per team (PPG allowed + rank + perimeter/pace clauses when columns available)
+- `build_player_profiles(player_stats_dict)` → mutates `profile_narrative` key in-place for each player meeting eligibility; called at end of `main()` after `build_player_stats()` writes the JSON
 - `build_player_stats(player_log, b2b_teams, opp_defense, game_pace, todays_games, teammate_correlations, whitelist, game_spreads=None, master_df=None, b2b_game_ids=None, positional_dvp_data=None, position_map=None)` → full `player_stats.json` dict
 
 ### `analyst.py`
 - `load_player_stats()` → reads `player_stats.json`, returns dict
-- `build_quant_context(player_stats)` → formatted string; DvP line per player + stat lines with vol_tag
+- `build_quant_context(player_stats)` → formatted string; DvP line per player + stat lines with vol_tag + FG_HOT/FG_COLD annotation on PTS lines
 - `load_audit_summary()` → reads `audit_summary.json`, returns "" if < 3 entries
-- `load_season_context()` → reads `context/nba_season_context.md`, returns "" if missing
+- `load_season_context()` → reads `context/nba_season_context.md`; strips HTML comment header; **strips `## TEAM DEFENSIVE PROFILES` section** (truncates at that heading — file unchanged, only in-memory text is modified); returns "" if missing
 - `load_pre_game_news()` → reads `pre_game_news.json`; formats critical flags + player_notes + game_notes + monitor flags; returns "" if no notable items
-- `build_prompt(games, player_context, injuries, audit_context, season_context, quant_context="", audit_summary="", pre_game_news="")` → full system prompt string
+- `render_playoff_picture(standings_path=STANDINGS_JSON)` → reads `data/standings_today.json`; formats bucketed `## PLAYOFF PICTURE` string; returns fallback string if file missing/stale
+- `format_team_defense_section(narratives_path=TEAM_DEFENSE_NARRATIVES_JSON)` → reads `data/team_defense_narratives.json`; validates `as_of == TODAY_STR`; returns `## TEAM DEFENSIVE PROFILES (last 15 games — auto-generated DATE)` block sorted alphabetically; always returns non-empty string (fallback warning if file missing/stale)
+- `build_prompt(games, player_context, injuries, audit_context, season_context, quant_context="", audit_summary="", pre_game_news="", player_profiles="", playoff_picture="", team_defense="")` → full system prompt string
 - Output schema fields: `date, player_name, team, opponent, home_away, prop_type, pick_value, direction, confidence_pct, hit_rate_display, trend, opp_defense_rating, tier_walk, iron_floor, reasoning`
 
 ### `auditor.py`
@@ -217,7 +262,12 @@ typical slates, above the parlay minimum.
 - Loads today's team abbrevs from `nba_master.csv`; loads active whitelist players on today's teams
 - Fetches ESPN athlete news per player + league-wide news (48h window)
 - Filters to prop-relevant items; discards noise keywords (contract/fine/trade rumor)
-- ONE Claude call (`claude-sonnet-4-6`, 2048 tokens) if filtered items exist → `player_notes` + `game_notes` dicts + `suggested_context_updates` (urgency: critical/monitor)
+- **`detect_staleness_flags(context_path, today)` → `list[str]`** — deterministic Pass 1; parses `## SEASON FACTS` section of `nba_season_context.md` for ISO dates (`YYYY-MM-DD`) and month-year dates (`Feb 2026`); applies three rules per line: (1) return/injury keyword + age >7d, (2) ISO date + no return keyword + age >5d, (3) trade/role keyword + age >60d; returns list of `⚠ CONTEXT FLAG: ...` strings; uses `re` + `datetime` only — no LLM
+- **`_append_staleness_flags_to_md(staleness_flags)`** — appends a `## 🕐 DATE-BASED STALENESS FLAGS (auto-detected)` block to `data/context_flags.md` after the Claude report section
+- **`call_claude_staleness_check(context_text, news_items)`** → `list[dict]` — Pass 2; single Claude call cross-referencing season context against today's news; returns list of `{player_or_team, current_context_fact, conflict, urgency, suggested_action}` flag dicts
+- **`write_context_flags_md(flags)`** — writes full structured markdown report to `data/context_flags.md` (OVERWRITES — critical/monitor urgency tiers with `##` headers); `_append_staleness_flags_to_md()` is called AFTER this to append Pass 1 flags
+- **`run_context_staleness_check(filtered_items, all_raw_items)`** → `tuple[list[dict], list[str]]` — orchestrates both passes; Pass 1 always runs first; Pass 2 (Claude) fires when `filtered_items > 0` OR context file date is stale; deduplicates Pass 1 flags against Pass 2 `player_or_team` tokens; returns `(claude_flags, staleness_flags)`
+- **`write_output(..., context_flags=None, staleness_flags=None)`** — writes `data/pre_game_news.json`; keys: `suggested_context_updates` (Claude flags), **`staleness_flags`** (Pass 1 flags — always present, `[]` when none)
 - Writes `data/pre_game_news.json`; always writes (empty) even with no news
 
 ### `lineup_watch.py` (standalone, runs after each injury refresh)
@@ -278,6 +328,26 @@ entries; `save_audit_summary()` handles missing fields with `.get()` defaults.
 from appearing under their old team. If a player is traded mid-season, update `team_abbr` in
 `player_whitelist.csv` and set the old entry `active=0`. Do not delete old rows.
 
+**`data/context_flags.md` write order** — `write_context_flags_md(claude_flags)` OVERWRITES the
+file each run with the Claude-format structured report. `_append_staleness_flags_to_md()` is
+called AFTER to append Pass 1 deterministic flags as a plain `## 🕐 DATE-BASED STALENESS FLAGS`
+block. If there are no Claude flags, `write_context_flags_md([])` writes a "no conflicts" stub,
+then staleness flags are still appended if any exist.
+
+**`detect_staleness_flags()` section boundary** — the function stops at BOTH
+`## TEAM DEFENSIVE PROFILES` AND `## PERMANENT ABSENCES` (whichever comes first). This prevents
+the static TEAM DEFENSIVE PROFILES content (still in the file as a reference — not injected by
+agents) from generating false staleness flags for old team defense notes.
+
+**`format_team_defense_section()` always non-empty contract** — returns the fallback warning
+string (including `##` header) on missing file, stale file (`as_of != TODAY_STR`), or empty
+narratives. The analyst always sees a `## TEAM DEFENSIVE PROFILES` section even if it's just
+the warning line. This means `team_defense_section` is never injected as a bare empty string.
+
+**`load_season_context()` TEAM DEFENSIVE PROFILES stripping** — the static `## TEAM DEFENSIVE
+PROFILES` section remains in `context/nba_season_context.md` as a human reference but is
+stripped in-memory before injection. The file itself is never modified by any agent.
+
 ---
 
 ## Prompt Signals and Their Reliability Status
@@ -291,6 +361,7 @@ from appearing under their old team. If a player is traded mid-season, update `t
 | B2B rate at tier | Stat line `b2b=` | Primary on B2B nights |
 | bb_lift / iron_floor | Stat line | Trust iron_floor; treat bb_lift as mild |
 | [VOLATILE] / [consistent] | Stat line suffix | Directional (no confirmed backtest yet) |
+| [FG_HOT] / [FG_COLD] | PTS stat line suffix | Shooting regression — ±8% threshold; unvalidated |
 | trend (up/stable/down) | Stat line | Noise — data shown, no directive weight |
 | BLOWOUT_RISK | Header flag | Confirmed directionally; −1 tier rule |
 | spread_abs > 13 | Header flag | Cap at 80% confidence |
@@ -299,23 +370,30 @@ from appearing under their old team. If a player is traded mid-season, update `t
 | 3PM opp defense | DvP line 3PM field | Excluded — noise (lift variance 0.053) |
 | 3PM cold streak | Inferred from trend + recent logs | Decline signal (lift=0.87, n=161) |
 | 3PM trend=down | Stat line `trend=down` | **Mandatory step-down rule** — pick one tier lower; skip if below T1 |
+| PLAYOFF PICTURE | ## PLAYOFF PICTURE section | Situational awareness only — no hard rules |
+| TEAM DEFENSIVE PROFILES | ## TEAM DEFENSIVE PROFILES section | Rolling 15g — replaces static file section |
 
 ---
 
-## Active Improvement Queue (as of March 7, 2026)
+## Active Improvement Queue (as of March 8, 2026)
 
-| ID | Name | Blocker | Files |
-|----|------|---------|-------|
-| P3 | Shooting Efficiency Regression | Requires ingest schema change (`fga/fgm/fg3a/fg3m`) — plan as standalone session | `espn_player_ingest.py`, `quant.py`, `analyst.py` |
-| P5 | Afternoon Lineup Re-Reasoning | `lineup_watch.py` live ✅. Wait for 7+ days voiding data | `lineup_update.py` (new), `injuries.yml`, `auditor.py`, `build_site.py` |
+| ID | Name | Status | Files |
+|----|------|--------|-------|
+| Season Context 0 | Standings Snapshot | ✅ DONE (March 2026) | `espn_daily_ingest.py`, `analyst.py`, `auditor.py` |
+| Season Context 1 | Auto-Generated Team Defense Narratives | ✅ DONE (March 2026) | `quant.py`, `analyst.py` |
+| Season Context 2 | Staleness Detection in pre_game_reporter | ✅ DONE (March 8, 2026) | `pre_game_reporter.py` |
+| Season Context 3 | Restructure SEASON FACTS into decay tiers | Manual edit — no code needed | `context/nba_season_context.md` |
+| P3 | Shooting Efficiency Regression | ✅ DONE (March 7–8, 2026) | `espn_player_ingest.py`, `quant.py`, `analyst.py` |
+| P5 | Afternoon Lineup Re-Reasoning | Waiting for 7+ days voiding data | `lineup_update.py` (new), `injuries.yml`, `auditor.py`, `build_site.py` |
 | P4 | Tier-Walk Audit Trail | ✅ DONE (March 6, 2026) | — |
 | #1 | Teammate Absence Delta | Deferred to next season (insufficient DNP sample) | `quant.py`, `analyst.py` |
 
-**Next backtest to run (H6/H7):** Post-blowout bounce-back and opponent schedule fatigue.
-Both testable with existing data — no new ingest needed. Design documented in `docs/BACKTESTS.md`.
+**Next backtests to run:**
+- **H8 — Positional DvP Validity:** Does positional DvP outpredict team-level DvP for PTS/AST? Requires ~30 days of live positional DvP data. Run ~early April 2026.
+- **H9 — Player × Opponent H2H Splits:** Does player-vs-specific-opponent hit rate outpredict population opp_defense? Requires near-complete season sample. Run ~mid-April 2026.
+- **Miss Anatomy:** Validate `near_miss_rate` / `blowup_rate` next-game prediction. Fields live in `player_stats.json`, analyst wiring deferred until backtest (~late March 2026).
 
-**H8 (new):** Validate positional DvP vs. team-level DvP for PTS/AST hit rate prediction.
-Run after 30+ days of positional data accumulates (approximately early April 2026).
+**H6 (post-blowout bounce-back)** and **H7 (opponent schedule fatigue)** are both CLOSED as NOISE (March 7, 2026). Full results in `docs/BACKTESTS.md`.
 
 **Confidence calibration check:** After 20+ audit days (~late March), compare per-band actual
 hit rates in `audit_summary.json` against stated confidence bands (70–75 / 76–80 / 81–85 / 86+).
@@ -333,6 +411,7 @@ Tighten prompt ceiling if any band systematically underperforms.
 | New pick output field | `analyst.py` OUTPUT FORMAT schema + `build_site.py` pick card renderer |
 | Whitelist change | `playerprops/player_whitelist.csv` only (toggle `active` flag) |
 | Season context update | `context/nba_season_context.md` only |
+| Team defense narratives | `quant.py` `build_team_defense_narratives()` only |
 | Backtest | `agents/backtest.py` — standalone, reads CSVs, writes JSON, no production impact |
 | Frontend change | `build_site.py` only — triggers on next injury refresh or analyst run |
 
@@ -345,6 +424,13 @@ Tighten prompt ceiling if any band systematically underperforms.
 - **Volatility scores have not been backtested** — σ thresholds (0.3/0.4) are reasonable priors
   but not empirically validated against this dataset. The auditor will accumulate evidence over
   time via the `reasoning` field (volatility flag instruction).
+- **Shooting regression signal has not been backtested** — ±8% threshold is an untested prior;
+  validate via audit accumulation after 30+ days of flagged picks. HOT misses clustering in
+  `model_gap` confirms mechanism; `variance` clustering suggests penalty is overcorrecting.
+- **Miss Anatomy analyst wiring is NOT done** — `near_miss_rate` and `blowup_rate` fields are
+  live in `player_stats.json` and feeding Player Profiles conditional rendering. The directive
+  prompt rule (confidence modifier or tier-drop on high `blowup_rate`) is explicitly NOT shipped
+  until the backtest validates the signal.
 - **P5 (lineup re-reasoning) is NOT live** — `lineup_watch.py` voids/flags picks and writes
   `injury_status_at_check` per run, but does NOT call Claude to re-evaluate confidence. Only
   deterministic status updates happen hourly.
@@ -356,3 +442,12 @@ Tighten prompt ceiling if any band systematically underperforms.
 - **Parlay concentration cap is enforced by Claude prompt, not deterministically** — the
   `## AVOID` rule in `parlay.py` instructs Claude not to use the same leg in 3+ parlays, but
   there is no Python-level filter enforcing this. Verify in the output if the rule seems ignored.
+- **Season Context Improvement 3 (SEASON FACTS decay tier restructure) is NOT done** — this is
+  a manual edit to `context/nba_season_context.md`. No code required. Do after verifying that
+  Improvements 0–2 are running cleanly in production.
+- **`team_defense_narratives.json` perimeter and pace clauses are NOT active** — the current
+  `team_game_log.csv` schema lacks `fg3_pct_allowed` and `possessions` columns, so only the
+  PPG rank line is generated. Perimeter/pace clauses will auto-activate when schema expands.
+- **Staleness flags do NOT auto-update `context/nba_season_context.md`** — `detect_staleness_flags()`
+  is read-only. Flags are surfaced for human action only — the analyst sees them as ⚠ warnings
+  in `pre_game_news.json`, but no agent modifies the context file automatically.
