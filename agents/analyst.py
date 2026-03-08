@@ -738,6 +738,15 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   Unlike other stats, 3PM cold streaks do not self-correct at N+1 — the slump persists or deepens.
   → If a player's recent L5 3PM output is materially below their L10/L20 rate, apply −5% confidence
     or skip the pick. Prefer cold-streak 3PM players only if facing a soft matchup.
+- 3PM trend=down mandatory step-down (live rule, motivated by observed miss pattern):
+  If the trend field for a player's 3PM stat is "down", you MUST step down exactly one full tier
+  from your analytically selected floor before finalizing the pick.
+  Example: best qualifying tier is T2 with 9/10 hit rate → trend=down → pick T1 instead.
+  Do NOT use the aggregate hit rate to override this step-down. A 9/10 overall rate at T2
+  means nothing if the directional signal is declining — the 0-make outcome is within range.
+  This rule does not apply to PTS or AST (trend has shown no sequential signal for those stats).
+  If stepping down would take the tier below the minimum valid tier (T1 for 3PM), skip the
+  3PM pick entirely for that player.
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
 
 KEY RULES — SPREAD / BLOWOUT RISK:

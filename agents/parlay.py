@@ -375,6 +375,11 @@ Each candidate has already passed:
 5. **Variety**: across your 3–5 selections, aim for a mix of leg counts (some tight 2-leggers, some 3–4 leg plays, maybe one 5+ if all legs are elite).
 
 ## AVOID
+- Any single player-prop combination (same player + same prop_type + same pick_value)
+  appearing in more than 2 of today's parlays. A single anchor leg in 3+ parlays creates
+  correlated exposure across your entire card — one bad night from that player simultaneously
+  kills multiple parlays. This cap applies even to iron-floor or 86%+ confidence legs.
+  Anchor players (high-confidence PTS legs) are the most common violation — distribute them.
 - Two parlays that share 3+ identical legs (provide variety)
 - Combos where the rationale would be "all soft matchups" with no deeper logic
 - Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
