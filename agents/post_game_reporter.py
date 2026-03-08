@@ -121,6 +121,36 @@ def load_yesterdays_missed_pick_names() -> set[str]:
         return set()
 
 
+def load_yesterdays_picks_with_status() -> dict[str, str]:
+    """
+    Return {player_name.lower(): injury_status_at_check} for yesterday's picks.
+    Only includes players where injury_status_at_check is present.
+    If a player has multiple picks yesterday, the most severe status wins
+    (OUT > DOUBTFUL > QUESTIONABLE > NOT_LISTED).
+    """
+    SEVERITY = {"OUT": 4, "DOUBTFUL": 3, "QUESTIONABLE": 2, "NOT_LISTED": 1}
+    if not PICKS_JSON.exists():
+        return {}
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+        result: dict[str, str] = {}
+        for p in all_picks:
+            if p.get("date") != YESTERDAY_STR:
+                continue
+            name   = (p.get("player_name") or "").strip().lower()
+            status = (p.get("injury_status_at_check") or "").strip().upper()
+            if not name or not status:
+                continue
+            existing = result.get(name)
+            if existing is None or SEVERITY.get(status, 0) > SEVERITY.get(existing, 0):
+                result[name] = status
+        return result
+    except Exception as e:
+        print(f"[post_game_reporter] WARNING: could not load injury statuses: {e}")
+        return {}
+
+
 def load_athlete_id_map() -> dict[str, str]:
     """
     Load player_dim.csv and return {player_name_norm (lowercase): player_id}.
@@ -307,6 +337,7 @@ def classify_from_news(
     news_items: list[dict],
     minutes: float | None,
     game_row: dict | None,
+    injury_status: str = "NOT_LISTED",
 ) -> tuple[str, str, str | None, bool]:
     """
     Returns (event_type, detail, source_url, from_news).
@@ -346,6 +377,23 @@ def classify_from_news(
             None, False,
         )
 
+    # ── Pre-game status inference ──────────────────────────────────────
+    # If player was QUESTIONABLE or DOUBTFUL pre-game and has no/zero box score,
+    # the DNP is likely injury-related even without an explicit ESPN news match.
+    if injury_status in ("QUESTIONABLE", "DOUBTFUL", "OUT"):
+        if game_row is None or (minutes is not None and minutes <= MINUTES_DNP_THRESHOLD):
+            status_detail = (
+                f"Player was {injury_status} pre-game and logged 0 minutes. "
+                f"Likely DNP due to pre-game injury designation — no ESPN confirmation found."
+            )
+            return "dnp", status_detail, None, False
+        elif minutes is not None and minutes < MINUTES_LOW_THRESHOLD:
+            status_detail = (
+                f"Player was {injury_status} pre-game and logged only {minutes:.0f} minutes. "
+                f"Possible early exit or minutes restriction — no ESPN confirmation found."
+            )
+            return "minutes_restriction", status_detail, None, False
+
     return "no_data", "No relevant news found and box score data insufficient to classify", None, False
 
 
@@ -362,9 +410,10 @@ def main() -> None:
 
     print(f"[post_game_reporter] Yesterday's picks: {len(player_names)} unique players")
 
-    athlete_ids      = load_athlete_id_map()
-    game_rows        = load_yesterday_game_rows(player_names)
+    athlete_ids       = load_athlete_id_map()
+    game_rows         = load_yesterday_game_rows(player_names)
     missed_pick_names = load_yesterdays_missed_pick_names()
+    injury_statuses   = load_yesterdays_picks_with_status()
 
     # Classify each player's fetch reason for logging, but fetch ALL players
     missed_count    = 0
@@ -404,11 +453,44 @@ def main() -> None:
                 fetch_errors.append(name)
         # No athlete_id → proceed with box score inference (not a fetch error)
 
+        injury_status = injury_statuses.get(name, "NOT_LISTED")
         event_type, detail, source_url, from_news = classify_from_news(
-            news_items, minutes, game_row
+            news_items, minutes, game_row, injury_status=injury_status
         )
 
         inj_detected, inj_term = news_contains_injury_language(news_items)
+
+        # Promote no_data → dnp/injury_exit when injury language exists in news
+        # but the classifier couldn't find an exact term match.
+        if event_type == "no_data" and inj_detected:
+            if minutes is None or minutes <= MINUTES_DNP_THRESHOLD:
+                event_type = "dnp"
+                detail = (
+                    f"Promoted from no_data: injury language detected in ESPN news "
+                    f"(matched: '{inj_term}') and player logged 0 or no minutes. "
+                    f"Likely DNP due to injury — exact classification unconfirmed."
+                )
+                from_news = True
+            elif minutes is not None and minutes < MINUTES_LOW_THRESHOLD:
+                event_type = "injury_exit"
+                detail = (
+                    f"Promoted from no_data: injury language detected in ESPN news "
+                    f"(matched: '{inj_term}') and player logged only {minutes:.0f} minutes. "
+                    f"Possible mid-game injury exit — exact classification unconfirmed."
+                )
+                from_news = True
+
+            if event_type != "no_data":
+                print(
+                    f"[post_game_reporter] ↑ {name}: promoted no_data → {event_type}"
+                    f" (injury term: '{inj_term}')"
+                )
+
+        if inj_detected and event_type == "no_data":
+            print(
+                f"[post_game_reporter] ⚠ {name}: injury language detected"
+                f" ('{inj_term}') but minutes normal ({minutes} min) — no promotion, check manually"
+            )
 
         confidence   = "confirmed" if from_news else "inferred"
         mins_display = round(minutes, 1) if minutes is not None else 0
@@ -419,6 +501,7 @@ def main() -> None:
             "minutes_played":           mins_display,
             "source_url":               source_url,
             "confidence":               confidence,
+            "injury_status_at_check":   injury_status,
             "injury_language_detected": inj_detected,
             "injury_scan_term":         inj_term if inj_detected else None,
         }
@@ -428,12 +511,6 @@ def main() -> None:
             f"[post_game_reporter] {name} → {event_type} ({confidence}, {mins_str} min)"
             f" [reason: {flag_reason}]"
         )
-
-        if inj_detected and event_type == "no_data":
-            print(
-                f"[post_game_reporter] ⚠ {name}: injury language detected"
-                f" ('{inj_term}') but event_type=no_data — check manually"
-            )
 
     output = {
         "date":         YESTERDAY_STR,
