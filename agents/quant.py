@@ -1118,6 +1118,49 @@ def compute_minutes_trend(games_10: pd.DataFrame, games_5: pd.DataFrame) -> str:
     return "stable"
 
 
+def compute_minutes_floor(grp: pd.DataFrame, window: int = 10) -> dict | None:
+    """
+    Compute the 10th-percentile minutes floor over the last `window` non-DNP games.
+
+    Returns:
+        {
+            "floor_minutes": float,   # 10th-percentile of L10 minutes_raw
+            "avg_minutes":   float,   # mean of same window (for context)
+            "n":             int,     # games used
+        }
+    Returns None if fewer than MIN_GAMES valid rows.
+
+    grp is expected to be sorted newest→oldest (same convention as all other per-player
+    compute functions). DNP rows are filtered defensively even though load_player_log()
+    already removes them.
+    """
+    # Defensive DNP exclusion
+    if "dnp" in grp.columns:
+        grp = grp[grp["dnp"].astype(str) != "1"]
+
+    # L{window} window (most recent games first → head gives most recent)
+    window_rows = grp.head(window)
+
+    if len(window_rows) < MIN_GAMES:
+        return None
+
+    # Coerce minutes_raw defensively; drop rows where coercion yields NaN
+    mins = pd.to_numeric(window_rows["minutes_raw"], errors="coerce").dropna()
+
+    if len(mins) < MIN_GAMES:
+        return None
+
+    floor_minutes = round(float(np.percentile(mins, 10)), 1)
+    avg_minutes   = round(float(mins.mean()), 1)
+    n             = len(mins)
+
+    return {
+        "floor_minutes": floor_minutes,
+        "avg_minutes":   avg_minutes,
+        "n":             n,
+    }
+
+
 def build_bounce_back_profiles(
     player_log: pd.DataFrame,
     whitelist: set,
@@ -1137,7 +1180,9 @@ def build_bounce_back_profiles(
         iron_floor          — True when max_consecutive_misses == 1 AND n_misses >= 5
         n_misses            — total misses in full history at this tier
     """
-    MIN_POST_MISS = 5
+    MIN_POST_MISS    = 5
+    NEAR_MISS_MARGIN = 2   # miss by ≤ this many units = near-miss
+    MIN_MISS_N       = 5   # min misses required to compute severity split
 
     # Filter to whitelisted players using full log (not today-filtered)
     if whitelist:
@@ -1188,6 +1233,9 @@ def build_bounce_back_profiles(
             hits = (values >= best_t).astype(int).tolist()
             n = len(hits)
 
+            # Shortfall per game: 0 on hits, positive amount below tier on misses
+            shortfalls = [max(0.0, float(best_t) - float(v)) for v in values]
+
             # Compute bounce-back metrics from the hit sequence
             post_miss_hits = []
             consec_misses = 0
@@ -1220,6 +1268,19 @@ def build_bounce_back_profiles(
             lift = round(post_miss_hr / overall_hr, 3) if overall_hr > 0 else 1.0
             iron_floor = (max_streak == 1) and (n_misses >= 5)
 
+            # Miss anatomy — severity classification
+            miss_shortfalls = [shortfalls[i] for i in range(n) if hits[i] == 0]
+            n_misses_total  = len(miss_shortfalls)
+            near_miss_rate  = None
+            blowup_rate     = None
+            typical_miss    = None
+            if n_misses_total >= MIN_MISS_N:
+                near_count     = sum(1 for s in miss_shortfalls if s <= NEAR_MISS_MARGIN)
+                blow_count     = sum(1 for s in miss_shortfalls if s > NEAR_MISS_MARGIN)
+                near_miss_rate = round(near_count / n_misses_total, 3)
+                blowup_rate    = round(blow_count / n_misses_total, 3)
+                typical_miss   = round(float(np.median(miss_shortfalls)), 1)
+
             player_profile[stat] = {
                 "tier": best_t,
                 "post_miss_hit_rate": round(post_miss_hr, 3),
@@ -1228,6 +1289,9 @@ def build_bounce_back_profiles(
                 "max_consecutive_misses": max_streak,
                 "iron_floor": iron_floor,
                 "n_misses": n_misses,
+                "near_miss_rate": near_miss_rate,  # fraction of misses within 2 units of tier; None if < 5 misses
+                "blowup_rate":    blowup_rate,      # fraction of misses 3+ units below tier; None if < 5 misses
+                "typical_miss":   typical_miss,     # median shortfall on miss games (units); None if < 5 misses
             }
 
         profiles[player_name] = player_profile
@@ -1335,6 +1399,7 @@ def build_player_stats(
 
         avg_minutes_last5 = round(games_5["minutes_raw"].mean(), 1)
         minutes_trend     = compute_minutes_trend(games_10, games_5)
+        minutes_floor     = compute_minutes_floor(grp)
         raw_avgs          = {stat: round(games_10[STAT_COL[stat]].mean(), 1) for stat in TIERS}
         on_b2b            = team in b2b_teams
         opp_context       = opp_defense.get(opponent) if opponent else None
@@ -1415,6 +1480,7 @@ def build_player_stats(
             "home_away_splits": home_away_splits,
             "minutes_trend": minutes_trend,
             "avg_minutes_last5": avg_minutes_last5,
+            "minutes_floor":     minutes_floor,
             "raw_avgs": raw_avgs,
             "opp_defense": opp_context,
             "game_pace": pace_ctx,
@@ -1659,8 +1725,8 @@ def build_player_profiles(
         minutes_line: str | None = None
         mf = s.get("minutes_floor")
         if mf is not None:
-            floor_min = mf.get("floor")
-            avg_min   = mf.get("avg")
+            floor_min = mf.get("floor_minutes")
+            avg_min   = mf.get("avg_minutes")
             if floor_min is not None and avg_min is not None and avg_min > 0:
                 ratio = floor_min / avg_min
                 minutes_line = (

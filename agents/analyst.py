@@ -386,7 +386,8 @@ def build_quant_context(player_stats: dict) -> str:
         rest_days        = s.get("rest_days")
         games_last_7     = s.get("games_last_7", 0)
         dense_schedule   = s.get("dense_schedule", False)
-        b2b_hit_rates    = s.get("b2b_hit_rates") or {}
+        b2b_hit_rates      = s.get("b2b_hit_rates") or {}
+        minutes_floor_data = s.get("minutes_floor") or {}
 
         # DvP line — one line per player showing positional defense ratings for all stats
         dvp         = s.get("positional_dvp") or {}
@@ -496,6 +497,13 @@ def build_quant_context(player_stats: dict) -> str:
                 f"trend={trend}{b2b_field}{bb_field}{vol_tag}{shoot_flag}"
             )
 
+        floor_val = minutes_floor_data.get("floor_minutes")
+        avg_val   = minutes_floor_data.get("avg_minutes")
+        if floor_val is not None and avg_val is not None:
+            min_floor_str = f" min_floor={floor_val}(avg={avg_val})"
+        else:
+            min_floor_str = ""
+
         if stat_parts:
             spread_info  = f"spread_abs={spread_abs:.1f}" if spread_abs is not None else "spread=n/a"
             blowout_flag = " BLOWOUT_RISK=True" if blowout_risk else ""
@@ -509,7 +517,7 @@ def build_quant_context(player_stats: dict) -> str:
             dense_flag = " DENSE" if dense_schedule else ""
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             lines.append(
-                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}):\n"
+                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}):\n"
                 + (defense_line + "\n" if defense_line else "")
                 + "\n".join(stat_parts)
             )
@@ -777,6 +785,18 @@ KEY RULES — REST & FATIGUE:
 - When "DENSE" is shown (even without B2B): cumulative fatigue is likely.
   → Reduce confidence by 5–10% across all stats for that player.
 - rest_days ≥ 3 = well-rested; no downward adjustment needed.
+
+MINUTES FLOOR — THRESHOLD EVENT FRAGILITY:
+- The min_floor= value in each player header is the 10th-percentile of their L10 minutes.
+  It represents the worst-case realistic playing time in recent games.
+- For PTS picks at T20 or higher: if min_floor < 24, apply mild caution — the player has
+  shown capacity for sub-24 minute games recently, which creates structural risk for high
+  point totals. Consider stepping down one tier or reducing confidence by 3-5%.
+- For REB and AST picks: if min_floor < 20, apply the same caution.
+- If min_floor >= avg_minutes - 3 (floor is close to average = very consistent minutes),
+  treat this as a mild positive signal — the player rarely has outlier-low minutes nights.
+- Do NOT apply this rule when the player's avg_minutes > 36: elite-usage players rarely
+  sit regardless of game script.
 
 KEY RULES — SEQUENTIAL GAME CONTEXT:
 - REB slump-persistent (confirmed signal, n=300, window=10):
