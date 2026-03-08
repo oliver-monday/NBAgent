@@ -38,7 +38,8 @@ GAME_LOG_CSV      = DATA / "player_game_log.csv"
 TEAM_LOG_CSV      = DATA / "team_game_log.csv"
 MASTER_CSV        = DATA / "nba_master.csv"
 WHITELIST_CSV     = ROOT / "playerprops" / "player_whitelist.csv"
-PLAYER_STATS_JSON = DATA / "player_stats.json"
+PLAYER_STATS_JSON             = DATA / "player_stats.json"
+TEAM_DEFENSE_NARRATIVES_JSON  = DATA / "team_defense_narratives.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -345,6 +346,164 @@ def build_opp_defense(team_log: pd.DataFrame) -> dict:
             }
 
     return result
+
+
+def _ordinal(n: int) -> str:
+    """Return e.g. 1→'1st', 2→'2nd', 3→'3rd', 4→'4th', 11→'11th', 21→'21st'."""
+    if 11 <= (n % 100) <= 13:
+        return f"{n}th"
+    return f"{n}" + {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+
+
+def build_team_defense_narratives(team_log: pd.DataFrame) -> dict[str, str]:
+    """
+    Compute a one-line defensive narrative per team from team_game_log.csv,
+    using the last OPP_WINDOW (15) games — same window as build_opp_defense().
+
+    Narrative format:
+      {ABBR} (last 15g): Allows {ppg:.1f} PPG (rank: {ordinal}).{perimeter_clause}{pace_clause}
+
+    Perimeter clause: requires fg3_pct_allowed column — omitted if unavailable.
+    Pace clause:      requires possessions column — omitted if unavailable.
+    (Current team_game_log schema lacks both; function is structured for easy expansion.)
+
+    Writes data/team_defense_narratives.json and returns the narratives dict.
+    Fails silently — never blocks the main quant run.
+    """
+    if team_log.empty:
+        print("[quant] WARNING: team_log empty — skipping team defense narratives.")
+        return {}
+
+    # ── Mirror the self-join from build_opp_defense() to get pts_allowed ──
+    has_3p   = "fg3_pct_allowed" in team_log.columns  # not in current schema
+    has_pace = "possessions" in team_log.columns        # not in current schema
+
+    base_cols = ["game_id", "game_date", "team_abbrev", "opp_abbrev", "team_pts"]
+    extra_cols = []
+    if has_3p:
+        extra_cols.append("fg3_pct_allowed")
+    if has_pace:
+        extra_cols.append("possessions")
+    tl = team_log[[c for c in base_cols + extra_cols if c in team_log.columns]].copy()
+
+    rename_map: dict[str, str] = {
+        "team_abbrev": "opp_check",
+        "opp_abbrev":  "team_check",
+        "team_pts":    "allowed_pts",
+    }
+    if has_3p:
+        rename_map["fg3_pct_allowed"] = "allowed_fg3_pct"
+    tl_opp = tl.rename(columns=rename_map)
+
+    merge_right_cols = ["game_id", "opp_check", "team_check", "allowed_pts"]
+    if has_3p:
+        merge_right_cols.append("allowed_fg3_pct")
+
+    merged = tl.merge(
+        tl_opp[merge_right_cols],
+        left_on=["game_id", "team_abbrev", "opp_abbrev"],
+        right_on=["game_id", "team_check", "opp_check"],
+        how="inner",
+    )
+
+    if merged.empty:
+        print("[quant] WARNING: team_log merge empty — skipping team defense narratives.")
+        return {}
+
+    # ── Per-team averages over last OPP_WINDOW games ──────────────────────
+    team_avgs: dict[str, dict] = {}
+    for team in merged["team_abbrev"].unique():
+        rows = (
+            merged[merged["team_abbrev"] == team]
+            .sort_values("game_date", ascending=False)
+            .head(OPP_WINDOW)
+        )
+        if len(rows) < 3:
+            continue
+        avgs: dict = {
+            "allowed_pts": round(float(rows["allowed_pts"].mean()), 1),
+            "n": len(rows),
+        }
+        if has_3p and "allowed_fg3_pct" in rows.columns:
+            avgs["allowed_fg3_pct"] = round(float(rows["allowed_fg3_pct"].mean()), 1)
+        if has_pace and "possessions" in rows.columns:
+            avgs["possessions"] = round(float(rows["possessions"].mean()), 1)
+        team_avgs[team] = avgs
+
+    if not team_avgs:
+        return {}
+
+    n_teams = len(team_avgs)
+
+    # ── League ranks ──────────────────────────────────────────────────────
+    # PPG allowed: rank 1 = best defense (fewest points allowed)
+    sorted_by_pts = sorted(team_avgs, key=lambda t: team_avgs[t]["allowed_pts"])
+    ppg_ranks = {team: rank for rank, team in enumerate(sorted_by_pts, start=1)}
+
+    # 3P% allowed: rank 1 = best perimeter defense (lowest %)
+    fg3_ranks: dict[str, int] = {}
+    if has_3p:
+        teams_with_fg3 = [t for t in team_avgs if "allowed_fg3_pct" in team_avgs[t]]
+        sorted_by_fg3 = sorted(teams_with_fg3, key=lambda t: team_avgs[t]["allowed_fg3_pct"])
+        fg3_ranks = {team: rank for rank, team in enumerate(sorted_by_fg3, start=1)}
+
+    # Pace: rank 1 = most possessions (fastest pace)
+    pace_ranks: dict[str, int] = {}
+    if has_pace:
+        teams_with_pace = [t for t in team_avgs if "possessions" in team_avgs[t]]
+        sorted_by_pace = sorted(
+            teams_with_pace, key=lambda t: team_avgs[t]["possessions"], reverse=True
+        )
+        pace_ranks = {team: rank for rank, team in enumerate(sorted_by_pace, start=1)}
+
+    # ── Assemble narratives ───────────────────────────────────────────────
+    narratives: dict[str, str] = {}
+    for team in sorted(team_avgs):
+        avgs = team_avgs[team]
+        ppg  = avgs["allowed_pts"]
+        ppg_rank = ppg_ranks[team]
+
+        line = f"{team} (last 15g): Allows {ppg:.1f} PPG (rank: {_ordinal(ppg_rank)})."
+
+        # Perimeter clause
+        if has_3p and team in fg3_ranks:
+            fg3_pct  = avgs["allowed_fg3_pct"]
+            fg3_rank = fg3_ranks[team]
+            if fg3_rank <= 10:
+                label = "Strong perimeter defense"
+            elif fg3_rank <= 20:
+                label = "Average perimeter defense"
+            else:
+                label = "Weak perimeter defense"
+            line += (
+                f" {label} — opponents shooting {fg3_pct:.1f}% from 3"
+                f" (rank: {_ordinal(fg3_rank)})."
+            )
+
+        # Pace clause — only for clearly high/low pace; average is omitted
+        if has_pace and team in pace_ranks:
+            poss      = avgs["possessions"]
+            pace_rank = pace_ranks[team]
+            if pace_rank <= 8:
+                line += f" High pace ({poss:.1f} poss/g). Inflates all counting stats."
+            elif pace_rank >= n_teams - 7:
+                line += f" Low pace ({poss:.1f} poss/g). Suppresses counting stats."
+
+        narratives[team] = line
+
+    # ── Write JSON ────────────────────────────────────────────────────────
+    output = {"as_of": TODAY_STR, "narratives": narratives}
+    try:
+        with open(TEAM_DEFENSE_NARRATIVES_JSON, "w") as fh:
+            json.dump(output, fh, indent=2)
+        print(
+            f"[quant] Team defense narratives: {len(narratives)} teams → "
+            f"{TEAM_DEFENSE_NARRATIVES_JSON}"
+        )
+    except Exception as e:
+        print(f"[quant] WARNING: could not write team defense narratives: {e}")
+
+    return narratives
 
 
 def compute_positional_dvp(player_log: pd.DataFrame, position_map: dict) -> dict:
@@ -1784,6 +1943,8 @@ def main():
 
     opp_defense = build_opp_defense(team_log)
     print(f"[quant] Opponent defense computed for {len(opp_defense)} teams")
+
+    build_team_defense_narratives(team_log)  # writes team_defense_narratives.json; best-effort
 
     position_map = load_whitelist_positions()
     positional_dvp_data = compute_positional_dvp(player_log, position_map)

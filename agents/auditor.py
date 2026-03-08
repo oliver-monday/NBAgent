@@ -39,6 +39,7 @@ PLAYER_STATS_JSON  = DATA / "player_stats.json"
 AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
 AUDIT_REPORTS_DIR   = DATA / "audit_reports"
 POST_GAME_NEWS_JSON = DATA / "post_game_news.json"
+STANDINGS_JSON      = DATA / "standings_today.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -150,6 +151,92 @@ def load_season_context() -> str:
     except Exception as e:
         print(f"[auditor] WARNING: could not load season context: {e}")
         return ""
+
+
+def render_playoff_picture(standings_path=STANDINGS_JSON) -> str:
+    """
+    Read standings_today.json (written by espn_daily_ingest.py) and return a
+    compact ## PLAYOFF PICTURE text block for prompt injection.
+
+    Bucketing logic (per conference, by rank within the conference):
+      Eliminated       — gb_from_8th > 15.0 (overrides rank)
+      Clinched/Safe    — rank ≤ 8 AND ≥ 5 games ahead of 9th
+      Playoff In       — rank ≤ 8 AND < 5 games ahead of 9th
+      Play-In          — rank 9 or 10
+      Bubble           — rank 11 or 12
+      Out of Contention— rank 13–15 (and not Eliminated)
+
+    Returns empty string if file missing or parse fails — never blocks a run.
+    """
+    try:
+        if not Path(standings_path).exists():
+            print("[auditor] standings_today.json not found — skipping playoff picture.")
+            return ""
+        with open(standings_path) as fh:
+            data = json.load(fh)
+    except Exception as e:
+        print(f"[auditor] WARNING: could not load standings: {e}")
+        return ""
+
+    date_str = data.get("date", "unknown")
+    lines = [f"## PLAYOFF PICTURE (as of {date_str})"]
+
+    for conf_key, conf_label in [("East", "EAST"), ("West", "WEST")]:
+        teams = data.get(conf_key, [])
+        if not teams:
+            continue
+        teams = sorted(teams, key=lambda t: t["rank"])
+
+        gb_8th = teams[7]["gb_leader"] if len(teams) >= 8 else None
+        gb_9th = teams[8]["gb_leader"] if len(teams) >= 9 else None
+
+        buckets: dict[str, list[str]] = {
+            "Clinched/Safe": [], "Playoff In": [], "Play-In": [],
+            "Bubble": [], "Out of Contention": [], "Eliminated": [],
+        }
+
+        for t in teams:
+            rank = t["rank"]
+            gb   = t["gb_leader"]
+            entry = f"{rank}. {t['team']} ({t['wins']}-{t['losses']})"
+
+            # Eliminated takes priority over rank
+            if gb_8th is not None and (gb - gb_8th) > 15.0:
+                buckets["Eliminated"].append(entry)
+            elif rank <= 8:
+                gb_from_9th = (gb_9th - gb) if gb_9th is not None else 0.0
+                if gb_from_9th >= 5.0:
+                    buckets["Clinched/Safe"].append(entry)
+                else:
+                    buckets["Playoff In"].append(entry)
+            elif rank in (9, 10):
+                buckets["Play-In"].append(entry)
+            elif rank in (11, 12):
+                buckets["Bubble"].append(entry)
+            else:
+                buckets["Out of Contention"].append(entry)
+
+        bucket_labels = {
+            "Clinched/Safe":    f"{conf_label} — Clinched/Safe (≥5 games clear of bubble):",
+            "Playoff In":       f"{conf_label} — Playoff In (within 5 games of safety):",
+            "Play-In":          f"{conf_label} — Play-In (9th–10th):",
+            "Bubble":           f"{conf_label} — Bubble (11th–12th):",
+            "Out of Contention":f"{conf_label} — Out of Contention:",
+            "Eliminated":       f"{conf_label} — Eliminated:",
+        }
+
+        for key in ["Clinched/Safe", "Playoff In", "Play-In", "Bubble", "Out of Contention", "Eliminated"]:
+            if not buckets[key]:
+                continue
+            lines.append(bucket_labels[key])
+            lines.append("  " + "  ".join(buckets[key]))
+
+        lines.append("")  # blank line between conferences
+
+    if len(lines) <= 1:
+        return ""
+    print(f"[auditor] Playoff picture rendered ({date_str})")
+    return "\n".join(lines).rstrip()
 
 
 def load_post_game_news() -> dict:
@@ -322,13 +409,15 @@ def build_absence_context(graded_picks: list[dict]) -> str:
     )
 
 
-def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", player_stats_context: dict | None = None, post_game_news: dict | None = None) -> str:
+def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", player_stats_context: dict | None = None, post_game_news: dict | None = None, playoff_picture: str = "") -> str:
     hits    = [p for p in graded_picks if p["result"] == "HIT"]
     misses  = [p for p in graded_picks if p["result"] == "MISS"]
     no_data = [p for p in graded_picks if p["result"] == "NO_DATA"]
 
     total_gradeable = len(hits) + len(misses)
     hit_rate = round(100 * len(hits) / total_gradeable, 1) if total_gradeable > 0 else 0
+
+    playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
 
     # ── Pre-computed breakdown stats ──────────────────────────────────
     prop_breakdown: dict = defaultdict(lambda: {"picks": 0, "hits": 0})
@@ -467,7 +556,7 @@ Do not flag exact-threshold results as near-misses or line-value problems in you
 ## SEASON CONTEXT — READ BEFORE ANALYZING ANY PICK
 {season_context if season_context else "No season context file found."}
 
-Players marked OFS all season are permanent absences. Their teammates' current roles are baselines,
+{playoff_picture_section}Players marked OFS all season are permanent absences. Their teammates' current roles are baselines,
 not elevations. Do not cite these absences as a causal factor in any pick reasoning or audit
 analysis.
 
@@ -1046,10 +1135,12 @@ def main():
         print(f"[auditor] Parlays graded: {p_hits}/{len(graded_parlays)} hit")
 
     season_context       = load_season_context()
+    playoff_picture      = render_playoff_picture()
     player_stats_context = load_player_stats_for_audit(graded_picks)
     post_game_news       = load_post_game_news()
     prompt = build_audit_prompt(
-        graded_picks, graded_parlays, season_context, player_stats_context, post_game_news
+        graded_picks, graded_parlays, season_context, player_stats_context, post_game_news,
+        playoff_picture=playoff_picture,
     )
     audit_entry = call_auditor(prompt)
 

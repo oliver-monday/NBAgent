@@ -53,6 +53,7 @@ def to_roto_code(code: str) -> str:
 
 import argparse
 import datetime as dt
+import json
 import os
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -91,6 +92,15 @@ def _daterange(start: dt.date, end: dt.date):
 
 # ✅ This is the GOOD, stable ESPN endpoint
 SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
+
+# ESPN standings endpoint — returns per-conference rank, W-L, games behind
+STANDINGS_URL = "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
+
+# Output path for standings (relative to repo root, derived from __file__)
+STANDINGS_JSON = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data", "standings_today.json"
+)
 
 # Rotowire starting lineups / injuries page
 ROTO_LINEUPS_URL = "https://www.rotowire.com/basketball/nba-lineups.php"
@@ -498,6 +508,76 @@ def upsert_rows(df_new: pd.DataFrame, csv_path: str):
 
 
 # --------------------------------------------------------------------
+# STANDINGS
+# --------------------------------------------------------------------
+
+def fetch_standings() -> None:
+    """
+    Fetch current NBA standings from the ESPN standings endpoint and write
+    data/standings_today.json.  Called once at the end of each ingest run.
+    Fails silently — never blocks the main ingest.
+
+    Output schema:
+      {
+        "fetched_at": "ISO timestamp",
+        "date": "YYYY-MM-DD",
+        "East": [{"rank": int, "team": str, "wins": int, "losses": int, "gb_leader": float}, ...],
+        "West": [...]
+      }
+    Teams are ordered by conference rank (1–15).
+    """
+    today_str = dt.date.today().strftime("%Y-%m-%d")
+    try:
+        resp = requests.get(
+            STANDINGS_URL,
+            headers={"User-Agent": USER_AGENT},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception as e:
+        print(f"[standings] WARNING: could not fetch standings: {e}")
+        return
+
+    result: Dict[str, Any] = {
+        "fetched_at": dt.datetime.utcnow().isoformat() + "Z",
+        "date": today_str,
+    }
+
+    for conf_entry in data.get("children", []):
+        conf_name = conf_entry.get("name", "")
+        if "Eastern" in conf_name:
+            conf_key = "East"
+        elif "Western" in conf_name:
+            conf_key = "West"
+        else:
+            continue
+
+        teams: List[Dict[str, Any]] = []
+        entries = conf_entry.get("standings", {}).get("entries", [])
+        for rank, entry in enumerate(entries, start=1):
+            abbrev = entry.get("team", {}).get("abbreviation", "UNK")
+            abbrev = to_roto_code(abbrev)
+            stats_map = {s["name"]: s.get("value", 0) for s in entry.get("stats", []) if "name" in s}
+            wins   = int(stats_map.get("wins", 0))
+            losses = int(stats_map.get("losses", 0))
+            gb     = float(stats_map.get("gamesBehind", 0.0))
+            teams.append({"rank": rank, "team": abbrev, "wins": wins, "losses": losses, "gb_leader": gb})
+
+        result[conf_key] = teams
+
+    try:
+        os.makedirs(os.path.dirname(STANDINGS_JSON), exist_ok=True)
+        with open(STANDINGS_JSON, "w") as fh:
+            json.dump(result, fh, indent=2)
+        east_n = len(result.get("East", []))
+        west_n = len(result.get("West", []))
+        print(f"[standings] Wrote {east_n} East + {west_n} West teams → {STANDINGS_JSON}")
+    except Exception as e:
+        print(f"[standings] WARNING: could not write standings file: {e}")
+
+
+# --------------------------------------------------------------------
 # MAIN
 # --------------------------------------------------------------------
 
@@ -614,6 +694,9 @@ def main():
             df_new.at[idx, "away_injuries"] = injuries_map.get(away_code)
 
     upsert_rows(df_new, args.out)
+
+    # Fetch and persist current standings (best effort)
+    fetch_standings()
 
 
 if __name__ == "__main__":
