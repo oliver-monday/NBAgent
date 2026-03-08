@@ -7,7 +7,7 @@
 ### Operational
 - **Whitelist maintenance** — review and update `active` flags as the season evolves, especially post-trade-deadline role changes
 - **Season end handling** — workflows need to be paused/disabled in the off-season (roughly late June). Simplest approach: disable the cron schedules in each `.yml`, re-enable in October.
-- **`context/nba_season_context.md` — manual restructure pending** — restructure SEASON FACTS into three decay tiers (PERMANENT / SEMI-STABLE / VOLATILE) as designed in Season Context Improvement 3. Code prompts for Improvements 0–2 are written and queued; this is a manual file edit, no code required. Do after Improvements 0–2 land.
+- **`context/nba_season_context.md` — manual restructure pending** — restructure SEASON FACTS into three decay tiers (PERMANENT / SEMI-STABLE / VOLATILE) as designed in Season Context Improvement 3. Improvements 0–2 are live as of March 8, 2026. This is a manual file edit only — no code required.
 
 ### Untested Hypotheses (backtest designs documented in `docs/BACKTESTS.md`)
 - **H8 — Positional DvP Validity** — Does the positional defense rating predict PTS/AST hit rates more accurately than the team-level opp_defense rating? Requires ~30 days of live positional DvP data accumulating in `player_stats.json`. Run approximately early April 2026. If positional DvP shows no meaningful lift over team-level, consider reverting to team-level to simplify the prompt. Design documented in `docs/BACKTESTS.md`.
@@ -33,62 +33,7 @@
 
 ## Active Queue — In Priority Order
 
-### Season Context Improvements (Code prompts written — ready to send)
-
-#### Season Context Improvement 0 — Standings Snapshot
-**Status: PROMPT WRITTEN — ready to send to Code**
-**Prompt file:** `season_context_improvement_0_standings.md`
-**Priority: HIGH — send first, self-contained, highest immediate value as March deepens**
-
-**What:** Ingest live NBA standings daily and inject a compact `## PLAYOFF PICTURE` snapshot into the analyst and auditor prompts. Pure situational awareness — no hard rules. Analyst and auditor infer implications (star rest decisions, tanking rotations, desperation defense).
-
-**Implementation scope:**
-- `ingest/espn_daily_ingest.py` — `fetch_standings()` added; writes `data/standings_today.json`
-- Shared formatter — `format_playoff_picture()` generates compact bucketed snapshot string
-- `analyst.py` — injected between `## SEASON CONTEXT` and `## TEAM DEFENSIVE PROFILES`
-- `auditor.py` — injected at equivalent position (grading is contextually aware of standings at time picks were made)
-
-**Bucket logic:** `safe` (seed 1–8, 5+ game cushion) / `contending` (within 3 of losing spot) / `playin` (9th–10th) / `bubble` (11th–12th, within 3 of play-in) / `eliminated` (15+ back). Teams in no meaningful bucket omitted from snapshot.
-
-**Design principle:** Spread tells you this game's line; standings tell you the season-level motivation context that explains why teams are playing the way they are. These are complementary, not redundant.
-
----
-
-#### Season Context Improvement 1 — Auto-Generated Team Defense Narratives
-**Status: PROMPT WRITTEN — ready to send to Code**
-**Prompt file:** `season_context_improvement_1_team_defense.md`
-**Priority: HIGH — send after Improvement 0 (no dependency)**
-
-**What:** Replace the static `## TEAM DEFENSIVE PROFILES` section in `nba_season_context.md` with auto-generated per-team narratives computed daily from `team_game_log.csv` last 15 games. The static file goes stale silently — a tanking Utah in March looks nothing like a competitive Utah in November.
-
-**Implementation scope:**
-- `quant.py` — `build_team_defense_narratives()` added; writes `data/team_defense_narratives.json`
-- Shared formatter — `format_team_defense_section()` generates dated narrative block
-- `analyst.py` — static TEAM DEFENSIVE PROFILES section replaced with formatter call
-
-**Narrative format:** `UTA (last 15g): Allows 118.4 PPG (rank: 29th). Weak perimeter defense — opponents shooting 42.1% from 3 (rank: 28th). High pace (103.2 poss/g). Inflates all counting stats.`
-
-**Note:** Static `## TEAM DEFENSIVE PROFILES` section remains in `nba_season_context.md` as a reference — Code just stops injecting it. Clean rollback path.
-
----
-
-#### Season Context Improvement 2 — Staleness Detection in `pre_game_reporter.py`
-**Status: PROMPT WRITTEN — ready to send to Code**
-**Prompt file:** `season_context_improvement_2_staleness.md`
-**Priority: MEDIUM — send after Improvements 0 and 1**
-
-**What:** Extend `pre_game_reporter.py` with a deterministic, Python-only staleness detection pass that fires before the existing Claude call. Parses `context/nba_season_context.md` SEASON FACTS section for explicit dates and flags facts that have exceeded their expected shelf life.
-
-**Three rules:**
-- Return/injury note older than 7 days → `⚠ CONTEXT FLAG`
-- Specific dated fact (full ISO date) older than 5 days → `⚠ CONTEXT FLAG`
-- Trade/role note older than 60 days (≈14 games) → `⚠ CONTEXT FLAG` (note likely redundant — game log has sufficient data)
-
-**Implementation scope:** `pre_game_reporter.py` only. Flags write to existing `context/context_flags.md` and `pre_game_news.json`. No changes to `analyst.py` — picks up via existing `⚠ CONTEXT FLAG` mechanism.
-
----
-
-#### Season Context Improvement 3 — Restructure SEASON FACTS into Decay Tiers
+### Season Context Improvement 3 — Restructure SEASON FACTS into Decay Tiers
 **Status: MANUAL — no Code prompt needed**
 **Priority: LOW — do after Improvements 0–2 land**
 
@@ -180,7 +125,7 @@ Design philosophy: the Analyst already has a solid quantitative matchup foundati
 
 ## Implementation Notes
 
-- **Season Context Improvements 0–2** — Code prompts written and ready. Send order: 0 → 1 → 2. Improvements 0 and 1 have no dependency on each other but both should land before doing the manual Improvement 3 restructure.
+- **Season Context Improvements 0–2** — ✅ All implemented March 8, 2026. Standings snapshot, auto-generated team defense narratives, and staleness detection are live in production. Improvement 3 (manual SEASON FACTS restructure) is the only remaining item.
 - **Miss Anatomy** — quant fields live and feeding Player Profiles conditional rendering. Analyst wiring deferred until backtest (~late March). See `miss_anatomy_quant_only.md` for deferred scope rationale.
 - **Minutes Floor** — structural feature, ships without backtest. Validates naturally via audit log accumulation within 2–3 weeks.
 - **P4 (Tier-Walk)** — ✅ IMPLEMENTED (March 6, 2026). `tier_walk_flag` in `miss_details` accumulates going forward — expect meaningful patterns after 20+ audit days.
@@ -275,7 +220,7 @@ Design philosophy: the Analyst already has a solid quantitative matchup foundati
 | **Auditor season context injection (March 2026)** | `load_season_context()` in `auditor.py`; OFS framing injected into audit prompt. PERMANENT ABSENCES rule block added to `nba_season_context.md`. |
 | **Auditor pre-computed statistics (March 2026)** | `prop_type_breakdown` and `confidence_calibration` pre-computed in Python before Claude call. `## PRE-COMPUTED STATISTICS` section added to audit prompt. Both fields added to `audit_log.json`. |
 | **Auditor 4-step miss analysis + miss_classification (March 2026)** | PICK ANALYSIS TASK replaced with 4-step protocol. `miss_classification` field added to `miss_details` schema. |
-| **Auditor player stats context injection (March 2026)** | `load_player_stats_for_audit()` added. `## PLAYER STATS CONTEXT` injected into audit prompt. |
+| **Auditor player stats context injection (March 2026)** | `load_player_stats_for_audit()` added. `## PLAYER STATS CONTEXT` injected into audit prompt. *(Superseded March 8, 2026 — function removed; auditor now reads quant context from pick object fields to avoid date-gate bug.)* |
 | **Parlay agent reads audit feedback (March 2026)** | `load_parlay_audit_feedback()` added to `parlay.py`. `## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS` injected into parlay prompt. |
 | **Longitudinal audit summary (March 2026)** | `save_audit_summary()` in `auditor.py` writes `data/audit_summary.json`. `load_audit_summary()` in `analyst.py` injects `## ROLLING PERFORMANCE SUMMARY`. |
 | **Injury report display overhaul (March 2026)** | `build_site.py` `load_injuries_display()` rewritten. Game grouping from `nba_master.csv`; whitelist filtering by `(canonical_team, last_name)` tuple; abbrev normalization via `_ABBR_NORM`. |
@@ -308,6 +253,9 @@ Design philosophy: the Analyst already has a solid quantitative matchup foundati
 | **Miss Anatomy quant fields (March 2026)** | `near_miss_rate`, `blowup_rate`, `typical_miss` added to `build_bounce_back_profiles()` in `quant.py`. Analyst wiring deferred pending backtest. |
 | **Minutes Floor (March 2026)** | `minutes_floor` in `quant.py` and `analyst.py`. Structural feature, no backtest. |
 | **Player Profiles (March 2026)** | `build_player_profiles()` in `quant.py`. `## PLAYER PROFILES` injected into analyst prompt. Live statistical portraits computed fresh daily. |
-| **Season Context Improvement 0 — Standings Snapshot** | Code prompt written (`season_context_improvement_0_standings.md`). Ready to send. |
-| **Season Context Improvement 1 — Auto-Generated Team Defense Narratives** | Code prompt written (`season_context_improvement_1_team_defense.md`). Ready to send. |
-| **Season Context Improvement 2 — Staleness Detection** | Code prompt written (`season_context_improvement_2_staleness.md`). Ready to send. |
+| **Season Context Improvement 0 — Standings Snapshot (March 8, 2026)** | `fetch_standings()` in `espn_daily_ingest.py` writes `data/standings_today.json`. `render_playoff_picture()` formatter in `analyst.py` and `auditor.py`. Bucketed `## PLAYOFF PICTURE` injected into both prompts. |
+| **Season Context Improvement 1 — Auto-Generated Team Defense Narratives (March 8, 2026)** | `build_team_defense_narratives()` in `quant.py` writes `data/team_defense_narratives.json` (last 15g PPG + rank per team). `format_team_defense_section()` in `analyst.py` replaces static `## TEAM DEFENSIVE PROFILES` section; validates `as_of == TODAY` and returns fallback if stale. |
+| **Season Context Improvement 2 — Staleness Detection (March 8, 2026)** | `detect_staleness_flags()` (Pass 1 — Python only, no LLM) added to `pre_game_reporter.py`. Parses SEASON FACTS dates and flags stale facts (7d/5d/60d rules). Flags appended to `data/context_flags.md` and `staleness_flags` key in `pre_game_news.json`. `analyst.py` picks up via existing `⚠ CONTEXT FLAG` mechanism. |
+| **Auditor — NO_DATA handling + player stats date gate (March 8, 2026)** | Removed `load_player_stats_for_audit()` and `PLAYER_STATS_JSON` entirely — eliminates today's-data-for-yesterday's-audit confabulation bug. HIT/MISS picks now go to `## FULL GRADED PICKS` for standard miss analysis; NO_DATA picks split into separate `## NO_DATA PICKS` block with dedicated `## NO_DATA ANALYSIS TASK`. Auditor directed to read quant context from pick object fields (`reasoning`, `hit_rate_display`, `tier_walk`, `opponent`). `no_data_details` array added to `audit_log.json` output schema. |
+| **Post-Game Reporter — QUESTIONABLE pre-game status + NO_DATA promotion (March 8, 2026)** | `load_yesterdays_picks_with_status()` added — reads `injury_status_at_check` from `picks.json`, returns highest-severity status per player. `classify_from_news()` now accepts `injury_status` param; pre-game status inference block fires when status ∈ {QUESTIONABLE, DOUBTFUL, OUT} and minutes are 0/low — returns `dnp` or `minutes_restriction` without needing ESPN confirmation. Separate promotion block upgrades `no_data` → `dnp`/`injury_exit` when injury language detected. `injury_status_at_check` added to `post_game_news.json` output. |
+| **Analyst — AST T4+ hard gate + 3PM hard skip (March 8, 2026)** | Two unconditional gates added to `build_prompt()`. (1) AST T4+ hard gate: PF/C or raw_avgs AST < 4.0 → opponent AST DvP must be "soft"; mid/tough = skip, no override. (2) 3PM hard skip: trend=down AND avg_minutes_last5 ≤ 30 → skip all 3PM picks including T1 (step-down rule does not apply). Both gates are additive; existing rules unchanged. |
