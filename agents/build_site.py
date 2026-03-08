@@ -407,12 +407,13 @@ def load_todays_parlays() -> dict:
                     hits += 1
                 elif r == "MISS":
                     misses += 1
-                if r in ("HIT", "MISS"):
+                if r in ("HIT", "MISS", "PARTIAL"):
                     past_parlays.append({
                         "date": bundle_date,
                         "label": p.get("label"),
                         "result": r,
                         "implied_odds": p.get("implied_odds"),
+                        "legs": p.get("legs", []),
                         "leg_results": p.get("leg_results", []),
                     })
 
@@ -1457,6 +1458,33 @@ function renderAudit() {{
     html += `<div class="audit-card"><h3>→ Analyst Instructions</h3><ul class="audit-list">`;
     a.recommendations.forEach(r => html += `<li>${{r}}</li>`);
     html += `</ul></div>`;
+  }}
+  const pr = a.parlay_results || {{}};
+  const parlayHits    = pr.hits ?? 0;
+  const parlayTotal   = pr.total ?? 0;
+  const parlaySummary = pr.parlay_summary || '';
+  const parlayLessons = pr.parlay_lessons || [];
+  const parlayReinf   = pr.parlay_reinforcements || [];
+  if (parlayTotal > 0) {{
+    let phtml = `<div class="audit-card">
+      <h3>🎰 Parlay Results — ${{parlayHits}}/${{parlayTotal}} hit</h3>`;
+    if (parlaySummary) {{
+      phtml += `<div style="font-size:13px;color:var(--muted);margin-bottom:10px;font-style:italic">${{parlaySummary}}</div>`;
+    }}
+    if (parlayReinf.length) {{
+      phtml += `<div style="font-size:12px;font-weight:600;color:var(--hit);margin-bottom:4px">✓ What worked</div>
+        <ul class="audit-list">`;
+      parlayReinf.forEach(r => phtml += `<li>${{r}}</li>`);
+      phtml += `</ul>`;
+    }}
+    if (parlayLessons.length) {{
+      phtml += `<div style="font-size:12px;font-weight:600;color:var(--miss);margin-top:8px;margin-bottom:4px">✗ Notes for next card</div>
+        <ul class="audit-list">`;
+      parlayLessons.forEach(l => phtml += `<li>${{l}}</li>`);
+      phtml += `</ul>`;
+    }}
+    phtml += `</div>`;
+    html += phtml;
   }}
   c.innerHTML = html;
 }}

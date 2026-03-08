@@ -448,9 +448,11 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
 {parlays_block}
 
 ## PARLAY ANALYSIS TASK
-4. For each PARLAY HIT: identify what made the combination work — correlation logic, matchup stack, game script.
-5. For each PARLAY MISS: which leg failed and why? Was the correlation assumption wrong? Was a leg too aggressive?
-6. Add 1–2 parlay-specific recommendations to help the Parlay Agent select better combinations.
+4. Parlay hit rate this session: {p_hits}/{len(graded_parlays)}. Write a one-line summary of the parlay card result — e.g. "Clean 5/5 sweep anchored by iron-floor PTS legs" or "2/5 — the Jokic AST leg was the consistent failure point."
+5. For each PARLAY HIT: identify in one sentence what made the combination work — correlation logic, matchup stack, or game script alignment.
+6. For each PARLAY MISS: identify in one sentence which leg failed and the root cause. Was the correlation assumption wrong? Was a leg too aggressive given known risks?
+7. parlay_reinforcements: write at least 1 item (max 3). Focus on combination patterns and leg types that succeeded — not individual pick quality, which is covered above. At least one item must reference a specific leg structure or correlation type.
+8. parlay_lessons: write at least 1 item (max 3) when any parlay missed. If all parlays hit, write 1 item noting what structural risk existed that could have caused a miss (e.g. correlated legs, anchor player concentration, aggressive tier on a secondary leg). The Parlay Agent must always receive at least one constructive note per session.
 """
 
     return f"""You are the Auditor for NBAgent, an NBA player props selection system.
@@ -605,8 +607,9 @@ Respond ONLY with valid JSON. No preamble.
     "hits": {p_hits},
     "misses": {p_misses},
     "partial": {p_partial},
-    "parlay_lessons": ["string: what the Parlay Agent should do differently"],
-    "parlay_reinforcements": ["string: what combination logic worked well"]
+    "parlay_summary": "string: one-line summary of the parlay card result",
+    "parlay_lessons": ["string — min 1 item always required. What the Parlay Agent should do differently, or what structural risk existed even on a winning card."],
+    "parlay_reinforcements": ["string — min 1 item always required. What combination logic or leg structure worked well."]
   }}
 }}
 """
@@ -926,6 +929,9 @@ def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlay
         # ── Parlay Results ────────────────────────────────────────────
         md_lines.append("## Parlay Results")
         md_lines.append(f"- Result: {p_hits}/{p_total} hit")
+        parlay_summary_line = parlay_results.get("parlay_summary", "")
+        if parlay_summary_line:
+            md_lines.append(f"- {parlay_summary_line}")
         md_lines.append("")
         for parlay in graded_parlays:
             label  = parlay.get("label", "Parlay")
