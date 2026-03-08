@@ -1098,5 +1098,255 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-08",
+    "parlays": [
+      {
+        "label": "Miller-Barrett Iron Floor",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "PHX",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "DAL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Derrick White",
+            "team": "BOS",
+            "opponent": "CLE",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+106",
+        "confidence_product": 0.5913,
+        "correlation": "independent",
+        "rationale": "Three iron-floor scorers across independent games; all trending up or stable with 9/10 or 8/10 hit rates.",
+        "date": "2026-03-08",
+        "id": "parlay_2026-03-08_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "LeBron Assists Anchor",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "LeBron James",
+            "team": "LAL",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 86,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "PHX",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "DAL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.618,
+        "correlation": "independent",
+        "rationale": "LeBron AST feeder prop (non-PTS) anchors two independent iron-floor scorers across four separate teams.",
+        "date": "2026-03-08",
+        "id": "parlay_2026-03-08_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Reaves-Miller-Barrett Volume",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Austin Reaves",
+            "team": "LAL",
+            "opponent": "NY",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 86,
+            "correlation_role": "pace_play"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "DAL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "PHX",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 88,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.618,
+        "correlation": "independent",
+        "rationale": "Reaves low-threshold 3PM iron floor diversifies prop types; Barrett and Miller provide independent volume-game scoring floors.",
+        "date": "2026-03-08",
+        "id": "parlay_2026-03-08_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Durant-Booker Cross-Slate Edge",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "LeBron James",
+            "team": "LAL",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 86,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Kevin Durant",
+            "team": "HOU",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "CHA",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 86,
+            "correlation_role": "pace_play"
+          },
+          {
+            "player_name": "Derrick White",
+            "team": "BOS",
+            "opponent": "CLE",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.5142,
+        "correlation": "independent",
+        "rationale": "Four different games, three distinct prop types (AST, PTS, 3PM); no competing roles, maximum game-script independence across slate.",
+        "date": "2026-03-08",
+        "id": "parlay_2026-03-08_04",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      },
+      {
+        "label": "Miller AST-Durant-White Diversifier",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "PHX",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 86,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Kevin Durant",
+            "team": "HOU",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Derrick White",
+            "team": "BOS",
+            "opponent": "CLE",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "LeBron James",
+            "team": "LAL",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 86,
+            "correlation_role": "feeder"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.5142,
+        "correlation": "independent",
+        "rationale": "Miller AST (not PTS) exposes him via different prop type; paired with Durant PTS and White PTS across fully independent games.",
+        "date": "2026-03-08",
+        "id": "parlay_2026-03-08_05",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      }
+    ]
   }
 ]
