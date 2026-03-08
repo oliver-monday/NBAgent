@@ -913,6 +913,16 @@ Stat-specific rules remain unchanged:
     Soft = favorable (upgrade bias or higher confidence).
     Tough = unfavorable (downgrade one tier or reduce confidence by 5–10%).
 
+  AST T4+ HARD GATE — low-volume passers vs non-soft defenses:
+    If you are considering an AST pick at T4 or higher AND either of the following is true:
+      (a) the player's position is PF or C, OR
+      (b) the player's raw_avgs AST is below 4.0 per game
+    → the opponent's AST DvP rating MUST be "soft" to proceed.
+    → If the AST DvP rating is "mid" or "tough", SKIP this pick entirely — regardless of overall
+      hit rate, confidence, or other signals. This gate is unconditional.
+    This prevents low-volume or frontcourt passers from being picked at AST T4+ against defenses
+    that historically suppress assists at that position.
+
   REB: positional DvP does NOT make REB a valid defense signal. Do not use REB rating as
     justification for a REB over. Rebounds are driven by pace, opponent FG%, and frontcourt
     competition — none captured by allowed-per-position averages. Ignore REB rating entirely.
@@ -963,6 +973,14 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   This rule does not apply to PTS or AST (trend has shown no sequential signal for those stats).
   If stepping down would take the tier below the minimum valid tier (T1 for 3PM), skip the
   3PM pick entirely for that player.
+- 3PM hard skip — trend=down AND limited minutes:
+  If a player's 3PM trend is "down" AND their avg_minutes_last5 is ≤ 30, SKIP all 3PM picks
+  for that player, including T1. Do not apply the step-down rule — skip outright.
+  Rationale: low-minute players have fewer 3PM attempts per game; a declining trend in limited
+  minutes means the absolute floor on makes is very close to zero. T1 (1+ make) is not a safe
+  floor in this profile.
+  This gate applies to the trend=down case only. A player with trend=stable or trend=up and
+  avg_minutes_last5 ≤ 30 may still qualify for T1 via normal tier selection logic.
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
 
 KEY RULES — SPREAD / BLOWOUT RISK:
