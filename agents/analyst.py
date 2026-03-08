@@ -346,6 +346,22 @@ def load_player_stats() -> dict:
         return {}
 
 
+def load_player_profiles(player_stats: dict) -> str:
+    """
+    Extract pre-rendered player profile narratives from player_stats dict.
+    Returns a formatted multi-player block for injection into the analyst prompt,
+    or empty string if no profiles are available (e.g. first run before quant writes them).
+    """
+    blocks = []
+    for player_name in sorted(player_stats):
+        narrative = player_stats[player_name].get("profile_narrative")
+        if narrative:
+            blocks.append(narrative)
+    if not blocks:
+        return ""
+    return "\n\n".join(blocks)
+
+
 def build_quant_context(player_stats: dict) -> str:
     """
     Build a compact quant stats block for the prompt.
@@ -592,7 +608,7 @@ def load_audit_summary() -> str:
 
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "") -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -604,6 +620,17 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
         "confidence levels.\n\n"
         f"{pre_game_news}\n\n"
     ) if pre_game_news else ""
+
+    player_profiles_section = (
+        "## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS\n"
+        "Pre-computed from the same game log data as the quant stats above. Use these to "
+        "identify structural risk factors (B2B-sensitive players, blowout-sensitive scorers, "
+        "FG-dependent players in tough matchups) and to contextualize recent hit sequences "
+        "(current streak, longest miss streak). These are informational — they do not override "
+        "tier hit rates but help explain why a high-hit-rate player might be structurally "
+        "fragile today.\n\n"
+        f"{player_profiles}\n\n"
+    ) if player_profiles else ""
 
     return f"""You are the Analyst for NBAgent, an NBA player props selection system.
 
@@ -836,7 +863,7 @@ Condition C — Confirming signals: At least two independent signals must suppor
 
 {quant_context if quant_context else "No quant stats available."}
 
-## AUDITOR FEEDBACK FROM PREVIOUS DAYS
+{player_profiles_section}## AUDITOR FEEDBACK FROM PREVIOUS DAYS
 {audit_context}
 
 ## ROLLING PERFORMANCE SUMMARY
@@ -999,6 +1026,10 @@ def main():
     print(f"[analyst] Loaded quant stats for {len(player_stats)} players")
     quant_context = build_quant_context(player_stats)
 
+    player_profiles = load_player_profiles(player_stats)
+    if player_profiles:
+        print(f"[analyst] Loaded player profile narratives")
+
     audit_summary = load_audit_summary()
     if audit_summary:
         print(f"[analyst] Loaded rolling audit summary")
@@ -1011,6 +1042,7 @@ def main():
         games, player_context, injuries, audit_context,
         season_context, quant_context, audit_summary,
         pre_game_news=pre_game_news,
+        player_profiles=player_profiles,
     )
 
     picks = call_analyst(prompt)

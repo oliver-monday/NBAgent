@@ -1429,6 +1429,264 @@ def build_player_stats(
     return stats_out
 
 
+def build_player_profiles(
+    player_log: pd.DataFrame,
+    player_stats: dict,
+    whitelist: set,
+) -> dict:
+    """
+    Build per-player narrative profile blocks for players with a qualifying PTS tier.
+    Computed fresh daily. Returns {player_name: str} where the value is a pre-rendered
+    multi-line text block ready for direct injection into the analyst prompt.
+
+    Only profiles players present in player_stats with a non-null best_tiers["PTS"].
+    player_log should be the raw log (pre-DNP-filter); this function applies its own
+    DNP exclusion internally.
+    Minimum 10 non-DNP games required — players below this are silently skipped.
+    """
+    profiles: dict = {}
+
+    # Coerce numeric columns (raw log may have string values)
+    numeric_cols = ["pts", "tpm", "fgm", "fga", "fg3m", "fg3a", "ftm", "fta", "minutes"]
+    log = player_log.copy()
+    for col in numeric_cols:
+        if col in log.columns:
+            log[col] = pd.to_numeric(log[col], errors="coerce")
+
+    for player_name, s in player_stats.items():
+        best_tiers_map = s.get("best_tiers") or {}
+        best_pts = best_tiers_map.get("PTS")
+        if not best_pts:
+            continue  # No qualifying PTS tier — skip
+
+        best_pts_tier    = int(best_pts["tier"])
+        overall_hit_rate = float(best_pts.get("hit_rate", 0.0))
+
+        # Filter to this player's games
+        pmask = log["player_name"].str.lower() == player_name.lower()
+        plog  = log[pmask].copy()
+
+        # Apply DNP exclusion
+        dnp_col  = pd.to_numeric(plog["dnp"].astype(str), errors="coerce").fillna(0)
+        plog     = plog[dnp_col != 1].copy()
+
+        # Sort descending by date (most recent first)
+        plog = plog.sort_values("game_date", ascending=False).reset_index(drop=True)
+
+        if len(plog) < 10:
+            continue  # Minimum data requirement
+
+        # L20 window (most recent 20 non-DNP games)
+        l20     = plog.head(20).copy()
+        n_games = len(l20)
+
+        # ── 1. PTS hit sequence ──────────────────────────────────────
+        hits_arr  = (l20["pts"].fillna(0) >= best_pts_tier).astype(int).tolist()
+        hit_count = sum(hits_arr)
+
+        # Current streak (index 0 = most recent game)
+        current_val = hits_arr[0]
+        current_len = 0
+        for h in hits_arr:
+            if h == current_val:
+                current_len += 1
+            else:
+                break
+        streak_word    = "hit" if current_val == 1 else "miss"
+        streak_summary = f"current: {current_len}-{streak_word} streak"
+
+        # Longest hit and miss streaks in L20
+        max_hit_streak = max_miss_streak = 0
+        cur_h = cur_m = 0
+        for h in hits_arr:
+            if h == 1:
+                cur_h += 1; cur_m = 0
+                max_hit_streak  = max(max_hit_streak,  cur_h)
+            else:
+                cur_m += 1; cur_h = 0
+                max_miss_streak = max(max_miss_streak, cur_m)
+
+        pct          = int(round(hit_count / n_games * 100))
+        sequence_line = (
+            f"  Hit sequence: {hit_count}/{n_games} ({pct}%) | "
+            f"{streak_summary} | "
+            f"longest hit-streak: {max_hit_streak} | "
+            f"longest miss-streak: {max_miss_streak}"
+        )
+
+        # ── 2. Scoring channel breakdown ─────────────────────────────
+        has_fg_data  = ("fgm" in log.columns and not l20["fgm"].isna().all())
+        has_ft_data  = (
+            "ftm" in log.columns and "fta" in log.columns
+            and not l20["ftm"].isna().all()
+        )
+
+        if not has_fg_data:
+            channel_line = "  Scoring channels: [shooting data unavailable]"
+        else:
+            shooting_games = l20[l20["fga"].fillna(0) > 0].copy()
+            if len(shooting_games) < 5:
+                channel_line = "  Scoring channels: [insufficient shooting data]"
+            else:
+                shooting_games["fg_pts"]  = shooting_games["fgm"].fillna(0) * 2
+                shooting_games["tpm_pts"] = shooting_games["tpm"].fillna(0) * 1
+                shooting_games["ft_pts"]  = (
+                    shooting_games["ftm"].fillna(0) * 1 if has_ft_data else 0.0
+                )
+                shooting_games["total_pts"] = (
+                    shooting_games["fg_pts"]
+                    + shooting_games["tpm_pts"]
+                    + shooting_games["ft_pts"]
+                )
+                valid = shooting_games[shooting_games["total_pts"] > 0]
+                if len(valid) < 3:
+                    channel_line = "  Scoring channels: [insufficient data]"
+                else:
+                    avg_fg  = float(valid["fg_pts"].mean())
+                    avg_tpm = float(valid["tpm_pts"].mean())
+                    avg_ft  = float(valid["ft_pts"].mean()) if has_ft_data else 0.0
+                    avg_tot = float(valid["total_pts"].mean())
+
+                    fg_pct  = int(round(avg_fg  / avg_tot * 100))
+                    tpm_pct = int(round(avg_tpm / avg_tot * 100))
+                    ft_pct  = int(round(avg_ft  / avg_tot * 100)) if has_ft_data else 0
+
+                    labels: list[str] = []
+                    if has_ft_data and (avg_ft / avg_tot) >= 0.25:
+                        labels.append("FT-contributor")
+                    if (avg_fg / avg_tot) >= 0.68:
+                        labels.append("FG-dependent")
+                    if (avg_tpm / avg_tot) >= 0.18:
+                        labels.append("3PM-contributor")
+                    if not labels:
+                        labels.append("balanced")
+
+                    label_str = " ".join(f"[{lb}]" for lb in labels)
+
+                    if has_ft_data:
+                        channel_line = (
+                            f"  Scoring channels: FG={fg_pct}% FT={ft_pct}% 3PM={tpm_pct}%"
+                            f"  {label_str}"
+                        )
+                    else:
+                        channel_line = (
+                            f"  Scoring channels: FG={fg_pct}% 3PM={tpm_pct}%"
+                            f"  {label_str}  [FT data unavailable]"
+                        )
+
+        # ── 3. B2B sensitivity ───────────────────────────────────────
+        b2b_data = (s.get("b2b_hit_rates") or {}).get("PTS")
+        if b2b_data and b2b_data.get("n", 0) >= 5:
+            b2b_hr_raw = b2b_data["hit_rates"].get(str(best_pts_tier))
+            b2b_n      = b2b_data["n"]
+            if b2b_hr_raw is not None:
+                b2b_hr   = float(b2b_hr_raw)
+                pp_delta = b2b_hr - overall_hit_rate
+                b2b_hits = int(round(b2b_hr * b2b_n))
+                b2b_pct  = int(round(b2b_hr * 100))
+                if pp_delta <= -0.10:
+                    b2b_label = "[B2B-sensitive]"
+                elif pp_delta >= 0.00:
+                    b2b_label = "[B2B-resilient]"
+                else:
+                    b2b_label = "[B2B-mixed]"
+                b2b_line = (
+                    f"  B2B: {b2b_hits}/{b2b_n} ({b2b_pct}%) on B2B second nights"
+                    f"  ({pp_delta:+.0%} vs baseline {int(round(overall_hit_rate*100))}%)"
+                    f"  {b2b_label}"
+                )
+            else:
+                b2b_line = "  B2B: insufficient sample (<5 games)"
+        else:
+            b2b_line = "  B2B: insufficient sample (<5 games)"
+
+        # ── 4. Blowout context ───────────────────────────────────────
+        blowout_line: str | None = None
+        spread_splits = (s.get("spread_split_hit_rates") or {}).get("PTS") or {}
+        comp_data = spread_splits.get("competitive")
+        blow_data = spread_splits.get("blowout")
+        if comp_data and blow_data:
+            comp_hr_raw = comp_data.get("hit_rates", {}).get(str(best_pts_tier))
+            blow_hr_raw = blow_data.get("hit_rates", {}).get(str(best_pts_tier))
+            comp_n      = comp_data.get("n", 0)
+            blow_n      = blow_data.get("n", 0)
+            if (
+                comp_hr_raw is not None and blow_hr_raw is not None
+                and comp_n >= 5 and blow_n >= 5
+            ):
+                comp_hr   = float(comp_hr_raw)
+                blow_hr   = float(blow_hr_raw)
+                pp_delta  = blow_hr - comp_hr
+                comp_pct  = int(round(comp_hr * 100))
+                blow_pct  = int(round(blow_hr * 100))
+                comp_hits = int(round(comp_hr * comp_n))
+                blow_hits = int(round(blow_hr * blow_n))
+                if pp_delta <= -0.10:
+                    blow_label = "[blowout-sensitive]"
+                elif pp_delta >= 0.00:
+                    blow_label = "[blowout-resilient]"
+                else:
+                    blow_label = "[blowout-mixed]"
+                blowout_line = (
+                    f"  Blowout context: {blow_hits}/{blow_n} ({blow_pct}%) in blowout games"
+                    f" vs {comp_hits}/{comp_n} ({comp_pct}%) competitive"
+                    f"  ({pp_delta:+.0%} vs competitive)"
+                    f"  {blow_label}"
+                )
+
+        # ── 5. Miss anatomy (conditional — only if parallel task has landed) ──
+        miss_line: str | None = None
+        bb_pts       = (s.get("bounce_back") or {}).get("PTS") or {}
+        near_miss_rt = bb_pts.get("near_miss_rate")
+        blowup_rt    = bb_pts.get("blowup_rate")
+        typical_miss = bb_pts.get("typical_miss")
+        n_misses_bb  = bb_pts.get("n_misses")
+        if near_miss_rt is not None and n_misses_bb:
+            pct_near   = int(round(near_miss_rt * 100))
+            pct_blowup = (
+                int(round(blowup_rt * 100)) if blowup_rt is not None
+                else 100 - pct_near
+            )
+            tm_str = f"{typical_miss:.1f}u" if typical_miss is not None else "n/a"
+            miss_line = (
+                f"  Miss anatomy ({n_misses_bb} misses): "
+                f"{pct_near}% near-miss (≤2u) / "
+                f"{pct_blowup}% blowup (>2u), "
+                f"typical shortfall={tm_str}"
+            )
+
+        # ── 6. Minutes floor (conditional — only if parallel task has landed) ──
+        minutes_line: str | None = None
+        mf = s.get("minutes_floor")
+        if mf is not None:
+            floor_min = mf.get("floor")
+            avg_min   = mf.get("avg")
+            if floor_min is not None and avg_min is not None and avg_min > 0:
+                ratio = floor_min / avg_min
+                minutes_line = (
+                    f"  Minutes floor (L10): floor={floor_min:.1f}min"
+                    f" avg={avg_min:.1f}min"
+                    f" (ratio={ratio:.2f})"
+                )
+
+        # ── Assemble narrative ───────────────────────────────────────
+        header = (
+            f"{player_name} — Scoring Portrait"
+            f" (L{n_games} games, best PTS tier: T{best_pts_tier}):"
+        )
+        parts = [header, sequence_line, channel_line, b2b_line]
+        if blowout_line:
+            parts.append(blowout_line)
+        if miss_line:
+            parts.append(miss_line)
+        if minutes_line:
+            parts.append(minutes_line)
+
+        profiles[player_name] = "\n".join(parts)
+
+    return profiles
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -1489,6 +1747,21 @@ def main():
         position_map=position_map,
     )
     print(f"[quant] Built stats cards for {len(player_stats)} players")
+
+    # Load raw player log (pre-DNP filter) for profile builder — separate from the
+    # filtered load_player_log() so build_player_profiles() can apply its own exclusions.
+    player_log_raw = pd.read_csv(GAME_LOG_CSV, dtype={"game_id": str, "player_id": str})
+    player_log_raw["game_date"] = (
+        pd.to_datetime(player_log_raw["game_date"], errors="coerce")
+        .dt.strftime("%Y-%m-%d")
+    )
+    player_log_raw = player_log_raw[player_log_raw["game_date"] < TODAY_STR].copy()
+
+    player_profiles_map = build_player_profiles(player_log_raw, player_stats, whitelist)
+    for name, narrative in player_profiles_map.items():
+        if name in player_stats:
+            player_stats[name]["profile_narrative"] = narrative
+    print(f"[quant] Built {len(player_profiles_map)} player profile narratives")
 
     with open(PLAYER_STATS_JSON, "w") as f:
         json.dump(player_stats, f, indent=2)
