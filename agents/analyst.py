@@ -823,12 +823,14 @@ JSON schema — each pick:
     "trend": "up | stable | down",
     "opp_defense_rating": "soft | mid | tough | unknown",
     "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
+    "iron_floor": "true | false",
     "reasoning": "One tight sentence: key reason this floor holds today. Max 15 words."
   }}
 ]
 
 pick_value must be one of the valid tier values listed above. No other values allowed.
 direction is always OVER.
+iron_floor must be true if and only if the quant stat line for this pick showed [iron_floor]. Otherwise false.
 Only include picks with confidence_pct >= 70.
 """
 
@@ -901,6 +903,8 @@ def save_picks(picks: list[dict]):
     for p in picks:
         p["result"] = None
         p["actual_value"] = None
+        if "iron_floor" not in p:
+            p["iron_floor"] = False
 
     updated = existing + picks
 
