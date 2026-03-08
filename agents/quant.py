@@ -760,6 +760,131 @@ def compute_shooting_regression(grp: pd.DataFrame) -> dict:
     }
 
 
+def compute_ft_safety_margin(grp: pd.DataFrame) -> dict:
+    """
+    Compute FG% safety margin per PTS tier.
+
+    Answers: "How much FG% buffer does this player have before their field-goal
+    shooting alone would cause them to miss their PTS tier?"
+
+    Breakeven FG% = (tier - season_ftm_avg - season_3pm_avg) / (season_fga_avg * 2)
+    Safety margin  = season_fg_pct - breakeven_fg_pct
+
+    Fragility classification:
+      margin >= 0.05 → "safe"        (player can miss shots freely and still hit tier)
+      margin >= 0.00 → "borderline"  (player needs near-baseline FG% to hit tier)
+      margin <  0.00 → "fragile"     (player needs above-baseline FG% — any cold game kills it)
+
+    ft_dominant: when (season_ftm_avg + season_3pm_avg * 1) >= tier, the player
+      can reach the tier from FTs and 3s alone — FG% becomes irrelevant for that tier.
+
+    grp is sorted newest→oldest (descending game_date); head(20) = most recent 20 games.
+    Requires fgm, fga, ftm, fta, tpm columns.
+
+    Returns:
+      {
+        "n_games": int,
+        "season_fg_pct":  float,
+        "season_ftm_avg": float,
+        "season_fta_avg": float,
+        "season_fga_avg": float,
+        "season_3pm_avg": float,
+        "tiers": {
+          "20": {"flag": "safe"|"borderline"|"fragile"|"ft_dominant",
+                 "breakeven_fg_pct": float|None, "margin": float|None},
+          "25": {...},
+          "30": {...},
+        }
+      }
+    or {"flag": "insufficient_data"} if fewer than 10 valid games.
+    """
+    g = grp.copy()
+
+    # Ensure numeric types
+    for col in ("fgm", "fga", "ftm", "fta", "tpm"):
+        if col in g.columns:
+            g[col] = pd.to_numeric(g[col], errors="coerce")
+        else:
+            g[col] = float("nan")
+
+    # Exclude DNP rows; require at least one shot attempted (fga > 0)
+    dnp_mask = pd.to_numeric(g["dnp"], errors="coerce").fillna(0) == 1
+    valid = g[~dnp_mask & (g["fga"].fillna(0) > 0)].head(20)
+    n_valid = len(valid)
+
+    if n_valid < 10:
+        return {"flag": "insufficient_data"}
+
+    # Season averages (aggregated totals, not mean of per-game rates)
+    total_fgm = valid["fgm"].sum()
+    total_fga = valid["fga"].sum()
+    season_fg_pct  = float(total_fgm / total_fga) if total_fga > 0 else None
+    season_fga_avg = float(total_fga / n_valid)
+
+    # FTM/FTA averages — include non-shooting games (DNPs already excluded above,
+    # but a player can have 0 FTA in a game; that is a real data point, not missing)
+    ft_valid = g[~dnp_mask].head(20)  # same L20 window, all active games
+    season_ftm_avg = float(ft_valid["ftm"].fillna(0).mean())
+    season_fta_avg = float(ft_valid["fta"].fillna(0).mean())
+
+    # 3PM average — from same L20 active games
+    season_3pm_avg = float(ft_valid["tpm"].fillna(0).mean())
+
+    if season_fg_pct is None or season_fga_avg == 0:
+        return {"flag": "insufficient_data"}
+
+    # Per-tier fragility
+    tier_results: dict = {}
+    for tier in PTS_TIERS:
+        pts_from_ft_and_3s = season_ftm_avg + season_3pm_avg
+
+        if pts_from_ft_and_3s >= tier:
+            # Player can reach the tier from FTs + 3s alone — FG% is irrelevant
+            tier_results[str(tier)] = {
+                "flag":             "ft_dominant",
+                "breakeven_fg_pct": None,
+                "margin":           None,
+            }
+            continue
+
+        # Breakeven: how many FGM needed from remaining pts / 2 pts per FGM
+        pts_needed_from_fg = tier - pts_from_ft_and_3s
+        breakeven_fg_pct   = pts_needed_from_fg / (season_fga_avg * 2)
+
+        if breakeven_fg_pct > 1.0:
+            # Physically impossible — player would need FG% > 100%
+            tier_results[str(tier)] = {
+                "flag":             "impossible",
+                "breakeven_fg_pct": round(breakeven_fg_pct, 3),
+                "margin":           round(season_fg_pct - breakeven_fg_pct, 3),
+            }
+            continue
+
+        margin = season_fg_pct - breakeven_fg_pct
+        if margin >= 0.05:
+            flag = "safe"
+        elif margin >= 0.00:
+            flag = "borderline"
+        else:
+            flag = "fragile"
+
+        tier_results[str(tier)] = {
+            "flag":             flag,
+            "breakeven_fg_pct": round(breakeven_fg_pct, 3),
+            "margin":           round(margin, 3),
+        }
+
+    return {
+        "n_games":        n_valid,
+        "season_fg_pct":  round(season_fg_pct,  3),
+        "season_ftm_avg": round(season_ftm_avg, 2),
+        "season_fta_avg": round(season_fta_avg, 2),
+        "season_fga_avg": round(season_fga_avg, 2),
+        "season_3pm_avg": round(season_3pm_avg, 2),
+        "tiers":          tier_results,
+    }
+
+
 def compute_matchup_tier_hit_rates(
     all_games: pd.DataFrame,
     opp_defense: dict,
@@ -1187,6 +1312,9 @@ def build_player_stats(
         # grp is already newest→oldest; compute_shooting_regression uses .head(N)
         shooting_regression = compute_shooting_regression(grp)
 
+        # FG% safety margin per PTS tier — requires ftm/fta columns (post-backfill)
+        ft_safety_margin = compute_ft_safety_margin(grp)
+
         trend          = {stat: compute_trend(games_10, games_5, stat) for stat in TIERS}
         # Matchup-specific split: full history on current team, split by opp defensive rating
         matchup_tier_hit_rates = {
@@ -1294,6 +1422,7 @@ def build_player_stats(
             "bounce_back": bounce_back,
             "volatility": volatility,
             "shooting_regression": shooting_regression,
+            "ft_safety_margin": ft_safety_margin,
             "positional_dvp": positional_dvp_entry,
         }
 

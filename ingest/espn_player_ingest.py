@@ -339,6 +339,9 @@ def parse_boxscore_players(summary_json: Dict[str, Any]) -> List[Dict[str, Any]]
                 fgm_val,  fga_val  = parse_shooting(fg_raw)
                 fg3m_val, fg3a_val = parse_shooting(tpt_raw)
 
+                ft_raw            = get_stat(stats_list, "FT")
+                ftm_val, fta_val  = parse_shooting(ft_raw)
+
                 row = {
                     "team_id": team_id,
                     "team_abbrev": team_abbrev,
@@ -355,6 +358,8 @@ def parse_boxscore_players(summary_json: Dict[str, Any]) -> List[Dict[str, Any]]
                     "fga": fga_val,
                     "fg3m": fg3m_val,
                     "fg3a": fg3a_val,
+                    "ftm": ftm_val,
+                    "fta": fta_val,
                     "dnp": dnp,
                 }
                 # Filter out empty athlete ids (rare)
@@ -923,7 +928,7 @@ def main():
             col_order = [
                 "season_end_year","game_id","game_date","team_abbrev","opp_abbrev","home_away",
                 "player_id","player_name","started","minutes","minutes_raw","pts","reb","ast","tpm",
-                "fgm","fga","fg3m","fg3a","dnp","team_hint_ok","ingested_at"
+                "fgm","fga","fg3m","fg3a","ftm","fta","dnp","team_hint_ok","ingested_at"
             ]
             for c in col_order:
                 if c not in df_merged.columns:

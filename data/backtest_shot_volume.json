@@ -1,0 +1,284 @@
+{
+  "generated_at": "2026-03-07T21:52:03",
+  "mode": "shot-volume",
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-06"
+  },
+  "total_instances": 521,
+  "instances_by_flag": {
+    "volume_high": 89,
+    "volume_low": 79,
+    "volume_neutral": 353,
+    "insufficient": 0
+  },
+  "median_fga_by_flag": {
+    "volume_high": 19.0,
+    "volume_neutral": 19.0,
+    "volume_low": 19.0
+  },
+  "core_analysis": {
+    "volume_neutral": {
+      "n": 353,
+      "hits": 255,
+      "hit_rate": 0.7224,
+      "lift": 1.0
+    },
+    "volume_low": {
+      "n": 79,
+      "hits": 63,
+      "hit_rate": 0.7975,
+      "lift": 1.104
+    },
+    "volume_high": {
+      "n": 89,
+      "hits": 65,
+      "hit_rate": 0.7303,
+      "lift": 1.011
+    }
+  },
+  "threshold_sweep": [
+    {
+      "threshold_pct": 5,
+      "high_n": 162,
+      "high_hr": 0.7407,
+      "high_lift": 1.086,
+      "low_n": 164,
+      "low_hr": 0.7927,
+      "low_lift": 1.162
+    },
+    {
+      "threshold_pct": 6,
+      "high_n": 144,
+      "high_hr": 0.75,
+      "high_lift": 1.084,
+      "low_n": 153,
+      "low_hr": 0.7843,
+      "low_lift": 1.133
+    },
+    {
+      "threshold_pct": 7,
+      "high_n": 128,
+      "high_hr": 0.7422,
+      "high_lift": 1.046,
+      "low_n": 128,
+      "low_hr": 0.7812,
+      "low_lift": 1.101
+    },
+    {
+      "threshold_pct": 8,
+      "high_n": 117,
+      "high_hr": 0.735,
+      "high_lift": 1.034,
+      "low_n": 110,
+      "low_hr": 0.8,
+      "low_lift": 1.125
+    },
+    {
+      "threshold_pct": 9,
+      "high_n": 102,
+      "high_hr": 0.7255,
+      "high_lift": 1.004,
+      "low_n": 91,
+      "low_hr": 0.7912,
+      "low_lift": 1.095
+    },
+    {
+      "threshold_pct": 10,
+      "high_n": 89,
+      "high_hr": 0.7303,
+      "high_lift": 1.011,
+      "low_n": 79,
+      "low_hr": 0.7975,
+      "low_lift": 1.104
+    },
+    {
+      "threshold_pct": 11,
+      "high_n": 82,
+      "high_hr": 0.7195,
+      "high_lift": 0.984,
+      "low_n": 67,
+      "low_hr": 0.7761,
+      "low_lift": 1.061
+    },
+    {
+      "threshold_pct": 12,
+      "high_n": 66,
+      "high_hr": 0.6818,
+      "high_lift": 0.924,
+      "low_n": 58,
+      "low_hr": 0.7759,
+      "low_lift": 1.051
+    },
+    {
+      "threshold_pct": 13,
+      "high_n": 54,
+      "high_hr": 0.6852,
+      "high_lift": 0.932,
+      "low_n": 51,
+      "low_hr": 0.7843,
+      "low_lift": 1.066
+    },
+    {
+      "threshold_pct": 14,
+      "high_n": 51,
+      "high_hr": 0.6863,
+      "high_lift": 0.935,
+      "low_n": 41,
+      "low_hr": 0.8049,
+      "low_lift": 1.096
+    },
+    {
+      "threshold_pct": 15,
+      "high_n": 42,
+      "high_hr": 0.6905,
+      "high_lift": 0.937,
+      "low_n": 34,
+      "low_hr": 0.7647,
+      "low_lift": 1.037
+    },
+    {
+      "threshold_pct": 16,
+      "high_n": 33,
+      "high_hr": 0.6364,
+      "high_lift": 0.868,
+      "low_n": 27,
+      "low_hr": 0.8889,
+      "low_lift": 1.212
+    },
+    {
+      "threshold_pct": 17,
+      "high_n": 30,
+      "high_hr": 0.6333,
+      "high_lift": 0.862,
+      "low_n": 20,
+      "low_hr": 0.9,
+      "low_lift": 1.225
+    },
+    {
+      "threshold_pct": 18,
+      "high_n": 25,
+      "high_hr": 0.68,
+      "high_lift": 0.928,
+      "low_n": 17,
+      "low_hr": 0.8824,
+      "low_lift": 1.204
+    },
+    {
+      "threshold_pct": 19,
+      "high_n": 21,
+      "high_hr": 0.619,
+      "high_lift": 0.841,
+      "low_n": 15,
+      "low_hr": 0.8667,
+      "low_lift": 1.177
+    },
+    {
+      "threshold_pct": 20,
+      "high_n": 19,
+      "high_hr": 0.6316,
+      "high_lift": 0.858,
+      "low_n": 13,
+      "low_hr": 0.8462,
+      "low_lift": 1.149
+    },
+    {
+      "threshold_pct": 21,
+      "high_n": 14,
+      "high_hr": 0.6429,
+      "high_lift": 0.876,
+      "low_n": 11,
+      "low_hr": 0.9091,
+      "low_lift": 1.239
+    },
+    {
+      "threshold_pct": 22,
+      "high_n": 12,
+      "high_hr": 0.6667,
+      "high_lift": 0.909,
+      "low_n": 10,
+      "low_hr": 0.9,
+      "low_lift": 1.227
+    },
+    {
+      "threshold_pct": 23,
+      "high_n": 9,
+      "high_hr": 0.6667,
+      "high_lift": 0.908,
+      "low_n": 8,
+      "low_hr": 0.875,
+      "low_lift": 1.192
+    },
+    {
+      "threshold_pct": 24,
+      "high_n": 6,
+      "high_hr": 0.5,
+      "high_lift": 0.68,
+      "low_n": 5,
+      "low_hr": 1.0,
+      "low_lift": 1.36
+    },
+    {
+      "threshold_pct": 25,
+      "high_n": 5,
+      "high_hr": 0.6,
+      "high_lift": 0.816,
+      "low_n": 2,
+      "low_hr": 1.0,
+      "low_lift": 1.36
+    }
+  ],
+  "tier_split": {
+    "T20": {
+      "volume_high": {
+        "n": 59,
+        "hit_rate": 0.7966
+      },
+      "volume_neutral": {
+        "n": 193,
+        "hit_rate": 0.7772
+      },
+      "volume_low": {
+        "n": 60,
+        "hit_rate": 0.8
+      }
+    },
+    "T25": {
+      "volume_high": {
+        "n": 27,
+        "hit_rate": 0.6296
+      },
+      "volume_neutral": {
+        "n": 127,
+        "hit_rate": 0.7008
+      },
+      "volume_low": {
+        "n": 16,
+        "hit_rate": 0.75
+      }
+    },
+    "T30": {
+      "volume_high": {
+        "n": 3,
+        "note": "n<10"
+      },
+      "volume_neutral": {
+        "n": 33,
+        "hit_rate": 0.4848
+      },
+      "volume_low": {
+        "n": 3,
+        "note": "n<10"
+      }
+    }
+  },
+  "verdict": {
+    "high_volume_verdict": "noise",
+    "low_volume_verdict": "weak",
+    "threshold_verdict": "17% maximizes low_lift divergence (1.225) with n=20",
+    "recommendations": [
+      "volume_low shows weak signal (lift=1.104). Consider surfacing as informational context on PTS stat lines in quant.py.",
+      "volume_high is noise (lift=1.011). No change recommended."
+    ]
+  }
+}

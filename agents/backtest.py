@@ -77,6 +77,23 @@ SR_HOT_THRESH  = 0.08  # relative delta >= +8% → FG_HOT
 SR_COLD_THRESH = 0.08  # relative delta <= -8% → FG_COLD
 SR_MIN_N       = 20    # min instances per flag bucket for a verdict
 
+# Shot volume mode constants
+SV_JSON        = DATA / "backtest_shot_volume.json"
+SV_L5_WINDOW   = 5     # recent FGA window
+SV_L20_WINDOW  = 20    # baseline FGA window
+SV_MIN_GAMES   = 10    # min valid FGA games in L20 window to qualify
+SV_LOW_THRESH  = 0.10  # delta <= -10% → volume_low
+SV_HIGH_THRESH = 0.10  # delta >= +10% → volume_high
+SV_MIN_N       = 20    # min instances per bucket for a verdict
+
+# FG% safety margin mode constants
+FSM_JSON        = DATA / "backtest_ft_safety_margin.json"
+FSM_L20_WINDOW  = 20    # games used to compute season averages
+FSM_MIN_GAMES   = 10    # min valid (non-DNP, fga>0) games in L20 to qualify
+FSM_SAFE_THRESH = 0.05  # margin >= this → safe
+FSM_FRAG_THRESH = 0.00  # margin <  this → fragile (else borderline)
+FSM_MIN_N       = 20    # min instances per fragility bucket for a verdict
+
 
 # ── Loaders ───────────────────────────────────────────────────────────
 
@@ -3577,6 +3594,561 @@ def run_shooting_regression_analysis(player_log: pd.DataFrame, args) -> None:
     print(f"\n{'='*72}\n")
 
 
+# ── Shot Volume Mode ──────────────────────────────────────────────────
+
+def compute_fga_volume_flag(player_log: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add fga_volume_flag and _fga_delta_pct columns to player_log.
+
+    Operates on raw FGA counts (not FG%). fga=NaN means missing data;
+    fga=0 is a real zero (rare non-DNP game with no attempts).
+    player_log must be sorted oldest→newest per player.
+    """
+    df = player_log.copy()
+
+    grp_fga = df.groupby("player_name")["fga"]
+
+    l20_fga = grp_fga.transform(
+        lambda x: x.shift(1).rolling(SV_L20_WINDOW, min_periods=SV_MIN_GAMES).mean()
+    )
+    l5_fga = grp_fga.transform(
+        lambda x: x.shift(1).rolling(SV_L5_WINDOW, min_periods=3).mean()
+    )
+
+    fga_delta = (l5_fga - l20_fga) / l20_fga.replace(0, np.nan)
+
+    flags = pd.Series("insufficient", index=df.index, dtype=str)
+    valid = l20_fga.notna() & fga_delta.notna()
+    flags[valid] = "volume_neutral"
+    flags[valid & (fga_delta >= SV_HIGH_THRESH)]  = "volume_high"
+    flags[valid & (fga_delta <= -SV_LOW_THRESH)]  = "volume_low"
+
+    df["fga_volume_flag"] = flags
+    df["_fga_delta_pct"]  = fga_delta
+    return df
+
+
+def build_shot_volume_instances(player_log: pd.DataFrame) -> pd.DataFrame:
+    """
+    Build evaluation instances for the shot volume backtest.
+
+    Rows qualify when: fga_volume_flag != 'insufficient',
+    best_tier_PTS >= 20, and fga is not NaN.
+    """
+    print("[sv-backtest] Computing FGA volume flags per player...")
+    df = compute_fga_volume_flag(player_log)
+
+    print("[sv-backtest] Computing best PTS tiers (window=20)...")
+    df = add_best_tiers(df, window=20)
+
+    qualified = df[
+        (df["fga_volume_flag"] != "insufficient") &
+        (df["best_tier_PTS"].notna()) &
+        (df["best_tier_PTS"] >= 20) &
+        (df["fga"].notna())
+    ].copy()
+
+    qualified["pts_tier_hit"] = (qualified["hit_actual_PTS"] == 1.0)
+
+    return qualified[[
+        "player_name", "game_date", "fga_volume_flag",
+        "pts", "best_tier_PTS", "pts_tier_hit",
+        "fga", "_fga_delta_pct",
+    ]].rename(columns={"best_tier_PTS": "best_tier_pts"})
+
+
+def run_shot_volume_analysis(player_log: pd.DataFrame, args) -> None:
+    """H13 — Shot Volume Delta backtest."""
+    sep = "─" * 60
+
+    print(f"\n{'='*72}")
+    print("  BACKTEST H13: SHOT VOLUME DELTA (L5 FGA vs L20 FGA)")
+    print(f"  Date range: {player_log['game_date'].min().date()} → {player_log['game_date'].max().date()}")
+    print(f"{'='*72}\n")
+
+    # ── Step 1: Build instances ────────────────────────────────────────
+    instances = build_shot_volume_instances(player_log)
+    total = len(instances)
+    counts = instances["fga_volume_flag"].value_counts().to_dict()
+
+    print("  Instance counts by FGA volume flag (qualifying rows: best_tier_pts ≥ T20, fga present):")
+    for flag in ["volume_high", "volume_low", "volume_neutral", "insufficient"]:
+        n = counts.get(flag, 0)
+        pct = f"  ({n/total*100:.1f}%)" if total > 0 and flag != "insufficient" else ""
+        print(f"    {flag:<18} n={n:,}{pct}")
+    print(f"    {'TOTAL':<18} n={total:,}\n")
+
+    if total == 0:
+        print("[sv-backtest] No qualified instances — check fga column in player_game_log.csv.")
+        return
+
+    # Median FGA sanity check
+    median_fga: dict = {}
+    for flag in ["volume_high", "volume_neutral", "volume_low"]:
+        bucket = instances[instances["fga_volume_flag"] == flag]
+        median_fga[flag] = round(float(bucket["fga"].median()), 1) if len(bucket) > 0 else None
+
+    print(f"  Median FGA — volume_high: {median_fga.get('volume_high')} | "
+          f"volume_neutral: {median_fga.get('volume_neutral')} | "
+          f"volume_low: {median_fga.get('volume_low')}")
+    print()
+
+    # ── Step 2: Core analysis ──────────────────────────────────────────
+    print(f"  FGA VOLUME FLAG → PTS TIER HIT RATE")
+    print(f"  {sep}")
+
+    neutral_bucket = instances[instances["fga_volume_flag"] == "volume_neutral"]
+    neutral_n    = len(neutral_bucket)
+    neutral_hits = int(neutral_bucket["pts_tier_hit"].sum())
+    neutral_hr   = neutral_hits / neutral_n if neutral_n > 0 else None
+
+    core_analysis: dict = {}
+    for flag in ["volume_neutral", "volume_low", "volume_high"]:
+        bucket = instances[instances["fga_volume_flag"] == flag]
+        n    = len(bucket)
+        hits = int(bucket["pts_tier_hit"].sum())
+        hr   = round(hits / n, 4) if n > 0 else None
+        lift = round(hr / neutral_hr, 3) if (hr is not None and neutral_hr) else None
+
+        if flag == "volume_neutral":
+            lift_str = "lift=1.000 (baseline)"
+        else:
+            lift_str = f"lift={lift:.3f}" if lift is not None else "n/a"
+        hr_str = f"{hr*100:.1f}%" if hr is not None else "n/a"
+
+        bar = ""
+        if lift is not None and flag != "volume_neutral":
+            if lift > 1.10:   bar = "  ▲▲"
+            elif lift > 1.05: bar = "  ▲"
+            elif lift < 0.90: bar = "  ▼▼"
+            elif lift < 0.95: bar = "  ▼"
+
+        note = f"  ⚠ n < {SV_MIN_N}" if n < SV_MIN_N else ""
+        print(f"  {flag:<16} n={n:<6} hits={hits:<6} hr={hr_str:<8} {lift_str}{bar}{note}")
+        core_analysis[flag] = {
+            "n": n, "hits": hits, "hit_rate": hr,
+            "lift": lift if flag != "volume_neutral" else 1.0,
+        }
+
+    # ── Step 3: Threshold sensitivity sweep ───────────────────────────
+    print(f"\n  THRESHOLD SENSITIVITY — delta required to flag VOLUME_HIGH or VOLUME_LOW")
+    print(f"  {sep}")
+    print(f"  {'thresh':<8} {'high_n':<8} {'high_hr':<10} {'high_lift':<12} {'low_n':<8} {'low_hr':<10} {'low_lift'}")
+
+    sweep_results: list = []
+    for thresh_pct in range(5, 26):
+        t = thresh_pct / 100.0
+        high_mask    = instances["_fga_delta_pct"] >= t
+        low_mask     = instances["_fga_delta_pct"] <= -t
+        neutral_mask = instances["_fga_delta_pct"].notna() & ~high_mask & ~low_mask
+
+        neut_bucket = instances[neutral_mask]
+        neut_n  = len(neut_bucket)
+        neut_hr = neut_bucket["pts_tier_hit"].sum() / neut_n if neut_n > 0 else None
+
+        def _stats(b):
+            bn   = len(b)
+            bh   = int(b["pts_tier_hit"].sum())
+            bhr  = round(bh / bn, 4) if bn > 0 else None
+            blift = round(bhr / neut_hr, 3) if (bhr is not None and neut_hr) else None
+            return bn, bh, bhr, blift
+
+        high_n, _, high_hr, high_lift = _stats(instances[high_mask])
+        low_n,  _, low_hr,  low_lift  = _stats(instances[low_mask])
+
+        marker = "  ← current" if thresh_pct == int(SV_HIGH_THRESH * 100) else ""
+        print(
+            f"  {str(thresh_pct)+'%':<8} {high_n:<8} "
+            f"{(str(round(high_hr*100,1))+'%') if high_hr else 'n/a':<10} "
+            f"{str(high_lift) if high_lift else 'n/a':<12} "
+            f"{low_n:<8} "
+            f"{(str(round(low_hr*100,1))+'%') if low_hr else 'n/a':<10} "
+            f"{str(low_lift) if low_lift else 'n/a'}{marker}"
+        )
+        sweep_results.append({
+            "threshold_pct": thresh_pct,
+            "high_n": high_n, "high_hr": high_hr, "high_lift": high_lift,
+            "low_n":  low_n,  "low_hr":  low_hr,  "low_lift":  low_lift,
+        })
+
+    # ── Step 4: Tier split ─────────────────────────────────────────────
+    print(f"\n  PER-TIER SPLIT (best_tier_pts × fga_volume_flag)")
+    print(f"  {sep}")
+    tier_split: dict = {}
+    for tier_val in [20, 25, 30]:
+        tier_key = f"T{tier_val}"
+        tier_bucket = instances[instances["best_tier_pts"] == float(tier_val)]
+        tier_split[tier_key] = {}
+        parts = []
+        for flag in ["volume_high", "volume_neutral", "volume_low"]:
+            fb = tier_bucket[tier_bucket["fga_volume_flag"] == flag]
+            n  = len(fb)
+            if n < 10:
+                parts.append(f"{flag}=n<10")
+                tier_split[tier_key][flag] = {"n": n, "note": "n<10"}
+            else:
+                hr = round(fb["pts_tier_hit"].sum() / n, 4)
+                parts.append(f"{flag}={hr*100:.1f}%(n={n})")
+                tier_split[tier_key][flag] = {"n": n, "hit_rate": hr}
+        print(f"  {tier_key}: {' | '.join(parts)}")
+
+    # ── Step 5: Verdict ────────────────────────────────────────────────
+    print(f"\n  VERDICT")
+    print(f"  {sep}")
+
+    def _signal_verdict(lift, n) -> str:
+        if n < SV_MIN_N or lift is None:
+            return "insufficient_data"
+        if lift > 1 + LIFT_PREDICTIVE or lift < 1 - LIFT_PREDICTIVE:
+            return "predictive"
+        if lift > 1 + LIFT_WEAK or lift < 1 - LIFT_WEAK:
+            return "weak"
+        return "noise"
+
+    high_lift_base = core_analysis["volume_high"]["lift"]
+    low_lift_base  = core_analysis["volume_low"]["lift"]
+    high_verdict   = _signal_verdict(high_lift_base, core_analysis["volume_high"]["n"])
+    low_verdict    = _signal_verdict(low_lift_base,  core_analysis["volume_low"]["n"])
+
+    best_low_entry = max(
+        (r for r in sweep_results if r["low_n"] >= SV_MIN_N and r["low_lift"] is not None),
+        key=lambda r: abs(r["low_lift"] - 1.0),
+        default=None,
+    )
+    if best_low_entry:
+        threshold_verdict = (
+            f"{best_low_entry['threshold_pct']}% maximizes low_lift divergence "
+            f"({best_low_entry['low_lift']:.3f}) with n={best_low_entry['low_n']}"
+        )
+    else:
+        threshold_verdict = f"No threshold with low_n >= {SV_MIN_N} found"
+
+    recommendations: list[str] = []
+    if low_verdict == "predictive" and low_lift_base is not None and low_lift_base < 0.85:
+        recommendations.append(
+            f"volume_low is predictive (lift={low_lift_base:.3f}). "
+            "Add [VOL_LOW] flag to quant.py PTS stat lines with a confidence reduction."
+        )
+    elif low_verdict in ("weak", "predictive"):
+        recommendations.append(
+            f"volume_low shows {low_verdict} signal (lift={low_lift_base:.3f}). "
+            "Consider surfacing as informational context on PTS stat lines in quant.py."
+        )
+    else:
+        recommendations.append(
+            f"volume_low is {low_verdict} (lift={low_lift_base:.3f}). "
+            "Shot volume delta does not predict PTS tier outcomes — hypothesis closed."
+        )
+
+    if high_verdict == "predictive" and high_lift_base is not None and high_lift_base > 1.15:
+        recommendations.append(
+            f"volume_high is predictive (lift={high_lift_base:.3f}). "
+            "Surface as mild positive context on PTS stat lines."
+        )
+    else:
+        recommendations.append(
+            f"volume_high is {high_verdict} (lift={high_lift_base:.3f}). No change recommended."
+        )
+
+    print(f"  high_volume_verdict: {high_verdict}")
+    print(f"  low_volume_verdict:  {low_verdict}")
+    print(f"  threshold_verdict:   {threshold_verdict}")
+    for rec in recommendations:
+        print(f"  → {rec}")
+
+    # ── Step 6: Write JSON ─────────────────────────────────────────────
+    date_min = player_log["game_date"].min().strftime("%Y-%m-%d")
+    date_max = player_log["game_date"].max().strftime("%Y-%m-%d")
+
+    output = {
+        "generated_at":        dt.datetime.now().isoformat(timespec="seconds"),
+        "mode":                "shot-volume",
+        "date_range":          {"start": date_min, "end": date_max},
+        "total_instances":     total,
+        "instances_by_flag":   {
+            "volume_high":    counts.get("volume_high", 0),
+            "volume_low":     counts.get("volume_low", 0),
+            "volume_neutral":  counts.get("volume_neutral", 0),
+            "insufficient":   counts.get("insufficient", 0),
+        },
+        "median_fga_by_flag":  median_fga,
+        "core_analysis":       core_analysis,
+        "threshold_sweep":     sweep_results,
+        "tier_split":          tier_split,
+        "verdict": {
+            "high_volume_verdict": high_verdict,
+            "low_volume_verdict":  low_verdict,
+            "threshold_verdict":   threshold_verdict,
+            "recommendations":     recommendations,
+        },
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else SV_JSON
+    with open(out_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"\n[sv-backtest] Results written → {out_path}")
+    print(f"\n{'='*72}\n")
+
+
+def run_ft_safety_margin_backtest(player_log: pd.DataFrame, args) -> None:
+    """
+    H11 — FG% Safety Margin Backtest.
+
+    For each player-game instance where a qualifying PTS tier (T20/T25/T30)
+    exists and sufficient prior FG + FT data is available, computes the FG%
+    safety margin from the prior L20 games (strict temporal holdout):
+
+      breakeven_fg_pct = (tier - season_ftm_avg - season_3pm_avg) / (season_fga_avg * 2)
+      margin           = season_fg_pct - breakeven_fg_pct
+
+    Classifies each instance as safe / borderline / fragile and measures PTS
+    tier hit rates within each bucket. ft_dominant instances (where FTs + 3s
+    alone could reach the tier) are excluded.
+
+    Requires player_game_log.csv to have ftm/fta columns (run
+    ingest/backfill_ft_stats.py + ingest/merge_ft_stats.py first).
+    """
+    print(f"\n{'='*72}")
+    print(f"  H11 — FG% Safety Margin Backtest")
+    print(f"{'='*72}")
+
+    # Verify required columns exist
+    for col in ["ftm", "fta", "fgm", "fga", "tpm"]:
+        if col not in player_log.columns:
+            print(f"\n[H11] ERROR: column '{col}' not found in player_game_log.csv.")
+            print(f"       Run ingest/backfill_ft_stats.py + ingest/merge_ft_stats.py first.")
+            sys.exit(1)
+
+    # Coerce shooting / FT columns to numeric (empty strings → NaN)
+    for col in ["ftm", "fta", "fgm", "fga", "tpm"]:
+        player_log[col] = pd.to_numeric(player_log[col], errors="coerce")
+
+    # Add best tiers so we know which PTS tier to evaluate per row
+    log = add_best_tiers(player_log.copy(), window=FSM_L20_WINDOW)
+
+    instances = []
+
+    for player_name, grp in log.groupby("player_name"):
+        # Sort ascending for temporal rolling
+        grp_asc = grp.sort_values("game_date").reset_index(drop=True)
+        n_rows = len(grp_asc)
+
+        for idx in range(n_rows):
+            row = grp_asc.iloc[idx]
+
+            # Only evaluate rows with a qualifying PTS tier at T20 / T25 / T30
+            tier_val = row.get("best_tier_PTS")
+            if pd.isna(tier_val):
+                continue
+            tier = int(float(tier_val))
+            if tier not in (20, 25, 30):
+                continue
+
+            # Prior games only (strict temporal holdout)
+            prior = grp_asc.iloc[:idx]
+            if len(prior) == 0:
+                continue
+
+            # DNP mask for prior games
+            dnp_prior = pd.to_numeric(prior["dnp"], errors="coerce").fillna(0) == 1
+
+            # Valid shooting games: non-DNP AND fga > 0
+            prior_shots = prior[~dnp_prior & (prior["fga"].fillna(0) > 0)]
+            prior_shots_20 = prior_shots.tail(FSM_L20_WINDOW)
+            if len(prior_shots_20) < FSM_MIN_GAMES:
+                continue
+
+            # Active games (non-DNP) for FT/3PM averages — same L20 window
+            prior_active = prior[~dnp_prior].tail(FSM_L20_WINDOW)
+            if len(prior_active) < FSM_MIN_GAMES:
+                continue
+
+            # Season averages (aggregated totals, not mean of per-game rates)
+            total_fgm = float(prior_shots_20["fgm"].fillna(0).sum())
+            total_fga = float(prior_shots_20["fga"].fillna(0).sum())
+            if total_fga == 0:
+                continue
+            season_fg_pct  = total_fgm / total_fga
+            season_fga_avg = total_fga / len(prior_shots_20)
+
+            season_ftm_avg = float(prior_active["ftm"].fillna(0).mean())
+            season_3pm_avg = float(prior_active["tpm"].fillna(0).mean())
+
+            pts_from_ft_and_3s = season_ftm_avg + season_3pm_avg
+
+            # ft_dominant: player can reach tier from FTs + 3s alone
+            if pts_from_ft_and_3s >= tier:
+                continue
+
+            if season_fga_avg == 0:
+                continue
+
+            pts_needed_from_fg = tier - pts_from_ft_and_3s
+            breakeven_fg_pct   = pts_needed_from_fg / (season_fga_avg * 2)
+
+            # Impossible tier (requires FG% > 100%)
+            if breakeven_fg_pct > 1.0:
+                continue
+
+            margin = season_fg_pct - breakeven_fg_pct
+
+            if margin >= FSM_SAFE_THRESH:
+                fragility = "safe"
+            elif margin >= FSM_FRAG_THRESH:
+                fragility = "borderline"
+            else:
+                fragility = "fragile"
+
+            # Did the player hit the tier?
+            actual_pts = row.get("pts")
+            if pd.isna(actual_pts):
+                continue
+            hit = 1 if float(actual_pts) >= tier else 0
+
+            instances.append({
+                "player":            player_name,
+                "game_date":         str(row["game_date"])[:10],
+                "tier":              tier,
+                "fragility":         fragility,
+                "margin":            round(margin, 3),
+                "breakeven_fg_pct":  round(breakeven_fg_pct, 3),
+                "season_fg_pct":     round(season_fg_pct, 3),
+                "season_ftm_avg":    round(season_ftm_avg, 2),
+                "season_3pm_avg":    round(season_3pm_avg, 2),
+                "season_fga_avg":    round(season_fga_avg, 2),
+                "hit":               hit,
+            })
+
+    print(f"\n[H11] Total qualifying instances: {len(instances)}")
+    if len(instances) < 30:
+        print(f"[H11] WARNING: fewer than 30 instances — results are not reliable.")
+        print(f"       Ensure player_game_log.csv has ftm/fta columns from the backfill.")
+        return
+
+    df = pd.DataFrame(instances)
+    baseline_hr = float(df["hit"].mean())
+    date_range = f"{df['game_date'].min()} → {df['game_date'].max()}"
+
+    # ── Core hit rates by fragility ───────────────────────────────────────
+    sep = "─" * 60
+    print(f"\n{sep}")
+    print(f"  Core Hit Rates by Fragility Bucket")
+    print(f"{sep}")
+    print(f"  Baseline (all): n={len(df)}, hr={baseline_hr:.1%}")
+
+    results_by_fragility: dict = {}
+    for label in ["safe", "borderline", "fragile"]:
+        sub = df[df["fragility"] == label]
+        if len(sub) == 0:
+            print(f"  {label:12s}: n=0 — no instances")
+            results_by_fragility[label] = {"n": 0, "hit_rate": None, "lift": None, "verdict": "no_data"}
+            continue
+        hr   = float(sub["hit"].mean())
+        lift = hr / baseline_hr if baseline_hr > 0 else None
+        abs_lift = abs(lift - 1.0) if lift else 0
+        if abs_lift >= LIFT_PREDICTIVE:
+            verdict = "PREDICTIVE"
+        elif abs_lift >= LIFT_WEAK:
+            verdict = "weak"
+        else:
+            verdict = "noise"
+        print(f"  {label:12s}: n={len(sub):3d}, hr={hr:.1%}, lift={lift:.3f}  {verdict}")
+        results_by_fragility[label] = {
+            "n": len(sub), "hit_rate": round(hr, 3),
+            "lift": round(lift, 3) if lift is not None else None, "verdict": verdict,
+        }
+
+    # ── Tier split: T20 vs T25 vs T30 ────────────────────────────────────
+    print(f"\n{sep}")
+    print(f"  Tier Split: T20 vs T25 vs T30")
+    print(f"{sep}")
+    tier_results: dict = {}
+    for tier_val in [20, 25, 30]:
+        sub = df[df["tier"] == tier_val]
+        if len(sub) == 0:
+            print(f"  T{tier_val}: n=0")
+            tier_results[str(tier_val)] = {}
+            continue
+        t_baseline = float(sub["hit"].mean())
+        print(f"  T{tier_val} (n={len(sub)}, baseline={t_baseline:.1%}):")
+        tfrag: dict = {}
+        for label in ["safe", "borderline", "fragile"]:
+            fsub = sub[sub["fragility"] == label]
+            if len(fsub) < 5:
+                print(f"    {label:12s}: n={len(fsub)} (insufficient)")
+                tfrag[label] = {"n": len(fsub), "hit_rate": None}
+                continue
+            hr   = float(fsub["hit"].mean())
+            lift = hr / t_baseline if t_baseline > 0 else None
+            print(f"    {label:12s}: n={len(fsub):3d}, hr={hr:.1%}, lift={lift:.3f}")
+            tfrag[label] = {"n": len(fsub), "hit_rate": round(hr, 3), "lift": round(lift, 3) if lift else None}
+        tier_results[str(tier_val)] = tfrag
+
+    # ── Threshold sweep: fragile threshold 0.00 → 0.10 in 0.01 steps ────
+    print(f"\n{sep}")
+    print(f"  Threshold Sweep (fragile = margin < X)")
+    print(f"{sep}")
+    sweep_results: dict = {}
+    for thresh_int in range(0, 11):
+        thresh = thresh_int / 100.0
+        fragile_mask = df["margin"] < thresh
+        safe_mask    = df["margin"] >= thresh
+        n_frag = int(fragile_mask.sum())
+        n_safe = int(safe_mask.sum())
+        if n_frag < FSM_MIN_N or n_safe < FSM_MIN_N:
+            continue
+        hr_frag = float(df.loc[fragile_mask, "hit"].mean())
+        hr_safe = float(df.loc[safe_mask,    "hit"].mean())
+        delta   = hr_safe - hr_frag
+        print(f"  thresh={thresh:.2f}: fragile n={n_frag:3d} hr={hr_frag:.1%} | "
+              f"safe n={n_safe:3d} hr={hr_safe:.1%} | delta={delta:+.1%}")
+        sweep_results[f"{thresh:.2f}"] = {
+            "fragile": {"n": n_frag, "hit_rate": round(hr_frag, 3)},
+            "safe":    {"n": n_safe, "hit_rate": round(hr_safe, 3)},
+            "delta":   round(delta, 3),
+        }
+
+    # ── Overall verdict ───────────────────────────────────────────────────
+    safe_hr    = results_by_fragility.get("safe",    {}).get("hit_rate")
+    fragile_hr = results_by_fragility.get("fragile", {}).get("hit_rate")
+    if safe_hr is not None and fragile_hr is not None:
+        delta = safe_hr - fragile_hr
+        if delta >= LIFT_PREDICTIVE:
+            verdict = "PREDICTIVE — fragile picks underperform safe picks meaningfully"
+        elif delta >= LIFT_WEAK:
+            verdict = "weak — directional but below predictive threshold"
+        else:
+            verdict = "noise — fragility not predictive"
+    else:
+        verdict = "insufficient data for verdict"
+
+    print(f"\n  Verdict: {verdict}")
+
+    # ── Write JSON ────────────────────────────────────────────────────────
+    output = {
+        "mode":             "ft-safety-margin",
+        "date_range":       date_range,
+        "total_instances":  len(df),
+        "ft_dominant_excluded": True,
+        "baseline_hit_rate": round(baseline_hr, 3),
+        "results_by_fragility": results_by_fragility,
+        "tier_split":       tier_results,
+        "threshold_sweep":  sweep_results,
+        "verdict":          verdict,
+        "constants": {
+            "FSM_L20_WINDOW":  FSM_L20_WINDOW,
+            "FSM_MIN_GAMES":   FSM_MIN_GAMES,
+            "FSM_SAFE_THRESH": FSM_SAFE_THRESH,
+            "FSM_FRAG_THRESH": FSM_FRAG_THRESH,
+        },
+    }
+    FSM_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(FSM_JSON, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"\n[H11] Results written → {FSM_JSON}")
+    print(f"\n{'='*72}\n")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -3591,7 +4163,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -3641,6 +4213,16 @@ def main():
     # ── Shooting regression mode ───────────────────────────────────────
     if getattr(args, "mode", None) == "shooting-regression":
         run_shooting_regression_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── Shot volume mode ───────────────────────────────────────────────
+    if getattr(args, "mode", None) == "shot-volume":
+        run_shot_volume_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── FG% safety margin mode ─────────────────────────────────────────
+    if getattr(args, "mode", None) == "ft-safety-margin":
+        run_ft_safety_margin_backtest(player_log, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────
