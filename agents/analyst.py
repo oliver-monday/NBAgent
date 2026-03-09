@@ -952,6 +952,15 @@ MINUTES FLOOR — THRESHOLD EVENT FRAGILITY:
   treat this as a mild positive signal — the player rarely has outlier-low minutes nights.
 - Do NOT apply this rule when the player's avg_minutes > 36: elite-usage players rarely
   sit regardless of game script.
+- MIN_FLOOR CONFIDENCE CAP: For any PTS pick where the player's floor_minutes (from the
+  minutes_floor field) is below 24.0, cap the final stated confidence_pct at 84%, regardless
+  of hit streak length, iron_floor tag, or any other signal. Do not assign 85%, 86%, 87%,
+  88%, or higher confidence to a PTS pick on a player whose floor_minutes < 24. The iron_floor
+  and consistent tags reflect historical frequency but do not account for matchup-specific
+  suppression in games where the player's baseline minutes exposure is below the 24-minute
+  threshold — streak-based signals overstate reliability when the underlying minutes floor
+  cannot support them. Apply this cap silently; do not explain it in the reasoning field
+  unless it changes what you would otherwise have stated.
 
 KEY RULES — SEQUENTIAL GAME CONTEXT:
 - REB slump-persistent (confirmed signal, n=300, window=10):
@@ -994,6 +1003,19 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
     in even when BLOWOUT_RISK is False — the pattern may be real.
 - When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
+- BLOWOUT_RISK SECONDARY SCORER SKIP: When a player's pick has BLOWOUT_RISK flagged AND the
+  player's team is the large underdog (spread of +8 or worse, i.e. the player's team is
+  expected to lose by 8+ points), AND the player is not the team's primary scoring option
+  (i.e. the player does not lead the team in PPG or is not the designated first option in the
+  stat line), do NOT select any PTS pick for this player regardless of hit rate. Do not apply
+  the -5% BLOWOUT_RISK deduction and proceed — skip the PTS pick entirely. Secondary scorers
+  on large underdogs face asymmetric usage compression in the second half of blowout games:
+  they accumulate playing time without scoring efficiency as the game deteriorates, and their
+  aggregate T-pick hit rates do not price in this game-script effect. The spread threshold
+  (+8 or worse) is the point at which blowout probability is high enough to make this a
+  reliable skip rather than a marginal reduction. Primary scorers (team PPG leaders, first
+  options) are exempt from this skip because their usage is more protected even in blowout
+  scenarios. If in doubt about whether a player is a primary or secondary scorer, apply the skip.
 
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).

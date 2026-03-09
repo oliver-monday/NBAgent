@@ -375,11 +375,14 @@ Each candidate has already passed:
 5. **Variety**: across your 3–5 selections, aim for a mix of leg counts (some tight 2-leggers, some 3–4 leg plays, maybe one 5+ if all legs are elite).
 
 ## AVOID
-- Any single player-prop combination (same player + same prop_type + same pick_value)
-  appearing in more than 2 of today's parlays. A single anchor leg in 3+ parlays creates
-  correlated exposure across your entire card — one bad night from that player simultaneously
-  kills multiple parlays. This cap applies even to iron-floor or 86%+ confidence legs.
-  Anchor players (high-confidence PTS legs) are the most common violation — distribute them.
+- Any single player appearing in more than 2 of today's parlays, regardless of prop type.
+  A player DNP or a general underperformance cascades across all parlays they appear in —
+  two is the limit. This applies at the player level (e.g. LeBron in parlay 1, 2, and 3
+  is a violation even if the prop types differ).
+- Any single player-prop combination (same player + same prop_type) appearing in more than
+  2 of today's parlays. A single anchor leg in 3+ parlays creates correlated exposure across
+  your entire card — one bad night simultaneously kills multiple parlays. This cap applies
+  even to iron-floor or 86%+ confidence legs.
 - Two parlays that share 3+ identical legs (provide variety)
 - Combos where the rationale would be "all soft matchups" with no deeper logic
 - Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
@@ -453,6 +456,64 @@ def call_parlay_agent(prompt: str) -> list[dict]:
         sys.exit(1)
 
 
+# ── Concentration cap enforcement ─────────────────────────────────────
+
+def enforce_concentration_cap(parlays: list[dict]) -> list[dict]:
+    """
+    Greedy-sequential post-selection enforcement of two concentration caps:
+    1. No player_name across more than 2 parlays (regardless of prop type).
+    2. No (player_name, prop_type) pair across more than 2 parlays.
+    Iterates in order; accepts a parlay only if it satisfies both caps.
+    """
+    player_counts:      dict[str, int]   = {}
+    player_prop_counts: dict[tuple, int] = {}
+    accepted: list[dict] = []
+
+    for parlay in parlays:
+        legs = parlay.get("legs", [])
+
+        # Tally what this parlay would add
+        pp_delta: dict[tuple, int] = {}
+        p_delta:  dict[str, int]   = {}
+        for leg in legs:
+            p_key  = leg["player_name"].lower()
+            pp_key = (p_key, leg["prop_type"])
+            p_delta[p_key]   = p_delta.get(p_key, 0) + 1
+            pp_delta[pp_key] = pp_delta.get(pp_key, 0) + 1
+
+        # Check player-level cap
+        violates = False
+        for p_key, delta in p_delta.items():
+            if player_counts.get(p_key, 0) + delta > 2:
+                print(f"[parlay] Concentration cap (player): dropping '{parlay.get('label')}' "
+                      f"— {p_key} would appear in "
+                      f"{player_counts.get(p_key, 0) + delta} parlays")
+                violates = True
+                break
+
+        # Check player-prop-level cap
+        if not violates:
+            for pp_key, delta in pp_delta.items():
+                if player_prop_counts.get(pp_key, 0) + delta > 2:
+                    print(f"[parlay] Concentration cap (player-prop): dropping '{parlay.get('label')}' "
+                          f"— ({pp_key[0]}, {pp_key[1]}) would appear in "
+                          f"{player_prop_counts.get(pp_key, 0) + delta} parlays")
+                    violates = True
+                    break
+
+        if not violates:
+            for p_key, delta in p_delta.items():
+                player_counts[p_key] = player_counts.get(p_key, 0) + delta
+            for pp_key, delta in pp_delta.items():
+                player_prop_counts[pp_key] = player_prop_counts.get(pp_key, 0) + delta
+            accepted.append(parlay)
+
+    skipped = len(parlays) - len(accepted)
+    if skipped:
+        print(f"[parlay] Concentration cap removed {skipped} parlay(s). Keeping {len(accepted)}.")
+    return accepted
+
+
 # ── Output ────────────────────────────────────────────────────────────
 
 def save_parlays(parlays: list[dict]):
@@ -523,6 +584,7 @@ def main():
     parlays = call_parlay_agent(prompt)
     print(f"[parlay] Claude returned {len(parlays)} parlays")
 
+    parlays = enforce_concentration_cap(parlays)
     save_parlays(parlays)
 
 
