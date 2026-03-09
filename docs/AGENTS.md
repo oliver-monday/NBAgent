@@ -24,7 +24,8 @@ analyst.yml (chains off auditor)
 
 injuries.yml (hourly, independent)
   └─ rotowire_injuries_only.py → injuries_today.json
-  └─ build_site.py             → site/index.html (redeployed with fresh injuries)
+  └─ lineup_watch.py           → picks.json (voided/lineup_risk updated in-place)
+  └─ build_site.py             → site/index.html (redeployed with fresh injuries + voided picks)
 ```
 
 ---

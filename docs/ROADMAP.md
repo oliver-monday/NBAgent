@@ -111,6 +111,27 @@ Design philosophy: the Analyst already has a solid quantitative matchup foundati
 
 ---
 
+### Watch-and-Accumulate Items (March 9, 2026)
+
+Items with directional signal but insufficient sample to act. Revisit after 2–3 more weeks of audit data.
+
+#### W1 — 76-80% Confidence Band Underconfidence
+**Status: WATCH — do not act until ~30 more picks in band**
+
+5-day calibration shows 76-80% band at 89.1% actual vs 78.0% expected (+11.1 pts, 55 picks). This is the largest sustained delta across all bands and is no longer noise. Hypothesis: VOLATILE (-5%) and BLOWOUT_RISK (-5%) penalties are stacking and pushing picks that would otherwise state ~82% down into the 76-80% range, where they then dramatically outperform. Action if confirmed: audit whether these penalties are additive caps or independent adjustments, and tighten stacking behavior. **Do not change penalty mechanics until calibration band has 80+ picks.**
+
+#### W2 — REB Opponent-Adjusted Floor
+**Status: WATCH — needs 3–4 more model_gap REB misses to justify quant work**
+
+REB has the worst miss profile of any prop type: 4 model_gaps out of 10 total misses, all sharing the same root cause — raw historical L10 floor overstates expected output when the opponent's defensive scheme specifically suppresses rebounding (MIA zone, HOU switching). The existing REB DvP exclusion from positional DvP was correct (rebounding is less positional), but the absence of any opponent-adjusted floor gate is showing up consistently. Conceptual fix: a modifier in the analyst prompt that discounts the qualifying L10 floor when opp_defense is tough for REB — not a hard block, but a downward adjustment to the clearance threshold. **Do not write quant or prompt code until pattern holds another week.**
+
+#### W3 — CLE Switching Scheme / DvP Aggregate Mismatch
+**Status: WATCH — single-team signal, needs more instances before generalizing**
+
+Derrick White's two model_gap misses (PTS + 3PM, March 8) expose a gap: CLE's aggregate 3PM DvP rates as "soft" in the team-level data, but their switching scheme neutralizes off-ball guard perimeter looks in a way the aggregate number cannot capture. The fix is architectural (team-level DvP cannot distinguish switching vs. drop coverage) and cannot be resolved with current data. Near-term action: add a CLE scheme note to `context/nba_season_context.md` (or its renamed successor) flagging this mismatch so the analyst has scheme context that the DvP rating doesn't convey. **Generalize to a broader "switching-scheme DvP discount" rule only if similar misses appear for other known switching teams (MIN, BOS, MIL).**
+
+---
+
 ### Pending Backtests
 
 | ID | Name | Status | Mode | ETA |

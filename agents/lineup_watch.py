@@ -43,19 +43,41 @@ TODAY_STR = dt.datetime.now(ET).date().strftime("%Y-%m-%d")
 # Severity rank — only upgrade, never downgrade
 _SEVERITY = {"moderate": 1, "high": 2}
 
+# Team abbrev normalisation — mirrors build_site.py _ABBR_NORM
+_ABBR_NORM: dict[str, str] = {
+    "GS": "GSW", "SA": "SAS", "NO": "NOP",
+    "NY": "NYK", "UTAH": "UTA", "WSH": "WAS",
+}
+
+
+def _norm_team(abbr: str) -> str:
+    a = str(abbr).upper().strip()
+    return _ABBR_NORM.get(a, a)
+
+
+def _extract_last(raw_name: str) -> str:
+    """Return lowercased last name from either 'F. LastName' or 'FirstName LastName'."""
+    n = str(raw_name).strip()
+    # Rotowire abbreviated format: "L. James"
+    if len(n) >= 3 and n[1] == "." and n[2] == " ":
+        return n[3:].lower()
+    # Full name: "LeBron James" → "james"
+    parts = n.split()
+    return parts[-1].lower() if parts else n.lower()
+
 
 # ── Data loaders ─────────────────────────────────────────────────────
 
-def load_injury_lookup() -> dict[str, dict]:
+def load_injury_lookup() -> dict[tuple, dict]:
     """
-    Flatten ALL injury entries across all teams into a single dict
-    keyed by player_name.lower().
+    Build injury lookup keyed by (norm_team_upper, last_name_lower).
 
-    Team abbrev keys in injuries_today.json are ignored — this
-    sidesteps NYK/NY, GS/GSW, SAS/SA, etc. mismatches completely.
+    Handles both Rotowire abbreviated names ("L. James") and full names
+    ("LeBron James") via _extract_last(). Team abbrevs are normalised
+    via _norm_team() to handle GS/GSW, SA/SAS, NY/NYK, etc.
 
     Returns:
-        {"jalen brunson": {"status": "OUT", "reason": "Knee"}, ...}
+        {("LAL", "james"): {"status": "OUT", "reason": "Knee"}, ...}
     """
     if not INJURIES_JSON.exists():
         print("[lineup_watch] injuries_today.json not found — skipping.")
@@ -68,17 +90,26 @@ def load_injury_lookup() -> dict[str, dict]:
         print(f"[lineup_watch] ERROR reading injuries: {e}")
         return {}
 
-    lookup: dict[str, dict] = {}
-    for key, val in raw.items():
+    lookup: dict[tuple, dict] = {}
+    for team_key, val in raw.items():
         if not isinstance(val, list):
             continue  # skip metadata keys like "fetched_at"
+        norm_t = _norm_team(team_key)
         for entry in val:
-            name = (entry.get("player_name") or "").strip().lower()
-            if name:
-                lookup[name] = {
-                    "status": (entry.get("status") or "").upper().strip(),
-                    "reason": (entry.get("reason") or "").strip(),
-                }
+            raw_name = (entry.get("player_name") or entry.get("name") or "").strip()
+            last = _extract_last(raw_name)
+            status_str = (entry.get("status") or "").upper().strip()
+            if last:
+                key = (norm_t, last)
+                # If duplicate last name on same team, keep the higher-severity entry
+                existing = lookup.get(key)
+                if existing is None or (
+                    _SEVERITY.get(status_str, 0) > _SEVERITY.get(existing["status"], 0)
+                ):
+                    lookup[key] = {
+                        "status": status_str,
+                        "reason": (entry.get("reason") or "").strip(),
+                    }
 
     print(f"[lineup_watch] Injury lookup built: {len(lookup)} players")
     return lookup
@@ -146,10 +177,12 @@ def run() -> None:
     all_today = [p for p in picks if p.get("date") == TODAY_STR]
 
     if debug:
-        pick_names = sorted({(p.get("player_name") or "").strip().lower() for p in all_today})
+        pick_names = sorted({(p.get("player_name") or "").strip() for p in all_today})
         print(f"[debug] Today's pick players ({len(pick_names)}):")
         for name in pick_names:
-            inj = injury_lookup.get(name)
+            p_last = _extract_last(name)
+            p_team = _norm_team(next((p.get("team","") for p in all_today if p.get("player_name","").strip()==name), ""))
+            inj = injury_lookup.get((p_team, p_last))
             if inj:
                 status = inj["status"]
                 reason = inj["reason"]
@@ -159,18 +192,22 @@ def run() -> None:
                 print(f"         no match   {name}")
         print()
 
-        injury_names = list(injury_lookup.keys())
+        injury_lasts = [k[1] for k in injury_lookup.keys()]
         print(f"[debug] Fuzzy near-miss check (pick players with no exact injury match):")
         found_nearmiss = False
         for name in pick_names:
-            if injury_lookup.get(name):
+            p_last = _extract_last(name)
+            p_team = _norm_team(next((p.get("team","") for p in all_today if p.get("player_name","").strip()==name), ""))
+            if injury_lookup.get((p_team, p_last)):
                 continue  # already matched exactly
-            close = difflib.get_close_matches(name, injury_names, n=3, cutoff=0.7)
+            close = difflib.get_close_matches(p_last, injury_lasts, n=3, cutoff=0.7)
             if close:
                 found_nearmiss = True
-                print(f"         NEAR-MISS: '{name}' ≈ {close}")
+                print(f"         NEAR-MISS: '{name}' (last='{p_last}') ≈ last names {close}")
                 for c in close:
-                    print(f"                   injury report has: '{c}' → {injury_lookup[c]['status']}")
+                    matches = {k: v for k, v in injury_lookup.items() if k[1] == c}
+                    for mk, mv in matches.items():
+                        print(f"                   injury report has: {mk} → {mv['status']}")
         if not found_nearmiss:
             print("         No near-misses found — name formats appear consistent")
         print()
@@ -193,8 +230,9 @@ def run() -> None:
         print()
 
     for p in all_today:
-        name = (p.get("player_name") or "").strip().lower()
-        inj  = injury_lookup.get(name)
+        p_last = _extract_last(p.get("player_name") or "")
+        p_team = _norm_team(p.get("team") or "")
+        inj  = injury_lookup.get((p_team, p_last))
         if inj is None:
             status_str = "NOT_LISTED"
         else:
@@ -222,14 +260,11 @@ def run() -> None:
     unchanged     = 0
 
     for p in open_today:
-        name = (p.get("player_name") or "").strip().lower()
-        inj  = injury_lookup.get(name)
+        p_last = _extract_last(p.get("player_name") or "")
+        p_team = _norm_team(p.get("team") or "")
+        inj    = injury_lookup.get((p_team, p_last))
 
-        if inj is None:
-            unchanged += 1
-            continue
-
-        status = inj["status"]
+        status = (inj["status"] if inj else "")
         label  = f"{p.get('player_name')} ({p.get('team')} {p.get('prop_type')} OVER {p.get('pick_value')})"
 
         if status == "OUT":
@@ -267,7 +302,12 @@ def run() -> None:
                     unchanged += 1  # already high or already moderate — no change
 
         else:
-            # PROBABLE or anything else — no action
+            # Not listed or PROBABLE — clear any stale flags from a prior run
+            had_flag = p.get("voided") or p.get("lineup_risk")
+            p["voided"] = False
+            p.pop("lineup_risk", None)
+            if had_flag:
+                print(f"[lineup_watch] CLEAR → {label} (no longer listed as injured)")
             unchanged += 1
 
     if not debug:
