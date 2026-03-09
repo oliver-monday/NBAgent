@@ -40,6 +40,7 @@ PICKS_JSON        = DATA / "picks.json"
 PLAYER_STATS_JSON = DATA / "player_stats.json"
 PARLAYS_JSON      = DATA / "parlays.json"
 AUDIT_LOG_JSON    = DATA / "audit_log.json"
+INJURIES_JSON     = DATA / "injuries_today.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -71,6 +72,50 @@ CORR_BONUS = {
 }
 
 
+# ── Injury exclusion helpers ──────────────────────────────────────────
+
+_ABBR_NORM: dict[str, str] = {
+    "GS": "GSW", "SA": "SAS", "NO": "NOP",
+    "NY": "NYK", "UTAH": "UTA", "WSH": "WAS",
+}
+
+def _norm_team(abbr: str) -> str:
+    a = str(abbr).upper().strip()
+    return _ABBR_NORM.get(a, a)
+
+def _extract_last(raw_name: str) -> str:
+    """Return lowercased last name from either 'F. LastName' or 'FirstName LastName'."""
+    n = str(raw_name).strip()
+    if len(n) >= 3 and n[1] == "." and n[2] == " ":
+        return n[3:].lower()
+    parts = n.split()
+    return parts[-1].lower() if parts else n.lower()
+
+def _load_out_players() -> set[tuple[str, str]]:
+    """Return (last_name_lower, norm_team_upper) tuples for OUT/DOUBTFUL players."""
+    if not INJURIES_JSON.exists():
+        return set()
+    try:
+        with open(INJURIES_JSON) as f:
+            raw = json.load(f)
+    except Exception:
+        return set()
+    excluded: set[tuple[str, str]] = set()
+    for team_key, entries in raw.items():
+        if not isinstance(entries, list):
+            continue
+        norm_t = _norm_team(team_key)
+        for entry in entries:
+            status = (entry.get("status") or "").upper().strip()
+            if status not in ("OUT", "DOUBTFUL"):
+                continue
+            raw_name = (entry.get("player_name") or entry.get("name") or "").strip()
+            last = _extract_last(raw_name)
+            if last:
+                excluded.add((last, norm_t))
+    return excluded
+
+
 # ── Helpers ───────────────────────────────────────────────────────────
 
 def american_odds(combined_prob: float) -> int:
@@ -98,12 +143,27 @@ def load_todays_picks() -> list[dict]:
         return []
     with open(PICKS_JSON) as f:
         all_picks = json.load(f)
-    picks = [
-        p for p in all_picks
-        if p.get("date") == TODAY_STR
-        and p.get("confidence_pct", 0) >= MIN_CONFIDENCE
-        and p.get("result") is None  # ungraded = today's picks
-    ]
+
+    out_players = _load_out_players()
+
+    picks = []
+    for p in all_picks:
+        if p.get("date") != TODAY_STR:
+            continue
+        if p.get("confidence_pct", 0) < MIN_CONFIDENCE:
+            continue
+        if p.get("result") is not None:  # already graded
+            continue
+        if p.get("voided", False):
+            continue
+        # Hard exclude OUT/DOUBTFUL even if not yet voided by lineup_watch
+        if out_players:
+            last = _extract_last(p.get("player_name") or "")
+            norm_t = _norm_team(p.get("team") or "")
+            if (last, norm_t) in out_players:
+                print(f"[parlay] EXCLUDED (OUT/DOUBTFUL): {p.get('player_name')} ({p.get('team')})")
+                continue
+        picks.append(p)
     return picks
 
 

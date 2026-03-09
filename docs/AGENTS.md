@@ -17,9 +17,11 @@ auditor.yml (chains off ingest)
   └─ auditor.py              → audit_log.json, updates picks.json + parlays.json
 
 analyst.yml (chains off auditor)
+  └─ rotowire_injuries_only.py → injuries_today.json (fresh refresh before picks)
   └─ quant.py                (re-run to ensure freshness)
-  └─ analyst.py              → picks.json (today's picks appended)
-  └─ parlay.py               → parlays.json (today's parlays appended)
+  └─ pre_game_reporter.py    → pre_game_news.json, context/context_flags.md
+  └─ analyst.py              → picks.json (today's picks appended; OUT/DOUBTFUL pre-filtered)
+  └─ parlay.py               → parlays.json (today's parlays appended; OUT/DOUBTFUL excluded)
   └─ build_site.py           → site/index.html (deployed to GitHub Pages)
 
 injuries.yml (hourly, independent)

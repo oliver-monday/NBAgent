@@ -40,6 +40,12 @@ jobs:
         run: |
           pip install pandas numpy anthropic requests
 
+      - name: Refresh injuries before picks
+        run: |
+          pip install beautifulsoup4 lxml
+          SLATE_DATE="$(TZ=America/Los_Angeles date +%Y-%m-%d)"
+          python ingest/rotowire_injuries_only.py --date "$SLATE_DATE"
+
       - name: Run Quant agent
         run: python agents/quant.py
 

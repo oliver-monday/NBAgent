@@ -127,6 +127,23 @@ def load_whitelist() -> set:
         print(f"[analyst] WARNING: could not load whitelist: {e}")
         return set()
 
+_ABBR_NORM: dict[str, str] = {
+    "GS": "GSW", "SA": "SAS", "NO": "NOP",
+    "NY": "NYK", "UTAH": "UTA", "WSH": "WAS",
+}
+
+def _norm_team(abbr: str) -> str:
+    a = str(abbr).upper().strip()
+    return _ABBR_NORM.get(a, a)
+
+def _extract_last(raw_name: str) -> str:
+    """Return lowercased last name from either 'F. LastName' or 'FirstName LastName'."""
+    n = str(raw_name).strip()
+    if len(n) >= 3 and n[1] == "." and n[2] == " ":
+        return n[3:].lower()
+    parts = n.split()
+    return parts[-1].lower() if parts else n.lower()
+
 def load_injuries(teams_today: list[str]) -> dict:
     if not INJURIES_JSON.exists():
         return {}
@@ -138,6 +155,36 @@ def load_injuries(teams_today: list[str]) -> dict:
         return {k: v for k, v in raw.items() if isinstance(v, list) and k.upper() in teams_upper}
     except Exception:
         return {}
+
+
+def load_out_players() -> set[tuple[str, str]]:
+    """
+    Build a set of (last_name_lower, norm_team_upper) tuples for players
+    listed as OUT or DOUBTFUL in today's injury report.
+    Used as a hard pre-filter before building quant context and prompt.
+    """
+    if not INJURIES_JSON.exists():
+        return set()
+    try:
+        with open(INJURIES_JSON, "r") as f:
+            raw = json.load(f)
+    except Exception:
+        return set()
+
+    excluded: set[tuple[str, str]] = set()
+    for team_key, entries in raw.items():
+        if not isinstance(entries, list):
+            continue
+        norm_t = _norm_team(team_key)
+        for entry in entries:
+            status = (entry.get("status") or "").upper().strip()
+            if status not in ("OUT", "DOUBTFUL"):
+                continue
+            raw_name = (entry.get("player_name") or entry.get("name") or "").strip()
+            last = _extract_last(raw_name)
+            if last:
+                excluded.add((last, norm_t))
+    return excluded
 
 
 def load_audit_feedback() -> list[dict]:
@@ -824,7 +871,10 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 ## SELECTION RULES
 - Weight recent form (last 5–10 games) heavily — season averages are misleading
 - Minimum 5 recent games required to evaluate any player
-- Skip players listed as OUT or DOUBTFUL
+- INJURY EXCLUSION (HARD RULE): Players listed as OUT or DOUBTFUL have been removed from the
+  quant context and player logs before this prompt was built. Do NOT generate any pick for a
+  player who does not appear in the ## QUANT STATS section. If a player appears in the game
+  log but not in QUANT STATS, treat them as excluded — do not pick them.
 - Factor in teammate injuries (affects usage/role) and back-to-back fatigue
 - Use SEASON CONTEXT to distinguish stable baselines from genuine injury-driven role changes
 - Pick as many qualifying props as there are — don't limit volume artificially
@@ -1231,6 +1281,21 @@ def main():
 
     player_stats = load_player_stats()
     print(f"[analyst] Loaded quant stats for {len(player_stats)} players")
+
+    # Hard pre-filter: exclude OUT/DOUBTFUL players before any prompt building
+    out_players = load_out_players()
+    if out_players:
+        filtered_stats: dict = {}
+        for pname, pdata in player_stats.items():
+            last = _extract_last(pname)
+            norm_t = _norm_team(pdata.get("team", ""))
+            if (last, norm_t) in out_players:
+                print(f"[analyst] EXCLUDED (OUT/DOUBTFUL): {pname} ({pdata.get('team', '')})")
+            else:
+                filtered_stats[pname] = pdata
+        player_stats = filtered_stats
+        print(f"[analyst] After injury pre-filter: {len(player_stats)} players remaining")
+
     quant_context = build_quant_context(player_stats)
 
     player_profiles = load_player_profiles(player_stats)
