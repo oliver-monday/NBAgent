@@ -56,6 +56,7 @@ TARGET_MIN_ODDS = 100   # +100 American
 TARGET_MAX_ODDS = 600   # soft ceiling — avoid ultra-long shots
 MIN_CONFIDENCE  = 70    # individual leg floor
 TOP_N_TO_CLAUDE = 15    # how many pre-scored combos to send Claude
+MAX_COMBO_PICKS = 25    # cap picks before combination building — C(57,6)=34M blows up the runner
 AUDIT_CONTEXT_ENTRIES = 3  # keep lean — parlay prompt is already large
 
 # Correlation scoring weights
@@ -489,7 +490,7 @@ def call_parlay_agent(prompt: str) -> list[dict]:
         print("[parlay] ERROR: ANTHROPIC_API_KEY not set.")
         sys.exit(1)
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = anthropic.Anthropic(api_key=api_key, timeout=90.0)
     print(f"[parlay] Calling Claude ({MODEL})...")
 
     message = client.messages.create(
@@ -631,6 +632,13 @@ def main():
 
     player_stats = load_player_stats()
     print(f"[parlay] Loaded player stats for {len(player_stats)} players")
+
+    # Cap picks before combination building to prevent O(n^6) explosion.
+    # C(57,6) = 34M iterations; cap at 25 → C(25,6) = 177K (safe).
+    # Sort descending by confidence so the best legs are always retained.
+    if len(picks) > MAX_COMBO_PICKS:
+        picks = sorted(picks, key=lambda p: p["confidence_pct"], reverse=True)[:MAX_COMBO_PICKS]
+        print(f"[parlay] Capped to top {MAX_COMBO_PICKS} picks by confidence for combination building")
 
     candidates = build_candidates(picks, player_stats)
     print(f"[parlay] Built {len(candidates)} scored candidates (top {TOP_N_TO_CLAUDE} sent to Claude)")
