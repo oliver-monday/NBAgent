@@ -600,6 +600,41 @@ def format_lineups_section(lineups_path: Path = LINEUPS_JSON, today_teams: set |
     return "\n".join(lines).strip()
 
 
+def write_analyst_snapshot(lineups_path: Path, picks_run_at: str) -> None:
+    """
+    Write a snapshot of the lineup state at analyst run time into
+    lineups_today.json under the key 'snapshot_at_analyst_run'.
+    This is the baseline for P5 change-detection — never updated after this point.
+    """
+    if not lineups_path.exists():
+        return
+    try:
+        with open(lineups_path) as fh:
+            raw = json.load(fh)
+    except Exception:
+        return
+
+    if raw.get("snapshot_at_analyst_run"):
+        return  # Already snapshotted this run — do not overwrite
+
+    snapshot: dict = {"written_at": picks_run_at, "teams": {}}
+    for key, val in raw.items():
+        if key in ("asof_date", "built_at_utc", "source", "snapshot_at_analyst_run"):
+            continue
+        if isinstance(val, dict) and "starters" in val:
+            snapshot["teams"][key] = {
+                "starters": [s["name"] for s in val.get("starters", [])],
+                "confirmed": val.get("confirmed", False),
+            }
+
+    raw["snapshot_at_analyst_run"] = snapshot
+    tmp = lineups_path.with_suffix(".json.tmp")
+    with open(tmp, "w") as fh:
+        json.dump(raw, fh, indent=2)
+    os.replace(tmp, lineups_path)
+    print(f"[analyst] Wrote lineup snapshot for {len(snapshot['teams'])} teams")
+
+
 def load_pre_game_news() -> str:
     """
     Load pre_game_news.json written by pre_game_reporter.py.
@@ -1441,6 +1476,9 @@ def main():
     playoff_picture = render_playoff_picture()
     team_defense    = format_team_defense_section()
     lineups_section = format_lineups_section(today_teams=set(teams_today))
+
+    picks_run_at = dt.datetime.now(ET).isoformat()
+    write_analyst_snapshot(LINEUPS_JSON, picks_run_at)
 
     player_stats = load_player_stats()
     print(f"[analyst] Loaded quant stats for {len(player_stats)} players")

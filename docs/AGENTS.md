@@ -25,9 +25,10 @@ analyst.yml (chains off auditor)
   └─ build_site.py           → site/index.html (deployed to GitHub Pages)
 
 injuries.yml (hourly, independent)
-  └─ rotowire_injuries_only.py → injuries_today.json
+  └─ rotowire_injuries_only.py → injuries_today.json + lineups_today.json
   └─ lineup_watch.py           → picks.json (voided/lineup_risk updated in-place)
-  └─ build_site.py             → site/index.html (redeployed with fresh injuries + voided picks)
+  └─ lineup_update.py          → picks.json (lineup_update sub-object on affected picks, conditional LLM call)
+  └─ build_site.py             → site/index.html (redeployed with fresh injuries + amendments)
 ```
 
 ---
@@ -328,6 +329,52 @@ CORR_BONUS = {
 ```
 
 Also updates `picks.json` and `parlays.json` in-place with graded results.
+
+---
+
+## lineup_update.py — Afternoon Lineup Amendment Agent
+
+**Model:** `claude-sonnet-4-6`
+**MAX_TOKENS:** `2048`
+**Runs:** hourly after `lineup_watch.py` in `injuries.yml`
+
+**Purpose:** Diffs current lineup/injury state against the morning snapshot written by `analyst.py`
+at pick time. When meaningful changes are detected (a morning starter is now OUT/DOUBTFUL, or has
+been silently dropped from projected starters), calls Claude to assess the downstream impact on
+today's open picks. Writes a `lineup_update` sub-object to affected picks — leaving all original
+pick fields intact.
+
+**No-op conditions (skips LLM call):**
+- `lineups_today.json` missing or has no `snapshot_at_analyst_run` key
+- No starter-level changes detected vs. morning snapshot
+- All affected picks are past the tip-off cutoff (CUTOFF_MINUTES = 20)
+- No open, non-voided today picks match the changed teams
+
+**Change types detected:**
+- `new_absence` — player was in morning starters, now OUT/DOUBTFUL in injury report
+- `starter_replaced` — player was in morning starters, no longer listed, not injured (quiet scratch)
+
+**Affected pick scope:** a pick is affected when its `team` OR `opponent` appears in the change list —
+covering both usage-boost picks (teammate is out → more usage) and matchup picks (key defender is out).
+
+**`lineup_update` sub-object written to each amended pick:**
+```json
+{
+  "triggered_by":          ["string, detail of each relevant change"],
+  "updated_at":            "ISO timestamp",
+  "direction":             "up" | "down" | "unchanged",
+  "revised_confidence_pct": number,
+  "revised_reasoning":     "string, max 20 words"
+}
+```
+
+Sub-object is **overwritten** on each hourly run — latest Claude assessment always wins.
+`direction=unchanged` is still written (audit evidence that the change was evaluated).
+Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are **never modified**.
+
+**Frontend display:** pick cards show `↑ Updated HH:MM` (green) or `↓ Updated HH:MM` (amber)
+badge beneath reasoning. Clicking expands a detail panel showing triggered_by, revised reasoning
+(with revised confidence %), and the original morning reasoning.
 
 ---
 

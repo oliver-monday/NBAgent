@@ -654,6 +654,14 @@ def generate_html(d: dict) -> str:
       padding: 2px 7px; line-height: 1.6; }}
     .tier-walk-toggle:hover {{ border-color: var(--accent); color: var(--accent); }}
     .tier-walk-body {{ display: none; }}
+    .lineup-update-badge-up   {{ color: #22c55e; font-size: 11px; cursor: pointer; background: none;
+      border: 1px solid rgba(34,197,94,0.3); border-radius: 4px; padding: 2px 7px;
+      margin-top: 5px; display: inline-flex; align-items: center; user-select: none; }}
+    .lineup-update-badge-down {{ color: #f59e0b; font-size: 11px; cursor: pointer; background: none;
+      border: 1px solid rgba(245,158,11,0.3); border-radius: 4px; padding: 2px 7px;
+      margin-top: 5px; display: inline-flex; align-items: center; user-select: none; }}
+    .lineup-update-body {{ display: none; font-size: 11px; color: var(--muted);
+      margin-top: 4px; line-height: 1.5; }}
     .micro-stats {{ display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }}
     .micro-pill {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px;
                    background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }}
@@ -1035,6 +1043,12 @@ function toggleTierWalk(btn) {{
   btn.innerHTML = open ? '&#9656; show reasoning' : '&#9662; hide reasoning';
 }}
 
+function toggleLineupUpdate(btn) {{
+  const body = btn.nextElementSibling;
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+}}
+
 function toggleDrawer(id) {{
   const body    = document.getElementById(id);
   const chevron = document.getElementById(id + '-chevron');
@@ -1217,6 +1231,18 @@ function renderPicks() {{
             ${{statusBadge}}
             ${{buildMicroStats(p, streakSpan)}}
             ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
+            ${{(function() {{
+              const lu = p.lineup_update;
+              if (!lu || lu.direction === 'unchanged') return '';
+              const cls = lu.direction === 'up' ? 'lineup-update-badge-up' : 'lineup-update-badge-down';
+              const arrow = lu.direction === 'up' ? '↑' : '↓';
+              const timeStr = lu.updated_at ? new Date(lu.updated_at).toLocaleTimeString('en-US', {{hour:'numeric',minute:'2-digit'}}) : '';
+              const triggered = (lu.triggered_by || []).join('; ');
+              return `<button class="${{cls}}" onclick="toggleLineupUpdate(this)">${{arrow}} Updated ${{timeStr}}</button>` +
+                `<div class="lineup-update-body">Triggered by: ${{triggered}}<br>` +
+                `Revised (${{lu.revised_confidence_pct}}%): ${{lu.revised_reasoning}}<br>` +
+                `Morning (${{p.confidence_pct}}%): ${{p.reasoning}}</div>`;
+            }})()}}
             ${{p.tier_walk ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : ''}}
           </div>
           <div class="pick-right">
@@ -1544,6 +1570,18 @@ function renderTopPicks() {{
       ? `<div class="tp-reasoning">${{p.reasoning}}</div>` : '';
     const tierWalk = p.tier_walk
       ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : '';
+    const lineupUpdateBadge = (function() {{
+      const lu = p.lineup_update;
+      if (!lu || lu.direction === 'unchanged') return '';
+      const cls = lu.direction === 'up' ? 'lineup-update-badge-up' : 'lineup-update-badge-down';
+      const arrow = lu.direction === 'up' ? '↑' : '↓';
+      const timeStr = lu.updated_at ? new Date(lu.updated_at).toLocaleTimeString('en-US', {{hour:'numeric',minute:'2-digit'}}) : '';
+      const triggered = (lu.triggered_by || []).join('; ');
+      return `<button class="${{cls}}" onclick="toggleLineupUpdate(this)">${{arrow}} Updated ${{timeStr}}</button>` +
+        `<div class="lineup-update-body">Triggered by: ${{triggered}}<br>` +
+        `Revised (${{lu.revised_confidence_pct}}%): ${{lu.revised_reasoning}}<br>` +
+        `Morning (${{p.confidence_pct}}%): ${{p.reasoning}}</div>`;
+    }})();
 
     html += `
       <div class="top-pick-card" style="border-left-color:${{color}}">
@@ -1552,6 +1590,7 @@ function renderTopPicks() {{
           <div class="tp-meta">${{p.team}}${{gameTime}}</div>
           ${{ironBadge}}
           ${{reasoning}}
+          ${{lineupUpdateBadge}}
           ${{tierWalk}}
         </div>
         <div class="tp-right">

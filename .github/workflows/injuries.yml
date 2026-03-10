@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas requests beautifulsoup4 lxml
+          pip install pandas requests beautifulsoup4 lxml anthropic
 
       - name: Refresh Rotowire injuries
         run: |
@@ -91,6 +91,27 @@ jobs:
             git push origin HEAD:main
           else
             echo "No picks status changes to commit."
+          fi
+
+      - name: Run lineup update agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python agents/lineup_update.py
+
+      - name: Commit lineup amendments
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase --autostash origin/main
+
+          if [ -n "$(git status --porcelain -- data/picks.json)" ]; then
+            git add data/picks.json
+            git commit -m "Lineup update: picks amended [skip ci]"
+            git push origin HEAD:main
+          else
+            echo "No lineup amendments to commit."
           fi
 
       - name: Rebuild frontend with updated injuries
