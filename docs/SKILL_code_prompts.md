@@ -205,7 +205,43 @@ with ≥5 misses at their best PTS tier and confirm:
 
 ---
 
-### 6. File Summary Table
+### 6. Docs Update
+
+Every prompt must include a final step instructing Code to update relevant `/docs` files
+to reflect what was just implemented. This is the last step after all verification checks
+pass — not optional.
+
+```markdown
+## Docs Update
+
+After verification passes, update the following docs to reflect this implementation:
+
+- `docs/ROADMAP.md` — move this item from the active queue to Resolved, or add it as a
+  new Resolved entry if it wasn't previously tracked. Include the implementation date and
+  a one-line summary of what was done.
+- `docs/SESSION_CONTEXT.md` — update any affected schema descriptions, function
+  signatures, or "what's live vs. pending" state. If a new field was added to
+  `player_stats.json` or `picks.json`, update the schema tables.
+- `docs/AGENTS.md` — if agent logic, config, or output schemas changed, update the
+  relevant section.
+- `docs/DATA.md` — if any CSV or JSON schema changed (new fields, new files), update
+  the schema documentation.
+- `CLAUDE.md` — only if the repo structure, workflow chain, or agent config table
+  changed materially (new file, new agent, new workflow).
+- `README.md` — only if user-facing setup or usage instructions changed.
+```
+
+**Rules:**
+- Always update `ROADMAP.md` and `SESSION_CONTEXT.md` — these are the two most
+  critical for future session continuity.
+- Only update `AGENTS.md`, `DATA.md`, `CLAUDE.md`, `README.md` when those docs are
+  actually affected. Do not make cosmetic edits.
+- Docs updates are part of the implementation, not a post-implementation courtesy.
+  A prompt that ships code without updating docs is incomplete.
+
+---
+
+### 7. File Summary Table
 
 End every prompt with a clean table:
 
@@ -380,6 +416,7 @@ Before handing a prompt to Code, verify:
 - [ ] Verification section has at least one mathematical invariant
 - [ ] File summary table is present and accurate
 - [ ] If directive signal: backtest-first decision is documented
+- [ ] Docs Update section is present with ROADMAP.md and SESSION_CONTEXT.md as mandatory targets
 
 ---
 

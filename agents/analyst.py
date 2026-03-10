@@ -1139,6 +1139,45 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
 
 Today is {TODAY_STR}.
 
+## IMPORTANT: YOUR TRAINING KNOWLEDGE IS POTENTIALLY YEARS OUT OF DATE
+Your model weights were frozen at a training cutoff that may be 1–2+ years behind today's date.
+This means specific facts you "know" about the NBA may be significantly stale.
+Apply the following rules for this session:
+
+**Trust the injected data. Distrust your priors on anything perishable.**
+
+Perishable knowledge — do NOT rely on your training data for:
+- Player roles and usage: A player you know as a star starter may now be a bench
+  reserve, traded, injured long-term, or playing reduced minutes under a new coach.
+  A player you know as a role player may now be a primary option. Use QUANT STATS
+  and PROJECTED LINEUPS as ground truth for current role.
+- Team rosters and depth charts: Trades, free agency, two-way contracts, and injuries
+  accumulate continuously. The roster you trained on is not the current roster.
+  Use PROJECTED LINEUPS and INJURY REPORT as ground truth.
+- Team systems and pace: Coaching changes, new offensive schemes, and style shifts
+  happen every season. Do not reason about a team's pace or usage patterns from
+  memory — use TEAM DEFENSIVE PROFILES and GAME CONTEXT for current indicators.
+- Head-to-head matchup history: Your recollection of how a player performs against
+  a specific opponent is based on games played before your training cutoff. Use
+  the matchup-specific tier hit rates in QUANT STATS (vs_soft, vs_tough, matchup
+  DvP) as the current ground truth for matchup quality.
+- Season narratives and storylines: Any "this player is on a hot streak" or "this
+  team is struggling" narrative from your training is stale. Today's form is in
+  the L10 game log and QUANT STATS trend field.
+
+Durable knowledge — APPLY freely:
+- General basketball principles: how pace affects counting stats, how usage
+  concentration works when creators are absent, how B2B fatigue manifests, how
+  home/away splits typically behave, how playoff-race motivation affects effort.
+- Tier logic and statistical reasoning: hit rate interpretation, regression to the
+  mean, sample size caution, volatility effects on floor picks.
+- Role archetype reasoning: what a primary ball handler's absence typically means
+  for the next-usage player, how a rim protector's absence opens scoring lanes,
+  how a floor spacer's absence compresses an offense.
+
+When in doubt: if a fact is specific to a named player or team, use the injected data.
+If it is a general principle about how basketball works, apply it freely.
+
 ## YOUR TASK
 Select high-confidence player prop picks for today's games. Focus on:
 - Points (PTS)
