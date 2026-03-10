@@ -217,7 +217,64 @@ def get_affected_picks(
 
 # ── Claude call ────────────────────────────────────────────────────────────────
 
-def call_lineup_update(affected_picks: list[dict], changes: list[dict]) -> list[dict]:
+def build_rotowire_context(lineups: dict, changed_teams: set) -> str:
+    """
+    Build a plain-text Rotowire projections block for each changed team.
+    Returns empty string when no projected_minutes or onoff_usage data is present
+    (graceful degradation for unauthenticated runs).
+    """
+    lines: list[str] = []
+    for raw_team in sorted(changed_teams):
+        team = _norm(raw_team)
+        team_data = lineups.get(raw_team) or lineups.get(team) or {}
+        if not isinstance(team_data, dict):
+            continue
+        proj_min = team_data.get("projected_minutes") or []
+        onoff    = team_data.get("onoff_usage") or []
+        if not proj_min and not onoff:
+            continue
+        lines.append(f"{team} — Rotowire projections:")
+        if proj_min:
+            starters = [p for p in proj_min if p.get("section") == "STARTERS"]
+            bench    = [p for p in proj_min if p.get("section") == "BENCH"]
+            out_pl   = [p for p in proj_min if p.get("section") == "OUT"]
+            if starters:
+                parts = [f"{p['name']} {p['minutes']}min" for p in starters]
+                lines.append(f"  Projected starters: {', '.join(parts)}")
+            if bench:
+                parts = [f"{p['name']} {p['minutes']}min" for p in bench]
+                lines.append(f"  Projected bench: {', '.join(parts)}")
+            if out_pl:
+                parts = [p["name"] for p in out_pl]
+                lines.append(f"  Out: {', '.join(parts)}")
+        if onoff:
+            usage_lines: list[str] = []
+            for p in onoff:
+                uc = p.get("usage_change")
+                if uc is None:
+                    continue
+                up     = p.get("usage_pct")
+                ms     = p.get("minutes_sample")
+                absent = ", ".join(p.get("absent_players") or [])
+                sign        = "+" if uc >= 0 else ""
+                sample      = f" ({ms}min sample)" if ms else ""
+                absent_str  = f" when {absent} OUT" if absent else ""
+                usage_str   = f" (usage={up}%)" if up is not None else ""
+                usage_lines.append(
+                    f"  {p['name']}: {sign}{uc}pp USG{usage_str}{absent_str}{sample}"
+                )
+            if usage_lines:
+                lines.append("  On/Off usage deltas:")
+                lines.extend(usage_lines)
+        lines.append("")
+    return "\n".join(lines).strip()
+
+
+def call_lineup_update(
+    affected_picks: list[dict],
+    changes: list[dict],
+    rotowire_context: str = "",
+) -> list[dict]:
     """
     Single Claude call. Returns list of amendment dicts:
         {player_name, prop_type, direction, revised_confidence_pct, revised_reasoning}
@@ -229,15 +286,33 @@ def call_lineup_update(affected_picks: list[dict], changes: list[dict]) -> list[
         "Lineup changes have occurred since the picks were made. Assess the impact on each "
         "affected pick based on the changes described.\n\n"
         "For each pick, return one JSON object with:\n"
-        '  "player_name":          string (exact match from AFFECTED PICKS)\n'
-        '  "prop_type":            "PTS" | "REB" | "AST" | "3PM"\n'
-        '  "direction":            "up" | "down" | "unchanged"\n'
+        '  "player_name":            string (exact match from AFFECTED PICKS)\n'
+        '  "prop_type":              "PTS" | "REB" | "AST" | "3PM"\n'
+        '  "direction":              "up" | "down" | "unchanged"\n'
         '  "revised_confidence_pct": integer 70–99 (same as original when unchanged)\n'
-        '  "revised_reasoning":    string, max 20 words\n\n'
-        "Direction guide:\n"
-        "  up   — a key opponent defender is now OUT → matchup is meaningfully easier\n"
-        "  down — a teammate who feeds/enables this player is OUT → fewer opportunities\n"
-        "  unchanged — the change has no meaningful effect on this specific prop\n\n"
+        '  "revised_reasoning":      string, max 20 words\n\n'
+        "DIRECTION GUIDE — apply prop-type-specific logic:\n\n"
+        "PTS:\n"
+        "  up   — key opposing defender/big OUT → matchup easier; OR usage spike from teammate OUT\n"
+        "  down — primary creator who draws defense OUT → fewer clean looks; OR B2B fatigue confirmed\n"
+        "  unchanged — role player OUT with no direct scoring/usage impact on this player\n\n"
+        "REB:\n"
+        "  up   — opposing rebounder/center OUT → fewer contested boards; OR lineup shrinks smaller\n"
+        "  down — teammate center/PF OUT → another rebounder inserted, splitting boards differently\n"
+        "  unchanged — perimeter player OUT with no rebounding impact\n\n"
+        "AST:\n"
+        "  up   — secondary ball-handler OUT → primary PG assumes all creation; more possessions, more AST\n"
+        "  down — primary scoring target OUT → fewer viable receivers; playmaker with fewer outlets\n"
+        "  unchanged — no change to offensive structure or usage hierarchy for this player\n\n"
+        "3PM:\n"
+        "  up   — primary perimeter defender assigned to this shooter OUT → more open looks\n"
+        "  down — key ball-mover/feeder OUT → fewer off-ball catch-and-shoot opportunities\n"
+        "  unchanged — structural change not affecting this player's shooting volume\n\n"
+        "DEFAULT RULE: when in doubt, use 'unchanged' — only override original confidence when the "
+        "connection between the lineup change and this specific pick is direct and meaningful.\n"
+        "Use Rotowire projected minutes and on/off usage data (when provided) to calibrate "
+        "the magnitude of confidence adjustments: larger shifts in projected minutes or usage "
+        "warrant larger confidence revisions (±5–15pp); minor tweaks warrant ±3–5pp.\n\n"
         "Respond ONLY with a JSON array. No prose, no markdown."
     )
 
@@ -249,9 +324,15 @@ def call_lineup_update(affected_picks: list[dict], changes: list[dict]) -> list[
         for p in affected_picks
     )
 
+    rotowire_section = (
+        f"\n## ROTOWIRE PROJECTIONS FOR CHANGED TEAMS\n{rotowire_context}\n"
+        if rotowire_context else ""
+    )
+
     user_msg = (
         f"## LINEUP CHANGES SINCE MORNING PICKS\n{changes_block}\n\n"
-        f"## AFFECTED PICKS\n{picks_block}\n\n"
+        f"## AFFECTED PICKS\n{picks_block}\n"
+        f"{rotowire_section}\n"
         "Return a JSON array with one object per pick listed above."
     )
 
@@ -397,9 +478,15 @@ def main() -> None:
 
     print(f"[lineup_update] {len(affected_picks)} pick(s) affected — calling Claude")
 
+    # ── Build Rotowire context for changed teams ────────────────────────────────
+    changed_teams: set[str] = {_norm(c["team"]) for c in changes}
+    rotowire_ctx = build_rotowire_context(lineups, changed_teams)
+    if rotowire_ctx:
+        print(f"[lineup_update] Rotowire context built for {len(changed_teams)} team(s)")
+
     # ── Call Claude ────────────────────────────────────────────────────────────
     try:
-        amendments = call_lineup_update(affected_picks, changes)
+        amendments = call_lineup_update(affected_picks, changes, rotowire_context=rotowire_ctx)
     except Exception as e:
         print(f"[lineup_update] ERROR calling Claude: {e}")
         return
