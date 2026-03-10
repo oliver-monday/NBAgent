@@ -537,8 +537,8 @@ By confidence band (HITs + MISSes only):
 
 ## NO_DATA PICKS (box score not found — player may have DNP'd)
 These picks returned no box score data. They are NOT misses — do not classify them as
-selection_error, model_gap, or variance. Handle them exclusively in the NO_DATA ANALYSIS
-TASK below.
+selection_error, model_gap_signal, model_gap_rule, or variance. Handle them exclusively
+in the NO_DATA ANALYSIS TASK below.
 
 {no_data_block_str}
 {parlay_section}
@@ -550,6 +550,9 @@ Each pick object in FULL GRADED PICKS contains the quant data that was live at p
 - "tier_walk": the analyst's walk-down, e.g. "PTS: 30→3/10 25→5/10 20→8/10✓"
 - "opponent": yesterday's opponent (correct at pick time)
 - "confidence_pct", "prop_type", "pick_value": as set by the analyst
+- "lineup_update": sub-object present when the afternoon lineup agent amended the pick.
+  Fields: direction ("up"/"down"/"unchanged"), revised_confidence_pct, revised_reasoning,
+  triggered_by (list of change strings). Absent when no amendment was triggered.
 
 Do NOT attempt to load or reference external player stats data. The pick objects are the
 authoritative record of what the system knew at pick time.
@@ -592,7 +595,7 @@ are zero AND no minutes evidence exists.
 STEP 2 — CHECK INJURY STATUS, THEN CLASSIFY THE MISS as exactly one of:
   First, inspect the pick object's injury_status_at_check and voided fields before
   choosing any classification. Prefer injury_event or workflow_gap when the evidence
-  supports them — these take priority over selection_error, model_gap, or variance.
+  supports them — these take priority over selection_error, model_gap_signal, model_gap_rule, or variance.
 
   - "injury_event": player was confirmed active at pick time (injury_status_at_check
     was NOT_LISTED or QUESTIONABLE) but exited the game mid-game due to injury.
@@ -605,9 +608,17 @@ STEP 2 — CHECK INJURY STATUS, THEN CLASSIFY THE MISS as exactly one of:
     this whenever pre-game OUT/DOUBTFUL status explains the miss.
   - "selection_error": the pick was wrong given data available at pick time
     (bad hit rate, wrong tier, ignored injury context, etc.)
-  - "model_gap": pick was reasonable but system lacks a signal that would
-    have caught this (e.g. teammate rebounding competition, assist suppression
-    by defense type, usage redistribution nuance)
+  - "model_gap_signal": pick was reasonable but the system lacks the signal entirely —
+    no quant field, annotation, or prompt rule exists that could have caught this.
+    Examples: teammate rebounding competition, scheme-type DvP mismatch (switching vs.
+    drop coverage), assist suppression by specific defensive structure.
+    Use when the miss required a signal NBAgent doesn't compute yet.
+  - "model_gap_rule": the signal existed in quant data or context at pick time, but the
+    analyst rule didn't correctly handle the combination.
+    Examples: blowout-resilient tag overcorrected on a large spread, QUESTIONABLE ankle
+    tag not penalized on a shooting prop, B2B penalty not applied to secondary scorer.
+    Use when the miss would have been caught by a tighter or better-tuned prompt rule,
+    using data already present in the pick object or quant context.
   - "variance": pick was sound, player had an off night. Hit rate and context
     supported the pick; outcome was within normal variance range.
 
@@ -642,6 +653,28 @@ unexpected (e.g. the selected tier was the only viable option, confirming the pi
 sound despite the miss).
 If the pick has no tier_walk field (older picks pre-dating this feature), skip STEP 5.
 
+STEP 6 — CHECK AMENDMENT STATUS: For every pick (hit or miss), check whether a
+"lineup_update" sub-object is present.
+  If present and direction = "down":
+    - If the pick MISSED: note in root_cause that the afternoon amendment correctly flagged
+      downside risk. Phrase as: "Amendment correctly flagged: [triggered_by summary]. Revised
+      down to [revised_confidence_pct]% — pick still ran and missed." This is a feature
+      validation data point.
+    - If the pick HIT: note in root_cause that the amendment was overcautious. Phrase as:
+      "Amendment flagged downside (revised to [revised_confidence_pct]%) but pick hit."
+  If present and direction = "up":
+    - If the pick HIT: note briefly in root_cause that the amendment correctly identified
+      upside. Phrase as: "Amendment flagged upside (revised to [revised_confidence_pct]%)."
+    - If the pick MISSED: note in root_cause that the amendment missed the real risk. Phrase
+      as: "Amendment flagged upside (revised to [revised_confidence_pct]%) but pick missed."
+  If present and direction = "unchanged":
+    - No comment needed in root_cause. The amendment found no meaningful update.
+  If absent:
+    - No comment needed. The pick was not evaluated by the afternoon agent (either no lineup
+      changes were detected for this player's game, or the agent had not yet run).
+Do NOT change the miss_classification based on amendment status alone. Amendments are
+contextual notes on the feature's performance, not a reclassification trigger.
+
 For hits: identify what the Analyst got right — specific statistical patterns, matchup reads,
 or reasoning that proved correct.
 
@@ -670,7 +703,7 @@ Respond ONLY with valid JSON. No preamble.
       "prop_type": "string",
       "pick_value": number,
       "actual_value": number,
-      "miss_classification": "selection_error | model_gap | variance | injury_event | workflow_gap",
+      "miss_classification": "selection_error | model_gap_signal | model_gap_rule | variance | injury_event | workflow_gap",
       "tier_walk_flag": "tier_skip_error | data_conflict | insufficient_walk | null",
       "root_cause": "string"
     }}
@@ -826,7 +859,7 @@ def save_audit_summary(audit_log: list[dict]):
     for entry in audit_log:
         for miss in entry.get("miss_details", []):
             mc = miss.get("miss_classification", "")
-            if mc in ("selection_error", "model_gap", "variance", "injury_event", "workflow_gap"):
+            if mc in ("selection_error", "model_gap_signal", "model_gap_rule", "variance", "injury_event", "workflow_gap"):
                 miss_classes[mc] += 1
 
     # ── Confidence calibration aggregation ────────────────────────────

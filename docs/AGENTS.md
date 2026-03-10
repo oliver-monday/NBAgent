@@ -141,7 +141,7 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 
 ## analyst.py — Pick Generator
 
-**Model:** `claude-sonnet-4-6`
+**Model:** `claude-sonnet-4-6` (`claude-opus-4-6` when >30 active players post injury pre-filter)
 **MAX_TOKENS:** `16384` (large slates can produce 30+ picks)
 **RECENT_GAME_WINDOW:** `10` games per player
 **AUDIT_CONTEXT_ENTRIES:** `5` most recent entries

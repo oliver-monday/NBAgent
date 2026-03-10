@@ -327,8 +327,8 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEV
 ### `auditor.py`
 - `build_absence_context(graded_picks)` → returns `## YESTERDAY'S NOTABLE ABSENCES` block (players voided or OUT at check time) or ""
 - `save_audit_summary(audit_log)` → writes `data/audit_summary.json`; per-prop and overall denominators exclude `injury_event` picks; `injury_exclusions` key in both per-prop and overall dicts
-- Miss classification taxonomy (5 types): `selection_error` / `model_gap` / `variance` / `injury_event` / `workflow_gap` — written to `miss_classification` in `miss_details`
-- `build_audit_prompt()` injects: `{absence_block}` before `{news_block}`, ⚠ INJURY LANGUAGE IN NEWS flag on news_lines entries where detected
+- Miss classification taxonomy (6 types): `selection_error` / `model_gap_signal` / `model_gap_rule` / `variance` / `injury_event` / `workflow_gap` — written to `miss_classification` in `miss_details`. `model_gap_signal` = system lacks the signal entirely (no quant field or rule exists that could have caught this); `model_gap_rule` = signal existed in quant data/context at pick time but the analyst rule didn't correctly handle the combination. The legacy `model_gap` value is no longer valid.
+- `build_audit_prompt()` injects: `{absence_block}` before `{news_block}`, ⚠ INJURY LANGUAGE IN NEWS flag on news_lines entries where detected. STEP 6 of PICK ANALYSIS TASK reads `lineup_update` sub-objects on pick objects and annotates amendment direction vs. outcome in `root_cause` (direction=down + miss → "Amendment correctly flagged…"; direction=up + miss → "Amendment flagged upside but pick missed"; direction=down + hit → "Amendment flagged downside but pick hit"; direction=unchanged or absent → no comment). Does not change `miss_classification` — amendment notes are contextual only.
 - **`load_player_stats_for_audit()` was REMOVED (March 8, 2026)** — eliminates yesterday's-data-for-today's-audit confabulation bug. Auditor now reads quant context from pick object fields (`reasoning`, `hit_rate_display`, `tier_walk`, `opponent`) written at pick time.
 
 ### `post_game_reporter.py` (runs before auditor each morning)
