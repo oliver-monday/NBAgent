@@ -41,6 +41,9 @@ jobs:
           pip install pandas numpy anthropic requests
 
       - name: Refresh injuries before picks
+        env:
+          ROTOWIRE_EMAIL: ${{ secrets.ROTOWIRE_EMAIL }}
+          ROTOWIRE_PASSWORD: ${{ secrets.ROTOWIRE_PASSWORD }}
         run: |
           pip install beautifulsoup4 lxml
           SLATE_DATE="$(TZ=America/Los_Angeles date +%Y-%m-%d)"

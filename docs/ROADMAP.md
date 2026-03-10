@@ -41,40 +41,40 @@
 
 ---
 
-### P5 — Afternoon Lineup Re-Reasoning Pass (`agents/lineup_update.py`)
-**Priority: MEDIUM — targeted Claude call when a key player goes OUT after morning picks are set**
-**Prerequisite: `lineup_watch.py` must be live first (✅ done as of March 2026)**
-**Revisit: once 7+ days of amendment data accumulated in audit_log.json**
+### P5 — Afternoon Lineup Update Agent (`agents/lineup_update.py`)
+**Status: ✅ IMPLEMENTED (March 10, 2026)**
 
-**What:** A focused LLM re-evaluation pass that triggers only when something meaningful has changed. Not a full analyst re-run — a minimal prompt scoped to the picks that are genuinely affected by a new absence.
+Implemented as snapshot-based diff: `analyst.py` writes `snapshot_at_analyst_run` into
+`lineups_today.json` at pick time. `lineup_update.py` runs hourly, diffs current
+lineup/injury state against that snapshot, and calls Claude only when changes are detected.
 
-**Trigger conditions (both must be true):**
-- At least one player crossed to OUT or DOUBTFUL since the previous injury refresh
-- Current time is before 5 PM ET (post-tip-off amendments are not actionable)
-
-**Scope:** Identifies today's open picks where the picked player is a teammate or opponent of a player who just went OUT/DOUBTFUL. Builds a minimal context block from `player_stats.json` for the newly-absent player.
-
-**Claude call:** Single focused prompt returning only picks where assessment changes, with revised `confidence_pct` and one-sentence `updated_reasoning`. Original morning values preserved in `morning_pick` — never overwritten.
-
-**Output schema additions to each amended pick in `picks.json`:**
+**Output schema (actual implementation):**
 ```json
 {
-  "lineup_updated": true,
-  "updated_at": "ISO timestamp",
-  "morning_pick": {
-    "confidence_pct": "<original>",
-    "reasoning": "<original reasoning>"
-  },
-  "confidence_pct": "<revised>",
-  "reasoning": "<revised reasoning>"
+  "lineup_update": {
+    "triggered_by": ["string"],
+    "updated_at": "ISO timestamp",
+    "direction": "up | down | unchanged",
+    "revised_confidence_pct": number,
+    "revised_reasoning": "string, max 20 words"
+  }
 }
 ```
 
-**Audit integration:** After ~20 audit entries with amendments, evaluate whether re-reasoned picks outperform their morning originals. If no improvement, cut the feature.
+Morning pick fields (`confidence_pct`, `reasoning`, `pick_value`) are **never modified**.
+Sub-object overwritten on each hourly run — latest assessment wins. `direction=unchanged`
+still written as audit evidence.
 
-**Frontend:** Amended pick cards display a small `↻ Updated [time]` badge with expandable morning vs. revised reasoning comparison.
+**Audit integration:** NOT yet implemented. Picks amended by lineup_update are graded identically
+to morning picks — no distinction in the audit log. Revisit after ~20 days of amendment data.
+The key evaluation question: do re-reasoned-DOWN picks miss more than un-amended picks at the
+same tier? If yes, keep the feature. If no improvement, simplify to log-only.
 
-**Where:** `agents/lineup_update.py` (new), `injuries.yml`, `auditor.py`, `build_site.py`.
+**Frontend:** `↑ Updated HH:MM` (green) / `↓ Updated HH:MM` (amber) badge on pick cards and
+Top Picks cards. Click expands: triggered_by, revised conf+reasoning, original morning reasoning.
+
+**Files:** `agents/lineup_update.py` (new), `analyst.py` (write_analyst_snapshot),
+`ingest/rotowire_injuries_only.py` (lineups_today.json), `injuries.yml`, `build_site.py`, `AGENTS.md`.
 
 ---
 
@@ -151,7 +151,7 @@ Derrick White's two model_gap misses (PTS + 3PM, March 8) expose a gap: CLE's ag
 - **Minutes Floor** — structural feature, ships without backtest. Validates naturally via audit log accumulation within 2–3 weeks.
 - **P4 (Tier-Walk)** — ✅ IMPLEMENTED (March 6, 2026). `tier_walk_flag` in `miss_details` accumulates going forward — expect meaningful patterns after 20+ audit days.
 - **P3 (Shooting Regression)** — ✅ FULLY IMPLEMENTED (March 8, 2026). Signal threshold (±8%) is an untested prior — validate via audit accumulation after 30+ days of flagged picks. HOT misses should cluster in `model_gap` to confirm mechanism; if they cluster in `variance`, the penalty is overcorrecting.
-- **P5 (Afternoon Re-Reasoning)** — requires `lineup_watch.py` already live (✅). Key open design question: change-detection for "new absence since last run" — simplest approach is comparing `injuries_today.json` against a prior-run snapshot cached to `data/injuries_prev.json` by `lineup_watch.py`. Revisit after 7 days of lineup_watch data.
+- **P5 (Afternoon Lineup Update)** — ✅ IMPLEMENTED (March 10, 2026). Snapshot-based diff (not prior-cycle diff). `analyst.py` writes `snapshot_at_analyst_run` into `lineups_today.json`; `lineup_update.py` diffs hourly. Audit integration NOT yet done — picks amended by lineup_update are graded identically to morning picks. Evaluate after ~20 days of amendment data: do revised-DOWN picks miss more? If no lift, simplify to log-only.
 - **#1 (Teammate Absence Delta)** — highest long-run alpha; revisit at season start when full-year DNP data exists.
 - **Confidence calibration tracking** — `audit_summary.json` accumulates per-band hit rates (70–75 / 76–80 / 81–85 / 86+). After 20+ audit days, compare actual hit rates to stated confidence bands. If a band systematically underperforms, tighten prompt guidance for that band directly.
 - **Positional DvP backtest (H8)** — data accumulating in `player_stats.json` since March 2026. Run early April. If not meaningfully stronger than team-level, consider reverting to simplify the prompt.
@@ -283,3 +283,5 @@ Derrick White's two model_gap misses (PTS + 3PM, March 8) expose a gap: CLE's ag
 | **Lineup Watch — wiring fix (March 9, 2026)** | `lineup_watch.py` was not in the `injuries.yml` chain — injuries refreshed hourly but `picks.json` `voided` flags never updated. Fixed: `lineup_watch.py` added between `rotowire_injuries_only.py` and `build_site.py` in `injuries.yml`. Name matching hardened to last-name + team-abbrev key (handles Rotowire abbreviated format). Stale flag clearing added: status improvements between hourly runs now remove prior `voided`/`lineup_risk` flags. `AGENTS.md` workflow diagram updated. |
 | **Analyst — min_floor confidence cap + BLOWOUT_RISK secondary scorer skip + parlay player-level concentration cap (March 9, 2026)** | Three hard gates added. (1) min_floor cap: PTS pick with `floor_minutes < 24` → confidence capped at 84% regardless of streak/iron_floor tag. (2) BLOWOUT_RISK secondary scorer skip: spread ≥ +8 underdog AND non-primary scorer → PTS pick skipped entirely (not just -5% deduction). (3) Parlay concentration cap widened from player-prop level to player level: no single `player_name` in more than 2 of today's parlays regardless of prop type. Post-selection validation added to `parlay.py` as reliable enforcement point. |
 | **Analyst — OUT/DOUBTFUL hard pre-filter (March 9, 2026)** | Root cause: `analyst.py` relied on LLM self-exclusion of OUT players — no Python filter existed. Two-layer fix: (1) `rotowire_injuries_only.py` added as first step of `analyst.yml` so injuries are always fresh before picks run. (2) `load_out_players()` added to `analyst.py` — reads `injuries_today.json`, builds `(last_name, team_abbrev)` exclusion set, strips OUT/DOUBTFUL players from `player_stats` dict before any prompt-building call. Claude never receives stats for excluded players. INJURY EXCLUSION hard rule added to KEY RULES as backstop. `parlay.py` candidate pool filters excluded players as defense-in-depth. Exclusions logged to stdout. `AGENTS.md` updated. |
+| **Projected Lineup Scraping + Analyst Context Injection (March 9–10, 2026)** | `rotowire_injuries_only.py` extended with `parse_rotowire_lineups()` and `write_lineups_json()` → writes `data/lineups_today.json`. Guard condition prevents 0-team parse from overwriting good existing data. `analyst.py` adds `format_lineups_section()` (reads + staleness-checks `lineups_today.json`), `write_analyst_snapshot()` (writes `snapshot_at_analyst_run` into `lineups_today.json` at pick time), LINEUP CONTEXT key rule in SELECTION RULES. `## PROJECTED LINEUPS` injected between injury report and pre-game news. `AGENTS.md` updated. |
+| **P5 — Afternoon Lineup Update Agent (March 10, 2026)** | New `agents/lineup_update.py`: snapshot-based diff against `snapshot_at_analyst_run`; detects `new_absence` and `starter_replaced` change types; calls Claude (single prompt) for affected picks (team or opponent changed, tip-off > 20 min); writes `lineup_update` sub-object `{triggered_by, updated_at, direction, revised_confidence_pct, revised_reasoning}` in-place; fully idempotent — overwrites on each hourly run; `direction=unchanged` still written as audit evidence. `injuries.yml` wired (`anthropic` dep + run step + commit step). `build_site.py` badge: `↑/↓ Updated HH:MM` with expandable detail panel on pick cards and Top Picks. `AGENTS.md` updated. |

@@ -4,8 +4,9 @@
 and `@docs/AGENTS.md` at session start. Covers current implementation state, design decisions,
 non-obvious gotchas, and live prompt format — things that take time to re-derive from source.
 
-**Last updated:** March 8, 2026 (Season Context Improvements 0, 1, 2 complete — standings
-snapshot, auto-generated team defense narratives, staleness detection in pre_game_reporter)
+**Last updated:** March 10, 2026 (P5 Afternoon Lineup Update Agent complete; March 9 additions
+documented: OUT/DOUBTFUL hard pre-filter, projected lineup scraping + analyst injection, lineup
+watch wiring fix, min_floor cap, BLOWOUT_RISK secondary scorer skip, parlay player-level cap)
 
 ---
 
@@ -20,9 +21,14 @@ team_defense_narratives.json  (per-team last-15g PPG allowed + rank, auto-genera
          player_notes, game_notes (Claude-summarised ESPN news)
          suggested_context_updates (Claude conflict flags)
          staleness_flags (deterministic date-based stale fact flags — Pass 1, no LLM)
-    ↓ analyst.py               → picks.json (appended, result=null until auditor runs)
-    ↓ parlay.py                → parlays.json (appended)
+    ↓ analyst.py
+         reads lineups_today.json (written by rotowire_injuries_only.py, refreshed at analyst start)
+         calls write_analyst_snapshot() → stores snapshot_at_analyst_run in lineups_today.json
+         OUT/DOUBTFUL pre-filter applied to player_stats before prompt building
+         → picks.json (appended, result=null until auditor runs)
+    ↓ parlay.py                → parlays.json (appended; OUT/DOUBTFUL excluded)
     ↓ lineup_watch.py          → picks.json (injury_status_at_check + voided/risk fields, hourly)
+    ↓ lineup_update.py         → picks.json (lineup_update sub-object on affected picks, hourly)
 
     ↓ post_game_reporter.py    → post_game_news.json (ESPN exit/DNP news for yesterday's picks)
     ↓ auditor.py (next morning)
@@ -34,6 +40,9 @@ site/index.html  (deployed to GitHub Pages)
 
 Quant runs twice per day: once in `ingest.yml` (for freshness after box scores land), once at
 the start of `analyst.yml` (to ensure the analyst sees today's correct data). This is intentional.
+
+`rotowire_injuries_only.py` runs at the START of `analyst.yml` (before quant re-run) to ensure
+injuries and lineups are fresh before picks are generated.
 
 ---
 
@@ -58,8 +67,8 @@ profile_narrative     ← string or null; live portrait for ≥10 non-DNP games 
 ```
 
 `opp_defense` is still written to `player_stats.json` even though the analyst no longer reads
-`opp_today=` from the quant context block — the auditor's `load_player_stats_for_audit()` slims
-entries to 9 fields including `opp_defense`, so it must stay.
+`opp_today=` from the quant context block — the auditor reads quant context from pick object
+fields directly (not from `player_stats.json`), but `opp_defense` remains for other consumers.
 
 `bounce_back` per-stat fields: `{post_miss_hit_rate, lift, iron_floor, n_misses,
 near_miss_rate, blowup_rate, typical_miss}`. The Miss Anatomy fields (`near_miss_rate`,
@@ -93,6 +102,7 @@ the positional sample had < 10 games. `n=` is the number of player-game observat
 3. Tier ceiling rules with backtest evidence (REB T8+, AST T6+, PTS T25+, PTS T30 invalid)
 4. `## TODAY'S GAMES` (JSON array)
 5. `## CURRENT INJURY REPORT` (filtered to today's teams only)
+5a. `## PROJECTED LINEUPS` (from `lineups_today.json`; freshness-checked vs TODAY_STR; fallback "unavailable" line if missing or stale)
 6. `## PRE-GAME NEWS` (conditional — only injected when `pre_game_news.json` has content; critical context flags prepended with ⚠ warning)
 7. `## SEASON CONTEXT` (SEASON FACTS only — `## TEAM DEFENSIVE PROFILES` section is stripped from the file at load time; manually maintained)
 8. `## PLAYOFF PICTURE` — auto-generated from `data/standings_today.json` (bucketed: safe / contending / playin / bubble / eliminated)
@@ -101,18 +111,27 @@ the positional sample had < 10 games. `n=` is the number of player-game observat
 11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS`
     - KEY RULES — MATCHUP QUALITY (DvP + vs_soft/vs_tough interaction)
     - OPPONENT DEFENSE — POSITIONAL DvP (stat-specific rules, REB/3PM exclusions)
-    - SELECTION RULES (offensive-first REB floor rule, tier ceiling conditions, tier walk-down discipline)
+    - SELECTION RULES (offensive-first REB floor rule, tier ceiling conditions, tier walk-down discipline; **LINEUP CONTEXT** rule — use ## PROJECTED LINEUPS as ground truth for who is playing)
     - KEY RULES — REST & FATIGUE (B2B, DENSE, rest_days)
     - KEY RULES — SEQUENTIAL GAME CONTEXT (REB slump-persistent, 3PM cold streak, **3PM trend=down mandatory step-down**)
-    - KEY RULES — SPREAD / BLOWOUT RISK (BLOWOUT_RISK flag, spread_abs > 13 cap)
+    - KEY RULES — SPREAD / BLOWOUT RISK (BLOWOUT_RISK flag, spread_abs > 13 cap; BLOWOUT_RISK secondary scorer skip for underdog non-primary scorers)
     - KEY RULES — VOLATILITY (−5% for VOLATILE, Top Pick gate, iron_floor override)
     - KEY RULES — HIGH CONFIDENCE GATE 81%+ (Conditions A/B/C)
+    - INJURY EXCLUSION (HARD RULE) — players removed from quant context by Python pre-filter; do not pick any player absent from ## QUANT STATS
     - `{quant_context}` — the per-player blocks
 12. `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS` (from `profile_narrative` fields in `player_stats.json`)
 13. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS` (last 5 entries)
 14. `## ROLLING PERFORMANCE SUMMARY` (from `audit_summary.json`, blank < 3 days)
 15. `## ANALYSIS APPROACH` (3-line per-player reasoning format)
 16. `## OUTPUT FORMAT` (strict JSON schema — includes `tier_walk` and `iron_floor` fields)
+
+**Hard gates enforced in Python before prompt building (not just in prompt rules):**
+- OUT/DOUBTFUL players removed from `player_stats` dict via `load_out_players()` — Claude never sees their stats
+- Same filter applied in `parlay.py` `load_todays_picks()` — cannot appear in parlay legs
+- `min_floor confidence cap` — PTS pick with `floor_minutes < 24` → confidence capped at 84%
+- `BLOWOUT_RISK secondary scorer skip` — spread ≥ +8 underdog AND non-primary scorer → PTS pick skipped
+- `AST T4+ hard gate` — PF/C or raw_avgs AST < 4.0 → opponent AST DvP must be "soft"; skip on mid/tough
+- `3PM hard skip` — trend=down AND avg_minutes_last5 ≤ 30 → skip all 3PM picks including T1
 
 ---
 
@@ -144,7 +163,7 @@ effective than abstract rules at anchoring Claude to the right selection logic.
 **Why does Quant NOT run LLM calls?**
 All signal is pre-computed deterministically. This keeps cost at zero for the heaviest compute
 step, makes debugging trivial (inspect the JSON), and separates concerns cleanly. The LLM only
-runs in analyst, parlay, and auditor.
+runs in analyst, parlay, auditor, and lineup_update.
 
 **Why does positional DvP rank *within position groups* rather than globally?**
 A PG averaging 18 pts/game against a team is not directly comparable to a C averaging 18 pts.
@@ -157,10 +176,12 @@ With only ~12 whitelisted players per position across 30 teams, some cells will 
 observations early in a season. Below 10, the variance is too high to trust the rating — the
 system falls back to team-level gracefully and marks `source: "team_fallback"`.
 
-**Why does the auditor get `player_stats.json` context?**
-The auditor originally had only the pick and the graded box score. Without the quant baseline,
-it couldn't distinguish "the data showed 80% and this was a model_gap miss" from "the data
-showed 60% and this was a selection_error." Now it can write precise, trackable root causes.
+**Why does the auditor read quant context from pick object fields rather than player_stats.json?**
+The auditor runs the morning after picks are made. `player_stats.json` is overwritten by quant
+each day — if the auditor read it, it would see today's (not yesterday's) quant context, which
+is wrong. `load_player_stats_for_audit()` was removed (March 8) to eliminate this confabulation
+bug. The auditor now reads `reasoning`, `hit_rate_display`, `tier_walk`, `opponent` directly
+from each pick object — fields that were written at pick time.
 
 **Why was `PLAYER_WINDOW` raised from 10 to 20?**
 Backtest 2 showed w20 improved REB T8 by +7.8pp (to 71.0%), crossing the 70% threshold that
@@ -183,6 +204,18 @@ file directly — so both formats serve different consumers.
 The `CONTEXT_FLAGS_MD = DATA / "context_flags.md"` constant was established when the file was
 first created. The flags file lives in `data/`, not `context/`. `analyst.py` reads flags via
 `load_pre_game_news()` which reads `pre_game_news.json` — the `.md` file is human-readable only.
+
+**Why does `lineup_update.py` use `snapshot_at_analyst_run` rather than the previous hourly cycle?**
+The comparison baseline must be "what was true when picks were made," not "what was true an hour
+ago." If the previous cycle is used, a change that happened before the first hourly run would
+never appear as a change. Using the morning snapshot means every hourly run independently compares
+against the same ground truth — and `direction=unchanged` is still written as audit evidence.
+
+**Why does `lineup_update.py` overwrite the `lineup_update` sub-object each run?**
+The latest Claude assessment is always the most current. Writing idempotently means the frontend
+always shows the most recent reasoning without needing to track "has this been processed" state.
+Original morning fields (`confidence_pct`, `reasoning`, `pick_value`, `tier_walk`) are never
+touched — the sub-object is additive, not destructive.
 
 ---
 
@@ -228,7 +261,17 @@ first created. The flags file lives in `data/`, not `context/`. `analyst.py` rea
 - `build_player_profiles(player_stats_dict)` → mutates `profile_narrative` key in-place for each player meeting eligibility; called at end of `main()` after `build_player_stats()` writes the JSON
 - `build_player_stats(player_log, b2b_teams, opp_defense, game_pace, todays_games, teammate_correlations, whitelist, game_spreads=None, master_df=None, b2b_game_ids=None, positional_dvp_data=None, position_map=None)` → full `player_stats.json` dict
 
+### `ingest/rotowire_injuries_only.py`
+- `parse_rotowire_lineups(html) → dict` — BeautifulSoup parse of Rotowire projected starters; returns `{team_abbr: {"starters": [{name, position}], "confirmed": bool}}`; walks `<li>` elements with PG/SG/SF/PF/C position labels + player `<a>` links
+- `write_lineups_json(lineups, asof_date, built_at_utc)` — atomic write to `data/lineups_today.json`
+- Guard condition in `main()`: if parsed 0 teams but existing file has teams for today, keeps existing (protects against partial scrape overwriting good data)
+- Output: `data/lineups_today.json` keys: `asof_date`, `built_at_utc`, `source`, per-team dicts with `starters` + `confirmed`; `snapshot_at_analyst_run` key added later by analyst.py
+
 ### `analyst.py`
+- `_ABBR_NORM` dict + `_norm_team(abbr)` + `_extract_last(raw_name)` — normalization helpers (mirrors `lineup_watch.py` and `build_site.py`); `_extract_last` handles "J. Brunson" style Rotowire names
+- `load_out_players() → set[tuple[str, str]]` — reads `injuries_today.json`; returns `{(last_name_lower, norm_team_upper)}` for all OUT/DOUBTFUL players; used in `main()` to pre-filter `player_stats` before any prompt building; Claude never receives stats for excluded players
+- `format_lineups_section(lineups_path=LINEUPS_JSON, today_teams=None) → str` — reads `lineups_today.json`; staleness-checks `asof_date == TODAY_STR`; loads game pairings from MASTER_CSV; loads injuries for key absences; returns formatted `## PROJECTED LINEUPS` block (starters + key absences per game pair); falls back to `"[Lineup data unavailable — injury report only]"` if file missing/stale
+- `write_analyst_snapshot(lineups_path, picks_run_at_iso) → None` — writes `snapshot_at_analyst_run` key into `lineups_today.json` capturing starters + confirmed flag per team at pick time; guards against double-snapshot (returns immediately if key already exists); atomic write via `.tmp` rename; called in `main()` after `format_lineups_section()`, before `build_prompt()`
 - `load_player_stats()` → reads `player_stats.json`, returns dict
 - `build_quant_context(player_stats)` → formatted string; DvP line per player + stat lines with vol_tag + FG_HOT/FG_COLD annotation on PTS lines
 - `load_audit_summary()` → reads `audit_summary.json`, returns "" if < 3 entries
@@ -236,15 +279,39 @@ first created. The flags file lives in `data/`, not `context/`. `analyst.py` rea
 - `load_pre_game_news()` → reads `pre_game_news.json`; formats critical flags + player_notes + game_notes + monitor flags; returns "" if no notable items
 - `render_playoff_picture(standings_path=STANDINGS_JSON)` → reads `data/standings_today.json`; formats bucketed `## PLAYOFF PICTURE` string; returns fallback string if file missing/stale
 - `format_team_defense_section(narratives_path=TEAM_DEFENSE_NARRATIVES_JSON)` → reads `data/team_defense_narratives.json`; validates `as_of == TODAY_STR`; returns `## TEAM DEFENSIVE PROFILES (last 15 games — auto-generated DATE)` block sorted alphabetically; always returns non-empty string (fallback warning if file missing/stale)
-- `build_prompt(games, player_context, injuries, audit_context, season_context, quant_context="", audit_summary="", pre_game_news="", player_profiles="", playoff_picture="", team_defense="")` → full system prompt string
+- `build_prompt(games, player_context, injuries, audit_context, season_context, quant_context="", audit_summary="", pre_game_news="", player_profiles="", playoff_picture="", team_defense="", lineups_section="")` → full system prompt string
 - Output schema fields: `date, player_name, team, opponent, home_away, prop_type, pick_value, direction, confidence_pct, hit_rate_display, trend, opp_defense_rating, tier_walk, iron_floor, reasoning`
 
+### `agents/lineup_update.py` (new — March 10, 2026)
+- Constants: `MODEL = "claude-sonnet-4-6"`, `MAX_TOKENS = 2048`, `CUTOFF_MINUTES = 20`
+- `_ABBR_NORM` dict + `_norm(abbr)` — same normalization pattern as rest of codebase
+- `load_game_map() → dict[str, str]` — `{norm_team_abbr: game_time_utc}` from `nba_master.csv`; used to check tip-off cutoff per pick
+- `game_is_actionable(game_time_utc, now_et) → bool` — True if tip-off > CUTOFF_MINUTES away; True on parse failure (safe default — don't skip on bad data)
+- `compute_lineup_diff(lineups, injuries) → list[dict]` — diffs `snapshot_at_analyst_run` vs current lineups + injuries; returns change events `{team, player_name, change_type, status, detail}`; change_type is `"new_absence"` (was starter, now OUT/DOUBTFUL) or `"starter_replaced"` (was starter, no longer listed, not injured)
+- `get_affected_picks(today_picks, changes, game_map, now_et) → list[dict]` — returns open today picks (result=None, not voided) where `team` OR `opponent` in changed teams AND game still actionable
+- `call_lineup_update(affected_picks, changes) → list[dict]` — single Claude call; system prompt teaches up/down/unchanged direction logic; returns `[{player_name, prop_type, direction, revised_confidence_pct, revised_reasoning}]`; extracts JSON array via `raw.find("[") … raw.rfind("]")`
+- `apply_amendments(all_picks, amendments, affected_picks, changes, now_iso) → tuple[int,int,int]` — writes `lineup_update` sub-objects in-place to `all_picks`; returns `(n_amended, n_up, n_down)`; keyed by `(player_name_lower, prop_type)`
+- `main()` — full no-op logic with 5 guard conditions; atomic write via `.tmp` rename; logs `changes=N affected_picks=M amended=K (X up, Y down, Z unchanged)`
+
+**`lineup_update` sub-object schema (written to affected picks):**
+```json
+{
+  "triggered_by":           ["string — detail of each relevant change"],
+  "updated_at":             "ISO timestamp",
+  "direction":              "up" | "down" | "unchanged",
+  "revised_confidence_pct": number,
+  "revised_reasoning":      "string, max 20 words"
+}
+```
+Sub-object is overwritten on each hourly run. `direction=unchanged` is still written (audit evidence).
+Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEVER modified.
+
 ### `auditor.py`
-- `load_player_stats_for_audit(graded_picks)` → slimmed player_stats for just picked players (9 fields)
 - `build_absence_context(graded_picks)` → returns `## YESTERDAY'S NOTABLE ABSENCES` block (players voided or OUT at check time) or ""
 - `save_audit_summary(audit_log)` → writes `data/audit_summary.json`; per-prop and overall denominators exclude `injury_event` picks; `injury_exclusions` key in both per-prop and overall dicts
 - Miss classification taxonomy (5 types): `selection_error` / `model_gap` / `variance` / `injury_event` / `workflow_gap` — written to `miss_classification` in `miss_details`
 - `build_audit_prompt()` injects: `{absence_block}` before `{news_block}`, ⚠ INJURY LANGUAGE IN NEWS flag on news_lines entries where detected
+- **`load_player_stats_for_audit()` was REMOVED (March 8, 2026)** — eliminates yesterday's-data-for-today's-audit confabulation bug. Auditor now reads quant context from pick object fields (`reasoning`, `hit_rate_display`, `tier_walk`, `opponent`) written at pick time.
 
 ### `post_game_reporter.py` (runs before auditor each morning)
 - `load_yesterdays_player_names()` → set of lowercase names from yesterday's picks
@@ -275,14 +342,17 @@ first created. The flags file lives in `data/`, not `context/`. `analyst.py` rea
 - Writes `injury_status_at_check` (OUT / DOUBTFUL / QUESTIONABLE / NOT_LISTED) + `injury_check_time` (ISO PT) to **ALL** of today's picks on every run
 - OUT → `voided=True` + `void_reason`; DOUBTFUL → `lineup_risk="high"`; QUESTIONABLE → `lineup_risk="moderate"`
 - Severity is sticky upward — picks never downgraded
-- Name matching is `player_name.lower()` across all teams (avoids abbrev mismatch)
+- Name matching uses last-name + team-abbrev key to handle Rotowire abbreviated player name format
+- Stale flag clearing: status improvements between hourly runs (e.g., DOUBTFUL → NOT_LISTED) now remove prior `voided`/`lineup_risk` flags
 
 ---
 
 ## Known Edge Cases and Gotchas
 
 **Team abbreviation variants:** `nba_master.csv` uses legacy 2-char forms (`GS`, `SA`, `NO`,
-`UTAH`, `WSH`). `build_site.py` handles this with `_ABBR_NORM` dict and `normAbbr()` JS helper.
+`UTAH`, `WSH`). `_ABBR_NORM` dict + normalization helpers exist in THREE places: `analyst.py`
+(`_norm_team()`), `parlay.py` (`_norm_team()`), and `build_site.py` (`normAbbr()` JS). Also in
+`lineup_update.py` (`_norm()`). Keep all in sync if abbreviations need updating.
 `analyst.py` copies raw abbrevs from `nba_master.csv` into `picks.json` — this is the root
 cause of historical game grouping issues (all now resolved in `build_site.py`).
 
@@ -296,10 +366,8 @@ and volatility exclude them via `df[df["dnp"] != "1"]` or equivalent. Missing th
 anywhere would silently corrupt hit rates (0 pts on a DNP would count as a miss at every tier).
 
 **`player_stats.json` is overwritten daily** — it only contains players playing TODAY. It is
-not a historical archive. The auditor's `load_player_stats_for_audit()` is called at the start
-of each audit run before the new quant run overwrites the file. If the auditor runs after quant,
-yesterday's positional DvP data may be gone. (Current workflow: ingest → auditor → quant → analyst.
-The quant in ingest.yml precedes the auditor, so the auditor sees yesterday's data. Low risk.)
+not a historical archive. The auditor no longer reads `player_stats.json` at all (the function
+was removed March 8 to fix the date-gate bug). The auditor reads quant context from pick fields.
 
 **`compute_positional_dvp` uses full season history,** not just the last 15 games (unlike
 `build_opp_defense()` which uses `OPP_WINDOW=15`). This is intentional — position-specific
@@ -318,11 +386,22 @@ The analyst prompt shows "Insufficient audit history yet (need 3+ days)" until 3
 The `prop_type_breakdown` and `confidence_calibration` fields are absent from pre-March audit
 entries; `save_audit_summary()` handles missing fields with `.get()` defaults.
 
-**`injury_status_at_check` field in `picks.json`** — written by `lineup_watch.py` on every hourly run to ALL of today's picks (not just open ones). Values: `OUT / DOUBTFUL / QUESTIONABLE / NOT_LISTED`. Used by the auditor's STEP 2 to distinguish `injury_event` (player was NOT_LISTED/QUESTIONABLE at pick time, exited mid-game) from `workflow_gap` (player was OUT/DOUBTFUL pre-game but wasn't voided). If `lineup_watch.py` hasn't run yet when the auditor grades, the field will be absent — auditor handles gracefully.
+**`injury_status_at_check` field in `picks.json`** — written by `lineup_watch.py` on every
+hourly run to ALL of today's picks (not just open ones). Values: `OUT / DOUBTFUL / QUESTIONABLE /
+NOT_LISTED`. Used by the auditor's STEP 2 to distinguish `injury_event` (player was
+NOT_LISTED/QUESTIONABLE at pick time, exited mid-game) from `workflow_gap` (player was
+OUT/DOUBTFUL pre-game but wasn't voided). If `lineup_watch.py` hasn't run yet when the auditor
+grades, the field will be absent — auditor handles gracefully.
 
-**`post_game_news.json` fetch errors** — `fetch_errors` list in the output names players whose ESPN API call failed. The auditor receives this in `## POST-GAME NEWS CONTEXT` and should note the gap, not infer absence from missing data. Players without `athlete_id` in `player_dim.csv` are also silently skipped for news fetch (box score inference used instead).
+**`post_game_news.json` fetch errors** — `fetch_errors` list in the output names players whose
+ESPN API call failed. The auditor receives this in `## POST-GAME NEWS CONTEXT` and should note
+the gap, not infer absence from missing data. Players without `athlete_id` in `player_dim.csv`
+are also silently skipped for news fetch (box score inference used instead).
 
-**`iron_floor` field in `picks.json`** — as of March 7, 2026, `iron_floor` is written to all new picks. Pre-March picks don't have the field; `build_site.py` badge logic handles `undefined` gracefully. The field is `true` only when the quant stat line showed `[iron_floor]` — Claude is instructed to copy it directly from the context, not derive it.
+**`iron_floor` field in `picks.json`** — as of March 7, 2026, `iron_floor` is written to all
+new picks. Pre-March picks don't have the field; `build_site.py` badge logic handles `undefined`
+gracefully. The field is `true` only when the quant stat line showed `[iron_floor]` — Claude is
+instructed to copy it directly from the context, not derive it.
 
 **Whitelist filter is a `(name, team)` tuple set**, not name-only. This prevents traded players
 from appearing under their old team. If a player is traded mid-season, update `team_abbr` in
@@ -348,6 +427,24 @@ the warning line. This means `team_defense_section` is never injected as a bare 
 PROFILES` section remains in `context/nba_season_context.md` as a human reference but is
 stripped in-memory before injection. The file itself is never modified by any agent.
 
+**`lineups_today.json` guard condition** — `rotowire_injuries_only.py` will NOT overwrite a
+good existing file with 0 teams parsed. If a scrape returns 0 starters (e.g., Rotowire is slow
+pre-noon), the existing file for today's date is preserved. Only non-zero parses overwrite.
+
+**`snapshot_at_analyst_run` in `lineups_today.json`** — written ONCE by `write_analyst_snapshot()`
+in `analyst.py` at pick time. Idempotent: if the key already exists, the function returns
+immediately without overwriting. This ensures the morning baseline is frozen even if the analyst
+workflow runs again. `lineup_update.py` treats absence of this key as a skip condition.
+
+**`lineup_update.py` no-op conditions** — five conditions will silently skip the LLM call:
+(1) `lineups_today.json` missing; (2) `snapshot_at_analyst_run` key absent; (3) no starter
+changes detected (most common daily case); (4) no open non-voided picks for changed teams;
+(5) all affected picks past tip-off cutoff. The agent logs the reason and exits cleanly.
+
+**`_extract_last()` in `analyst.py`** — handles Rotowire-abbreviated name format "J. Brunson"
+by detecting a pattern of `[char]. [rest]` and taking everything after the `. `. For normal
+names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normalize to lowercase.
+
 ---
 
 ## Prompt Signals and Their Reliability Status
@@ -363,19 +460,20 @@ stripped in-memory before injection. The file itself is never modified by any ag
 | [VOLATILE] / [consistent] | Stat line suffix | Directional (no confirmed backtest yet) |
 | [FG_HOT] / [FG_COLD] | PTS stat line suffix | Shooting regression — ±8% threshold; unvalidated |
 | trend (up/stable/down) | Stat line | Noise — data shown, no directive weight |
-| BLOWOUT_RISK | Header flag | Confirmed directionally; −1 tier rule |
+| BLOWOUT_RISK | Header flag | Confirmed directionally; −1 tier rule + secondary scorer skip |
 | spread_abs > 13 | Header flag | Cap at 80% confidence |
 | DENSE schedule | Header flag | −5–10% confidence |
 | REB opp defense | DvP line REB field | Excluded — not a valid signal |
 | 3PM opp defense | DvP line 3PM field | Excluded — noise (lift variance 0.053) |
 | 3PM cold streak | Inferred from trend + recent logs | Decline signal (lift=0.87, n=161) |
 | 3PM trend=down | Stat line `trend=down` | **Mandatory step-down rule** — pick one tier lower; skip if below T1 |
+| PROJECTED LINEUPS | ## PROJECTED LINEUPS section | Ground truth for starter availability — treat as LINEUP CONTEXT backstop |
 | PLAYOFF PICTURE | ## PLAYOFF PICTURE section | Situational awareness only — no hard rules |
 | TEAM DEFENSIVE PROFILES | ## TEAM DEFENSIVE PROFILES section | Rolling 15g — replaces static file section |
 
 ---
 
-## Active Improvement Queue (as of March 8, 2026)
+## Active Improvement Queue (as of March 10, 2026)
 
 | ID | Name | Status | Files |
 |----|------|--------|-------|
@@ -384,9 +482,16 @@ stripped in-memory before injection. The file itself is never modified by any ag
 | Season Context 2 | Staleness Detection in pre_game_reporter | ✅ DONE (March 8, 2026) | `pre_game_reporter.py` |
 | Season Context 3 | Restructure SEASON FACTS into decay tiers | Manual edit — no code needed | `context/nba_season_context.md` |
 | P3 | Shooting Efficiency Regression | ✅ DONE (March 7–8, 2026) | `espn_player_ingest.py`, `quant.py`, `analyst.py` |
-| P5 | Afternoon Lineup Re-Reasoning | Waiting for 7+ days voiding data | `lineup_update.py` (new), `injuries.yml`, `auditor.py`, `build_site.py` |
 | P4 | Tier-Walk Audit Trail | ✅ DONE (March 6, 2026) | — |
+| P5 | Afternoon Lineup Update Agent | ✅ DONE (March 10, 2026) | `analyst.py`, `agents/lineup_update.py` (new), `injuries.yml`, `build_site.py`, `AGENTS.md` |
 | #1 | Teammate Absence Delta | Deferred to next season (insufficient DNP sample) | `quant.py`, `analyst.py` |
+
+**Also completed March 9 (not in prior queue but shipped):**
+- Lineup Watch wiring fix — `lineup_watch.py` now actually in `injuries.yml` chain; name matching hardened; stale flag clearing added
+- Analyst OUT/DOUBTFUL hard pre-filter — `load_out_players()` + Python-level filter before prompt building; `parlay.py` also filters
+- Projected Lineup Scraping + Analyst Injection — `rotowire_injuries_only.py` parses starters → `lineups_today.json`; `## PROJECTED LINEUPS` in analyst prompt
+- Hard analyst gates — min_floor confidence cap (floor_minutes < 24 → max 84%), BLOWOUT_RISK secondary scorer PTS skip, AST T4+ hard gate for PF/C, 3PM hard skip for trend=down + low minutes
+- Parlay player-level concentration cap — Python enforcement in `parlay.py` (no single player_name in 3+ parlays regardless of prop type)
 
 **Next backtests to run:**
 - **H8 — Positional DvP Validity:** Does positional DvP outpredict team-level DvP for PTS/AST? Requires ~30 days of live positional DvP data. Run ~early April 2026.
@@ -414,6 +519,7 @@ Tighten prompt ceiling if any band systematically underperforms.
 | Team defense narratives | `quant.py` `build_team_defense_narratives()` only |
 | Backtest | `agents/backtest.py` — standalone, reads CSVs, writes JSON, no production impact |
 | Frontend change | `build_site.py` only — triggers on next injury refresh or analyst run |
+| Lineup update rules | `agents/lineup_update.py` `call_lineup_update()` system/user prompt only |
 
 ---
 
@@ -431,17 +537,18 @@ Tighten prompt ceiling if any band systematically underperforms.
   live in `player_stats.json` and feeding Player Profiles conditional rendering. The directive
   prompt rule (confidence modifier or tier-drop on high `blowup_rate`) is explicitly NOT shipped
   until the backtest validates the signal.
-- **P5 (lineup re-reasoning) is NOT live** — `lineup_watch.py` voids/flags picks and writes
-  `injury_status_at_check` per run, but does NOT call Claude to re-evaluate confidence. Only
-  deterministic status updates happen hourly.
-- **`auditor.py` does NOT currently detect lineup_updated picks** — the P5 audit integration
-  is described in ROADMAP but not implemented.
-- **`injury_status_at_check` depends on `lineup_watch.py` having run before tip-off** — if
-  the workflow fails or runs after a game starts, the field may be absent or stale. The auditor
-  uses `.get("injury_status_at_check", "unknown")` and handles missing gracefully.
-- **Parlay concentration cap is enforced by Claude prompt, not deterministically** — the
-  `## AVOID` rule in `parlay.py` instructs Claude not to use the same leg in 3+ parlays, but
-  there is no Python-level filter enforcing this. Verify in the output if the rule seems ignored.
+- **`auditor.py` does NOT detect `lineup_update` picks** — picks that were re-reasoned by
+  `lineup_update.py` are graded identically to morning picks. The audit log does not distinguish
+  "revised up/down" from "original." A future P5 audit integration would tag these and evaluate
+  whether re-reasoned picks outperform their morning originals. Revisit after ~20 days of
+  amendment data accumulates.
+- **`lineup_update.py` LLM cost** — each hourly run that detects changes will call Claude (one
+  call, up to 2048 tokens). On a typical day with one morning absence detected, this adds ~$0.01.
+  On a busy injury day with 3+ changes, cost is still negligible. Monitor if cost becomes visible.
+- **`lineup_update.py` has no audit integration** — `lineup_update` sub-objects are written
+  but the auditor's STEP 2 and miss classification do not yet check for them. A pick that was
+  revised DOWN and then missed would still be classified via the normal root-cause logic without
+  noting the amendment context. Acceptable for now.
 - **Season Context Improvement 3 (SEASON FACTS decay tier restructure) is NOT done** — this is
   a manual edit to `context/nba_season_context.md`. No code required. Do after verifying that
   Improvements 0–2 are running cleanly in production.
@@ -451,3 +558,6 @@ Tighten prompt ceiling if any band systematically underperforms.
 - **Staleness flags do NOT auto-update `context/nba_season_context.md`** — `detect_staleness_flags()`
   is read-only. Flags are surfaced for human action only — the analyst sees them as ⚠ warnings
   in `pre_game_news.json`, but no agent modifies the context file automatically.
+- **`lineups_today.json` is NOT committed to git** — generated at runtime by
+  `rotowire_injuries_only.py` in both `analyst.yml` (pre-picks) and `injuries.yml` (hourly). Not
+  persisted between days. This is correct behavior — same as `injuries_today.json`.

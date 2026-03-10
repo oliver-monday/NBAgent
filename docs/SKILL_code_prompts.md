@@ -357,6 +357,12 @@ changes before the signal has been validated.
 
 ---
 
+## Output Format
+
+Every Code prompt must be saved and delivered as a `.md` file (e.g., `rotowire_projected_minutes.md`). Do not paste prompts inline into the chat as the sole deliverable. Writing to a file ensures the prompt is downloadable for local archiving, referenceable by name in future sessions, and cleanly separated from session discussion.
+
+---
+
 ## Quality Checklist Before Sending
 
 Before handing a prompt to Code, verify:

@@ -20,6 +20,7 @@ from bs4 import BeautifulSoup
 from zoneinfo import ZoneInfo
 
 ROTOWIRE_URL = "https://www.rotowire.com/basketball/nba-lineups.php"
+ROTOWIRE_LOGIN_URL = "https://www.rotowire.com/users/login.php"
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
@@ -48,9 +49,39 @@ def _short_status(s: str) -> str:
     return s.strip().upper()
 
 
-def fetch_rotowire_html() -> str | None:
+def login_rotowire(session: requests.Session) -> bool:
+    """
+    POST credentials to Rotowire login endpoint.
+    Returns True on success, False on failure.
+    Credentials are read from env vars ROTOWIRE_EMAIL and ROTOWIRE_PASSWORD.
+    """
+    email    = os.environ.get("ROTOWIRE_EMAIL", "")
+    password = os.environ.get("ROTOWIRE_PASSWORD", "")
+    if not email or not password:
+        print("[injuries] ROTOWIRE_EMAIL / ROTOWIRE_PASSWORD not set — skipping auth")
+        return False
     try:
-        resp = requests.get(
+        resp = session.post(
+            ROTOWIRE_LOGIN_URL,
+            data={"username": email, "password": password},
+            headers={"User-Agent": USER_AGENT},
+            timeout=12,
+            allow_redirects=True,
+        )
+        if resp.status_code == 200:
+            print("[injuries] Rotowire login succeeded")
+            return True
+        print(f"[injuries] Rotowire login HTTP {resp.status_code}")
+        return False
+    except Exception as exc:
+        print(f"[injuries] Rotowire login error: {exc}")
+        return False
+
+
+def fetch_rotowire_html(session: requests.Session | None = None) -> str | None:
+    try:
+        requester = session if session is not None else requests
+        resp = requester.get(
             ROTOWIRE_URL,
             headers={"User-Agent": USER_AGENT},
             timeout=12,
@@ -317,7 +348,246 @@ def parse_rotowire_lineups(html: str) -> dict:
     return {t: d for t, d in lineups.items() if d["starters"]}
 
 
-def write_lineups_json(lineups: dict, asof_date: str, built_at_utc: str) -> None:
+def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
+    """
+    Parse the Projected Minutes panel from the Rotowire lineups page.
+
+    For each team, iterates .lineups-viz containers and extracts per-player
+    projected minute integers, section (STARTERS/BENCH/OUT), and injury status.
+
+    Team key is read from the preceding button[data-team] attribute.
+
+    Returns:
+        {
+          "LAL": [
+            {"name": "LeBron James", "minutes": 36, "section": "STARTERS", "injury_status": None},
+            {"name": "Austin Reaves", "minutes": 28, "section": "BENCH",    "injury_status": None},
+            {"name": "Jarred Vanderbilt", "minutes": 0, "section": "OUT",   "injury_status": "Out"},
+          ],
+          ...
+        }
+    Returns {} on any parse error.
+    """
+    NBA_ABBREVS = {
+        "ATL","BOS","BKN","CHA","CHI","CLE","DAL","DEN","DET","GSW",
+        "HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK",
+        "OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS",
+    }
+    result: dict[str, list[dict]] = {}
+    try:
+        for viz in soup.find_all("div", class_="lineups-viz"):
+            # Identify team from the nearest preceding button[data-team]
+            team = ""
+            for sib in viz.find_previous_siblings():
+                dt_attr = sib.get("data-team", "").upper()
+                if dt_attr in NBA_ABBREVS:
+                    team = dt_attr
+                    break
+                # Also check descendants of sibling (button may be nested)
+                btn = sib.find("button", attrs={"data-team": True})
+                if btn:
+                    t = btn.get("data-team", "").upper()
+                    if t in NBA_ABBREVS:
+                        team = t
+                        break
+            if not team:
+                continue
+
+            current_section = "STARTERS"
+            players: list[dict] = []
+
+            for el in viz.descendants:
+                if not hasattr(el, "get"):
+                    continue
+                # Section header
+                cls = " ".join(el.get("class", []))
+                if "lineups-viz__title" in cls:
+                    text = el.get_text(strip=True).upper()
+                    if "BENCH" in text:
+                        current_section = "BENCH"
+                    elif "OUT" in text:
+                        current_section = "OUT"
+                    elif "START" in text:
+                        current_section = "STARTERS"
+
+                # Player row — anchor on player name element
+                if "lineups-viz__player-name" in cls:
+                    a = el.find("a")
+                    name = a.get_text(strip=True) if a else ""
+                    if not name:
+                        continue
+
+                    # Projected minutes: nearest .minutes-meter__proj in same parent li
+                    parent_li = el.find_parent("li")
+                    minutes = None
+                    inj_status = None
+                    if parent_li:
+                        proj = parent_li.find(class_="minutes-meter__proj")
+                        if proj:
+                            raw = proj.get_text(strip=True)
+                            try:
+                                minutes = int(raw)
+                            except ValueError:
+                                minutes = 0
+                        inj_el = parent_li.find(class_="lineups-viz__inj")
+                        if inj_el:
+                            inj_status = inj_el.get_text(strip=True) or None
+
+                    players.append({
+                        "name":          name,
+                        "minutes":       minutes if minutes is not None else 0,
+                        "section":       current_section,
+                        "injury_status": inj_status,
+                    })
+
+            if players:
+                result[team] = players
+
+    except Exception as e:
+        print(f"[injuries] ERROR parsing projected minutes: {e}")
+        return {}
+
+    print(f"[injuries] projected_minutes: parsed {len(result)} teams")
+    return result
+
+
+def parse_onoff_usage(soup: BeautifulSoup) -> dict[str, list[dict]]:
+    """
+    Parse the On/Off Court Stats panel from the Rotowire lineups page.
+
+    For each team, extracts per-player usage rate when listed players are off court,
+    usage change delta, minutes sample, and the names of absent players driving the calc.
+
+    The absent player names are resolved from the data-out attribute on the On/Off button
+    (comma-separated Rotowire IDs) mapped to player names in the same container.
+
+    Returns:
+        {
+          "LAL": [
+            {
+              "name": "LeBron James",
+              "usage_pct": 30.9,
+              "usage_change": 10.0,
+              "minutes_sample": 111,
+              "absent_players": ["Anthony Davis"]
+            },
+          ]
+        }
+    Returns {} on any parse error.
+    """
+    NBA_ABBREVS = {
+        "ATL","BOS","BKN","CHA","CHI","CLE","DAL","DEN","DET","GSW",
+        "HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK",
+        "OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS",
+    }
+    result: dict[str, list[dict]] = {}
+    try:
+        for viz in soup.find_all("div", class_="lineups-viz"):
+            # Identify team — same sibling-walk as parse_projected_minutes
+            team = ""
+            for sib in viz.find_previous_siblings():
+                dt_attr = sib.get("data-team", "").upper()
+                if dt_attr in NBA_ABBREVS:
+                    team = dt_attr
+                    break
+                btn = sib.find("button", attrs={"data-team": True})
+                if btn:
+                    t = btn.get("data-team", "").upper()
+                    if t in NBA_ABBREVS:
+                        team = t
+                        break
+            if not team:
+                continue
+
+            # Find On/Off screen container
+            onoff_screen = viz.find("div", class_="lineups-viz__off-usage-screen")
+            if not onoff_screen:
+                continue
+
+            # Resolve absent player names from data-out IDs
+            # The On/Off button carries data-out="id1,id2"; player <a> tags carry data-athlete-id
+            absent_ids: set[str] = set()
+            onoff_btn = viz.find("button", class_=lambda c: c and "onoff" in " ".join(c).lower())
+            if onoff_btn:
+                raw_out = onoff_btn.get("data-out", "")
+                absent_ids = {x.strip() for x in raw_out.split(",") if x.strip()}
+
+            # Build id→name map from all player links in this viz container
+            id_to_name: dict[str, str] = {}
+            for a in viz.find_all("a", attrs={"data-athlete-id": True}):
+                aid = a.get("data-athlete-id", "").strip()
+                name = a.get_text(strip=True)
+                if aid and name:
+                    id_to_name[aid] = name
+
+            absent_names = [id_to_name[i] for i in absent_ids if i in id_to_name]
+
+            players: list[dict] = []
+            for row in onoff_screen.find_all(
+                "div", class_="lineups-viz__onoff-off-usage-row"
+            ):
+                name_el = row.find(class_="lineups-viz__onoff-off-usage-name")
+                a = name_el.find("a") if name_el else None
+                name = a.get_text(strip=True) if a else ""
+                if not name:
+                    continue
+
+                # Usage % from title attribute on the meter bar
+                usage_pct = None
+                bar = row.find(class_="lineups-viz__onoff-off-usage-meter-bar")
+                if bar:
+                    raw = bar.get("title", "").strip()
+                    try:
+                        usage_pct = float(raw)
+                    except ValueError:
+                        pass
+
+                # Usage change delta
+                usage_change = None
+                delta_el = row.find(class_="lineups-viz__onoff-off-usage-change-meter-val")
+                if delta_el:
+                    raw = delta_el.get_text(strip=True).replace("+", "")
+                    try:
+                        usage_change = float(raw)
+                    except ValueError:
+                        pass
+
+                # Minutes sample
+                minutes_sample = None
+                min_el = row.find(class_="lineups-viz__onoff-off-usage-minutes")
+                if min_el:
+                    raw = min_el.get_text(strip=True).replace("min", "").strip()
+                    try:
+                        minutes_sample = int(raw)
+                    except ValueError:
+                        pass
+
+                players.append({
+                    "name":           name,
+                    "usage_pct":      usage_pct,
+                    "usage_change":   usage_change,
+                    "minutes_sample": minutes_sample,
+                    "absent_players": absent_names,
+                })
+
+            if players:
+                result[team] = players
+
+    except Exception as e:
+        print(f"[injuries] ERROR parsing on/off usage: {e}")
+        return {}
+
+    print(f"[injuries] onoff_usage: parsed {len(result)} teams")
+    return result
+
+
+def write_lineups_json(
+    lineups: dict,
+    asof_date: str,
+    built_at_utc: str,
+    projected_minutes: dict | None = None,
+    onoff_usage: dict | None = None,
+) -> None:
     data_dir = Path("data")
     data_dir.mkdir(parents=True, exist_ok=True)
     out_path = data_dir / "lineups_today.json"
@@ -329,6 +599,23 @@ def write_lineups_json(lineups: dict, asof_date: str, built_at_utc: str) -> None
         "source": "rotowire",
         **lineups,
     }
+
+    # Merge projected_minutes and onoff_usage into per-team entries
+    if projected_minutes:
+        for team, minutes_data in projected_minutes.items():
+            if team in payload and isinstance(payload[team], dict):
+                payload[team]["projected_minutes"] = minutes_data
+            else:
+                payload[team] = {"starters": [], "confirmed": False,
+                                 "projected_minutes": minutes_data}
+    if onoff_usage:
+        for team, usage_data in onoff_usage.items():
+            if team in payload and isinstance(payload[team], dict):
+                payload[team]["onoff_usage"] = usage_data
+            else:
+                payload[team] = {"starters": [], "confirmed": False,
+                                 "onoff_usage": usage_data}
+
     with open(tmp_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
     os.replace(tmp_path, out_path)
@@ -411,7 +698,11 @@ def main() -> int:
     else:
         asof_date = dt.datetime.now(ZoneInfo("America/Los_Angeles")).date().strftime("%Y-%m-%d")
 
-    html = fetch_rotowire_html()
+    # ── Session setup + auth ─────────────────────────────────────────────
+    session = requests.Session()
+    authenticated = login_rotowire(session)
+
+    html = fetch_rotowire_html(session)
     if not html:
         return 0
 
@@ -458,10 +749,21 @@ def main() -> int:
         if isinstance(v, dict) and v.get("starters")
     )
 
+    # ── New panels (subscription-gated) ──────────────────────────────────
+    projected_minutes: dict = {}
+    onoff_usage: dict = {}
+    if authenticated:
+        soup_for_new = BeautifulSoup(html, "lxml")
+        projected_minutes = parse_projected_minutes(soup_for_new)
+        onoff_usage = parse_onoff_usage(soup_for_new)
+    else:
+        print("[injuries] Skipping projected_minutes + onoff_usage — not authenticated")
+
+    # ── Write lineups_today.json ──────────────────────────────────────────
     if lineup_teams == 0 and existing_lineups_teams > 0 and existing_lineups_asof == asof_date:
         print(f"[lineups] Guard: parsed 0 teams; keeping existing lineups_today.json for asof_date={asof_date}")
     else:
-        write_lineups_json(lineups, asof_date, built_at_utc)
+        write_lineups_json(lineups, asof_date, built_at_utc, projected_minutes, onoff_usage)
         print(f"[lineups] wrote lineups_today.json teams={lineup_teams} starters={lineup_starters}")
 
     return 0

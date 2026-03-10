@@ -32,12 +32,13 @@ NBAgent/
 │   ├── parlay.py           # Parlay agent — calls Claude, generates parlays; reads parlay audit feedback
 │   ├── auditor.py          # Auditor agent — grades picks + parlays, writes audit_log.json + audit_summary.json; injects season context
 │   ├── lineup_watch.py     # Deterministic post-process — voids OUT picks, flags DOUBTFUL/QUESTIONABLE; runs after each injury refresh
+│   ├── lineup_update.py    # Afternoon amendment agent — diffs morning lineup snapshot vs current, calls Claude, writes lineup_update sub-objects to picks
 │   ├── backtest.py         # Standalone retrospective signal analysis — 5 modes (see docs/BACKTESTS.md)
 │   └── build_site.py       # Static site generator (v3 — 4-tab); renders voided/risk badges
 ├── ingest/
 │   ├── espn_daily_ingest.py        # Game slate + spreads from ESPN Core odds API
 │   ├── espn_player_ingest.py       # Player box scores → player_game_log.csv, team_game_log.csv, player_dim.csv
-│   └── rotowire_injuries_only.py   # Hourly injury scrape → injuries_today.json
+│   └── rotowire_injuries_only.py   # Injury + lineup scrape → injuries_today.json, lineups_today.json
 ├── context/
 │   └── nba_season_context.md   # Manually maintained NBA context — injected into Analyst AND Auditor prompts
 ├── data/
@@ -47,7 +48,8 @@ NBAgent/
 │   ├── team_game_log.csv       # Team-level aggregated box scores — used by Quant for opp defense + pace
 │   ├── player_stats.json       # Quant output — consumed by Analyst, Parlay, and Auditor
 │   ├── injuries_today.json     # Hourly updated by injuries workflow
-│   ├── picks.json              # All picks with results; mutated in-place by analyst (append), lineup_watch (void/flag), auditor (grade)
+│   ├── picks.json              # All picks with results; mutated in-place by analyst (append), lineup_watch (void/flag), lineup_update (lineup_update sub-object), auditor (grade)
+│   ├── lineups_today.json      # Projected starters — written by rotowire_injuries_only.py; snapshot_at_analyst_run key added by analyst.py at pick time
 │   ├── parlays.json            # All parlays with results
 │   ├── audit_log.json          # Daily auditor entries — full graded pick details
 │   └── audit_summary.json      # Rolled-up season stats — consumed by Analyst as Rolling Performance Summary
@@ -74,8 +76,8 @@ NBAgent/
 ## Workflow Chain
 
 ```
-ingest.yml → auditor.yml → analyst.yml (quant → analyst → parlay → deploy)
-injuries.yml runs independently on hourly schedule (lineup_watch → site rebuild)
+ingest.yml → auditor.yml → analyst.yml (rotowire refresh → quant → analyst → parlay → deploy)
+injuries.yml runs independently on hourly schedule (rotowire → lineup_watch → lineup_update → site rebuild)
 ```
 
 - All workflows: `TZ: America/Los_Angeles`
@@ -94,6 +96,7 @@ injuries.yml runs independently on hourly schedule (lineup_watch → site rebuil
 | parlay.py | claude-sonnet-4-6 | 4096 | picks.json, player_stats.json, audit_log (last 3 parlay feedback) | parlays.json (append) |
 | auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, player_game_log, player_stats.json, nba_season_context | audit_log.json, audit_summary.json, updates picks + parlays in-place |
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |
+| lineup_update.py | claude-sonnet-4-6 | 2048 | lineups_today.json (snapshot), injuries_today.json, picks.json, nba_master.csv | picks.json (lineup_update sub-object on affected picks) |
 
 Full agent details → **@docs/AGENTS.md**
 
@@ -103,7 +106,7 @@ Full agent details → **@docs/AGENTS.md**
 
 - **`audit_summary.json`** is generated fresh after every auditor run by `save_audit_summary()`. The Analyst reads it as `## ROLLING PERFORMANCE SUMMARY` — provides season hit rates, per-prop rates, and miss classification totals. Returns empty string if fewer than 3 audit entries exist (graceful cold-start).
 - **`player_stats.json`** is consumed by three agents: Analyst (pick generation), Parlay (correlation tags, spread context), and Auditor (audit context injection for root-cause grading). Do not change its schema without checking all three consumers.
-- **`picks.json`** is mutated in-place by three separate processes in sequence: Analyst appends new picks, lineup_watch.py mutates voided/risk fields, Auditor grades results. Always read the full file before writing — never overwrite with a subset.
+- **`picks.json`** is mutated in-place by four separate processes in sequence: Analyst appends new picks, lineup_watch.py mutates voided/risk fields, lineup_update.py writes `lineup_update` sub-objects (hourly, conditional on changes), Auditor grades results. Always read the full file before writing — never overwrite with a subset.
 - **`context/nba_season_context.md`** is injected into BOTH `analyst.py` and `auditor.py` prompts. Updates to this file affect both agents. The file includes a PERMANENT ABSENCES block at the top instructing both agents to treat listed players as if they never existed this season.
 - **Parlay audit feedback loop** — `parlay.py` reads the last 3 `audit_log.json` entries for `parlay_reinforcements` and `parlay_lessons` and injects them into the Claude prompt. The parlay agent now sees what correlation types and leg structures have historically succeeded or failed.
 
@@ -145,8 +148,11 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 | `voided` | lineup_watch.py | `true` when player is listed OUT; pick treated as inactive |
 | `void_reason` | lineup_watch.py | e.g. `"OUT: Knee (Rotowire)"` |
 | `lineup_risk` | lineup_watch.py | `"high"` (DOUBTFUL) or `"moderate"` (QUESTIONABLE); not set for OUT |
-
-**Not in picks.json:** `iron_floor` — this lives in `player_stats.json` under `bounce_back` and surfaces in the quant context prompt annotation (`[iron_floor]`). The Analyst does NOT write it to picks.json. The frontend `🔒 Iron Floor` badge therefore never fires (known gap).
+| `injury_status_at_check` | lineup_watch.py | `OUT / DOUBTFUL / QUESTIONABLE / NOT_LISTED` — written to ALL today's picks on every run |
+| `injury_check_time` | lineup_watch.py | ISO timestamp of last lineup_watch run |
+| `tier_walk` | Analyst | Tier walk-down reasoning string; shown on pick cards as expandable |
+| `iron_floor` | Analyst | `true` when quant stat line showed `[iron_floor]`; Claude copies directly from context |
+| `lineup_update` | lineup_update.py | Sub-object: `{triggered_by, updated_at, direction, revised_confidence_pct, revised_reasoning}`; written hourly when starter changes detected; overwritten on each run |
 
 ---
 

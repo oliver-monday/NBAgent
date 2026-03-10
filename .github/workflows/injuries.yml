@@ -45,6 +45,9 @@ jobs:
           pip install pandas requests beautifulsoup4 lxml anthropic
 
       - name: Refresh Rotowire injuries
+        env:
+          ROTOWIRE_EMAIL: ${{ secrets.ROTOWIRE_EMAIL }}
+          ROTOWIRE_PASSWORD: ${{ secrets.ROTOWIRE_PASSWORD }}
         run: |
           SLATE_DATE="$(TZ=America/Los_Angeles date +%Y-%m-%d)"
           python ingest/rotowire_injuries_only.py --date "$SLATE_DATE"
