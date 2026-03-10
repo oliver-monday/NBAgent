@@ -38,6 +38,7 @@ AUDIT_SUMMARY_JSON = DATA / "audit_summary.json"
 PRE_GAME_NEWS_JSON = DATA / "pre_game_news.json"
 STANDINGS_JSON                = DATA / "standings_today.json"
 TEAM_DEFENSE_NARRATIVES_JSON = DATA / "team_defense_narratives.json"
+LINEUPS_JSON                 = DATA / "lineups_today.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -445,6 +446,160 @@ def format_team_defense_section(narratives_path=TEAM_DEFENSE_NARRATIVES_JSON) ->
     return "\n".join(lines)
 
 
+def format_lineups_section(lineups_path: Path = LINEUPS_JSON, today_teams: set | None = None) -> str:
+    """
+    Read lineups_today.json (written by rotowire_injuries_only.py) and return a
+    formatted ## PROJECTED LINEUPS block for prompt injection.
+
+    Groups by game using nba_master.csv for home/away pairing and game time.
+    Cross-references injuries_today.json for key absences.
+
+    Returns a single-line fallback if the file is missing, stale, or unparseable.
+    Never raises — always returns a string.
+    """
+    fallback = "## PROJECTED LINEUPS\n[Lineup data unavailable — injury report only]"
+
+    try:
+        if not lineups_path.exists():
+            return fallback
+        with open(lineups_path) as fh:
+            data = json.load(fh)
+    except Exception:
+        return fallback
+
+    if data.get("asof_date") != TODAY_STR:
+        return fallback
+
+    built_at = data.get("built_at_utc", "")
+
+    # Load injuries for key absences
+    inj_by_team: dict = {}
+    try:
+        if INJURIES_JSON.exists():
+            with open(INJURIES_JSON) as fh:
+                inj_raw = json.load(fh)
+            inj_by_team = {k: v for k, v in inj_raw.items() if isinstance(v, list)}
+    except Exception:
+        pass
+
+    # Load today's games for pairing and game times
+    games: list[dict] = []
+    try:
+        if MASTER_CSV.exists():
+            df = pd.read_csv(MASTER_CSV, dtype=str)
+            today_games = df[df["game_date"] == TODAY_STR]
+            for _, row in today_games.iterrows():
+                games.append({
+                    "home": str(row.get("home_team_abbrev", "") or "").strip().upper(),
+                    "away": str(row.get("away_team_abbrev", "") or "").strip().upper(),
+                    "time_utc": str(row.get("game_time_utc", "") or "").strip(),
+                })
+    except Exception:
+        pass
+
+    # Normalise a team abbrev for lineup lookup
+    _ABBR = {"GS": "GSW", "SA": "SAS", "NO": "NOP", "NY": "NYK", "UTAH": "UTA", "WSH": "WAS"}
+
+    def _norm(a: str) -> str:
+        return _ABBR.get(a.upper(), a.upper())
+
+    def _game_time_pt(utc_str: str) -> str:
+        try:
+            ts = dt.datetime.fromisoformat(utc_str.replace("Z", "+00:00"))
+            pt = ts.astimezone(ET)
+            h, m = pt.hour, pt.minute
+            suffix = "AM" if h < 12 else "PM"
+            h12 = h % 12 or 12
+            return f"{h12}:{m:02d} {suffix} PT"
+        except Exception:
+            return ""
+
+    # Determine which teams we're covering
+    covered_teams = set(today_teams) if today_teams else set()
+    all_game_teams: set[str] = set()
+    for g in games:
+        all_game_teams.add(_norm(g["home"]))
+        all_game_teams.add(_norm(g["away"]))
+
+    lines = [f"## PROJECTED LINEUPS\nas_of: {built_at}\n"]
+
+    processed: set[str] = set()
+
+    # Game-grouped output
+    for g in games:
+        home = _norm(g["home"])
+        away = _norm(g["away"])
+        time_str = _game_time_pt(g["time_utc"])
+        header = f"{away} vs {home}"
+        if time_str:
+            header += f" — {time_str}"
+        lines.append(header)
+
+        for team in (away, home):
+            team_data = data.get(team) or data.get(g["home"] if team == home else g["away"])
+            if not isinstance(team_data, dict):
+                lines.append(f"{team}: Lineup not yet available")
+            else:
+                starters = team_data.get("starters", [])
+                confirmed = team_data.get("confirmed", False)
+                label = "Confirmed" if confirmed else "Expected"
+                if starters:
+                    parts = []
+                    for s in starters:
+                        entry = f"{s['position']} {s['name']}"
+                        if s.get("injury_status"):
+                            entry += f" [{s['injury_status']}]"
+                        parts.append(entry)
+                    lines.append(f"{team} ({label}): {' | '.join(parts)}")
+                else:
+                    lines.append(f"{team}: Lineup not yet available")
+
+                # Key absences from injury report
+                absent = []
+                for entry in inj_by_team.get(team, []):
+                    status = (entry.get("status") or "").upper()
+                    if status in ("OUT", "DOUBT", "OFS"):
+                        name = entry.get("name") or entry.get("player_name") or ""
+                        if name:
+                            absent.append(f"{name} ({status})")
+                if absent:
+                    lines.append(f"  ⚠ Key absences: {', '.join(absent)}")
+
+            processed.add(team)
+
+        lines.append("")
+
+    # Any teams not matched to a game (edge case)
+    if covered_teams:
+        for team in sorted(covered_teams - processed):
+            t = _norm(team)
+            team_data = data.get(t)
+            if isinstance(team_data, dict) and team_data.get("starters"):
+                starters = team_data["starters"]
+                confirmed = team_data.get("confirmed", False)
+                label = "Confirmed" if confirmed else "Expected"
+                parts = []
+                for s in starters:
+                    entry = f"{s['position']} {s['name']}"
+                    if s.get("injury_status"):
+                        entry += f" [{s['injury_status']}]"
+                    parts.append(entry)
+                lines.append(f"{t} ({label}): {' | '.join(parts)}")
+                absent = []
+                for entry in inj_by_team.get(t, []):
+                    status = (entry.get("status") or "").upper()
+                    if status in ("OUT", "DOUBT", "OFS"):
+                        name = entry.get("name") or entry.get("player_name") or ""
+                        if name:
+                            absent.append(f"{name} ({status})")
+                if absent:
+                    lines.append(f"  ⚠ Key absences: {', '.join(absent)}")
+                lines.append("")
+
+    print(f"[analyst] Loaded projected lineups ({len(games)} games from lineups_today.json)")
+    return "\n".join(lines).strip()
+
+
 def load_pre_game_news() -> str:
     """
     Load pre_game_news.json written by pre_game_reporter.py.
@@ -805,7 +960,7 @@ def load_audit_summary() -> str:
 
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "") -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "", lineups_section: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -820,6 +975,7 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
 
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
+    lineups_block           = f"{lineups_section}\n\n" if lineups_section else ""
 
     player_profiles_section = (
         "## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS\n"
@@ -869,6 +1025,12 @@ The edge is in finding floors the market undervalues. Season averages overstate 
 A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick, not a 20-tier pick.
 
 ## SELECTION RULES
+- LINEUP CONTEXT: ## PROJECTED LINEUPS shows today's expected starters and key absences per
+  game. Use this as ground truth for who is playing. A player listed as a starter with no
+  injury flag is confirmed available for that game. A player not in the starting lineup but
+  also not listed as OUT/DOUBTFUL may be a bench contributor — apply normal analysis. Never
+  pick a player listed in Key absences as OUT or DOUBTFUL (the pre-filter should have already
+  excluded them, but this is your backstop).
 - Weight recent form (last 5–10 games) heavily — season averages are misleading
 - Minimum 5 recent games required to evaluate any player
 - INJURY EXCLUSION (HARD RULE): Players listed as OUT or DOUBTFUL have been removed from the
@@ -921,7 +1083,7 @@ selection signals.
 ## CURRENT INJURY REPORT
 {injuries_block}
 
-{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
+{lineups_block}{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
 {season_context if season_context else "No season context file found."}
 
 {playoff_picture_section}{team_defense_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
@@ -1278,6 +1440,7 @@ def main():
     season_context  = load_season_context()
     playoff_picture = render_playoff_picture()
     team_defense    = format_team_defense_section()
+    lineups_section = format_lineups_section(today_teams=set(teams_today))
 
     player_stats = load_player_stats()
     print(f"[analyst] Loaded quant stats for {len(player_stats)} players")
@@ -1317,6 +1480,7 @@ def main():
         player_profiles=player_profiles,
         playoff_picture=playoff_picture,
         team_defense=team_defense,
+        lineups_section=lineups_section,
     )
 
     picks = call_analyst(prompt)

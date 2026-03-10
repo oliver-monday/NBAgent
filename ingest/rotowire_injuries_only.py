@@ -212,6 +212,128 @@ def parse_rotowire_injuries(html: str) -> Dict[str, List[Dict[str, str]]]:
     return injuries_today
 
 
+def parse_rotowire_lineups(html: str) -> dict:
+    """
+    Parse projected starting lineups from the Rotowire nba-lineups.php page.
+    The Expected Lineup section (PG→SG→SF→PF→C) appears before the MAY NOT PLAY
+    section within each team block. Position labels and player <a> tags are the
+    reliable structural anchors.
+
+    Returns {team_abbr: {"starters": [...], "confirmed": bool}} with only teams
+    that have at least one starter entry.
+    """
+    POSITIONS = {"PG", "SG", "SF", "PF", "C"}
+    NBA_ABBREVS = {
+        "ATL", "BOS", "BKN", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW",
+        "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN", "NOP", "NYK",
+        "OKC", "ORL", "PHI", "PHX", "POR", "SAC", "SAS", "TOR", "UTA", "WAS",
+    }
+    lineups: dict = {}
+
+    try:
+        soup = BeautifulSoup(html, "lxml")
+
+        # Walk every <li> on the page. Position-labeled starter rows have:
+        #   - A descendant element whose stripped text is exactly a position abbrev
+        #   - An <a> tag with the player name
+        # Both conditions together are highly specific to the lineup table rows.
+        for li in soup.find_all("li"):
+            # Find a descendant with exactly a position label
+            pos_text = None
+            for desc in li.descendants:
+                if not hasattr(desc, "get_text"):
+                    continue
+                t = desc.get_text(strip=True).upper()
+                if t in POSITIONS:
+                    pos_text = t
+                    break
+            if not pos_text:
+                continue
+
+            # Must have a player <a> link in the same <li>
+            a_tag = li.find("a")
+            if not a_tag:
+                continue
+            name = a_tag.get_text(strip=True)
+            if not name or len(name) < 3:
+                continue
+
+            # Check for an inline injury status on this starter
+            inj_status = None
+            for tag in li.find_all(True):
+                cls = " ".join(tag.get("class", []))
+                if "inj" in cls.lower() or "status" in cls.lower():
+                    raw = tag.get_text(strip=True)
+                    # Avoid picking up broad class names as status text
+                    if raw and len(raw) <= 20 and raw.upper() not in {"STATUS", "INJURY"}:
+                        inj_status = _short_status(raw)
+                        break
+
+            # Walk up ancestors to find team abbreviation
+            team = ""
+            confirmed = False
+            for ancestor in list(li.parents):
+                # data-team attribute takes precedence (used by buttons/containers)
+                dt = ancestor.get("data-team", "").upper()
+                if dt and dt in NBA_ABBREVS:
+                    team = dt
+                    break
+                # Look for a direct child element whose sole text is a team abbrev
+                # (e.g. <div class="lineup__abbrev">PHI</div>)
+                for child in ancestor.find_all(True, recursive=False):
+                    t = child.get_text(strip=True).upper()
+                    if t in NBA_ABBREVS:
+                        team = t
+                        break
+                if team:
+                    # Check for "Confirmed" text within this same ancestor section
+                    section_text = ancestor.get_text(" ", strip=True)
+                    if re.search(r"\bconfirm", section_text, re.IGNORECASE):
+                        confirmed = True
+                    break
+
+            if not team:
+                continue
+
+            # Build or update the team entry
+            if team not in lineups:
+                lineups[team] = {"starters": [], "confirmed": False}
+            if confirmed:
+                lineups[team]["confirmed"] = True
+
+            # Deduplicate by position — keep first occurrence
+            existing_positions = {s["position"] for s in lineups[team]["starters"]}
+            if pos_text not in existing_positions:
+                lineups[team]["starters"].append({
+                    "position": pos_text,
+                    "name": name,
+                    "injury_status": inj_status,
+                })
+
+    except Exception as e:
+        print(f"[lineups] ERROR parsing lineups: {e}")
+
+    # Drop teams with zero starters (shouldn't happen but guard it)
+    return {t: d for t, d in lineups.items() if d["starters"]}
+
+
+def write_lineups_json(lineups: dict, asof_date: str, built_at_utc: str) -> None:
+    data_dir = Path("data")
+    data_dir.mkdir(parents=True, exist_ok=True)
+    out_path = data_dir / "lineups_today.json"
+    tmp_path = data_dir / "lineups_today.json.tmp"
+
+    payload = {
+        "asof_date": asof_date,
+        "built_at_utc": built_at_utc,
+        "source": "rotowire",
+        **lineups,
+    }
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+    os.replace(tmp_path, out_path)
+
+
 def append_injury_log(injuries_today: Dict[str, List[Dict[str, str]]], asof_date: str) -> None:
     if not injuries_today:
         return
@@ -322,6 +444,26 @@ def main() -> int:
         print(f"[injuries] wrote injuries_today.json teams={len(injuries_today)} entries={entry_count}")
 
     print(f"[injuries] asof_date={asof_date} entries={entry_count} guard={guard}")
+
+    # ── Lineup parsing ────────────────────────────────────────────────
+    lineups = parse_rotowire_lineups(html)
+    lineup_teams = len(lineups)
+    lineup_starters = sum(len(d["starters"]) for d in lineups.values())
+
+    lineups_path = Path("data") / "lineups_today.json"
+    existing_lineups = load_existing(lineups_path)
+    existing_lineups_asof = existing_lineups.get("asof_date") if isinstance(existing_lineups, dict) else None
+    existing_lineups_teams = sum(
+        1 for k, v in (existing_lineups or {}).items()
+        if isinstance(v, dict) and v.get("starters")
+    )
+
+    if lineup_teams == 0 and existing_lineups_teams > 0 and existing_lineups_asof == asof_date:
+        print(f"[lineups] Guard: parsed 0 teams; keeping existing lineups_today.json for asof_date={asof_date}")
+    else:
+        write_lineups_json(lineups, asof_date, built_at_utc)
+        print(f"[lineups] wrote lineups_today.json teams={lineup_teams} starters={lineup_starters}")
+
     return 0
 
 

@@ -17,7 +17,7 @@ auditor.yml (chains off ingest)
   └─ auditor.py              → audit_log.json, updates picks.json + parlays.json
 
 analyst.yml (chains off auditor)
-  └─ rotowire_injuries_only.py → injuries_today.json (fresh refresh before picks)
+  └─ rotowire_injuries_only.py → injuries_today.json + lineups_today.json (fresh refresh before picks)
   └─ quant.py                (re-run to ensure freshness)
   └─ pre_game_reporter.py    → pre_game_news.json, context/context_flags.md
   └─ analyst.py              → picks.json (today's picks appended; OUT/DOUBTFUL pre-filtered)
@@ -155,6 +155,7 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 - `context/context_flags.md` — staleness and conflict flags from pre_game_reporter; injected as `⚠ CONTEXT FLAG` prefixed lines
 - `data/standings_today.json` — live standings snapshot; formatted by `format_playoff_picture()` and injected as `## PLAYOFF PICTURE` section
 - `data/team_defense_narratives.json` — auto-generated team defense profiles; formatted by `format_team_defense_section()` and injected as `## TEAM DEFENSIVE PROFILES` section
+- `data/lineups_today.json` — projected starting lineups from rotowire_injuries_only.py; formatted by `format_lineups_section()` and injected as `## PROJECTED LINEUPS` section; staleness-checked against today's date
 - `playerprops/player_whitelist.csv` — (name, team) tuple filter
 
 **Prompt section order (canonical):**
@@ -163,6 +164,7 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 3. Tier ceiling rules with backtest evidence
 4. `## TODAY'S GAMES`
 5. `## CURRENT INJURY REPORT`
+5a. `## PROJECTED LINEUPS` (from `lineups_today.json`; fallback line if unavailable)
 6. `## PRE-GAME NEWS` (conditional)
 7. `## SEASON CONTEXT` — SEASON FACTS only (from `nba_season_context.md`)
 8. `## PLAYOFF PICTURE` — auto-generated from `standings_today.json`
