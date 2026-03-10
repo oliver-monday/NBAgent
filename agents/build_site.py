@@ -457,7 +457,8 @@ def get_top_picks(picks: list, max_picks: int = 5) -> list:
         # Rank: iron floor first, then confidence desc, then hit rate desc, then stat priority
         return (iron, conf, hits, -stat_pri)
 
-    return sorted(candidates, key=score, reverse=True)[:max_picks]
+    ranked = sorted(candidates, key=score, reverse=True)[:max_picks]
+    return ranked
 
 
 def build_site():
@@ -647,6 +648,12 @@ def generate_html(d: dict) -> str:
     .pick-main .player  {{ font-size: 16px; font-weight: 600; }}
     .pick-main .reasoning {{ font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.5; font-style: italic; }}
     .tier-walk {{ font-size: 10px; color: var(--muted); margin-top: 4px; font-family: monospace; opacity: 0.7; }}
+    .tier-walk-toggle {{ display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;
+      font-size: 10px; color: var(--muted); cursor: pointer; user-select: none;
+      background: none; border: 1px solid var(--border); border-radius: 4px;
+      padding: 2px 7px; line-height: 1.6; }}
+    .tier-walk-toggle:hover {{ border-color: var(--accent); color: var(--accent); }}
+    .tier-walk-body {{ display: none; }}
     .micro-stats {{ display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }}
     .micro-pill {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px;
                    background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }}
@@ -1021,6 +1028,13 @@ function statusClass(s) {{
   return 'status-OTHER';
 }}
 
+function toggleTierWalk(btn) {{
+  const body = btn.nextElementSibling;
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  btn.innerHTML = open ? '&#9656; show reasoning' : '&#9662; hide reasoning';
+}}
+
 function toggleDrawer(id) {{
   const body    = document.getElementById(id);
   const chevron = document.getElementById(id + '-chevron');
@@ -1203,7 +1217,7 @@ function renderPicks() {{
             ${{statusBadge}}
             ${{buildMicroStats(p, streakSpan)}}
             ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
-            ${{p.tier_walk ? `<div class="tier-walk">${{p.tier_walk}}</div>` : ''}}
+            ${{p.tier_walk ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : ''}}
           </div>
           <div class="pick-right">
             <div class="pick-line">
@@ -1529,7 +1543,7 @@ function renderTopPicks() {{
     const reasoning = p.reasoning
       ? `<div class="tp-reasoning">${{p.reasoning}}</div>` : '';
     const tierWalk = p.tier_walk
-      ? `<div class="tier-walk">${{p.tier_walk}}</div>` : '';
+      ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : '';
 
     html += `
       <div class="top-pick-card" style="border-left-color:${{color}}">
