@@ -6,7 +6,10 @@ non-obvious gotchas, and live prompt format — things that take time to re-deri
 
 **Last updated:** March 10, 2026 (P5 Afternoon Lineup Update Agent complete; March 9 additions
 documented: OUT/DOUBTFUL hard pre-filter, projected lineup scraping + analyst injection, lineup
-watch wiring fix, min_floor cap, BLOWOUT_RISK secondary scorer skip, parlay player-level cap)
+watch wiring fix, min_floor cap, BLOWOUT_RISK secondary scorer skip, parlay player-level cap.
+Session 2: Rotowire session login + projected_minutes/onoff_usage scraping; analyst lineup
+context wiring (proj_min/USG_SPIKE/OPP annotations); knowledge staleness awareness block
+in build_prompt())
 
 ---
 
@@ -23,6 +26,8 @@ team_defense_narratives.json  (per-team last-15g PPG allowed + rank, auto-genera
          staleness_flags (deterministic date-based stale fact flags — Pass 1, no LLM)
     ↓ analyst.py
          reads lineups_today.json (written by rotowire_injuries_only.py, refreshed at analyst start)
+         lineups_today.json optionally contains projected_minutes + onoff_usage per team (when Rotowire creds present)
+         load_lineup_context() builds per-team lookup → proj_min/USG_SPIKE/OPP annotations in quant context blocks
          calls write_analyst_snapshot() → stores snapshot_at_analyst_run in lineups_today.json
          OUT/DOUBTFUL pre-filter applied to player_stats before prompt building
          → picks.json (appended, result=null until auditor runs)
@@ -80,13 +85,15 @@ conditional rendering. Analyst wiring for directive rules is **deferred** pendin
 ## Current Quant Context Block Format (what the Analyst actually sees per player)
 
 ```
-Jalen Brunson (vs BOS | spread_abs=5.5 rest=1d L7:4g):
+Jalen Brunson (vs BOS | spread_abs=5.5 rest=1d L7:4g proj_min=34 [USG_SPIKE:+7.2pp vs J.Holiday]):
+  ⚠ OPP: Jayson Tatum OUT (proj=0min)
   DvP [PG]: PTS=soft REB=mid AST=tough 3PM=soft (n=52)
   PTS: tier=25 overall=80% vs_soft=85%(14g) vs_tough=62%(11g) competitive=79%(18g) blowout_games=71%(7g) trend=up bb_lift=1.18(6miss) [consistent]
   AST: tier=6 overall=72% vs_soft=n/a vs_tough=68%(11g) competitive=74%(18g) blowout_games=n/a trend=stable [VOLATILE]
 ```
 
-**Header flags:** `B2B`, `rest=Xd`, `DENSE`, `L7:Xg`, `BLOWOUT_RISK=True`, `spread_abs=X.X`
+**Header flags:** `B2B`, `rest=Xd`, `DENSE`, `L7:Xg`, `BLOWOUT_RISK=True`, `spread_abs=X.X`, `proj_min=N` (Rotowire projected minutes, when creds present), `[USG_SPIKE:+N.Npp vs X.Name]` (usage spike ≥5pp + ≥100 min sample, when creds present)
+**After DvP line (optional):** `⚠ OPP: Name OUT (proj=0min)` — opponent player with 0 projected minutes per Rotowire; capped at 3 entries; only emitted when Rotowire creds present
 **DvP line:** one per player (not per stat), covers all 4 stats, shows `(team-lvl)` tag when
 the positional sample had < 10 games. `n=` is the number of player-game observations.
 **Stat line fields (in order):** `tier` · `overall` · `vs_soft` · `vs_tough` · `competitive` ·
@@ -97,7 +104,10 @@ the positional sample had < 10 games. `n=` is the number of player-game observat
 
 ## Current `build_prompt()` Section Order
 
-1. Task framing + tier system intro
+1. Task framing:
+   - `Today is {TODAY_STR}.`
+   - `## IMPORTANT: YOUR TRAINING KNOWLEDGE IS POTENTIALLY YEARS OUT OF DATE` — epistemic calibration block; distinguishes perishable knowledge (player roles, rosters, team systems, H2H history, season narratives — do NOT rely on training data) from durable knowledge (basketball principles, tier logic, role archetype reasoning — apply freely); instructs Claude to trust injected data over training priors on any named-player or named-team fact
+   - `## YOUR TASK` + tier system intro
 2. Hit definition (`>=`, exact match = HIT)
 3. Tier ceiling rules with backtest evidence (REB T8+, AST T6+, PTS T25+, PTS T30 invalid)
 4. `## TODAY'S GAMES` (JSON array)
@@ -262,10 +272,16 @@ touched — the sub-object is additive, not destructive.
 - `build_player_stats(player_log, b2b_teams, opp_defense, game_pace, todays_games, teammate_correlations, whitelist, game_spreads=None, master_df=None, b2b_game_ids=None, positional_dvp_data=None, position_map=None)` → full `player_stats.json` dict
 
 ### `ingest/rotowire_injuries_only.py`
+- `ROTOWIRE_LOGIN_URL` — constant for Rotowire login endpoint
+- `login_rotowire(session: requests.Session) → bool` — reads `ROTOWIRE_EMAIL`/`ROTOWIRE_PASSWORD` env vars; POSTs to login URL; returns `False` (not crash) if creds missing or HTTP != 200; returns `True` when session is authenticated
+- `fetch_rotowire_html(session: requests.Session | None = None) → str | None` — refactored to accept optional session; `requester = session if session is not None else requests`; backward-compatible for callers without session
 - `parse_rotowire_lineups(html) → dict` — BeautifulSoup parse of Rotowire projected starters; returns `{team_abbr: {"starters": [{name, position}], "confirmed": bool}}`; walks `<li>` elements with PG/SG/SF/PF/C position labels + player `<a>` links
-- `write_lineups_json(lineups, asof_date, built_at_utc)` — atomic write to `data/lineups_today.json`
+- `parse_projected_minutes(soup: BeautifulSoup) → dict[str, list[dict]]` — parses subscription-gated Projected Minutes panel; finds `.lineups-viz` containers; identifies team via `find_previous_siblings()` walk on `data-team` attribute (with nested button fallback); extracts `{name, minutes, section, injury_status}` per player; returns `{}` on any exception (graceful degradation)
+- `parse_onoff_usage(soup: BeautifulSoup) → dict[str, list[dict]]` — parses subscription-gated On/Off Court Stats panel; finds `.lineups-viz__off-usage-screen`; resolves absent player names via `data-out` ID → `data-athlete-id` map built from `<a data-athlete-id>` tags in the viz container; extracts `{name, usage_pct, usage_change, minutes_sample, absent_players}`; returns `{}` on any exception
+- `write_lineups_json(lineups, asof_date, built_at_utc, projected_minutes: dict | None = None, onoff_usage: dict | None = None)` — extended signature; merges `projected_minutes` and `onoff_usage` dicts into per-team payload before atomic write to `data/lineups_today.json`
 - Guard condition in `main()`: if parsed 0 teams but existing file has teams for today, keeps existing (protects against partial scrape overwriting good data)
-- Output: `data/lineups_today.json` keys: `asof_date`, `built_at_utc`, `source`, per-team dicts with `starters` + `confirmed`; `snapshot_at_analyst_run` key added later by analyst.py
+- Session flow in `main()`: creates `requests.Session()`; calls `login_rotowire(session)`; passes session to `fetch_rotowire_html(session)`; calls `parse_projected_minutes()`/`parse_onoff_usage()` only when `authenticated=True`
+- Output: `data/lineups_today.json` keys: `asof_date`, `built_at_utc`, `source`, per-team dicts with `starters` + `confirmed`; optional `projected_minutes` + `onoff_usage` per team when Rotowire creds present and scrape succeeds; `snapshot_at_analyst_run` key added later by analyst.py
 
 ### `analyst.py`
 - `_ABBR_NORM` dict + `_norm_team(abbr)` + `_extract_last(raw_name)` — normalization helpers (mirrors `lineup_watch.py` and `build_site.py`); `_extract_last` handles "J. Brunson" style Rotowire names
@@ -273,7 +289,8 @@ touched — the sub-object is additive, not destructive.
 - `format_lineups_section(lineups_path=LINEUPS_JSON, today_teams=None) → str` — reads `lineups_today.json`; staleness-checks `asof_date == TODAY_STR`; loads game pairings from MASTER_CSV; loads injuries for key absences; returns formatted `## PROJECTED LINEUPS` block (starters + key absences per game pair); falls back to `"[Lineup data unavailable — injury report only]"` if file missing/stale
 - `write_analyst_snapshot(lineups_path, picks_run_at_iso) → None` — writes `snapshot_at_analyst_run` key into `lineups_today.json` capturing starters + confirmed flag per team at pick time; guards against double-snapshot (returns immediately if key already exists); atomic write via `.tmp` rename; called in `main()` after `format_lineups_section()`, before `build_prompt()`
 - `load_player_stats()` → reads `player_stats.json`, returns dict
-- `build_quant_context(player_stats)` → formatted string; DvP line per player + stat lines with vol_tag + FG_HOT/FG_COLD annotation on PTS lines
+- `load_lineup_context() → dict[str, dict]` — reads `lineups_today.json`; staleness-checks `asof_date == TODAY_STR`; skips metadata keys (`asof_date`, `built_at_utc`, `source`, `snapshot_at_analyst_run`); builds `{norm_team: {"projected_minutes": {name_lower: {minutes, section}}, "onoff_usage": {name_lower: {usage_pct, usage_change, minutes_sample, absent_players}}}}`; returns `{}` silently if missing/stale; logs team count on success
+- `build_quant_context(player_stats: dict, lineup_context: dict | None = None) → str` — updated signature; DvP line per player + stat lines with vol_tag + FG_HOT/FG_COLD; new per-player annotations: `proj_min=N` appended to header when projected minutes present; `[USG_SPIKE:+N.Npp vs X.Name]` appended to header when `usage_change ≥ 5.0` AND `minutes_sample ≥ 100` (absent player abbreviated as `F.Lastname`); `⚠ OPP: Name OUT (proj=0min)` lines after DvP (only `section=="OUT"` or `minutes==0` from opponent team, capped at 3)
 - `load_audit_summary()` → reads `audit_summary.json`, returns "" if < 3 entries
 - `load_season_context()` → reads `context/nba_season_context.md`; strips HTML comment header; **strips `## TEAM DEFENSIVE PROFILES` section** (truncates at that heading — file unchanged, only in-memory text is modified); returns "" if missing
 - `load_pre_game_news()` → reads `pre_game_news.json`; formats critical flags + player_notes + game_notes + monitor flags; returns "" if no notable items
@@ -470,6 +487,9 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 | PROJECTED LINEUPS | ## PROJECTED LINEUPS section | Ground truth for starter availability — treat as LINEUP CONTEXT backstop |
 | PLAYOFF PICTURE | ## PLAYOFF PICTURE section | Situational awareness only — no hard rules |
 | TEAM DEFENSIVE PROFILES | ## TEAM DEFENSIVE PROFILES section | Rolling 15g — replaces static file section |
+| proj_min=N (player header) | Quant context block header | Rotowire projected minutes; contextual only — no directive rules; absent when Rotowire creds not present |
+| [USG_SPIKE:+Npp vs X.Name] (player header) | Quant context block header | Usage boost ≥5pp with ≥100 min sample when named player absent; treat as contextual positive signal |
+| ⚠ OPP: Name OUT (proj=0min) | After DvP line | Opponent key player with 0 projected minutes per Rotowire; supports matchup assessment; absent when creds not present |
 
 ---
 
@@ -492,6 +512,11 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 - Projected Lineup Scraping + Analyst Injection — `rotowire_injuries_only.py` parses starters → `lineups_today.json`; `## PROJECTED LINEUPS` in analyst prompt
 - Hard analyst gates — min_floor confidence cap (floor_minutes < 24 → max 84%), BLOWOUT_RISK secondary scorer PTS skip, AST T4+ hard gate for PF/C, 3PM hard skip for trend=down + low minutes
 - Parlay player-level concentration cap — Python enforcement in `parlay.py` (no single player_name in 3+ parlays regardless of prop type)
+
+**Also completed March 10, Session 2:**
+- Rotowire session login + projected_minutes/onoff_usage scraping — `login_rotowire()`, `parse_projected_minutes()`, `parse_onoff_usage()` added to `rotowire_injuries_only.py`; `write_lineups_json()` extended with optional params; `lineups_today.json` optionally carries per-team projected minutes + on/off usage when Rotowire creds present; `ROTOWIRE_EMAIL`/`ROTOWIRE_PASSWORD` env vars injected into both `injuries.yml` and `analyst.yml`
+- Analyst lineup context wiring — `load_lineup_context()` in `analyst.py`; `proj_min=N`, `[USG_SPIKE:+N.Npp vs Name]`, and `⚠ OPP: Name OUT` annotations in `build_quant_context()`; `main()` wired to load and pass lineup context
+- Knowledge staleness awareness block — `## IMPORTANT: YOUR TRAINING KNOWLEDGE IS POTENTIALLY YEARS OUT OF DATE` inserted in `build_prompt()` between date line and `## YOUR TASK`; perishable vs. durable knowledge distinction; instructs Claude to trust injected data over training priors on named-player/team facts
 
 **Next backtests to run:**
 - **H8 — Positional DvP Validity:** Does positional DvP outpredict team-level DvP for PTS/AST? Requires ~30 days of live positional DvP data. Run ~early April 2026.
