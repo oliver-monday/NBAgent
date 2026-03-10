@@ -407,16 +407,15 @@ def load_todays_parlays() -> dict:
                     hits += 1
                 elif r == "MISS":
                     misses += 1
-                # Include all past-date parlays regardless of grade status.
-                # result may be null if build_site runs before auditor writes back.
-                past_parlays.append({
-                    "date": bundle_date,
-                    "label": p.get("label"),
-                    "result": r,
-                    "implied_odds": p.get("implied_odds"),
-                    "legs": p.get("legs", []),
-                    "leg_results": p.get("leg_results", []),
-                })
+                if r in ("HIT", "MISS", "PARTIAL"):
+                    past_parlays.append({
+                        "date": bundle_date,
+                        "label": p.get("label"),
+                        "result": r,
+                        "implied_odds": p.get("implied_odds"),
+                        "legs": p.get("legs", []),
+                        "leg_results": p.get("leg_results", []),
+                    })
 
     total = hits + misses
     hit_rate = round(100 * hits / total, 1) if total else 0
@@ -432,10 +431,10 @@ def load_todays_parlays() -> dict:
     }
 
 
-def get_top_picks(picks: list, max_picks: int = 5, min_picks: int = 3) -> list:
+def get_top_picks(picks: list, max_picks: int = 5) -> list:
     """
     Deterministically selects the highest-confidence picks for the Top Picks banner.
-    Returns [] if fewer than min_picks candidates qualify (avoids a weak 'Top' label).
+    Returns [] only if no picks qualify at >= 85% confidence.
     """
     STAT_PRIORITY = {"PTS": 0, "3PM": 1, "AST": 2, "REB": 3}
 
@@ -458,8 +457,7 @@ def get_top_picks(picks: list, max_picks: int = 5, min_picks: int = 3) -> list:
         # Rank: iron floor first, then confidence desc, then hit rate desc, then stat priority
         return (iron, conf, hits, -stat_pri)
 
-    ranked = sorted(candidates, key=score, reverse=True)[:max_picks]
-    return ranked if len(ranked) >= min_picks else []
+    return sorted(candidates, key=score, reverse=True)[:max_picks]
 
 
 def build_site():
@@ -1330,20 +1328,12 @@ function renderResults() {{
         const d = p.date ? p.date.split('-') : ['','',''];
         const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}/${{d[0].slice(2)}}` : p.date;
         let resultBadge = '';
-        if (p.result==='HIT')         resultBadge = `<span class="parlay-result-hit">✓ HIT</span>`;
-        else if (p.result==='MISS')   resultBadge = `<span class="parlay-result-miss">✗ MISS</span>`;
-        else if (p.result==='PARTIAL') resultBadge = `<span class="parlay-result-partial">~ PARTIAL</span>`;
-        else if (p.result==='NO_DATA') resultBadge = `<span style="font-size:11px;font-weight:600;color:var(--muted)">— NO DATA</span>`;
-        else                           resultBadge = `<span style="font-size:11px;color:var(--muted)">Pending</span>`;
-        const legResults = p.leg_results && p.leg_results.length ? p.leg_results : null;
-        const legs = legResults
-          ? legResults.map(l => {{
-              const lr = l.result==='HIT' ? `<span class="result-hit">✓</span>` : l.result==='MISS' ? `<span class="result-miss">✗</span>` : `<span style="color:var(--muted)">·</span>`;
-              return `<div style="font-size:11px;padding:2px 0">${{lr}} ${{l.player_name}} ${{l.prop_type}} OVER ${{l.pick_value}} → ${{l.actual_value??'—'}}</div>`;
-            }}).join('')
-          : (p.legs || []).map(l => {{
-              return `<div style="font-size:11px;padding:2px 0;color:var(--muted)">· ${{l.player_name}} ${{l.prop_type}} OVER ${{l.pick_value}}</div>`;
-            }}).join('');
+        if (p.result==='HIT')       resultBadge = `<span class="parlay-result-hit">✓ HIT</span>`;
+        else if (p.result==='MISS') resultBadge = `<span class="parlay-result-miss">✗ MISS</span>`;
+        const legs = (p.leg_results || []).map(l => {{
+          const lr = l.result==='HIT' ? `<span class="result-hit">✓</span>` : `<span class="result-miss">✗</span>`;
+          return `<div style="font-size:11px;padding:2px 0">${{lr}} ${{l.player_name}} ${{l.prop_type}} OVER ${{l.pick_value}} → ${{l.actual_value??'—'}}</div>`;
+        }}).join('');
         phHtml += `
           <div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
