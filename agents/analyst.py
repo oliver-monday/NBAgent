@@ -1388,7 +1388,39 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   floor in this profile.
   This gate applies to the trend=down case only. A player with trend=stable or trend=up and
   avg_minutes_last5 ≤ 30 may still qualify for T1 via normal tier selection logic.
+- 3PM hard skip — trend=down AND tough DvP:
+  If a player's 3PM trend is "down" AND the opponent's DvP 3PM rating is "tough", SKIP all
+  3PM picks for that player, including T1. Do not apply the step-down rule — skip outright.
+  Rationale: after a trend=down step-down lands at T1, there is no margin left. A single
+  cold-shooting night produces zero — which is within normal variance for any shooter. When
+  the opponent is also rated tough for 3PM defense at the positional level, perimeter
+  opportunity is further compressed. The combination of declining trend + tough perimeter
+  defense makes T1 a binary coin flip, not a floor. Historical hit rates at 8/10 or 9/10
+  do not protect against this combination — both T1 miss examples in the March 9 audit
+  (Mitchell 3PM, Murray 3PM) had 8/10 and 9/10 rates respectively and went 0 actual.
+  Note: 3PM DvP is otherwise treated as noise (no confidence adjustments in either direction).
+  This skip rule is the sole exception — it applies only when BOTH conditions are met
+  (trend=down AND tough DvP). A player with trend=down alone still uses the step-down rule.
+  A player with tough DvP alone and trend=stable or up is unaffected.
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
+
+KEY RULES — INJURY STATUS ON SHOOTING PROPS:
+- When a player carries a QUESTIONABLE status in the injury report, check the injury
+  description. If the injury involves a soft-tissue joint concern (ankle, foot, knee,
+  hip, groin), apply an additional -5% confidence penalty to ALL shooting-dependent props
+  (3PM and PTS) for that player, regardless of trend direction or hit rate.
+- Rationale: soft-tissue joint injuries subtly alter shot mechanics and selection —
+  compromised lower-body movement shifts attempts toward the paint and mid-range and away
+  from the perimeter. This affects 3PM floors directly and PTS floors indirectly via
+  reduced shooting efficiency. The QUESTIONABLE tag for these injury types should function
+  as a hard signal for shooting props, not just a minutes-floor caution.
+- This penalty applies to QUESTIONABLE status only. OUT and DOUBTFUL players are already
+  excluded from the prompt via pre-filter. Players listed as PROBABLE or not listed are
+  unaffected.
+- If the injury description is not a soft-tissue joint concern (e.g., illness, rest,
+  non-contact soreness), do not apply this penalty.
+- Apply this -5% silently to the confidence calculation. You may note the ankle/knee/foot
+  tag in the reasoning field if it is the key reason for a borderline skip.
 
 KEY RULES — SPREAD / BLOWOUT RISK:
 - "BLOWOUT_RISK=True" means this team is heavily favored (spread_abs > 8). Stars get pulled in
@@ -1396,6 +1428,15 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   → When BLOWOUT_RISK=True: prefer one tier lower than your best tier, OR reduce confidence by
     10–15 pct. Do not skip the pick entirely unless confidence would drop below 70%.
   → When spread_abs > 13: cap confidence at 80% for ALL players on the favored team.
+  → BLOWOUT-RESILIENT OFFSET CAP: When a player's quant stat line shows the [iron_floor] tag
+    or other signals have been described as "blowout-resilient" in prior reasoning, this does
+    NOT fully neutralize the BLOWOUT_RISK -10% penalty on PTS props. Treat blowout-resilient
+    as a -5% offset to the penalty (net -5% total), NOT a full zero-out. A resilient scorer
+    still gets benched in Q4 garbage time when the lead is large.
+  → LARGE SPREAD PTS CAP: When BLOWOUT_RISK=True AND spread_abs ≥ 12, cap PTS confidence at
+    74% regardless of hit rate, iron_floor tag, or blowout-resilient signals. The larger the
+    margin, the more likely conservative Q4 rotations suppress counting stats — even elite
+    scorers are not immune. This cap applies to the favored team's players only.
 - "competitive" split = historical hit rate in close games (spread_abs ≤ 6.5).
   "blowout_games" split = historical hit rate in non-competitive games (spread_abs > 6.5).
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
