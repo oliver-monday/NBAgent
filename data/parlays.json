@@ -1578,5 +1578,120 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-10",
+    "parlays": [
+      {
+        "label": "Iron Floor Quad",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "POR",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "HOU",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "LAL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Jaylen Brown",
+            "team": "BOS",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+133",
+        "confidence_product": 0.4301,
+        "correlation": "independent",
+        "rationale": "Four independent games anchored by two 10/10 iron-floor low-threshold legs plus Brown's up-trend vs soft SA defense.",
+        "date": "2026-03-10",
+        "id": "parlay_2026-03-10_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      },
+      {
+        "label": "Scorers Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "POR",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kevin Durant",
+            "team": "HOU",
+            "opponent": "TOR",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Giannis Antetokounmpo",
+            "team": "MIL",
+            "opponent": "PHX",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "LAL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+133",
+        "confidence_product": 0.4301,
+        "correlation": "independent",
+        "rationale": "Miller's 9/10 floor anchors Durant vs soft TOR and Giannis vs soft PHX; Randle's 10/10 rate adds a low-risk floor lock.",
+        "date": "2026-03-10",
+        "id": "parlay_2026-03-10_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      }
+    ]
   }
 ]
