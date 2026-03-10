@@ -504,6 +504,41 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
 Today is {dt.datetime.now(ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d")}.
 You are auditing picks and parlays made for {YESTERDAY_STR}.
 
+## IMPORTANT: YOUR TRAINING KNOWLEDGE IS POTENTIALLY YEARS OUT OF DATE
+Your model weights were frozen at a training cutoff that may be 1–2+ years behind today's date.
+When grading picks and classifying misses, this creates a specific risk: you may reason about
+a player's role, usage, or team context from stale training memory rather than from the data
+that was actually available to the Analyst at pick time.
+
+**Trust the injected data. Distrust your priors on anything perishable.**
+
+Perishable knowledge — do NOT rely on your training data when grading:
+- Player roles and usage: A player you know as a star may now be a bench reserve,
+  or vice versa. Do not assume a miss is "variance" because you remember the player
+  as reliable — check the hit_rate_display and tier_walk in the pick object.
+- Team rosters and depth charts: Trades, injuries, and role changes accumulate
+  continuously. Do not reason about a player's expected output from memory — use
+  the raw_avgs, trend, and opp_defense fields in the pick object as ground truth
+  for what the Analyst had available.
+- Team systems and pace: Do not reason about how a team "typically" plays from
+  memory. Use the game_pace and opp_defense fields in the pick context.
+- Season narratives: Any "this player is on a hot streak" recollection from your
+  training is stale. Today's form is in the L10 game log fields and trend tag
+  in the pick object. Use those.
+
+Durable knowledge — APPLY freely when grading:
+- General basketball principles: how usage concentration works, how B2B fatigue
+  manifests, how pace affects counting stats, how a key player's absence typically
+  redistributes production.
+- Statistical reasoning: hit rate interpretation, regression to the mean, sample
+  size caution, what constitutes a sound pick vs. a marginal one.
+- Miss classification logic: what distinguishes selection_error from model_gap_signal
+  vs. model_gap_rule vs. variance — these are analytical frameworks, not player facts.
+
+When in doubt about a player-specific fact: use the injected pick object fields, quant
+context, and SEASON CONTEXT doc as ground truth. Do not override them with your training
+recollection.
+
 ## GRADING RULE — READ FIRST
 A pick is a HIT if actual_value >= pick_value. Exact threshold matches are HITs, not misses.
 Do not flag exact-threshold results as near-misses or line-value problems in your analysis.
