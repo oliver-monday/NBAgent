@@ -725,6 +725,76 @@ def load_player_stats() -> dict:
         return {}
 
 
+def load_lineup_context() -> dict[str, dict]:
+    """
+    Load projected_minutes and onoff_usage from lineups_today.json.
+    Returns a dict keyed by normalised team abbreviation:
+        {
+          "LAL": {
+            "projected_minutes": {name_lower: {"minutes": 36, "section": "STARTERS"}},
+            "onoff_usage":       {name_lower: {"usage_pct": 30.9, "usage_change": 10.0,
+                                               "minutes_sample": 111,
+                                               "absent_players": ["Anthony Davis"]}}
+          },
+          ...
+        }
+    Returns {} gracefully if file missing, stale, or unparseable — never blocks a run.
+    """
+    if not LINEUPS_JSON.exists():
+        return {}
+    try:
+        with open(LINEUPS_JSON) as fh:
+            raw = json.load(fh)
+    except Exception as e:
+        print(f"[analyst] WARNING: could not load lineup context: {e}")
+        return {}
+
+    if raw.get("asof_date") != TODAY_STR:
+        print("[analyst] lineup context stale — skipping proj_min / onoff annotations")
+        return {}
+
+    result: dict[str, dict] = {}
+    skip_keys = {"asof_date", "built_at_utc", "source", "snapshot_at_analyst_run"}
+
+    for team_key, team_data in raw.items():
+        if team_key in skip_keys or not isinstance(team_data, dict):
+            continue
+        norm = _norm_team(team_key)
+
+        # projected_minutes: index by name_lower
+        pm_list = team_data.get("projected_minutes") or []
+        pm_map: dict[str, dict] = {}
+        for entry in pm_list:
+            name = (entry.get("name") or "").strip()
+            if name:
+                pm_map[name.lower()] = {
+                    "minutes": entry.get("minutes", 0),
+                    "section": entry.get("section", ""),
+                }
+
+        # onoff_usage: index by name_lower
+        ou_list = team_data.get("onoff_usage") or []
+        ou_map: dict[str, dict] = {}
+        for entry in ou_list:
+            name = (entry.get("name") or "").strip()
+            if name:
+                ou_map[name.lower()] = {
+                    "usage_pct":      entry.get("usage_pct"),
+                    "usage_change":   entry.get("usage_change"),
+                    "minutes_sample": entry.get("minutes_sample"),
+                    "absent_players": entry.get("absent_players") or [],
+                }
+
+        if pm_map or ou_map:
+            result[norm] = {
+                "projected_minutes": pm_map,
+                "onoff_usage":       ou_map,
+            }
+
+    print(f"[analyst] Lineup context loaded: {len(result)} teams with proj_min/onoff data")
+    return result
+
+
 def load_player_profiles(player_stats: dict) -> str:
     """
     Extract pre-rendered player profile narratives from player_stats dict.
@@ -741,7 +811,7 @@ def load_player_profiles(player_stats: dict) -> str:
     return "\n\n".join(blocks)
 
 
-def build_quant_context(player_stats: dict) -> str:
+def build_quant_context(player_stats: dict, lineup_context: dict | None = None) -> str:
     """
     Build a compact quant stats block for the prompt.
     Shows pre-computed best tiers and matchup-specific hit rates (vs_soft, vs_tough)
@@ -755,6 +825,47 @@ def build_quant_context(player_stats: dict) -> str:
     for player_name in sorted(player_stats):
         s = player_stats[player_name]
         opp              = s.get("opponent", "?")
+
+        # ── Lineup context lookups ────────────────────────────────────
+        lc = lineup_context or {}
+        player_team_lc = lc.get(_norm_team(s.get("team", ""))) or {}
+        opp_team_lc    = lc.get(_norm_team(opp)) or {}
+
+        player_name_lower = player_name.strip().lower()
+
+        # Projected minutes for this player
+        pm_entry   = (player_team_lc.get("projected_minutes") or {}).get(player_name_lower)
+        proj_min   = pm_entry["minutes"] if pm_entry else None
+        proj_min_str = f" proj_min={proj_min}" if proj_min is not None else ""
+
+        # Usage spike: only fire when change >= +5.0pp AND sample >= 100 min
+        ou_entry     = (player_team_lc.get("onoff_usage") or {}).get(player_name_lower)
+        usg_spike_str = ""
+        if ou_entry:
+            change  = ou_entry.get("usage_change")
+            sample  = ou_entry.get("minutes_sample") or 0
+            absent  = ou_entry.get("absent_players") or []
+            if change is not None and change >= 5.0 and sample >= 100:
+                def _abbrev_name(n: str) -> str:
+                    parts = n.strip().split()
+                    if len(parts) >= 2:
+                        return f"{parts[0][0]}.{parts[-1]}"
+                    return n
+                absent_str = "+".join(_abbrev_name(n) for n in absent[:2])
+                usg_spike_str = f" [USG_SPIKE:+{change:.1f}pp vs {absent_str}]" if absent_str else f" [USG_SPIKE:+{change:.1f}pp]"
+
+        # Opposing key absences: rotation players projected 0 or absent (section=OUT)
+        opp_absence_lines: list[str] = []
+        opp_pm = opp_team_lc.get("projected_minutes") or {}
+        for opp_name, opp_pm_data in opp_pm.items():
+            opp_minutes = opp_pm_data.get("minutes", 0)
+            opp_section = opp_pm_data.get("section", "")
+            if opp_section == "OUT" or opp_minutes == 0:
+                display = opp_name.title()
+                opp_absence_lines.append(f"  ⚠ OPP: {display} OUT (proj={opp_minutes}min)")
+        # Cap at 3 opposing absences to avoid clutter
+        opp_absence_str = "\n".join(opp_absence_lines[:3])
+
         best_tiers       = s.get("best_tiers") or {}
         matchup_hrs      = s.get("matchup_tier_hit_rates") or {}
         trends           = s.get("trend") or {}
@@ -896,8 +1007,9 @@ def build_quant_context(player_stats: dict) -> str:
             dense_flag = " DENSE" if dense_schedule else ""
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             lines.append(
-                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}):\n"
+                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}{proj_min_str}{usg_spike_str}):\n"
                 + (defense_line + "\n" if defense_line else "")
+                + (opp_absence_str + "\n" if opp_absence_str else "")
                 + "\n".join(stat_parts)
             )
 
@@ -1482,6 +1594,7 @@ def main():
 
     player_stats = load_player_stats()
     print(f"[analyst] Loaded quant stats for {len(player_stats)} players")
+    lineup_context = load_lineup_context()
 
     # Hard pre-filter: exclude OUT/DOUBTFUL players before any prompt building
     out_players = load_out_players()
@@ -1497,7 +1610,7 @@ def main():
         player_stats = filtered_stats
         print(f"[analyst] After injury pre-filter: {len(player_stats)} players remaining")
 
-    quant_context = build_quant_context(player_stats)
+    quant_context = build_quant_context(player_stats, lineup_context=lineup_context)
 
     player_profiles = load_player_profiles(player_stats)
     if player_profiles:
