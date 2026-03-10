@@ -45,8 +45,11 @@ TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
 # ── Config ───────────────────────────────────────────────────────────
-MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 16384
+MODEL         = "claude-sonnet-4-6"   # default model
+MODEL_LARGE   = "claude-opus-4-6"     # upgraded model for large slates
+MAX_TOKENS    = 16384
+# Player count threshold (after injury pre-filter) above which Opus is used
+LARGE_SLATE_THRESHOLD = 30
 # How many recent games to include per player in the prompt
 RECENT_GAME_WINDOW = 10
 # How many audit log entries to feed back as context (keep lean)
@@ -1514,13 +1517,26 @@ Condition C — Confirming signals: At least two independent signals must suppor
 {audit_summary if audit_summary else "Insufficient audit history yet (need 3+ days)."}
 
 ## ANALYSIS APPROACH
-Work through each player mentally before writing output. Keep your per-player reasoning
-to 3 lines maximum:
-  Line 1: Best qualifying tier + hit rate (e.g. "PTS T20: 9/10 ✓")
+For EVERY player in the QUANT STATS section, you MUST evaluate ALL FOUR prop types
+(PTS, REB, AST, 3PM) in sequence before moving to the next player. Do not skip a prop
+type silently. If a prop type has no qualifying tier after applying all rules, note the
+skip reason briefly and move on — but you must have visited it.
+
+Work through each player in this fixed order:
+  1. PTS — walk tiers top-down; apply all PTS rules (FG_MARGIN, BLOWOUT, min_floor cap, etc.)
+  2. REB — walk tiers top-down; apply REB-specific rules (78% floor, 25th-pct gate, etc.)
+  3. AST — walk tiers top-down; apply AST-specific rules (T4+ hard gate, etc.)
+  4. 3PM — walk tiers top-down; apply 3PM-specific rules (trend=down step-down, hard skips, etc.)
+
+Keep your per-player reasoning to 3 lines maximum per prop type:
+  Line 1: Best qualifying tier + hit rate (e.g. "PTS T20: 9/10 ✓") or skip signal
   Line 2: Key adjustment applied if any (e.g. "VOLATILE -5%, B2B rate used, BLOWOUT -10%")
   Line 3: Final confidence + pick or skip decision (e.g. "→ 80% PICK" or "→ 65% SKIP")
+
 Do not narrate every rule check. Do not recalculate L10 averages in writing — work from
 the quant data provided. Brief internal notes only; the JSON output is what matters.
+Do NOT include skip decisions in the JSON output — only picks with confidence_pct ≥ 70
+belong in the array. Skips are internal reasoning only.
 
 ## OUTPUT FORMAT — EMIT THIS FIRST, BEFORE ANY OTHER TEXT
 Your response MUST begin with the JSON array on the very first line. No preamble.
@@ -1560,7 +1576,7 @@ Only include picks with confidence_pct >= 70.
 
 # ── Claude call ──────────────────────────────────────────────────────
 
-def call_analyst(prompt: str) -> list[dict]:
+def call_analyst(prompt: str, model: str = MODEL) -> list[dict]:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
         print("[analyst] ERROR: ANTHROPIC_API_KEY not set.")
@@ -1568,9 +1584,9 @@ def call_analyst(prompt: str) -> list[dict]:
 
     client = anthropic.Anthropic(api_key=api_key)
 
-    print(f"[analyst] Calling Claude ({MODEL})...")
+    print(f"[analyst] Calling Claude ({model})...")
     message = client.messages.create(
-        model=MODEL,
+        model=model,
         max_tokens=MAX_TOKENS,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -1714,7 +1730,15 @@ def main():
         lineups_section=lineups_section,
     )
 
-    picks = call_analyst(prompt)
+    # Select model based on slate size — Opus for large slates, Sonnet otherwise
+    active_count = len(player_stats)
+    model_to_use = MODEL_LARGE if active_count > LARGE_SLATE_THRESHOLD else MODEL
+    if model_to_use == MODEL_LARGE:
+        print(f"[analyst] Large slate ({active_count} players > threshold {LARGE_SLATE_THRESHOLD}) — upgrading to {MODEL_LARGE}")
+    else:
+        print(f"[analyst] Normal slate ({active_count} players) — using {MODEL}")
+
+    picks = call_analyst(prompt, model=model_to_use)
     print(f"[analyst] Claude returned {len(picks)} picks")
 
     save_picks(picks)

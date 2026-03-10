@@ -92,7 +92,7 @@ injuries.yml runs independently on hourly schedule (rotowire → lineup_watch �
 | Agent | Model | MAX_TOKENS | Key inputs | Key output |
 |-------|-------|-----------|------------|------------|
 | quant.py | — (pure Python) | — | player_game_log, team_game_log, nba_master, player_whitelist | player_stats.json |
-| analyst.py | claude-sonnet-4-6 | 16384 | player_stats.json, injuries, audit_log (last 5), audit_summary, nba_season_context | picks.json (append) |
+| analyst.py | claude-sonnet-4-6 (claude-opus-4-6 when >30 active players) | 16384 | player_stats.json, injuries, audit_log (last 5), audit_summary, nba_season_context | picks.json (append) |
 | parlay.py | claude-sonnet-4-6 | 4096 | picks.json, player_stats.json, audit_log (last 3 parlay feedback) | parlays.json (append) |
 | auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, player_game_log, player_stats.json, nba_season_context | audit_log.json, audit_summary.json, updates picks + parlays in-place |
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |

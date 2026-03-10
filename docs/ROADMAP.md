@@ -157,6 +157,7 @@ Derrick White's two model_gap misses (PTS + 3PM, March 8) expose a gap: CLE's ag
 - **Positional DvP backtest (H8)** — data accumulating in `player_stats.json` since March 2026. Run early April. If not meaningfully stronger than team-level, consider reverting to simplify the prompt.
 - **Rotowire projected_minutes/onoff_usage (March 10, 2026)** — scraper wired; `lineups_today.json` carries the data; analyst wiring live (`proj_min`, `[USG_SPIKE]`, `⚠ OPP` annotations). No directive prompt rules yet — treat as contextual signals until audit data accumulates. No backtest required for the annotation layer; validate via analyst pick quality over time.
 - **Knowledge staleness awareness (March 10, 2026)** — epistemic calibration block inserted in `build_prompt()`. No code-level validation possible — validate indirectly by watching for fewer "stale training knowledge" root causes in audit miss classifications over time.
+- **Analyst — full-coverage prop enumeration + Opus hybrid (March 10, 2026)** — `## ANALYSIS APPROACH` block rewritten to require explicit evaluation of all four prop types per player before moving on. `LARGE_SLATE_THRESHOLD = 30` constant added; `call_analyst()` accepts `model` param; `main()` conditionally upgrades to `claude-opus-4-6` when active player count (post injury pre-filter) exceeds threshold. Addresses coverage collapse observed on 48-player slate where Analyst silently skipped prop types.
 
 ---
 
