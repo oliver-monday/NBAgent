@@ -585,6 +585,33 @@ Tighten prompt ceiling if any band systematically underperforms.
 - **Staleness flags do NOT auto-update `context/nba_season_context.md`** — `detect_staleness_flags()`
   is read-only. Flags are surfaced for human action only — the analyst sees them as ⚠ warnings
   in `pre_game_news.json`, but no agent modifies the context file automatically.
-- **`lineups_today.json` is NOT committed to git** — generated at runtime by
-  `rotowire_injuries_only.py` in both `analyst.yml` (pre-picks) and `injuries.yml` (hourly). Not
-  persisted between days. This is correct behavior — same as `injuries_today.json`.
+- **`lineups_today.json` IS committed by `analyst.yml`** — added to the commit loop (alongside
+  `picks.json`, `parlays.json`, `player_stats.json`) so that the `snapshot_at_analyst_run` key
+  written by `write_analyst_snapshot()` persists into the hourly `injuries.yml` runs. Without
+  this, `lineup_update.py` would always exit with "no snapshot found — skipping" because each
+  hourly checkout started from a clean repo with no `lineups_today.json`. `injuries.yml` does
+  NOT commit the file — it only reads and updates it in-place. The file is overwritten fresh
+  each morning by the next day's analyst run, so it does not accumulate across days.
+  Note: `injuries_today.json` remains uncommitted (refreshed every hourly run, no snapshot
+  dependency) — the analogy to `lineups_today.json` is imperfect.
+
+---
+
+## Workflow Implementation Lesson (from P5 post-mortem, March 2026)
+
+**When implementing a feature that spans multiple workflows, explicitly audit every file the
+feature reads at runtime and verify it will be present in each workflow's checkout.**
+
+The P5 Lineup Update Agent (lineup_update.py) was implemented correctly in isolation — the
+Python logic, snapshot writing, and diff computation all worked as designed. The blindspot was
+`lineups_today.json`: analyst.py wrote it, lineup_update.py read it, but analyst.yml never
+committed it. Every hourly injuries.yml run checked out a clean repo, found no
+`lineups_today.json`, and silently skipped with "no snapshot found." The feature ran for
+multiple days producing zero output with no visible error.
+
+**Checklist for any future cross-workflow feature:**
+1. List every file the new agent reads (not just writes).
+2. For each file: which workflow writes it? which workflow reads it? are they the same job, or different jobs running at different times?
+3. If different jobs: is the file committed between them? If not, the reader will always see a missing or stale file.
+4. Check that all commit steps (`git add` loops) in relevant `.yml` files include the new file.
+5. Verify the "no file found" graceful-skip log line is actually the expected no-op, not a silent failure masking a missing commit step.
