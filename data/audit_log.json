@@ -856,5 +856,193 @@
         "The feeder-target correlation logic (SGA AST \u2192 Holmgren PTS within the same OKC-DEN game) was directionally sound \u2014 SGA did deliver 15 assists confirming the feeder role \u2014 but the correlated leg structure was rendered moot by Holmgren's DNP; when building intra-game correlated legs, both players must have confirmed active status at parlay lock time, not just at the pre-game injury check window, making same-game correlated parlays higher operational risk than cross-game independent structures."
       ]
     }
+  },
+  {
+    "date": "2026-03-10",
+    "total_picks": 48,
+    "hits": 37,
+    "misses": 7,
+    "no_data": 4,
+    "hit_rate_pct": 84.1,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 18,
+        "hits": 13,
+        "hit_rate_pct": 72.2
+      },
+      "REB": {
+        "picks": 9,
+        "hits": 8,
+        "hit_rate_pct": 88.9
+      },
+      "AST": {
+        "picks": 15,
+        "hits": 11,
+        "hit_rate_pct": 73.3
+      },
+      "3PM": {
+        "picks": 6,
+        "hits": 5,
+        "hit_rate_pct": 83.3
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 15,
+        "hits": 11,
+        "hit_rate_pct": 73.3,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 26,
+        "hits": 23,
+        "hit_rate_pct": 88.5,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Low-threshold PTS floors (T10 and T15) on high-usage primaries with 9/10 or 10/10 hit rates proved near-automatic: Randle T10 (hit 14), RJ Barrett T10 (hit 25), Duren T15 (hit 26), Brandon Miller T15 (hit 23) \u2014 these tiers are the system's most reliable prop class.",
+      "Multi-stat coverage on elite scorers paid off cleanly: Durant went 3/3 (PTS/REB/AST), Doncic went 3/3 (PTS/REB/3PM), and Derrick White went 3/3 (PTS/REB/AST) \u2014 stacking confirmed players at their floor tiers across prop types is high-value.",
+      "The 3PM T1 floor (OVER 1) strategy on high-volume shooters was 5/5 when restricted to consistent-tagged players with 9/10 or 10/10 rates (Doncic, Booker, Reaves, Cunningham, Knueppel) \u2014 this tier is a systematic edge.",
+      "REB picks at T4 and T6 with confirmed L10 floor-gate passage went 8/8 across all players \u2014 the 25th-percentile 3rd-lowest gate is functioning correctly as a filter against volatility.",
+      "The blowout-resilient PTS classification correctly protected Duren (+14.5 underdog, hit 26) and Cunningham (+14.5 underdog, hit 15 AST) \u2014 the primary scorer exemption from blowout secondary-skip is validated."
+    ],
+    "lessons": [
+      "Jaylen Brown's iron-floor PTS tag failed badly (8 actual vs 20 pick) in just 15 minutes \u2014 the post-game context shows only 15 minutes played, suggesting an early exit or coach decision. The iron-floor tag and 8/10 hit rate did not protect against a minutes collapse. When min_floor is derived from full-game samples, a 15-minute game is structurally unforeseeable, but the miss reveals that iron-floor confidence capping at 80% may be appropriate even for consistent-tagged scorers when no minute-protection signal exists.",
+      "Brandon Ingram's PTS miss (9 actual vs 15 pick, VOLATILE tag, 7/10 hit rate) in 36 minutes confirms that the VOLATILE penalty at 70-72% confidence is the correct zone for him \u2014 the reasoning cited vs_soft=85% as a supportive signal, but 7/10 at T15 for a volatile SF is a marginal pick even in favorable matchups. The Analyst should treat 7/10 VOLATILE PTS picks at T15+ as borderline-skip candidates regardless of DvP rating.",
+      "RJ Barrett's AST miss (1 actual vs 2 pick, iron-floor tag, 8/10 hit rate) in 32 minutes with a down trend is a low-tier variance miss \u2014 the player logged 32 minutes and 25 points but only 1 assist. The down trend was correctly noted but the iron-floor tag suppressed the VOLATILE penalty. Iron-floor classification should not override a down-trend + declining AST pattern for wing scorers; the trend signal deserved more weight.",
+      "Julius Randle's AST miss (2 actual vs 4 pick, 7/10 hit rate, VOLATILE) confirms that T4 AST picks for non-primary PGs remain risky at 70% confidence \u2014 the reasoning correctly flagged VOLATILE -5% bringing confidence to 70%, and the pick still missed. The system is right to be cautious here; this classification validates the 70% floor threshold as a borderline zone.",
+      "Cooper Flagg's PTS miss (14 actual vs 15 pick, iron-floor tag, 7/10 rate) with only 1 point below threshold illustrates that T15 iron-floor picks at exactly 70% confidence with FG_COLD:-18% present are genuinely marginal. The FG_COLD signal was logged as 'informational only' but a -18% shooting suppression on a 15-point threshold is a material risk that should trigger a tier step-down to T10.",
+      "LaMelo Ball's PTS miss (14 actual vs 15 pick, 9/10 rate, 22 minutes played) \u2014 the post-game context shows only 22 minutes, well below his typical load. A min_floor=22.9 below 24 triggered a confidence cap but did not trigger a tier step-down. The minutes-floor cap rule should be evaluated for whether it's doing enough: a min_floor below 24 should perhaps force a mandatory tier step-down to T10 rather than just capping confidence."
+    ],
+    "recommendations": [
+      "Institute a mandatory tier step-down for PTS picks where min_floor < 24 AND the pick tier is T15 or higher: LaMelo Ball (min_floor=22.9, T15 missed by 1) and Flagg (FG_COLD -18%, T15 missed by 1) both fell just below threshold \u2014 dropping to T10 in these cases costs little upside and eliminates the near-miss exposure. Apply this as a rule: min_floor < 24 on a T15 PTS pick \u2192 step to T10.",
+      "Treat FG_COLD >= -15% as a hard tier-reduction signal, not informational: Flagg's FG_COLD was -18% and his PTS pick was T15 at 70% confidence. The informational-only designation allowed an analytically weak pick to proceed. Recommendation: FG_COLD <= -15% should force a one-tier step-down on PTS picks, matching the existing FG_MARGIN_THIN rule logic.",
+      "For wing scorers (SG/SF) with a down trend on AST, do not apply iron-floor classification to suppress the VOLATILE penalty: Barrett's AST miss (1 actual, down trend, 32 minutes, 25 points scored) shows that high scoring output does not guarantee assist accumulation. The down trend on AST for wings should trigger a VOLATILE deduction even when the iron-floor tag is present \u2014 iron-floor should protect the tier pick, not the confidence level.",
+      "Add a minutes-exit risk modifier for players whose L10 log contains any game with fewer than 20 minutes played in a non-DNP context: Brown played only 15 minutes despite no pre-game flag. If any L10 game shows <20 active minutes (not a DNP), apply a -5% confidence penalty and note as MINUTES_RISK. This is a distinct signal from min_floor and would have reduced Brown's PTS confidence below the 80% assigned.",
+      "For 3PM picks classified as VOLATILE with a tough DvP, maintain the existing approach of not applying additional tough-DvP penalties per the 3PM noise rule \u2014 the Edwards 3PM miss (1 actual, 7/10 rate, tough DvP) is a clean variance outcome on a 70% confidence pick. The rule is correct; the Edwards miss is within expected 30% failure rate and does not warrant rule changes."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Anthony Edwards",
+        "prop_type": "3PM",
+        "pick_value": 3,
+        "actual_value": 1,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "7/10 hit rate with VOLATILE -5% landing at 70% confidence \u2014 this is the system's defined margin zone. The analyst correctly applied the T3+ ceiling rule (7/10 AND up trend), noted tough DvP with no additional penalty per 3PM noise rule, and landed at 70%. Edwards logged 31 minutes and had an off shooting night (1 3PM). At 70% confidence, a 30% miss rate is expected; this is a clean variance outcome within the model's stated uncertainty. The tier walk correctly identified T4 as blocked and stepped to T3, and the pick was appropriately marginal. No rule or signal failure."
+      },
+      {
+        "player_name": "Jaylen Brown",
+        "prop_type": "PTS",
+        "pick_value": 20,
+        "actual_value": 8,
+        "miss_classification": "model_gap_signal",
+        "tier_walk_flag": "null",
+        "root_cause": "Brown logged only 15 minutes per post-game context \u2014 an early exit or coach-managed minutes restriction that was not predictable from any pre-game signal (injury_status_at_check = NOT_LISTED, no voiding). The iron-floor tag and 8/10 hit rate (with min_floor=26.1 >= 24) all indicated a sound pick. The reasoning cited 'mid SA defense won't suppress Brown's volume' which was correct in isolation, but the miss was entirely driven by a minutes collapse below any floor the model tracks. This is a model_gap_signal: NBAgent has no mechanism to detect in-game minutes management decisions by coaching staff that occur without a pre-game injury flag. The post-game context confirms 15 minutes played with no injury confirmation, suggesting a load-management or game-script decision. Note: this was the parlay-breaking leg in 'Iron Floor Quad.'"
+      },
+      {
+        "player_name": "RJ Barrett",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "Barrett logged 32 minutes and scored 25 points \u2014 fully active with substantial usage \u2014 but accumulated only 1 assist against a 2-pick threshold. The iron-floor tag and 8/10 hit rate at T2 supported the pick, and the down trend was correctly acknowledged with a conservative 78% confidence cap. The analyst's reasoning ('reliable secondary playmaker accumulating assists at T2') was reasonable for a wing scorer. However, in games where Barrett concentrates on scoring (25 PTS), assist accumulation can collapse to near-zero \u2014 this is within the 22% miss rate implied by 78% confidence. Classified as variance. Note: the down trend on AST was a legitimate caution signal; the iron-floor tag appropriately prevented a VOLATILE deduction but the down trend deserved slightly more weight in the confidence calculation."
+      },
+      {
+        "player_name": "Julius Randle",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 2,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "Randle logged 26 minutes and scored 14 points but recorded only 2 assists vs the 4-pick threshold. The analyst correctly applied VOLATILE -5% to reach 70% confidence and noted the borderline hard-gate condition (PF position, AST avg ~4.7, soft DvP). The 7/10 hit rate in a VOLATILE context at 70% confidence is the system's defined edge zone \u2014 a 30% miss rate is expected. The reasoning ('playmaking role confirmed with primary ball-handlers available') is correct in principle but the soft DvP context did not translate to assist volume in this specific game. Clean variance at the model's stated 70% confidence floor."
+      },
+      {
+        "player_name": "LaMelo Ball",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 14,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "Ball logged only 22 minutes \u2014 well below his typical load \u2014 and scored 14, missing by exactly 1 point. The pick had min_floor=22.9 < 24, which correctly triggered a confidence cap, but the rule only capped confidence rather than forcing a tier step-down. With min_floor below 24 and a T15 PTS pick, the existing rule structure was insufficient: Ball's reduced minutes (22 logged) were the proximate cause of missing the threshold. A min_floor < 24 should mandate a tier step-down to T10 on PTS picks of T15 or higher \u2014 the signal existed in the quant data at pick time (min_floor=22.9 was computed and present) but the rule only adjusted confidence, not the tier. This is a model_gap_rule miss: the signal was available; the rule didn't fully act on it."
+      },
+      {
+        "player_name": "Cooper Flagg",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 14,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "Flagg logged 32 minutes and scored 14 \u2014 missing by exactly 1 point with a FG_COLD:-18% signal logged as 'informational only.' The iron-floor tag and 7/10 hit rate placed this at the system's minimum viable threshold (70%), but the FG_COLD -18% signal was explicitly present in the quant data at pick time and not acted upon as a tier modifier. The analyst's reasoning correctly identified Flagg as DAL's primary scorer with boosted usage, but the FG_COLD signal was material: a shooter 18% below baseline shooting efficiency on a T15 PTS pick is a meaningful suppression risk. The rule treating FG_COLD as informational-only allowed this marginal pick to proceed at T15 when T10 would have been the appropriate tier. Model_gap_rule: the FG_COLD signal existed, the rule did not use it to step down the tier."
+      },
+      {
+        "player_name": "Brandon Ingram",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 9,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "Ingram logged 36 minutes \u2014 fully active \u2014 but scored only 9 points, well below the 15-pick threshold. The VOLATILE tag and 7/10 hit rate correctly placed this at 72% confidence, the system's acknowledged margin zone for volatile scorers. The analyst's reasoning cited vs_soft=85% as supportive, which is a real signal, but the 7/10 rate combined with VOLATILE is the system's weakest qualifying combination for a T15 PTS pick. At 72% confidence, a 28% miss rate is expected, and Ingram's volatile shooting profile means misses can be significant in magnitude (not near-misses). The pick was technically sound per system rules but borderline \u2014 Ingram's VOLATILE + 7/10 + T15 profile is a candidate for future skip-list consideration without additional confluence signals."
+      }
+    ],
+    "no_data_details": [
+      {
+        "player_name": "LeBron James",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "no_data_classification": "workflow_gap",
+        "no_data_explanation": "LeBron James was confirmed OUT pre-game (injury_status_at_check = OUT at pick time) and logged 0 minutes per post-game context; the pick carried voided=true with void_reason='player OUT per injury report,' indicating the void was correctly recorded but the pick still appears in the graded set \u2014 standard workflow gap where OUT status was confirmed and voiding was applied."
+      },
+      {
+        "player_name": "LeBron James",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "no_data_classification": "workflow_gap",
+        "no_data_explanation": "Same as PTS pick: LeBron was OUT pre-game (injury_status_at_check = OUT), logged 0 minutes, voided=true \u2014 both LeBron picks were correctly voided but surface as NO_DATA due to the DNP, consistent with the workflow gap classification."
+      },
+      {
+        "player_name": "Payton Pritchard",
+        "prop_type": "REB",
+        "pick_value": 2,
+        "no_data_classification": "workflow_gap",
+        "no_data_explanation": "Payton Pritchard was confirmed OUT pre-game (injury_status_at_check = OUT), logged 0 minutes per post-game context, and the pick carries voided=true with void_reason='player OUT per injury report' \u2014 correctly voided; no analytical failure."
+      },
+      {
+        "player_name": "Payton Pritchard",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "no_data_classification": "workflow_gap",
+        "no_data_explanation": "Same as REB pick: Pritchard was OUT pre-game (injury_status_at_check = OUT), logged 0 minutes, voided=true \u2014 both Pritchard picks were correctly voided and are classified as workflow gaps consistent with the pre-game OUT designation."
+      }
+    ],
+    "parlay_results": {
+      "total": 2,
+      "hits": 1,
+      "misses": 1,
+      "partial": 0,
+      "parlay_summary": "1/2 parlay session \u2014 'Scorers Sweep' hit cleanly on all four legs while 'Iron Floor Quad' was broken by Jaylen Brown's unforeseeable 15-minute exit, making Brown the single point of failure on an otherwise 3/4 card.",
+      "parlay_lessons": [
+        "The 'Iron Floor Quad' miss exposes a structural concentration risk in parlays that include any player with min_floor < 24 or an undocumented minutes-management history: Brown's 15-minute exit was not predictable from any pre-game signal, but parlays cannot absorb even one minutes-collapse leg \u2014 future parlays should explicitly screen out any leg where min_floor < 24 or where the player has shown any in-season load-management pattern, regardless of iron-floor classification.",
+        "Including a 20-point PTS threshold leg (Brown OVER 20) in a 4-leg parlay alongside T10 floor legs (Barrett OVER 10, Randle OVER 10) creates asymmetric risk: if the high-threshold leg is the anchor of the parlay narrative ('Brown's up-trend vs soft SA'), the parlay's structural integrity depends on a leg that is materially harder to hit than its partners. The parlay agent should cap the highest single-leg threshold in any multi-leg card to no more than 1.5x the median threshold of all legs (here, median was 12.5, so max should be ~19 \u2014 Brown at 20 was marginally above this)."
+      ],
+      "parlay_reinforcements": [
+        "The 'Scorers Sweep' structure \u2014 stacking primary scorer PTS legs from independent games where all players have soft or mid DvP and 8/10+ hit rates at their selected tier \u2014 produced a clean 4/4 sweep (Miller 23, Durant 29, Giannis 22, Randle 14 all cleared). This multi-game independent scorer stack with matched floor thresholds (T15/T20/T20/T10) and no cross-game correlations is the system's most validated parlay template.",
+        "Low-threshold anchor legs (T10 PTS at 10/10 hit rate) serve as structural insurance in multi-leg parlays: Randle OVER 10 (hit 14) and Barrett OVER 10 (hit 25) both cleared comfortably and appeared in both parlays. These legs should always be included when available as a near-certain base in any parlay construction, as they reduce the probability of a full miss even when a higher-threshold leg underperforms."
+      ]
+    }
   }
 ]
