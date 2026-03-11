@@ -1693,5 +1693,100 @@
         "legs_total": 4
       }
     ]
+  },
+  {
+    "date": "2026-03-11",
+    "parlays": [
+      {
+        "label": "Iron Floor Trio",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "James Harden",
+            "team": "CLE",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "NO",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Alperen Sengun",
+            "team": "HOU",
+            "opponent": "DEN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "positive",
+        "rationale": "Three independent volume-game scorers with 9-10/10 hit rates and soft-to-mid floors anchor a clean multi-game sweep.",
+        "date": "2026-03-11",
+        "id": "parlay_2026-03-11_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Banchero Barrett Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "CLE",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "NO",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Alperen Sengun",
+            "team": "HOU",
+            "opponent": "DEN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "positive",
+        "rationale": "Banchero trending up vs soft CLE DvP pairs with Barrett and Sengun iron-floor low-threshold anchors across three independent games.",
+        "date": "2026-03-11",
+        "id": "parlay_2026-03-11_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
