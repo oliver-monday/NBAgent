@@ -1345,9 +1345,15 @@ KEY RULES — REST & FATIGUE:
 MINUTES FLOOR — THRESHOLD EVENT FRAGILITY:
 - The min_floor= value in each player header is the 10th-percentile of their L10 minutes.
   It represents the worst-case realistic playing time in recent games.
-- For PTS picks at T20 or higher: if min_floor < 24, apply mild caution — the player has
-  shown capacity for sub-24 minute games recently, which creates structural risk for high
-  point totals. Consider stepping down one tier or reducing confidence by 3-5%.
+- For PTS picks at T15 or higher: if min_floor < 24, you MUST step down exactly one full tier
+  before finalizing the pick (e.g. T15 → T10, T20 → T15). Do not treat this as a confidence
+  reduction option — the step-down is mandatory. Rationale: two independent audit misses (Ball
+  min_floor=22.9 at T15, Flagg FG_COLD at T15) both fell exactly 1 point short of threshold in
+  games where minutes fragility was the structural risk. A confidence cap alone is insufficient
+  when the tier itself is exposed by a sub-24 minute floor. After stepping down, re-evaluate
+  whether the lower tier qualifies (≥70% hit rate). If it does not qualify, skip the PTS pick
+  entirely. Exception: if avg_minutes > 36, this rule does not apply — elite-usage players
+  rarely sit regardless of game script.
 - For REB and AST picks: if min_floor < 20, apply the same caution.
 - If min_floor >= avg_minutes - 3 (floor is close to average = very consistent minutes),
   treat this as a mild positive signal — the player rarely has outlier-low minutes nights.
@@ -1472,8 +1478,33 @@ KEY RULES — VOLATILITY:
        favorable rest).
     3. Flag the volatility in the reasoning field so the Auditor can track whether
        volatile picks underperform over time.
-  Do not apply the volatility penalty if the player has [iron_floor] on this stat —
-  iron floor already captures the consistency signal more precisely.
+  Iron-floor and VOLATILE interact as follows:
+  * [iron_floor] protects the TIER — it prevents stepping down to a lower tier based on
+    volatility alone. The tier you selected is sound.
+  * [iron_floor] does NOT protect the CONFIDENCE LEVEL — trend and VOLATILE still apply to
+    confidence calculation normally. Specifically: if a player has [iron_floor] AND trend=down
+    on the same stat, apply the VOLATILE -5% confidence reduction as normal. Do not suppress
+    the confidence deduction because iron_floor is present. Iron_floor means "this floor is
+    real"; it does not mean "this stat is trending in the right direction." For wing scorers
+    (SG/SF position) with a down trend on AST: iron_floor does not suppress the VOLATILE
+    deduction. High scoring output in the same game does not guarantee assist accumulation —
+    these are independent outputs. The down trend signal deserves full weight in the confidence
+    calculation even when the tier is protected by iron_floor.
+- VOLATILE PTS skip — weak qualifying combination: If ALL of the following are true, SKIP
+  the PTS pick entirely. Do not pick at a lower tier.
+    1. The stat is tagged [VOLATILE]
+    2. The overall hit rate at the selected tier is exactly 7/10 (70%)
+    3. The pick tier is T15 or higher
+  Rationale: 7/10 at T15+ for a VOLATILE player is the system's weakest qualifying combination.
+  After the mandatory -5% VOLATILE deduction, confidence lands at the 70% floor. A VOLATILE
+  player at 70% confidence on a high counting-stat threshold offers no margin — any cold game
+  or role compression produces a significant undershoot, not a near-miss. The system generates
+  enough picks that marginal combinations like this should be skipped in favor of
+  higher-confidence selections. This rule applies to PTS props only. VOLATILE + 7/10 at T15+
+  for REB or AST is handled by the existing 78% REB minimum floor and AST gate rules
+  respectively. Exception: if the player has [iron_floor] on this stat AND trend=up, this
+  skip does not apply — the iron_floor tag elevates the floor reliability above the 7/10
+  baseline.
 
 KEY RULES — SHOOTING EFFICIENCY REGRESSION:
 - [FG_HOT:+X%] and [FG_COLD:-X%] annotations are informational only. Do not apply any confidence
