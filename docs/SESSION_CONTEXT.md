@@ -340,8 +340,12 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEV
 - `news_contains_injury_language(news_items)` → `(bool, matched_term)` — scans `INJURY_SCAN_TERMS` (26 terms) across headline + description
 - `fetch_espn_news(athlete_id)` → `(news_items, fetch_ok)`
 - `classify_from_news(news_items, minutes, game_row)` → `(event_type, detail, source_url, from_news)` — event_type is `injury_exit / dnp / minutes_restriction / no_data`
-- Writes `data/post_game_news.json`: `{date, generated_at, players: {name: {event_type, detail, minutes_played, source_url, confidence, injury_language_detected, injury_scan_term}}, fetch_errors}`
+- `_get_miss_pick_meta(player_name_lower)` → `{prop_type, pick_value, actual_value, team}` — reads first MISS/ungraded pick for the player on YESTERDAY_STR from `picks.json`; returns `{}` if not found
+- `fetch_web_narratives(missed_players)` → `{name_lower: raw_snippet_text}` — Brave Search API; one query per missed-pick player (`"{name} {team} NBA recap {date}"`); `count=3` results; returns `{}` if `BRAVE_API_KEY` not set or all searches fail; graceful per-player error handling
+- `call_claude_summarise_narratives(missed_players, raw_snippets)` → `{name_lower: narrative_str}` — single batch Claude call (`claude-sonnet-4-6`, max_tokens=2048); extracts factual one-to-two sentence miss explanation per player from snippets; returns `{}` if `ANTHROPIC_API_KEY` not set or API fails; only called when at least one snippet exists
+- Writes `data/post_game_news.json`: `{date, generated_at, players: {name: {event_type, detail, minutes_played, source_url, confidence, injury_language_detected, injury_scan_term, web_narrative}}, fetch_errors}` — `web_narrative` is a string for missed players with Brave snippets, `null` otherwise; present on all entries
 - **Universal fetch:** ALL yesterday's pick players are fetched regardless of box score criteria; `should_fetch()` output used only for logging labels
+- **Web narrative layer (March 11, 2026):** runs AFTER the ESPN loop, scoped to missed-pick players only; `BRAVE_API_KEY` secret injected in `auditor.yml`; Auditor `build_audit_prompt()` renders `web_narrative` as `📰 WEB RECAP:` line in `## POST-GAME NEWS CONTEXT` block
 
 ### `pre_game_reporter.py` (runs between quant and analyst)
 - Loads today's team abbrevs from `nba_master.csv`; loads active whitelist players on today's teams

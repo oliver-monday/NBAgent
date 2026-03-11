@@ -468,7 +468,11 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
             mins     = event.get("minutes_played", "?")
             conf     = event.get("confidence", "unknown")
             inj_flag = " ⚠ INJURY LANGUAGE IN NEWS" if event.get("injury_language_detected") else ""
-            news_lines.append(f"{name}: {et} — {detail} ({mins} min played) [{conf}]{inj_flag}")
+            narrative_str = ""
+            web_narr = event.get("web_narrative")
+            if web_narr:
+                narrative_str = f"\n  📰 WEB RECAP: {web_narr}"
+            news_lines.append(f"{name}: {et} — {detail} ({mins} min played) [{conf}]{inj_flag}{narrative_str}")
         news_block = (
             "## POST-GAME NEWS CONTEXT\n"
             "The following post-game facts were confirmed or inferred for yesterday's players.\n"

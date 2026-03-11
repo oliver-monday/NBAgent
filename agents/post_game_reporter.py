@@ -33,6 +33,9 @@ import re
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import os
+
+import anthropic
 import requests
 
 # ── Paths ─────────────────────────────────────────────────────────────
@@ -61,6 +64,11 @@ REQUEST_TIMEOUT       = 10   # seconds per HTTP call
 MINUTES_DNP_THRESHOLD    = 0    # zero minutes → DNP candidate
 MINUTES_LOW_THRESHOLD    = 15   # < 15 min → potential injury exit or restriction
 MINUTES_STAT_THRESHOLD   = 20   # < 20 min AND any zero stat → investigate
+
+# Web narrative config
+WEB_SEARCH_MODEL  = "claude-sonnet-4-6"
+WEB_SEARCH_TOKENS = 2048
+BRAVE_SEARCH_URL  = "https://api.search.brave.com/res/v1/web/search"
 
 # Injury language scan terms — broader than _INJURY_EXIT_TERMS, for detection only
 INJURY_SCAN_TERMS = [
@@ -149,6 +157,34 @@ def load_yesterdays_picks_with_status() -> dict[str, str]:
     except Exception as e:
         print(f"[post_game_reporter] WARNING: could not load injury statuses: {e}")
         return {}
+
+
+def _get_miss_pick_meta(player_name_lower: str) -> dict:
+    """
+    Return prop context for a missed-pick player: prop_type, pick_value, actual_value, team.
+    Uses the first MISS (or ungraded) pick found for this player on YESTERDAY_STR.
+    Returns empty dict if not found.
+    """
+    if not PICKS_JSON.exists():
+        return {}
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+        for p in all_picks:
+            if (
+                p.get("date") == YESTERDAY_STR
+                and (p.get("player_name") or "").strip().lower() == player_name_lower
+                and p.get("result") in ("MISS", None)
+            ):
+                return {
+                    "prop_type":    p.get("prop_type", ""),
+                    "pick_value":   str(p.get("pick_value", "")),
+                    "actual_value": str(p.get("actual_value", "")),
+                    "team":         p.get("team", ""),
+                }
+    except Exception:
+        pass
+    return {}
 
 
 def load_athlete_id_map() -> dict[str, str]:
@@ -307,6 +343,151 @@ def fetch_espn_news(athlete_id: str) -> tuple[list[dict], bool]:
         return data.get("feed", []), True
     except Exception:
         return [], False
+
+
+# ── Web narrative fetch + summarisation ───────────────────────────────
+
+def fetch_web_narratives(missed_players: list[dict]) -> dict[str, str]:
+    """
+    For each missed-pick player, run a Brave web search for a game recap
+    and return {player_name_lower: raw_snippet_text}.
+
+    missed_players is a list of dicts: [{"name": str, "team": str, "prop": str,
+    "pick_value": str, "actual": str, "minutes": float|None}]
+
+    Returns empty dict if BRAVE_API_KEY is not set or all searches fail.
+    Never crashes — logs warnings and returns partial results on error.
+    """
+    api_key = os.environ.get("BRAVE_API_KEY")
+    if not api_key:
+        print("[post_game_reporter] BRAVE_API_KEY not set — skipping web narrative fetch.")
+        return {}
+
+    results: dict[str, str] = {}
+    date_str = YESTERDAY.strftime("%B %-d, %Y")   # e.g. "March 10, 2026"
+
+    for player in missed_players:
+        name  = player["name"]
+        team  = player.get("team", "")
+        query = f"{name} {team} NBA recap {date_str}"
+        try:
+            resp = requests.get(
+                BRAVE_SEARCH_URL,
+                headers={
+                    "Accept":              "application/json",
+                    "Accept-Encoding":     "gzip",
+                    "X-Subscription-Token": api_key,
+                },
+                params={"q": query, "count": 3, "search_lang": "en"},
+                timeout=REQUEST_TIMEOUT,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            snippets = []
+            for result in data.get("web", {}).get("results", []):
+                title       = result.get("title", "")
+                description = result.get("description", "")
+                if title or description:
+                    snippets.append(f"{title}: {description}")
+            if snippets:
+                results[name.lower()] = "\n".join(snippets)
+                print(f"[post_game_reporter] web search OK: {name} ({len(snippets)} snippets)")
+            else:
+                print(f"[post_game_reporter] web search: no snippets for {name}")
+        except Exception as e:
+            print(f"[post_game_reporter] WARNING: web search failed for {name}: {e}")
+
+    return results
+
+
+def call_claude_summarise_narratives(
+    missed_players: list[dict],
+    raw_snippets:   dict[str, str],
+) -> dict[str, str]:
+    """
+    Single Claude call: given web search snippets for all missed-pick players,
+    extract a concise factual narrative per player explaining why they missed
+    their prop (ejection, foul trouble, early exit, game script, etc.).
+
+    missed_players: same list of dicts as passed to fetch_web_narratives().
+    raw_snippets: {player_name_lower: snippet_text} from fetch_web_narratives().
+
+    Returns {player_name_lower: narrative_string} for players where a
+    meaningful narrative was found. Returns {} on any API failure.
+    Never crashes.
+    """
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        print("[post_game_reporter] ANTHROPIC_API_KEY not set — skipping narrative summarisation.")
+        return {}
+
+    # Only include players where we have snippets
+    players_with_snippets = [
+        p for p in missed_players if p["name"].lower() in raw_snippets
+    ]
+    if not players_with_snippets:
+        print("[post_game_reporter] No web snippets to summarise.")
+        return {}
+
+    # Build the user prompt
+    player_blocks = []
+    for p in players_with_snippets:
+        name    = p["name"]
+        prop    = p.get("prop", "")
+        pick_v  = p.get("pick_value", "")
+        actual  = p.get("actual", "")
+        mins    = p.get("minutes")
+        mins_str = f"{mins:.0f}" if mins is not None else "unknown"
+        snippets = raw_snippets[name.lower()]
+        player_blocks.append(
+            f"PLAYER: {name}\n"
+            f"MISSED PICK: {prop} OVER {pick_v} (actual: {actual}, minutes: {mins_str})\n"
+            f"WEB SEARCH SNIPPETS:\n{snippets}"
+        )
+
+    user_prompt = (
+        f"Today is {YESTERDAY_STR}. The following NBA players missed their prop picks last night.\n"
+        f"For each player, use the web search snippets to extract a factual one-to-two sentence\n"
+        f"explanation of WHY they missed — e.g. ejection, foul trouble, early injury exit,\n"
+        f"coaching decision, blowout garbage time, cold shooting, etc.\n\n"
+        f"Be factual and specific. If the snippets do not explain the miss clearly, write null.\n"
+        f"Do not speculate beyond what the snippets confirm.\n\n"
+        f"Respond ONLY with a JSON object — no preamble, no markdown fences:\n"
+        f'{{"players": [{{"name": "player name", "narrative": "one-to-two sentence explanation or null"}}]}}\n\n'
+        + "\n\n---\n\n".join(player_blocks)
+    )
+
+    system_prompt = (
+        "You are a factual sports reporter extracting game narrative from web search snippets. "
+        "Return only valid JSON. If snippets are insufficient to explain a miss factually, "
+        "return null for that player's narrative. Never invent facts not in the snippets."
+    )
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model=WEB_SEARCH_MODEL,
+            max_tokens=WEB_SEARCH_TOKENS,
+            system=system_prompt,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        raw = response.content[0].text.strip()
+        # Strip markdown fences if present
+        if raw.startswith("```"):
+            raw = re.sub(r"^```[a-z]*\n?", "", raw)
+            raw = re.sub(r"\n?```$", "", raw)
+        data = json.loads(raw)
+        narratives: dict[str, str] = {}
+        for entry in data.get("players", []):
+            name_key  = (entry.get("name") or "").strip().lower()
+            narrative = entry.get("narrative")
+            if name_key and narrative:
+                narratives[name_key] = narrative
+        print(f"[post_game_reporter] Claude narratives: {len(narratives)} player(s) summarised")
+        return narratives
+    except Exception as e:
+        print(f"[post_game_reporter] WARNING: Claude narrative summarisation failed: {e}")
+        return {}
 
 
 # ── Classification ────────────────────────────────────────────────────
@@ -504,6 +685,7 @@ def main() -> None:
             "injury_status_at_check":   injury_status,
             "injury_language_detected": inj_detected,
             "injury_scan_term":         inj_term if inj_detected else None,
+            "web_narrative":            None,  # populated later for missed picks
         }
 
         mins_str = f"{minutes:.0f}" if minutes is not None else "?"
@@ -511,6 +693,46 @@ def main() -> None:
             f"[post_game_reporter] {name} → {event_type} ({confidence}, {mins_str} min)"
             f" [reason: {flag_reason}]"
         )
+
+    # ── Web narrative enrichment (missed picks only) ───────────────────
+    missed_player_records: list[dict] = []
+    for name in sorted(missed_pick_names):
+        row     = game_rows.get(name)
+        minutes = parse_minutes(row) if row else None
+        # Pull pick details from picks.json for context
+        # We use the first MISS pick for this player (prop + pick_value + actual)
+        pick_meta = _get_miss_pick_meta(name)
+        missed_player_records.append({
+            "name":       name,
+            "team":       pick_meta.get("team", ""),
+            "prop":       pick_meta.get("prop_type", ""),
+            "pick_value": pick_meta.get("pick_value", ""),
+            "actual":     pick_meta.get("actual_value", ""),
+            "minutes":    minutes,
+        })
+
+    web_narratives: dict[str, str] = {}
+    if missed_player_records:
+        raw_snippets   = fetch_web_narratives(missed_player_records)
+        web_narratives = call_claude_summarise_narratives(missed_player_records, raw_snippets)
+
+    # Merge web_narrative into players_out entries
+    for name, narrative in web_narratives.items():
+        if name in players_out:
+            players_out[name]["web_narrative"] = narrative
+        else:
+            # Player had no ESPN event but has a web narrative — create minimal entry
+            players_out[name] = {
+                "event_type":               "no_data",
+                "detail":                   "No ESPN news or box score flag. Web narrative only.",
+                "minutes_played":           None,
+                "source_url":               None,
+                "confidence":               "web_search",
+                "injury_status_at_check":   "NOT_LISTED",
+                "injury_language_detected": False,
+                "injury_scan_term":         None,
+                "web_narrative":            narrative,
+            }
 
     output = {
         "date":         YESTERDAY_STR,
