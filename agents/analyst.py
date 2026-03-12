@@ -1675,13 +1675,15 @@ def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict
     client = anthropic.Anthropic(api_key=api_key)
 
     print(f"[analyst] Calling Claude ({model})...")
-    message = client.messages.create(
+    raw_chunks = []
+    with client.messages.stream(
         model=model,
         max_tokens=MAX_TOKENS,
         messages=[{"role": "user", "content": prompt}],
-    )
-
-    raw = message.content[0].text.strip()
+    ) as stream:
+        for text in stream.text_stream:
+            raw_chunks.append(text)
+    raw = "".join(raw_chunks).strip()
 
     # Strip markdown fences if present
     if raw.startswith("```"):
