@@ -1,0 +1,21 @@
+name: Rotowire Minutes Diagnostic
+on:
+  workflow_dispatch:
+
+env:
+  TZ: America/Los_Angeles
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests beautifulsoup4 lxml pandas
+      - name: Run diagnostic
+        env:
+          ROTOWIRE_EMAIL:    ${{ secrets.ROTOWIRE_EMAIL }}
+          ROTOWIRE_PASSWORD: ${{ secrets.ROTOWIRE_PASSWORD }}
+        run: python agents/rotowire_minutes_diag.py
