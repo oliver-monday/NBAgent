@@ -21,6 +21,7 @@ from zoneinfo import ZoneInfo
 
 ROTOWIRE_URL = "https://www.rotowire.com/basketball/nba-lineups.php"
 ROTOWIRE_LOGIN_URL = "https://www.rotowire.com/users/login.php"
+ROTOWIRE_MINUTES_URL = "https://www.rotowire.com/basketball/projected-minutes.php"
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
@@ -91,6 +92,23 @@ def fetch_rotowire_html(session: requests.Session | None = None) -> str | None:
         return None
     if resp.status_code != 200:
         print(f"[injuries] Rotowire HTTP {resp.status_code}, skipping.")
+        return None
+    return resp.text
+
+
+def fetch_rotowire_minutes_html(session: requests.Session) -> str | None:
+    """Fetch the dedicated projected-minutes page (subscription required)."""
+    try:
+        resp = session.get(
+            ROTOWIRE_MINUTES_URL,
+            headers={"User-Agent": USER_AGENT},
+            timeout=15,
+        )
+    except Exception as exc:
+        print(f"[injuries] projected-minutes fetch error: {exc}")
+        return None
+    if resp.status_code != 200:
+        print(f"[injuries] projected-minutes HTTP {resp.status_code}, skipping.")
         return None
     return resp.text
 
@@ -447,7 +465,14 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
         print(f"[injuries] ERROR parsing projected minutes: {e}")
         return {}
 
-    print(f"[injuries] projected_minutes: parsed {len(result)} teams")
+    # Health check: count how many players have a non-zero projected minute value
+    populated = sum(
+        1 for players in result.values()
+        for p in players
+        if isinstance(p.get("minutes"), int) and p["minutes"] > 0
+    )
+    print(f"[injuries] projected_minutes: parsed {len(result)} teams, "
+          f"{populated} players with minutes > 0")
     return result
 
 
@@ -753,9 +778,13 @@ def main() -> int:
     projected_minutes: dict = {}
     onoff_usage: dict = {}
     if authenticated:
-        soup_for_new = BeautifulSoup(html, "lxml")
-        projected_minutes = parse_projected_minutes(soup_for_new)
-        onoff_usage = parse_onoff_usage(soup_for_new)
+        minutes_html = fetch_rotowire_minutes_html(session)
+        if minutes_html:
+            soup_minutes = BeautifulSoup(minutes_html, "lxml")
+            projected_minutes = parse_projected_minutes(soup_minutes)
+            onoff_usage = parse_onoff_usage(soup_minutes)
+        else:
+            print("[injuries] projected-minutes page unavailable — skipping premium panels")
     else:
         print("[injuries] Skipping projected_minutes + onoff_usage — not authenticated")
 
