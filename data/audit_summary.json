@@ -1,60 +1,60 @@
 {
-  "generated_at": "2026-03-11",
-  "entries_included": 7,
+  "generated_at": "2026-03-12",
+  "entries_included": 8,
   "overall": {
-    "total_picks": 257,
-    "hits": 199,
-    "misses": 42,
+    "total_picks": 295,
+    "hits": 234,
+    "misses": 45,
     "injury_exclusions": 0,
-    "hit_rate_pct": 82.6
+    "hit_rate_pct": 83.9
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 81,
-      "hits": 62,
+      "picks": 93,
+      "hits": 72,
       "injury_exclusions": 0,
-      "hit_rate_pct": 76.5
+      "hit_rate_pct": 77.4
     },
     "REB": {
-      "picks": 38,
-      "hits": 30,
+      "picks": 48,
+      "hits": 39,
       "injury_exclusions": 0,
-      "hit_rate_pct": 78.9
+      "hit_rate_pct": 81.2
     },
     "AST": {
-      "picks": 62,
-      "hits": 47,
+      "picks": 72,
+      "hits": 57,
       "injury_exclusions": 0,
-      "hit_rate_pct": 75.8
+      "hit_rate_pct": 79.2
     },
     "3PM": {
-      "picks": 44,
-      "hits": 35,
+      "picks": 50,
+      "hits": 41,
       "injury_exclusions": 0,
-      "hit_rate_pct": 79.5
+      "hit_rate_pct": 82.0
     }
   },
   "miss_classification_totals": {
-    "variance": 16,
+    "variance": 17,
     "selection_error": 4,
-    "model_gap_signal": 1,
-    "model_gap_rule": 2
+    "model_gap_signal": 2,
+    "model_gap_rule": 3
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 71,
-      "hits": 54,
-      "hit_rate_pct": 76.1
+      "picks": 76,
+      "hits": 59,
+      "hit_rate_pct": 77.6
     },
     "76-80": {
-      "picks": 95,
-      "hits": 83,
-      "hit_rate_pct": 87.4
+      "picks": 126,
+      "hits": 111,
+      "hit_rate_pct": 88.1
     },
     "81-85": {
-      "picks": 31,
-      "hits": 26,
-      "hit_rate_pct": 83.9
+      "picks": 33,
+      "hits": 28,
+      "hit_rate_pct": 84.8
     },
     "86+": {
       "picks": 12,
@@ -63,45 +63,46 @@
     }
   },
   "parlay_summary": {
-    "total": 32,
-    "hits": 18,
+    "total": 34,
+    "hits": 20,
     "misses": 9,
     "partial": 5
   },
   "recent_lessons": [
-    "Jalen Duren REB T6 missed at 5 rebounds (1 below threshold) in only 26 minutes against MIA \u2014 MIA's elite rebounding suppression profile and low-pace scheme were not sufficiently weighted; MIA's zone-based defense limits second-chance opportunities which directly compresses big-man board totals, and the 25th-percentile L10 floor of 7 was derived from games without this specific defensive suppression context.",
-    "3PM props went 2/5 (40%) \u2014 both misses were 0 actual on T1 picks (Murray 3PM miss: 0 actual vs 1 pick; Mitchell 3PM miss: 0 actual vs 1 pick) \u2014 a T1 3PM pick with a down-trend step-down offers very limited margin, and a single cold shooting night produces a goose egg; the 8/10 and 9/10 historical hit rates may overstate floor reliability when opponent defense and game script converge against shooters.",
-    "Donovan Mitchell's PTS miss (17 actual vs 20 pick) on a B2B home game against a depleted PHI occurred despite a 7/10 hit rate and blowout-resilient offset \u2014 the blowout context likely drove bench-minute conservation in the fourth quarter, eroding what would have been an otherwise reachable floor; the blowout-resilient offset should not fully neutralize the BLOWOUT_RISK -10% on PTS props when the spread is as large as 12.5.",
     "Jamal Murray's 3PM miss (0 actual vs 1 pick) came despite an 8/10 hit rate, up trend, and vs_tough=94% context \u2014 his ankle questionable tag was noted as informational but not penalized enough on a volatile shooting prop; even a single-3PM floor is not protected when shooting mechanics may be compromised by a soft-tissue concern.",
     "Jaylen Brown's iron-floor PTS tag failed badly (8 actual vs 20 pick) in just 15 minutes \u2014 the post-game context shows only 15 minutes played, suggesting an early exit or coach decision. The iron-floor tag and 8/10 hit rate did not protect against a minutes collapse. When min_floor is derived from full-game samples, a 15-minute game is structurally unforeseeable, but the miss reveals that iron-floor confidence capping at 80% may be appropriate even for consistent-tagged scorers when no minute-protection signal exists.",
     "Brandon Ingram's PTS miss (9 actual vs 15 pick, VOLATILE tag, 7/10 hit rate) in 36 minutes confirms that the VOLATILE penalty at 70-72% confidence is the correct zone for him \u2014 the reasoning cited vs_soft=85% as a supportive signal, but 7/10 at T15 for a volatile SF is a marginal pick even in favorable matchups. The Analyst should treat 7/10 VOLATILE PTS picks at T15+ as borderline-skip candidates regardless of DvP rating.",
     "RJ Barrett's AST miss (1 actual vs 2 pick, iron-floor tag, 8/10 hit rate) in 32 minutes with a down trend is a low-tier variance miss \u2014 the player logged 32 minutes and 25 points but only 1 assist. The down trend was correctly noted but the iron-floor tag suppressed the VOLATILE penalty. Iron-floor classification should not override a down-trend + declining AST pattern for wing scorers; the trend signal deserved more weight.",
     "Julius Randle's AST miss (2 actual vs 4 pick, 7/10 hit rate, VOLATILE) confirms that T4 AST picks for non-primary PGs remain risky at 70% confidence \u2014 the reasoning correctly flagged VOLATILE -5% bringing confidence to 70%, and the pick still missed. The system is right to be cautious here; this classification validates the 70% floor threshold as a borderline zone.",
     "Cooper Flagg's PTS miss (14 actual vs 15 pick, iron-floor tag, 7/10 rate) with only 1 point below threshold illustrates that T15 iron-floor picks at exactly 70% confidence with FG_COLD:-18% present are genuinely marginal. The FG_COLD signal was logged as 'informational only' but a -18% shooting suppression on a 15-point threshold is a material risk that should trigger a tier step-down to T10.",
-    "LaMelo Ball's PTS miss (14 actual vs 15 pick, 9/10 rate, 22 minutes played) \u2014 the post-game context shows only 22 minutes, well below his typical load. A min_floor=22.9 below 24 triggered a confidence cap but did not trigger a tier step-down. The minutes-floor cap rule should be evaluated for whether it's doing enough: a min_floor below 24 should perhaps force a mandatory tier step-down to T10 rather than just capping confidence."
+    "LaMelo Ball's PTS miss (14 actual vs 15 pick, 9/10 rate, 22 minutes played) \u2014 the post-game context shows only 22 minutes, well below his typical load. A min_floor=22.9 below 24 triggered a confidence cap but did not trigger a tier step-down. The minutes-floor cap rule should be evaluated for whether it's doing enough: a min_floor below 24 should perhaps force a mandatory tier step-down to T10 rather than just capping confidence.",
+    "Blowout game script is a scoring suppressor even for elite centers: Jokic missed PTS 20 with 16 actual in a 36-point DEN blowout win \u2014 his triple-double (13 AST, 12 REB) confirms he played but scored less as the game became garbage time. The reasoning noted 'spread=6.5 competitive enough to protect minutes' but a 36-point final margin was not captured pre-game; the system needs a real-time blowout game script adjustment, not just a pre-game spread gate.",
+    "Kevin Durant's PTS miss (11 actual vs. 20 threshold, 26 minutes played) on a 9/10 hit rate is the most concerning miss: the reasoning cited '8-game hit streak' and 'min_floor=32.5 above 24-min threshold' but he logged only 26 minutes \u2014 suggesting either a load management decision or an early exit that was not injury-classified. With no post-game news confirming injury and no pre-game OUT flag, the 6-minute shortfall from the stated min_floor is unexplained and represents a model gap around minutes floor reliability in away games against specific opponents.",
+    "Sengun REB missed badly (2 actual vs. 6 threshold) despite a 10/10 hit rate, 80% confidence, and a tough DvP. With 24 minutes played, he was active and contributing. A single catastrophic REB game (2) against a tough opponent on a B2B road game suggests that the 10/10 hit rate at T6 was masking a tail risk: the L10 3rd-lowest REB=6 floor cited in reasoning was exactly at the threshold, leaving zero cushion. When the 3rd-lowest L10 value equals the pick threshold exactly, there is no protective buffer \u2014 one bad game breaks the streak."
   ],
   "recent_reinforcements": [
-    "Iron-floor REB picks went 3/3 (100%) \u2014 Kawhi REB at T4 (7 actual vs 4 pick), Mobley REB stepped to T2 (8 actual vs 4), Murray REB at T2 (8 actual vs 2); the 25th-percentile gate and iron-floor tag reliably identified safe rebound floors even in a blowout-risk CLE game.",
-    "AST floor picks at T2 and T4 for elite primary ball-handlers (SGA 15 actual vs 4 pick, Jokic 13 actual vs 6, Kawhi 8 actual vs 2, Mitchell 6 actual vs 4) were the session's most consistent prop type at 80%; low AST thresholds for high-usage hubs provide reliable value.",
-    "Kawhi Leonard's multi-prop card (PTS/REB/AST/3PM) hit 4/4 on a night he played 35 minutes with 29 pts, 7 reb, 8 ast, 2 3PM \u2014 the consistent tag and iron-floor anchors across all four props validated the multi-prop stacking approach on high-usage wings with stable role definitions.",
-    "SGA's PTS iron-floor at T25 (35 actual vs 25 pick, 78% confidence) confirmed that iron-floor elevation is justified for MVP-caliber scorers in favorable home matchups, even after applying the VOLATILE -5% penalty.",
-    "The VOLATILE -5% modifier applied to both SGA PTS (landed 78%) and Jokic AST (landed 75%) did not prevent either from hitting comfortably \u2014 both players outperformed their pick values by wide margins (35 vs 25, 13 vs 6), suggesting the VOLATILE flag is properly conservative without over-penalizing elite performers.",
     "Low-threshold PTS floors (T10 and T15) on high-usage primaries with 9/10 or 10/10 hit rates proved near-automatic: Randle T10 (hit 14), RJ Barrett T10 (hit 25), Duren T15 (hit 26), Brandon Miller T15 (hit 23) \u2014 these tiers are the system's most reliable prop class.",
     "Multi-stat coverage on elite scorers paid off cleanly: Durant went 3/3 (PTS/REB/AST), Doncic went 3/3 (PTS/REB/3PM), and Derrick White went 3/3 (PTS/REB/AST) \u2014 stacking confirmed players at their floor tiers across prop types is high-value.",
     "The 3PM T1 floor (OVER 1) strategy on high-volume shooters was 5/5 when restricted to consistent-tagged players with 9/10 or 10/10 rates (Doncic, Booker, Reaves, Cunningham, Knueppel) \u2014 this tier is a systematic edge.",
     "REB picks at T4 and T6 with confirmed L10 floor-gate passage went 8/8 across all players \u2014 the 25th-percentile 3rd-lowest gate is functioning correctly as a filter against volatility.",
-    "The blowout-resilient PTS classification correctly protected Duren (+14.5 underdog, hit 26) and Cunningham (+14.5 underdog, hit 15 AST) \u2014 the primary scorer exemption from blowout secondary-skip is validated."
+    "The blowout-resilient PTS classification correctly protected Duren (+14.5 underdog, hit 26) and Cunningham (+14.5 underdog, hit 15 AST) \u2014 the primary scorer exemption from blowout secondary-skip is validated.",
+    "Low-threshold PTS floors (T10-T15) on volume scorers with 9-10/10 hit rates proved nearly automatic: Harden 30, Edwards 36, Kawhi 45, Banchero 25, LaMelo 30, Knueppel 24 all cleared comfortably \u2014 the tier-walk step-down discipline is working precisely as designed.",
+    "AST props at conservative thresholds (T2-T6) went a perfect 10/10, confirming that pairing a soft-to-mid AST DvP gate with a player's documented iron floor or 10/10 hit rate is a high-confidence structure regardless of trend direction.",
+    "3PM props at T1 with 9-10/10 hit rates swept 6/6 even through a trend=down case (Bane) and a trend=down with iron_floor override (Mitchell) \u2014 the step-down-to-T1 rule on down-trending shooters is well-calibrated.",
+    "The BLOWOUT_RISK -10% confidence cap (Knueppel, LaMelo, both at 74%) correctly restrained overconfidence on a 12.5-point spread game; both players still hit comfortably, validating that the blowout_games resilience counter (93-95%) can support including these picks at reduced confidence rather than skipping them.",
+    "The tough DvP hard gate on AST (Randle, Kawhi) correctly stepped down from T4 to T2 in both cases, producing clean 10/10 floors \u2014 the hard gate rule on position-specific tough DvP AST is preventing overreach and should be maintained."
   ],
   "recent_recommendations": [
-    "Downgrade or skip 3PM T1 picks when trend=down AND opponent defense rating is tough \u2014 both Mitchell and Murray missed at 0 3PM despite strong historical hit rates; a down-trend step-down to T1 on a tight floor leaves no margin for cold-shooting variance, and tough defensive opponents further compress 3PM opportunity; consider skipping 3PM entirely under this combined condition rather than accepting T1 as a safe floor.",
-    "On PTS picks with BLOWOUT_RISK (spread_abs \u2265 10), do not let the blowout-resilient offset fully neutralize the -10% penalty \u2014 Mitchell's 17 PTS vs 20 pick illustrates that even resilient scorers get benched in fourth quarters of large blowouts; treat blowout-resilient as a -5% offset to the -10% penalty (net -5%) rather than a full zero-out, and cap PTS confidence at 74% when spread_abs \u2265 12.",
-    "When a player carries a QUESTIONABLE ankle tag, apply an additional -5% penalty to all shooting-dependent props (3PM, PTS) regardless of trend direction \u2014 Murray's ankle concern was flagged as informational only, but his 0 3PM result suggests compromised shooting mechanics; the ankle tag should function as a hard signal for shooting props, not just a minutes-floor caution.",
-    "REB and AST floor props on elite, high-usage players at T2\u2013T4 thresholds are the session's most reliable selections \u2014 consider prioritizing these prop types over 3PM when building parlays; the 3PM category hit rate of 40% versus REB 100% and AST 80% suggests 3PM legs meaningfully increase parlay bust risk.",
-    "For Donovan Mitchell specifically, flag that his PTS pick at T20 on a B2B with spread_abs \u2265 12 is a pattern that produced a miss; before the next B2B Mitchell PTS pick in a large-spread game, verify fourth-quarter minutes history in blowouts rather than relying solely on historical hit rate against the opponent.",
     "Institute a mandatory tier step-down for PTS picks where min_floor < 24 AND the pick tier is T15 or higher: LaMelo Ball (min_floor=22.9, T15 missed by 1) and Flagg (FG_COLD -18%, T15 missed by 1) both fell just below threshold \u2014 dropping to T10 in these cases costs little upside and eliminates the near-miss exposure. Apply this as a rule: min_floor < 24 on a T15 PTS pick \u2192 step to T10.",
     "Treat FG_COLD >= -15% as a hard tier-reduction signal, not informational: Flagg's FG_COLD was -18% and his PTS pick was T15 at 70% confidence. The informational-only designation allowed an analytically weak pick to proceed. Recommendation: FG_COLD <= -15% should force a one-tier step-down on PTS picks, matching the existing FG_MARGIN_THIN rule logic.",
     "For wing scorers (SG/SF) with a down trend on AST, do not apply iron-floor classification to suppress the VOLATILE penalty: Barrett's AST miss (1 actual, down trend, 32 minutes, 25 points scored) shows that high scoring output does not guarantee assist accumulation. The down trend on AST for wings should trigger a VOLATILE deduction even when the iron-floor tag is present \u2014 iron-floor should protect the tier pick, not the confidence level.",
     "Add a minutes-exit risk modifier for players whose L10 log contains any game with fewer than 20 minutes played in a non-DNP context: Brown played only 15 minutes despite no pre-game flag. If any L10 game shows <20 active minutes (not a DNP), apply a -5% confidence penalty and note as MINUTES_RISK. This is a distinct signal from min_floor and would have reduced Brown's PTS confidence below the 80% assigned.",
-    "For 3PM picks classified as VOLATILE with a tough DvP, maintain the existing approach of not applying additional tough-DvP penalties per the 3PM noise rule \u2014 the Edwards 3PM miss (1 actual, 7/10 rate, tough DvP) is a clean variance outcome on a 70% confidence pick. The rule is correct; the Edwards miss is within expected 30% failure rate and does not warrant rule changes."
-  ]
+    "For 3PM picks classified as VOLATILE with a tough DvP, maintain the existing approach of not applying additional tough-DvP penalties per the 3PM noise rule \u2014 the Edwards 3PM miss (1 actual, 7/10 rate, tough DvP) is a clean variance outcome on a 70% confidence pick. The rule is correct; the Edwards miss is within expected 30% failure rate and does not warrant rule changes.",
+    "Implement a live game script adjustment for PTS props on centers and high-usage forwards: when the in-game spread expands beyond 20 points, apply a scoring suppression flag. The Jokic miss (16 PTS in a 36-point blowout) and the reasoning's reliance on pre-game spread (6.5) illustrate that pre-game spread alone is insufficient \u2014 build a second-half load management discount into the model for marquee big men in non-competitive games.",
+    "Add a minutes floor reliability check for away games: Durant's stated min_floor of 32.5 was not met (26 min actual). When a player's away B2B minutes history shows variance >5 min from the stated floor, downgrade confidence by 5% or flag the pick for manual review. The 'min_floor' field should be sourced from away-game-only splits, not overall averages, to avoid overestimating floor reliability on road legs.",
+    "Tighten the REB floor gate: when the L10 3rd-lowest value equals the pick threshold exactly (as with Sengun REB=6 gating at T6), require a 1-unit cushion \u2014 i.e., the 3rd-lowest L10 value must be strictly greater than the pick threshold, not equal to it. An exact match provides no variance buffer and a single outlier game causes a miss. Apply this rule to all prop types.",
+    "For Jokic PTS specifically: given his triple-double profile and Denver's tendency to run up scores against weak opponents, consider a conditional rule that steps down Jokic PTS by one tier (T25\u2192T20\u2192skip) when the opponent is ranked bottom-5 defensively AND DEN is a home favorite by 6+. The blowout risk is structurally higher for Jokic than for guards because his scoring is more discretionary in garbage time.",
+    "Validate Kevin Durant's miss classification next session with additional data: his 26-minute appearance against a stated min_floor of 32.5 is either a load management decision (model_gap_signal \u2014 no quant field captures coach rest decisions mid-game) or an undisclosed minor injury exit. If confirmed as load management, add a 'star load management away B2B' penalty flag for veterans on road second nights \u2014 even those with 100% B2B resilience ratings."
+  ],
+  "skip_validation": {}
 }
