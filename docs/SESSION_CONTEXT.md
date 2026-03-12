@@ -297,7 +297,12 @@ touched — the sub-object is additive, not destructive.
 - `render_playoff_picture(standings_path=STANDINGS_JSON)` → reads `data/standings_today.json`; formats bucketed `## PLAYOFF PICTURE` string; returns fallback string if file missing/stale
 - `format_team_defense_section(narratives_path=TEAM_DEFENSE_NARRATIVES_JSON)` → reads `data/team_defense_narratives.json`; validates `as_of == TODAY_STR`; returns `## TEAM DEFENSIVE PROFILES (last 15 games — auto-generated DATE)` block sorted alphabetically; always returns non-empty string (fallback warning if file missing/stale)
 - `build_prompt(games, player_context, injuries, audit_context, season_context, quant_context="", audit_summary="", pre_game_news="", player_profiles="", playoff_picture="", team_defense="", lineups_section="")` → full system prompt string
-- Output schema fields: `date, player_name, team, opponent, home_away, prop_type, pick_value, direction, confidence_pct, hit_rate_display, trend, opp_defense_rating, tier_walk, iron_floor, reasoning`
+- Output schema: Claude emits `{"picks": [...], "skips": [...]}` JSON object. `call_analyst()` returns `tuple[list[dict], list[dict]]` — picks and skips. Falls back to flat-array parse for robustness.
+- Pick output fields: `date, player_name, team, opponent, home_away, prop_type, pick_value, direction, confidence_pct, hit_rate_display, trend, opp_defense_rating, tier_walk, iron_floor, reasoning`
+- Skip output fields: `date, player_name, team, opponent, prop_type, tier_considered, direction, skip_reason, rule_context` (rule-specific dict)
+- Skip reasons: `min_floor_tier_step`, `volatile_weak_combo`, `blowout_secondary_scorer`, `3pm_trend_down_tough_dvp`, `3pm_trend_down_low_minutes`, `ast_hard_gate`, `fg_margin_thin_no_valid_tier`, `reb_floor_skip`
+- `save_skips(skips: list[dict]) → None` — writes `data/skipped_picks.json`; initialises null grading fields (`actual_value`, `would_have_hit`, `skip_verdict`, `skip_verdict_notes`); logs each skip reason to stdout
+- `main()` now unpacks `picks, skips = call_analyst(...)` and calls both `save_picks(picks)` and `save_skips(skips)`
 
 ### `agents/lineup_update.py` (new — March 10, 2026)
 - Constants: `MODEL = "claude-sonnet-4-6"`, `MAX_TOKENS = 2048`, `CUTOFF_MINUTES = 20`
@@ -326,7 +331,11 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEV
 
 ### `auditor.py`
 - `build_absence_context(graded_picks)` → returns `## YESTERDAY'S NOTABLE ABSENCES` block (players voided or OUT at check time) or ""
-- `save_audit_summary(audit_log)` → writes `data/audit_summary.json`; per-prop and overall denominators exclude `injury_event` picks; `injury_exclusions` key in both per-prop and overall dicts
+- `save_audit_summary(audit_log, all_skips=None)` → writes `data/audit_summary.json`; per-prop and overall denominators exclude `injury_event` picks; `injury_exclusions` key in both per-prop and overall dicts; when `all_skips` provided, rolls up per-rule false skip rates into `"skip_validation"` key in the summary
+- `load_skipped_picks() → list[dict]` — reads `data/skipped_picks.json`; returns `[]` gracefully if missing
+- `build_game_log_rows_for_yesterday() → dict[str, dict]` — reads `player_game_log.csv` for YESTERDAY_STR; returns `{player_name_lower: row_dict}` for non-DNP rows; used by `grade_skips()`
+- `grade_skips(skips, game_log_rows) → list[dict]` — pure Python; fills `actual_value`, `would_have_hit`, `skip_verdict` (`false_skip` / `correct_skip` / `no_data`), `skip_verdict_notes` on each skip record in-place; returns same list
+- `save_audit_report(audit_entry, graded_picks, graded_parlays, skips=None)` → extended signature; when `skips` provided, appends `## Skip Validation` table to the daily markdown report in `data/audit_reports/`; `save_audit()` callsite passes graded skips
 - Miss classification taxonomy (6 types): `selection_error` / `model_gap_signal` / `model_gap_rule` / `variance` / `injury_event` / `workflow_gap` — written to `miss_classification` in `miss_details`. `model_gap_signal` = system lacks the signal entirely (no quant field or rule exists that could have caught this); `model_gap_rule` = signal existed in quant data/context at pick time but the analyst rule didn't correctly handle the combination. The legacy `model_gap` value is no longer valid.
 - `build_audit_prompt()` injects: `{absence_block}` before `{news_block}`, ⚠ INJURY LANGUAGE IN NEWS flag on news_lines entries where detected. STEP 6 of PICK ANALYSIS TASK reads `lineup_update` sub-objects on pick objects and annotates amendment direction vs. outcome in `root_cause` (direction=down + miss → "Amendment correctly flagged…"; direction=up + miss → "Amendment flagged upside but pick missed"; direction=down + hit → "Amendment flagged downside but pick hit"; direction=unchanged or absent → no comment). Does not change `miss_classification` — amendment notes are contextual only.
 - **`load_player_stats_for_audit()` was REMOVED (March 8, 2026)** — eliminates yesterday's-data-for-today's-audit confabulation bug. Auditor now reads quant context from pick object fields (`reasoning`, `hit_rate_display`, `tier_walk`, `opponent`) written at pick time.
@@ -498,7 +507,7 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 
 ---
 
-## Active Improvement Queue (as of March 10, 2026)
+## Active Improvement Queue (as of March 11, 2026)
 
 | ID | Name | Status | Files |
 |----|------|--------|-------|
@@ -509,6 +518,7 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 | P3 | Shooting Efficiency Regression | ✅ DONE (March 7–8, 2026) | `espn_player_ingest.py`, `quant.py`, `analyst.py` |
 | P4 | Tier-Walk Audit Trail | ✅ DONE (March 6, 2026) | — |
 | P5 | Afternoon Lineup Update Agent | ✅ DONE (March 10, 2026) | `analyst.py`, `agents/lineup_update.py` (new), `injuries.yml`, `build_site.py`, `AGENTS.md` |
+| P6 | Skip Validation System | ✅ DONE (March 11, 2026) | `analyst.py`, `auditor.py`, `analyst.yml`, `auditor.yml` |
 | #1 | Teammate Absence Delta | Deferred to next season (insufficient DNP sample) | `quant.py`, `analyst.py` |
 
 **Also completed March 9 (not in prior queue but shipped):**
@@ -522,7 +532,12 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 - Rotowire session login + projected_minutes/onoff_usage scraping — `login_rotowire()`, `parse_projected_minutes()`, `parse_onoff_usage()` added to `rotowire_injuries_only.py`; `write_lineups_json()` extended with optional params; `lineups_today.json` optionally carries per-team projected minutes + on/off usage when Rotowire creds present; `ROTOWIRE_EMAIL`/`ROTOWIRE_PASSWORD` env vars injected into both `injuries.yml` and `analyst.yml`
 - Analyst lineup context wiring — `load_lineup_context()` in `analyst.py`; `proj_min=N`, `[USG_SPIKE:+N.Npp vs Name]`, and `⚠ OPP: Name OUT` annotations in `build_quant_context()`; `main()` wired to load and pass lineup context
 - Knowledge staleness awareness block — `## IMPORTANT: YOUR TRAINING KNOWLEDGE IS POTENTIALLY YEARS OUT OF DATE` inserted in `build_prompt()` between date line and `## YOUR TASK`; perishable vs. durable knowledge distinction; instructs Claude to trust injected data over training priors on named-player/team facts
-- Analyst coverage + Opus hybrid — `LARGE_SLATE_THRESHOLD=30`; `MODEL_LARGE=claude-opus-4-6`; `call_analyst(model=)` param; `main()` conditionally upgrades to Opus when active player count (post injury pre-filter) > 30; `## ANALYSIS APPROACH` block enforces all-four-prop enumeration per player in fixed order (PTS→REB→AST→3PM); skip records excluded from JSON output
+- Analyst coverage + Opus hybrid — `LARGE_SLATE_THRESHOLD=30`; `MODEL_LARGE=claude-opus-4-6`; `call_analyst(model=)` param; `main()` conditionally upgrades to Opus when active player count (post injury pre-filter) > 30; `## ANALYSIS APPROACH` block enforces all-four-prop enumeration per player in fixed order (PTS→REB→AST→3PM)
+
+**Also completed March 11:**
+- Three analyst prompt rule hardening changes — (1) MINUTES FLOOR: T15 mandatory step-down (raised from T20); avg_minutes > 36 exception; (2) VOLATILITY iron-floor scope: two-bullet interaction model separating tier protection (yes) from confidence level (no); SG/SF AST case explicitly called out; (3) VOLATILE PTS skip rule: VOLATILE + 7/10 + T15+ → skip entirely; exception: iron_floor + trend=up
+- Post-Game Reporter web search narrative layer — `fetch_web_narratives()` (Brave Search) + `call_claude_summarise_narratives()` + `_get_miss_pick_meta()` added to `post_game_reporter.py`; `web_narrative` field in `post_game_news.json`; rendered as `📰 WEB RECAP:` in auditor `build_audit_prompt()`; `BRAVE_API_KEY` added to `auditor.yml`
+- Skip Validation System (P6) — `analyst.py` emits `{"picks": [...], "skips": [...]}` JSON object; `save_skips()` writes `data/skipped_picks.json` with null grading fields; `auditor.py` grades skips via `grade_skips()` (pure Python, no LLM), writes back, rolls up into `audit_summary.json["skip_validation"]` per-rule false skip rates; `save_audit_report()` appends `## Skip Validation` table to daily markdown; both `analyst.yml` and `auditor.yml` commit `skipped_picks.json`
 
 **Next backtests to run:**
 - **H8 — Positional DvP Validity:** Does positional DvP outpredict team-level DvP for PTS/AST? Requires ~30 days of live positional DvP data. Run ~early April 2026.
@@ -580,6 +595,11 @@ Tighten prompt ceiling if any band systematically underperforms.
   but the auditor's STEP 2 and miss classification do not yet check for them. A pick that was
   revised DOWN and then missed would still be classified via the normal root-cause logic without
   noting the amendment context. Acceptable for now.
+- **Skip Validation has no analyst prompt feedback loop yet** — `audit_summary.json["skip_validation"]`
+  accumulates per-rule false skip rates, but the analyst prompt does NOT yet read or act on this
+  data. A future enhancement would inject high-false-skip-rate rules into the analyst prompt
+  (e.g., "skip rule X has 35% false skip rate — consider loosening"). Evaluate after ~20 days of
+  skip data accumulates.
 - **Season Context Improvement 3 (SEASON FACTS decay tier restructure) is NOT done** — this is
   a manual edit to `context/nba_season_context.md`. No code required. Do after verifying that
   Improvements 0–2 are running cleanly in production.
@@ -598,6 +618,13 @@ Tighten prompt ceiling if any band systematically underperforms.
   each morning by the next day's analyst run, so it does not accumulate across days.
   Note: `injuries_today.json` remains uncommitted (refreshed every hourly run, no snapshot
   dependency) — the analogy to `lineups_today.json` is imperfect.
+- **`skipped_picks.json` is committed by BOTH `analyst.yml` AND `auditor.yml`** — `analyst.py`
+  writes it fresh each morning (null grading fields). `auditor.py` reads it, calls `grade_skips()`
+  to fill `would_have_hit` / `skip_verdict` / `skip_verdict_notes` / `actual_value`, then writes
+  it back. Both commit steps include it. The auditor's graded version is what `save_audit_summary()`
+  rolls up into `audit_summary.json` under `"skip_validation"`. `save_audit_report()` renders the
+  per-day skip table in the markdown archive report. This file accumulates only the current day's
+  skips (overwritten each morning) — it is not a historical archive.
 
 ---
 

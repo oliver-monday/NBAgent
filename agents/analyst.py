@@ -39,6 +39,7 @@ PRE_GAME_NEWS_JSON = DATA / "pre_game_news.json"
 STANDINGS_JSON                = DATA / "standings_today.json"
 TEAM_DEFENSE_NARRATIVES_JSON = DATA / "team_defense_narratives.json"
 LINEUPS_JSON                 = DATA / "lineups_today.json"
+SKIPPED_PICKS_JSON           = DATA / "skipped_picks.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -1566,48 +1567,77 @@ Keep your per-player reasoning to 3 lines maximum per prop type:
 
 Do not narrate every rule check. Do not recalculate L10 averages in writing — work from
 the quant data provided. Brief internal notes only; the JSON output is what matters.
-Do NOT include skip decisions in the JSON output — only picks with confidence_pct ≥ 70
-belong in the array. Skips are internal reasoning only.
+Include explicit skip records for any prop where a hard rule fired to block an
+otherwise-qualifying tier (hit rate ≥ 70% but rule overrode the pick). Do NOT record
+skips for props where no tier qualified on hit rate alone — only record rule-forced skips.
 
 ## OUTPUT FORMAT — EMIT THIS FIRST, BEFORE ANY OTHER TEXT
-Your response MUST begin with the JSON array on the very first line. No preamble.
+Your response MUST begin with a single JSON object on the very first line. No preamble.
 No "I'll analyze..." No game context review block. No markdown headers before the JSON.
-The JSON array starts at character 0 of your response.
+The JSON object starts at character 0 of your response.
 
-After the closing ] of the JSON array, you may include a brief optional summary
-(3–5 lines maximum) noting any notable skips or edge cases. Nothing more.
+The object has two keys: "picks" (array of pick objects) and "skips" (array of skip objects).
+Both keys must always be present. If there are no skips, emit "skips": [].
 
-JSON schema — each pick:
-[
-  {{
-    "date": "{TODAY_STR}",
-    "player_name": "string",
-    "team": "string (abbrev)",
-    "opponent": "string (abbrev)",
-    "home_away": "H or A",
-    "prop_type": "PTS | REB | AST | 3PM",
-    "pick_value": number,
-    "direction": "OVER",
-    "confidence_pct": number (70-99),
-    "hit_rate_display": "string — fraction from last 10 games at this tier, e.g. '8/10'",
-    "trend": "up | stable | down",
-    "opp_defense_rating": "soft | mid | tough | unknown",
-    "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
-    "iron_floor": "true | false",
-    "reasoning": "One tight sentence: key reason this floor holds today. Max 15 words."
-  }}
-]
+After the closing }} of the JSON object, you may include a brief optional summary
+(3–5 lines maximum) noting any notable decisions. Nothing more.
 
-pick_value must be one of the valid tier values listed above. No other values allowed.
-direction is always OVER.
-iron_floor must be true if and only if the quant stat line for this pick showed [iron_floor]. Otherwise false.
-Only include picks with confidence_pct >= 70.
+JSON schema:
+{{
+  "picks": [
+    {{
+      "date": "{TODAY_STR}",
+      "player_name": "string",
+      "team": "string (abbrev)",
+      "opponent": "string (abbrev)",
+      "home_away": "H or A",
+      "prop_type": "PTS | REB | AST | 3PM",
+      "pick_value": number,
+      "direction": "OVER",
+      "confidence_pct": number (70-99),
+      "hit_rate_display": "string — fraction from last 10 games at this tier, e.g. '8/10'",
+      "trend": "up | stable | down",
+      "opp_defense_rating": "soft | mid | tough | unknown",
+      "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
+      "iron_floor": true or false,
+      "reasoning": "One tight sentence: key reason this floor holds today. Max 15 words."
+    }}
+  ],
+  "skips": [
+    {{
+      "date": "{TODAY_STR}",
+      "player_name": "string",
+      "team": "string (abbrev)",
+      "opponent": "string (abbrev)",
+      "prop_type": "PTS | REB | AST | 3PM",
+      "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
+      "direction": "OVER",
+      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | ast_hard_gate | fg_margin_thin_no_valid_tier | reb_floor_skip",
+      "rule_context": {{
+        ... fields specific to this skip_reason as defined in the rules above ...
+      }}
+    }}
+  ]
+}}
+
+picks rules:
+- pick_value must be one of the valid tier values listed above. No other values allowed.
+- direction is always OVER.
+- iron_floor must be true if and only if the quant stat line showed [iron_floor]. Otherwise false.
+- Only include picks with confidence_pct >= 70.
+
+skips rules:
+- Only emit a skip record when a hard rule explicitly overrides a tier that had ≥70% hit rate.
+- Do NOT emit skip records for props where no tier qualified on hit rate alone.
+- Do NOT emit skip records for props where the player was entirely excluded (OUT/DOUBTFUL).
+- rule_context must contain exactly the fields defined for that skip_reason — no extra fields.
+- tier_considered is the tier value that was blocked (e.g. 15 for a T15 PTS skip).
 """
 
 
 # ── Claude call ──────────────────────────────────────────────────────
 
-def call_analyst(prompt: str, model: str = MODEL) -> list[dict]:
+def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict]]:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
         print("[analyst] ERROR: ANTHROPIC_API_KEY not set.")
@@ -1631,25 +1661,54 @@ def call_analyst(prompt: str, model: str = MODEL) -> list[dict]:
             raw = raw[4:]
     raw = raw.strip()
 
-    # Fallback: if response has prose before the JSON array, find the array start
+    # Try new object format first: {"picks": [...], "skips": [...]}
+    brace_idx   = raw.find('{')
     bracket_idx = raw.find('[')
-    if bracket_idx > 0:
-        print(f"[analyst] WARNING: response had {bracket_idx} chars of prose before JSON — extracting array")
-        raw = raw[bracket_idx:]
-    # Also handle case where response ends after ] with trailing prose
-    last_bracket = raw.rfind(']')
-    if last_bracket != -1 and last_bracket < len(raw) - 1:
-        raw = raw[:last_bracket + 1]
 
-    try:
-        picks = json.loads(raw)
-        if not isinstance(picks, list):
-            raise ValueError("Response is not a JSON array")
-        return picks
-    except Exception as e:
-        print(f"[analyst] ERROR parsing Claude response: {e}")
-        print(f"[analyst] Raw response (first 500 chars):\n{raw[:500]}")
-        sys.exit(1)
+    # Determine whether response leads with object or array
+    use_object = (brace_idx != -1) and (brace_idx < bracket_idx or bracket_idx == -1)
+
+    if use_object:
+        if brace_idx > 0:
+            print(f"[analyst] WARNING: response had {brace_idx} chars of prose before JSON — extracting object")
+            raw = raw[brace_idx:]
+        # Trim trailing prose after closing brace
+        last_brace = raw.rfind('}')
+        if last_brace != -1 and last_brace < len(raw) - 1:
+            raw = raw[:last_brace + 1]
+        try:
+            data = json.loads(raw)
+            if not isinstance(data, dict):
+                raise ValueError("Response is not a JSON object")
+            picks = data.get("picks", [])
+            skips = data.get("skips", [])
+            if not isinstance(picks, list):
+                raise ValueError("picks is not a list")
+            if not isinstance(skips, list):
+                skips = []
+            return picks, skips
+        except Exception as e:
+            print(f"[analyst] ERROR parsing Claude object response: {e}")
+            print(f"[analyst] Raw response (first 500 chars):\n{raw[:500]}")
+            sys.exit(1)
+    else:
+        # Fallback: old flat-array format
+        if bracket_idx > 0:
+            print(f"[analyst] WARNING: response had {bracket_idx} chars of prose before JSON — extracting array")
+            raw = raw[bracket_idx:]
+        last_bracket = raw.rfind(']')
+        if last_bracket != -1 and last_bracket < len(raw) - 1:
+            raw = raw[:last_bracket + 1]
+        try:
+            picks = json.loads(raw)
+            if not isinstance(picks, list):
+                raise ValueError("Response is not a JSON array")
+            print(f"[analyst] WARNING: received old flat-array format — no skip records")
+            return picks, []
+        except Exception as e:
+            print(f"[analyst] ERROR parsing Claude response: {e}")
+            print(f"[analyst] Raw response (first 500 chars):\n{raw[:500]}")
+            sys.exit(1)
 
 
 # ── Output ───────────────────────────────────────────────────────────
@@ -1684,6 +1743,27 @@ def save_picks(picks: list[dict]):
     print(f"[analyst] Saved {len(picks)} picks for {TODAY_STR} → {PICKS_JSON}")
     for p in picks:
         print(f"  {p['player_name']} {p['prop_type']} OVER {p['pick_value']} ({p['confidence_pct']}%) — {p['reasoning'][:80]}...")
+
+
+def save_skips(skips: list[dict]) -> None:
+    """
+    Write today's skip records to data/skipped_picks.json.
+    Overwrites the file completely — only today's skips are written.
+    Auditor reads this file the next morning to grade each skip.
+    """
+    # Tag each skip with null grading fields (filled by auditor)
+    for s in skips:
+        s["actual_value"]       = None
+        s["would_have_hit"]     = None
+        s["skip_verdict"]       = None
+        s["skip_verdict_notes"] = None
+
+    with open(SKIPPED_PICKS_JSON, "w") as f:
+        json.dump(skips, f, indent=2)
+
+    print(f"[analyst] Saved {len(skips)} skip records for {TODAY_STR} → {SKIPPED_PICKS_JSON}")
+    for s in skips:
+        print(f"  SKIP: {s['player_name']} {s['prop_type']} T{s['tier_considered']} — {s['skip_reason']}")
 
 
 # ── Main ─────────────────────────────────────────────────────────────
@@ -1769,10 +1849,11 @@ def main():
     else:
         print(f"[analyst] Normal slate ({active_count} players) — using {MODEL}")
 
-    picks = call_analyst(prompt, model=model_to_use)
-    print(f"[analyst] Claude returned {len(picks)} picks")
+    picks, skips = call_analyst(prompt, model=model_to_use)
+    print(f"[analyst] Claude returned {len(picks)} picks, {len(skips)} skip records")
 
     save_picks(picks)
+    save_skips(skips)
 
 
 if __name__ == "__main__":

@@ -37,8 +37,9 @@ AUDIT_LOG_JSON    = DATA / "audit_log.json"
 CONTEXT_MD         = ROOT / "context" / "nba_season_context.md"
 AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
 AUDIT_REPORTS_DIR   = DATA / "audit_reports"
-POST_GAME_NEWS_JSON = DATA / "post_game_news.json"
-STANDINGS_JSON      = DATA / "standings_today.json"
+POST_GAME_NEWS_JSON  = DATA / "post_game_news.json"
+STANDINGS_JSON       = DATA / "standings_today.json"
+SKIPPED_PICKS_JSON   = DATA / "skipped_picks.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -217,6 +218,96 @@ def load_post_game_news() -> dict:
     except Exception as e:
         print(f"[auditor] WARNING: could not load post_game_news.json: {e}")
         return {}
+
+
+def load_skipped_picks() -> list[dict]:
+    """
+    Load skipped_picks.json written by analyst.py for today's run.
+    Returns empty list gracefully if file missing.
+    """
+    if not SKIPPED_PICKS_JSON.exists():
+        return []
+    try:
+        with open(SKIPPED_PICKS_JSON) as f:
+            skips = json.load(f)
+        print(f"[auditor] Loaded {len(skips)} skip records from {SKIPPED_PICKS_JSON}")
+        return skips
+    except Exception as e:
+        print(f"[auditor] WARNING: could not load skipped_picks.json: {e}")
+        return []
+
+
+def build_game_log_rows_for_yesterday() -> dict[str, dict]:
+    """
+    Build a lookup of yesterday's actual game rows: {player_name_lower: row_dict}.
+    Used for grading skip records — did the player actually hit the skipped tier?
+    """
+    if not GAME_LOG_CSV.exists():
+        return {}
+    try:
+        df = pd.read_csv(GAME_LOG_CSV, dtype=str)
+        df = df[df["game_date"] == YESTERDAY_STR]
+        df = df[df.get("dnp", pd.Series(["0"] * len(df))) != "1"]
+        rows: dict[str, dict] = {}
+        for _, row in df.iterrows():
+            name_lower = str(row.get("player_name", "")).strip().lower()
+            if name_lower:
+                rows[name_lower] = row.to_dict()
+        return rows
+    except Exception as e:
+        print(f"[auditor] WARNING: could not build game log rows for yesterday: {e}")
+        return {}
+
+
+SKIP_PROP_COL_MAP = {
+    "PTS": "pts",
+    "REB": "reb",
+    "AST": "ast",
+    "3PM": "tpm",
+}
+
+
+def grade_skips(skips: list[dict], game_log_rows: dict[str, dict]) -> list[dict]:
+    """
+    Grade each skip record: did the player hit the tier that was skipped?
+    Fills would_have_hit and skip_verdict fields in-place.
+    Returns the same list with fields filled.
+    """
+    for skip in skips:
+        player_lower = skip.get("player_name", "").strip().lower()
+        prop_type    = skip.get("prop_type", "")
+        tier         = skip.get("tier_considered")
+        col          = SKIP_PROP_COL_MAP.get(prop_type)
+
+        if not player_lower or not col or tier is None:
+            skip["would_have_hit"]     = None
+            skip["skip_verdict"]       = "no_data"
+            skip["skip_verdict_notes"] = "missing player/prop/tier"
+            continue
+
+        row = game_log_rows.get(player_lower)
+        if row is None:
+            skip["would_have_hit"]     = None
+            skip["skip_verdict"]       = "no_data"
+            skip["skip_verdict_notes"] = "player not found in yesterday's game log"
+            continue
+
+        try:
+            actual = float(row.get(col, 0) or 0)
+        except (ValueError, TypeError):
+            skip["would_have_hit"]     = None
+            skip["skip_verdict"]       = "no_data"
+            skip["skip_verdict_notes"] = "could not parse actual value"
+            continue
+
+        skip["actual_value"]   = actual
+        skip["would_have_hit"] = actual >= float(tier)
+        skip["skip_verdict"]   = "false_skip" if skip["would_have_hit"] else "correct_skip"
+        skip["skip_verdict_notes"] = (
+            f"Actual {actual} {'≥' if skip['would_have_hit'] else '<'} tier {tier}"
+        )
+
+    return skips
 
 
 # ── Grading ──────────────────────────────────────────────────────────
@@ -848,11 +939,23 @@ def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list
         json.dump(existing_log, f, indent=2)
     print(f"[auditor] Saved audit entry for {YESTERDAY_STR} → {AUDIT_LOG_JSON}")
 
-    save_audit_summary(existing_log)
-    save_audit_report(audit_entry, graded_picks, graded_parlays)
+    # ── Grade yesterday's skip records ────────────────────────────────
+    skips = load_skipped_picks()
+    if skips:
+        game_log_rows = build_game_log_rows_for_yesterday()
+        skips = grade_skips(skips, game_log_rows)
+        try:
+            with open(SKIPPED_PICKS_JSON, "w") as f:
+                json.dump(skips, f, indent=2)
+            print(f"[auditor] Graded {len(skips)} skip records → {SKIPPED_PICKS_JSON}")
+        except Exception as e:
+            print(f"[auditor] WARNING: could not write graded skips: {e}")
+
+    save_audit_summary(existing_log, all_skips=skips if skips else None)
+    save_audit_report(audit_entry, graded_picks, graded_parlays, skips=skips)
 
 
-def save_audit_summary(audit_log: list[dict]):
+def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = None):
     """Roll up all audit entries into a longitudinal summary for the Analyst."""
     if not audit_log:
         return
@@ -937,6 +1040,30 @@ def save_audit_summary(audit_log: list[dict]):
     p_misses  = sum(e.get("parlay_results", {}).get("misses",  0) for e in audit_log)
     p_partial = sum(e.get("parlay_results", {}).get("partial", 0) for e in audit_log)
 
+    # ── Skip validation rollup ─────────────────────────────────────────
+    skip_validation: dict = {}
+    if all_skips:
+        by_rule: dict = defaultdict(lambda: {"total": 0, "false_skips": 0, "no_data": 0})
+        for s in all_skips:
+            rule    = s.get("skip_reason", "unknown")
+            verdict = s.get("skip_verdict", "no_data")
+            by_rule[rule]["total"] += 1
+            if verdict == "false_skip":
+                by_rule[rule]["false_skips"] += 1
+            elif verdict == "no_data":
+                by_rule[rule]["no_data"] += 1
+        for rule, counts in by_rule.items():
+            gradeable_skips = counts["total"] - counts["no_data"]
+            skip_validation[rule] = {
+                "total":           counts["total"],
+                "false_skips":     counts["false_skips"],
+                "correct_skips":   gradeable_skips - counts["false_skips"],
+                "no_data":         counts["no_data"],
+                "false_skip_rate": round(
+                    counts["false_skips"] / gradeable_skips * 100, 1
+                ) if gradeable_skips > 0 else None,
+            }
+
     summary = {
         "generated_at":    TODAY.strftime("%Y-%m-%d"),
         "entries_included": len(audit_log),
@@ -959,6 +1086,7 @@ def save_audit_summary(audit_log: list[dict]):
         "recent_lessons":          recent_lessons[-10:],
         "recent_reinforcements":   recent_reinforcements[-10:],
         "recent_recommendations":  recent_recommendations[-10:],
+        "skip_validation":         skip_validation,
     }
 
     with open(AUDIT_SUMMARY_JSON, "w") as f:
@@ -966,7 +1094,7 @@ def save_audit_summary(audit_log: list[dict]):
     print(f"[auditor] Saved rolling audit summary ({len(audit_log)} entries) → {AUDIT_SUMMARY_JSON}")
 
 
-def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlays: list[dict]) -> None:
+def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlays: list[dict], skips: list[dict] | None = None) -> None:
     """
     Write a human-readable markdown audit report to data/audit_reports/YYYY-MM-DD.md.
     One file per day, generated at end of auditor run. Permanent archive — never overwritten
@@ -1114,6 +1242,44 @@ def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlay
             md_lines.append("**Parlay reinforcements:**")
             for item in parlay_reinforcements:
                 md_lines.append(f"- {item}")
+            md_lines.append("")
+
+        # ── Skip Validation ───────────────────────────────────────────
+        if skips:
+            graded_skips  = [s for s in skips if s.get("skip_verdict") not in (None, "no_data")]
+            false_skips   = [s for s in skips if s.get("skip_verdict") == "false_skip"]
+            correct_skips = [s for s in skips if s.get("skip_verdict") == "correct_skip"]
+            no_data_skips = [s for s in skips if s.get("skip_verdict") in (None, "no_data")]
+            false_skip_rate = (
+                round(len(false_skips) / len(graded_skips) * 100, 1)
+                if graded_skips else None
+            )
+            md_lines.append("## Skip Validation")
+            md_lines.append(
+                f"- Total skips: {len(skips)} | "
+                f"False skips (would have hit): {len(false_skips)} | "
+                f"Correct skips: {len(correct_skips)} | "
+                f"No data: {len(no_data_skips)}"
+            )
+            if false_skip_rate is not None:
+                md_lines.append(f"- False skip rate: {false_skip_rate}%")
+            if skips:
+                md_lines.append("")
+                md_lines.append("| Player | Prop | Tier | Skip Reason | Would Hit? | Actual |")
+                md_lines.append("|--------|------|------|-------------|------------|--------|")
+                for s in skips:
+                    player  = s.get("player_name", "?")
+                    prop    = s.get("prop_type", "?")
+                    tier    = s.get("tier_considered", "?")
+                    reason  = s.get("skip_reason", "?")
+                    verdict = s.get("skip_verdict", "no_data")
+                    actual  = s.get("actual_value")
+                    actual_str = str(actual) if actual is not None else "—"
+                    would_hit_str = (
+                        "✓ YES" if verdict == "false_skip"
+                        else ("✗ NO" if verdict == "correct_skip" else "—")
+                    )
+                    md_lines.append(f"| {player} | {prop} | {tier} | {reason} | {would_hit_str} | {actual_str} |")
             md_lines.append("")
 
         output_path.write_text("\n".join(md_lines), encoding="utf-8")
