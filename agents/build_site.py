@@ -23,9 +23,10 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SITE = ROOT / "site"
 
-PICKS_JSON     = DATA / "picks.json"
-PARLAYS_JSON   = DATA / "parlays.json"
-AUDIT_LOG_JSON = DATA / "audit_log.json"
+PICKS_JSON          = DATA / "picks.json"
+PARLAYS_JSON        = DATA / "parlays.json"
+AUDIT_LOG_JSON      = DATA / "audit_log.json"
+AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
 MASTER_CSV     = DATA / "nba_master.csv"
 INJURIES_JSON  = DATA / "injuries_today.json"
 WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
@@ -431,19 +432,41 @@ def load_todays_parlays() -> dict:
     }
 
 
+def load_yesterday_summary() -> dict:
+    """
+    Reads audit_summary.json for season-level stats used on the Results tab.
+    Returns {} gracefully if file is missing or malformed.
+    """
+    try:
+        summary = load_json(AUDIT_SUMMARY_JSON, {})
+        if not isinstance(summary, dict):
+            return {}
+        return summary
+    except Exception:
+        return {}
+
+
 def get_top_picks(picks: list, max_picks: int = 5) -> list:
     """
-    Deterministically selects the highest-confidence picks for the Top Picks banner.
-    Returns [] only if no picks qualify at >= 85% confidence.
+    Returns today's top picks.
+    Primary: picks where analyst set top_pick=True (LLM-driven selection).
+    Fallback: mechanical >= 85% confidence gate (backwards-compat for older picks).
+    Returns [] if no qualifying picks.
     """
-    STAT_PRIORITY = {"PTS": 0, "3PM": 1, "AST": 2, "REB": 3}
-
-    candidates = [p for p in picks if (
+    open_picks = [p for p in picks if (
         p.get("result") is None and
         not p.get("voided", False) and
-        p.get("lineup_risk") != "high" and
-        p.get("confidence_pct", 0) >= 85
+        p.get("lineup_risk") != "high"
     )]
+
+    # Primary: analyst-flagged top picks
+    flagged = [p for p in open_picks if p.get("top_pick") is True]
+    if flagged:
+        return flagged[:max_picks]
+
+    # Fallback: legacy confidence gate
+    STAT_PRIORITY = {"PTS": 0, "3PM": 1, "AST": 2, "REB": 3}
+    candidates = [p for p in open_picks if p.get("confidence_pct", 0) >= 85]
 
     def score(p):
         hr_str = p.get("hit_rate_display", "0/10")
@@ -454,11 +477,9 @@ def get_top_picks(picks: list, max_picks: int = 5) -> list:
         iron     = 1 if p.get("iron_floor") else 0
         stat_pri = STAT_PRIORITY.get(p.get("prop_type", "REB"), 3)
         conf     = p.get("confidence_pct", 0)
-        # Rank: iron floor first, then confidence desc, then hit rate desc, then stat priority
         return (iron, conf, hits, -stat_pri)
 
-    ranked = sorted(candidates, key=score, reverse=True)[:max_picks]
-    return ranked
+    return sorted(candidates, key=score, reverse=True)[:max_picks]
 
 
 def build_site():
@@ -467,13 +488,15 @@ def build_site():
     game_times = load_game_times()
     injuries_display = load_injuries_display()
     ml_odds = load_game_ml_odds()
-    parlays_data = load_todays_parlays()
+    parlays_data     = load_todays_parlays()
+    yesterday_summary = load_yesterday_summary()
 
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
     past_picks  = [p for p in picks if p.get("date") != TODAY_STR
                    and p.get("result") in ("HIT", "MISS")]
 
-    past_top_picks = [p for p in past_picks if p.get("confidence_pct", 0) >= 85]
+    past_top_picks = [p for p in past_picks if
+                      p.get("top_pick") is True or p.get("confidence_pct", 0) >= 85]
     tp_hits   = sum(1 for p in past_top_picks if p["result"] == "HIT")
     tp_total  = len(past_top_picks)
     tp_pct    = round(100 * tp_hits / tp_total, 1) if tp_total else 0
@@ -517,7 +540,8 @@ def build_site():
                                   reverse=True)[:40],
         "injuries":  injuries_display,
         "parlays":   parlays_data,
-        "ml_odds":   ml_odds,
+        "ml_odds":          ml_odds,
+        "yesterday_summary": yesterday_summary,
         "top_picks": top_picks,
         "top_picks_history": {
             "hits": tp_hits,
@@ -548,8 +572,9 @@ def generate_html(d: dict) -> str:
     injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "games": []}))
     parlays_json    = json.dumps(d.get("parlays", {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}))
     ml_odds_json    = json.dumps(d.get("ml_odds", {}))
-    top_picks_json         = json.dumps(d.get("top_picks", []))
-    top_picks_history_json = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
+    top_picks_json          = json.dumps(d.get("top_picks", []))
+    top_picks_history_json  = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
+    yesterday_summary_json  = json.dumps(d.get("yesterday_summary", {}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -793,6 +818,21 @@ def generate_html(d: dict) -> str:
     .overall-banner .big {{ font-size: 38px; font-weight: 800; color: var(--accent2); line-height: 1; }}
     .overall-banner .sub {{ font-size: 12px; color: var(--muted); margin-top: 3px; }}
 
+    /* Results tab — stat cards */
+    .results-cards-row {{ display: grid; grid-template-columns: repeat(3, 1fr);
+                          gap: 12px; margin-bottom: 16px; }}
+    .results-card {{ background: var(--surface); border: 1px solid var(--border);
+                     border-radius: 12px; padding: 16px 18px; }}
+    .results-card-wide {{ grid-column: 1 / -1; }}
+    .results-card-header {{ font-size: 10px; font-weight: 700; text-transform: uppercase;
+                            letter-spacing: 0.6px; color: var(--muted); margin-bottom: 8px; }}
+    .results-hero-num {{ font-size: 36px; font-weight: 800; color: var(--accent2); line-height: 1; }}
+    .results-hero-sub {{ font-size: 11px; color: var(--muted); margin-top: 4px; }}
+    @media (max-width: 480px) {{
+      .results-cards-row {{ grid-template-columns: 1fr 1fr; }}
+      .results-card-wide {{ grid-column: 1 / -1; }}
+    }}
+
     /* Trend chart */
     .chart-wrap {{ background: var(--surface); border: 1px solid var(--border);
                    border-radius: 12px; padding: 16px; margin-bottom: 20px; }}
@@ -932,19 +972,26 @@ def generate_html(d: dict) -> str:
 </div>
 <div id="tab-parlays" class="page"><div id="parlays-container"></div></div>
 <div id="tab-results" class="page">
-  <div class="overall-banner">
-    <div>
-      <div class="big" id="overall-pct">—</div>
-      <div class="sub" id="overall-sub">overall hit rate</div>
+  <div class="results-cards-row">
+    <div class="results-card">
+      <div class="results-card-header">Overall</div>
+      <div class="results-hero-num" id="overall-pct">—</div>
+      <div class="results-hero-sub" id="overall-sub">no graded picks yet</div>
     </div>
-    <div id="prop-streak-grid" class="prop-streak-grid" style="flex:1;max-width:440px"></div>
-  </div>
-  <div id="top-picks-banner" class="overall-banner" style="margin-top:12px;display:none">
-    <div>
-      <div class="big" id="tp-pct">—</div>
-      <div class="sub" id="tp-sub">⚡ top picks hit rate</div>
+    <div class="results-card">
+      <div class="results-card-header">Yesterday</div>
+      <div class="results-hero-num" id="yesterday-pct">—</div>
+      <div class="results-hero-sub" id="yesterday-sub">no audit yet</div>
     </div>
-    <div style="flex:1;max-width:300px;font-size:13px;color:var(--muted);padding-left:16px" id="tp-detail"></div>
+    <div class="results-card">
+      <div class="results-card-header">⚡ Top Picks</div>
+      <div class="results-hero-num" id="tp-pct">—</div>
+      <div class="results-hero-sub" id="tp-sub">need 3+ graded</div>
+    </div>
+    <div class="results-card results-card-wide">
+      <div class="results-card-header">Props</div>
+      <div id="prop-streak-grid" class="prop-streak-grid"></div>
+    </div>
   </div>
   <div class="chart-wrap">
     <div class="chart-title">Daily hit rate — last 30 days</div>
@@ -993,8 +1040,9 @@ const DATA = {{
   injuries:         {injuries_json},
   parlays:          {parlays_json},
   ml_odds:          {ml_odds_json},
-  top_picks:        {top_picks_json},
+  top_picks:         {top_picks_json},
   top_picks_history: {top_picks_history_json},
+  yesterday_summary: {yesterday_summary_json},
 }};
 
 function showTab(name) {{
@@ -1263,11 +1311,30 @@ function renderPicks() {{
 
 // ── RESULTS ──
 function renderResults() {{
+  // ── Overall card ──
   document.getElementById('overall-pct').textContent =
-    DATA.total_graded ? DATA.overall_hit_rate+'%' : '—';
+    DATA.total_graded ? DATA.overall_hit_rate + '%' : '—';
   document.getElementById('overall-sub').textContent =
     DATA.total_graded ? `${{DATA.total_graded}} picks graded` : 'no graded picks yet';
 
+  // ── Yesterday card ──
+  const la = DATA.last_audit;
+  if (la && la.total_picks > 0) {{
+    document.getElementById('yesterday-pct').textContent = la.hit_rate_pct + '%';
+    const d = (la.date||'').split('-');
+    const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}` : (la.date||'');
+    document.getElementById('yesterday-sub').textContent =
+      `${{la.hits}}/${{la.total_picks}} picks · ${{fmt}}`;
+  }}
+
+  // ── Top Picks card ──
+  const tph = DATA.top_picks_history;
+  if (tph && tph.total >= 3) {{
+    document.getElementById('tp-pct').textContent = tph.pct + '%';
+    document.getElementById('tp-sub').textContent = `${{tph.hits}}/${{tph.total}} top picks`;
+  }}
+
+  // ── Props card ──
   const ps  = DATA.prop_stats;
   const grid = document.getElementById('prop-streak-grid');
   let gh = '';
@@ -1285,46 +1352,39 @@ function renderResults() {{
   }});
   grid.innerHTML = gh;
 
-  const tph = DATA.top_picks_history;
-  if (tph && tph.total >= 3) {{
-    document.getElementById('top-picks-banner').style.display = 'flex';
-    document.getElementById('tp-pct').textContent = tph.pct + '%';
-    document.getElementById('tp-sub').textContent = '⚡ top picks hit rate';
-    document.getElementById('tp-detail').textContent =
-      `${{tph.hits}}/${{tph.total}} picks at 85%+ confidence`;
-  }}
-
+  // ── Pick History drawer ──
   const c = document.getElementById('results-container');
   const results = DATA.recent_results;
   if (!results.length) {{
     c.innerHTML = `<div class="empty"><div class="empty-icon">📊</div>No graded results yet.</div>`;
-    return;
+  }} else {{
+    let html = `<table class="history-table"><thead><tr>
+      <th>Date</th><th>Player</th><th>Prop</th><th>Pick</th><th>Actual</th><th>Result</th>
+    </tr></thead><tbody>`;
+    results.forEach(p => {{
+      const res = p.result==='HIT'
+        ? `<span class="result-hit">✓ HIT</span>`
+        : p.result==='MISS'
+        ? `<span class="result-miss">✗ MISS</span>`
+        : `<span class="result-nd">—</span>`;
+      const bs = `width:32px;height:18px;border-radius:4px;font-size:9px;display:inline-flex;align-items:center;justify-content:center`;
+      const d = p.date ? p.date.split('-') : ['','',''];
+      const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}/${{d[0].slice(2)}}` : p.date;
+      const tp = p.top_pick ? ' ⚡' : '';
+      html += `<tr>
+        <td style="white-space:nowrap">${{fmt}}</td>
+        <td><strong>${{p.player_name}}${{tp}}</strong><br><span style="font-size:11px;color:var(--muted)">${{p.team}}</span></td>
+        <td><span class="prop-badge ${{propColor(p.prop_type)}}" style="${{bs}}">${{p.prop_type}}</span></td>
+        <td style="white-space:nowrap">${{p.pick_value}}</td>
+        <td>${{p.actual_value??'—'}}</td>
+        <td>${{res}}</td>
+      </tr>`;
+    }});
+    html += '</tbody></table>';
+    c.innerHTML = html;
   }}
-  let html = `<table class="history-table"><thead><tr>
-    <th>Date</th><th>Player</th><th>Prop</th><th>Pick</th><th>Actual</th><th>Result</th>
-  </tr></thead><tbody>`;
-  results.forEach(p => {{
-    const res = p.result==='HIT'
-      ? `<span class="result-hit">✓ HIT</span>`
-      : p.result==='MISS'
-      ? `<span class="result-miss">✗ MISS</span>`
-      : `<span class="result-nd">—</span>`;
-    const bs = `width:32px;height:18px;border-radius:4px;font-size:9px;display:inline-flex;align-items:center;justify-content:center`;
-    const d = p.date ? p.date.split('-') : ['','',''];
-    const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}/${{d[0].slice(2)}}` : p.date;
-    html += `<tr>
-      <td style="white-space:nowrap">${{fmt}}</td>
-      <td><strong>${{p.player_name}}</strong><br><span style="font-size:11px;color:var(--muted)">${{p.team}}</span></td>
-      <td><span class="prop-badge ${{propColor(p.prop_type)}}" style="${{bs}}">${{p.prop_type}}</span></td>
-      <td style="white-space:nowrap">${{p.pick_value}}</td>
-      <td>${{p.actual_value??'—'}}</td>
-      <td>${{res}}</td>
-    </tr>`;
-  }});
-  html += '</tbody></table>';
-  c.innerHTML = html;
 
-  // Top Picks History drawer
+  // ── Top Picks History drawer ──
   const tpContainer = document.getElementById('top-picks-history-container');
   if (tpContainer) {{
     const tpPicks = (DATA.top_picks_history || {{}}).picks || [];
@@ -1356,7 +1416,7 @@ function renderResults() {{
     }}
   }}
 
-  // Parlay History drawer
+  // ── Parlay History drawer ──
   const phContainer = document.getElementById('parlay-history-container');
   if (phContainer) {{
     const parlayHistory = (DATA.parlays || {{}}).history || [];

@@ -107,9 +107,11 @@ def load_yesterdays_player_names() -> set[str]:
 
 def load_yesterdays_missed_pick_names() -> set[str]:
     """
-    Return lowercase player names from yesterday's picks where result == MISS
-    or result is None (ungraded at reporter run time).
-    These players get fetched regardless of box score minutes.
+    Return lowercase player names from yesterday's picks where result == "MISS".
+    Ungraded picks (result=None) are excluded — the reporter runs before the auditor
+    grades picks, so including None would treat every ungraded pick as a missed pick
+    and fetch Brave/ESPN for all players regardless of outcome.
+    Only explicitly-graded MISSes trigger web narrative enrichment.
     """
     if not PICKS_JSON.exists():
         return set()
@@ -121,7 +123,7 @@ def load_yesterdays_missed_pick_names() -> set[str]:
             for p in all_picks
             if p.get("date") == YESTERDAY_STR
             and p.get("player_name")
-            and p.get("result") in ("MISS", None)
+            and p.get("result") == "MISS"
         }
         return names
     except Exception as e:
@@ -628,6 +630,7 @@ def main() -> None:
         aid         = athlete_ids.get(name)
 
         news_items: list[dict] = []
+        fetch_ok = None  # None = no athlete ID (ESPN not attempted)
         if aid:
             news_items, fetch_ok = fetch_espn_news(aid)
             if not fetch_ok:
@@ -685,6 +688,7 @@ def main() -> None:
             "injury_status_at_check":   injury_status,
             "injury_language_detected": inj_detected,
             "injury_scan_term":         inj_term if inj_detected else None,
+            "espn_fetch_ok":            fetch_ok if aid else None,  # None = no athlete ID
             "web_narrative":            None,  # populated later for missed picks
         }
 
@@ -731,6 +735,7 @@ def main() -> None:
                 "injury_status_at_check":   "NOT_LISTED",
                 "injury_language_detected": False,
                 "injury_scan_term":         None,
+                "espn_fetch_ok":            None,  # no athlete ID lookup for narrative-only entries
                 "web_narrative":            narrative,
             }
 

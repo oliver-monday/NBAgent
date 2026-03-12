@@ -1617,6 +1617,22 @@ Include explicit skip records for any prop where a hard rule fired to block an
 otherwise-qualifying tier (hit rate ≥ 70% but rule overrode the pick). Do NOT record
 skips for props where no tier qualified on hit rate alone — only record rule-forced skips.
 
+## TOP PICKS — FINAL SELECTION STEP
+After completing your full player analysis, review all picks you intend to emit and select
+2–4 as your TOP PICKS for the day. These are the picks you have the most conviction on —
+the clearest signal, lowest variance, and strongest contextual support.
+
+Criteria for a top pick (must meet most of these):
+- confidence_pct ≥ 78%
+- hit_rate_display shows ≥ 8 hits in last 10 games at this tier
+- Not flagged VOLATILE or no volatility concern at this tier
+- Opponent defense is soft or mid (not tough) for this stat
+- No B2B, DENSE, BLOWOUT_RISK, or meaningful injury risk
+- iron_floor is true, OR trend is up with a strong recent game log
+
+Do not force exactly 4 if fewer genuinely qualify. 2 strong top picks beats 4 weak ones.
+Set top_pick: true on exactly these picks in the JSON output. All other picks get top_pick: false.
+
 ## OUTPUT FORMAT — EMIT THIS FIRST, BEFORE ANY OTHER TEXT
 Your response MUST begin with a single JSON object on the very first line. No preamble.
 No "I'll analyze..." No game context review block. No markdown headers before the JSON.
@@ -1646,6 +1662,7 @@ JSON schema:
       "opp_defense_rating": "soft | mid | tough | unknown",
       "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
       "iron_floor": true or false,
+      "top_pick": true or false,
       "reasoning": "One tight sentence: key reason this floor holds today. Max 15 words."
     }}
   ],
@@ -1670,6 +1687,7 @@ picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
 - direction is always OVER.
 - iron_floor must be true if and only if the quant stat line showed [iron_floor]. Otherwise false.
+- top_pick must be true for exactly the picks you flagged in the TOP PICKS step above. All others must be false.
 - Only include picks with confidence_pct >= 70.
 
 skips rules:

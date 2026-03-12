@@ -178,6 +178,7 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 | `injury_check_time` | lineup_watch.py | ISO timestamp of last lineup_watch run |
 | `tier_walk` | Analyst | Tier walk-down reasoning string; shown on pick cards as expandable |
 | `iron_floor` | Analyst | `true` when quant stat line showed `[iron_floor]`; Claude copies directly from context |
+| `top_pick` | Analyst | `true` for 2–4 analyst-declared best picks of the day; `false` for all others; used by `build_site.py` `get_top_picks()` as primary selection signal |
 | `lineup_update` | lineup_update.py | Sub-object: `{triggered_by, updated_at, direction, revised_confidence_pct, revised_reasoning}`; written hourly when starter changes detected; overwritten on each run |
 
 ---

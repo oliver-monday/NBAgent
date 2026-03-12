@@ -8,7 +8,6 @@
 - **Whitelist maintenance** — review and update `active` flags as the season evolves, especially post-trade-deadline role changes
 - **Season end handling** — workflows need to be paused/disabled in the off-season (roughly late June). Simplest approach: disable the cron schedules in each `.yml`, re-enable in October.
 - **DST → PST cron shift (early November)** — GitHub Actions cron runs in UTC. During PDT (mid-March → early November) PT = UTC-7; during PST (early November → mid-March) PT = UTC-8. All cron entries in `injuries.yml` (and any other workflow with PT-labeled schedules) need their UTC hour values incremented by 1 when clocks fall back in November, and decremented by 1 when clocks spring forward in March. Failure to update will cause the schedule to run one hour later than intended all winter. Add this to the October re-enable checklist.
-- **`context/nba_season_context.md` — manual restructure pending** — restructure SEASON FACTS into three decay tiers (PERMANENT / SEMI-STABLE / VOLATILE) as designed in Season Context Improvement 3. Improvements 0–2 are live as of March 8, 2026. This is a manual file edit only — no code required.
 
 ### Untested Hypotheses (backtest designs documented in `docs/BACKTESTS.md`)
 - **H8 — Positional DvP Validity** — Does the positional defense rating predict PTS/AST hit rates more accurately than the team-level opp_defense rating? Requires ~30 days of live positional DvP data accumulating in `player_stats.json`. Run approximately early April 2026. If positional DvP shows no meaningful lift over team-level, consider reverting to team-level to simplify the prompt. Design documented in `docs/BACKTESTS.md`.
@@ -221,7 +220,7 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 
 ## Implementation Notes
 
-- **Season Context Improvements 0–2** — ✅ All implemented March 8, 2026. Standings snapshot, auto-generated team defense narratives, and staleness detection are live in production. Improvement 3 (manual SEASON FACTS restructure) is the only remaining item.
+- **Season Context Improvements 0–2** — ✅ All implemented March 8, 2026. Standings snapshot, auto-generated team defense narratives, and staleness detection are live in production. 
 - **Miss Anatomy** — quant fields live and feeding Player Profiles conditional rendering. Analyst wiring deferred until backtest (~late March). See `miss_anatomy_quant_only.md` for deferred scope rationale.
 - **Minutes Floor** — structural feature, ships without backtest. Validates naturally via audit log accumulation within 2–3 weeks.
 - **P4 (Tier-Walk)** — ✅ IMPLEMENTED (March 6, 2026). `tier_walk_flag` in `miss_details` accumulates going forward — expect meaningful patterns after 20+ audit days.
