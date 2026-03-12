@@ -4,12 +4,12 @@
 and `@docs/AGENTS.md` at session start. Covers current implementation state, design decisions,
 non-obvious gotchas, and live prompt format — things that take time to re-derive from source.
 
-**Last updated:** March 10, 2026 (P5 Afternoon Lineup Update Agent complete; March 9 additions
-documented: OUT/DOUBTFUL hard pre-filter, projected lineup scraping + analyst injection, lineup
-watch wiring fix, min_floor cap, BLOWOUT_RISK secondary scorer skip, parlay player-level cap.
-Session 2: Rotowire session login + projected_minutes/onoff_usage scraping; analyst lineup
-context wiring (proj_min/USG_SPIKE/OPP annotations); knowledge staleness awareness block
-in build_prompt())
+**Last updated:** March 12, 2026 (M2 Defensive Recency Split complete — `compute_opp_defense_recency()`,
+`def_recency` field in player_stats.json, `DEF↑`/`DEF↓` header annotation, annotation-only.
+March 11 additions: P6 Skip Validation System, P7 Team Momentum Indicator, three analyst prompt
+rule hardenings, Post-Game Reporter Brave Search web narrative layer. March 10: P5 Lineup Update
+Agent complete, Rotowire session login + proj_min/USG_SPIKE/OPP annotations, knowledge staleness
+awareness block, analyst Opus hybrid.)
 
 ---
 
@@ -515,7 +515,7 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 
 ---
 
-## Active Improvement Queue (as of March 11, 2026)
+## Active Improvement Queue (as of March 12, 2026)
 
 | ID | Name | Status | Files |
 |----|------|--------|-------|
@@ -548,7 +548,9 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 - Post-Game Reporter web search narrative layer — `fetch_web_narratives()` (Brave Search) + `call_claude_summarise_narratives()` + `_get_miss_pick_meta()` added to `post_game_reporter.py`; `web_narrative` field in `post_game_news.json`; rendered as `📰 WEB RECAP:` in auditor `build_audit_prompt()`; `BRAVE_API_KEY` added to `auditor.yml`
 - Skip Validation System (P6) — `analyst.py` emits `{"picks": [...], "skips": [...]}` JSON object; `save_skips()` writes `data/skipped_picks.json` with null grading fields; `auditor.py` grades skips via `grade_skips()` (pure Python, no LLM), writes back, rolls up into `audit_summary.json["skip_validation"]` per-rule false skip rates; `save_audit_report()` appends `## Skip Validation` table to daily markdown; both `analyst.yml` and `auditor.yml` commit `skipped_picks.json`
 - Team Momentum Indicator (P7) — `build_team_momentum()` in `quant.py` computes L10 W-L record, avg point margin, and hot/cold/neutral tag for all teams playing today from `nba_master.csv`; `team_momentum` field in `player_stats.json` with `{team: {...}, opponent: {...}}` structure; `Momentum —` annotation line in `build_quant_context()` between DvP line and stat lines; annotation only — no directive rules
-- M2 Defensive Recency Split — `compute_opp_defense_recency()` added to `quant.py` (constants: `DEF_RECENCY_SHORT=5`, `DEF_RECENCY_THRESH=0.08`, `DEF_RECENCY_MIN_L5=3`); compares opponent's L5 vs L15 PTS-allowed avg; flags `"soft"` (L5 ≥8% above L15) or `"tough"` (L5 ≥8% below L15) or `None`; `def_recency` field in `player_stats.json`; `DEF↑`/`DEF↓` inline header annotation in `build_quant_context()`; annotation only — no directive rules; no validation gate required
+
+**Also completed March 12:**
+- M2 Defensive Recency Split — `compute_opp_defense_recency()` added to `quant.py` (constants: `DEF_RECENCY_SHORT=5`, `DEF_RECENCY_THRESH=0.08`, `DEF_RECENCY_MIN_L5=3`); compares opponent's L5 vs L15 PTS-allowed avg; flags `"soft"` (L5 ≥8% above L15) or `"tough"` (L5 ≥8% below L15) or `None`; `def_recency` field in `player_stats.json`; `DEF↑`/`DEF↓` inline header annotation in `build_quant_context()` after `{usg_spike_str}`; annotation only — no directive rules; validation gate at 30+ flagged instances
 
 **Next backtests to run:**
 - **H8 — Positional DvP Validity:** Does positional DvP outpredict team-level DvP for PTS/AST? Requires ~30 days of live positional DvP data. Run ~early April 2026.
