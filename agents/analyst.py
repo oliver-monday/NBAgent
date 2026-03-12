@@ -48,7 +48,7 @@ TODAY_STR = TODAY.strftime("%Y-%m-%d")
 # ── Config ───────────────────────────────────────────────────────────
 MODEL         = "claude-sonnet-4-6"   # default model
 MODEL_LARGE   = "claude-opus-4-6"     # upgraded model for large slates
-MAX_TOKENS    = 16384
+MAX_TOKENS    = 32000                 # was 16384
 # Player count threshold (after injury pre-filter) above which Opus is used
 LARGE_SLATE_THRESHOLD = 30
 # How many recent games to include per player in the prompt
