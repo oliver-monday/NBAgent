@@ -2,16 +2,23 @@ name: Injuries Refresh
 
 on:
   schedule:
-    - cron: "0 14 * * *"   #  9:00 AM ET
-    - cron: "0 15 * * *"   # 10:00 AM ET
-    - cron: "0 16 * * *"   # 11:00 AM ET
-    - cron: "0 17 * * *"   # 12:00 PM ET
-    - cron: "0 18 * * *"   #  1:00 PM ET
-    - cron: "0 19 * * *"   #  2:00 PM ET
-    - cron: "0 20 * * *"   #  3:00 PM ET
-    - cron: "0 21 * * *"   #  4:00 PM ET
-    - cron: "0 22 * * *"   #  5:00 PM ET
-    - cron: "0 23 * * *"   #  6:00 PM ET
+    - cron: "0 14 * * *"   #  6:00 AM PT
+    - cron: "0 15 * * *"   #  7:00 AM PT
+    - cron: "0 16 * * *"   #  8:00 AM PT
+    - cron: "0 17 * * *"   #  9:00 AM PT
+    - cron: "0 18 * * *"   # 10:00 AM PT
+    - cron: "0 19 * * *"   # 11:00 AM PT
+    - cron: "0 20 * * *"   # 12:00 PM PT
+    - cron: "0 21 * * *"   #  1:00 PM PT
+    - cron: "0 22 * * *"   #  2:00 PM PT
+    - cron: "0 23 * * *"   #  3:00 PM PT
+    - cron: "0 0 * * *"    #  4:00 PM PT
+    - cron: "0 1 * * *"    #  5:00 PM PT
+    - cron: "0 2 * * *"    #  6:00 PM PT
+    - cron: "0 3 * * *"    #  7:00 PM PT
+    - cron: "0 4 * * *"    #  8:00 PM PT
+    - cron: "0 5 * * *"    #  9:00 PM PT
+    - cron: "0 6 * * *"    # 10:00 PM PT
   workflow_dispatch:
 
 permissions:
