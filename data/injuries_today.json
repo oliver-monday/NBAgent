@@ -1,13 +1,8 @@
 {
   "asof_date": "2026-03-12",
-  "built_at_utc": "2026-03-12T22:01:06Z",
+  "built_at_utc": "2026-03-12T22:45:40Z",
   "source": "rotowire",
   "PHI": [
-    {
-      "name": "A. Drummond",
-      "status": "QUES",
-      "details": "A. Drummond (Ques)"
-    },
     {
       "name": "Adem Bona",
       "status": "OUT",
@@ -17,6 +12,11 @@
       "name": "J. Broome",
       "status": "OUT",
       "details": "J. Broome (Out)"
+    },
+    {
+      "name": "A. Drummond",
+      "status": "OUT",
+      "details": "A. Drummond (Out)"
     },
     {
       "name": "J. Embiid",
@@ -74,13 +74,8 @@
   "PHX": [
     {
       "name": "G. Allen",
-      "status": "QUES",
-      "details": "G. Allen (Ques)"
-    },
-    {
-      "name": "H. Highsmith",
-      "status": "QUES",
-      "details": "H. Highsmith (Ques)"
+      "status": "OUT",
+      "details": "G. Allen (Out)"
     },
     {
       "name": "D. Brooks",
@@ -248,48 +243,6 @@
       "details": "D. Daniels (Out)"
     }
   ],
-  "MIL": [
-    {
-      "name": "K. Porter",
-      "status": "QUES",
-      "details": "K. Porter (Ques)"
-    },
-    {
-      "name": "B. Portis",
-      "status": "QUES",
-      "details": "B. Portis (Ques)"
-    },
-    {
-      "name": "J. Sims",
-      "status": "QUES",
-      "details": "J. Sims (Ques)"
-    },
-    {
-      "name": "T. Herro",
-      "status": "QUES",
-      "details": "T. Herro (Ques)"
-    },
-    {
-      "name": "N. Jovic",
-      "status": "OUT",
-      "details": "N. Jovic (Out)"
-    },
-    {
-      "name": "N. Powell",
-      "status": "OUT",
-      "details": "N. Powell (Out)"
-    },
-    {
-      "name": "T. Rozier",
-      "status": "OUT",
-      "details": "T. Rozier (Out)"
-    },
-    {
-      "name": "A. Wiggins",
-      "status": "OUT",
-      "details": "A. Wiggins (Out)"
-    }
-  ],
   "MIA": [
     {
       "name": "T. Herro",
@@ -330,8 +283,8 @@
     },
     {
       "name": "K. Thompson",
-      "status": "DOUBT",
-      "details": "K. Thompson (Doubt)"
+      "status": "OUT",
+      "details": "K. Thompson (Out)"
     },
     {
       "name": "C. Spencer",
@@ -661,6 +614,33 @@
       "name": "M. Smart",
       "status": "OUT",
       "details": "M. Smart (Out)"
+    }
+  ],
+  "MIL": [
+    {
+      "name": "T. Herro",
+      "status": "QUES",
+      "details": "T. Herro (Ques)"
+    },
+    {
+      "name": "N. Jovic",
+      "status": "OUT",
+      "details": "N. Jovic (Out)"
+    },
+    {
+      "name": "N. Powell",
+      "status": "OUT",
+      "details": "N. Powell (Out)"
+    },
+    {
+      "name": "T. Rozier",
+      "status": "OUT",
+      "details": "T. Rozier (Out)"
+    },
+    {
+      "name": "A. Wiggins",
+      "status": "OUT",
+      "details": "A. Wiggins (Out)"
     }
   ]
 }
