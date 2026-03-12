@@ -1262,7 +1262,7 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 - Only output picks with confidence_pct ≥ 70
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
 - REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
-- REB props — pick value gate: The pick value must be at or below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. If the intended tier exceeds this floor, move down one tier. If no valid tier exists at or below the floor, skip the REB prop entirely.
+- REB props — pick value gate: The pick value must be strictly below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. The pick tier must be strictly less than this floor value — an exact match is not sufficient. Rationale: when the 3rd-lowest L10 value equals the pick threshold exactly, there is zero variance buffer. A single outlier game (even for a player with a 10/10 hit rate) breaks the streak with no protective cushion. If the intended tier equals or exceeds this floor, move down one tier. If no valid tier exists strictly below the floor, skip the REB prop entirely.
 - REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 78% confidence minimum AND the floor gate must pass before any REB pick is output.
 - Tier walk-down discipline: Always evaluate tiers from highest to lowest for the stat.
   Never select a tier if the tier immediately above it also qualifies (≥70% hit rate in
@@ -1523,26 +1523,43 @@ KEY RULES — VOLATILITY:
 - VOLATILE PTS skip — weak qualifying combination: If ALL of the following are true, SKIP
   the PTS pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
-    2. The overall hit rate at the selected tier is exactly 7/10 (70%)
+    2. The overall hit rate at the selected tier is 7/10 (70%) OR 8/10 (80%)
     3. The pick tier is T15 or higher
-  Rationale: 7/10 at T15+ for a VOLATILE player is the system's weakest qualifying combination.
-  After the mandatory -5% VOLATILE deduction, confidence lands at the 70% floor. A VOLATILE
-  player at 70% confidence on a high counting-stat threshold offers no margin — any cold game
-  or role compression produces a significant undershoot, not a near-miss. The system generates
-  enough picks that marginal combinations like this should be skipped in favor of
-  higher-confidence selections. This rule applies to PTS props only. VOLATILE + 7/10 at T15+
-  for REB or AST is handled by the existing 78% REB minimum floor and AST gate rules
-  respectively. Exception: if the player has [iron_floor] on this stat AND trend=up, this
-  skip does not apply — the iron_floor tag elevates the floor reliability above the 7/10
-  baseline.
+  Rationale: VOLATILE players at T15+ with 7/10 or 8/10 hit rates represent the system's
+  weakest qualifying combinations. After the mandatory -5% VOLATILE deduction, 7/10 lands
+  at the 70% floor with no margin. 8/10 lands at 75% — low enough that any cold game or
+  role compression produces a significant undershoot, not a near-miss. Audit evidence:
+  Brandon Ingram missed PTS O15 three times in 8 days — once at 7/10 and twice at 8/10 —
+  all classified as variance or model_gap, all at T15. The VOLATILE tag is the system's
+  signal that this player's counting stats are distribution-wide; pairing it with T15+
+  at these hit rates is structurally marginal regardless of DvP or trend context. The
+  system generates enough picks that these combinations should be skipped in favor of
+  higher-confidence selections. This rule applies to PTS props only. VOLATILE + 7/10 or
+  8/10 at T15+ for REB or AST is handled by the existing 78% REB minimum floor and AST
+  gate rules respectively. Exception: if the player has [iron_floor] on this stat AND
+  trend=up, this skip does not apply — the iron_floor tag elevates the floor reliability
+  above the 8/10 baseline.
 
 KEY RULES — SHOOTING EFFICIENCY REGRESSION:
-- [FG_HOT:+X%] and [FG_COLD:-X%] annotations are informational only. Do not apply any confidence
-  adjustment in either direction based on these flags.
+- [FG_HOT:+X%] and [FG_COLD:-X%] annotations are generally informational. Do not apply any
+  confidence adjustment in either direction based on these flags.
 - Rationale: backtested across 521 instances — FG_HOT lift=1.014 (noise); FG_COLD lift=1.128
   (counterintuitively positive). Tier selection is based on counting-stat hit rates, not FG%, so
-  shooting efficiency fluctuations do not predict next-game PTS tier outcomes. Treat both flags
-  as context only — visible in the quant block for transparency, not directive.
+  shooting efficiency fluctuations do not predict next-game PTS tier outcomes in the general case.
+- EXCEPTION — severe FG_COLD on high PTS tiers: If a player shows [FG_COLD:-X%] where X ≥ 15
+  (i.e., L5 FG% is 15 or more percentage points below L20 FG%) AND the PTS pick tier is T15
+  or higher, apply a mandatory one-tier step-down (e.g., T15 → T10, T20 → T15) before
+  finalizing the pick. Re-evaluate whether the lower tier qualifies (≥70% hit rate). If it
+  does not qualify, skip the PTS pick.
+  Rationale: at severe FG_COLD thresholds on high counting-stat tiers, the recent shooting
+  depression is material enough to compress scoring output. The H10 backtest's positive
+  aggregate lift reflects regression-to-mean across all FG_COLD instances; at ≥15% cold
+  combined with a T15+ tier, the tail risk is structural, not noise. Audit evidence:
+  Cooper Flagg missed PTS O15 with FG_COLD:-18% present in quant data — the flag was
+  treated as informational and the pick was not stepped down. Flagg scored 14 (1 below
+  threshold) in 32 minutes.
+  This rule does NOT apply to: FG_COLD below 15%; T10 or lower PTS tiers; REB/AST/3PM props.
+  Document the tier step-down in the tier_walk field.
 
 KEY RULES — FG% SAFETY MARGIN (H11 — backtested, 537 instances):
 - PTS stat lines may show [FG_MARGIN_THIN:X%] based on the player's structural shooting margin.
@@ -1641,7 +1658,7 @@ JSON schema:
       "prop_type": "PTS | REB | AST | 3PM",
       "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
       "direction": "OVER",
-      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | ast_hard_gate | fg_margin_thin_no_valid_tier | reb_floor_skip",
+      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | ast_hard_gate | fg_margin_thin_no_valid_tier | reb_floor_skip | fg_cold_tier_step",
       "rule_context": {{
         ... fields specific to this skip_reason as defined in the rules above ...
       }}

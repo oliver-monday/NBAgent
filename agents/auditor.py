@@ -40,6 +40,7 @@ AUDIT_REPORTS_DIR   = DATA / "audit_reports"
 POST_GAME_NEWS_JSON  = DATA / "post_game_news.json"
 STANDINGS_JSON       = DATA / "standings_today.json"
 SKIPPED_PICKS_JSON   = DATA / "skipped_picks.json"
+MASTER_CSV           = DATA / "nba_master.csv"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -218,6 +219,119 @@ def load_post_game_news() -> dict:
     except Exception as e:
         print(f"[auditor] WARNING: could not load post_game_news.json: {e}")
         return {}
+
+
+def load_game_results() -> dict[str, dict]:
+    """
+    Load yesterday's final scores from nba_master.csv.
+    Returns a dict keyed by team abbreviation (both home and away) for O(1) lookup.
+
+    Each value:
+        {
+            "home": str,           # home team abbrev
+            "away": str,           # away team abbrev
+            "home_score": int,
+            "away_score": int,
+            "margin": int,         # abs(home_score - away_score)
+            "winner": str,         # abbrev of winning team
+            "loser": str,          # abbrev of losing team
+            "game_script": str,    # "blowout" | "competitive" | "close"
+        }
+
+    game_script thresholds:
+        margin >= 20  → "blowout"
+        margin >= 10  → "competitive"
+        margin <  10  → "close"
+
+    Returns empty dict on any error (file missing, parse failure, etc.).
+    """
+    if not MASTER_CSV.exists():
+        print("[auditor] nba_master.csv not found — skipping game results")
+        return {}
+    try:
+        master = pd.read_csv(MASTER_CSV)
+        yesterday_games = master[master["game_date"] == YESTERDAY_STR].copy()
+        if yesterday_games.empty:
+            print(f"[auditor] No games found in nba_master for {YESTERDAY_STR}")
+            return {}
+
+        results: dict[str, dict] = {}
+        for _, row in yesterday_games.iterrows():
+            home = str(row.get("home_team_abbrev", "")).strip().upper()
+            away = str(row.get("away_team_abbrev", "")).strip().upper()
+            try:
+                hs  = int(row["home_score"])
+                as_ = int(row["away_score"])
+            except (ValueError, TypeError):
+                continue  # score not yet filled (game not played or ingest gap)
+
+            margin = abs(hs - as_)
+            winner = home if hs > as_ else away
+            loser  = away if hs > as_ else home
+
+            if margin >= 20:
+                script = "blowout"
+            elif margin >= 10:
+                script = "competitive"
+            else:
+                script = "close"
+
+            game_dict = {
+                "home": home,
+                "away": away,
+                "home_score": hs,
+                "away_score": as_,
+                "margin": margin,
+                "winner": winner,
+                "loser": loser,
+                "game_script": script,
+            }
+            # Key by both team abbrevs for O(1) lookup from either side
+            results[home] = game_dict
+            results[away] = game_dict
+
+        print(f"[auditor] Loaded game results for {len(yesterday_games)} yesterday games")
+        return results
+    except Exception as e:
+        print(f"[auditor] Warning: could not load game results — {e}")
+        return {}
+
+
+def build_game_results_block(game_results: dict[str, dict]) -> str:
+    """
+    Format yesterday's game results as a prompt-injectable block.
+    Deduplicates games (each game appears once despite being keyed twice).
+    """
+    if not game_results:
+        return ""
+
+    seen: set = set()
+    lines: list[str] = []
+    for team, g in game_results.items():
+        game_key = f"{g['home']}_{g['away']}"
+        if game_key in seen:
+            continue
+        seen.add(game_key)
+        script_label = g["game_script"].upper()
+        lines.append(
+            f"  {g['away']} @ {g['home']}: "
+            f"{g['away_score']}–{g['home_score']} "
+            f"({g['winner']} won by {g['margin']}) [{script_label}]"
+        )
+
+    if not lines:
+        return ""
+
+    return (
+        "## GAME RESULTS — YESTERDAY\n"
+        "Final scores for all yesterday's games. Use these to establish game-script\n"
+        "context BEFORE analyzing individual misses. A blowout margin affects all\n"
+        "players on both sides of the game — do not require per-player web narratives\n"
+        "to apply game-script reasoning when the margin is already visible here.\n\n"
+        + "\n".join(sorted(lines))
+        + "\n\nGame script labels: BLOWOUT = margin ≥20pts; COMPETITIVE = margin 10–19pts; "
+          "CLOSE = margin <10pts.\n"
+    )
 
 
 def load_skipped_picks() -> list[dict]:
@@ -460,7 +574,7 @@ def build_absence_context(graded_picks: list[dict]) -> str:
     )
 
 
-def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", post_game_news: dict | None = None, playoff_picture: str = "") -> str:
+def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", post_game_news: dict | None = None, playoff_picture: str = "", game_results_block: str = "") -> str:
     hits    = [p for p in graded_picks if p["result"] == "HIT"]
     misses  = [p for p in graded_picks if p["result"] == "MISS"]
     no_data = [p for p in graded_picks if p["result"] == "NO_DATA"]
@@ -641,6 +755,7 @@ Do not flag exact-threshold results as near-misses or line-value problems in you
 ## SEASON CONTEXT — READ BEFORE ANALYZING ANY PICK
 {season_context if season_context else "No season context file found."}
 
+{game_results_block}
 {playoff_picture_section}Players marked OFS all season are permanent absences. Their teammates' current roles are baselines,
 not elevations. Do not cite these absences as a causal factor in any pick reasoning or audit
 analysis.
@@ -716,6 +831,30 @@ Add each NO_DATA pick to the "no_data_details" array in your output (see OUTPUT 
 ## PICK ANALYSIS TASK
 
 For every miss, perform analysis in this exact order before writing root_cause:
+
+STEP 0 — ESTABLISH GAME CONTEXT: Before analyzing any individual miss, look up the player's
+team abbreviation in the ## GAME RESULTS — YESTERDAY section above.
+  - Identify the final score and margin for their game.
+  - Note the game_script label: BLOWOUT / COMPETITIVE / CLOSE.
+  - If the game was a BLOWOUT (margin ≥ 20), apply game-script reasoning to ALL
+    players from that game — both the winning side (garbage-time production compression,
+    star resting once lead is safe) and the losing side (starters benched in the fourth
+    quarter, offensive rhythm disrupted). Do NOT require a separate web narrative to
+    apply blowout game-script reasoning when the margin is already established here.
+  - When multiple misses share the same game, establish the game context ONCE and
+    carry it forward as shared evidence for all players in that game. Do not re-derive
+    or contradict it per player.
+  - Game-script context established in STEP 0 is an input to STEP 2 miss classification.
+    A miss explained by blowout on either side is typically model_gap_rule (the signal —
+    pre-game spread — existed but the rule threshold was too permissive) or variance
+    (spread was already flagged and pick was made at reduced confidence). Use the
+    pre-game spread and blowout_risk field from the pick object alongside the actual
+    margin to determine which applies.
+  - If the game was COMPETITIVE or CLOSE: note this as neutral context. Game script
+    is not a causal factor for misses in these games.
+  - If game results are unavailable (## GAME RESULTS section is empty or player's
+    team not listed): proceed to STEP 1 using post-game news and pick object fields
+    as normal.
 
 STEP 1 — CHECK ACTIVITY: Did the player record any non-zero stat in any category (REB, AST,
 minutes implied by any non-zero output)? If actual_value is 0 for the picked stat, check all
@@ -1365,12 +1504,15 @@ def main():
         p_hits = sum(1 for p in graded_parlays if p["result"] == "HIT")
         print(f"[auditor] Parlays graded: {p_hits}/{len(graded_parlays)} hit")
 
-    season_context  = load_season_context()
-    playoff_picture = render_playoff_picture()
-    post_game_news  = load_post_game_news()
+    season_context     = load_season_context()
+    playoff_picture    = render_playoff_picture()
+    post_game_news     = load_post_game_news()
+    game_results       = load_game_results()
+    game_results_block = build_game_results_block(game_results)
     prompt = build_audit_prompt(
         graded_picks, graded_parlays, season_context, post_game_news,
         playoff_picture=playoff_picture,
+        game_results_block=game_results_block,
     )
     audit_entry = call_auditor(prompt)
 
