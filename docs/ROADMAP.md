@@ -7,6 +7,7 @@
 ### Operational
 - **Whitelist maintenance** — review and update `active` flags as the season evolves, especially post-trade-deadline role changes
 - **Season end handling** — workflows need to be paused/disabled in the off-season (roughly late June). Simplest approach: disable the cron schedules in each `.yml`, re-enable in October.
+- **DST → PST cron shift (early November)** — GitHub Actions cron runs in UTC. During PDT (mid-March → early November) PT = UTC-7; during PST (early November → mid-March) PT = UTC-8. All cron entries in `injuries.yml` (and any other workflow with PT-labeled schedules) need their UTC hour values incremented by 1 when clocks fall back in November, and decremented by 1 when clocks spring forward in March. Failure to update will cause the schedule to run one hour later than intended all winter. Add this to the October re-enable checklist.
 - **`context/nba_season_context.md` — manual restructure pending** — restructure SEASON FACTS into three decay tiers (PERMANENT / SEMI-STABLE / VOLATILE) as designed in Season Context Improvement 3. Improvements 0–2 are live as of March 8, 2026. This is a manual file edit only — no code required.
 
 ### Untested Hypotheses (backtest designs documented in `docs/BACKTESTS.md`)
@@ -28,18 +29,11 @@
 ### Frontend
 - **Parlays tab historical stats banner** — hidden until graded parlay history exists. Once data accumulates (1–2 weeks), evaluate whether to add a rolling chart similar to the picks trend chart.
 - **Mobile layout** — current pick cards are readable but not optimized for small screens. Low priority until real users request it.
+- **"Stay Away?" UI caution flag** — A `⚠ Stay Away?` badge on pick cards that meet the system's statistical criteria but carry compounding contextual risk signals. Does NOT suppress the pick — purely informational for manual betting decision. Badge triggers when 2+ risk signals co-occur on the same pick. Candidate signals: team momentum `[cold]` tag, opponent `[hot]` tag, `DENSE` schedule, `B2B`, `blowout_risk`, player on `[cold]` matchup DvP split, `VOLATILE` + weak trend. Badge expands a drawer (same UX pattern as "show reasoning") listing whichever signals fired and a brief plain-English summary. Implementation: small new field on pick output (`stay_away_signals: []`) written by analyst if signals fire; `build_site.py` renders badge + drawer. No new LLM calls, no new quant logic. Prerequisite: team momentum indicator live in production so `[hot]`/`[cold]` tags are available. Evaluate trigger threshold after momentum data accumulates (~2 weeks).
 
 ---
 
 ## Active Queue — In Priority Order
-
-### Season Context Improvement 3 — Restructure SEASON FACTS into Decay Tiers
-**Status: MANUAL — no Code prompt needed**
-**Priority: LOW — do after Improvements 0–2 land**
-
-**What:** Edit `context/nba_season_context.md` manually to add three explicit decay tiers to the SEASON FACTS section header: PERMANENT, SEMI-STABLE, VOLATILE. VOLATILE entries are explicitly dated and get the most scrutiny from the staleness detection added in Improvement 2. When a volatile fact stabilizes (e.g., Tatum's minutes settle after 10+ games), promote to SEMI-STABLE or remove entirely.
-
----
 
 ### P5 — Afternoon Lineup Update Agent (`agents/lineup_update.py`)
 **Status: ✅ IMPLEMENTED (March 10, 2026)**
@@ -82,30 +76,40 @@ Top Picks cards. Click expands: triggered_by, revised conf+reasoning, original m
 
 Design philosophy: the Analyst already has a solid quantitative matchup foundation (positional DvP, vs_soft/vs_tough splits, game pace, spread context). The following proposals address gaps where rolling averages give a misleading picture because something material has changed that the numbers alone cannot capture.
 
-#### M1 — Player × Opponent H2H Splits
-**Priority: MEDIUM — backtest-ready mid-April 2026**
-**Prerequisite: sufficient per-player-opponent sample sizes (~8+ games)**
+#### M1 — Situational Player Profiles (DEFERRED TO OFFSEASON)
+**Priority: OFFSEASON — multi-season data required; not tractable within a single season**
+**Replaces the original narrow H2H splits design; scope significantly expanded after March 2026 discussion**
 
-**What:** For each player today, compute their hit rate at their best tier specifically against today's opponent (full season history). Surface as `h2h_hit_rate` and `h2h_n` alongside the existing `vs_soft`/`vs_tough` population-level rates.
+**What this is really about:** The original M1 framing — compute per-player tier hit rate against today's specific opponent over a single season — is too narrow and too sample-limited to be honest. NBA teams play each opponent only 2–4 times per season. By the time you have 5+ matchups (the original minimum), the season is nearly over, and there's no subsequent game to act on. The regular season ends April 12, 2026 — the mid-April backtest timing in the original design was almost exactly end-of-season, making it operationally useless for in-season picks.
 
-**Why:** The system knows "Brunson hits PTS T25 80% of the time vs soft defenses." It does not know "Brunson hits PTS T25 in 7 of his last 8 games specifically against BOS." Those are different signals — a player may systematically over- or under-perform against a specific defensive scheme that the population-level soft/mid/tough rating smooths over.
+**The broader hypothesis worth investigating:** There is a real class of player-level situational performance patterns that are statistically grounded but currently invisible to the system. Examples that motivated this:
+- Players who consistently over- or under-perform against specific opponents (scheme familiarity, matchup history, rivalry dynamics)
+- Players who elevate in big-market road arenas (MSG, Crypto.com, TD Garden) — the "big stage" effect
+- Players who perform differently in nationally televised games vs. local broadcasts
+- Players with historically strong/weak records against specific defensive archetypes (switching teams, zone-heavy teams, physical bigs) across multiple seasons
+- Career rivalries between individual players (Ant vs. Luka, etc.) that show up in stat lines, not just narrative
 
-**Design:**
-- `quant.py` — `compute_h2h_splits(player_log, stat)`: per player × opponent, compute tier hit rate at best qualifying tier. Minimum n=5 to surface; null otherwise. New `h2h_splits` key in `player_stats.json`.
-- `analyst.py` — `h2h=XX%(Ng)` appended to stat line when n≥5 and today's opponent matches. Prompt rule: weight h2h rate over vs_soft/vs_tough when n≥8; supporting context only when n=5–7.
+**Why not now:** All of these require multi-season data with consistent role context to be meaningful. A single-season sample has too few instances per condition, and roster/role changes between seasons require careful controls. The investigation belongs in the offseason when there's time to assemble clean multi-season datasets and run honest backtests.
 
-**Validation gate:** After 30+ days of flagged h2h picks, run backtest H9. **Where:** `agents/quant.py`, `agents/analyst.py` only.
+**Relationship to Stay Away flag:** This offseason investigation is the right long-term feeder for the "Stay Away?" UI caution flag (see Frontend open items). The pattern isn't "the system should hard-skip this pick" — it's "here is a real tension between the statistical case and a situational risk factor the numbers don't fully capture." Small-sample situational splits are well-suited to informing a human hold decision, not to encoding as directive system rules.
+
+**Offseason research agenda (when ready):**
+- Assemble 2–3 seasons of `player_game_log.csv` data with consistent player-team mapping
+- Define and test: opponent-specific hit rate splits; home arena performance profiles; national TV game splits; opponent defensive archetype splits (requires team-level scheme tagging)
+- Validate each against a null hypothesis of no effect — most narrative-driven splits will not survive honest testing, and that's the finding worth knowing
+- For signals that survive: design annotation-only injection into player profiles or Stay Away flag triggers; do NOT encode as directive rules without further validation
+- Consider: which signals are stable enough across seasons to be useful in-season, and which require annual recalibration?
+
+**Where:** Offseason project. No current-season code changes.
 
 ---
 
 #### M2 — Defensive Recency Split
-**Priority: LOW-MEDIUM — cheap quant addition, no backtest required to ship**
+**Status: ✅ IMPLEMENTED (March 12, 2026)**
+
+`compute_opp_defense_recency()` added to `quant.py` (constants: `DEF_RECENCY_SHORT=5`, `DEF_RECENCY_THRESH=0.08`, `DEF_RECENCY_MIN_L5=3`). Compares opponent's L5 vs L15 PTS-allowed avg; flags `"soft"` (L5 ≥8% above L15) or `"tough"` (L5 ≥8% below L15); `def_recency` field in `player_stats.json`. `DEF↑`/`DEF↓` inline header annotation in `build_quant_context()`. Annotation only — no directive rules. Validation gate: after 30+ flagged instances, evaluate whether `DEF↑` picks outperform baseline vs. neutral/`DEF↓` picks.
 
 **What:** A recency flag on opponent defense: compare opponent's allowed average over last 5 games vs. last 15 games (the existing `opp_defense` window). Flag when L5 diverges materially from L15 — indicating the defense has changed recently (injury to key defender, scheme change, fatigue stretch).
-
-**Design:**
-- `quant.py` — extend `build_opp_defense()` or add `compute_opp_defense_recency()`. Flag `def_trending_soft` when L5 allowed avg ≥8% above L15; `def_trending_tough` when ≥8% below. Minimum 3 games in L5 window. New `def_recency` field per player in `player_stats.json`.
-- `analyst.py` — `DEF↑` (trending soft) or `DEF↓` (trending tough) per-player header annotation. Prompt rule: mild modifier, same weight as pace_tag — not tier-changing until backtested.
 
 **Validation gate:** After 30+ flagged instances, evaluate whether `def_trending_soft` picks outperform baseline. **Where:** `agents/quant.py`, `agents/analyst.py` only.
 
@@ -159,8 +163,8 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 
 | ID | Name | Status | Mode | ETA |
 |----|------|--------|------|-----|
-| H8 | Positional DvP Validity | Queued — data accumulating | `--mode positional-dvp` | ~early April 2026 |
-| H9 | Player × Opponent H2H | Queued — data accumulating | `--mode h2h-splits` | ~mid-April 2026 |
+| H8 | Positional DvP Validity | Queued — data accumulating | `--mode positional-dvp` | ~early April 2026 (run before Apr 12) |
+| H9 | Situational Player Profiles | DEFERRED TO OFFSEASON — see M1 entry | — | Oct 2026+ |
 | Miss Anatomy | Near-miss vs. blowup next-game | Queued — quant fields live | `--mode miss-anatomy` | ~late March 2026 |
 
 **Miss Anatomy — analyst wiring deferred:** `near_miss_rate` and `blowup_rate` fields are live in `player_stats.json` and feeding Player Profiles. The directive prompt rule (confidence modifier or tier-drop on high `blowup_rate`) is explicitly NOT shipped until the backtest validates the signal. See `miss_anatomy_quant_only.md`.
@@ -190,6 +194,8 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 - **Analyst — INJURY STATUS ON SHOOTING PROPS rule (March 10, 2026)** — New KEY RULES — INJURY STATUS ON SHOOTING PROPS block added to `build_prompt()`. When a player carries QUESTIONABLE status involving a soft-tissue joint concern (ankle, foot, knee, hip, groin), apply -5% confidence to all shooting-dependent props (3PM and PTS). Rationale: compromised lower-body movement shifts attempts away from the perimeter, reducing 3PM floors directly and PTS floors via shooting efficiency. Does not apply to PROBABLE/unlisted (OUT/DOUBTFUL already pre-filtered). Non-contact injury types (illness, rest) exempt.
 - **Analyst — 3PM hard skip: trend=down AND tough DvP (March 10, 2026)** — Second 3PM hard skip rule added to KEY RULES — SEQUENTIAL GAME CONTEXT in `build_prompt()`. If 3PM trend is "down" AND opponent DvP 3PM rating is "tough", skip all 3PM picks including T1 — do not apply step-down rule. Rationale: after a trend=down step-down lands at T1, there is no margin left; a single cold night produces zero. Tough perimeter DvP compounds the floor compression. Both March 9 audit 3PM misses (Mitchell T1 8/10, Murray T1 9/10) met this exact profile. Note: 3PM DvP is otherwise noise — this is the sole exception, requiring BOTH conditions simultaneously.
 - **Auditor — amendment context injection + model_gap sub-classification (March 10, 2026)** — STEP 6 added to PICK ANALYSIS TASK: Auditor reads `lineup_update` sub-object on pick objects and notes amendment direction vs. outcome in `root_cause` (direction=down + miss → "Amendment correctly flagged…"; direction=up + miss → "Amendment flagged upside but pick missed"; etc.). Does not change `miss_classification` — amendment notes are contextual feature-validation evidence only. `model_gap` split into `model_gap_signal` (system lacks the signal entirely — no quant field or rule exists) and `model_gap_rule` (signal existed in quant data/context but analyst rule didn't handle the combination). `save_audit_summary()` valid set updated to include both new sub-classifications; legacy `model_gap` removed. Two prose references to `model_gap` in NO_DATA block and STEP 2 inspection-order text also updated.
+- **Team Momentum Indicator (March 11, 2026)** — `build_team_momentum()` in `quant.py`. L10 record + avg point margin for player's team and opponent. `team_momentum` field in `player_stats.json`. `Momentum —` annotation line in `build_quant_context()` between DvP and stat lines. Annotation only — no directive rules. No new ingest required: fully derived from existing `nba_master.csv` completed game data. Tag logic: ≥7 wins = "hot", ≤3 wins = "cold", otherwise "neutral" (not shown in annotation). Computed for all teams playing today via `build_team_momentum(master_df, teams_today)` in `main()`; passed to `build_player_stats()` as `team_momentum=team_momentum`.
+- **M2 — Defensive Recency Split (March 12, 2026)** — `compute_opp_defense_recency()` added to `quant.py`; compares opponent's L5 vs L15 PTS-allowed avg; `DEF_RECENCY_SHORT=5`, `DEF_RECENCY_THRESH=0.08`, `DEF_RECENCY_MIN_L5=3`; flags `"soft"` (L5 ≥8% above L15 = defense trending easier) or `"tough"` (L5 ≥8% below L15 = defense tightening), `None` otherwise; `def_recency` field in `player_stats.json`; `DEF↑`/`DEF↓` inline header annotation in `build_quant_context()` after `{usg_spike_str}`; annotation only — no directive rules. Validation gate: after 30+ flagged instances, evaluate whether `DEF↑` picks outperform baseline.
 - **Fix: `analyst.yml` — commit `lineups_today.json` (March 10, 2026)** — `data/lineups_today.json` added as fourth entry in the analyst.yml commit loop (alongside `picks.json`, `parlays.json`, `player_stats.json`). Root cause: P5 implemented `write_analyst_snapshot()` in `analyst.py` and `lineup_update.py` correctly, but `analyst.yml` never committed the file. Every hourly `injuries.yml` run checked out a clean repo with no `lineups_today.json`, causing `lineup_update.py` to exit with "no snapshot found — skipping" and produce zero output. **Implementation lesson:** when a feature spans multiple workflows, explicitly audit every file the feature reads at runtime and verify it will be present in each workflow's checkout. Specifically: if workflow A writes a file and workflow B reads it in a later job, the file must be committed by A's commit step or B will always see a missing file. The "no file found" skip log is ambiguous — it can mean expected no-op *or* silent failure from a missing commit. Verify which before shipping cross-workflow features.
 
 ---
@@ -328,3 +334,5 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 | **Post-Game Reporter — Brave Search web narrative layer (March 11, 2026)** | `fetch_web_narratives()` added to `post_game_reporter.py` — queries Brave Search API for each missed-pick player (`"{name} {team} NBA recap {date}"`, 3 results). `call_claude_summarise_narratives()` makes a single batch Claude call (2048 tokens) and returns `{player_name_lower: narrative_string}`. `web_narrative` field added to `players_out` entries in `post_game_news.json` (default null). Auditor `build_audit_prompt()` appends `📰 WEB RECAP: {narrative}` to POST-GAME NEWS CONTEXT per missed player. `auditor.yml` wired with `BRAVE_API_KEY`. ESPN flow unchanged; web layer is additive and fully gracefully-degrading. Root cause addressed: ejections and foul-trouble narratives were invisible to reporter and auditor. |
 | **Skip Validation — analyst skip records + auditor grading (March 11, 2026)** | Analyst now emits `{"picks": [...], "skips": [...]}` JSON object (was flat array). Backward-compatible flat-array fallback retained. Skip records written to `data/skipped_picks.json` (overwrite daily) for hard-rule-forced skips where blocked tier had ≥70% hit rate. Eight `skip_reason` values: `min_floor_tier_step`, `volatile_weak_combo`, `blowout_secondary_scorer`, `3pm_trend_down_tough_dvp`, `3pm_trend_down_low_minutes`, `ast_hard_gate`, `fg_margin_thin_no_valid_tier`, `reb_floor_skip`. `call_analyst()` returns `(picks, skips)` tuple. `save_skips()` writes null grading fields. Auditor grades via pure-Python `grade_skips()` (no Claude call) — fills `actual_value`, `would_have_hit`, `skip_verdict`, `skip_verdict_notes`. `save_audit_summary()` rolls up `skip_validation` block (per-rule `false_skip_rate`). Daily audit report includes `## Skip Validation` table. `skipped_picks.json` committed in both `analyst.yml` and `auditor.yml`. |
 | **Injuries workflow — extended evening cron schedule (March 11, 2026)** | Hourly injury refresh runs extended from 6 PM PT cutoff to 10 PM PT. Seven new cron entries added (4 PM–10 PM PT). Covers all NBA tipoff windows (5 PM, 7 PM, 8 PM, 8:30 PM PT) and late-scratch window (~90 min post-tip). All schedule comments corrected from ET to PT. Root cause: late scratches announced after last scheduled refresh were leaving picks un-voided through tip-off. |
+| **Team Momentum Indicator (March 11, 2026)** | `build_team_momentum()` in `quant.py` computes L10 W-L record, avg point margin, and hot/cold/neutral tag for all teams playing today from `nba_master.csv`; `team_momentum` field in `player_stats.json` with `{team: {...}, opponent: {...}}` structure; `Momentum —` annotation line in `build_quant_context()` between DvP line and stat lines; annotation only — no directive rules. |
+| **M2 — Defensive Recency Split (March 12, 2026)** | `compute_opp_defense_recency()` added to `quant.py`; `def_recency` field in `player_stats.json`; `DEF↑`/`DEF↓` inline header annotation in analyst `build_quant_context()`; annotation only — no directive rules; validation gate at 30+ flagged instances. |

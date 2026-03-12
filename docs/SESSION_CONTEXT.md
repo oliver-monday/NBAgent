@@ -67,6 +67,8 @@ bounce_back,          ← player-level post-miss profiles + iron_floor + miss an
 volatility,           ← {PTS/REB/AST/3PM: {label, sigma, n}}
 positional_dvp,       ← {position, pts_rating, reb_rating, ast_rating, tpm_rating, n, source}
 ft_safety_margin,     ← {label, margin, breakeven_fg_pct, season_fg_pct, n}; null if insufficient FT data
+team_momentum,        ← {team: {l10_wins, l10_losses, l10_pct, l10_margin, tag}, opponent: {...}}; null if no data
+def_recency,          ← "soft" | "tough" | null — opponent's L5 vs L15 PTS allowed divergence; null when <3 L5 games or within threshold
 shooting_regression,  ← {fg_hot, fg_cold, fg_pct_l5, fg_pct_l20, n_l5, n_l20}; null if insufficient data
 profile_narrative     ← string or null; live portrait for ≥10 non-DNP games + qualifying PTS best tier
 ```
@@ -85,15 +87,17 @@ conditional rendering. Analyst wiring for directive rules is **deferred** pendin
 ## Current Quant Context Block Format (what the Analyst actually sees per player)
 
 ```
-Jalen Brunson (vs BOS | spread_abs=5.5 rest=1d L7:4g proj_min=34 [USG_SPIKE:+7.2pp vs J.Holiday]):
+Jalen Brunson (vs BOS | spread_abs=5.5 rest=1d L7:4g proj_min=34 [USG_SPIKE:+7.2pp vs J.Holiday] DEF↑):
   ⚠ OPP: Jayson Tatum OUT (proj=0min)
   DvP [PG]: PTS=soft REB=mid AST=tough 3PM=soft (n=52)
+  Momentum — NYK: 7-3 L10 avg_margin=+5.2 [hot] | BOS: 4-6 L10 avg_margin=-1.8
   PTS: tier=25 overall=80% vs_soft=85%(14g) vs_tough=62%(11g) competitive=79%(18g) blowout_games=71%(7g) trend=up bb_lift=1.18(6miss) [consistent]
   AST: tier=6 overall=72% vs_soft=n/a vs_tough=68%(11g) competitive=74%(18g) blowout_games=n/a trend=stable [VOLATILE]
 ```
 
-**Header flags:** `B2B`, `rest=Xd`, `DENSE`, `L7:Xg`, `BLOWOUT_RISK=True`, `spread_abs=X.X`, `proj_min=N` (Rotowire projected minutes, when creds present), `[USG_SPIKE:+N.Npp vs X.Name]` (usage spike ≥5pp + ≥100 min sample, when creds present)
-**After DvP line (optional):** `⚠ OPP: Name OUT (proj=0min)` — opponent player with 0 projected minutes per Rotowire; capped at 3 entries; only emitted when Rotowire creds present
+**Header flags:** `B2B`, `rest=Xd`, `DENSE`, `L7:Xg`, `BLOWOUT_RISK=True`, `spread_abs=X.X`, `proj_min=N` (Rotowire projected minutes, when creds present), `[USG_SPIKE:+N.Npp vs X.Name]` (usage spike ≥5pp + ≥100 min sample, when creds present), `DEF↑` (opponent defense trending soft — L5 ≥8% above L15 PTS allowed), `DEF↓` (opponent defense trending tough — L5 ≥8% below L15 PTS allowed); omitted when neutral or insufficient data
+**After DvP line (optional):** `Momentum —` line showing L10 W-L record, avg point margin, and hot/cold tag for the player's team and opponent; omitted when neither team's momentum can be computed; "neutral" tag teams show no tag (only [hot] and [cold] labelled)
+**After Momentum line (optional):** `⚠ OPP: Name OUT (proj=0min)` — opponent player with 0 projected minutes per Rotowire; capped at 3 entries; only emitted when Rotowire creds present
 **DvP line:** one per player (not per stat), covers all 4 stats, shows `(team-lvl)` tag when
 the positional sample had < 10 games. `n=` is the number of player-game observations.
 **Stat line fields (in order):** `tier` · `overall` · `vs_soft` · `vs_tough` · `competitive` ·
@@ -269,7 +273,9 @@ touched — the sub-object is additive, not destructive.
 - `build_bounce_back_profiles(player_log_df, whitelist_set)` → `{player: {stat: {post_miss_hit_rate, lift, iron_floor, n_misses, near_miss_rate, blowup_rate, typical_miss}}}`
 - `build_team_defense_narratives(team_log)` → `dict[str, str]`; writes `data/team_defense_narratives.json`; one auto-generated narrative per team (PPG allowed + rank + perimeter/pace clauses when columns available)
 - `build_player_profiles(player_stats_dict)` → mutates `profile_narrative` key in-place for each player meeting eligibility; called at end of `main()` after `build_player_stats()` writes the JSON
-- `build_player_stats(player_log, b2b_teams, opp_defense, game_pace, todays_games, teammate_correlations, whitelist, game_spreads=None, master_df=None, b2b_game_ids=None, positional_dvp_data=None, position_map=None)` → full `player_stats.json` dict
+- `build_team_momentum(master_df, teams_today) → dict[str, dict]` — computes L10 W-L record, avg point margin, and hot (≥7W) / cold (≤3W) / neutral tag for each team in `teams_today`; uses completed games only (both scores present, date < TODAY_STR); returns `{}` if master_df is None/empty; tag is always one of "hot"/"cold"/"neutral"
+- `compute_opp_defense_recency(team_log) → dict[str, str | None]` — one entry per team appearing as opponent today; value is `"soft"` (L5 PTS-allowed ≥8% above L15), `"tough"` (L5 ≥8% below L15), or `None` (neutral / insufficient data); requires `n_l15 ≥ 3` and `n_l5 ≥ DEF_RECENCY_MIN_L5 (3)` to compute; mirrors `build_opp_defense()` self-join pattern
+- `build_player_stats(player_log, b2b_teams, opp_defense, game_pace, todays_games, teammate_correlations, whitelist, game_spreads=None, master_df=None, b2b_game_ids=None, positional_dvp_data=None, position_map=None, team_momentum=None, opp_defense_recency=None)` → full `player_stats.json` dict
 
 ### `ingest/rotowire_injuries_only.py`
 - `ROTOWIRE_LOGIN_URL` — constant for Rotowire login endpoint
@@ -503,7 +509,9 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 | TEAM DEFENSIVE PROFILES | ## TEAM DEFENSIVE PROFILES section | Rolling 15g — replaces static file section |
 | proj_min=N (player header) | Quant context block header | Rotowire projected minutes; contextual only — no directive rules; absent when Rotowire creds not present |
 | [USG_SPIKE:+Npp vs X.Name] (player header) | Quant context block header | Usage boost ≥5pp with ≥100 min sample when named player absent; treat as contextual positive signal |
-| ⚠ OPP: Name OUT (proj=0min) | After DvP line | Opponent key player with 0 projected minutes per Rotowire; supports matchup assessment; absent when creds not present |
+| ⚠ OPP: Name OUT (proj=0min) | After Momentum line | Opponent key player with 0 projected minutes per Rotowire; supports matchup assessment; absent when creds not present |
+| Momentum — line | After DvP line | L10 W-L record + avg margin + hot/cold tag; annotation only — no directive rules; unbacktested; treat as situational awareness |
+| DEF↑ / DEF↓ (player header) | Quant context block header | Opponent's L5 vs L15 PTS-allowed divergence ≥8%; annotation only — no directive rules; absent when neutral or <3 L5 games |
 
 ---
 
@@ -519,6 +527,7 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 | P4 | Tier-Walk Audit Trail | ✅ DONE (March 6, 2026) | — |
 | P5 | Afternoon Lineup Update Agent | ✅ DONE (March 10, 2026) | `analyst.py`, `agents/lineup_update.py` (new), `injuries.yml`, `build_site.py`, `AGENTS.md` |
 | P6 | Skip Validation System | ✅ DONE (March 11, 2026) | `analyst.py`, `auditor.py`, `analyst.yml`, `auditor.yml` |
+| P7 | Team Momentum Indicator | ✅ DONE (March 11, 2026) | `quant.py`, `analyst.py` |
 | #1 | Teammate Absence Delta | Deferred to next season (insufficient DNP sample) | `quant.py`, `analyst.py` |
 
 **Also completed March 9 (not in prior queue but shipped):**
@@ -538,6 +547,8 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 - Three analyst prompt rule hardening changes — (1) MINUTES FLOOR: T15 mandatory step-down (raised from T20); avg_minutes > 36 exception; (2) VOLATILITY iron-floor scope: two-bullet interaction model separating tier protection (yes) from confidence level (no); SG/SF AST case explicitly called out; (3) VOLATILE PTS skip rule: VOLATILE + 7/10 + T15+ → skip entirely; exception: iron_floor + trend=up
 - Post-Game Reporter web search narrative layer — `fetch_web_narratives()` (Brave Search) + `call_claude_summarise_narratives()` + `_get_miss_pick_meta()` added to `post_game_reporter.py`; `web_narrative` field in `post_game_news.json`; rendered as `📰 WEB RECAP:` in auditor `build_audit_prompt()`; `BRAVE_API_KEY` added to `auditor.yml`
 - Skip Validation System (P6) — `analyst.py` emits `{"picks": [...], "skips": [...]}` JSON object; `save_skips()` writes `data/skipped_picks.json` with null grading fields; `auditor.py` grades skips via `grade_skips()` (pure Python, no LLM), writes back, rolls up into `audit_summary.json["skip_validation"]` per-rule false skip rates; `save_audit_report()` appends `## Skip Validation` table to daily markdown; both `analyst.yml` and `auditor.yml` commit `skipped_picks.json`
+- Team Momentum Indicator (P7) — `build_team_momentum()` in `quant.py` computes L10 W-L record, avg point margin, and hot/cold/neutral tag for all teams playing today from `nba_master.csv`; `team_momentum` field in `player_stats.json` with `{team: {...}, opponent: {...}}` structure; `Momentum —` annotation line in `build_quant_context()` between DvP line and stat lines; annotation only — no directive rules
+- M2 Defensive Recency Split — `compute_opp_defense_recency()` added to `quant.py` (constants: `DEF_RECENCY_SHORT=5`, `DEF_RECENCY_THRESH=0.08`, `DEF_RECENCY_MIN_L5=3`); compares opponent's L5 vs L15 PTS-allowed avg; flags `"soft"` (L5 ≥8% above L15) or `"tough"` (L5 ≥8% below L15) or `None`; `def_recency` field in `player_stats.json`; `DEF↑`/`DEF↓` inline header annotation in `build_quant_context()`; annotation only — no directive rules; no validation gate required
 
 **Next backtests to run:**
 - **H8 — Positional DvP Validity:** Does positional DvP outpredict team-level DvP for PTS/AST? Requires ~30 days of live positional DvP data. Run ~early April 2026.

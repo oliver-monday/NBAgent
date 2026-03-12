@@ -282,6 +282,91 @@ def build_game_spreads(todays_games: list[dict]) -> dict:
     return result
 
 
+def build_team_momentum(master_df: pd.DataFrame, teams_today: set[str]) -> dict:
+    """
+    Compute L10 win/loss record and average point margin for each team playing today.
+
+    Uses completed games only (games where both home_score and away_score are non-null
+    and the game_date is before TODAY_STR).
+
+    Returns:
+        {
+            "HOU": {
+                "l10_wins":   4,
+                "l10_losses": 6,
+                "l10_pct":    0.4,
+                "l10_margin": -3.2,   # avg point differential (positive = winning)
+                "tag":        "cold"  # "hot" (7+W), "cold" (≤3W), "neutral" otherwise
+            },
+            ...
+        }
+    Returns {} if master_df is empty or None.
+    """
+    if master_df is None or master_df.empty:
+        return {}
+
+    df = master_df.copy()
+    df["game_date"] = pd.to_datetime(df["game_date"], errors="coerce").dt.strftime("%Y-%m-%d")
+    # Completed games only: both scores present, date before today
+    df = df[df["game_date"] < TODAY_STR].copy()
+    for col in ["home_score", "away_score"]:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    df = df.dropna(subset=["home_score", "away_score"])
+
+    momentum: dict = {}
+
+    for team in teams_today:
+        team = team.upper()
+        # Find all games where this team was home or away
+        home_mask = df["home_team_abbrev"].str.upper() == team
+        away_mask = df["away_team_abbrev"].str.upper() == team
+        team_games = df[home_mask | away_mask].sort_values("game_date", ascending=False)
+
+        last10 = team_games.head(10)
+        if last10.empty:
+            continue
+
+        wins = 0
+        losses = 0
+        margins = []
+
+        for _, row in last10.iterrows():
+            is_home = str(row.get("home_team_abbrev", "")).upper() == team
+            if is_home:
+                team_pts = row["home_score"]
+                opp_pts  = row["away_score"]
+            else:
+                team_pts = row["away_score"]
+                opp_pts  = row["home_score"]
+            margin = team_pts - opp_pts
+            margins.append(margin)
+            if margin > 0:
+                wins += 1
+            else:
+                losses += 1
+
+        n = wins + losses
+        l10_pct    = round(wins / n, 3) if n > 0 else None
+        l10_margin = round(sum(margins) / len(margins), 1) if margins else None
+
+        if wins >= 7:
+            tag = "hot"
+        elif wins <= 3:
+            tag = "cold"
+        else:
+            tag = "neutral"
+
+        momentum[team] = {
+            "l10_wins":   wins,
+            "l10_losses": losses,
+            "l10_pct":    l10_pct,
+            "l10_margin": l10_margin,
+            "tag":        tag,
+        }
+
+    return momentum
+
+
 # ── Opponent defensive context ────────────────────────────────────────
 
 def build_opp_defense(team_log: pd.DataFrame) -> dict:
@@ -344,6 +429,101 @@ def build_opp_defense(team_log: pd.DataFrame) -> dict:
                 "n_teams": n_teams,
                 "rating": rating,
             }
+
+    return result
+
+
+# ── Opponent defensive recency split ─────────────────────────────────
+
+DEF_RECENCY_SHORT   = 5    # recent window for recency comparison
+DEF_RECENCY_THRESH  = 0.08 # ≥8% divergence from L15 = trending flag
+DEF_RECENCY_MIN_L5  = 3    # minimum games in L5 window to compute flag
+
+
+def compute_opp_defense_recency(team_log: pd.DataFrame) -> dict:
+    """
+    For each team in team_log, compare their allowed PTS average over the last
+    DEF_RECENCY_SHORT (5) games vs. the last OPP_WINDOW (15) games.
+
+    Flags when the L5 average diverges from the L15 average by ≥ DEF_RECENCY_THRESH (8%):
+      - "soft"  when L5 allowed avg ≥ 8% ABOVE L15 (defense trending softer — leaking more)
+      - "tough" when L5 allowed avg ≥ 8% BELOW L15 (defense trending tougher — locking down)
+      - None    otherwise (neutral / insufficient data)
+
+    Uses PTS only as the primary recency signal (most stable indicator of defensive trend).
+
+    Returns:
+        {
+            "HOU": {
+                "flag":      "soft",   # "soft" | "tough" | None
+                "l5_avg":    115.4,    # allowed PTS per game, last 5 games
+                "l15_avg":   110.2,    # allowed PTS per game, last 15 games
+                "delta_pct": 0.047,    # (l5_avg - l15_avg) / l15_avg; positive = trending soft
+                "n_l5":      5,
+                "n_l15":     15,
+            },
+            ...
+        }
+    Returns {} if team_log is empty.
+    """
+    if team_log.empty:
+        return {}
+
+    # Mirror the self-join from build_opp_defense() to get allowed_pts per game
+    tl = team_log[["game_id", "game_date", "team_abbrev", "opp_abbrev", "team_pts"]].copy()
+    tl_opp = tl.rename(columns={
+        "team_abbrev": "opp_check",
+        "opp_abbrev":  "team_check",
+        "team_pts":    "allowed_pts",
+    })
+    merged = tl.merge(
+        tl_opp[["game_id", "opp_check", "team_check", "allowed_pts"]],
+        left_on=["game_id", "team_abbrev", "opp_abbrev"],
+        right_on=["game_id", "team_check", "opp_check"],
+        how="inner",
+    )
+
+    if merged.empty:
+        return {}
+
+    result: dict = {}
+    for team in merged["team_abbrev"].unique():
+        rows = (
+            merged[merged["team_abbrev"] == team]
+            .sort_values("game_date", ascending=False)  # newest first
+        )
+        l15_rows = rows.head(OPP_WINDOW)          # last 15
+        l5_rows  = rows.head(DEF_RECENCY_SHORT)   # last 5
+
+        n_l15 = len(l15_rows)
+        n_l5  = len(l5_rows)
+
+        if n_l15 < 3 or n_l5 < DEF_RECENCY_MIN_L5:
+            continue
+
+        l15_avg = round(l15_rows["allowed_pts"].mean(), 1)
+        l5_avg  = round(l5_rows["allowed_pts"].mean(), 1)
+
+        if l15_avg == 0:
+            continue
+
+        delta_pct = (l5_avg - l15_avg) / l15_avg  # positive = leaking more (soft trend)
+
+        if delta_pct >= DEF_RECENCY_THRESH:
+            flag = "soft"
+        elif delta_pct <= -DEF_RECENCY_THRESH:
+            flag = "tough"
+        else:
+            flag = None
+
+        result[team] = {
+            "flag":      flag,
+            "l5_avg":    l5_avg,
+            "l15_avg":   l15_avg,
+            "delta_pct": round(delta_pct, 4),
+            "n_l5":      n_l5,
+            "n_l15":     n_l15,
+        }
 
     return result
 
@@ -1471,6 +1651,8 @@ def build_player_stats(
     b2b_game_ids: dict | None = None,
     positional_dvp_data: dict | None = None,
     position_map: dict | None = None,
+    team_momentum: dict | None = None,
+    opp_defense_recency: dict | None = None,
 ) -> dict:
 
     # Bounce-back profiles use full player_log (all season history, not today-filtered)
@@ -1590,6 +1772,17 @@ def build_player_stats(
         spread_abs   = spread_ctx.get("spread_abs")
         blowout_risk = spread_ctx.get("blowout_risk", False)
 
+        # Team momentum context for this player's team and opponent
+        momentum_team = (team_momentum or {}).get(team)
+        momentum_opp  = (team_momentum or {}).get(opponent) if opponent else None
+        team_momentum_ctx = {
+            "team":     momentum_team,
+            "opponent": momentum_opp,
+        } if (momentum_team or momentum_opp) else None
+
+        # Defensive recency flag for today's opponent (L5 vs L15 divergence)
+        def_recency = (opp_defense_recency or {}).get(opponent) if opponent else None
+
         # Historical spread split hit rates (competitive vs blowout games)
         if master_df is not None and not master_df.empty:
             spread_split_hit_rates = {
@@ -1648,6 +1841,8 @@ def build_player_stats(
             "volatility": volatility,
             "shooting_regression": shooting_regression,
             "ft_safety_margin": ft_safety_margin,
+            "team_momentum":    team_momentum_ctx,
+            "def_recency":      def_recency,
             "positional_dvp": positional_dvp_entry,
         }
 
@@ -1944,6 +2139,10 @@ def main():
     opp_defense = build_opp_defense(team_log)
     print(f"[quant] Opponent defense computed for {len(opp_defense)} teams")
 
+    opp_defense_recency = compute_opp_defense_recency(team_log)
+    n_flagged = sum(1 for v in opp_defense_recency.values() if v is not None)
+    print(f"[quant] Defensive recency computed for {len(opp_defense_recency)} teams ({n_flagged} flagged)")
+
     build_team_defense_narratives(team_log)  # writes team_defense_narratives.json; best-effort
 
     position_map = load_whitelist_positions()
@@ -1962,6 +2161,9 @@ def main():
         teams_today.add(g["home"].upper())
         teams_today.add(g["away"].upper())
 
+    team_momentum = build_team_momentum(master_df, teams_today)
+    print(f"[quant] Team momentum computed for {len(team_momentum)} teams")
+
     teammate_correlations = build_teammate_correlations(player_log, teams_today, whitelist)
     print(f"[quant] Teammate correlations computed for {len(teammate_correlations)} players")
 
@@ -1972,6 +2174,8 @@ def main():
         b2b_game_ids=b2b_game_ids,
         positional_dvp_data=positional_dvp_data,
         position_map=position_map,
+        team_momentum=team_momentum,
+        opp_defense_recency=opp_defense_recency,
     )
     print(f"[quant] Built stats cards for {len(player_stats)} players")
 

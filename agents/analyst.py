@@ -896,6 +896,30 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
             f"(n={dvp.get('n', 0)})"
         ) if dvp else ""
 
+        # Momentum line — L10 record + avg margin for both teams
+        momentum_line = ""
+        tm_ctx  = s.get("team_momentum") or {}
+        tm_self = tm_ctx.get("team") or {}
+        tm_opp  = tm_ctx.get("opponent") or {}
+        if tm_self or tm_opp:
+            def _fmt_momentum(m: dict, label: str) -> str:
+                if not m:
+                    return ""
+                w   = m.get("l10_wins", 0)
+                l   = m.get("l10_losses", 0)
+                mg  = m.get("l10_margin")
+                tag = m.get("tag", "")
+                tag_str = f" [{tag}]" if tag and tag != "neutral" else ""
+                mg_str  = f" avg_margin={mg:+.1f}" if mg is not None else ""
+                return f"{label}: {w}-{l} L10{mg_str}{tag_str}"
+            parts = []
+            self_str = _fmt_momentum(tm_self, s.get("team", "TEAM"))
+            opp_str  = _fmt_momentum(tm_opp,  s.get("opponent", "OPP"))
+            if self_str: parts.append(self_str)
+            if opp_str:  parts.append(opp_str)
+            if parts:
+                momentum_line = "  Momentum — " + " | ".join(parts)
+
         stat_parts = []
         bounce_back_all    = s.get("bounce_back") or {}
         volatility_all     = s.get("volatility") or {}
@@ -998,6 +1022,10 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
         else:
             min_floor_str = ""
 
+        # Defensive recency flag for today's opponent (L5 vs L15 divergence)
+        def_recency = s.get("def_recency")
+        def_rec_str = " DEF↑" if def_recency == "soft" else " DEF↓" if def_recency == "tough" else ""
+
         if stat_parts:
             spread_info  = f"spread_abs={spread_abs:.1f}" if spread_abs is not None else "spread=n/a"
             blowout_flag = " BLOWOUT_RISK=True" if blowout_risk else ""
@@ -1011,8 +1039,9 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
             dense_flag = " DENSE" if dense_schedule else ""
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             lines.append(
-                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}{proj_min_str}{usg_spike_str}):\n"
+                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
                 + (defense_line + "\n" if defense_line else "")
+                + (momentum_line + "\n" if momentum_line else "")
                 + (opp_absence_str + "\n" if opp_absence_str else "")
                 + "\n".join(stat_parts)
             )
