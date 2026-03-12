@@ -2,25 +2,25 @@ name: Injuries Refresh
 
 on:
   schedule:
-    - cron: "45 19 * * *"   # 11:45 AM PT
-    - cron: "15 20 * * *"   # 12:15 PM PT
-    - cron: "45 20 * * *"   # 12:45 PM PT
-    - cron: "15 21 * * *"   #  1:15 PM PT
-    - cron: "45 21 * * *"   #  1:45 PM PT
-    - cron: "15 22 * * *"   #  2:15 PM PT
-    - cron: "45 22 * * *"   #  2:45 PM PT
-    - cron: "15 23 * * *"   #  3:15 PM PT
-    - cron: "45 23 * * *"   #  3:45 PM PT
-    - cron: "15 0 * * *"    #  4:15 PM PT
-    - cron: "45 0 * * *"    #  4:45 PM PT
-    - cron: "15 1 * * *"    #  5:15 PM PT
-    - cron: "45 1 * * *"    #  5:45 PM PT
-    - cron: "15 2 * * *"    #  6:15 PM PT
-    - cron: "45 2 * * *"    #  6:45 PM PT
-    - cron: "15 3 * * *"    #  7:15 PM PT
-    - cron: "45 3 * * *"    #  7:45 PM PT
-    - cron: "15 4 * * *"    #  8:15 PM PT
-    - cron: "45 4 * * *"    #  8:45 PM PT
+    - cron: "45 18 * * *"   # 11:45 AM PT
+    - cron: "15 19 * * *"   # 12:15 PM PT
+    - cron: "45 19 * * *"   # 12:45 PM PT
+    - cron: "15 20 * * *"   #  1:15 PM PT
+    - cron: "45 20 * * *"   #  1:45 PM PT
+    - cron: "15 21 * * *"   #  2:15 PM PT
+    - cron: "45 21 * * *"   #  2:45 PM PT
+    - cron: "15 22 * * *"   #  3:15 PM PT
+    - cron: "45 22 * * *"   #  3:45 PM PT
+    - cron: "15 23 * * *"   #  4:15 PM PT
+    - cron: "45 23 * * *"   #  4:45 PM PT
+    - cron: "15 0 * * *"    #  5:15 PM PT
+    - cron: "45 0 * * *"    #  5:45 PM PT
+    - cron: "15 1 * * *"    #  6:15 PM PT
+    - cron: "45 1 * * *"    #  6:45 PM PT
+    - cron: "15 2 * * *"    #  7:15 PM PT
+    - cron: "45 2 * * *"    #  7:45 PM PT
+    - cron: "15 3 * * *"    #  8:15 PM PT
+    - cron: "45 3 * * *"    #  8:45 PM PT
   workflow_dispatch:
 
 permissions:
