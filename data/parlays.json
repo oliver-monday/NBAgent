@@ -1788,5 +1788,190 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-12",
+    "parlays": [
+      {
+        "label": "Thursday Floor Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Derrick White",
+            "team": "BOS",
+            "opponent": "OKC",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "IND",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Giannis Antetokounmpo",
+            "team": "MIL",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Three independent games, all 9/10 hit rates, no shared lineup risk, conservative thresholds across different prop types.",
+        "date": "2026-03-12",
+        "id": "parlay_2026-03-12_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Multi-Game Volume Triple",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Austin Reaves",
+            "team": "LAL",
+            "opponent": "CHI",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "IND",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Giannis Antetokounmpo",
+            "team": "MIL",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "positive",
+        "rationale": "Three separate games, volume_game correlation tags, all 9/10 hit rates with ultra-low conservative thresholds minimizing bust risk.",
+        "date": "2026-03-12",
+        "id": "parlay_2026-03-12_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Independent Scorers Sweeper",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Austin Reaves",
+            "team": "LAL",
+            "opponent": "CHI",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "WSH",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "BOS",
+            "prop_type": "PTS",
+            "pick_value": 25,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Three independent games with no lineup overlap; SGA elite scorer anchors while two low-threshold assists props provide sturdy floor coverage.",
+        "date": "2026-03-12",
+        "id": "parlay_2026-03-12_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Bam-White Cross-Game Lock",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Derrick White",
+            "team": "BOS",
+            "opponent": "OKC",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Bam Adebayo",
+            "team": "MIA",
+            "opponent": "MIL",
+            "prop_type": "REB",
+            "pick_value": 8,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "WSH",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4867,
+        "correlation": "independent",
+        "rationale": "Three separate games mixing PTS and REB prop types; all 78%+ confidence, no shared game script risk, diversified across BOS, MIA, ORL.",
+        "date": "2026-03-12",
+        "id": "parlay_2026-03-12_04",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
