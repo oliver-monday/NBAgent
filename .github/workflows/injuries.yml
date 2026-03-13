@@ -22,7 +22,6 @@ on:
     - cron: "15 2 * * *"    #  7:15 PM PT
     - cron: "45 2 * * *"    #  7:45 PM PT
     - cron: "15 3 * * *"    #  8:15 PM PT
-    - cron: "45 3 * * *"    #  8:45 PM PT
   workflow_dispatch:
 
 permissions:
