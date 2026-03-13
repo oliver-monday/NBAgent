@@ -23,13 +23,14 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SITE = ROOT / "site"
 
-PICKS_JSON          = DATA / "picks.json"
-PARLAYS_JSON        = DATA / "parlays.json"
-AUDIT_LOG_JSON      = DATA / "audit_log.json"
-AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
-MASTER_CSV     = DATA / "nba_master.csv"
-INJURIES_JSON  = DATA / "injuries_today.json"
-WHITELIST_CSV  = ROOT / "playerprops" / "player_whitelist.csv"
+PICKS_JSON              = DATA / "picks.json"
+PARLAYS_JSON            = DATA / "parlays.json"
+AUDIT_LOG_JSON          = DATA / "audit_log.json"
+AUDIT_SUMMARY_JSON      = DATA / "audit_summary.json"
+MASTER_CSV              = DATA / "nba_master.csv"
+INJURIES_JSON           = DATA / "injuries_today.json"
+OPPORTUNITY_FLAGS_JSON  = DATA / "opportunity_flags.json"
+WHITELIST_CSV           = ROOT / "playerprops" / "player_whitelist.csv"
 
 # Team abbreviation normalization — nba_master.csv sometimes uses legacy short forms
 _ABBR_NORM = {
@@ -446,6 +447,20 @@ def load_yesterday_summary() -> dict:
         return {}
 
 
+def load_opportunity_flags() -> list:
+    """
+    Reads opportunity_flags.json and returns today's suggestions only.
+    Returns [] gracefully if file is missing or malformed.
+    """
+    try:
+        flags = load_json(OPPORTUNITY_FLAGS_JSON, [])
+        if not isinstance(flags, list):
+            return []
+        return [f for f in flags if f.get("date") == TODAY_STR]
+    except Exception:
+        return []
+
+
 def get_top_picks(picks: list, max_picks: int = 5) -> list:
     """
     Returns today's top picks.
@@ -488,8 +503,9 @@ def build_site():
     game_times = load_game_times()
     injuries_display = load_injuries_display()
     ml_odds = load_game_ml_odds()
-    parlays_data     = load_todays_parlays()
+    parlays_data      = load_todays_parlays()
     yesterday_summary = load_yesterday_summary()
+    opportunity_flags = load_opportunity_flags()
 
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
     past_picks  = [p for p in picks if p.get("date") != TODAY_STR
@@ -541,7 +557,8 @@ def build_site():
         "injuries":  injuries_display,
         "parlays":   parlays_data,
         "ml_odds":          ml_odds,
-        "yesterday_summary": yesterday_summary,
+        "yesterday_summary":  yesterday_summary,
+        "opportunity_flags":  opportunity_flags,
         "top_picks": top_picks,
         "top_picks_history": {
             "hits": tp_hits,
@@ -575,6 +592,7 @@ def generate_html(d: dict) -> str:
     top_picks_json          = json.dumps(d.get("top_picks", []))
     top_picks_history_json  = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
     yesterday_summary_json  = json.dumps(d.get("yesterday_summary", {}))
+    opportunity_flags_json  = json.dumps(d.get("opportunity_flags", []))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1043,6 +1061,7 @@ const DATA = {{
   top_picks:         {top_picks_json},
   top_picks_history: {top_picks_history_json},
   yesterday_summary: {yesterday_summary_json},
+  opportunity_flags: {opportunity_flags_json},
 }};
 
 function showTab(name) {{
@@ -1305,6 +1324,38 @@ function renderPicks() {{
 
     html += `</div></div></div>`;
   }});
+
+  // ── Opportunity flags — amber cards below main picks ─────────────────────
+  const opps = (DATA.opportunity_flags || []).filter(f => f.date === DATA.today_str);
+  if (opps.length) {{
+    html += `<div class="section-header" style="margin-top:24px;color:#F5A623;">⚡ OPPORTUNITIES — Late-Scratch Pickups</div>`;
+    opps.forEach(opp => {{
+      const cautions = (opp.caution_flags || []);
+      const cautionHtml = cautions.length
+        ? `<div style="margin-top:6px;font-size:11px;color:var(--muted);">⚠ ${{cautions.join(' · ')}}</div>`
+        : '';
+      const tiers = opp.qualifying_tiers || {{}};
+      const tierLines = Object.entries(tiers).map(([stat, info]) => {{
+        const hr = info.hit_rate !== undefined ? ` ${{Math.round(info.hit_rate*100)}}%` : '';
+        const n  = info.n !== undefined ? ` (n=${{info.n}})` : '';
+        return `<span style="margin-right:10px;color:#F5A623;font-weight:600">${{stat}} ≥${{info.tier}}</span><span style="color:var(--muted);font-size:11px">${{hr}}${{n}}</span>`;
+      }}).join('<br>');
+      const triggeredBy = opp.triggered_by || 'Unknown absence';
+      html += `
+        <div class="pick-card" style="border-color:#F5A623;border-left-width:4px;">
+          <div class="pick-main">
+            <div class="player">${{opp.player_name}} <span style="font-size:11px;color:var(--muted)">(${{opp.team}})</span></div>
+            <div style="margin:4px 0;font-size:12px;color:var(--muted)">Triggered by: ${{triggeredBy}}</div>
+            <div style="margin-top:4px;font-size:12px;">${{tierLines || 'No qualifying tiers'}}</div>
+            ${{cautionHtml}}
+          </div>
+          <div class="pick-right">
+            <div style="font-size:11px;color:#F5A623;font-weight:700;text-align:center;margin-bottom:4px;">OPPORTUNITY</div>
+            <div style="font-size:11px;color:var(--muted);text-align:center;">Not picked<br>this morning</div>
+          </div>
+        </div>`;
+    }});
+  }}
 
   c.innerHTML = html;
 }}

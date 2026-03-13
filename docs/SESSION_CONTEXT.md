@@ -34,6 +34,7 @@ team_defense_narratives.json  (per-team last-15g PPG allowed + rank, auto-genera
     ↓ parlay.py                → parlays.json (appended; OUT/DOUBTFUL excluded)
     ↓ lineup_watch.py          → picks.json (injury_status_at_check + voided/risk fields, hourly)
     ↓ lineup_update.py         → picks.json (lineup_update sub-object on affected picks, hourly)
+                               → opportunity_flags.json (teammate suggestions when qualifying absence detected, hourly)
 
     ↓ post_game_reporter.py    → post_game_news.json (ESPN exit/DNP news for yesterday's picks)
     ↓ auditor.py (next morning)
@@ -314,17 +315,27 @@ touched — the sub-object is additive, not destructive.
 - `save_skips(skips: list[dict]) → None` — writes `data/skipped_picks.json`; initialises null grading fields (`actual_value`, `would_have_hit`, `skip_verdict`, `skip_verdict_notes`); logs each skip reason to stdout
 - `main()` now unpacks `picks, skips = call_analyst(...)` and calls both `save_picks(picks)` and `save_skips(skips)`
 
-### `agents/lineup_update.py` (new — March 10, 2026)
+### `agents/lineup_update.py` (new — March 10, 2026; overhauled March 12, 2026)
 - Constants: `MODEL = "claude-sonnet-4-6"`, `MAX_TOKENS = 2048`, `CUTOFF_MINUTES = 20`
 - `_ABBR_NORM` dict + `_norm(abbr)` — same normalization pattern as rest of codebase
+- `OPPORTUNITY_FLAGS_JSON = DATA / "opportunity_flags.json"` — cumulative suggestion file
+- `_OPPORTUNITY_TRIGGER_TAGS = {"defensive_anchor", "rim_anchor", "high_usage"}` — role tags that trigger teammate opportunity scan; `"perimeter_threat"` and `"role_player"` do NOT trigger
 - `load_game_map() → dict[str, str]` — `{norm_team_abbr: game_time_utc}` from `nba_master.csv`; used to check tip-off cutoff per pick
 - `game_is_actionable(game_time_utc, now_et) → bool` — True if tip-off > CUTOFF_MINUTES away; True on parse failure (safe default — don't skip on bad data)
 - `compute_lineup_diff(lineups, injuries) → list[dict]` — diffs `snapshot_at_analyst_run` vs current lineups + injuries; returns change events `{team, player_name, change_type, status, detail}`; change_type is `"new_absence"` (was starter, now OUT/DOUBTFUL) or `"starter_replaced"` (was starter, no longer listed, not injured)
 - `get_affected_picks(today_picks, changes, game_map, now_et) → list[dict]` — returns open today picks (result=None, not voided) where `team` OR `opponent` in changed teams AND game still actionable
 - `build_rotowire_context(lineups, changed_teams) → str` — reads `projected_minutes` and `onoff_usage` from `lineups_today.json` for each team in `changed_teams`; formats starters/bench/out projected minutes and on/off usage deltas as a plain-text block; returns `""` when no Rotowire data present (graceful no-op on unauthenticated runs)
-- `call_lineup_update(affected_picks, changes, rotowire_context="") → list[dict]` — single Claude call; system prompt uses prop-type-aware direction guide (PTS/REB/AST/3PM each with separate up/down/unchanged logic + magnitude calibration from Rotowire usage); `rotowire_context` injected as `## ROTOWIRE PROJECTIONS FOR CHANGED TEAMS` in user message when non-empty; returns `[{player_name, prop_type, direction, revised_confidence_pct, revised_reasoning}]`; extracts JSON array via `raw.find("[") … raw.rfind("]")`
+- `load_player_stats() → dict` — reads `data/player_stats.json`; returns `{}` gracefully if missing
+- `build_pick_quant_summary(player_name, prop_type, player_stats) → str` — builds a one-line quant summary for a specific pick (tier hit rate, vs_soft/vs_tough, trend, volatility tag); injected as context beneath each pick in the Claude prompt
+- `classify_absent_player(player_name, team, player_stats) → dict` — derives role tags `{role_tags, avg_pts, avg_reb, avg_ast, avg_min}` from `player_stats.json`; tag logic: high_usage (avg_pts ≥ 20 or raw_avgs usage proxy), rim_anchor (avg_reb ≥ 7 and C/PF or raw_reb ≥ 9), defensive_anchor (avg_reb ≥ 6 and avg_pts < 15 proxy), perimeter_threat (avg_tpm ≥ 1.5), otherwise role_player
+- `build_absent_player_profiles(changes, player_stats) → str` — builds a `## ABSENT PLAYER PROFILES` block for the Claude prompt listing each absent player with role tags and key stats
+- `call_lineup_update(affected_picks, changes, rotowire_context="", player_stats=None) → list[dict]` — single Claude call with 4-step reasoning framework (identify role, determine direction, calibrate magnitude using quant, apply default rule); system prompt now uses absent player profiles and per-pick quant context; `rotowire_context` injected when non-empty; returns `[{player_name, prop_type, direction, revised_confidence_pct, revised_reasoning}]`
 - `apply_amendments(all_picks, amendments, affected_picks, changes, now_iso) → tuple[int,int,int]` — writes `lineup_update` sub-objects in-place to `all_picks`; returns `(n_amended, n_up, n_down)`; keyed by `(player_name_lower, prop_type)`
-- `main()` — full no-op logic with 5 guard conditions; computes `changed_teams` set, calls `build_rotowire_context()`, passes result to `call_lineup_update()`; atomic write via `.tmp` rename; logs `changes=N affected_picks=M amended=K (X up, Y down, Z unchanged)`
+- `load_game_log() → pd.DataFrame | None` — reads `data/player_game_log.csv`; returns None gracefully on missing/error
+- `compute_without_player_rates(teammate_name, absent_player_name, game_log) → dict` — looks up historical games where absent player had dnp=="1" or minutes in ("","0"); computes hit rates at each tier for the teammate in those games; returns `{stat: {tier, hit_rate, n}}` for qualifying tiers (≥0.70 and n≥3); returns `{}` when insufficient history
+- `build_opportunity_suggestions(changes, today_picks, player_stats, game_log, now_iso) → list[dict]` — for each qualifying absence (trigger tag in `_OPPORTUNITY_TRIGGER_TAGS`), scans whitelisted teammates NOT in today's picks; emits suggestion dicts with `qualifying_tiers`, `without_player_rates`, `caution_flags`; deduplicates via `(date, player_name_lower, prop_type, triggered_by_lower)` 4-tuple
+- `save_opportunity_flags(suggestions) → None` — appends to `data/opportunity_flags.json`; deduplicates; atomic write via `.tmp` rename
+- `main()` — restructured: LLM amendment path only when `affected_picks` non-empty; opportunity surfacing block runs unconditionally whenever `changes` is non-empty and qualifying absences exist; does NOT return early from empty `affected_picks` when qualifying absences remain
 
 **`lineup_update` sub-object schema (written to affected picks):**
 ```json
@@ -571,6 +582,14 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 - Three analyst prompt rule tightenings (audit hardening, 8 days / 45 misses evidence base): (1) **REB gate strict greater-than** — pick tier must be strictly less than 3rd-lowest L10 value; exact match no longer passes (motivated by Sengun REB miss: 3rd-lowest=6, pick=6, actual=2); (2) **VOLATILE PTS skip extended to 8/10** — skip condition now covers 7/10 OR 8/10 at T15+ (motivated by Ingram PTS O15 miss ×3 in 8 days, twice at 8/10 where existing rule didn't fire); exception clause updated to reference 8/10 baseline; (3) **FG_COLD ≥15% tier step-down** — severe FG_COLD on T15+ PTS now requires mandatory one-tier step-down before finalizing; skip (fg_cold_tier_step) if no qualifying tier after step-down (motivated by Flagg PTS O15 miss with FG_COLD:-18% treated as informational). `fg_cold_tier_step` added to skip_reason enum.
 - Auditor game results context injection — `MASTER_CSV = DATA / "nba_master.csv"` path constant added; `load_game_results()` reads yesterday's completed games from `nba_master.csv`, keys result dict by both home and away team abbrev for O(1) lookup; `build_game_results_block()` deduplicates, labels each game BLOWOUT/COMPETITIVE/CLOSE by margin (≥20/10–19/<10), returns formatted `## GAME RESULTS — YESTERDAY` block; `build_audit_prompt()` signature extended with `game_results_block: str = ""`; block injected between season context and playoff picture; STEP 0 — ESTABLISH GAME CONTEXT inserted as first step of PICK ANALYSIS TASK (look up player's team in game results, identify margin and script label before analyzing individual miss); existing STEP 1–6 numbering unchanged; `main()` wired with both new function calls and kwarg pass. Motivating failure: Durant and Jokic played in the same HOU/DEN game (36-pt blowout, March 11) — auditor had to wait for a Brave Search hit to establish the blowout context that should have been obvious, causing asymmetric `variance` vs. `selection_error` classification between the two players.
 
+**Also completed March 12 (Session 3):**
+- **`ingest/rotowire_injuries_only.py` — snapshot preservation bug fix** — `write_lineups_json()` now reads existing `lineups_today.json` before constructing the payload and carries forward `snapshot_at_analyst_run` if present; previously every hourly Rotowire refresh overwrote the key, causing `lineup_update.py` to always exit with "no snapshot found — skipping"
+- **`agents/lineup_update.py` — reasoning overhaul** — replaced direction guide with 4-step reasoning framework; added `load_player_stats()`, `build_pick_quant_summary()`, `classify_absent_player()`, `build_absent_player_profiles()`; `call_lineup_update()` signature updated to accept `player_stats` and inject per-pick quant context + absent player role profiles into Claude prompt
+- **`agents/lineup_update.py` — Opportunity Surfacing** — late-scratch teammate suggestions feature; new helpers: `load_game_log()`, `compute_without_player_rates()`, `build_opportunity_suggestions()`, `save_opportunity_flags()`; trigger gate `_OPPORTUNITY_TRIGGER_TAGS = {"defensive_anchor", "rim_anchor", "high_usage"}`; `main()` restructured so opportunity block runs unconditionally when qualifying absences exist (even if `affected_picks` is empty); output written to `data/opportunity_flags.json`
+- **`agents/build_site.py` — opportunity flag rendering** — `OPPORTUNITY_FLAGS_JSON` constant; `load_opportunity_flags()` loads and filters to TODAY_STR; amber ⚡ OPPORTUNITY section rendered below main pick cards in Today's Picks tab
+- **`.github/workflows/injuries.yml`** — "Commit lineup amendments" step updated to loop over both `data/picks.json` and `data/opportunity_flags.json`
+- **`.github/workflows/analyst.yml`** — morning commit loop updated to include `data/opportunity_flags.json`
+
 **Completed backtests (March 12, 2026):**
 - **H8 — Positional DvP Validity:** ✅ RAN — REVERT verdict. Full results in `docs/BACKTESTS.md`. Prompt cleanup pending.
 - **H15 — Opponent Team Hit Rate:** ✅ RAN — insufficient sample (8 days of picks). No actionable findings yet. Re-run late March. MIN × AST worth watching (−26.4pp, n=7).
@@ -629,6 +648,11 @@ Tighten prompt ceiling if any band systematically underperforms.
   but the auditor's STEP 2 and miss classification do not yet check for them. A pick that was
   revised DOWN and then missed would still be classified via the normal root-cause logic without
   noting the amendment context. Acceptable for now.
+- **`opportunity_flags.json` has no grading integration** — the auditor does NOT read `opportunity_flags.json`
+  and does NOT compare suggestion tiers against actual game results. Implement after ~2 weeks of suggestion
+  data accumulates to verify the surfacing mechanism is working before adding grading infrastructure.
+  The follow-on design (Option 2 from spec) would log `opportunity_miss` events to `audit_log.json` when
+  a surfaced suggestion would have hit at the suggested tier.
 - **Skip Validation has no analyst prompt feedback loop yet** — `audit_summary.json["skip_validation"]`
   accumulates per-rule false skip rates, but the analyst prompt does NOT yet read or act on this
   data. A future enhancement would inject high-false-skip-rate rules into the analyst prompt

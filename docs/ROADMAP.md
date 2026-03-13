@@ -71,6 +71,47 @@ Top Picks cards. Click expands: triggered_by, revised conf+reasoning, original m
 
 ---
 
+### Opportunity Surfacing — Late-Scratch Teammate Suggestions
+**Status: ✅ IMPLEMENTED (March 12, 2026)**
+
+When `lineup_update.py` detects a qualifying absence (role_tag in `defensive_anchor`, `rim_anchor`, or `high_usage`), it now scans whitelisted teammates who were NOT picked this morning and checks whether they have qualifying tiers (≥70% hit rate at any tier) for PTS/REB/AST/3PM. These are surfaced as amber ⚡ OPPORTUNITY cards on the frontend so the user can manually evaluate whether to place a same-day prop bet.
+
+**No LLM call for opportunity surfacing** — pure deterministic Python. Opportunity block runs unconditionally whenever changes exist (even when `get_affected_picks()` returns empty — i.e., no existing morning picks to amend).
+
+**Key design decisions:**
+- Trigger gate: `_OPPORTUNITY_TRIGGER_TAGS = {"defensive_anchor", "rim_anchor", "high_usage"}` — role players (perimeter_threat) do not trigger teammate scan
+- Exclusion: players already in today's morning picks are excluded from surfacing (they get the LLM amendment path instead)
+- Without-player rates: `compute_without_player_rates()` optionally looks up hit rates at each tier from historical games where the absent player had DNP/0 minutes — requires ≥3 games; surfaced as a secondary signal when available
+- Caution flags: volatile player, trend=down, small without-player sample (n<5), no without-player history
+- Deduplication: `(date, player_name_lower, prop_type, triggered_by_lower)` 4-tuple prevents duplicate entries on repeated hourly runs
+- Cumulative file: `data/opportunity_flags.json` — appends across hourly runs; frontend filters to TODAY_STR; auditor never reads it
+
+**Output file: `data/opportunity_flags.json`** — list of suggestion dicts:
+```json
+{
+  "date": "YYYY-MM-DD",
+  "player_name": "string",
+  "team": "abbrev",
+  "triggered_by": "Absent Player Name — change_type (role_tag)",
+  "qualifying_tiers": {
+    "PTS": {"tier": 20, "hit_rate": 0.75, "n": 20},
+    "REB": {"tier": 6, "hit_rate": 0.72, "n": 20}
+  },
+  "without_player_rates": {"PTS": {"tier": 20, "hit_rate": 0.80, "n": 5}},
+  "caution_flags": ["string"],
+  "surfaced_at": "ISO timestamp"
+}
+```
+
+**Frontend:** amber ⚡ OPPORTUNITY section appears below main pick cards in Today's Picks tab when any suggestions exist. Each card shows player name, triggering absence, qualifying tier hit rates, and caution flags.
+
+**Files:** `agents/lineup_update.py` (helpers + main() wiring), `agents/build_site.py` (loader + renderer), `.github/workflows/injuries.yml` (commit loop), `.github/workflows/analyst.yml` (morning commit loop).
+
+**Follow-on (not yet implemented — Option 2 from spec):**
+Graded pick generation: when an opportunity suggestion would have hit at a suggested tier, log it to `audit_log.json` as an `opportunity_miss` entry so the system can track its own suggestion quality over time. Implement after ~2 weeks of suggestion data accumulates to verify the surfacing mechanism is working before adding grading infrastructure.
+
+---
+
 ### Matchup Signals Queue
 
 Design philosophy: the Analyst already has a solid quantitative matchup foundation (positional DvP, vs_soft/vs_tough splits, game pace, spread context). The following proposals address gaps where rolling averages give a misleading picture because something material has changed that the numbers alone cannot capture.

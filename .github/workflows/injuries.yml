@@ -120,8 +120,15 @@ jobs:
           git fetch origin main
           git rebase --autostash origin/main
 
-          if [ -n "$(git status --porcelain -- data/picks.json)" ]; then
-            git add data/picks.json
+          CHANGED=0
+          for f in "data/picks.json" "data/opportunity_flags.json"; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
+          if [ "$CHANGED" -eq 1 ]; then
             git commit -m "Lineup update: picks amended [skip ci]"
             git push origin HEAD:main
           else

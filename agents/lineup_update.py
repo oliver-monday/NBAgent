@@ -67,6 +67,297 @@ def load_player_stats() -> dict:
         return {}
 
 
+GAME_LOG_CSV = ROOT / "data" / "player_game_log.csv"
+
+
+def load_game_log() -> "pd.DataFrame | None":
+    """
+    Load player_game_log.csv. Returns None on any error.
+    Only imported/loaded when opportunity surfacing is triggered.
+    """
+    try:
+        import pandas as pd
+        df = pd.read_csv(GAME_LOG_CSV, dtype=str)
+        return df
+    except Exception as e:
+        print(f"[lineup_update] WARNING: could not load game_log: {e}")
+        return None
+
+
+def compute_without_player_rates(
+    teammate_name: str,
+    absent_player_name: str,
+    game_log: "pd.DataFrame",
+) -> dict:
+    """
+    Compute tier hit rates for `teammate_name` on dates when `absent_player_name`
+    had dnp=="1" or minutes=="0" or minutes=="".
+
+    Returns dict keyed by prop_type → {tier → hit_rate, n} for qualifying tiers.
+    Returns {} when sample < 3 games (too small to show).
+
+    Tiers checked: PTS [10,15,20,25,30], REB [2,4,6,8], AST [2,4,6], 3PM [1,2,3]
+    Hit condition: actual >= tier (NBAgent convention — exact hit counts as HIT)
+    DNP exclusion for teammate: exclude rows where teammate dnp=="1"
+    """
+    TIERS = {
+        "PTS": [10, 15, 20, 25, 30],
+        "REB": [2, 4, 6, 8],
+        "AST": [2, 4, 6],
+        "3PM": [1, 2, 3],
+    }
+    STAT_COL = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+
+    try:
+        import pandas as pd
+
+        # Find dates when absent player had dnp or 0 minutes
+        absent_rows = game_log[
+            game_log["player_name"].str.strip().str.lower()
+            == absent_player_name.strip().lower()
+        ]
+        dnp_mask = (
+            (absent_rows["dnp"].astype(str).str.strip() == "1")
+            | (absent_rows["minutes"].astype(str).str.strip().isin(["0", ""]))
+        )
+        absent_dates: set = set(absent_rows.loc[dnp_mask, "game_date"].astype(str).str.strip())
+
+        if len(absent_dates) < 3:
+            return {}  # Insufficient sample — don't surface
+
+        # Get teammate rows on those dates (exclude teammate DNPs)
+        tm_rows = game_log[
+            (game_log["player_name"].str.strip().str.lower()
+             == teammate_name.strip().lower())
+            & (game_log["game_date"].astype(str).str.strip().isin(absent_dates))
+            & (game_log["dnp"].astype(str).str.strip() != "1")
+        ]
+
+        if len(tm_rows) < 3:
+            return {}
+
+        results: dict = {}
+        for prop, tiers in TIERS.items():
+            col = STAT_COL.get(prop)
+            if col not in tm_rows.columns:
+                continue
+            vals = pd.to_numeric(tm_rows[col], errors="coerce").dropna()
+            if len(vals) < 3:
+                continue
+            prop_result: dict = {}
+            for tier in tiers:
+                hits = int((vals >= tier).sum())
+                n    = len(vals)
+                hr   = hits / n
+                if hr >= 0.70:  # same floor as analyst
+                    prop_result[tier] = {"hit_rate": hr, "n": n}
+            if prop_result:
+                results[prop] = prop_result
+        return results
+
+    except Exception as e:
+        print(f"[lineup_update] WARNING: compute_without_player_rates failed: {e}")
+        return {}
+
+
+OPPORTUNITY_FLAGS_JSON = DATA / "opportunity_flags.json"
+
+# Qualifying absence tags — only these trigger teammate surfacing
+_OPPORTUNITY_TRIGGER_TAGS = {"defensive_anchor", "rim_anchor", "high_usage"}
+
+
+def build_opportunity_suggestions(
+    changes: list[dict],
+    today_picks: list[dict],
+    player_stats: dict,
+    game_log: "pd.DataFrame | None",
+    now_iso: str,
+) -> list[dict]:
+    """
+    For each qualifying absence (high-impact absent player), find whitelisted
+    teammates who were NOT picked this morning and have a qualifying tier.
+
+    Returns list of suggestion dicts — one per qualifying player × prop_type.
+    Empty list when no qualifying absences or no teammate opportunities found.
+    """
+    # Build set of already-picked (player_name_lower, team) to avoid re-surfacing
+    picked_keys: set = {
+        (p["player_name"].strip().lower(), _norm(p.get("team", "")))
+        for p in today_picks
+    }
+
+    suggestions: list[dict] = []
+
+    for change in changes:
+        if change.get("change_type") != "new_absence":
+            continue
+
+        absent_name = change["player_name"]
+        absent_team = _norm(change["team"])
+
+        # Check if this absence qualifies as high-impact
+        profile = classify_absent_player(absent_name, absent_team, player_stats)
+        trigger_tags = set(profile.get("role_tags", [])) & _OPPORTUNITY_TRIGGER_TAGS
+        if not trigger_tags:
+            print(
+                f"[lineup_update] opportunity: {absent_name} has no trigger tags "
+                f"({profile.get('role_tags', [])}) — skipping teammate scan"
+            )
+            continue
+
+        print(
+            f"[lineup_update] opportunity triggered: {absent_name} ({absent_team}) "
+            f"tags={sorted(trigger_tags)} — scanning teammates"
+        )
+
+        # Find whitelisted teammates in player_stats who weren't picked
+        for tm_name, tm_stats in player_stats.items():
+            if _norm(tm_stats.get("team", "")) != absent_team:
+                continue
+            if (tm_name.strip().lower(), absent_team) in picked_keys:
+                continue  # Already has a morning pick — lineup_update amends it instead
+
+            best_tiers  = tm_stats.get("best_tiers") or {}
+            trends      = tm_stats.get("trend") or {}
+            volatility  = tm_stats.get("volatility") or {}
+
+            # Compute without-absent-player rates if game_log available
+            without_rates: dict = {}
+            if game_log is not None:
+                without_rates = compute_without_player_rates(
+                    tm_name, absent_name, game_log
+                )
+                if without_rates:
+                    print(
+                        f"[lineup_update] opportunity: {tm_name} has without-"
+                        f"{absent_name.split()[-1]} data for "
+                        f"{list(without_rates.keys())}"
+                    )
+
+            for prop in ("PTS", "REB", "AST", "3PM"):
+                best = best_tiers.get(prop)
+                if not best:
+                    continue
+
+                tier    = best["tier"]
+                base_hr = best["hit_rate"]
+                trend   = trends.get(prop, "stable")
+                vol     = (volatility.get(prop) or {}).get("label", "")
+
+                # Check without-player rates — prefer if available and qualifying
+                without_tier_data = None
+                without_hr        = None
+                without_n         = None
+                if without_rates.get(prop):
+                    wrates = without_rates[prop]
+                    best_without_tier = max(
+                        (t for t in wrates if wrates[t]["hit_rate"] >= 0.70),
+                        default=None
+                    )
+                    if best_without_tier is not None:
+                        without_hr        = wrates[best_without_tier]["hit_rate"]
+                        without_n         = wrates[best_without_tier]["n"]
+                        without_tier_data = best_without_tier
+
+                # Overall rate must qualify (≥70%) to surface
+                if base_hr < 0.70:
+                    continue
+
+                # Build caution flags
+                caution_parts: list[str] = []
+                if vol == "volatile":
+                    caution_parts.append("volatile player")
+                if trend == "down":
+                    caution_parts.append("trend=down")
+                if without_n is not None and without_n < 5:
+                    caution_parts.append(f"small without-sample (n={without_n})")
+                elif without_n is None:
+                    caution_parts.append("no without-player history")
+
+                # Build reasoning summary
+                reason_parts = [
+                    f"{prop} T{tier} overall={int(round(base_hr*100))}%",
+                ]
+                if without_hr is not None:
+                    reason_parts.append(
+                        f"{int(round(without_hr*100))}% in {without_n}g without "
+                        f"{absent_name.split()[-1]}"
+                    )
+                reason_parts.append(f"trend={trend}")
+                if trigger_tags:
+                    reason_parts.append(
+                        f"triggered by {absent_name} OUT "
+                        f"[{', '.join(sorted(trigger_tags))}]"
+                    )
+                reasoning = "; ".join(reason_parts)
+
+                suggestions.append({
+                    "date":                        TODAY_STR,
+                    "generated_at":                now_iso,
+                    "triggered_by_player":         absent_name,
+                    "triggered_by_team":           absent_team,
+                    "trigger_tags":                sorted(trigger_tags),
+                    "player_name":                 tm_name,
+                    "team":                        absent_team,
+                    "prop_type":                   prop,
+                    "suggested_tier":              tier,
+                    "tier_hit_rate_pct":           int(round(base_hr * 100)),
+                    "without_player_tier":         without_tier_data,
+                    "without_player_hit_rate_pct": int(round(without_hr * 100)) if without_hr is not None else None,
+                    "without_player_n":            without_n,
+                    "trend":                       trend,
+                    "volatility":                  vol or "moderate",
+                    "caution":                     "; ".join(caution_parts) if caution_parts else None,
+                    "reasoning":                   reasoning,
+                })
+
+    return suggestions
+
+
+def save_opportunity_flags(suggestions: list[dict]) -> None:
+    """
+    Append today's suggestions to the cumulative opportunity_flags.json.
+    Deduplicates by (date, player_name, prop_type, triggered_by_player) so
+    repeated hourly runs don't create duplicate entries.
+    """
+    # Load existing
+    existing: list[dict] = []
+    if OPPORTUNITY_FLAGS_JSON.exists():
+        try:
+            with open(OPPORTUNITY_FLAGS_JSON) as fh:
+                existing = json.load(fh)
+            if not isinstance(existing, list):
+                existing = []
+        except Exception:
+            existing = []
+
+    # Dedup key
+    def _key(s: dict) -> tuple:
+        return (
+            s.get("date", ""),
+            s.get("player_name", "").strip().lower(),
+            s.get("prop_type", ""),
+            s.get("triggered_by_player", "").strip().lower(),
+        )
+
+    existing_keys: set = {_key(e) for e in existing}
+    new_entries = [s for s in suggestions if _key(s) not in existing_keys]
+
+    if not new_entries:
+        print("[lineup_update] opportunity: no new suggestions to save")
+        return
+
+    combined = existing + new_entries
+    tmp = OPPORTUNITY_FLAGS_JSON.with_suffix(".json.tmp")
+    with open(tmp, "w") as fh:
+        json.dump(combined, fh, indent=2)
+    os.replace(tmp, OPPORTUNITY_FLAGS_JSON)
+    print(
+        f"[lineup_update] opportunity: saved {len(new_entries)} new suggestion(s) "
+        f"({len(combined)} total in file)"
+    )
+
+
 def build_pick_quant_summary(player_name: str, prop_type: str, player_stats: dict) -> str:
     """
     Build a slim quant summary for a single pick player + prop type.
@@ -695,52 +986,68 @@ def main() -> None:
         return
 
     # ── Find affected picks ────────────────────────────────────────────────────
-    game_map      = load_game_map()
+    game_map       = load_game_map()
     affected_picks = get_affected_picks(today_picks, changes, game_map, now_et)
 
-    if not affected_picks:
+    # ── LLM amendment path (only when open picks are affected) ─────────────────
+    if affected_picks:
+        print(f"[lineup_update] {len(affected_picks)} pick(s) affected — calling Claude")
+
+        # ── Build Rotowire context for changed teams ──────────────────────────
+        changed_teams: set[str] = {_norm(c["team"]) for c in changes}
+        rotowire_ctx = build_rotowire_context(lineups, changed_teams)
+        if rotowire_ctx:
+            print(f"[lineup_update] Rotowire context built for {len(changed_teams)} team(s)")
+
+        # ── Call Claude ───────────────────────────────────────────────────────
+        try:
+            amendments = call_lineup_update(
+                affected_picks,
+                changes,
+                rotowire_context=rotowire_ctx,
+                player_stats=player_stats,
+            )
+        except Exception as e:
+            print(f"[lineup_update] ERROR calling Claude: {e}")
+            amendments = []
+
+        if amendments:
+            # ── Apply + write ─────────────────────────────────────────────────
+            n_amended, n_up, n_down = apply_amendments(
+                all_picks, amendments, affected_picks, changes, now_iso
+            )
+
+            tmp = PICKS_JSON.with_suffix(".json.tmp")
+            with open(tmp, "w") as fh:
+                json.dump(all_picks, fh, indent=2)
+            os.replace(tmp, PICKS_JSON)
+
+            n_unchanged = n_amended - n_up - n_down
+            print(
+                f"[lineup_update] changes={len(changes)} affected_picks={len(affected_picks)} "
+                f"amended={n_amended} ({n_up} up, {n_down} down, {n_unchanged} unchanged)"
+            )
+        else:
+            print("[lineup_update] no amendments returned — skipping write")
+    else:
         print("[lineup_update] no actionable picks affected by changes — skipping LLM call")
-        return
 
-    print(f"[lineup_update] {len(affected_picks)} pick(s) affected — calling Claude")
-
-    # ── Build Rotowire context for changed teams ────────────────────────────────
-    changed_teams: set[str] = {_norm(c["team"]) for c in changes}
-    rotowire_ctx = build_rotowire_context(lineups, changed_teams)
-    if rotowire_ctx:
-        print(f"[lineup_update] Rotowire context built for {len(changed_teams)} team(s)")
-
-    # ── Call Claude ────────────────────────────────────────────────────────────
-    try:
-        amendments = call_lineup_update(
-            affected_picks,
-            changes,
-            rotowire_context=rotowire_ctx,
+    # ── Opportunity surfacing — runs unconditionally whenever changes exist ─────
+    qualifying_absences = [c for c in changes if c.get("change_type") == "new_absence"]
+    if qualifying_absences:
+        game_log = load_game_log()
+        suggestions = build_opportunity_suggestions(
+            changes=changes,
+            today_picks=today_picks,
             player_stats=player_stats,
+            game_log=game_log,
+            now_iso=now_iso,
         )
-    except Exception as e:
-        print(f"[lineup_update] ERROR calling Claude: {e}")
-        return
-
-    if not amendments:
-        print("[lineup_update] no amendments returned — skipping write")
-        return
-
-    # ── Apply + write ──────────────────────────────────────────────────────────
-    n_amended, n_up, n_down = apply_amendments(
-        all_picks, amendments, affected_picks, changes, now_iso
-    )
-
-    tmp = PICKS_JSON.with_suffix(".json.tmp")
-    with open(tmp, "w") as fh:
-        json.dump(all_picks, fh, indent=2)
-    os.replace(tmp, PICKS_JSON)
-
-    n_unchanged = n_amended - n_up - n_down
-    print(
-        f"[lineup_update] changes={len(changes)} affected_picks={len(affected_picks)} "
-        f"amended={n_amended} ({n_up} up, {n_down} down, {n_unchanged} unchanged)"
-    )
+        if suggestions:
+            save_opportunity_flags(suggestions)
+            print(f"[lineup_update] opportunity: {len(suggestions)} suggestion(s) surfaced")
+        else:
+            print("[lineup_update] opportunity: no qualifying teammate suggestions found")
 
 
 if __name__ == "__main__":
