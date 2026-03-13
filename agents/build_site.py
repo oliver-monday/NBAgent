@@ -1369,12 +1369,13 @@ function renderResults() {{
   // ── Yesterday card ──
   const la = DATA.last_audit;
   if (la && la.total_picks > 0) {{
-    document.getElementById('yesterday-pct').textContent = la.hit_rate_pct + '%';
-    const d = (la.date||'').split('-');
-    const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}` : (la.date||'');
-    const voidedStr = (la.voided_picks||0) > 0 ? ` · ${{la.voided_picks}} voided` : '';
+    const laVoids   = la.voided_picks || 0;
+    const laValid   = la.total_picks - laVoids;
+    const laHitRate = laValid > 0 ? Math.round(10 * 100 * la.hits / laValid) / 10 : 0;
+    document.getElementById('yesterday-pct').textContent = laHitRate + '%';
+    const voidedStr = laVoids > 0 ? ` · ${{laVoids}} voided` : '';
     document.getElementById('yesterday-sub').textContent =
-      `${{la.hits}}/${{la.total_picks}} picks · ${{fmt}}${{voidedStr}}`;
+      `${{la.hits}} hits / ${{laValid}} valid picks${{voidedStr}}`;
   }}
 
   // ── Top Picks card ──
@@ -1586,13 +1587,18 @@ function renderAudit() {{
   let html = `
     <div class="audit-card">
       <h3>Last Audit — ${{a.date}}</h3>
-      <div style="display:flex;gap:24px;flex-wrap:wrap">
-        <div><div style="font-size:11px;color:var(--muted)">Hit Rate</div><div style="font-size:24px;font-weight:700;color:var(--accent2)">${{a.hit_rate_pct}}%</div></div>
-        <div><div style="font-size:11px;color:var(--muted)">Total</div><div style="font-size:24px;font-weight:700">${{a.total_picks}}</div></div>
-        <div><div style="font-size:11px;color:var(--muted)">Hits</div><div style="font-size:24px;font-weight:700;color:var(--hit)">${{a.hits}}</div></div>
-        <div><div style="font-size:11px;color:var(--muted)">Misses</div><div style="font-size:24px;font-weight:700;color:var(--miss)">${{a.misses}}</div></div>
-        <div><div style="font-size:11px;color:var(--muted)">Voids</div><div style="font-size:24px;font-weight:700;color:var(--muted)">${{a.voided_picks||0}}</div></div>
-      </div>
+      ${{(()=>{{
+        const aVoids = a.voided_picks || 0;
+        const aValid = a.total_picks - aVoids;
+        const aHitRate = aValid > 0 ? Math.round(10 * 100 * a.hits / aValid) / 10 : 0;
+        return `<div style="display:flex;gap:24px;flex-wrap:wrap">
+          <div><div style="font-size:11px;color:var(--muted)">Hit Rate</div><div style="font-size:24px;font-weight:700;color:var(--accent2)">${{aHitRate}}%</div></div>
+          <div><div style="font-size:11px;color:var(--muted)">Total</div><div style="font-size:24px;font-weight:700">${{aValid}}</div></div>
+          <div><div style="font-size:11px;color:var(--muted)">Hits</div><div style="font-size:24px;font-weight:700;color:var(--hit)">${{a.hits}}</div></div>
+          <div><div style="font-size:11px;color:var(--muted)">Misses</div><div style="font-size:24px;font-weight:700;color:var(--miss)">${{a.misses}}</div></div>
+          <div><div style="font-size:11px;color:var(--muted)">Voids</div><div style="font-size:24px;font-weight:700;color:var(--muted)">${{aVoids}}</div></div>
+        </div>`;
+      }})()}}
     </div>`;
   if (a.reinforcements?.length) {{
     html += `<div class="audit-card"><h3>✓ What Worked</h3><ul class="audit-list">`;
