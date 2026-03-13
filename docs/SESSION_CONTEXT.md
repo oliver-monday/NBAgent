@@ -252,6 +252,8 @@ touched — the sub-object is additive, not destructive.
 | 3PM T2 | 71.4%(w10) → 77.3%(w20) | Valid pick tier |
 | Post-blowout bounce-back (H6) | NOISE — lift 0.955–0.988 across all stats | Closed March 7, 2026 |
 | Opponent schedule fatigue (H7) | NOISE — opp B2B lift 0.977–1.025; dense=0 instances | Closed March 7, 2026 |
+| Positional DvP (H8) | REVERT — lift_advantage negative for PTS/REB/AST (−0.051/−0.052/−0.060); 3PM KEEP (+0.106) but 3PM DvP already excluded from prompt. Team-level opp defense outperforms positional splits — position-splitting dilutes cell sizes and flattens signal. | Prompt cleanup pending; `DvP [POS]` annotation line to be removed; implementation is currently annotation-only so no picks at risk |
+| Opponent team hit rate (H15) | INSUFFICIENT SAMPLE (8 days of picks only) — no team clears ±10pp suppressor/amplifier gate at ≥15 picks. MIN × AST notable at −26.4pp (n=7). SAS/CHA show floor compression (mean miss margin ≤−5, n=3 each). Re-run late March with full season volume. | No action; watch MIN × AST |
 
 ---
 
@@ -569,8 +571,11 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 - Three analyst prompt rule tightenings (audit hardening, 8 days / 45 misses evidence base): (1) **REB gate strict greater-than** — pick tier must be strictly less than 3rd-lowest L10 value; exact match no longer passes (motivated by Sengun REB miss: 3rd-lowest=6, pick=6, actual=2); (2) **VOLATILE PTS skip extended to 8/10** — skip condition now covers 7/10 OR 8/10 at T15+ (motivated by Ingram PTS O15 miss ×3 in 8 days, twice at 8/10 where existing rule didn't fire); exception clause updated to reference 8/10 baseline; (3) **FG_COLD ≥15% tier step-down** — severe FG_COLD on T15+ PTS now requires mandatory one-tier step-down before finalizing; skip (fg_cold_tier_step) if no qualifying tier after step-down (motivated by Flagg PTS O15 miss with FG_COLD:-18% treated as informational). `fg_cold_tier_step` added to skip_reason enum.
 - Auditor game results context injection — `MASTER_CSV = DATA / "nba_master.csv"` path constant added; `load_game_results()` reads yesterday's completed games from `nba_master.csv`, keys result dict by both home and away team abbrev for O(1) lookup; `build_game_results_block()` deduplicates, labels each game BLOWOUT/COMPETITIVE/CLOSE by margin (≥20/10–19/<10), returns formatted `## GAME RESULTS — YESTERDAY` block; `build_audit_prompt()` signature extended with `game_results_block: str = ""`; block injected between season context and playoff picture; STEP 0 — ESTABLISH GAME CONTEXT inserted as first step of PICK ANALYSIS TASK (look up player's team in game results, identify margin and script label before analyzing individual miss); existing STEP 1–6 numbering unchanged; `main()` wired with both new function calls and kwarg pass. Motivating failure: Durant and Jokic played in the same HOU/DEN game (36-pt blowout, March 11) — auditor had to wait for a Brave Search hit to establish the blowout context that should have been obvious, causing asymmetric `variance` vs. `selection_error` classification between the two players.
 
+**Completed backtests (March 12, 2026):**
+- **H8 — Positional DvP Validity:** ✅ RAN — REVERT verdict. Full results in `docs/BACKTESTS.md`. Prompt cleanup pending.
+- **H15 — Opponent Team Hit Rate:** ✅ RAN — insufficient sample (8 days of picks). No actionable findings yet. Re-run late March. MIN × AST worth watching (−26.4pp, n=7).
+
 **Next backtests to run:**
-- **H8 — Positional DvP Validity:** Does positional DvP outpredict team-level DvP for PTS/AST? Requires ~30 days of live positional DvP data. Run ~early April 2026.
 - **H9 — Player × Opponent H2H Splits:** Does player-vs-specific-opponent hit rate outpredict population opp_defense? Requires near-complete season sample. Run ~mid-April 2026.
 - **Miss Anatomy:** Validate `near_miss_rate` / `blowup_rate` next-game prediction. Fields live in `player_stats.json`, analyst wiring deferred until backtest (~late March 2026).
 
@@ -601,8 +606,7 @@ Tighten prompt ceiling if any band systematically underperforms.
 
 ## What Has NOT Been Done (common assumption errors)
 
-- **Positional DvP has not been backtested** — the rating is structurally sound but unvalidated.
-  Weight it appropriately until H8 runs (target: early April 2026 with 30+ days of data).
+- **Positional DvP — H8 verdict: REVERT (March 12, 2026)** — backtest ran against full season game logs. Positional lift_advantage was negative for PTS (−0.051), REB (−0.052), and AST (−0.060). Team-level opp defense outperforms positional splits — position-splitting dilutes cell sizes and flattens signal, particularly for frontcourt REB (team-level lift 1.077 vs positional 0.980). 3PM was KEEP (+0.106) but 3PM DvP is already excluded from prompt rules. **Prompt cleanup is PENDING** — `DvP [POS]` line in `build_quant_context()` to be removed; implementation is annotation-only so no picks are at risk in the interim. Do not treat positional DvP as a validated signal.
 - **Volatility scores have not been backtested** — σ thresholds (0.3/0.4) are reasonable priors
   but not empirically validated against this dataset. The auditor will accumulate evidence over
   time via the `reasoning` field (volatility flag instruction).

@@ -1,0 +1,297 @@
+{
+  "mode": "positional-dvp",
+  "generated_at": "2026-03-12T15:30:47",
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-11"
+  },
+  "total_instances": 6137,
+  "constants": {
+    "PDV_WINDOW": 15,
+    "PDV_MIN_GAMES": 10,
+    "PDV_MIN_N": 20,
+    "PDV_SOFT_PCTILE": 33,
+    "PDV_TOUGH_PCTILE": 67
+  },
+  "results": {
+    "PTS": {
+      "team_level": {
+        "soft": {
+          "n": 539,
+          "hit_rate": 0.7718
+        },
+        "mid": {
+          "n": 495,
+          "hit_rate": 0.7576
+        },
+        "tough": {
+          "n": 535,
+          "hit_rate": 0.757
+        },
+        "lift": 1.02
+      },
+      "positional": {
+        "soft": {
+          "n": 296,
+          "hit_rate": 0.7736
+        },
+        "mid": {
+          "n": 294,
+          "hit_rate": 0.7177
+        },
+        "tough": {
+          "n": 297,
+          "hit_rate": 0.798
+        },
+        "lift": 0.969
+      },
+      "lift_advantage": -0.051,
+      "verdict": "REVERT"
+    },
+    "REB": {
+      "team_level": {
+        "soft": {
+          "n": 573,
+          "hit_rate": 0.7976
+        },
+        "mid": {
+          "n": 586,
+          "hit_rate": 0.8089
+        },
+        "tough": {
+          "n": 590,
+          "hit_rate": 0.7661
+        },
+        "lift": 1.041
+      },
+      "positional": {
+        "soft": {
+          "n": 333,
+          "hit_rate": 0.7988
+        },
+        "mid": {
+          "n": 322,
+          "hit_rate": 0.7578
+        },
+        "tough": {
+          "n": 327,
+          "hit_rate": 0.8073
+        },
+        "lift": 0.989
+      },
+      "lift_advantage": -0.052,
+      "verdict": "REVERT"
+    },
+    "AST": {
+      "team_level": {
+        "soft": {
+          "n": 510,
+          "hit_rate": 0.8118
+        },
+        "mid": {
+          "n": 474,
+          "hit_rate": 0.7975
+        },
+        "tough": {
+          "n": 497,
+          "hit_rate": 0.7606
+        },
+        "lift": 1.067
+      },
+      "positional": {
+        "soft": {
+          "n": 275,
+          "hit_rate": 0.7782
+        },
+        "mid": {
+          "n": 283,
+          "hit_rate": 0.7915
+        },
+        "tough": {
+          "n": 286,
+          "hit_rate": 0.7727
+        },
+        "lift": 1.007
+      },
+      "lift_advantage": -0.06,
+      "verdict": "REVERT"
+    },
+    "3PM": {
+      "team_level": {
+        "soft": {
+          "n": 378,
+          "hit_rate": 0.746
+        },
+        "mid": {
+          "n": 403,
+          "hit_rate": 0.7667
+        },
+        "tough": {
+          "n": 401,
+          "hit_rate": 0.7955
+        },
+        "lift": 0.938
+      },
+      "positional": {
+        "soft": {
+          "n": 238,
+          "hit_rate": 0.7857
+        },
+        "mid": {
+          "n": 227,
+          "hit_rate": 0.7445
+        },
+        "tough": {
+          "n": 222,
+          "hit_rate": 0.7523
+        },
+        "lift": 1.044
+      },
+      "lift_advantage": 0.106,
+      "verdict": "KEEP"
+    }
+  },
+  "position_breakdown": {
+    "PTS": {
+      "perimeter": {
+        "n_qualified": 775,
+        "positional": {
+          "soft": {
+            "n": 165,
+            "hit_rate": 0.7636
+          },
+          "mid": {
+            "n": 161,
+            "hit_rate": 0.7267
+          },
+          "tough": {
+            "n": 160,
+            "hit_rate": 0.775
+          },
+          "lift": 0.985
+        },
+        "team_level": {
+          "soft": {
+            "n": 260,
+            "hit_rate": 0.7538
+          },
+          "mid": {
+            "n": 238,
+            "hit_rate": 0.7311
+          },
+          "tough": {
+            "n": 260,
+            "hit_rate": 0.7654
+          },
+          "lift": 0.985
+        },
+        "lift_advantage": 0.0
+      },
+      "frontcourt": {
+        "n_qualified": 597,
+        "positional": {
+          "soft": {
+            "n": 108,
+            "hit_rate": 0.787
+          },
+          "mid": {
+            "n": 106,
+            "hit_rate": 0.7358
+          },
+          "tough": {
+            "n": 109,
+            "hit_rate": 0.8073
+          },
+          "lift": 0.975
+        },
+        "team_level": {
+          "soft": {
+            "n": 198,
+            "hit_rate": 0.7778
+          },
+          "mid": {
+            "n": 178,
+            "hit_rate": 0.7921
+          },
+          "tough": {
+            "n": 203,
+            "hit_rate": 0.7537
+          },
+          "lift": 1.032
+        },
+        "lift_advantage": -0.057
+      }
+    },
+    "REB": {
+      "perimeter": {
+        "n_qualified": 786,
+        "positional": {
+          "soft": {
+            "n": 170,
+            "hit_rate": 0.8059
+          },
+          "mid": {
+            "n": 163,
+            "hit_rate": 0.7853
+          },
+          "tough": {
+            "n": 163,
+            "hit_rate": 0.8037
+          },
+          "lift": 1.003
+        },
+        "team_level": {
+          "soft": {
+            "n": 256,
+            "hit_rate": 0.7969
+          },
+          "mid": {
+            "n": 255,
+            "hit_rate": 0.8314
+          },
+          "tough": {
+            "n": 258,
+            "hit_rate": 0.7907
+          },
+          "lift": 1.008
+        },
+        "lift_advantage": -0.005
+      },
+      "frontcourt": {
+        "n_qualified": 710,
+        "positional": {
+          "soft": {
+            "n": 126,
+            "hit_rate": 0.7857
+          },
+          "mid": {
+            "n": 127,
+            "hit_rate": 0.6929
+          },
+          "tough": {
+            "n": 126,
+            "hit_rate": 0.8016
+          },
+          "lift": 0.98
+        },
+        "team_level": {
+          "soft": {
+            "n": 227,
+            "hit_rate": 0.793
+          },
+          "mid": {
+            "n": 223,
+            "hit_rate": 0.7758
+          },
+          "tough": {
+            "n": 239,
+            "hit_rate": 0.7364
+          },
+          "lift": 1.077
+        },
+        "lift_advantage": -0.097
+      }
+    }
+  },
+  "overall_verdict": "REVERT \u2014 positional DvP not improving over team-level; consider simplifying prompt"
+}

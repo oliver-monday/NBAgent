@@ -371,22 +371,45 @@ FG% Safety Margin is a structural explainability feature, not a directional sign
 
 ### H8 — Positional DvP vs. Team-Level DvP Predictive Validity
 
-**Status: QUEUED — data accumulating, run ~early April 2026**
+**Status: COMPLETE — March 12, 2026**
 **Mode:** `--mode positional-dvp`
-**Output:** `data/backtest_positional_dvp.json` (not yet run)
+**Output:** `data/backtest_positional_dvp.json`
+**Sample:** 6,137 instances, full 2025-26 season through March 11
 
-**Question:** Is positional defense rating (DvP) a stronger predictor of PTS/AST tier hit rates than the existing team-level opponent defense rating?
+**Question:** Is positional defense rating (DvP) a stronger predictor of PTS/AST/REB/3PM tier hit rates than the existing team-level opponent defense rating?
 
-**Mechanism:** A PG facing a team that allows a lot of points to opposing PGs is a more precise signal than "this team allows a lot of points overall." Positional DvP was added to `quant.py` and `analyst.py` in March 2026 but has not been validated against actual outcomes.
+**Verdict by stat:**
 
-**Test design:**
-- For each player-game instance where a pick was made, compare hit rates when positional DvP rating (soft/mid/tough) differs from the team-level opp_defense rating
-- Measure whether positional DvP lift variance exceeds team-level lift variance for PTS and AST
-- Minimum: 30+ days of positional DvP data in `player_stats.json` (approximately early April 2026)
+| Stat | Team-Level Lift | Positional Lift | Lift Advantage | Verdict |
+|------|----------------|-----------------|----------------|---------|
+| PTS  | 1.020 | 0.969 | −0.051 | **REVERT** |
+| REB  | 1.041 | 0.989 | −0.052 | **REVERT** |
+| AST  | 1.067 | 1.007 | −0.060 | **REVERT** |
+| 3PM  | 0.938 | 1.044 | +0.106 | **KEEP** |
 
-**Data dependency:** Requires ~30 days of live production data with positional DvP computed. Cannot be backtested against historical data — the positional data was not collected before March 2026.
+**Overall verdict: REVERT for PTS/REB/AST. KEEP for 3PM.**
 
-**Priority:** Medium. If positional DvP is not meaningfully stronger than team-level, consider reverting to team-level only to simplify the prompt.
+**Key findings:**
+
+1. **PTS/REB/AST — positional DvP adds noise, not signal.** Team-level lift is consistently higher across all three. Positional buckets are roughly half the size (~300 instances vs. ~500), making percentile thresholds noisier. The positional ratings for PTS and REB show mild inversion — "tough" cells outperforming "soft" — which is the signal going backwards. The frontcourt REB breakdown is the most telling: team-level lift = 1.077 vs. positional lift = 0.980 (−0.097 swing) for the matchup where positional DvP should theoretically matter most. Team-level is capturing something real that position-splitting is diluting.
+
+2. **Why positional DvP inverts for PTS/REB:** The whitelist skews heavily toward star players. Star players at a given position disproportionately face the opponent's best defensive assignment — meaning "tough" positional cells include games where elite offensive players still hit their tier despite tough defense, creating upward bias in the tough bucket and compressing lift.
+
+3. **3PM exception is real and mechanically sound.** Perimeter three-point defense is genuinely position-specific in a way PTS/REB/AST aren't. Team-level 3PM DvP runs *backwards* (tough 79.6% beats soft 74.6%) because it mixes in frontcourt-defender games where 3PM is nearly irrelevant. Positional DvP filters those out and finds the true signal: +0.106 lift advantage, above the KEEP threshold.
+
+4. **Current production state:** `DvP [POS]` line in analyst prompt is annotation-only with no directive rules — no picks at risk from this finding. However, the inverted signal for PTS/REB/AST means the annotation may be actively misleading the analyst.
+
+**Implementation (backtest.py approach):**
+- Reconstructs positional allowed-avg retroactively from `player_game_log.csv` grouped by `(opp_abbrev, position)`. Uses `shift(1).rolling(PDV_WINDOW=15, min_periods=10).mean()` — no lookahead.
+- Per-`(stat, position)` percentile classification: ≥67th pctile allowed avg = "soft", ≤33rd = "tough". Direction: high allowed avg → soft defense.
+- Team-level baseline computed via existing `build_opp_defense_lookup()` + `add_opp_defense_signal()` functions.
+
+**Required production changes (next session):**
+1. Remove `DvP [POS]` annotation from analyst prompt for PTS, REB, AST — revert to team-level `opp_today=` format for those three stats
+2. For 3PM: positional DvP is valid — evaluate whether to activate it in prompt (currently excluded as noise per prior decision). The backtest verdict says it works; activation is a separate prompt-design decision
+3. Simplify `build_quant_context()` in `analyst.py` accordingly — ~2 lines removed per player for PTS/REB/AST
+
+**Do not revert `compute_positional_dvp()` in `quant.py`** — keep the field in `player_stats.json`. The 3PM signal is valid, and the field may be useful for future analyses (H15b cross-validation, offseason M1). Only the analyst *prompt injection* needs to change for PTS/REB/AST.
 
 ---
 
@@ -408,6 +431,34 @@ FG% Safety Margin is a structural explainability feature, not a directional sign
 **Data dependency:** Requires near-complete season sample (~mid-April 2026).
 
 **Priority:** Medium-low. H2H samples are small by design (NBA schedule) — expect high variance, may close as NOISE.
+
+---
+
+### H15 — Opponent Team Pick Suppression / Lift
+
+**Status: IMPLEMENTED in backtest.py — ready to run ~late March 2026**
+**Mode:** `--mode opp-team-hit-rate`
+**Output:** `data/backtest_opp_team_hit_rate.json` (not yet run)
+
+**Question:** Do certain opponent teams systematically suppress or amplify the system's pick hit rate beyond what the `opp_defense` soft/mid/tough rating captures?
+
+**Three sub-hypotheses:**
+- **H15a — Overall hit rate by opponent:** Gate ≥15 picks. Suppressor: ≥10pp below baseline. Amplifier: ≥10pp above. Output: ranked list of all 30 opponents by system-wide hit rate.
+- **H15b — By prop type:** Gate ≥5 picks per (opponent, prop_type). Same ±10pp threshold. Surfaces prop-specific suppression (e.g., team neutralizing AST without affecting PTS).
+- **H15c — Miss margin floor compression:** Gate ≥3 misses per opponent. Mean miss margin = `actual_value − pick_value` (negative = missed below). Floor compression: mean ≤ −5.0. Near-miss pattern: mean > −3.0. Detects tier overshoot vs. variance.
+
+**Implementation (backtest.py):**
+- Reads `data/picks.json` directly (graded picks only: `result in HIT/MISS`, `voided != True`). Does NOT require `player_game_log.csv` — all data already in picks.json.
+- Normalizes `opponent` field via `_ABBR_NORM_BT` dict (GS→GSW, NY→NYK, SA→SAS, NO→NOP, UTAH→UTA, WSH→WAS).
+- Overall baseline = all graded picks hit rate (equivalent to `audit_summary.json` overall rate).
+- H15a/H15b suppressor/amplifier verdict applied at ≥15 / ≥5 pick thresholds respectively. Opponents below threshold tagged `insufficient_sample`.
+- H15c includes overall miss margin distribution (mean, median, p25, p75) as baseline reference.
+
+**Run timing:** ~late March 2026 — no new data collection required; all inputs already in `picks.json`. Run alongside H8.
+
+**If signal confirmed (H15a/b):** Implementation path is annotation-only first — `opp_team_suppressor` bool flag per prop type in `player_stats.json`; single annotation line in `build_quant_context()`. No tier-step or confidence rules without cross-season validation.
+
+**If signal confirmed (H15c):** Floor compression evidence warrants note in `nba_season_context.md` or player profile conditional rendering for affected opponent matchups.
 
 ---
 
@@ -453,6 +504,6 @@ FG% Safety Margin is a structural explainability feature, not a directional sign
 | Opponent Schedule Fatigue (H7) | NOISE | Opp B2B lift 0.977–1.025; dense bucket = 0 instances | ❌ Closed |
 | FG% Safety Margin (H11) | Structural — shipped without backtest | Explainability feature; validates via audit log | ✅ ft_safety_margin in quant + analyst |
 | Shot Volume / H13 | NOISE / CONFOUNDED | Median FGA sanity check failed | ❌ Closed |
-| Positional DvP (H8) | QUEUED | — | ⏳ ~early April 2026 |
+| Positional DvP (H8) | **REVERT (PTS/REB/AST) / KEEP (3PM)** | Team-level beats positional on PTS/REB/AST (lift adv −0.05 to −0.06); 3PM positional lift adv +0.106. Inversion on PTS/REB frontcourt. | ⚠️ Remove `DvP [POS]` from prompt for PTS/REB/AST; retain field in quant; 3PM activation TBD |
 | Player × Opponent H2H (H9) | QUEUED | — | ⏳ ~mid-April 2026 |
 | Miss Anatomy (player-level) | QUEUED — quant fields live | near_miss_rate / blowup_rate in player_stats.json | ⏳ ~late March 2026; analyst wiring deferred |

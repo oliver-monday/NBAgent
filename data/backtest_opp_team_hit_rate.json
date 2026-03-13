@@ -1,0 +1,199 @@
+{
+  "mode": "opp-team-hit-rate",
+  "generated_at": "2026-03-12T15:20:35",
+  "date_range": {
+    "start": "2026-03-04",
+    "end": "2026-03-11"
+  },
+  "total_picks": 279,
+  "baseline_hit_rate": 0.8387,
+  "baseline_by_prop": {
+    "PTS": 0.8469,
+    "REB": 0.8,
+    "AST": 0.8356,
+    "3PM": 0.8679
+  },
+  "constants": {
+    "OTH_MIN_PICKS": 15,
+    "OTH_MIN_PROP_PICKS": 5,
+    "OTH_MIN_MISSES": 3,
+    "OTH_SUPPRESSOR_DELTA": 0.1,
+    "OTH_AMPLIFIER_DELTA": 0.1,
+    "OTH_MARGIN_FLOOR_CMP": -5.0
+  },
+  "h15a_overall": {
+    "suppressors": [],
+    "amplifiers": [],
+    "neutral": [
+      {
+        "opponent": "MIN",
+        "picks": 22,
+        "hits": 17,
+        "hit_rate": 0.7727,
+        "delta": -0.066
+      },
+      {
+        "opponent": "NYK",
+        "picks": 17,
+        "hits": 14,
+        "hit_rate": 0.8235,
+        "delta": -0.0152
+      },
+      {
+        "opponent": "SAS",
+        "picks": 18,
+        "hits": 15,
+        "hit_rate": 0.8333,
+        "delta": -0.0054
+      },
+      {
+        "opponent": "DEN",
+        "picks": 15,
+        "hits": 13,
+        "hit_rate": 0.8667,
+        "delta": 0.028
+      },
+      {
+        "opponent": "ORL",
+        "picks": 15,
+        "hits": 13,
+        "hit_rate": 0.8667,
+        "delta": 0.028
+      }
+    ],
+    "insufficient_sample": [
+      "ATL",
+      "BKN",
+      "BOS",
+      "CHA",
+      "CHI",
+      "CLE",
+      "DAL",
+      "DET",
+      "GSW",
+      "HOU",
+      "IND",
+      "LAC",
+      "LAL",
+      "MEM",
+      "MIA",
+      "MIL",
+      "NOP",
+      "OKC",
+      "PHI",
+      "PHX",
+      "POR",
+      "SAC",
+      "TOR",
+      "UTA",
+      "WAS"
+    ]
+  },
+  "h15b_by_prop": {
+    "PTS": {
+      "baseline": 0.8469,
+      "suppressors": [],
+      "amplifiers": []
+    },
+    "REB": {
+      "baseline": 0.8,
+      "suppressors": [],
+      "amplifiers": []
+    },
+    "AST": {
+      "baseline": 0.8356,
+      "suppressors": [
+        {
+          "opponent": "MIN",
+          "picks": 7,
+          "hits": 4,
+          "hit_rate": 0.5714,
+          "delta": -0.2642
+        }
+      ],
+      "amplifiers": []
+    },
+    "3PM": {
+      "baseline": 0.8679,
+      "suppressors": [],
+      "amplifiers": []
+    }
+  },
+  "h15c_miss_margin": {
+    "floor_compression": [
+      {
+        "opponent": "SAS",
+        "n_misses": 3,
+        "mean_margin": -6.0
+      },
+      {
+        "opponent": "CHA",
+        "n_misses": 3,
+        "mean_margin": -5.0
+      }
+    ],
+    "near_miss": [
+      {
+        "opponent": "MIN",
+        "n_misses": 5,
+        "mean_margin": -1.8
+      },
+      {
+        "opponent": "POR",
+        "n_misses": 3,
+        "mean_margin": -1.67
+      }
+    ],
+    "all_opponents": [
+      {
+        "opponent": "CHA",
+        "n_misses": 3,
+        "mean_margin": -5.0,
+        "classification": "floor_compression"
+      },
+      {
+        "opponent": "HOU",
+        "n_misses": 3,
+        "mean_margin": -3.67,
+        "classification": "other"
+      },
+      {
+        "opponent": "MIN",
+        "n_misses": 5,
+        "mean_margin": -1.8,
+        "classification": "near_miss"
+      },
+      {
+        "opponent": "NYK",
+        "n_misses": 3,
+        "mean_margin": -3.67,
+        "classification": "other"
+      },
+      {
+        "opponent": "PHX",
+        "n_misses": 4,
+        "mean_margin": -3.5,
+        "classification": "other"
+      },
+      {
+        "opponent": "POR",
+        "n_misses": 3,
+        "mean_margin": -1.67,
+        "classification": "near_miss"
+      },
+      {
+        "opponent": "SAS",
+        "n_misses": 3,
+        "mean_margin": -6.0,
+        "classification": "floor_compression"
+      }
+    ],
+    "overall_distribution": {
+      "mean": -3.0,
+      "median": -2.0,
+      "p25": -4.0,
+      "p75": -1.0
+    }
+  },
+  "verdict": "No system-wide suppressors with sufficient sample. 2 opponent(s) show floor compression (mean margin \u2264 -5). Recommend annotation in nba_season_context.md for confirmed suppressors."
+}

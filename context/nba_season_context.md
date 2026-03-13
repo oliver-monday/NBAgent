@@ -165,4 +165,14 @@ Notable: Haliburton tore his Achilles in Q1 of Game 7 of the Finals. SGA average
 | UTA  | 52-20   | 49-33   | 37-45   | 31-51   | 17-65   |
 | WAS  | 34-38   | 35-47   | 35-47   | 15-67   | 18-64   |
 
-Last updated: 2026-03-10
+Last updated: 2026-03-12
+
+---
+
+### OPPONENT SCHEME NOTES — PROP CONTEXT
+
+Early-season system signals from H15 backtest (279 picks through Mar 12). Low sample — treat as watch items, not hard rules.
+
+**MIN — AST suppressor (watch item):** System hit rate on AST props vs. Minnesota is tracking at 57% (n=7), −26pp below AST baseline. Plausible mechanism: Chris Finch's switching scheme disrupts ball-handler assist opportunities. Do not fade AST picks vs. MIN on this alone, but apply extra scrutiny and prefer higher-confidence thresholds.
+
+**SAS — floor compression pattern (watch item):** On misses vs. San Antonio, players are missing well below their tier threshold (mean miss margin −6.0, n=3 misses). Suggests scheme or pace is compressing counting stats structurally, not variance-style near-misses. Sample too small to act on — flag for reconfirmation when H15 reruns at ≥400 picks.

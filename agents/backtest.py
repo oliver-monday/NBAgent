@@ -94,6 +94,28 @@ FSM_SAFE_THRESH = 0.05  # margin >= this → safe
 FSM_FRAG_THRESH = 0.00  # margin <  this → fragile (else borderline)
 FSM_MIN_N       = 20    # min instances per fragility bucket for a verdict
 
+# Positional DvP mode constants (H8)
+PDV_WINDOW        = 15    # games for rolling positional allowed avg (mirrors quant.py OPP_WINDOW)
+PDV_MIN_GAMES     = 10    # min positional games to qualify (mirrors quant.py)
+PDV_MIN_N         = 20    # min instances per rating bucket for a verdict
+PDV_SOFT_PCTILE   = 33    # ≤ this percentile of allowed avg → "tough" defense
+PDV_TOUGH_PCTILE  = 67    # ≥ this percentile of allowed avg → "soft" defense
+POSITIONAL_DVP_JSON = DATA / "backtest_positional_dvp.json"
+
+# Opponent team hit rate mode constants (H15)
+OTH_MIN_PICKS        = 15    # min picks against an opponent for a hit rate figure
+OTH_MIN_PROP_PICKS   = 5     # min picks for a prop-specific split
+OTH_MIN_MISSES       = 3     # min misses for a miss-margin figure
+OTH_SUPPRESSOR_DELTA = 0.10  # hit rate ≥10pp below baseline → suppressor
+OTH_AMPLIFIER_DELTA  = 0.10  # hit rate ≥10pp above baseline → amplifier
+OTH_MARGIN_FLOOR_CMP = -5.0  # mean miss margin ≤ this → floor compression signal
+OPP_TEAM_HIT_RATE_JSON = DATA / "backtest_opp_team_hit_rate.json"
+
+_ABBR_NORM_BT = {
+    "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
+    "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
+}
+
 
 # ── Loaders ───────────────────────────────────────────────────────────
 
@@ -178,6 +200,26 @@ def load_master(args) -> pd.DataFrame:
     if getattr(args, "end", None):
         df = df[df["game_date"] <= pd.Timestamp(args.end)]
     return df
+
+
+def load_picks_json() -> list:
+    """Load all graded picks from data/picks.json. Used by H15."""
+    picks_path = DATA / "picks.json"
+    if not picks_path.exists():
+        print("[backtest] WARNING: picks.json not found — H15 requires graded picks")
+        return []
+    with open(picks_path) as f:
+        raw = json.load(f)
+    picks = raw if isinstance(raw, list) else []
+    graded = [
+        p for p in picks
+        if p.get("result") in ("HIT", "MISS")
+        and not p.get("voided", False)
+    ]
+    print(f"[backtest] picks.json: {len(graded)} graded picks "
+          f"({sum(1 for p in graded if p['result'] == 'HIT')} HIT, "
+          f"{sum(1 for p in graded if p['result'] == 'MISS')} MISS)")
+    return graded
 
 
 # ── Signal 1: Trend ───────────────────────────────────────────────────
@@ -4149,6 +4191,607 @@ def run_ft_safety_margin_backtest(player_log: pd.DataFrame, args) -> None:
     print(f"\n{'='*72}\n")
 
 
+# ── Positional DvP Backtest (H8) ──────────────────────────────────────
+
+def run_positional_dvp_analysis(
+    player_log: pd.DataFrame,
+    team_log: pd.DataFrame,
+    whitelist_df: pd.DataFrame,
+    args,
+) -> None:
+    """H8 — Positional DvP Validity Backtest.
+
+    Retroactively computes position-specific opponent defense ratings from raw
+    game log data and compares their predictive lift against team-level ratings.
+    """
+    sep = "─" * 60
+    VALID_POSITIONS = {"PG", "SG", "SF", "PF", "C"}
+    PERIMETER   = {"PG", "SG"}
+    FRONTCOURT  = {"PF", "C"}
+
+    print(f"\n{'='*60}")
+    print(f"  H8 — Positional DvP Validity Backtest")
+    print(f"  Date range: {player_log['game_date'].min().date()} → {player_log['game_date'].max().date()}")
+    print(f"{'='*60}\n")
+
+    # ── Step 1: Add position column from whitelist ─────────────────────
+    if whitelist_df.empty or "position" not in whitelist_df.columns:
+        print("[H8] ERROR: whitelist_df missing or has no 'position' column.")
+        return
+    wl_active = whitelist_df[whitelist_df["active"].astype(str).str.strip() == "1"].copy()
+    pos_map = dict(zip(
+        wl_active["player_name"].str.strip().str.lower(),
+        wl_active["position"].str.strip().str.upper(),
+    ))
+    df = player_log.copy()
+    df["position"] = df["player_name"].str.strip().str.lower().map(pos_map)
+    df = df[df["position"].notna() & df["position"].isin(VALID_POSITIONS)].copy()
+    n_after = len(df)
+    print(f"  Player log after position filter: {n_after:,} rows "
+          f"({df['player_name'].nunique()} players)")
+    pos_counts = df["position"].value_counts().to_dict()
+    for pos in ["PG", "SG", "SF", "PF", "C"]:
+        print(f"    {pos}: {pos_counts.get(pos, 0):,} rows")
+    print()
+    if n_after < 100:
+        print("[H8] ERROR: fewer than 100 rows after position filter — insufficient data.")
+        return
+
+    # ── Step 2: Build positional DvP rolling averages ─────────────────
+    # For each player-game: rolling mean of stat for players of this position
+    # who played against the same opponent in the prior PDV_WINDOW games.
+    # Achieved by grouping by (opp_abbrev, position) and computing a
+    # shift(1) rolling mean — no lookahead.
+    print(f"  [H8] Computing positional DvP rolling averages "
+          f"(window={PDV_WINDOW}, min={PDV_MIN_GAMES})...")
+    df["_opp_upper"] = df["opp_abbrev"].str.upper().str.strip()
+    df_sorted = df.sort_values(["_opp_upper", "position", "game_date"]).copy()
+
+    for stat, col in STAT_COL.items():
+        df_sorted[f"pos_dvp_{stat}"] = df_sorted.groupby(
+            ["_opp_upper", "position"]
+        )[col].transform(
+            lambda x: x.shift(1).rolling(PDV_WINDOW, min_periods=PDV_MIN_GAMES).mean()
+        )
+
+    # Index-aligned merge back to original order
+    for stat in STAT_COL:
+        df[f"pos_dvp_{stat}"] = df_sorted[f"pos_dvp_{stat}"]
+    df = df.drop(columns=["_opp_upper"])
+
+    for stat in STAT_COL:
+        n_nn = int(df[f"pos_dvp_{stat}"].notna().sum())
+        print(f"    pos_dvp_{stat}: {n_nn:,} non-null ({n_nn / len(df) * 100:.1f}%)")
+    print()
+
+    # ── Step 3: Classify positional DvP into soft/mid/tough ───────────
+    # Percentiles computed per (stat, position) so PG PTS is ranked vs other
+    # PG PTS values — not mixed with C PTS values.
+    # High allowed avg = soft defense (favorable for offense).
+    print(f"  [H8] Classifying positional DvP per stat × position "
+          f"(soft={PDV_TOUGH_PCTILE}th pctile, tough={PDV_SOFT_PCTILE}th pctile)...")
+    for stat in STAT_COL:
+        dvp_col    = f"pos_dvp_{stat}"
+        rating_col = f"pos_dvp_rating_{stat}"
+        df[rating_col] = "null"
+        for pos in VALID_POSITIONS:
+            pos_mask = df["position"] == pos
+            vals = df.loc[pos_mask, dvp_col].dropna()
+            if len(vals) < PDV_MIN_N:
+                continue
+            p_low  = float(np.percentile(vals, PDV_SOFT_PCTILE))   # ≤33rd → tough
+            p_high = float(np.percentile(vals, PDV_TOUGH_PCTILE))  # ≥67th → soft
+
+            def _classify(v, pl=p_low, ph=p_high):
+                if pd.isna(v):
+                    return "null"
+                if v >= ph:
+                    return "soft"
+                if v <= pl:
+                    return "tough"
+                return "mid"
+
+            df.loc[pos_mask, rating_col] = df.loc[pos_mask, dvp_col].apply(_classify)
+
+    # ── Step 4: Build team-level opp defense ratings ───────────────────
+    print(f"  [H8] Building team-level opp defense ratings...")
+    if not team_log.empty:
+        opp_lookup = build_opp_defense_lookup(team_log)
+        df = add_opp_defense_signal(df, opp_lookup)
+    else:
+        print("  [H8] WARNING: team_log empty — team-level comparison unavailable.")
+        for stat in STAT_COL:
+            df[f"opp_def_{stat}"] = "null"
+
+    # ── Step 5: Compute best tiers ─────────────────────────────────────
+    print(f"  [H8] Computing best tiers (window={PDV_WINDOW})...")
+    df = add_best_tiers(df, window=PDV_WINDOW)
+    total_instances = int(sum(df[f"best_tier_{s}"].notna().sum() for s in STAT_COL))
+    print(f"  [H8] Qualified instances by stat:")
+    for stat in STAT_COL:
+        print(f"    {stat}: {int(df[f'best_tier_{stat}'].notna().sum()):,}")
+    print(f"    Total: {total_instances:,}\n")
+
+    if total_instances < PDV_MIN_N:
+        print("[H8] ERROR: insufficient qualified instances for analysis.")
+        return
+
+    # ── Step 6: Core hit rate analysis ────────────────────────────────
+    date_min = df["game_date"].min().strftime("%Y-%m-%d")
+    date_max = df["game_date"].max().strftime("%Y-%m-%d")
+
+    def _fl(v):
+        """Format a float as 3dp, or 'n/a'."""
+        return f"{v:.3f}" if v is not None else "n/a"
+
+    def _hr_str(n, hr):
+        flag = " ⚠" if n < PDV_MIN_N else ""
+        return f"n={n} hr={hr * 100:.1f}%{flag}" if hr is not None else f"n={n} hr=n/a{flag}"
+
+    def bucket_hit_rates(data: pd.DataFrame, stat: str, rating_col: str) -> dict:
+        """Compute hit rates for soft/mid/tough buckets."""
+        best_col = f"best_tier_{stat}"
+        hit_col  = f"hit_actual_{stat}"
+        qual = data[data[best_col].notna() & data[hit_col].notna()].copy()
+        results: dict = {}
+        for rating in ("soft", "mid", "tough"):
+            bucket = qual[qual[rating_col] == rating]
+            n  = len(bucket)
+            hr = round(float(bucket[hit_col].mean()), 4) if n > 0 else None
+            results[rating] = {"n": n, "hit_rate": hr}
+        soft_hr  = results["soft"]["hit_rate"]
+        tough_hr = results["tough"]["hit_rate"]
+        lift = round(soft_hr / tough_hr, 3) if (soft_hr is not None and tough_hr and tough_hr > 0) else None
+        results["lift"] = lift
+        return results
+
+    print(f"\n{'='*60}")
+    print(f"  H8 — Positional DvP Validity Backtest")
+    print(f"  Date range: {date_min} → {date_max}")
+    print(f"  Qualified instances: {total_instances:,}")
+    print(f"{'='*60}")
+
+    results_by_stat: dict  = {}
+    position_breakdown: dict = {}
+
+    for stat in STAT_COL:
+        best_col = f"best_tier_{stat}"
+        hit_col  = f"hit_actual_{stat}"
+        n_total  = int(df[df[best_col].notna() & df[hit_col].notna()].__len__())
+
+        print(f"\n  {stat} ({n_total:,} instances)")
+        print(f"  {sep}")
+
+        tl_rates  = bucket_hit_rates(df, stat, f"opp_def_{stat}")
+        pos_rates = bucket_hit_rates(df, stat, f"pos_dvp_rating_{stat}")
+
+        tl_lift  = tl_rates["lift"]
+        pos_lift = pos_rates["lift"]
+
+        print(f"  Team-level DvP:")
+        print(f"    soft {_hr_str(tl_rates['soft']['n'], tl_rates['soft']['hit_rate'])} | "
+              f"mid {_hr_str(tl_rates['mid']['n'], tl_rates['mid']['hit_rate'])} | "
+              f"tough {_hr_str(tl_rates['tough']['n'], tl_rates['tough']['hit_rate'])}")
+        print(f"    lift (soft/tough) = {_fl(tl_lift)}")
+
+        print(f"  Positional DvP:")
+        print(f"    soft {_hr_str(pos_rates['soft']['n'], pos_rates['soft']['hit_rate'])} | "
+              f"mid {_hr_str(pos_rates['mid']['n'], pos_rates['mid']['hit_rate'])} | "
+              f"tough {_hr_str(pos_rates['tough']['n'], pos_rates['tough']['hit_rate'])}")
+        print(f"    lift (soft/tough) = {_fl(pos_lift)}")
+
+        lift_adv = round(pos_lift - tl_lift, 3) if (pos_lift is not None and tl_lift is not None) else None
+        if lift_adv is None:
+            verdict = "INSUFFICIENT_DATA"
+        elif lift_adv > 0.08:
+            verdict = "KEEP"
+        elif lift_adv > 0.03:
+            verdict = "MONITOR"
+        else:
+            verdict = "REVERT"
+
+        adv_str = f"{lift_adv:+.3f}" if lift_adv is not None else "n/a"
+        print(f"  Lift advantage (positional over team): {adv_str} → {verdict}")
+
+        results_by_stat[stat] = {
+            "team_level":     tl_rates,
+            "positional":     pos_rates,
+            "lift_advantage": lift_adv,
+            "verdict":        verdict,
+        }
+
+        # ── Position breakdown for PTS and REB ────────────────────────
+        if stat in ("PTS", "REB"):
+            print(f"\n  {stat} — Position group breakdown:")
+            pos_bd: dict = {}
+            for group_name, group_positions in [
+                ("perimeter",  PERIMETER),
+                ("frontcourt", FRONTCOURT),
+            ]:
+                sub = df[df["position"].isin(group_positions)]
+                n_sub = int(sub[sub[f"best_tier_{stat}"].notna()].__len__())
+                if n_sub < PDV_MIN_N:
+                    print(f"    {group_name:10s}: n={n_sub} qualified — skipped (< {PDV_MIN_N})")
+                    pos_bd[group_name] = {"n_qualified": n_sub, "note": "insufficient"}
+                    continue
+                pos_sub   = bucket_hit_rates(sub, stat, f"pos_dvp_rating_{stat}")
+                team_sub  = bucket_hit_rates(sub, stat, f"opp_def_{stat}")
+                ps_lift   = pos_sub.get("lift")
+                tl_sub_l  = team_sub.get("lift")
+                la_sub    = round(ps_lift - tl_sub_l, 3) if (ps_lift is not None and tl_sub_l is not None) else None
+                la_str    = f"{la_sub:+.3f}" if la_sub is not None else "n/a"
+                print(f"    {group_name:10s}: positional lift={_fl(ps_lift)} | "
+                      f"team lift={_fl(tl_sub_l)} | advantage={la_str}")
+                pos_bd[group_name] = {
+                    "n_qualified": n_sub,
+                    "positional":  pos_sub,
+                    "team_level":  team_sub,
+                    "lift_advantage": la_sub,
+                }
+            position_breakdown[stat] = pos_bd
+
+    # ── Overall verdict ────────────────────────────────────────────────
+    verdicts = [results_by_stat[s]["verdict"] for s in STAT_COL]
+    keep_n    = verdicts.count("KEEP")
+    monitor_n = verdicts.count("MONITOR")
+    revert_n  = verdicts.count("REVERT")
+    if keep_n >= 2:
+        overall = "KEEP — positional DvP meaningfully outpredicts team-level for ≥2 stats"
+    elif keep_n + monitor_n >= 3:
+        overall = "MONITOR — weak advantage; accumulate more data before deciding"
+    elif revert_n >= 3:
+        overall = "REVERT — positional DvP not improving over team-level; consider simplifying prompt"
+    else:
+        overall = "MIXED — review per-stat verdicts individually"
+
+    print(f"\n  Overall verdict: {overall}")
+    print(f"{'='*60}\n")
+
+    # ── Write JSON ─────────────────────────────────────────────────────
+    output = {
+        "mode":              "positional-dvp",
+        "generated_at":      dt.datetime.now().isoformat(timespec="seconds"),
+        "date_range":        {"start": date_min, "end": date_max},
+        "total_instances":   total_instances,
+        "constants": {
+            "PDV_WINDOW":       PDV_WINDOW,
+            "PDV_MIN_GAMES":    PDV_MIN_GAMES,
+            "PDV_MIN_N":        PDV_MIN_N,
+            "PDV_SOFT_PCTILE":  PDV_SOFT_PCTILE,
+            "PDV_TOUGH_PCTILE": PDV_TOUGH_PCTILE,
+        },
+        "results":            results_by_stat,
+        "position_breakdown": position_breakdown,
+        "overall_verdict":    overall,
+    }
+    POSITIONAL_DVP_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(POSITIONAL_DVP_JSON, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[H8] Results written → {POSITIONAL_DVP_JSON}")
+    print(f"\n{'='*60}\n")
+
+
+# ── Opponent Team Hit Rate Backtest (H15) ─────────────────────────────
+
+def run_opp_team_hit_rate_analysis(picks: list, args) -> None:
+    """H15 — Opponent Team Pick Suppression / Lift Backtest.
+
+    Reads picks.json directly. Measures whether certain opponents systematically
+    suppress or amplify the system's pick hit rate beyond what opp_defense captures.
+    """
+    from collections import defaultdict
+    sep = "─" * 60
+
+    # Optional date filter
+    if getattr(args, "start", None):
+        picks = [p for p in picks if p.get("date", "") >= args.start]
+    if getattr(args, "end", None):
+        picks = [p for p in picks if p.get("date", "") <= args.end]
+    if not picks:
+        print("[H15] No graded picks after date filter.")
+        return
+
+    # ── Step 1: Normalize and enrich pick records ──────────────────────
+    enriched = []
+    for p in picks:
+        opp_raw = str(p.get("opponent", "")).strip().upper()
+        opp = _ABBR_NORM_BT.get(opp_raw, opp_raw)
+        hit = (p["result"] == "HIT")
+        actual   = p.get("actual_value")
+        pick_val = p.get("pick_value")
+        if actual is not None and pick_val is not None:
+            try:
+                miss_margin = float(actual) - float(pick_val)
+            except (TypeError, ValueError):
+                miss_margin = None
+        else:
+            miss_margin = None
+        # injury_event exclusion: field absent in picks.json schema → include all (conservative)
+        if p.get("miss_classification") == "injury_event":
+            continue
+        enriched.append({
+            "date":        p.get("date", ""),
+            "player":      p.get("player_name", ""),
+            "opponent":    opp,
+            "prop_type":   p.get("prop_type", ""),
+            "pick_value":  pick_val,
+            "actual":      actual,
+            "hit":         hit,
+            "miss_margin": miss_margin if not hit else None,
+        })
+
+    if not enriched:
+        print("[H15] No picks remain after enrichment.")
+        return
+
+    dates    = sorted(set(p["date"] for p in enriched))
+    date_min = dates[0]
+    date_max = dates[-1]
+    total    = len(enriched)
+    n_hits   = sum(1 for p in enriched if p["hit"])
+    baseline_hr = n_hits / total
+
+    # Per-prop baseline
+    prop_baseline: dict = {}
+    for prop in ("PTS", "REB", "AST", "3PM"):
+        sub = [p for p in enriched if p["prop_type"] == prop]
+        prop_baseline[prop] = sum(1 for p in sub if p["hit"]) / len(sub) if sub else None
+
+    print(f"\n{'='*60}")
+    print(f"  H15 — Opponent Team Pick Suppression / Lift")
+    print(f"  Date range: {date_min} → {date_max}")
+    print(f"  Total graded picks: {total}  |  Baseline hit rate: {baseline_hr * 100:.1f}%")
+    print(f"{'='*60}")
+
+    # ── Step 2: H15a — Overall hit rate by opponent ────────────────────
+    by_opp: dict = defaultdict(list)
+    for p in enriched:
+        by_opp[p["opponent"]].append(p)
+
+    suppressors: list = []
+    amplifiers:  list = []
+    neutral:     list = []
+    insufficient: list = []
+
+    for opp in sorted(by_opp.keys()):
+        opp_picks = by_opp[opp]
+        n = len(opp_picks)
+        if n < OTH_MIN_PICKS:
+            insufficient.append(opp)
+            continue
+        hits  = sum(1 for p in opp_picks if p["hit"])
+        hr    = hits / n
+        delta = hr - baseline_hr
+        entry = {
+            "opponent": opp, "picks": n, "hits": hits,
+            "hit_rate": round(hr, 4), "delta": round(delta, 4),
+        }
+        if delta <= -OTH_SUPPRESSOR_DELTA:
+            suppressors.append(entry)
+        elif delta >= OTH_AMPLIFIER_DELTA:
+            amplifiers.append(entry)
+        else:
+            neutral.append(entry)
+
+    suppressors.sort(key=lambda x: x["delta"])
+    amplifiers.sort(key=lambda x: x["delta"], reverse=True)
+    neutral.sort(key=lambda x: x["delta"])
+
+    print(f"\n  H15a — Overall hit rate by opponent (≥{OTH_MIN_PICKS} picks)")
+    print(f"  {sep}")
+    if suppressors:
+        print(f"  SUPPRESSORS (hit rate ≥{OTH_SUPPRESSOR_DELTA * 100:.0f}pp below baseline):")
+        for e in suppressors:
+            print(f"    {e['opponent']:5s}: {e['hits']}/{e['picks']} picks  "
+                  f"{e['hit_rate'] * 100:.1f}%  ({e['delta'] * 100:+.1f}pp)  ← SUPPRESSOR")
+    else:
+        print(f"  SUPPRESSORS: none (with ≥{OTH_MIN_PICKS} picks)")
+    if amplifiers:
+        print(f"  AMPLIFIERS (hit rate ≥{OTH_AMPLIFIER_DELTA * 100:.0f}pp above baseline):")
+        for e in amplifiers:
+            print(f"    {e['opponent']:5s}: {e['hits']}/{e['picks']} picks  "
+                  f"{e['hit_rate'] * 100:.1f}%  ({e['delta'] * 100:+.1f}pp)  ← AMPLIFIER")
+    else:
+        print(f"  AMPLIFIERS: none")
+    if neutral:
+        print(f"  NEUTRAL (< {OTH_SUPPRESSOR_DELTA * 100:.0f}pp delta, ≥{OTH_MIN_PICKS} picks):")
+        for e in neutral:
+            print(f"    {e['opponent']:5s}: {e['hits']}/{e['picks']} picks  "
+                  f"{e['hit_rate'] * 100:.1f}%  ({e['delta'] * 100:+.1f}pp)")
+    if insufficient:
+        print(f"  Insufficient sample (<{OTH_MIN_PICKS} picks): {', '.join(sorted(insufficient))}")
+
+    # ── Step 3: H15b — Hit rate by opponent × prop type ───────────────
+    print(f"\n  H15b — Hit rate by opponent × prop type (≥{OTH_MIN_PROP_PICKS} picks)")
+    print(f"  {sep}")
+
+    h15b_results: dict = {}
+    notable_suppressors_b: list = []
+    notable_amplifiers_b:  list = []
+
+    for prop in ("PTS", "REB", "AST", "3PM"):
+        prop_picks_all = [p for p in enriched if p["prop_type"] == prop]
+        pb = prop_baseline.get(prop)
+        if pb is None:
+            continue
+        by_opp_prop: dict = defaultdict(list)
+        for p in prop_picks_all:
+            by_opp_prop[p["opponent"]].append(p)
+
+        prop_supp: list = []
+        prop_ampl: list = []
+        for opp in sorted(by_opp_prop.keys()):
+            opp_prop_picks = by_opp_prop[opp]
+            n = len(opp_prop_picks)
+            if n < OTH_MIN_PROP_PICKS:
+                continue
+            hits  = sum(1 for p in opp_prop_picks if p["hit"])
+            hr    = hits / n
+            delta = hr - pb
+            entry = {
+                "opponent": opp, "picks": n, "hits": hits,
+                "hit_rate": round(hr, 4), "delta": round(delta, 4),
+            }
+            if delta <= -OTH_SUPPRESSOR_DELTA:
+                prop_supp.append(entry)
+                notable_suppressors_b.append({**entry, "prop": prop, "prop_baseline": round(pb, 4)})
+            elif delta >= OTH_AMPLIFIER_DELTA:
+                prop_ampl.append(entry)
+                notable_amplifiers_b.append({**entry, "prop": prop, "prop_baseline": round(pb, 4)})
+
+        prop_supp.sort(key=lambda x: x["delta"])
+        prop_ampl.sort(key=lambda x: x["delta"], reverse=True)
+        h15b_results[prop] = {
+            "baseline":    round(pb, 4),
+            "suppressors": prop_supp,
+            "amplifiers":  prop_ampl,
+        }
+
+    if notable_suppressors_b:
+        print(f"  Notable suppressors:")
+        for e in sorted(notable_suppressors_b, key=lambda x: x["delta"]):
+            print(f"    {e['opponent']:5s} × {e['prop']:3s}: "
+                  f"{e['hits']}/{e['picks']}  {e['hit_rate'] * 100:.1f}%  "
+                  f"({e['delta'] * 100:+.1f}pp vs {e['prop']} baseline "
+                  f"{e['prop_baseline'] * 100:.1f}%)  ← SUPPRESSOR")
+    else:
+        print(f"  No notable suppressors "
+              f"(≥{OTH_SUPPRESSOR_DELTA * 100:.0f}pp below prop baseline, "
+              f"≥{OTH_MIN_PROP_PICKS} picks)")
+    if notable_amplifiers_b:
+        print(f"  Notable amplifiers:")
+        for e in sorted(notable_amplifiers_b, key=lambda x: x["delta"], reverse=True):
+            print(f"    {e['opponent']:5s} × {e['prop']:3s}: "
+                  f"{e['hits']}/{e['picks']}  {e['hit_rate'] * 100:.1f}%  "
+                  f"({e['delta'] * 100:+.1f}pp vs {e['prop']} baseline "
+                  f"{e['prop_baseline'] * 100:.1f}%)  ← AMPLIFIER")
+    else:
+        print(f"  No notable amplifiers")
+
+    # ── Step 4: H15c — Miss margin by opponent ─────────────────────────
+    print(f"\n  H15c — Miss margin by opponent (misses only, ≥{OTH_MIN_MISSES} misses)")
+    print(f"  {sep}")
+
+    miss_picks = [p for p in enriched if not p["hit"] and p["miss_margin"] is not None]
+    by_opp_miss: dict = defaultdict(list)
+    for p in miss_picks:
+        by_opp_miss[p["opponent"]].append(p["miss_margin"])
+
+    floor_compression: list = []
+    near_miss_list:    list = []
+    all_opp_margins:   list = []
+
+    for opp in sorted(by_opp_miss.keys()):
+        margins = by_opp_miss[opp]
+        if len(margins) < OTH_MIN_MISSES:
+            continue
+        mean_m = round(float(np.mean(margins)), 2)
+        if mean_m <= OTH_MARGIN_FLOOR_CMP:
+            cls = "floor_compression"
+            floor_compression.append({"opponent": opp, "n_misses": len(margins), "mean_margin": mean_m})
+        elif mean_m > -3.0:
+            cls = "near_miss"
+            near_miss_list.append({"opponent": opp, "n_misses": len(margins), "mean_margin": mean_m})
+        else:
+            cls = "other"
+        all_opp_margins.append({
+            "opponent": opp, "n_misses": len(margins),
+            "mean_margin": mean_m, "classification": cls,
+        })
+
+    floor_compression.sort(key=lambda x: x["mean_margin"])
+    near_miss_list.sort(key=lambda x: x["mean_margin"])
+
+    if floor_compression:
+        print(f"  FLOOR COMPRESSION (mean miss margin ≤ {OTH_MARGIN_FLOOR_CMP:.0f}):")
+        for e in floor_compression:
+            print(f"    {e['opponent']:5s}: mean miss margin {e['mean_margin']:.1f} "
+                  f"(n={e['n_misses']} misses)  ← FLOOR COMPRESSION")
+    else:
+        print(f"  FLOOR COMPRESSION: none (with ≥{OTH_MIN_MISSES} misses)")
+    if near_miss_list:
+        print(f"  NEAR-MISS VARIANCE (mean miss margin > −3):")
+        for e in near_miss_list:
+            print(f"    {e['opponent']:5s}: mean miss margin {e['mean_margin']:.1f} "
+                  f"(n={e['n_misses']} misses)")
+
+    all_margins = [p["miss_margin"] for p in miss_picks if p["miss_margin"] is not None]
+    if all_margins:
+        mm_arr = np.array(all_margins)
+        dist = {
+            "mean":   round(float(np.mean(mm_arr)),            2),
+            "median": round(float(np.median(mm_arr)),          2),
+            "p25":    round(float(np.percentile(mm_arr, 25)),  2),
+            "p75":    round(float(np.percentile(mm_arr, 75)),  2),
+        }
+        print(f"\n  Overall miss margin distribution (n={len(all_margins)} misses):")
+        print(f"    mean={dist['mean']:.1f} | median={dist['median']:.1f} | "
+              f"p25={dist['p25']:.1f} | p75={dist['p75']:.1f}")
+    else:
+        dist = {}
+
+    # ── Verdict ────────────────────────────────────────────────────────
+    n_suppressors = len(suppressors)
+    n_floor       = len(floor_compression)
+    vparts: list  = []
+    if n_suppressors > 0:
+        vparts.append(
+            f"{n_suppressors} opponent(s) qualify as system-wide suppressors "
+            f"with ≥{OTH_MIN_PICKS} picks."
+        )
+    else:
+        vparts.append("No system-wide suppressors with sufficient sample.")
+    if n_floor > 0:
+        vparts.append(
+            f"{n_floor} opponent(s) show floor compression "
+            f"(mean margin ≤ {OTH_MARGIN_FLOOR_CMP:.0f})."
+        )
+    if n_suppressors > 0 or n_floor > 0:
+        vparts.append("Recommend annotation in nba_season_context.md for confirmed suppressors.")
+    else:
+        vparts.append("No action required at current sample size.")
+    verdict = " ".join(vparts)
+    print(f"\n  Verdict: {verdict}")
+    print(f"{'='*60}\n")
+
+    # ── Write JSON ─────────────────────────────────────────────────────
+    output = {
+        "mode":             "opp-team-hit-rate",
+        "generated_at":     dt.datetime.now().isoformat(timespec="seconds"),
+        "date_range":       {"start": date_min, "end": date_max},
+        "total_picks":      total,
+        "baseline_hit_rate": round(baseline_hr, 4),
+        "baseline_by_prop": {k: round(v, 4) if v is not None else None for k, v in prop_baseline.items()},
+        "constants": {
+            "OTH_MIN_PICKS":        OTH_MIN_PICKS,
+            "OTH_MIN_PROP_PICKS":   OTH_MIN_PROP_PICKS,
+            "OTH_MIN_MISSES":       OTH_MIN_MISSES,
+            "OTH_SUPPRESSOR_DELTA": OTH_SUPPRESSOR_DELTA,
+            "OTH_AMPLIFIER_DELTA":  OTH_AMPLIFIER_DELTA,
+            "OTH_MARGIN_FLOOR_CMP": OTH_MARGIN_FLOOR_CMP,
+        },
+        "h15a_overall": {
+            "suppressors":       suppressors,
+            "amplifiers":        amplifiers,
+            "neutral":           neutral,
+            "insufficient_sample": sorted(insufficient),
+        },
+        "h15b_by_prop":   h15b_results,
+        "h15c_miss_margin": {
+            "floor_compression":   floor_compression,
+            "near_miss":           near_miss_list,
+            "all_opponents":       all_opp_margins,
+            "overall_distribution": dist,
+        },
+        "verdict": verdict,
+    }
+    OPP_TEAM_HIT_RATE_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(OPP_TEAM_HIT_RATE_JSON, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[H15] Results written → {OPP_TEAM_HIT_RATE_JSON}")
+    print(f"\n{'='*60}\n")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -4163,7 +4806,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -4223,6 +4866,21 @@ def main():
     # ── FG% safety margin mode ─────────────────────────────────────────
     if getattr(args, "mode", None) == "ft-safety-margin":
         run_ft_safety_margin_backtest(player_log, args)
+        sys.exit(0)
+
+    # ── Positional DvP mode ──────────────────────────────────────────
+    if getattr(args, "mode", None) == "positional-dvp":
+        whitelist_df = pd.read_csv(WHITELIST_CSV, dtype=str) if WHITELIST_CSV.exists() else pd.DataFrame()
+        run_positional_dvp_analysis(player_log, team_log, whitelist_df, args)
+        sys.exit(0)
+
+    # ── Opponent team hit rate mode ──────────────────────────────────
+    if getattr(args, "mode", None) == "opp-team-hit-rate":
+        picks = load_picks_json()
+        if not picks:
+            print("[backtest] No graded picks found — cannot run H15.")
+            sys.exit(0)
+        run_opp_team_hit_rate_analysis(picks, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────
