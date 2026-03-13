@@ -50,6 +50,185 @@ def _norm(abbr: str) -> str:
     return _ABBR_NORM.get(a, a)
 
 
+# ── Player stats helpers ────────────────────────────────────────────────────────
+
+PLAYER_STATS_JSON = DATA / "player_stats.json"
+
+
+def load_player_stats() -> dict:
+    """Load player_stats.json written by quant.py. Returns {} on any error."""
+    if not PLAYER_STATS_JSON.exists():
+        return {}
+    try:
+        with open(PLAYER_STATS_JSON) as fh:
+            return json.load(fh)
+    except Exception as e:
+        print(f"[lineup_update] WARNING: could not load player_stats.json: {e}")
+        return {}
+
+
+def build_pick_quant_summary(player_name: str, prop_type: str, player_stats: dict) -> str:
+    """
+    Build a slim quant summary for a single pick player + prop type.
+    Returns empty string when player not in player_stats (graceful degradation).
+
+    Output format (single line):
+      quant: tier=T vs_soft=X%(Ng) vs_tough=X%(Ng) trend=up/stable/down
+             opp_def=soft/mid/tough bb_lift=X.XX [iron_floor] [VOLATILE/consistent]
+             min_floor=X(avg=Y)
+    Fields are omitted when not available — never show "n/a" or "null".
+    """
+    s = player_stats.get(player_name) or player_stats.get(player_name.strip())
+    if not s:
+        return ""
+
+    best_tiers  = s.get("best_tiers") or {}
+    best        = best_tiers.get(prop_type)
+    if not best:
+        return ""
+
+    tier        = best["tier"]
+    overall_pct = int(round(best["hit_rate"] * 100))
+    trend       = (s.get("trend") or {}).get(prop_type, "stable")
+
+    # Matchup hit rates at this tier
+    matchup_hrs  = s.get("matchup_tier_hit_rates") or {}
+    matchup_stat = (matchup_hrs.get(prop_type) or {}).get(str(tier)) or {}
+    soft_data    = matchup_stat.get("soft")
+    tough_data   = matchup_stat.get("tough")
+    soft_str  = f"{int(round(soft_data['hit_rate']*100))}%({soft_data['n']}g)"  if soft_data  else ""
+    tough_str = f"{int(round(tough_data['hit_rate']*100))}%({tough_data['n']}g)" if tough_data else ""
+
+    # Opponent defense rating (team-level)
+    opp_def    = (s.get("opp_defense") or {}).get(prop_type, {})
+    opp_rating = opp_def.get("rating", "")  # "soft" | "mid" | "tough"
+
+    # Bounce-back
+    bb_data = (s.get("bounce_back") or {}).get(prop_type) or {}
+    if bb_data.get("iron_floor"):
+        bb_str = " [iron_floor]"
+    elif bb_data.get("lift", 1.0) > 1.0:
+        bb_str = f" bb_lift={bb_data['lift']:.2f}({bb_data['n_misses']}miss)"
+    else:
+        bb_str = ""
+
+    # Volatility
+    vol_label = ((s.get("volatility") or {}).get(prop_type) or {}).get("label", "")
+    vol_str = " [VOLATILE]" if vol_label == "volatile" else " [consistent]" if vol_label == "consistent" else ""
+
+    # Minutes floor
+    mf        = s.get("minutes_floor") or {}
+    floor_val = mf.get("floor_minutes")
+    avg_val   = mf.get("avg_minutes")
+    mf_str    = f" min_floor={floor_val}(avg={avg_val})" if floor_val is not None and avg_val is not None else ""
+
+    parts = [f"tier=T{tier} overall={overall_pct}%"]
+    if soft_str:
+        parts.append(f"vs_soft={soft_str}")
+    if tough_str:
+        parts.append(f"vs_tough={tough_str}")
+    parts.append(f"trend={trend}")
+    if opp_rating:
+        parts.append(f"opp_def={opp_rating}")
+    return f"  quant: {' '.join(parts)}{bb_str}{vol_str}{mf_str}"
+
+
+def classify_absent_player(player_name: str, team: str, player_stats: dict) -> dict:
+    """
+    Classify an absent player by their impact archetype using player_stats.json.
+    Used to help Claude reason about downstream effects — especially for
+    opponent-side elite defenders or high-usage teammates.
+
+    Returns a dict:
+        {
+          "name": str,
+          "team": str,
+          "role_tags": list[str],   # e.g. ["high_usage", "rim_anchor", "primary_creator"]
+          "avg_pts": float | None,
+          "avg_reb": float | None,
+          "avg_ast": float | None,
+          "summary": str            # one-line plain-text for prompt injection
+        }
+
+    role_tags logic (non-exclusive — a player can have multiple):
+        "high_usage"      — avg_pts >= 20
+        "primary_creator" — avg_ast >= 6
+        "rim_anchor"      — avg_reb >= 9 AND position in ("C", "PF", "F-C", "C-F")
+        "perimeter_threat"— best 3PM tier exists with overall >= 72%
+        "defensive_anchor"— avg_reb >= 8 AND avg_pts >= 15  (proxy for star big)
+
+    Falls back gracefully — if player not in player_stats, returns minimal dict
+    with name/team and empty role_tags (agent still functions, just with less context).
+    """
+    s          = player_stats.get(player_name) or player_stats.get(player_name.strip()) or {}
+    raw_avgs   = s.get("raw_avgs") or {}
+    best_tiers = s.get("best_tiers") or {}
+    position   = s.get("position", "")  # from whitelist via quant
+
+    avg_pts = raw_avgs.get("PTS")
+    avg_reb = raw_avgs.get("REB")
+    avg_ast = raw_avgs.get("AST")
+
+    role_tags: list[str] = []
+
+    if avg_pts is not None and avg_pts >= 20:
+        role_tags.append("high_usage")
+    if avg_ast is not None and avg_ast >= 6:
+        role_tags.append("primary_creator")
+    if avg_reb is not None and avg_reb >= 9 and any(
+        pos in position for pos in ("C", "PF", "F-C", "C-F")
+    ):
+        role_tags.append("rim_anchor")
+
+    tpm_best = best_tiers.get("3PM")
+    if tpm_best and int(round(tpm_best["hit_rate"] * 100)) >= 72:
+        role_tags.append("perimeter_threat")
+
+    if avg_reb is not None and avg_pts is not None and avg_reb >= 8 and avg_pts >= 15:
+        role_tags.append("defensive_anchor")
+
+    # Build summary line
+    stat_parts = []
+    if avg_pts is not None:
+        stat_parts.append(f"{avg_pts:.1f}pts")
+    if avg_reb is not None:
+        stat_parts.append(f"{avg_reb:.1f}reb")
+    if avg_ast is not None:
+        stat_parts.append(f"{avg_ast:.1f}ast")
+
+    stat_str = " / ".join(stat_parts) if stat_parts else "stats unavailable"
+    tag_str  = ", ".join(role_tags) if role_tags else "role player"
+    summary  = f"{player_name} ({team}) OUT — {stat_str} [{tag_str}]"
+
+    return {
+        "name":      player_name,
+        "team":      team,
+        "role_tags": role_tags,
+        "avg_pts":   avg_pts,
+        "avg_reb":   avg_reb,
+        "avg_ast":   avg_ast,
+        "summary":   summary,
+    }
+
+
+def build_absent_player_profiles(changes: list[dict], player_stats: dict) -> str:
+    """
+    Build a structured block describing absent players for the Claude prompt.
+    Only includes players with change_type == "new_absence" (OUT or DOUBTFUL).
+    Returns empty string if no new absences.
+    """
+    absence_lines: list[str] = []
+    for c in changes:
+        if c.get("change_type") != "new_absence":
+            continue
+        profile = classify_absent_player(c["player_name"], c["team"], player_stats)
+        absence_lines.append(f"- {profile['summary']}")
+
+    if not absence_lines:
+        return ""
+    return "## ABSENT PLAYER PROFILES\n" + "\n".join(absence_lines)
+
+
 # ── Game-time helpers ──────────────────────────────────────────────────────────
 
 def load_game_map() -> dict[str, str]:
@@ -274,65 +453,105 @@ def call_lineup_update(
     affected_picks: list[dict],
     changes: list[dict],
     rotowire_context: str = "",
+    player_stats: dict | None = None,
 ) -> list[dict]:
     """
     Single Claude call. Returns list of amendment dicts:
         {player_name, prop_type, direction, revised_confidence_pct, revised_reasoning}
     """
     client = anthropic.Anthropic()
+    player_stats = player_stats or {}
 
     system_prompt = (
-        "You are a sports analyst reviewing NBA player prop picks generated this morning.\n"
-        "Lineup changes have occurred since the picks were made. Assess the impact on each "
-        "affected pick based on the changes described.\n\n"
+        "You are a sports analyst reviewing NBA player prop picks made this morning.\n"
+        "Lineup changes have occurred since picks were generated. Re-assess each affected pick.\n\n"
+
         "For each pick, return one JSON object with:\n"
         '  "player_name":            string (exact match from AFFECTED PICKS)\n'
         '  "prop_type":              "PTS" | "REB" | "AST" | "3PM"\n'
         '  "direction":              "up" | "down" | "unchanged"\n'
         '  "revised_confidence_pct": integer 70–99 (same as original when unchanged)\n'
-        '  "revised_reasoning":      string, max 20 words\n\n'
-        "DIRECTION GUIDE — apply prop-type-specific logic:\n\n"
-        "PTS:\n"
-        "  up   — key opposing defender/big OUT → matchup easier; OR usage spike from teammate OUT\n"
-        "  down — primary creator who draws defense OUT → fewer clean looks; OR B2B fatigue confirmed\n"
-        "  unchanged — role player OUT with no direct scoring/usage impact on this player\n\n"
-        "REB:\n"
-        "  up   — opposing rebounder/center OUT → fewer contested boards; OR lineup shrinks smaller\n"
-        "  down — teammate center/PF OUT → another rebounder inserted, splitting boards differently\n"
-        "  unchanged — perimeter player OUT with no rebounding impact\n\n"
-        "AST:\n"
-        "  up   — secondary ball-handler OUT → primary PG assumes all creation; more possessions, more AST\n"
-        "  down — primary scoring target OUT → fewer viable receivers; playmaker with fewer outlets\n"
-        "  unchanged — no change to offensive structure or usage hierarchy for this player\n\n"
-        "3PM:\n"
-        "  up   — primary perimeter defender assigned to this shooter OUT → more open looks\n"
-        "  down — key ball-mover/feeder OUT → fewer off-ball catch-and-shoot opportunities\n"
-        "  unchanged — structural change not affecting this player's shooting volume\n\n"
-        "DEFAULT RULE: when in doubt, use 'unchanged' — only override original confidence when the "
-        "connection between the lineup change and this specific pick is direct and meaningful.\n"
-        "Use Rotowire projected minutes and on/off usage data (when provided) to calibrate "
-        "the magnitude of confidence adjustments: larger shifts in projected minutes or usage "
-        "warrant larger confidence revisions (±5–15pp); minor tweaks warrant ±3–5pp.\n\n"
-        "Respond ONLY with a JSON array. No prose, no markdown."
+        '  "revised_reasoning":      string, max 25 words\n\n'
+
+        "## REASONING FRAMEWORK\n\n"
+
+        "Step 1 — Identify each absent player's role from ABSENT PLAYER PROFILES:\n"
+        "  Tags tell you what type of impact to expect:\n"
+        "  - high_usage / primary_creator: significant offensive redistribution on their team\n"
+        "  - rim_anchor: affects rebounding and paint defense on BOTH sides of the ball\n"
+        "  - defensive_anchor: when OUT, opposing offensive players get easier looks and higher volume\n"
+        "    especially bigs driving into the paint, and guards getting open mid-range/3PM\n"
+        "  - perimeter_threat: their absence changes spacing for their teammates\n\n"
+
+        "Step 2 — Determine which picks are affected and how:\n"
+        "  TEAMMATE pick (pick player on SAME team as absent player):\n"
+        "    PTS up  — if absent player was high_usage/primary_creator → usage/shots redistribute\n"
+        "    PTS down — if absent player was a spacing threat whose absence collapses defense on pick player\n"
+        "    REB up  — if absent player was rim_anchor and pick player competes for boards\n"
+        "    AST up  — if absent player was primary_creator and pick player becomes secondary creator\n"
+        "    AST down — if absent player was primary scoring target → fewer viable receivers\n\n"
+        "  OPPONENT pick (pick player on OPPOSING team vs. absent player's team):\n"
+        "    PTS up  — if absent player had defensive_anchor or rim_anchor tags\n"
+        "               → opponent bigs get easier paint access, higher FG%, more volume\n"
+        "               → opponent guards benefit from less help-side presence\n"
+        "               → magnitude scales with absent player's avg_reb and avg_pts\n"
+        "    REB up  — if absent player was rim_anchor → pick player competes against weaker frontcourt\n"
+        "    3PM up  — if absent player was rim_anchor/defensive_anchor → less help-side deterrence\n"
+        "               means more open corner 3s from kick-outs on broken paint possessions\n"
+        "    AST    — usually unchanged unless absent player was the primary ball-pressure defender\n\n"
+
+        "Step 3 — Calibrate magnitude using quant data:\n"
+        "  Use the quant block under each pick:\n"
+        "  - vs_soft vs vs_tough spread tells you how much this player benefits from matchup shifts\n"
+        "  - trend=up + opponent absence = amplified upside\n"
+        "  - [VOLATILE] = high variance, be conservative on revisions\n"
+        "  - [iron_floor] = floor protected, absence mainly affects ceiling\n"
+        "  Use Rotowire projected minutes and on/off usage data (when provided) to calibrate\n"
+        "  magnitude: larger projected minute shifts → larger confidence revisions (±5–15pp);\n"
+        "  minor shifts → ±3–5pp. When quant data is absent, use ±3–5pp as default.\n\n"
+
+        "Step 4 — Apply the DEFAULT RULE:\n"
+        "  When in doubt, use 'unchanged'. Only override original confidence when the connection\n"
+        "  between the lineup change and this specific pick is direct and meaningful.\n"
+        "  A role player going OUT rarely justifies any revision.\n"
+        "  An elite defensive anchor going OUT for an opposing big IS a meaningful revision.\n\n"
+
+        "Respond ONLY with a JSON array. No prose, no markdown fences."
     )
 
+    # Build absent player profiles block
+    absent_profiles_block = build_absent_player_profiles(changes, player_stats)
+
+    # Build per-pick quant summaries
+    picks_lines: list[str] = []
+    for p in affected_picks:
+        quant_line = build_pick_quant_summary(
+            p["player_name"], p.get("prop_type", ""), player_stats
+        )
+        pick_line = (
+            f"- {p['player_name']} ({p['team']}) vs {p['opponent']}: "
+            f"{p['prop_type']} OVER {p['pick_value']} "
+            f"[conf={p.get('confidence_pct', '?')}%, reasoning={p.get('reasoning', '')!r}]"
+        )
+        if quant_line:
+            pick_line += f"\n{quant_line}"
+        picks_lines.append(pick_line)
+
     changes_block = "\n".join(f"- {c['detail']}" for c in changes)
-    picks_block = "\n".join(
-        f"- {p['player_name']} ({p['team']}) vs {p['opponent']}: "
-        f"{p['prop_type']} OVER {p['pick_value']} "
-        f"[conf={p.get('confidence_pct', '?')}%, reasoning={p.get('reasoning', '')!r}]"
-        for p in affected_picks
-    )
+    picks_block   = "\n".join(picks_lines)
 
     rotowire_section = (
         f"\n## ROTOWIRE PROJECTIONS FOR CHANGED TEAMS\n{rotowire_context}\n"
         if rotowire_context else ""
     )
 
+    absent_section = f"\n{absent_profiles_block}\n" if absent_profiles_block else ""
+
     user_msg = (
-        f"## LINEUP CHANGES SINCE MORNING PICKS\n{changes_block}\n\n"
-        f"## AFFECTED PICKS\n{picks_block}\n"
-        f"{rotowire_section}\n"
+        f"## LINEUP CHANGES SINCE MORNING PICKS\n{changes_block}\n"
+        f"{absent_section}"
+        f"\n## AFFECTED PICKS\n{picks_block}\n"
+        f"{rotowire_section}"
         "Return a JSON array with one object per pick listed above."
     )
 
@@ -445,6 +664,13 @@ def main() -> None:
         except Exception as e:
             print(f"[lineup_update] WARNING: could not load injuries: {e}")
 
+    # ── Load player stats (for quant context + absent player profiling) ────────
+    player_stats = load_player_stats()
+    if player_stats:
+        print(f"[lineup_update] loaded player_stats for {len(player_stats)} players")
+    else:
+        print("[lineup_update] WARNING: player_stats.json unavailable — reasoning without quant context")
+
     # ── Compute changes ────────────────────────────────────────────────────────
     changes = compute_lineup_diff(lineups, injuries)
     if not changes:
@@ -486,7 +712,12 @@ def main() -> None:
 
     # ── Call Claude ────────────────────────────────────────────────────────────
     try:
-        amendments = call_lineup_update(affected_picks, changes, rotowire_context=rotowire_ctx)
+        amendments = call_lineup_update(
+            affected_picks,
+            changes,
+            rotowire_context=rotowire_ctx,
+            player_stats=player_stats,
+        )
     except Exception as e:
         print(f"[lineup_update] ERROR calling Claude: {e}")
         return

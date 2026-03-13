@@ -600,7 +600,7 @@ Tighten prompt ceiling if any band systematically underperforms.
 | Team defense narratives | `quant.py` `build_team_defense_narratives()` only |
 | Backtest | `agents/backtest.py` — standalone, reads CSVs, writes JSON, no production impact |
 | Frontend change | `build_site.py` only — triggers on next injury refresh or analyst run |
-| Lineup update rules | `agents/lineup_update.py` `call_lineup_update()` system/user prompt only |
+| Lineup update rules | `agents/lineup_update.py` `call_lineup_update()` system/user prompt; also `classify_absent_player()` role_tag thresholds for absence impact tuning |
 
 ---
 
