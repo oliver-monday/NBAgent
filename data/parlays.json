@@ -1973,5 +1973,190 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-13",
+    "parlays": [
+      {
+        "label": "Iron Floor Trio",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Alperen Sengun",
+            "team": "HOU",
+            "opponent": "NO",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "GS",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "CHI",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.512,
+        "correlation": "independent",
+        "rationale": "Three independent 80%-confidence iron-floor legs across three games with zero lineup overlap and all soft matchups.",
+        "date": "2026-03-13",
+        "id": "parlay_2026-03-13_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Multi-Game AST Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "CHI",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "GS",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Brandon Ingram",
+            "team": "TOR",
+            "opponent": "PHX",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Three ultra-low AST T2 thresholds across three separate games \u2014 the system's most structurally reliable iron-floor leg type.",
+        "date": "2026-03-13",
+        "id": "parlay_2026-03-13_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Scorers Plus Floor",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "PHX",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Anthony Edwards",
+            "team": "MIN",
+            "opponent": "GS",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Donovan Mitchell",
+            "team": "CLE",
+            "opponent": "DAL",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Up-trending Barrett scorer anchors two separate iron-floor props across three fully independent games and game scripts.",
+        "date": "2026-03-13",
+        "id": "parlay_2026-03-13_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Scottie-Mitchell Cross-Game Lock",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Alperen Sengun",
+            "team": "HOU",
+            "opponent": "NO",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Donovan Mitchell",
+            "team": "CLE",
+            "opponent": "DAL",
+            "prop_type": "REB",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "PHX",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Sengun PTS floor plus two independent rebounding props from different games, all soft matchups and 9/10+ hit rates.",
+        "date": "2026-03-13",
+        "id": "parlay_2026-03-13_04",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
