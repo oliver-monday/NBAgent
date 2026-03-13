@@ -14,10 +14,10 @@
       "confidence_after_volatile_deduction": 65,
       "note": "VOLATILE -5% reduces 70% to 65%, below 70% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-03-12",
@@ -34,10 +34,10 @@
       "gate_rule": "3rd-lowest must be strictly greater than pick value; 2 equals 2, no cushion",
       "lower_tier_available": false
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-03-12",
@@ -54,10 +54,10 @@
       "dvp_ast_rating": "tough",
       "gate_condition_fired": "tough DvP AST \u2014 wait, re-checking gate: fires only if PF/C OR AST avg <4.0. White SG, AST avg >4. Gate does NOT fire by position/avg condition. However T4 only had 9/10 hit rate qualifying... actually the AST gate fires for (a) PF/C or (b) AST avg <4.0. White is SG with AST avg >4, so gate technically does NOT fire. But tough DvP should reduce confidence. 85%-5%(tough)=80% qualifies. Reconsider \u2014 pick should qualify."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 4"
   },
   {
     "date": "2026-03-12",
@@ -73,10 +73,10 @@
       "dvp_3pm_rating": "soft",
       "note": "DvP 3PM=soft so hard skip does NOT apply \u2014 trend=down with soft DvP uses step-down rule, not hard skip. Pick T1 after step-down."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-03-12",
@@ -93,10 +93,10 @@
       "action": "Drop one tier to T15 and re-evaluate; T15 likely qualifies",
       "note": "FG_MARGIN_THIN:6% forces tier drop from T20 to T15"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 21.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 21.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-12",
@@ -113,10 +113,10 @@
       "action": "FG_MARGIN_THIN:10% exactly at threshold \u2014 drop to T15",
       "note": "VOLATILE-5% + BLOWOUT-10% would drop T20 to 60% regardless; T15 may qualify"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 43.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 43.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-12",
@@ -136,10 +136,10 @@
       "confidence_calculation": "80% overall - 5% VOLATILE - 10% BLOWOUT = 65%",
       "note": "Confidence drops below 70% after mandatory deductions; iron_floor protects tier not confidence"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-12",
@@ -157,10 +157,10 @@
       "lower_tier_available": true,
       "action": "Step to T4"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-12",
@@ -178,10 +178,10 @@
       "stepped_tier": 10,
       "note": "B2B rate at T20=67% also fails; min_floor=17<24 forces T20\u2192T15\u2192T10 via two applications"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 39.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 39.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-12",
@@ -199,10 +199,10 @@
       "lower_tier_available": false,
       "note": "Iron_floor protects tier selection but tightened gate overrides at the pick level"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-03-12",
@@ -219,10 +219,10 @@
       "gate_condition": "PF/C position with non-soft AST DvP \u2014 unconditional block at T4+",
       "hit_rate_at_tier": "8/10"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-12",
@@ -239,10 +239,10 @@
       "confidence_after_volatile_deduction": 65,
       "note": "VOLATILE -5% reduces 70% to 65%; T10 is below T15 threshold for hard skip rule but confidence still drops below floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 14.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 14.0 \u2265 tier 10"
   },
   {
     "date": "2026-03-12",
@@ -258,10 +258,10 @@
       "dvp_3pm_rating": "tough",
       "note": "Both conditions met: trend=down AND tough 3PM DvP \u2014 mandatory hard skip all 3PM including T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-12",
@@ -279,10 +279,10 @@
       "lower_tier_available": true,
       "action": "Step to T4"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-12",
@@ -299,10 +299,10 @@
       "confidence_after_volatile_deduction": 65,
       "note": "VOLATILE -5% reduces 70% to 65%; iron_floor protects tier but not confidence level"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-12",
@@ -320,10 +320,10 @@
       "lower_tier_available": true,
       "action": "Step to T4"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-12",
@@ -341,10 +341,10 @@
       "confidence_calculation": "75% - 5% VOLATILE - 10% BLOWOUT = 60%",
       "note": "Combined VOLATILE + BLOWOUT deductions drop below 70% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-12",
@@ -363,9 +363,9 @@
       "confidence_calculation": "76% - 5% VOLATILE - 10% BLOWOUT = 61%",
       "note": "min_floor<24 would also require step-down; combined deductions eliminate pick"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 36.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 36.0 \u2265 tier 10"
   }
 ]
