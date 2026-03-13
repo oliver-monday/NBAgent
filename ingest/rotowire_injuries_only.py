@@ -618,12 +618,28 @@ def write_lineups_json(
     out_path = data_dir / "lineups_today.json"
     tmp_path = data_dir / "lineups_today.json.tmp"
 
+    # Preserve the analyst snapshot key if already written this morning.
+    # This key is written by analyst.py after picks run and must survive
+    # hourly Rotowire refreshes — without it, lineup_update.py always skips.
+    existing_snapshot = None
+    if out_path.exists():
+        try:
+            with open(out_path) as _fh:
+                _existing = json.load(_fh)
+            existing_snapshot = _existing.get("snapshot_at_analyst_run")
+        except Exception:
+            pass  # If we can't read it, just proceed without preserving
+
     payload = {
         "asof_date": asof_date,
         "built_at_utc": built_at_utc,
         "source": "rotowire",
         **lineups,
     }
+
+    # Re-inject snapshot if it existed
+    if existing_snapshot:
+        payload["snapshot_at_analyst_run"] = existing_snapshot
 
     # Merge projected_minutes and onoff_usage into per-team entries
     if projected_minutes:

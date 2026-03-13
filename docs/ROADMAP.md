@@ -403,6 +403,7 @@ H15c — Mean miss margin by opponent (misses only):
 
 | Issue | Fix Applied |
 |-------|-------------|
+| `lineups_today.json` snapshot clobbered by hourly Rotowire refreshes (March 12, 2026) | `write_lineups_json()` overwrote `snapshot_at_analyst_run` on every `injuries.yml` run, causing `lineup_update.py` to always skip with "no snapshot found." Fix: read existing file and carry forward the key before constructing payload. `ingest/rotowire_injuries_only.py` only. |
 | API key "balance too low" error | Create new API key after adding credits — old key had sync issue |
 | JSON truncation on large slates | analyst.py MAX_TOKENS increased 4096 → 8192 → 16384 |
 | All 30 teams' injuries sent to prompt | `load_injuries()` filters to today's teams only |

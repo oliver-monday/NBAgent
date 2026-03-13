@@ -652,6 +652,7 @@ Tighten prompt ceiling if any band systematically underperforms.
   each morning by the next day's analyst run, so it does not accumulate across days.
   Note: `injuries_today.json` remains uncommitted (refreshed every hourly run, no snapshot
   dependency) — the analogy to `lineups_today.json` is imperfect.
+  Note: `write_lineups_json()` in `rotowire_injuries_only.py` now preserves `snapshot_at_analyst_run` across hourly rewrites — fixed March 12, 2026. Prior to this fix, every successful Rotowire parse overwrote the file without the snapshot key, causing `lineup_update.py` to always skip despite the key being committed.
 - **`skipped_picks.json` is committed by BOTH `analyst.yml` AND `auditor.yml`** — `analyst.py`
   writes it fresh each morning (null grading fields). `auditor.py` reads it, calls `grade_skips()`
   to fill `would_have_hit` / `skip_verdict` / `skip_verdict_notes` / `actual_value`, then writes
