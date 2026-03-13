@@ -51,6 +51,13 @@ MODEL_LARGE   = "claude-opus-4-6"     # upgraded model for large slates
 MAX_TOKENS    = 32000                 # was 16384
 # Player count threshold (after injury pre-filter) above which Opus is used
 LARGE_SLATE_THRESHOLD = 30
+# Valid tier values per prop type — mirrors tier definitions in quant.py and the analyst prompt
+VALID_TIERS = {
+    "PTS": [10, 15, 20, 25, 30],
+    "REB": [2, 4, 6, 8, 10, 12],
+    "AST": [2, 4, 6, 8, 10, 12],
+    "3PM": [1, 2, 3, 4],
+}
 # How many recent games to include per player in the prompt
 RECENT_GAME_WINDOW = 10
 # How many audit log entries to feed back as context (keep lean)
@@ -1779,7 +1786,110 @@ def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict
 
 # ── Output ───────────────────────────────────────────────────────────
 
+def reconcile_pick_values(picks: list[dict]) -> list[dict]:
+    """
+    Post-process picks to ensure pick_value matches the final stepped-down tier
+    documented in tier_walk. Claude correctly reasons about mandatory step-downs
+    (min_floor, FG_COLD, volatility, etc.) and records them in tier_walk, but
+    does not always update pick_value. This function detects the mismatch and
+    corrects it before writing to disk.
+
+    Only lowers pick_value — never raises it. Skips ambiguous cases.
+    """
+    import re
+
+    # Step-down indicator keywords — when these appear in tier_walk, the integer
+    # that follows (or precedes via →) is the destination tier after stepping down.
+    STEP_KEYWORDS = re.compile(
+        r"\b(step|apply|drop|corrected|→|->)\b", re.IGNORECASE
+    )
+
+    for pick in picks:
+        tier_walk = pick.get("tier_walk") or ""
+        prop_type  = pick.get("prop_type", "")
+        pick_value = pick.get("pick_value")
+
+        if not tier_walk or prop_type not in VALID_TIERS or pick_value is None:
+            continue
+
+        valid = VALID_TIERS[prop_type]
+        name  = pick.get("player_name", "?")
+
+        # ── Strategy 1: find the last ✓-marked tier, then check if a step keyword
+        # appears after it pointing to a lower tier. ─────────────────────────────
+        # Collect all (position, tier) pairs where a valid tier value is followed by ✓
+        check_hits = []
+        for m in re.finditer(r"\b(\d+)\b[^✓\n]*✓", tier_walk):
+            val = int(m.group(1))
+            if val in valid:
+                check_hits.append((m.start(), val))
+
+        # Collect all (position, tier) pairs that appear after a step keyword
+        step_hits = []
+        for m in re.finditer(r"(?:step|apply|drop|corrected|→|->)[^\d]*(\d+)", tier_walk, re.IGNORECASE):
+            val = int(m.group(1))
+            if val in valid:
+                step_hits.append((m.start(), val))
+
+        final_tier = None
+
+        if step_hits:
+            # The rightmost step-destination is the final tier
+            candidate = max(step_hits, key=lambda x: x[0])[1]
+            # Only accept if it is lower than current pick_value (step-downs only)
+            if candidate < pick_value:
+                final_tier = candidate
+
+        # ── Strategy 2 (fallback): if no ✓ and no step keyword matched, look for
+        # the rightmost valid tier mentioned after any → in the string. ─────────
+        if final_tier is None:
+            arrow_hits = []
+            for m in re.finditer(r"(?:→|->)\s*T?(\d+)", tier_walk, re.IGNORECASE):
+                val = int(m.group(1))
+                if val in valid and val < pick_value:
+                    arrow_hits.append((m.start(), val))
+            if arrow_hits:
+                final_tier = max(arrow_hits, key=lambda x: x[0])[1]
+
+        if final_tier is None:
+            # Could not determine a stepped-down tier unambiguously — leave as-is
+            if STEP_KEYWORDS.search(tier_walk):
+                # Only log when step keywords were present (genuine parse failure)
+                print(
+                    f"[analyst] RECONCILE_SKIP: {name} {prop_type} — "
+                    f"could not parse final tier from tier_walk"
+                )
+            continue
+
+        if final_tier == pick_value:
+            continue  # Already correct — no action needed
+
+        # Safety: never raise pick_value via this function
+        if final_tier > pick_value:
+            print(
+                f"[analyst] RECONCILE_SKIP: {name} {prop_type} — "
+                f"parsed tier {final_tier} > pick_value {pick_value}, skipping"
+            )
+            continue
+
+        old_val = pick_value
+        pick["pick_value"] = final_tier
+        pick["tier_walk"]  = (
+            tier_walk
+            + f" [reconciled: pick_value corrected {old_val}→{final_tier} by Python post-processor]"
+        )
+        print(
+            f"[analyst] RECONCILED: {name} {prop_type} pick_value {old_val}→{final_tier} "
+            f"(tier_walk indicated step-down)"
+        )
+
+    return picks
+
+
 def save_picks(picks: list[dict]):
+    # Reconcile pick_value against tier_walk step-down documentation
+    picks = reconcile_pick_values(picks)
+
     # Load existing picks (from prior days), append today's
     existing = []
     if PICKS_JSON.exists():

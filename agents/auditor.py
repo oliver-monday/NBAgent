@@ -575,9 +575,16 @@ def build_absence_context(graded_picks: list[dict]) -> str:
 
 
 def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", post_game_news: dict | None = None, playoff_picture: str = "", game_results_block: str = "") -> str:
-    hits    = [p for p in graded_picks if p["result"] == "HIT"]
-    misses  = [p for p in graded_picks if p["result"] == "MISS"]
-    no_data = [p for p in graded_picks if p["result"] == "NO_DATA"]
+    # Split voided (confirmed OUT pre-game) from active picks.
+    # Voided picks are excluded from all counting and statistical breakdowns —
+    # the system should not be docked for picks that were correctly voided.
+    # build_absence_context() still receives all graded_picks to detect voided players.
+    voided_picks = [p for p in graded_picks if p.get("voided") is True]
+    active_picks = [p for p in graded_picks if not p.get("voided", False)]
+
+    hits    = [p for p in active_picks if p["result"] == "HIT"]
+    misses  = [p for p in active_picks if p["result"] == "MISS"]
+    no_data = [p for p in active_picks if p["result"] == "NO_DATA"]
 
     total_gradeable = len(hits) + len(misses)
     hit_rate = round(100 * len(hits) / total_gradeable, 1) if total_gradeable > 0 else 0
@@ -586,7 +593,7 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
 
     # ── Pre-computed breakdown stats ──────────────────────────────────
     prop_breakdown: dict = defaultdict(lambda: {"picks": 0, "hits": 0})
-    for p in graded_picks:
+    for p in active_picks:
         pt = p.get("prop_type", "")
         prop_breakdown[pt]["picks"] += 1
         if p.get("result") == "HIT":
@@ -599,7 +606,7 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
     bands = {"70-75": (70, 75), "76-80": (76, 80), "81-85": (81, 85), "86+": (86, 100)}
     conf_breakdown: dict = {}
     for band, (lo, hi) in bands.items():
-        subset = [p for p in graded_picks
+        subset = [p for p in active_picks
                   if lo <= p.get("confidence_pct", 0) <= hi
                   and p.get("result") in ("HIT", "MISS")]
         h = sum(1 for p in subset if p["result"] == "HIT")
@@ -655,12 +662,12 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
     p_misses  = sum(1 for p in graded_parlays if p["result"] == "MISS")
     p_partial = sum(1 for p in graded_parlays if p["result"] == "PARTIAL")
 
-    hits_and_misses = [p for p in graded_picks if p["result"] in ("HIT", "MISS")]
+    hits_and_misses = [p for p in active_picks if p["result"] in ("HIT", "MISS")]
     picks_block   = json.dumps(hits_and_misses, indent=2)
     no_data_block_str = json.dumps(no_data, indent=2) if no_data else "[]"
     parlays_block = json.dumps(graded_parlays, indent=2) if graded_parlays else "[]"
 
-    # ── Absence context block ─────────────────────────────────────────
+    # ── Absence context block — uses all graded_picks (voided players ARE the absences)
     absence_block = build_absence_context(graded_picks)
 
     # ── Post-game news block ──────────────────────────────────────────
@@ -761,11 +768,9 @@ not elevations. Do not cite these absences as a causal factor in any pick reason
 analysis.
 
 ## PICK GRADED RESULTS SUMMARY
-- Total picks: {len(graded_picks)}
-- Hits: {len(hits)}
-- Misses: {len(misses)}
-- No data (DNP/missing): {len(no_data)}
-- Hit rate (gradeable only): {hit_rate}%
+- Total picks (active): {len(active_picks)} | Voided (DNP/OUT pre-game): {len(voided_picks)} | Hits: {len(hits)} | Misses: {len(misses)}
+- No data (DNP/missing, active only): {len(no_data)}
+- Hit rate (gradeable only, voided excluded): {hit_rate}%
 
 ## PRE-COMPUTED STATISTICS
 Use these values exactly when filling prop_type_breakdown and confidence_calibration in your output.
@@ -956,7 +961,8 @@ Respond ONLY with valid JSON. No preamble.
 
 {{
   "date": "{YESTERDAY_STR}",
-  "total_picks": {len(graded_picks)},
+  "total_picks": {len(active_picks)},
+  "voided_picks": {len(voided_picks)},
   "hits": {len(hits)},
   "misses": {len(misses)},
   "no_data": {len(no_data)},
@@ -1100,9 +1106,10 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         return
 
     # ── Overall totals ─────────────────────────────────────────────────
-    total_picks  = sum(e.get("total_picks", 0) for e in audit_log)
-    total_hits   = sum(e.get("hits",        0) for e in audit_log)
-    total_misses = sum(e.get("misses",      0) for e in audit_log)
+    total_picks  = sum(e.get("total_picks",  0) for e in audit_log)
+    total_voided = sum(e.get("voided_picks", 0) for e in audit_log)  # older entries return 0 via .get()
+    total_hits   = sum(e.get("hits",         0) for e in audit_log)
+    total_misses = sum(e.get("misses",       0) for e in audit_log)
     gradeable    = total_hits + total_misses
 
     # ── Per-prop aggregation (from prop_type_breakdown in each entry) ──
@@ -1208,6 +1215,7 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         "entries_included": len(audit_log),
         "overall": {
             "total_picks":       total_picks,
+            "voided":            total_voided,
             "hits":              total_hits,
             "misses":            total_misses,
             "injury_exclusions": total_injury_exclusions,

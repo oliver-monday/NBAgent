@@ -901,8 +901,6 @@ def generate_html(d: dict) -> str:
                            justify-content: space-between; gap: 12px; margin-bottom: 12px; }}
     .parlay-label {{ font-size: 15px; font-weight: 700; }}
     .parlay-meta {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; align-items: center; }}
-    .parlay-odds {{ font-size: 20px; font-weight: 800; color: var(--accent2);
-                    white-space: nowrap; flex-shrink: 0; text-align: right; }}
     .parlay-result-hit  {{ font-size: 11px; font-weight: 700; color: var(--hit);
                            background: rgba(34,197,94,0.12); padding: 2px 8px;
                            border-radius: 99px; white-space: nowrap; }}
@@ -1374,8 +1372,9 @@ function renderResults() {{
     document.getElementById('yesterday-pct').textContent = la.hit_rate_pct + '%';
     const d = (la.date||'').split('-');
     const fmt = d.length===3 ? `${{parseInt(d[1])}}/${{parseInt(d[2])}}` : (la.date||'');
+    const voidedStr = (la.voided_picks||0) > 0 ? ` · ${{la.voided_picks}} voided` : '';
     document.getElementById('yesterday-sub').textContent =
-      `${{la.hits}}/${{la.total_picks}} picks · ${{fmt}}`;
+      `${{la.hits}}/${{la.total_picks}} picks · ${{fmt}}${{voidedStr}}`;
   }}
 
   // ── Top Picks card ──
@@ -1490,7 +1489,7 @@ function renderResults() {{
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
               <span style="font-size:12px;font-weight:600">${{p.label||'Parlay'}}</span>
               <span style="display:flex;gap:8px;align-items:center">
-                <span style="font-size:11px;color:var(--muted)">${{fmt}} · ${{p.implied_odds||''}}</span>
+                <span style="font-size:11px;color:var(--muted)">${{fmt}}</span>
                 ${{resultBadge}}
               </span>
             </div>
@@ -1592,6 +1591,7 @@ function renderAudit() {{
         <div><div style="font-size:11px;color:var(--muted)">Total</div><div style="font-size:24px;font-weight:700">${{a.total_picks}}</div></div>
         <div><div style="font-size:11px;color:var(--muted)">Hits</div><div style="font-size:24px;font-weight:700;color:var(--hit)">${{a.hits}}</div></div>
         <div><div style="font-size:11px;color:var(--muted)">Misses</div><div style="font-size:24px;font-weight:700;color:var(--miss)">${{a.misses}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Voids</div><div style="font-size:24px;font-weight:700;color:var(--muted)">${{a.voided_picks||0}}</div></div>
       </div>
     </div>`;
   if (a.reinforcements?.length) {{
@@ -1793,7 +1793,6 @@ function renderParlays() {{
             </div>
             ${{riskBanner}}
           </div>
-          <div class="parlay-odds">${{p.implied_odds || ''}}</div>
         </div>
         <div class="parlay-legs">`;
 
