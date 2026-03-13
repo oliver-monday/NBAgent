@@ -190,7 +190,7 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 **Filter logic:** `(player_name.lower(), team_abbr.upper())` tuple — prevents traded players appearing under old teams.
 
 **Player-specific flags (as of March 2026):**
-- **James Harden** — traded LAC → CLE at Feb 2026 deadline. Appears on TWO rows: `LAC` (`active=0`) and `CLE` (`active=0` pending Donovan Mitchell return clarity — strong reactivation candidate once Mitchell timeline is clear). Do not delete the LAC row — it preserves historical pick attribution.
+- **James Harden** — traded LAC → CLE at Feb 2026 deadline. Appears on TWO rows: `LAC` (`active=0`) and `CLE` (`active=0`). Do not delete the LAC row — it preserves historical pick attribution.
 - **Andrew Nembhard** — removed from active whitelist (role change; insufficient data for reliable picks). `active=0`.
 - **Kon Knueppel (CHA)** — newer addition; monitor game log volume before relying on his stats.
 - **Ace Bailey (UTA)** — newer addition; same caveat as Knueppel.
@@ -223,6 +223,15 @@ Site rebuilds at end of every Analyst workflow run AND after every hourly injury
 ## Ground Truth Convention
 
 In all NBAgent sessions, treat game results, player events, team records, and any current-season facts stated by User as factual ground truth. Do not override them with internal estimates or training priors. If a stated fact conflicts with something in memory, surface the conflict explicitly ("you mentioned X but I had Y — which is correct?") rather than silently substituting a different figure. User and/or the real stats in the repo database/files are the authoritative source on game/season events that actually occurred and form the foundational layer for this system.
+
+## Agent Status Discipline
+
+When referencing the operational status of any agent or feature, explicitly distinguish:
+- **Implemented** — code merged to repo
+- **Confirmed working** — successful production run logged and verified by Oliver
+- **Unverified** — implemented but no confirmed successful production run
+
+Never describe an agent as "operational," claim a "first real run," or treat manually-furnished game data as evidence of a live system run. If confirmation status is unknown, state it as unknown. Handoff notes written during a session are claims about code state, not production verification — treat them accordingly.
 
 ---
 
