@@ -1033,7 +1033,7 @@ def generate_html(d: dict) -> str:
                    border-radius: 12px; padding: 16px; margin-bottom: 20px; }}
     .chart-title {{ font-size: 11px; color: var(--muted); margin-bottom: 12px;
                     font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }}
-    #trend-chart {{ width: 100%; height: 120px; display: block; }}
+    #trend-chart {{ width: 100%; height: 160px; display: block; }}
 
     /* History table */
     .history-table {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
@@ -1685,49 +1685,68 @@ function renderResults() {{
 }}
 
 // ── TREND CHART (vanilla canvas, no deps) ──
-let chartDrawn = false;
 function drawTrendChart() {{
-  if (chartDrawn) return;
-  chartDrawn = true;
   const trend  = DATA.daily_trend;
   const canvas = document.getElementById('trend-chart');
   const empty  = document.getElementById('chart-empty');
   if (!trend || trend.length < 2) {{
     canvas.style.display = 'none';
-    empty.style.display  = 'block';
+    if (empty) empty.style.display = 'block';
     return;
   }}
+
   const dpr = window.devicePixelRatio || 1;
   const W = canvas.parentElement.clientWidth - 32;
-  const H = 120;
+  const H = 160;
   canvas.width  = W * dpr; canvas.height = H * dpr;
   canvas.style.width = W+'px'; canvas.style.height = H+'px';
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
-  const pad = {{t:10, r:10, b:28, l:36}};
+  const pad = {{t:14, r:10, b:28, l:38}};
   const cw = W-pad.l-pad.r, ch = H-pad.t-pad.b;
 
-  // Grid + y-axis labels
-  [50,70,100].forEach(pct => {{
-    const y = pad.t + ch - (pct/100)*ch;
-    ctx.strokeStyle='#2a2a32'; ctx.lineWidth=1;
+  // ── Dynamic Y-axis ─────────────────────────────────────────────────────────
+  // Normal floor: 65% (buffer below 70% target line).
+  // If any data point dips below 65%, extend floor to 5pp below the minimum.
+  const TARGET = 70;
+  const minPct = Math.min(...trend.map(d => d.pct));
+  const maxPct = Math.max(...trend.map(d => d.pct));
+  const yFloor = minPct < 65 ? Math.floor(minPct / 5) * 5 - 5 : 65;
+  const yCeil  = Math.min(100, Math.ceil((maxPct + 3) / 5) * 5);  // headroom above max, cap 100%
+  const yRange = yCeil - yFloor;
+
+  // Map a pct value to canvas y
+  const toY = pct => pad.t + ch - ((pct - yFloor) / yRange) * ch;
+
+  // ── Grid + y-axis labels ───────────────────────────────────────────────────
+  // Choose grid lines: always include TARGET; add floor, ceil, and midpoint
+  const rawGridLines = new Set([yFloor, TARGET, yCeil]);
+  // Add a mid grid line if gap is big enough
+  const mid = Math.round((yFloor + yCeil) / 2 / 5) * 5;
+  if (mid !== TARGET && mid !== yFloor && mid !== yCeil) rawGridLines.add(mid);
+  const gridLines = [...rawGridLines].sort((a,b)=>a-b);
+
+  gridLines.forEach(pct => {{
+    const y = toY(pct);
+    ctx.strokeStyle = pct === TARGET ? 'rgba(232,112,58,0.0)' : '#2a2a32';
+    ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
     ctx.fillStyle='#888898'; ctx.font='9px system-ui'; ctx.textAlign='right';
     ctx.fillText(pct+'%', pad.l-4, y+3);
   }});
 
-  // 70% target dashed line
-  const ty = pad.t + ch - 0.7*ch;
-  ctx.strokeStyle='rgba(232,112,58,0.45)'; ctx.setLineDash([3,4]); ctx.lineWidth=1;
+  // ── 70% target dashed line ────────────────────────────────────────────────
+  const ty = toY(TARGET);
+  ctx.strokeStyle='rgba(232,112,58,0.5)'; ctx.setLineDash([3,4]); ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(pad.l,ty); ctx.lineTo(pad.l+cw,ty); ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle='rgba(232,112,58,0.6)'; ctx.font='9px system-ui'; ctx.textAlign='left';
+  ctx.fillStyle='rgba(232,112,58,0.7)'; ctx.font='9px system-ui'; ctx.textAlign='left';
   ctx.fillText('target 70%', pad.l+4, ty-3);
 
-  // Data points
+  // ── Data points ────────────────────────────────────────────────────────────
   const pts = trend.map((d,i) => ({{
     x: pad.l + (trend.length>1 ? i/(trend.length-1) : 0.5)*cw,
-    y: pad.t + ch - (d.pct/100)*ch,
+    y: toY(d.pct),
     pct: d.pct, date: d.date
   }}));
 
@@ -1744,19 +1763,31 @@ function drawTrendChart() {{
   pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
   ctx.stroke();
 
-  // Dots (green above target, red below)
+  // Dots
   pts.forEach(p => {{
     ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2);
-    ctx.fillStyle = p.pct>=70 ? '#00d4aa' : '#ef4444';
+    ctx.fillStyle = p.pct>=TARGET ? '#00d4aa' : '#ef4444';
     ctx.fill();
   }});
 
-  // X-axis labels
+  // X-axis date labels
   ctx.fillStyle='#888898'; ctx.font='9px system-ui'; ctx.textAlign='center';
   [0, Math.floor((trend.length-1)/2), trend.length-1].forEach(i => {{
     ctx.fillText(trend[i].date.slice(5), pts[i].x, H-6);
   }});
 }}
+
+// Responsive: redraw on container resize
+(function() {{
+  const canvas = document.getElementById('trend-chart');
+  if (!canvas) return;
+  let lastW = 0;
+  const ro = new ResizeObserver(() => {{
+    const w = canvas.parentElement.clientWidth;
+    if (Math.abs(w - lastW) > 4) {{ lastW = w; drawTrendChart(); }}
+  }});
+  ro.observe(canvas.parentElement);
+}})();
 
 // ── AUDIT ──
 function renderAudit() {{
