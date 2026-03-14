@@ -917,6 +917,10 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
             if parts:
                 momentum_line = "  Momentum — " + " | ".join(parts)
 
+        # Whitelisted teammates line — current-season roster grounding
+        wt = s.get("whitelisted_teammates") or []
+        teammates_line = f"  Teammates (active/whitelisted): {', '.join(wt)}" if wt else ""
+
         stat_parts = []
         bounce_back_all    = s.get("bounce_back") or {}
         volatility_all     = s.get("volatility") or {}
@@ -1044,7 +1048,8 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             lines.append(
                 f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
-                + (momentum_line + "\n" if momentum_line else "")
+                + (momentum_line  + "\n" if momentum_line  else "")
+                + (teammates_line + "\n" if teammates_line else "")
                 + (opp_absence_str + "\n" if opp_absence_str else "")
                 + "\n".join(stat_parts)
             )
@@ -1672,6 +1677,11 @@ JSON schema:
     }}
   ]
 }}
+
+TEAMMATE REFERENCES:
+- The quant context includes a "Teammates (active/whitelisted)" line for each player listing their current-season co-players on today's roster. When explaining a player's role, usage, or opportunity, you may only name teammates who appear on that line OR who appear in today's injury report.
+- Do not name historical teammates, former co-players, or players from other teams.
+- If a player's elevated role is evident from the quant stats (usage rate, AST rate, minutes), state the stats — do not speculate about who is absent unless their absence is explicitly documented in today's context.
 
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.

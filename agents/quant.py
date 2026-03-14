@@ -1813,6 +1813,7 @@ def build_player_stats(
 
         stats_out[player_name] = {
             "team": team,
+            "whitelisted_teammates": sorted(teammate_corr.keys()),
             "opponent": opponent,
             "games_available": len(games_10),
             "last_updated": TODAY_STR,

@@ -55,7 +55,8 @@ injuries and lineups are fresh before picks are generated.
 ## Current `player_stats.json` Schema (all keys, in order)
 
 ```
-team, opponent, games_available, last_updated,
+team, whitelisted_teammates,  ← sorted list of other active whitelisted players on same team playing today; [] when none
+opponent, games_available, last_updated,
 on_back_to_back, rest_days, games_last_7, dense_schedule,
 b2b_hit_rates, today_spread, spread_abs, blowout_risk,
 tier_hit_rates, matchup_tier_hit_rates, spread_split_hit_rates,
@@ -98,7 +99,8 @@ Jalen Brunson (vs BOS | spread_abs=5.5 rest=1d L7:4g proj_min=34 [USG_SPIKE:+7.2
 
 **Header flags:** `B2B`, `rest=Xd`, `DENSE`, `L7:Xg`, `BLOWOUT_RISK=True`, `spread_abs=X.X`, `proj_min=N` (Rotowire projected minutes, when creds present), `[USG_SPIKE:+N.Npp vs X.Name]` (usage spike ≥5pp + ≥100 min sample, when creds present), `DEF↑` (opponent defense trending soft — L5 ≥8% above L15 PTS allowed), `DEF↓` (opponent defense trending tough — L5 ≥8% below L15 PTS allowed); omitted when neutral or insufficient data
 **After DvP line (optional):** `Momentum —` line showing L10 W-L record, avg point margin, and hot/cold tag for the player's team and opponent; omitted when neither team's momentum can be computed; "neutral" tag teams show no tag (only [hot] and [cold] labelled)
-**After Momentum line (optional):** `⚠ OPP: Name OUT (proj=0min)` — opponent player with 0 projected minutes per Rotowire; capped at 3 entries; only emitted when Rotowire creds present
+**After Momentum line (optional):** `Teammates (active/whitelisted): Name1, Name2` — other active whitelisted players on the same team playing today; omitted when none; used to ground Analyst teammate references and prevent stale training knowledge hallucinations
+**After Teammates line (optional):** `⚠ OPP: Name OUT (proj=0min)` — opponent player with 0 projected minutes per Rotowire; capped at 3 entries; only emitted when Rotowire creds present
 **DvP line:** one per player (not per stat), covers all 4 stats, shows `(team-lvl)` tag when
 the positional sample had < 10 games. `n=` is the number of player-game observations.
 **Stat line fields (in order):** `tier` · `overall` · `vs_soft` · `vs_tough` · `competitive` ·

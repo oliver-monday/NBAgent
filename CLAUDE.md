@@ -161,6 +161,7 @@ Quant output. One entry per whitelisted player playing today. Key fields:
 | `shooting_regression` | fg_flag (hot/cold/null), fg_delta_pct — L5 vs L20 FG% divergence |
 | `team_momentum` | L10 W-L record + avg point margin + tag (hot/cold/neutral) for player's team and opponent |
 | `profile_narrative` | Live scoring portrait text block (Players Profiles); null if <10 games or no qualifying PTS tier |
+| `whitelisted_teammates` | Sorted list of other active whitelisted players on same team playing today; `[]` when none; used to ground Analyst teammate references and prevent stale training knowledge hallucinations |
 
 Full schema → **@docs/DATA.md** and **@docs/SESSION_CONTEXT.md**
 
