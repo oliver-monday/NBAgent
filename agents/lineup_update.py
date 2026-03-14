@@ -15,6 +15,7 @@ No-op conditions:
   - all affected picks past tip-off cutoff → skip
 """
 
+import argparse
 import json
 import os
 import datetime as dt
@@ -196,7 +197,7 @@ def build_opportunity_suggestions(
         absent_team = _norm(change["team"])
 
         # Check if this absence qualifies as high-impact
-        profile = classify_absent_player(absent_name, absent_team, player_stats)
+        profile = classify_absent_player(absent_name, absent_team, player_stats, today_picks=today_picks)
         trigger_tags = set(profile.get("role_tags", [])) & _OPPORTUNITY_TRIGGER_TAGS
         if not trigger_tags:
             print(
@@ -309,6 +310,95 @@ def build_opportunity_suggestions(
                     "volatility":                  vol or "moderate",
                     "caution":                     "; ".join(caution_parts) if caution_parts else None,
                     "reasoning":                   reasoning,
+                })
+
+        # ── Opponent scan (defensive_anchor / rim_anchor absences only) ──────
+        # When an elite defender goes OUT, the opposing team's offensive players
+        # get easier looks, higher FGA, and more paint access.
+        # Only run this for tags that have a clear opponent-side impact.
+        opponent_trigger_tags = {"defensive_anchor", "rim_anchor"}
+        if not (trigger_tags & opponent_trigger_tags):
+            continue  # skip opponent scan for high_usage/primary_creator — impact is team-side only
+
+        # Find which team is playing absent_team today
+        # Use player_stats to find a player on absent_team and read their opponent
+        opponent_team: str | None = None
+        for ps_name, ps_data in player_stats.items():
+            if _norm(ps_data.get("team", "")) == absent_team:
+                opp_candidate = _norm(ps_data.get("opponent", ""))
+                if opp_candidate:
+                    opponent_team = opp_candidate
+                    break
+
+        if not opponent_team:
+            print(
+                f"[lineup_update] opportunity: could not determine opponent for "
+                f"{absent_team} — skipping opponent scan"
+            )
+            continue
+
+        print(
+            f"[lineup_update] opportunity: scanning opponent {opponent_team} "
+            f"picks for {absent_name} defensive absence"
+        )
+
+        for tm_name, tm_stats in player_stats.items():
+            if _norm(tm_stats.get("team", "")) != opponent_team:
+                continue
+            if (tm_name.strip().lower(), opponent_team) in picked_keys:
+                # Already picked this morning — the LLM amendment path will handle upward revision
+                # Don't surface as an opportunity (it's already in the picks card)
+                continue
+
+            best_tiers = tm_stats.get("best_tiers") or {}
+            trends     = tm_stats.get("trend") or {}
+            volatility = tm_stats.get("volatility") or {}
+
+            for prop in ("PTS", "REB", "3PM"):  # AST unaffected by defensive absence
+                best = best_tiers.get(prop)
+                if not best:
+                    continue
+
+                tier    = best["tier"]
+                base_hr = best["hit_rate"]
+                trend   = trends.get(prop, "stable")
+                vol     = (volatility.get(prop) or {}).get("label", "")
+
+                if base_hr < 0.70:
+                    continue
+
+                caution_parts: list[str] = []
+                if vol == "volatile":
+                    caution_parts.append("volatile player")
+                if trend == "down":
+                    caution_parts.append("trend=down")
+
+                reason_parts = [
+                    f"{prop} T{tier} overall={int(round(base_hr*100))}%",
+                    f"opponent {absent_name} OUT [{', '.join(sorted(trigger_tags & opponent_trigger_tags))}]",
+                    f"trend={trend}",
+                ]
+                reasoning = "; ".join(reason_parts)
+
+                suggestions.append({
+                    "date":                        TODAY_STR,
+                    "generated_at":                now_iso,
+                    "triggered_by_player":         absent_name,
+                    "triggered_by_team":           absent_team,
+                    "trigger_tags":                sorted(trigger_tags & opponent_trigger_tags),
+                    "player_name":                 tm_name,
+                    "team":                        opponent_team,
+                    "prop_type":                   prop,
+                    "suggested_tier":              tier,
+                    "tier_hit_rate_pct":           int(round(base_hr * 100)),
+                    "without_player_tier":         None,
+                    "without_player_hit_rate_pct": None,
+                    "without_player_n":            None,
+                    "trend":                       trend,
+                    "volatility":                  vol or "moderate",
+                    "caution":                     "; ".join(caution_parts) if caution_parts else None,
+                    "reasoning":                   reasoning,
+                    "side":                        "opponent",  # new field — distinguishes from teammate suggestions
                 })
 
     return suggestions
@@ -424,7 +514,7 @@ def build_pick_quant_summary(player_name: str, prop_type: str, player_stats: dic
     return f"  quant: {' '.join(parts)}{bb_str}{vol_str}{mf_str}"
 
 
-def classify_absent_player(player_name: str, team: str, player_stats: dict) -> dict:
+def classify_absent_player(player_name: str, team: str, player_stats: dict, today_picks: list[dict] | None = None) -> dict:
     """
     Classify an absent player by their impact archetype using player_stats.json.
     Used to help Claude reason about downstream effects — especially for
@@ -478,6 +568,36 @@ def classify_absent_player(player_name: str, team: str, player_stats: dict) -> d
     if avg_reb is not None and avg_pts is not None and avg_reb >= 8 and avg_pts >= 15:
         role_tags.append("defensive_anchor")
 
+    # ── Fallback: infer from today's picks when player_stats unavailable ──────
+    # If player was pre-filtered out of player_stats (e.g. already injured at analyst time),
+    # use their pick history to infer role. Any whitelisted player we picked is meaningful.
+    if not role_tags and today_picks:
+        player_picks = [
+            p for p in today_picks
+            if p.get("player_name", "").strip().lower() == player_name.strip().lower()
+        ]
+        if player_picks:
+            pts_pick = next((p for p in player_picks if p.get("prop_type") == "PTS"), None)
+            if pts_pick and (pts_pick.get("pick_value") or 0) >= 20:
+                role_tags.append("high_usage")
+            elif pts_pick:
+                role_tags.append("high_usage")  # any PTS pick = meaningful scorer
+            ast_pick = next((p for p in player_picks if p.get("prop_type") == "AST"), None)
+            if ast_pick and (ast_pick.get("pick_value") or 0) >= 4:
+                role_tags.append("primary_creator")
+            reb_pick = next((p for p in player_picks if p.get("prop_type") == "REB"), None)
+            if reb_pick and (reb_pick.get("pick_value") or 0) >= 6:
+                role_tags.append("rim_anchor")
+                role_tags.append("defensive_anchor")
+            if len(player_picks) >= 3:
+                # Player with 3+ prop picks is a multi-dimensional star — always high_usage
+                if "high_usage" not in role_tags:
+                    role_tags.append("high_usage")
+            print(
+                f"[lineup_update] classify: {player_name} not in player_stats — "
+                f"inferred from picks: {role_tags}"
+            )
+
     # Build summary line
     stat_parts = []
     if avg_pts is not None:
@@ -512,7 +632,7 @@ def build_absent_player_profiles(changes: list[dict], player_stats: dict) -> str
     for c in changes:
         if c.get("change_type") != "new_absence":
             continue
-        profile = classify_absent_player(c["player_name"], c["team"], player_stats)
+        profile = classify_absent_player(c["player_name"], c["team"], player_stats, today_picks=None)
         absence_lines.append(f"- {profile['summary']}")
 
     if not absence_lines:
@@ -559,23 +679,28 @@ def game_is_actionable(game_time_utc: str, now_et: dt.datetime) -> bool:
 
 # ── Diff computation ───────────────────────────────────────────────────────────
 
-def compute_lineup_diff(lineups: dict, injuries: dict) -> list[dict]:
+def compute_lineup_diff(lineups: dict, injuries: dict, today_picks: list[dict] | None = None) -> list[dict]:
     """
     Diff current lineup/injury state against the morning snapshot.
+
+    Two detection sources (both run, results merged and deduplicated):
+
+    Source 1 — Snapshot starters: players who were in snapshot_at_analyst_run starters
+    and are now OUT/DOUBTFUL in the injury report, or quietly dropped from projected starters.
+
+    Source 2 — Picks-based: players with open picks today who are now OUT/DOUBTFUL in
+    the injury report, regardless of whether they were in the snapshot starters. This catches
+    bench players, load-managed stars, and any player whose status shifted after the snapshot.
 
     Returns a list of change dicts:
         {team, player_name, change_type, status, detail}
 
     change_type values:
-        "new_absence"      — player was in morning starters, now OUT/DOUBTFUL in injury report
-        "starter_replaced" — player was in morning starters, no longer in current starters,
-                             and not listed as injured (e.g. late scratch, load management)
+        "new_absence"      — player OUT/DOUBTFUL (from either source)
+        "starter_replaced" — player dropped from starters but not injured
     """
     snapshot = lineups.get("snapshot_at_analyst_run") or {}
     snap_teams: dict = snapshot.get("teams", {})
-
-    if not snap_teams:
-        return []
 
     # Build injury map: team → {name_lower: status}
     injury_map: dict[str, dict[str, str]] = {}
@@ -590,14 +715,16 @@ def compute_lineup_diff(lineups: dict, injuries: dict) -> list[dict]:
         }
 
     changes: list[dict] = []
+    # Track (team, name_lower) pairs already added to avoid duplicates across sources
+    seen: set[tuple[str, str]] = set()
 
+    # ── Source 1: Snapshot starters ───────────────────────────────────────────
     for raw_team, snap_data in snap_teams.items():
         team = _norm(raw_team)
         morning_starters: set[str] = {
             s.strip().lower() for s in snap_data.get("starters", [])
         }
 
-        # Current starters — try both raw_team key and normalized key
         current_data = lineups.get(raw_team) or lineups.get(team) or {}
         current_starters: set[str] = {
             s["name"].strip().lower()
@@ -608,7 +735,6 @@ def compute_lineup_diff(lineups: dict, injuries: dict) -> list[dict]:
         team_injuries = injury_map.get(team, {})
 
         for name_lower in morning_starters:
-            # Recover display-case name from current starters or snapshot list
             display_name = next(
                 (s["name"] for s in current_data.get("starters", [])
                  if isinstance(s, dict) and s.get("name", "").strip().lower() == name_lower),
@@ -619,9 +745,11 @@ def compute_lineup_diff(lineups: dict, injuries: dict) -> list[dict]:
                 )
             )
 
+            key = (team, name_lower)
             if name_lower in team_injuries:
                 status = team_injuries[name_lower]
-                if status in ("OUT", "DOUBTFUL"):
+                if status in ("OUT", "DOUBTFUL") and key not in seen:
+                    seen.add(key)
                     changes.append({
                         "team":        team,
                         "player_name": display_name,
@@ -631,15 +759,65 @@ def compute_lineup_diff(lineups: dict, injuries: dict) -> list[dict]:
                             f"{display_name} ({team}) now {status} — "
                             "was expected starter at pick time"
                         ),
+                        "source":      "snapshot",
                     })
-            elif name_lower not in current_starters and current_starters:
-                # Still not injured but quietly dropped from projected starters
+            elif name_lower not in current_starters and current_starters and key not in seen:
+                seen.add(key)
                 changes.append({
                     "team":        team,
                     "player_name": display_name,
                     "change_type": "starter_replaced",
                     "status":      "UNKNOWN",
                     "detail":      f"{display_name} ({team}) removed from projected starters",
+                    "source":      "snapshot",
+                })
+
+    # ── Source 2: Picks-based detection ───────────────────────────────────────
+    # Any player with open picks today who is now OUT/DOUBTFUL = new_absence,
+    # regardless of snapshot starters.
+    if today_picks:
+        for pick in today_picks:
+            if pick.get("result") is not None:
+                continue  # already graded
+
+            p_name     = (pick.get("player_name") or "").strip()
+            p_team     = _norm(pick.get("team") or "")
+            name_lower = p_name.strip().lower()
+            key        = (p_team, name_lower)
+
+            if key in seen:
+                continue  # already detected via snapshot source
+
+            # Check current injury status via full-name match
+            team_inj = injury_map.get(p_team, {})
+            last_lower = name_lower.split()[-1] if name_lower else ""
+
+            current_status = team_inj.get(name_lower)
+            # Fallback: last-name match across all entries for this team
+            if current_status is None:
+                for inj_name, inj_data in team_inj.items():
+                    if inj_name.split()[-1] == last_lower:
+                        current_status = inj_data if isinstance(inj_data, str) else None
+                        break
+
+            # Also accept voided picks (lineup_watch already confirmed OUT)
+            if pick.get("voided") and pick.get("void_reason"):
+                inferred_status = "OUT"
+            else:
+                inferred_status = current_status
+
+            if inferred_status in ("OUT", "DOUBTFUL"):
+                seen.add(key)
+                changes.append({
+                    "team":        p_team,
+                    "player_name": p_name,
+                    "change_type": "new_absence",
+                    "status":      inferred_status,
+                    "detail":      (
+                        f"{p_name} ({p_team}) {inferred_status} — "
+                        "had picks this morning (detected via picks.json)"
+                    ),
+                    "source":      "picks",
                 })
 
     return changes
@@ -927,6 +1105,14 @@ def apply_amendments(
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", action="store_true",
+                        help="Diagnostic mode — prints full state, no LLM call, no file writes")
+    args = parser.parse_args()
+    debug = args.debug
+    if debug:
+        print("[lineup_update] *** DEBUG MODE — read only, no writes, no LLM call ***\n")
+
     now_et  = dt.datetime.now(ET)
     now_iso = now_et.isoformat()
 
@@ -962,17 +1148,7 @@ def main() -> None:
     else:
         print("[lineup_update] WARNING: player_stats.json unavailable — reasoning without quant context")
 
-    # ── Compute changes ────────────────────────────────────────────────────────
-    changes = compute_lineup_diff(lineups, injuries)
-    if not changes:
-        print("[lineup_update] no changes detected — skipping LLM call")
-        return
-
-    print(f"[lineup_update] detected {len(changes)} change(s):")
-    for c in changes:
-        print(f"  {c['detail']}")
-
-    # ── Load picks ─────────────────────────────────────────────────────────────
+    # ── Load picks (needed for picks-based change detection) ───────────────────
     if not PICKS_JSON.exists():
         print("[lineup_update] no picks.json found — skipping")
         return
@@ -985,50 +1161,80 @@ def main() -> None:
         print("[lineup_update] no picks today — skipping")
         return
 
+    # ── Compute changes (uses both snapshot and picks-based sources) ────────────
+    snap_teams_debug = (lineups.get("snapshot_at_analyst_run") or {}).get("teams", {}).keys()
+    changes = compute_lineup_diff(lineups, injuries, today_picks=today_picks)
+
+    if debug:
+        print(f"[lineup_update] DEBUG: snapshot teams found: {list(snap_teams_debug)}")
+        print(f"[lineup_update] DEBUG: changes detected: {len(changes)}")
+        for c in changes:
+            print(f"  [{c.get('source','?')}] {c['detail']}")
+        if not changes:
+            print("  (none — check snapshot starters and injury report overlap)")
+        print()
+
+    if not changes:
+        print("[lineup_update] no changes detected — skipping LLM call")
+        return
+
+    print(f"[lineup_update] detected {len(changes)} change(s):")
+    for c in changes:
+        print(f"  {c['detail']}")
+
     # ── Find affected picks ────────────────────────────────────────────────────
     game_map       = load_game_map()
     affected_picks = get_affected_picks(today_picks, changes, game_map, now_et)
 
+    if debug:
+        print(f"[lineup_update] DEBUG: affected picks: {len(affected_picks)}")
+        for p in affected_picks:
+            print(f"  {p['player_name']} ({p['team']}) {p['prop_type']} OVER {p['pick_value']}")
+        print()
+
     # ── LLM amendment path (only when open picks are affected) ─────────────────
     if affected_picks:
-        print(f"[lineup_update] {len(affected_picks)} pick(s) affected — calling Claude")
-
-        # ── Build Rotowire context for changed teams ──────────────────────────
-        changed_teams: set[str] = {_norm(c["team"]) for c in changes}
-        rotowire_ctx = build_rotowire_context(lineups, changed_teams)
-        if rotowire_ctx:
-            print(f"[lineup_update] Rotowire context built for {len(changed_teams)} team(s)")
-
-        # ── Call Claude ───────────────────────────────────────────────────────
-        try:
-            amendments = call_lineup_update(
-                affected_picks,
-                changes,
-                rotowire_context=rotowire_ctx,
-                player_stats=player_stats,
-            )
-        except Exception as e:
-            print(f"[lineup_update] ERROR calling Claude: {e}")
-            amendments = []
-
-        if amendments:
-            # ── Apply + write ─────────────────────────────────────────────────
-            n_amended, n_up, n_down = apply_amendments(
-                all_picks, amendments, affected_picks, changes, now_iso
-            )
-
-            tmp = PICKS_JSON.with_suffix(".json.tmp")
-            with open(tmp, "w") as fh:
-                json.dump(all_picks, fh, indent=2)
-            os.replace(tmp, PICKS_JSON)
-
-            n_unchanged = n_amended - n_up - n_down
-            print(
-                f"[lineup_update] changes={len(changes)} affected_picks={len(affected_picks)} "
-                f"amended={n_amended} ({n_up} up, {n_down} down, {n_unchanged} unchanged)"
-            )
+        if debug:
+            print(f"[lineup_update] DEBUG: would call Claude for {len(affected_picks)} pick(s) — skipping in debug mode")
         else:
-            print("[lineup_update] no amendments returned — skipping write")
+            print(f"[lineup_update] {len(affected_picks)} pick(s) affected — calling Claude")
+
+            # ── Build Rotowire context for changed teams ──────────────────────
+            changed_teams: set[str] = {_norm(c["team"]) for c in changes}
+            rotowire_ctx = build_rotowire_context(lineups, changed_teams)
+            if rotowire_ctx:
+                print(f"[lineup_update] Rotowire context built for {len(changed_teams)} team(s)")
+
+            # ── Call Claude ───────────────────────────────────────────────────
+            try:
+                amendments = call_lineup_update(
+                    affected_picks,
+                    changes,
+                    rotowire_context=rotowire_ctx,
+                    player_stats=player_stats,
+                )
+            except Exception as e:
+                print(f"[lineup_update] ERROR calling Claude: {e}")
+                amendments = []
+
+            if amendments:
+                # ── Apply + write ─────────────────────────────────────────────
+                n_amended, n_up, n_down = apply_amendments(
+                    all_picks, amendments, affected_picks, changes, now_iso
+                )
+
+                tmp = PICKS_JSON.with_suffix(".json.tmp")
+                with open(tmp, "w") as fh:
+                    json.dump(all_picks, fh, indent=2)
+                os.replace(tmp, PICKS_JSON)
+
+                n_unchanged = n_amended - n_up - n_down
+                print(
+                    f"[lineup_update] changes={len(changes)} affected_picks={len(affected_picks)} "
+                    f"amended={n_amended} ({n_up} up, {n_down} down, {n_unchanged} unchanged)"
+                )
+            else:
+                print("[lineup_update] no amendments returned — skipping write")
     else:
         print("[lineup_update] no actionable picks affected by changes — skipping LLM call")
 
@@ -1044,8 +1250,13 @@ def main() -> None:
             now_iso=now_iso,
         )
         if suggestions:
-            save_opportunity_flags(suggestions)
-            print(f"[lineup_update] opportunity: {len(suggestions)} suggestion(s) surfaced")
+            if debug:
+                print(f"[lineup_update] DEBUG: opportunity suggestions (not saved in debug mode):")
+                for s in suggestions:
+                    print(f"  {s['player_name']} ({s['team']}) {s['prop_type']} T{s['suggested_tier']} — {s['reasoning']}")
+            else:
+                save_opportunity_flags(suggestions)
+                print(f"[lineup_update] opportunity: {len(suggestions)} suggestion(s) surfaced")
         else:
             print("[lineup_update] opportunity: no qualifying teammate suggestions found")
 
