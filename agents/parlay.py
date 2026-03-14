@@ -436,14 +436,14 @@ Each candidate has already passed:
 5. **Variety**: across your 3–5 selections, aim for a mix of leg counts (some tight 2-leggers, some 3–4 leg plays, maybe one 5+ if all legs are elite).
 
 ## AVOID
-- Any single player appearing in more than 2 of today's parlays, regardless of prop type.
-  A player DNP or a general underperformance cascades across all parlays they appear in —
-  two is the limit. This applies at the player level (e.g. LeBron in parlay 1, 2, and 3
-  is a violation even if the prop types differ).
+- Any single player appearing in more than 1 of today's parlays, regardless of prop type.
+  A player DNP or underperformance cascades across every parlay they appear in — one parlay
+  per player is the hard limit. If a player looks like a lock, they go in your best parlay
+  only. This applies at the player level regardless of prop type (e.g. LeBron in parlay 1
+  and parlay 2 is a violation even if one is PTS and the other is AST).
 - Any single player-prop combination (same player + same prop_type) appearing in more than
-  2 of today's parlays. A single anchor leg in 3+ parlays creates correlated exposure across
-  your entire card — one bad night simultaneously kills multiple parlays. This cap applies
-  even to iron-floor or 86%+ confidence legs.
+  1 of today's parlays. Since the player-level cap already enforces one parlay per player,
+  this rule is redundant but kept as an explicit secondary guardrail.
 - Two parlays that share 3+ identical legs (provide variety)
 - Combos where the rationale would be "all soft matchups" with no deeper logic
 - Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
@@ -522,8 +522,8 @@ def call_parlay_agent(prompt: str) -> list[dict]:
 def enforce_concentration_cap(parlays: list[dict]) -> list[dict]:
     """
     Greedy-sequential post-selection enforcement of two concentration caps:
-    1. No player_name across more than 2 parlays (regardless of prop type).
-    2. No (player_name, prop_type) pair across more than 2 parlays.
+    1. No player_name across more than 1 parlay (regardless of prop type).
+    2. No (player_name, prop_type) pair across more than 1 parlay.
     Iterates in order; accepts a parlay only if it satisfies both caps.
     """
     player_counts:      dict[str, int]   = {}
@@ -545,20 +545,20 @@ def enforce_concentration_cap(parlays: list[dict]) -> list[dict]:
         # Check player-level cap
         violates = False
         for p_key, delta in p_delta.items():
-            if player_counts.get(p_key, 0) + delta > 2:
+            if player_counts.get(p_key, 0) + delta > 1:
                 print(f"[parlay] Concentration cap (player): dropping '{parlay.get('label')}' "
                       f"— {p_key} would appear in "
-                      f"{player_counts.get(p_key, 0) + delta} parlays")
+                      f"{player_counts.get(p_key, 0) + delta} parlays (max 1)")
                 violates = True
                 break
 
         # Check player-prop-level cap
         if not violates:
             for pp_key, delta in pp_delta.items():
-                if player_prop_counts.get(pp_key, 0) + delta > 2:
+                if player_prop_counts.get(pp_key, 0) + delta > 1:
                     print(f"[parlay] Concentration cap (player-prop): dropping '{parlay.get('label')}' "
                           f"— ({pp_key[0]}, {pp_key[1]}) would appear in "
-                          f"{player_prop_counts.get(pp_key, 0) + delta} parlays")
+                          f"{player_prop_counts.get(pp_key, 0) + delta} parlays (max 1)")
                     violates = True
                     break
 

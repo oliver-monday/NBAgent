@@ -1436,6 +1436,24 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   This skip rule is the sole exception — it applies only when BOTH conditions are met
   (trend=down AND tough DvP). A player with trend=down alone still uses the step-down rule.
   A player with tough DvP alone and trend=stable or up is unaffected.
+- 3PM hard skip — trend=down AND blowout_risk=True:
+  If a player's 3PM trend is "down" AND BLOWOUT_RISK=True is shown in their header (meaning
+  their team is heavily favored, spread_abs > 8), SKIP all 3PM picks for that player,
+  including T1. Do not apply the step-down rule — skip outright.
+  This rule overrides the [iron_floor] tag. Iron_floor reflects historical frequency of
+  hitting the tier; it does not protect against game-script volume compression in blowouts.
+  When a favored team's lead grows large, 3PM attempts decline disproportionately in the
+  fourth quarter — stars are benched, shot selection becomes conservative, and the floor on
+  3PM collapses regardless of the player's historical pattern.
+  Rationale: Donovan Mitchell 3PM T1 miss on 2026-03-13 in a 33-point CLE blowout win.
+  The system correctly applied BLOWOUT -10% and the trend=down step-down to T1, and the
+  pick still missed. The iron_floor tag was present and provided no protection. The
+  combination of declining trend + winning-side blowout makes even T1 3PM structurally
+  unreliable — the mechanics that produce zero makes are in play regardless of the tier floor.
+  Note: this skip applies only to BLOWOUT_RISK=True (favored team, spread_abs > 8).
+  A player on the losing-side team in a blowout is subject to the existing BLOWOUT_RISK
+  rules and secondary-scorer skip rules — not this rule. The mechanism here is specific to
+  winning-side players whose minutes get compressed when the game is decided early.
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
 
 KEY RULES — INJURY STATUS ON SHOOTING PROPS:
@@ -1670,7 +1688,7 @@ JSON schema:
       "prop_type": "PTS | REB | AST | 3PM",
       "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
       "direction": "OVER",
-      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | ast_hard_gate | fg_margin_thin_no_valid_tier | reb_floor_skip | fg_cold_tier_step",
+      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_no_valid_tier | reb_floor_skip | fg_cold_tier_step",
       "rule_context": {{
         ... fields specific to this skip_reason as defined in the rules above ...
       }}

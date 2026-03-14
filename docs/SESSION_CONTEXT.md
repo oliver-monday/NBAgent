@@ -149,6 +149,9 @@ the positional sample had < 10 games. `n=` is the number of player-game observat
 - `BLOWOUT_RISK secondary scorer skip` — spread ≥ +8 underdog AND non-primary scorer → PTS pick skipped
 - `AST T4+ hard gate` — PF/C or raw_avgs AST < 4.0 → opponent AST DvP must be "soft"; skip on mid/tough
 - `3PM hard skip` — trend=down AND avg_minutes_last5 ≤ 30 → skip all 3PM picks including T1
+- `3PM blowout hard skip` (March 14, 2026) — trend=down AND BLOWOUT_RISK=True → skip all 3PM including T1; overrides [iron_floor] (prompt rule only; no Python pre-filter)
+
+**Parlay concentration cap:** max 1 parlay per player per day (March 14, 2026 — tightened from 2). Enforced in `enforce_concentration_cap()` (`> 1` threshold) and `build_parlay_prompt()` AVOID section.
 
 ---
 
@@ -313,7 +316,8 @@ touched — the sub-object is additive, not destructive.
 - Output schema: Claude emits `{"picks": [...], "skips": [...]}` JSON object. `call_analyst()` returns `tuple[list[dict], list[dict]]` — picks and skips. Falls back to flat-array parse for robustness.
 - Pick output fields: `date, player_name, team, opponent, home_away, prop_type, pick_value, direction, confidence_pct, hit_rate_display, trend, opp_defense_rating, tier_walk, iron_floor, top_pick, reasoning`
 - Skip output fields: `date, player_name, team, opponent, prop_type, tier_considered, direction, skip_reason, rule_context` (rule-specific dict)
-- Skip reasons: `min_floor_tier_step`, `volatile_weak_combo`, `blowout_secondary_scorer`, `3pm_trend_down_tough_dvp`, `3pm_trend_down_low_minutes`, `ast_hard_gate`, `fg_margin_thin_no_valid_tier`, `reb_floor_skip`, `fg_cold_tier_step`
+- Skip reasons: `min_floor_tier_step`, `volatile_weak_combo`, `blowout_secondary_scorer`, `3pm_trend_down_tough_dvp`, `3pm_trend_down_low_minutes`, `3pm_blowout_trend_down`, `ast_hard_gate`, `fg_margin_thin_no_valid_tier`, `reb_floor_skip`, `fg_cold_tier_step`
+- `3pm_blowout_trend_down` (March 14, 2026): trend=down AND BLOWOUT_RISK=True → hard skip all 3PM including T1; overrides [iron_floor]; winning-side players only
 - `save_skips(skips: list[dict]) → None` — writes `data/skipped_picks.json`; initialises null grading fields (`actual_value`, `would_have_hit`, `skip_verdict`, `skip_verdict_notes`); logs each skip reason to stdout
 - `main()` now unpacks `picks, skips = call_analyst(...)` and calls both `save_picks(picks)` and `save_skips(skips)`
 - `VALID_TIERS` constant — `{"PTS": [10,15,20,25,30], "REB": [2,4,6,8,10,12], "AST": [2,4,6,8,10,12], "3PM": [1,2,3,4]}` — defined after `LARGE_SLATE_THRESHOLD`; used by `reconcile_pick_values()`
