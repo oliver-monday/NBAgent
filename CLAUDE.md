@@ -174,8 +174,8 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 | Field | Set by | Notes |
 |-------|--------|-------|
 | `game_time` | Analyst | Formatted game time string, e.g. `"7:30 PM PT"` |
-| `voided` | lineup_watch.py | `true` when player is listed OUT; pick treated as inactive |
-| `void_reason` | lineup_watch.py | e.g. `"OUT: Knee (Rotowire)"` |
+| `voided` | lineup_watch.py | `true` when player is listed OUT; pick treated as inactive. **Grading contract:** `voided=True` picks always have `result=null, actual_value=null` — auditor skips grading them entirely |
+| `void_reason` | lineup_watch.py | e.g. `"OUT: Knee (Rotowire)"`. Also set post-hoc by auditor for late DNPs detected at grading time (auditor promotes to `voided=True` when `void_reason` non-empty + `actual=0.0`) |
 | `lineup_risk` | lineup_watch.py | `"high"` (DOUBTFUL) or `"moderate"` (QUESTIONABLE); not set for OUT |
 | `injury_status_at_check` | lineup_watch.py | `OUT / DOUBTFUL / QUESTIONABLE / NOT_LISTED` — written to ALL today's picks on every run |
 | `injury_check_time` | lineup_watch.py | ISO timestamp of last lineup_watch run |
@@ -193,10 +193,8 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 **Filter logic:** `(player_name.lower(), team_abbr.upper())` tuple — prevents traded players appearing under old teams.
 
 **Player-specific flags (as of March 2026):**
-- **James Harden** — traded LAC → CLE at Feb 2026 deadline. Appears on TWO rows: `LAC` (`active=0`) and `CLE` (`active=0`). Do not delete the LAC row — it preserves historical pick attribution.
+- **James Harden** — traded LAC → CLE at Feb 2026 deadline. Appears on TWO rows: `LAC` (`active=0`) and `CLE` (`active=1`). Do not delete the LAC row — it preserves historical pick attribution.
 - **Andrew Nembhard** — removed from active whitelist (role change; insufficient data for reliable picks). `active=0`.
-- **Kon Knueppel (CHA)** — newer addition; monitor game log volume before relying on his stats.
-- **Ace Bailey (UTA)** — newer addition; same caveat as Knueppel.
 
 ---
 

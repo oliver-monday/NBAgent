@@ -21,11 +21,11 @@ Source: `espn_daily_ingest.py`. One row per game. `game_time_utc` is ISO format.
 
 Remaining 106 null rows: ~4 All-Star game entries, ~20 games with no Pinnacle coverage, and ~82 games from mid-Jan through Feb where the Pinnacle scraper stopped collecting before game day and the gap exceeded the 3-day tolerance. Coverage accumulates going forward via ESPN.
 
-### player_game_log.csv (18 columns)
+### player_game_log.csv (24 columns)
 ```
 season_end_year, game_id, game_date, team_abbrev, opp_abbrev,
 home_away, player_id, player_name, started, minutes, minutes_raw,
-pts, reb, ast, tpm, dnp, team_hint_ok, ingested_at
+pts, reb, ast, tpm, fgm, fga, fg3m, fg3a, ftm, fta, dnp, team_hint_ok, ingested_at
 ```
 Source: `espn_player_ingest.py`. One row per player per game.  
 `dnp = "1"` rows are kept but excluded from analytics.  
@@ -257,8 +257,8 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
   "trend": "up|stable|down",
   "opp_defense_rating": "soft|mid|tough|unknown",
   "reasoning": "string",
-  "result": "HIT|MISS|NO_DATA|null",
-  "actual_value": number|null,
+  "result": "HIT|MISS|NO_DATA|null",  // null until auditor runs; voided=True picks always have result=null
+  "actual_value": number|null,          // null until auditor runs; voided=True picks always have actual_value=null
   "game_time": "7:30 PM PT"
 }]
 ```

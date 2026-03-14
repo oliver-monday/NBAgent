@@ -101,129 +101,28 @@ Watch list for graded data: `ast_hard_gate` false-skip rate (White confirmed = 1
 ### Pending Backtests
 
 ### H15 — Opponent Team Pick Suppression / Lift
-**Status: FIRST RUN COMPLETE — rerun triggered at ≥400 graded picks**
-**First run:** March 12, 2026 — 279 graded picks
-**Rerun ETA:** ~March 20-25 (pick-count dependent, not date-dependent — large slate days like Mar 12 ~52 picks/day accelerate timeline significantly)
+**Status: FIRST RUN COMPLETE — rerun triggered at ≥400 graded picks (~Mar 20–25)**
 **Mode: `--mode opp-team-hit-rate`**
 
-**First run findings (279 picks, Mar 12):**
-- H15a (overall by opponent): No suppressors or amplifiers cleared the ±10pp / ≥15 picks threshold. Only 5 opponents had ≥15 picks (MIN, SAS, NYK, DEN, ORL) — all rated neutral. MIN closest at −6.6pp but below actionable threshold.
-- H15b (by prop type): **MIN × AST at 57.1% hit rate (n=7), −26.4pp below AST baseline.** Plausible mechanism: Minnesota switching scheme compresses ball-handler assist opportunities. Watch item added to `nba_season_context.md`.
-- H15c (miss margin): **SAS floor compression — mean miss margin −6.0 (n=3 misses).** Players missing well below tier threshold vs. SAS, not near-miss variance. Sample too small to act on. CHA at −5.0 (n=3) also flagged. MIN is near-miss pattern (−1.8 avg) — borderline, not structural.
-- `nba_season_context.md` updated with MIN AST and SAS floor compression watch items.
-
-**Hypothesis:** Certain opponent teams systematically suppress or amplify the system's tier pick hit rate beyond what the current `opp_defense` soft/mid/tough rating captures. The existing defensive rating measures *allowed averages* — it does not directly measure whether the system's tier picks actually hit or miss against that opponent. A team might rate "soft" on PTS-allowed but the system keeps missing against them due to scheme, pace, or matchup geometry not captured by the average. Conversely, a team rated "tough" might yield high hit rates because their defensive identity concentrates on stopping things (e.g., three-point defense) that are orthogonal to the props we pick.
-
-**Motivating framing:** Individual player hit rates vs. a specific opponent have inadequate sample (2–4 games/season per matchup). Aggregating *all whitelisted player picks vs. Team X* across the full season gives a workable N while measuring the same structural opponent effect.
-
-**Three separable sub-hypotheses:**
-
-1. **H15a — Team-level suppression/lift (overall):** Does facing Opponent X predict system hit rate above or below baseline? Rank all 30 opponents by system-wide hit rate against them. Flag teams where actual hit rate diverges ≥10pp from baseline with ≥15 pick observations.
-
-2. **H15b — Prop-specific suppression:** Does Opponent X suppress REB picks specifically even if their PTS-allowed rating is unremarkable? Compute hit rate by opponent × prop type (PTS / REB / AST / 3PM). A switching scheme may compress AST without affecting PTS; a physical frontcourt may suppress REB without affecting perimeter props. This gives a more actionable signal than the overall rate.
-
-3. **H15c — Tier threshold misalignment:** Does the system's tier selection systematically overshoot against certain opponents? Measure not just hit/miss but *miss margin* — how far below the pick threshold did the player finish on misses against Team X? A consistent miss-by-many pattern (e.g., picking T15 PTS but player averages 10 actual against this opponent) signals the tier ceiling is wrong, not variance. Compare miss margin distribution against Team X vs. all-opponent baseline.
-
-**Relationship to existing hypotheses:**
-- **H8 (Positional DvP):** If positional DvP is working, opponents with tough positional ratings should correlate with the team-level suppressors found in H15a/b. If they don't correlate, that's direct evidence DvP rating isn't translating to pick outcomes — the most important validation H8 needs.
-- **H14 (Elite Opposing Rebounder):** H15b's REB-by-opponent slice should surface the same teams (DEN, MIL) that H14 targets via the individual-rebounder mechanism. Convergent findings across H14 and H15b strengthen the case for a REB opp annotation.
-- **M1 (Situational Profiles, offseason):** H15 is the population-level version of the same investigation, tractable mid-season where M1 is not.
-
-**Data requirements:** All inputs already in existing CSVs.
-- `data/picks.json` — all graded picks with `result` (HIT/MISS), `prop_type`, `opponent`, `pick_value`, `actual_value`, `confidence_pct`
-- `player_game_log.csv` — for miss margin computation (actual stat value per game)
-- `player_whitelist.csv` — position column for prop-specific position filtering if needed
-
-**Key design decisions:**
-- **Population:** All graded picks in `picks.json` with `result` in `("HIT", "MISS")` and `voided != True`. Do not filter to whitelist — the pick record is already whitelist-filtered by construction.
-- **Opponent key:** Use `opponent` field from picks.json (team abbrev). Normalize via `_ABBR_NORM` dict.
-- **Minimum sample gate:** ≥15 picks against an opponent before reporting a hit rate figure. Opponents below threshold reported as "insufficient sample" — do not discard, flag separately.
-- **Baseline:** Overall system hit rate across all graded picks (the `overall_hit_rate` figure from `audit_summary.json`).
-- **Miss margin (H15c):** For each MISS pick, compute `actual_value - pick_value` (negative = missed below threshold). Report mean miss margin per opponent. A mean miss margin of −5 or worse against a specific team is structurally different from −1 (near-miss variance vs. systematic floor compression).
-- **DNP/injury exclusion:** `voided == True` picks already excluded. `injury_event` classified misses should also be excluded from the opponent suppression analysis — they are not evidence of opponent-driven suppression.
-
-**Output structure:**
-```
-H15a — Overall hit rate by opponent (ranked):
-  OKC: 12/18 picks (66.7%) vs baseline 83.9% → −17.2pp [SUPPRESSOR]
-  MIA: 8/10 picks (80.0%) vs baseline 83.9% → −3.9pp
-  GSW: 9/9 picks (100.0%) vs baseline 83.9% → +16.1pp [AMPLIFIER]
-  ...
-
-H15b — Hit rate by opponent × prop type (≥5 picks):
-  OKC × AST: 2/6 (33.3%) → −50.6pp [SUPPRESSOR]
-  OKC × PTS: 7/9 (77.8%) → −6.1pp
-  MIA × REB: 3/5 (60.0%) → −23.9pp [SUPPRESSOR]
-  ...
-
-H15c — Mean miss margin by opponent (misses only):
-  OKC: mean miss margin −6.2 pts (n=6 misses) [FLOOR COMPRESSION]
-  MIA: mean miss margin −3.1 pts (n=2 misses)
-  ...
-```
-
-**Verdict criteria:**
-- **Actionable signal (H15a/b):** ≥15 picks against opponent, hit rate ≥10pp below baseline → warrants `opp_team_flag` annotation in analyst context (not a hard rule — annotation only until mechanism is understood)
-- **Actionable signal (H15c):** Mean miss margin ≤ −5 with ≥5 misses → tier overshoot signal; warrants a note in `nba_season_context.md` or player profile conditional rendering
-- **Weak signal:** 5–9pp below baseline or mean miss margin −3 to −4 → note in `nba_season_context.md` only; no quant changes
-- **Noise:** <5pp divergence or insufficient sample → close sub-hypothesis with no action
-
-**If signal confirmed:** Implementation is annotation-only first. New `opp_team_suppressor` flag in `player_stats.json` (bool per prop type); injected as a single annotation line in `build_quant_context()` when today's opponent is a confirmed system suppressor at that prop type. No tier-step or confidence rules until the signal is validated across two seasons.
-
-**Scope:** `agents/backtest.py` only — add `--mode opp-team-hit-rate` mode. No production files touched until verdict confirmed. Run alongside H8 in late March — the two are complementary (H8 tests whether our defensive *input signal* is well-calibrated; H15 tests whether our defensive signal translates to actual *pick outcome* differences).
+First run (Mar 12, 279 picks): No suppressors cleared ±10pp/≥15 picks threshold. MIN×AST notable at −26.4pp (n=7). SAS floor compression (mean miss margin −6.0, n=3). Watch items added to `nba_season_context.md`. Full design in `docs/BACKTESTS.md`.
 
 ---
 
 ### H14 — Elite Opposing Rebounder REB Suppression
-**Status: QUEUED — no new data collection required; all inputs in existing CSVs**
-**ETA: ~late March / early April 2026**
-**Mode: `--mode elite-opp-rebounder`**
+**Status: QUEUED — no new data required**
+**Mode: `--mode elite-opp-rebounder` | ETA: ~late March / early April 2026**
 
-**Hypothesis:** A player's REB tier hit rate is meaningfully suppressed when the opponent features (a) an elite individual rebounder at center — specifically a top-N season REB average — and/or (b) an elite team offensive rebounding unit, because the opposing center is implicitly tasked with boxing-out or otherwise contesting the elite rebounder, compressing their own counting stats.
-
-**Motivating observation (March 11, 2026):** Alperen Sengun (9.0 avg REB, #11 league-wide) missed REB O6 with only 2 actual against Jokic and DEN despite a 10/10 recent hit rate, 80% confidence, and tough DvP. Post-game context: DEN won 129–93, HOU team REB distribution was spread across guards/wings (Tari Eason notable first-half boards), suggesting Sengun was occupied boxing out Jokic rather than collecting boards. Classified as `variance` by auditor, but domain reasoning suggests a structural mechanism worth testing.
-
-**Two separable sub-hypotheses:**
-
-1. **H14a — Individual Opposing Center Quality:** Does REB tier hit rate for a center/PF drop when the opposing center ranks in the top N by season REB average? Test at top-5, top-10, top-15 cutoffs. Primary position filter: apply only to C and PF (the positional boxing-out effect is direct; wings are less affected).
-
-2. **H14b — Team Offensive Rebounding Rate:** Does REB tier hit rate drop when playing against a top-N offensive rebounding team? An elite OREB team generates more contested second-chance situations that change the rebounding geometry for the opposing big. This is independent of individual matchup — a team that crashes hard (OKC, IND, DEN historically) compresses opposing center REB totals even without one dominant individual rebounder. Test at top-5, top-10, top-15 cutoffs by team OREB rate.
-
-**Why these are distinct:** H14a is about a single elite opponent rebounder demanding defensive attention. H14b is about the volume of offensive rebounding attempts requiring response. A team can have a high OREB rate without a single dominant rebounder (and vice versa). Both mechanisms could independently suppress opposing center REB totals; both should be tested separately.
-
-**Data requirements:** All inputs already in existing CSVs.
-- `player_game_log.csv` — per-game REB totals, player position, opponent
-- `nba_master.csv` — game-level opponent pairing, season context
-- `player_whitelist.csv` — position column for filtering to C/PF
-- For H14b: team OREB data derivable from `team_game_log.csv` (offensive rebounds column, if present) or from per-player REB aggregation
-
-**Key design decisions:**
-
-- **Position filter:** Apply primarily to C and PF. Wing scorers (SG/SF) are not the primary boxing-out assignment and the mechanism is weaker for them. Run wing cut separately to confirm the effect is position-specific.
-- **Opponent center identification:** Rank by season REB average among centers (use `player_whitelist.csv` positions + `player_game_log.csv` aggregates). For games where the opposing center is in the top-N, flag the game.
-- **Tier hit rate metric:** Same methodology as existing backtests — compute tier hit rate for the target REB tier (best qualifying tier from `tier_hit_rates`) split by elite-opponent-present vs. not-present. Primary stat: lift = hit_rate_elite_opp / hit_rate_baseline.
-- **Minimum sample gate:** Require ≥15 game observations per split before reporting a lift figure. Small-N splits are discarded.
-- **DNP exclusion:** Standard — exclude `dnp == "1"` rows before any computation.
-
-**Thresholds to test:**
-- Individual opposing center: top-5, top-10, top-15 by season REB avg
-- Team OREB: top-5, top-10, top-15 teams by season OREB rate
-- Report lift at each threshold; look for consistent directional signal before setting a production cutoff
-
-**Verdict criteria:**
-- **Actionable signal:** Lift ≤ 0.85 (≥15% suppression) at top-10 individual or top-10 team OREB cutoff with ≥15 game sample → warrants an annotation in analyst context and possible tier-step rule
-- **Weak signal:** Lift 0.86–0.94 → annotation only, no directive rule, monitor further
-- **Noise:** Lift > 0.95 or inconsistent across cutoffs → close hypothesis, no action
-
-**If signal confirmed:** Implementation path is quant-first / analyst-annotation-only (consistent with annotation vs. directive discipline). New `opp_rebounder_risk` field in `player_stats.json` (bool + label); annotation injected into per-player REB stat line similar to `[FG_COLD]`. Directive tier-step rule requires further validation before shipping. REB DvP exclusion already established — this signal is complementary, not redundant (it measures opposing rebounder quality, not team defensive rebounding tendency).
-
-**Scope:** `agents/backtest.py` only — add `--mode elite-opp-rebounder` mode. No production files touched until verdict is confirmed.
+Tests whether REB tier hit rate drops when opponent has elite individual rebounder (top-N season REB avg) or elite team OREB rate. Motivated by Sengun REB miss vs Jokic (Mar 11). Full design in `docs/BACKTESTS.md`.
 
 ---
 
-**H16 — 3PA Volume Gate:** backtest implemented, pending first run. See ROADMAP_resolved.md.
+### H16 — 3PA Volume Gate
+**Status: IMPLEMENTED — verdict pending. Re-run at ~150+ 3PM picks.**
+**Mode: `--mode 3pa-volume-gate`** | Full results in `docs/BACKTESTS.md`.
 
-**H17 — Spread Context vs. Tier Hit Rate:** FIRST RUN COMPLETE — March 13, 2026 (327 picks). Current binary split (≤6 vs >6) is NOISE — 1.2pp gap. No spread threshold produces a meaningful hit rate gap; best single threshold (10.5) yields only 4.8pp gap. Gradient sparse due to NBA half-point spread clustering. Verdict: insufficient signal — spread magnitude does not predict tier hit rate at current sample. Re-run at full-season completion to confirm noise verdict before closing. See ROADMAP_resolved.md.
+### H17 — Spread Context vs. Tier Hit Rate
+**Status: FIRST RUN COMPLETE — NOISE verdict (Mar 13, 327 picks). Re-run at ≥500 picks.**
+**Mode: `--mode spread-context`** | Full results in `docs/BACKTESTS.md`.
 
 ---
 
