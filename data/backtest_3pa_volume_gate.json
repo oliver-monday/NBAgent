@@ -1,0 +1,166 @@
+{
+  "mode": "3pa-volume-gate",
+  "generated_at": "2026-03-13T18:08:19",
+  "population": {
+    "total_3pm_picks": 63,
+    "hits": 54,
+    "misses": 9,
+    "excluded_lt5_games": 0
+  },
+  "constants": {
+    "H16_L10_WINDOW": 10,
+    "H16_MIN_GAMES": 5,
+    "H16_MIN_N": 15,
+    "H16_VOL_LOW_MAX": 3.0,
+    "H16_VOL_HIGH_MIN": 5.0,
+    "H16_PCT_HIGH_MIN": 0.37,
+    "H16_ACTIONABLE_DELTA": 0.15,
+    "H16_WEAK_DELTA": 0.08
+  },
+  "h16a_baseline": {
+    "1": {
+      "tier": 1,
+      "hit_rate": 0.8919,
+      "n": 37
+    },
+    "2": {
+      "tier": 2,
+      "hit_rate": 0.7778,
+      "n": 18
+    },
+    "3": {
+      "tier": 3,
+      "hit_rate": 0.875,
+      "n": 8
+    }
+  },
+  "h16a_buckets": {
+    "low": {
+      "1": {
+        "tier": 1,
+        "hit_rate": 1.0,
+        "n": 2
+      },
+      "2": {
+        "tier": 2,
+        "hit_rate": null,
+        "n": 0
+      },
+      "3": {
+        "tier": 3,
+        "hit_rate": null,
+        "n": 0
+      }
+    },
+    "mid": {
+      "1": {
+        "tier": 1,
+        "hit_rate": 1.0,
+        "n": 8
+      },
+      "2": {
+        "tier": 2,
+        "hit_rate": null,
+        "n": 0
+      },
+      "3": {
+        "tier": 3,
+        "hit_rate": null,
+        "n": 0
+      }
+    },
+    "high": {
+      "1": {
+        "tier": 1,
+        "hit_rate": 0.8519,
+        "n": 27
+      },
+      "2": {
+        "tier": 2,
+        "hit_rate": 0.7778,
+        "n": 18
+      },
+      "3": {
+        "tier": 3,
+        "hit_rate": 0.875,
+        "n": 8
+      }
+    }
+  },
+  "h16b_profiles": {
+    "high-vol/high-%": {
+      "n": 34,
+      "hit_rate": 0.8529,
+      "t1": {
+        "hit_rate": 0.9333,
+        "n": 15
+      },
+      "t2": {
+        "hit_rate": 0.7273,
+        "n": 11
+      }
+    },
+    "high-vol/low-%": {
+      "n": 19,
+      "hit_rate": 0.7895,
+      "t1": {
+        "hit_rate": 0.75,
+        "n": 12
+      },
+      "t2": {
+        "hit_rate": 0.8571,
+        "n": 7
+      }
+    },
+    "low-vol/high-%": {
+      "n": 5,
+      "hit_rate": 1.0,
+      "t1": {
+        "hit_rate": 1.0,
+        "n": 5
+      },
+      "t2": {
+        "hit_rate": null,
+        "n": 0
+      }
+    },
+    "low-vol/low-%": {
+      "n": 5,
+      "hit_rate": 1.0,
+      "t1": {
+        "hit_rate": 1.0,
+        "n": 5
+      },
+      "t2": {
+        "hit_rate": null,
+        "n": 0
+      }
+    }
+  },
+  "h16c_floors": {
+    "1": {
+      "hit_rate": 0.871,
+      "n": 62
+    },
+    "2": {
+      "hit_rate": 0.8852,
+      "n": 61
+    },
+    "3": {
+      "hit_rate": 0.9138,
+      "n": 58
+    },
+    "4": {
+      "hit_rate": 0.9434,
+      "n": 53
+    },
+    "5": {
+      "hit_rate": 0.96,
+      "n": 50
+    },
+    "0": {
+      "hit_rate": null,
+      "n": 0
+    }
+  }
+}

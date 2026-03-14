@@ -111,6 +111,18 @@ OTH_AMPLIFIER_DELTA  = 0.10  # hit rate ≥10pp above baseline → amplifier
 OTH_MARGIN_FLOOR_CMP = -5.0  # mean miss margin ≤ this → floor compression signal
 OPP_TEAM_HIT_RATE_JSON = DATA / "backtest_opp_team_hit_rate.json"
 
+# 3PA Volume Gate mode constants (H16)
+H16_L10_WINDOW        = 10     # L10 window for avg_3pa computation (mirrors PLAYER_WINDOW)
+H16_MIN_GAMES         = 5      # min non-DNP games prior to pick date to qualify
+H16_MIN_N             = 15     # min picks per bucket/profile for a reportable hit rate
+H16_MIN_N_H16C        = 10     # min picks per 3PA floor threshold for H16c
+H16_VOL_LOW_MAX       = 3.0    # avg_3pa_l10 < this → low-vol bucket
+H16_VOL_HIGH_MIN      = 5.0    # avg_3pa_l10 ≥ this → high-vol bucket
+H16_PCT_HIGH_MIN      = 0.37   # avg_3pct_l10 ≥ this → high-pct profile
+H16_ACTIONABLE_DELTA  = 0.15   # ≥15pp gap low vs high → actionable signal
+H16_WEAK_DELTA        = 0.08   # 8–14pp gap → weak signal / annotation only
+THREE_PA_VOLUME_JSON  = DATA / "backtest_3pa_volume_gate.json"
+
 _ABBR_NORM_BT = {
     "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
     "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
@@ -4792,6 +4804,595 @@ def run_opp_team_hit_rate_analysis(picks: list, args) -> None:
     print(f"\n{'='*60}\n")
 
 
+# ── 3PA Volume Gate Backtest (H16) ────────────────────────────────────
+
+def run_3pa_volume_gate_analysis(picks: list, player_log_raw: pd.DataFrame, args) -> None:
+    """H16 — 3PA Volume Gate for 3PM Tier Picks.
+
+    Tests whether 3PM tier hit rates are meaningfully higher for players above
+    a 3PA-per-game threshold. Uses graded picks from picks.json + L10 avg 3PA
+    computed from player_game_log.csv at pick time (no lookahead).
+    """
+    from collections import defaultdict
+    sep = "─" * 60
+
+    today_str = dt.datetime.now().strftime("%Y-%m-%d")
+
+    # ── Filter to 3PM HIT/MISS non-voided picks ───────────────────────
+    tpm_picks = [
+        p for p in picks
+        if p.get("prop_type") == "3PM"
+        and p.get("result") in ("HIT", "MISS")
+        and not p.get("voided", False)
+    ]
+    if not tpm_picks:
+        print("[H16] No graded 3PM picks found.")
+        return
+
+    # ── Build player log lookup: player → sorted list of (date, fg3a, fg3m, dnp) ─
+    # player_log_raw already has dnp rows excluded by load_player_log;
+    # we need ALL rows (incl. dnp) to correctly exclude them per the spec.
+    # Re-read the CSV directly so we have dnp rows too.
+    raw_csv_path = DATA / "player_game_log.csv"
+    if not raw_csv_path.exists():
+        print("[H16] player_game_log.csv not found.")
+        return
+    full_log = pd.read_csv(raw_csv_path, dtype=str)
+    full_log["game_date"] = pd.to_datetime(full_log["game_date"], errors="coerce")
+    full_log["fg3a"] = pd.to_numeric(full_log["fg3a"], errors="coerce")
+    full_log["fg3m"] = pd.to_numeric(full_log["fg3m"], errors="coerce")
+    # Normalise player name
+    full_log["player_name_lower"] = full_log["player_name"].str.strip().str.lower()
+
+    # Index: player_name_lower → DataFrame sorted by game_date ascending
+    player_log_idx: dict = {}
+    for pname, grp in full_log.groupby("player_name_lower"):
+        player_log_idx[pname] = grp.sort_values("game_date").reset_index(drop=True)
+
+    # ── Compute avg_3pa_l10 and avg_3pm_l10 per pick at pick time ──────
+    enriched = []
+    n_excluded_games = 0
+
+    for p in tpm_picks:
+        pname_lower = str(p.get("player_name", "")).strip().lower()
+        pick_date_str = str(p.get("date", ""))
+        try:
+            pick_date = pd.Timestamp(pick_date_str)
+        except Exception:
+            continue
+
+        plog = player_log_idx.get(pname_lower)
+        if plog is None:
+            n_excluded_games += 1
+            continue
+
+        # Games strictly before pick date, non-DNP only
+        prior = plog[
+            (plog["game_date"] < pick_date) &
+            (plog["dnp"].astype(str).str.strip() != "1")
+        ]
+        if len(prior) < H16_MIN_GAMES:
+            n_excluded_games += 1
+            continue
+
+        # Take 10 most recent (grp is ascending; tail gives most recent)
+        recent = prior.tail(H16_L10_WINDOW)
+        avg_3pa = float(recent["fg3a"].mean()) if recent["fg3a"].notna().any() else None
+        avg_3pm = float(recent["fg3m"].mean()) if recent["fg3m"].notna().any() else None
+
+        if avg_3pa is None:
+            n_excluded_games += 1
+            continue
+
+        avg_3pct = (avg_3pm / avg_3pa) if (avg_3pm is not None and avg_3pa > 0) else None
+
+        # Actual fg3a for this specific game (H16c)
+        game_rows = plog[plog["game_date"] == pick_date]
+        actual_fg3a = None
+        if not game_rows.empty:
+            val = game_rows.iloc[0]["fg3a"]
+            if pd.notna(val):
+                actual_fg3a = int(val)
+
+        enriched.append({
+            "player":      p.get("player_name", ""),
+            "date":        pick_date_str,
+            "pick_value":  p.get("pick_value"),
+            "result":      p.get("result"),
+            "hit":         p.get("result") == "HIT",
+            "avg_3pa":     round(avg_3pa, 2),
+            "avg_3pm":     round(avg_3pm, 2) if avg_3pm is not None else None,
+            "avg_3pct":    round(avg_3pct, 4) if avg_3pct is not None else None,
+            "actual_fg3a": actual_fg3a,
+        })
+
+    n_total    = len(enriched)
+    n_hits     = sum(1 for e in enriched if e["hit"])
+    n_misses   = n_total - n_hits
+
+    print(f"\n{'='*70}")
+    print(f"  H16 — 3PA Volume Gate Backtest")
+    print(f"  Population: {n_total} total 3PM picks  "
+          f"({n_hits} HIT, {n_misses} MISS, {n_excluded_games} excluded <{H16_MIN_GAMES} games)")
+    print(f"  Analysis date: {today_str}")
+    print(f"{'='*70}")
+
+    if n_total == 0:
+        print("[H16] No picks survived after L10 computation.")
+        return
+
+    # ── H16a: Tier hit rate by avg L10 3PA bucket ─────────────────────
+    print(f"\n  --- H16a: Tier Hit Rate by avg L10 3PA Bucket ---\n")
+
+    # Baseline across all qualified picks by tier
+    def _tier_hr(subset: list, tier: int) -> tuple:
+        """Returns (hit_rate, n) for picks at given pick_value tier."""
+        at_tier = [e for e in subset if e.get("pick_value") == tier]
+        n = len(at_tier)
+        if n == 0:
+            return (None, 0)
+        hits = sum(1 for e in at_tier if e["hit"])
+        return (hits / n, n)
+
+    def _print_tier_row(label: str, subset: list, tier: int, indent: str = "  ") -> dict:
+        hr, n = _tier_hr(subset, tier)
+        if n == 0:
+            print(f"{indent}T{tier}: n=0")
+            return {"tier": tier, "hit_rate": None, "n": 0}
+        pct_str = f"{hr*100:.1f}%"
+        flag = "  [BELOW MIN — n<15]" if n < H16_MIN_N else ""
+        print(f"{indent}T{tier}: {pct_str} (n={n}){flag}")
+        return {"tier": tier, "hit_rate": round(hr, 4) if hr is not None else None, "n": n}
+
+    print(f"  Baseline (all qualified 3PM picks):")
+    baseline_results = {}
+    for t in (1, 2, 3):
+        baseline_results[t] = _print_tier_row("", enriched, t)
+
+    buckets = {
+        "low":  [e for e in enriched if e["avg_3pa"] < H16_VOL_LOW_MAX],
+        "mid":  [e for e in enriched if H16_VOL_LOW_MAX <= e["avg_3pa"] < H16_VOL_HIGH_MIN],
+        "high": [e for e in enriched if e["avg_3pa"] >= H16_VOL_HIGH_MIN],
+    }
+    bucket_labels = {
+        "low":  f"Low volume (avg 3PA < {H16_VOL_LOW_MAX:.0f}):",
+        "mid":  f"Mid volume ({H16_VOL_LOW_MAX:.0f} ≤ avg 3PA < {H16_VOL_HIGH_MIN:.0f}):",
+        "high": f"High volume (avg 3PA ≥ {H16_VOL_HIGH_MIN:.0f}):",
+    }
+    bucket_results: dict = {}
+    for bkey in ("low", "mid", "high"):
+        sub = buckets[bkey]
+        print(f"\n  {bucket_labels[bkey]}")
+        bucket_results[bkey] = {}
+        for t in (1, 2, 3):
+            bucket_results[bkey][t] = _print_tier_row("", sub, t)
+
+    # Key gap: low vs high at T2
+    low_t2  = bucket_results["low"][2]
+    high_t2 = bucket_results["high"][2]
+    print(f"\n  Key gaps (low vs high bucket, T2):")
+    if low_t2["hit_rate"] is not None and high_t2["hit_rate"] is not None:
+        delta_pp = (high_t2["hit_rate"] - low_t2["hit_rate"]) * 100
+        flag = "  ← ACTIONABLE SIGNAL" if abs(delta_pp) >= H16_ACTIONABLE_DELTA * 100 else (
+               "  ← WEAK SIGNAL"       if abs(delta_pp) >= H16_WEAK_DELTA * 100      else
+               "  ← NOISE")
+        print(f"    High − Low delta: {delta_pp:+.1f}pp{flag}")
+    else:
+        print(f"    Insufficient data in one or both buckets for T2 comparison.")
+
+    # ── H16b: Tier hit rate by 3PA × 3P% profile ──────────────────────
+    print(f"\n  --- H16b: Tier Hit Rate by 3PA × 3P% Profile ---\n")
+
+    h16b_picks = [e for e in enriched if e["avg_3pct"] is not None]
+    h16b_excluded = n_total - len(h16b_picks)
+
+    if h16b_picks:
+        arr_3pa  = np.array([e["avg_3pa"]  for e in h16b_picks])
+        arr_3pct = np.array([e["avg_3pct"] for e in h16b_picks])
+        print(f"  3PA distribution (n={len(arr_3pa)}): "
+              f"median={np.median(arr_3pa):.1f}, "
+              f"p25={np.percentile(arr_3pa, 25):.1f}, "
+              f"p75={np.percentile(arr_3pa, 75):.1f}")
+        print(f"  3P% distribution (n={len(arr_3pct)}): "
+              f"median={np.median(arr_3pct)*100:.1f}%, "
+              f"p25={np.percentile(arr_3pct, 25)*100:.1f}%, "
+              f"p75={np.percentile(arr_3pct, 75)*100:.1f}%")
+        print(f"  Volume threshold used: {H16_VOL_HIGH_MIN:.1f}  |  "
+              f"Efficiency threshold used: {H16_PCT_HIGH_MIN*100:.1f}%")
+        if h16b_excluded > 0:
+            print(f"  ({h16b_excluded} picks excluded from H16b: avg_3pa = 0)")
+
+        profiles = {
+            "high-vol/high-%": [e for e in h16b_picks
+                                 if e["avg_3pa"] >= H16_VOL_HIGH_MIN and e["avg_3pct"] >= H16_PCT_HIGH_MIN],
+            "high-vol/low-%":  [e for e in h16b_picks
+                                 if e["avg_3pa"] >= H16_VOL_HIGH_MIN and e["avg_3pct"] < H16_PCT_HIGH_MIN],
+            "low-vol/high-%":  [e for e in h16b_picks
+                                 if e["avg_3pa"] < H16_VOL_HIGH_MIN  and e["avg_3pct"] >= H16_PCT_HIGH_MIN],
+            "low-vol/low-%":   [e for e in h16b_picks
+                                 if e["avg_3pa"] < H16_VOL_HIGH_MIN  and e["avg_3pct"] < H16_PCT_HIGH_MIN],
+        }
+        print()
+        profile_results: dict = {}
+        for pkey, psub in profiles.items():
+            n = len(psub)
+            if n == 0:
+                print(f"  {pkey:<22}: n=0")
+                profile_results[pkey] = {"n": 0}
+                continue
+            hits  = sum(1 for e in psub if e["hit"])
+            hr    = hits / n
+            hr_t1, n_t1 = _tier_hr(psub, 1)
+            hr_t2, n_t2 = _tier_hr(psub, 2)
+            flag = "  [BELOW MIN — n<15]" if n < H16_MIN_N else ""
+            t1_str = f"T1: {hr_t1*100:.1f}%" if hr_t1 is not None else "T1: n/a"
+            t2_str = f"T2: {hr_t2*100:.1f}%" if hr_t2 is not None else "T2: n/a"
+            print(f"  {pkey:<22}: {hr*100:.1f}% (n={n})  [{t1_str}, {t2_str}]{flag}")
+            profile_results[pkey] = {
+                "n": n, "hit_rate": round(hr, 4),
+                "t1": {"hit_rate": round(hr_t1, 4) if hr_t1 is not None else None, "n": n_t1},
+                "t2": {"hit_rate": round(hr_t2, 4) if hr_t2 is not None else None, "n": n_t2},
+            }
+    else:
+        print("  No picks with valid avg_3pct — fg3a may be zero for all picks.")
+        profile_results = {}
+
+    # ── H16c: Game-level 3PA floor (post-hoc) ──────────────────────────
+    print(f"\n  --- H16c: Game-Level 3PA Floor (post-hoc mechanism check) ---\n")
+
+    h16c_picks = [e for e in enriched if e["actual_fg3a"] is not None]
+    if h16c_picks:
+        floor_results: dict = {}
+        for floor in (1, 2, 3, 4, 5):
+            at_or_above = [e for e in h16c_picks if e["actual_fg3a"] >= floor]
+            n = len(at_or_above)
+            if n < H16_MIN_N_H16C:
+                flag = f"  (n={n}, below {H16_MIN_N_H16C}-pick minimum)"
+                print(f"  3PA ≥ {floor}: —{flag}")
+                floor_results[floor] = {"hit_rate": None, "n": n}
+            else:
+                hits = sum(1 for e in at_or_above if e["hit"])
+                hr   = hits / n
+                print(f"  3PA ≥ {floor}: {hr*100:.1f}% hit rate (n={n})")
+                floor_results[floor] = {"hit_rate": round(hr, 4), "n": n}
+
+        # Contrast case: 3PA = 0
+        zero_pa = [e for e in h16c_picks if e["actual_fg3a"] == 0]
+        n_zero = len(zero_pa)
+        if n_zero >= H16_MIN_N_H16C:
+            hits_zero = sum(1 for e in zero_pa if e["hit"])
+            hr_zero = hits_zero / n_zero
+            print(f"  3PA = 0: {hr_zero*100:.1f}% hit rate (n={n_zero})  [contrast case]")
+            floor_results[0] = {"hit_rate": round(hr_zero, 4), "n": n_zero}
+        else:
+            print(f"  3PA = 0: n={n_zero} (below {H16_MIN_N_H16C}-pick minimum)  [contrast case]")
+            floor_results[0] = {"hit_rate": None, "n": n_zero}
+
+        print(f"\n  NOTE: H16c is post-hoc (actual 3PA unknown pre-game). Validates mechanism only.")
+    else:
+        print("  No game-level fg3a data found — H16c skipped.")
+        floor_results = {}
+
+    # ── Verdict guidance ───────────────────────────────────────────────
+    print(f"\n  --- Verdict Guidance ---\n")
+    print(f"  H16a actionable signal: low-bucket T2 hit rate ≥{H16_ACTIONABLE_DELTA*100:.0f}pp below high-bucket "
+          f"with ≥{H16_MIN_N} picks each")
+    print(f"  H16a weak signal: {H16_WEAK_DELTA*100:.0f}–{H16_ACTIONABLE_DELTA*100-1:.0f}pp gap → annotation only "
+          f"(avg_3pa_l10 as context, no gate)")
+    print(f"  H16a noise: <{H16_WEAK_DELTA*100:.0f}pp gap or insufficient sample → close")
+    print(f"  H16b actionable: low-vol underperforms high-vol by ≥{H16_ACTIONABLE_DELTA*100:.0f}pp "
+          f"regardless of 3P% → volume is dominant gate")
+    print(f"  H16c actionable: hit rate rises ≥20pp above a specific 3PA floor → validates mechanism")
+    print(f"\n{'='*70}\n")
+
+    # ── Write JSON ─────────────────────────────────────────────────────
+    output = {
+        "mode":           "3pa-volume-gate",
+        "generated_at":   dt.datetime.now().isoformat(timespec="seconds"),
+        "population": {
+            "total_3pm_picks": n_total,
+            "hits":            n_hits,
+            "misses":          n_misses,
+            "excluded_lt5_games": n_excluded_games,
+        },
+        "constants": {
+            "H16_L10_WINDOW":       H16_L10_WINDOW,
+            "H16_MIN_GAMES":        H16_MIN_GAMES,
+            "H16_MIN_N":            H16_MIN_N,
+            "H16_VOL_LOW_MAX":      H16_VOL_LOW_MAX,
+            "H16_VOL_HIGH_MIN":     H16_VOL_HIGH_MIN,
+            "H16_PCT_HIGH_MIN":     H16_PCT_HIGH_MIN,
+            "H16_ACTIONABLE_DELTA": H16_ACTIONABLE_DELTA,
+            "H16_WEAK_DELTA":       H16_WEAK_DELTA,
+        },
+        "h16a_baseline": {t: baseline_results[t] for t in (1, 2, 3)},
+        "h16a_buckets":  bucket_results,
+        "h16b_profiles": profile_results,
+        "h16c_floors":   floor_results,
+    }
+    THREE_PA_VOLUME_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(THREE_PA_VOLUME_JSON, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[H16] Results written → {THREE_PA_VOLUME_JSON}")
+    print(f"\n{'='*70}\n")
+
+
+# ── Spread Context mode constants (H17) ──────────────────────────────
+H17_MIN_N          = 10    # min picks per cell for a reportable hit rate (Layer 2)
+H17_MIN_N_OVERALL  = 5     # min picks per bucket for Layer 1 / gradient
+H17_THRESH_MIN     = 4.0   # start of threshold search range
+H17_THRESH_MAX     = 12.0  # end of threshold search range
+H17_THRESH_STEP    = 0.5   # step size for threshold search
+SPREAD_CONTEXT_JSON = DATA / "backtest_spread_context.json"
+
+# Bucket definitions: (label, lo_inclusive, hi_exclusive)
+_H17_BUCKETS = [
+    ("0-3",   0.0,  3.5),
+    ("4-6",   3.5,  6.5),
+    ("7-9",   6.5,  9.5),
+    ("10-13", 9.5, 13.5),
+    ("14+",  13.5, float("inf")),
+]
+
+
+def _h17_bucket(spread_abs: float) -> str | None:
+    """Return bucket label for a given spread_abs value, or None if negative."""
+    if spread_abs < 0:
+        return None
+    for label, lo, hi in _H17_BUCKETS:
+        if lo <= spread_abs < hi:
+            return label
+    return "14+"
+
+
+def run_spread_context_analysis(picks: list, master: pd.DataFrame, args) -> None:
+    """H17 — Spread Context vs. Tier Hit Rate Backtest.
+
+    Tests whether pregame spread magnitude predicts tier pick hit rate, and
+    whether the relationship differs meaningfully across prop types.
+    """
+    today_str = dt.date.today().isoformat()
+    sep = "─" * 70
+
+    # Optional date filter
+    if getattr(args, "start", None):
+        picks = [p for p in picks if p.get("date", "") >= args.start]
+    if getattr(args, "end", None):
+        picks = [p for p in picks if p.get("date", "") <= args.end]
+    if not picks:
+        print("[H17] No graded picks after date filter.")
+        return
+
+    # ── Build spread lookup from nba_master.csv ────────────────────────
+    # Key: (game_date_str, norm_team) → spread_abs
+    spread_lookup: dict[tuple[str, str], float] = {}
+    if master is not None and not master.empty:
+        for _, row in master.iterrows():
+            gd = str(row["game_date"])[:10]  # YYYY-MM-DD
+            home = _ABBR_NORM_BT.get(str(row.get("home_team_abbrev", "")).strip().upper(),
+                                      str(row.get("home_team_abbrev", "")).strip().upper())
+            away = _ABBR_NORM_BT.get(str(row.get("away_team_abbrev", "")).strip().upper(),
+                                      str(row.get("away_team_abbrev", "")).strip().upper())
+            try:
+                spread_abs = abs(float(row["home_spread"]))
+            except (TypeError, ValueError):
+                continue
+            if spread_abs != spread_abs:  # NaN check
+                continue
+            spread_lookup[(gd, home)] = spread_abs
+            spread_lookup[(gd, away)] = spread_abs
+
+    # ── Enrich picks with spread_abs ──────────────────────────────────
+    enriched = []
+    n_excluded = 0
+    for p in picks:
+        date_str = str(p.get("date", ""))[:10]
+        opp_raw  = str(p.get("opponent", "")).strip().upper()
+        team_raw = str(p.get("team", "")).strip().upper()
+        opp      = _ABBR_NORM_BT.get(opp_raw,  opp_raw)
+        team     = _ABBR_NORM_BT.get(team_raw, team_raw)
+
+        # Try matching by team first, then opponent
+        spread_abs = spread_lookup.get((date_str, team))
+        if spread_abs is None:
+            spread_abs = spread_lookup.get((date_str, opp))
+
+        if spread_abs is None:
+            n_excluded += 1
+            continue
+
+        bucket = _h17_bucket(spread_abs)
+        hit    = (p["result"] == "HIT")
+        enriched.append({
+            "date":       date_str,
+            "player":     p.get("player_name", ""),
+            "prop_type":  p.get("prop_type", ""),
+            "pick_value": p.get("pick_value"),
+            "actual":     p.get("actual_value"),
+            "hit":        hit,
+            "spread_abs": spread_abs,
+            "bucket":     bucket,
+        })
+
+    if not enriched:
+        print("[H17] No picks could be matched to spread data.")
+        return
+
+    total    = len(enriched)
+    n_hits   = sum(1 for p in enriched if p["hit"])
+    baseline = n_hits / total
+
+    prop_counts = {pt: sum(1 for p in enriched if p["prop_type"] == pt)
+                   for pt in ("PTS", "REB", "AST", "3PM")}
+
+    # ── Print header ───────────────────────────────────────────────────
+    print(f"\n{'='*70}")
+    print(f"  H17 — Spread Context Backtest")
+    print(f"{'='*70}")
+    print(f"  Population: {total} total picks  "
+          f"(PTS: {prop_counts['PTS']}, REB: {prop_counts['REB']}, "
+          f"AST: {prop_counts['AST']}, 3PM: {prop_counts['3PM']})")
+    print(f"  Excluded (no spread match): {n_excluded}")
+    print(f"  Analysis date: {today_str}")
+
+    # ── Layer 1: Overall hit rate by spread bucket ─────────────────────
+    print(f"\n{sep}")
+    print(f"  Layer 1: Overall Hit Rate by Spread Bucket")
+    print(f"{sep}")
+    print(f"  {'Bucket':<10} | {'Hit Rate':>8} | {'n':>6} | {'vs. Baseline':>12}")
+    print(f"  {'-'*10}-+-{'-'*8}-+-{'-'*6}-+-{'-'*12}")
+
+    bucket_results: dict[str, dict] = {}
+    for label, _, _ in _H17_BUCKETS:
+        sub  = [p for p in enriched if p["bucket"] == label]
+        n    = len(sub)
+        if n >= H17_MIN_N_OVERALL:
+            hr   = sum(1 for p in sub if p["hit"]) / n
+            delta = hr - baseline
+            sign  = "+" if delta >= 0 else ""
+            hr_str    = f"{hr*100:.1f}%"
+            delta_str = f"{sign}{delta*100:.1f}pp"
+        else:
+            hr   = None
+            delta = None
+            hr_str    = f"n={n} (below min)"
+            delta_str = "—"
+        print(f"  {label:<10} | {hr_str:>8} | {n:>6} | {delta_str:>12}")
+        bucket_results[label] = {"hit_rate": hr, "n": n, "vs_baseline": delta}
+
+    print(f"  {'Baseline':<10} | {baseline*100:>7.1f}% | {total:>6} |")
+
+    # ── Layer 2: Hit rate by prop type × spread bucket ─────────────────
+    print(f"\n{sep}")
+    print(f"  Layer 2: Hit Rate by Prop Type × Spread Bucket")
+    print(f"{sep}")
+    bucket_labels = [b[0] for b in _H17_BUCKETS]
+    col_w = 11
+    header = f"  {'':8} | " + " | ".join(f"{b:>{col_w}}" for b in bucket_labels)
+    print(header)
+    print(f"  {'-'*8}-+-" + "-+-".join("-" * col_w for _ in bucket_labels))
+
+    prop_bucket_results: dict[str, dict[str, dict]] = {}
+    for prop in ("PTS", "REB", "AST", "3PM"):
+        cells = []
+        prop_bucket_results[prop] = {}
+        for label, _, _ in _H17_BUCKETS:
+            sub = [p for p in enriched if p["prop_type"] == prop and p["bucket"] == label]
+            n   = len(sub)
+            if n >= H17_MIN_N:
+                hr  = sum(1 for p in sub if p["hit"]) / n
+                cell_str = f"{hr*100:.1f}%({n})"
+                hr_val = hr
+            else:
+                cell_str = f"n={n}(<min)"
+                hr_val = None
+            cells.append(f"{cell_str:>{col_w}}")
+            prop_bucket_results[prop][label] = {"hit_rate": hr_val, "n": n}
+        print(f"  {prop:<8} | " + " | ".join(cells))
+
+    print(f"\n  [Cells below {H17_MIN_N}-pick minimum shown as n=N(<min)]")
+
+    # ── Layer 3: Threshold validation ─────────────────────────────────
+    print(f"\n{sep}")
+    print(f"  Layer 3: Threshold Validation")
+    print(f"{sep}")
+
+    # Reproduce current binary split at 6.0 (competitive ≤6 vs blowout >6)
+    comp   = [p for p in enriched if p["spread_abs"] <= 6.0]
+    blow   = [p for p in enriched if p["spread_abs"] >  6.0]
+    comp_hr = sum(1 for p in comp if p["hit"]) / len(comp) if comp else None
+    blow_hr = sum(1 for p in blow if p["hit"]) / len(blow) if blow else None
+    gap_cur = (comp_hr - blow_hr) if (comp_hr is not None and blow_hr is not None) else None
+
+    print(f"\n  Current binary split (≤6 vs >6):")
+    if comp_hr is not None:
+        print(f"    Competitive (≤6): {comp_hr*100:.1f}% (n={len(comp)})")
+    if blow_hr is not None:
+        print(f"    Blowout     (>6): {blow_hr*100:.1f}% (n={len(blow)})")
+    if gap_cur is not None:
+        print(f"    Gap: {gap_cur*100:.1f}pp")
+
+    # Best single threshold search
+    threshold_results = []
+    thresh = H17_THRESH_MIN
+    while thresh <= H17_THRESH_MAX + 1e-9:
+        below = [p for p in enriched if p["spread_abs"] <= thresh]
+        above = [p for p in enriched if p["spread_abs"] >  thresh]
+        if len(below) >= H17_MIN_N_OVERALL and len(above) >= H17_MIN_N_OVERALL:
+            hr_below = sum(1 for p in below if p["hit"]) / len(below)
+            hr_above = sum(1 for p in above if p["hit"]) / len(above)
+            gap      = abs(hr_below - hr_above)
+            threshold_results.append({
+                "threshold": round(thresh, 1),
+                "hr_below": hr_below,
+                "n_below":  len(below),
+                "hr_above": hr_above,
+                "n_above":  len(above),
+                "gap":      gap,
+            })
+        thresh += H17_THRESH_STEP
+
+    threshold_results.sort(key=lambda x: x["gap"], reverse=True)
+
+    print(f"\n  Best single threshold search ({H17_THRESH_MIN}–{H17_THRESH_MAX}, step {H17_THRESH_STEP}):")
+    print(f"  ({len(threshold_results)} thresholds tested)")
+    for rank, r in enumerate(threshold_results[:3], 1):
+        sign = "+" if r["hr_below"] >= r["hr_above"] else ""
+        print(f"    Rank {rank}: split at {r['threshold']:.1f} → gap {r['gap']*100:.1f}pp  "
+              f"(≤{r['threshold']:.1f}: {r['hr_below']*100:.1f}% n={r['n_below']} | "
+              f">{r['threshold']:.1f}: {r['hr_above']*100:.1f}% n={r['n_above']})")
+
+    # ── Continuous gradient ────────────────────────────────────────────
+    print(f"\n{sep}")
+    print(f"  Continuous Gradient (all props, ±0.5 around each integer)")
+    print(f"{sep}")
+    print(f"  {'spread_abs':>10} | {'hit_rate':>8} | {'n':>5}")
+    print(f"  {'-'*10}-+-{'-'*8}-+-{'-'*5}")
+
+    gradient_rows = []
+    for sa in range(0, 21):
+        sub = [p for p in enriched if abs(p["spread_abs"] - sa) < 0.5]
+        n   = len(sub)
+        if n >= H17_MIN_N_OVERALL:
+            hr  = sum(1 for p in sub if p["hit"]) / n
+            print(f"  {sa:>10} | {hr*100:>7.1f}% | {n:>5}")
+            gradient_rows.append({"spread_abs": sa, "hit_rate": hr, "n": n})
+        else:
+            print(f"  {sa:>10} | {'—':>8} | {n:>5}  (below min)")
+            gradient_rows.append({"spread_abs": sa, "hit_rate": None, "n": n})
+
+    print(f"\n{'='*70}\n")
+
+    # ── Write JSON output ──────────────────────────────────────────────
+    output = {
+        "analysis_date":    today_str,
+        "total_picks":      total,
+        "n_excluded":       n_excluded,
+        "baseline_hit_rate": baseline,
+        "prop_counts":      prop_counts,
+        "layer1_overall":   bucket_results,
+        "layer2_by_prop":   prop_bucket_results,
+        "layer3_threshold": {
+            "current_split": {
+                "threshold":   6.0,
+                "hr_competitive": comp_hr,
+                "n_competitive":  len(comp),
+                "hr_blowout":     blow_hr,
+                "n_blowout":      len(blow),
+                "gap":            gap_cur,
+            },
+            "best_thresholds": threshold_results[:3],
+            "all_thresholds":  threshold_results,
+        },
+        "gradient": gradient_rows,
+    }
+    SPREAD_CONTEXT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(SPREAD_CONTEXT_JSON, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[H17] Results written → {SPREAD_CONTEXT_JSON}")
+    print(f"\n{'='*70}\n")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -4806,7 +5407,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -4881,6 +5482,24 @@ def main():
             print("[backtest] No graded picks found — cannot run H15.")
             sys.exit(0)
         run_opp_team_hit_rate_analysis(picks, args)
+        sys.exit(0)
+
+    # ── 3PA volume gate mode ──────────────────────────────────────────
+    if getattr(args, "mode", None) == "3pa-volume-gate":
+        picks = load_picks_json()
+        if not picks:
+            print("[backtest] No graded picks found — cannot run H16.")
+            sys.exit(0)
+        run_3pa_volume_gate_analysis(picks, player_log, args)
+        sys.exit(0)
+
+    # ── Spread context mode ───────────────────────────────────────────
+    if getattr(args, "mode", None) == "spread-context":
+        picks = load_picks_json()
+        if not picks:
+            print("[backtest] No graded picks found — cannot run H17.")
+            sys.exit(0)
+        run_spread_context_analysis(picks, master_df, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

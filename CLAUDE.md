@@ -201,7 +201,7 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 
 ## Frontend
 
-Four-tab dark theme SPA deployed to GitHub Pages via `build_site.py`.
+Five-tab dark theme SPA deployed to GitHub Pages via `build_site.py`.
 
 | Tab | Content |
 |-----|---------|
@@ -209,6 +209,7 @@ Four-tab dark theme SPA deployed to GitHub Pages via `build_site.py`.
 | Parlays | Historical stats banner (hidden until graded history exists). Parlay cards with leg rows, implied odds, correlation badge, result once graded. "⚠ Leg at risk" banner when any leg player is voided. |
 | Results | Overall hit rate banner, 4 per-prop streak cards, 30-day hit rate trend chart (vanilla canvas), full pick history table. |
 | Audit Log | Latest auditor entry — hit rate stats, what worked, what to avoid, analyst instructions. Skip validation table. |
+| Research | Player game log explorer. Filter by player, stat, home/away, rest days, spread bucket, game result, and opponent. Renders tier hit rate table with bar charts, distribution stats, and full game log. Static — no LLM calls, fully client-side. |
 
 Site rebuilds at end of every Analyst workflow run AND after every hourly injury refresh.
 

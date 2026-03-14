@@ -461,6 +461,160 @@ def load_opportunity_flags() -> list:
         return []
 
 
+def build_explorer_data() -> dict:
+    """
+    Builds the player explorer dataset for the Research tab.
+    Returns a dict keyed by player_name (active whitelisted players only),
+    each containing a list of game records with context fields.
+    Returns {} on any error — never blocks site build.
+    """
+    try:
+        import pandas as pd
+
+        game_log_csv = DATA / "player_game_log.csv"
+        if not game_log_csv.exists() or not MASTER_CSV.exists():
+            return {}
+
+        # Load active whitelisted players
+        if not WHITELIST_CSV.exists():
+            return {}
+        wl = pd.read_csv(WHITELIST_CSV, dtype=str)
+        wl = wl[wl["active"].astype(str).str.strip() == "1"]
+        active_players = set(wl["player_name"].str.strip().str.lower())
+
+        # Load game log — exclude DNPs
+        gl = pd.read_csv(game_log_csv, dtype=str)
+        if "dnp" in gl.columns:
+            gl = gl[gl["dnp"].astype(str).str.strip() != "1"]
+        gl["game_date"] = pd.to_datetime(gl["game_date"], errors="coerce")
+        gl = gl.dropna(subset=["game_date"])
+
+        # Filter to active whitelisted players only
+        gl = gl[gl["player_name"].str.strip().str.lower().isin(active_players)]
+        if gl.empty:
+            return {}
+
+        # Load master for spread + game result context
+        master = pd.read_csv(MASTER_CSV, dtype=str)
+        master["game_date"] = pd.to_datetime(master["game_date"], errors="coerce")
+        master = master.dropna(subset=["game_date"])
+
+        # Normalize team abbrevs in master
+        for col in ["home_team_abbrev", "away_team_abbrev"]:
+            if col in master.columns:
+                master[col] = master[col].str.strip().str.upper().map(
+                    lambda x: _ABBR_NORM.get(x, x)
+                )
+
+        # Build game context lookup keyed by (game_date_str, team_abbrev)
+        # Provides spread_abs, won, margin for each team in each game
+        game_ctx: dict = {}
+        for _, row in master.iterrows():
+            gd = row["game_date"].strftime("%Y-%m-%d") if pd.notna(row["game_date"]) else None
+            if not gd:
+                continue
+            home = str(row.get("home_team_abbrev", "") or "").strip().upper()
+            away = str(row.get("away_team_abbrev", "") or "").strip().upper()
+            home = _ABBR_NORM.get(home, home)
+            away = _ABBR_NORM.get(away, away)
+
+            # Spread
+            try:
+                spread_abs = abs(float(str(row.get("home_spread", "") or "").strip()))
+            except (ValueError, TypeError):
+                spread_abs = None
+
+            # Game result
+            try:
+                home_score = float(str(row.get("home_score", "") or "").strip())
+                away_score = float(str(row.get("away_score", "") or "").strip())
+                home_won = home_score > away_score
+                margin = abs(home_score - away_score)
+            except (ValueError, TypeError):
+                home_won = None
+                margin = None
+
+            if home:
+                game_ctx[(gd, home)] = {
+                    "spread_abs": round(spread_abs, 1) if spread_abs is not None else None,
+                    "won": home_won,
+                    "margin": int(margin) if margin is not None else None,
+                }
+            if away:
+                away_won = (not home_won) if home_won is not None else None
+                game_ctx[(gd, away)] = {
+                    "spread_abs": round(spread_abs, 1) if spread_abs is not None else None,
+                    "won": away_won,
+                    "margin": int(margin) if margin is not None else None,
+                }
+
+        # Build per-player game records
+        def safe_int(val):
+            try:
+                return int(float(str(val).strip()))
+            except (ValueError, TypeError):
+                return None
+
+        gl_sorted = gl.sort_values(["player_name", "game_date"], ascending=[True, True])
+
+        result: dict = {}
+        for player_name, grp in gl_sorted.groupby("player_name"):
+            grp = grp.sort_values("game_date", ascending=True).reset_index(drop=True)
+            records = []
+            prev_date = None
+            for _, row in grp.iterrows():
+                gd_str = row["game_date"].strftime("%Y-%m-%d")
+                team = str(row.get("team_abbrev", "") or "").strip().upper()
+                team = _ABBR_NORM.get(team, team)
+
+                # Rest days → bucket
+                if prev_date is not None:
+                    rest = (row["game_date"] - prev_date).days - 1
+                    rest_bucket = 0 if rest == 0 else (1 if rest == 1 else (2 if rest == 2 else 3))
+                else:
+                    rest_bucket = None
+                prev_date = row["game_date"]
+
+                # Stats — game_log already has correct column names
+                pts  = safe_int(row.get("pts"))
+                reb  = safe_int(row.get("reb"))
+                ast  = safe_int(row.get("ast"))
+                tpm  = safe_int(row.get("tpm"))
+                mins = safe_int(row.get("minutes"))
+
+                # H/A and opponent are already in game_log
+                ha  = str(row.get("home_away", "") or "").strip().upper()
+                opp = str(row.get("opp_abbrev", "") or "").strip().upper()
+                opp = _ABBR_NORM.get(opp, opp)
+
+                # Spread and result from master join
+                ctx = game_ctx.get((gd_str, team), {})
+
+                records.append({
+                    "date":       gd_str,
+                    "pts":        pts,
+                    "reb":        reb,
+                    "ast":        ast,
+                    "tpm":        tpm,
+                    "mins":       mins,
+                    "rest":       rest_bucket,
+                    "ha":         ha if ha else None,
+                    "opp":        opp if opp else None,
+                    "spread_abs": ctx.get("spread_abs"),
+                    "won":        ctx.get("won"),
+                    "margin":     ctx.get("margin"),
+                })
+
+            if records:
+                result[player_name] = records
+
+        return result
+
+    except Exception as e:
+        print(f"[build_explorer_data] error: {e}")
+        return {}
+
+
 def get_top_picks(picks: list, max_picks: int = 5) -> list:
     """
     Returns today's top picks.
@@ -506,6 +660,7 @@ def build_site():
     parlays_data      = load_todays_parlays()
     yesterday_summary = load_yesterday_summary()
     opportunity_flags = load_opportunity_flags()
+    explorer_data     = build_explorer_data()
 
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
     past_picks  = [p for p in picks if p.get("date") != TODAY_STR
@@ -559,6 +714,7 @@ def build_site():
         "ml_odds":          ml_odds,
         "yesterday_summary":  yesterday_summary,
         "opportunity_flags":  opportunity_flags,
+        "explorer":           explorer_data,
         "top_picks": top_picks,
         "top_picks_history": {
             "hits": tp_hits,
@@ -593,6 +749,7 @@ def generate_html(d: dict) -> str:
     top_picks_history_json  = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
     yesterday_summary_json  = json.dumps(d.get("yesterday_summary", {}))
     opportunity_flags_json  = json.dumps(d.get("opportunity_flags", []))
+    explorer_json           = json.dumps(d.get("explorer", {}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -977,6 +1134,7 @@ def generate_html(d: dict) -> str:
   <button class="tab" onclick="showTab('parlays')">Parlays</button>
   <button class="tab" onclick="showTab('results')">Results</button>
   <button class="tab" onclick="showTab('audit')">Audit Log</button>
+  <button class="tab" onclick="showTab('research')">Research</button>
 </div>
 
 <button id="back-to-top" onclick="window.scrollTo({{top:0,behavior:'smooth'}})" aria-label="Back to top">↑</button>
@@ -1042,6 +1200,7 @@ def generate_html(d: dict) -> str:
   </div>
 </div>
 <div id="tab-audit" class="page"><div id="audit-container"></div></div>
+<div id="tab-research" class="page"><div id="research-container"></div></div>
 
 <script>
 const DATA = {{
@@ -1060,11 +1219,12 @@ const DATA = {{
   top_picks_history: {top_picks_history_json},
   yesterday_summary: {yesterday_summary_json},
   opportunity_flags: {opportunity_flags_json},
+  explorer:          {explorer_json},
 }};
 
 function showTab(name) {{
   document.querySelectorAll('.tab').forEach((t,i) =>
-    t.classList.toggle('active', ['picks','parlays','results','audit'][i] === name));
+    t.classList.toggle('active', ['picks','parlays','results','audit','research'][i] === name));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   if (name === 'results') drawTrendChart();
@@ -1845,6 +2005,269 @@ function renderParlays() {{
 }}
 
 renderParlays();
+
+// ── PLAYER EXPLORER ──
+function renderResearch() {{
+  const c = document.getElementById('research-container');
+  if (!c) return;
+
+  const explorerData = DATA.explorer || {{}};
+  const players = Object.keys(explorerData).sort();
+
+  if (!players.length) {{
+    c.innerHTML = '<div style="padding:32px;color:var(--muted);font-size:13px">No player game log data available.</div>';
+    return;
+  }}
+
+  // Collect all opponents for the opponent filter dropdown
+  const allOpponents = new Set();
+  players.forEach(p => {{
+    (explorerData[p] || []).forEach(g => {{ if (g.opp) allOpponents.add(g.opp); }});
+  }});
+  const sortedOpps = Array.from(allOpponents).sort();
+
+  let html = `
+    <div style="max-width:780px;margin:0 auto;padding:16px 0">
+      <div style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--fg)">Player Explorer</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px">
+        Full-season game log. Select a player and any combination of filters, then hit Search.
+        Results are descriptive — small samples shown as-is.
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px">
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Player *</div>
+          <select id="ex-player" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">— select player —</option>
+            ${{players.map(p => `<option value="${{p}}">${{p}}</option>`).join('')}}
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Stat</div>
+          <select id="ex-stat" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="pts">PTS</option>
+            <option value="reb">REB</option>
+            <option value="ast">AST</option>
+            <option value="tpm">3PM</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Home / Away</div>
+          <select id="ex-ha" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            <option value="H">Home</option>
+            <option value="A">Away</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Rest Days</div>
+          <select id="ex-rest" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            <option value="0">0 (B2B)</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3+</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Spread</div>
+          <select id="ex-spread" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            <option value="0-3">0 – 3.5 (Pick'em)</option>
+            <option value="4-6">3.5 – 6.5 (Competitive)</option>
+            <option value="7-9">6.5 – 9.5 (Moderate)</option>
+            <option value="10-13">9.5 – 13.5 (Large)</option>
+            <option value="14+">14+ (Blowout risk)</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Game Result</div>
+          <select id="ex-result" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            <option value="W">Win</option>
+            <option value="L">Loss</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Opponent</div>
+          <select id="ex-opp" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            ${{sortedOpps.map(o => `<option value="${{o}}">${{o}}</option>`).join('')}}
+          </select>
+        </div>
+
+      </div>
+
+      <button onclick="runExplorer()" style="background:var(--accent);color:#000;border:none;border-radius:6px;padding:9px 24px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:24px">
+        Search
+      </button>
+
+      <div id="ex-results"></div>
+    </div>`;
+
+  c.innerHTML = html;
+}}
+
+function runExplorer() {{
+  const explorerData = DATA.explorer || {{}};
+  const playerName   = document.getElementById('ex-player').value;
+  const stat         = document.getElementById('ex-stat').value;
+  const haFilter     = document.getElementById('ex-ha').value;
+  const restFilter   = document.getElementById('ex-rest').value;
+  const spreadFilter = document.getElementById('ex-spread').value;
+  const resultFilter = document.getElementById('ex-result').value;
+  const oppFilter    = document.getElementById('ex-opp').value;
+  const out          = document.getElementById('ex-results');
+
+  if (!playerName) {{
+    out.innerHTML = '<div style="color:var(--muted);font-size:13px">Select a player to get started.</div>';
+    return;
+  }}
+
+  const games = explorerData[playerName] || [];
+
+  const filtered = games.filter(g => {{
+    if (haFilter && g.ha !== haFilter) return false;
+    if (restFilter !== '' && String(g.rest) !== restFilter) return false;
+    if (oppFilter && g.opp !== oppFilter) return false;
+    if (resultFilter) {{
+      if (resultFilter === 'W' && g.won !== true)  return false;
+      if (resultFilter === 'L' && g.won !== false) return false;
+    }}
+    if (spreadFilter) {{
+      if (g.spread_abs === null || g.spread_abs === undefined) return false;
+      const s = g.spread_abs;
+      if (spreadFilter === '0-3'   && !(s < 3.5))             return false;
+      if (spreadFilter === '4-6'   && !(s >= 3.5 && s < 6.5)) return false;
+      if (spreadFilter === '7-9'   && !(s >= 6.5 && s < 9.5)) return false;
+      if (spreadFilter === '10-13' && !(s >= 9.5 && s < 13.5)) return false;
+      if (spreadFilter === '14+'   && !(s >= 13.5))            return false;
+    }}
+    return true;
+  }});
+
+  if (!filtered.length) {{
+    out.innerHTML = '<div style="color:var(--muted);font-size:13px">No games match the selected filters.</div>';
+    return;
+  }}
+
+  const TIERS       = {{ pts:[10,15,20,25,30], reb:[2,4,6,8,10,12], ast:[2,4,6,8,10,12], tpm:[1,2,3,4] }};
+  const STAT_COLORS = {{ pts:'var(--pts)', reb:'var(--reb)', ast:'var(--ast)', tpm:'var(--3pm)' }};
+  const STAT_LABELS = {{ pts:'PTS', reb:'REB', ast:'AST', tpm:'3PM' }};
+  const tiers = TIERS[stat];
+  const color = STAT_COLORS[stat];
+  const label = STAT_LABELS[stat];
+  const n = filtered.length;
+
+  const tierRows = tiers.map(t => {{
+    const valid = filtered.filter(g => g[stat] !== null && g[stat] !== undefined);
+    const hits  = valid.filter(g => g[stat] >= t).length;
+    const pct   = valid.length ? (hits / valid.length * 100) : null;
+    return {{ tier: t, hits, n: valid.length, pct }};
+  }});
+
+  const vals   = filtered.map(g => g[stat]).filter(v => v !== null && v !== undefined);
+  const avg    = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : '—';
+  const mn     = vals.length ? Math.min(...vals) : '—';
+  const mx     = vals.length ? Math.max(...vals) : '—';
+  const sorted = [...vals].sort((a,b)=>a-b);
+  const med    = sorted.length ? sorted[Math.floor(sorted.length/2)] : '—';
+
+  let html = `
+    <div style="margin-bottom:12px">
+      <span style="font-size:15px;font-weight:700;color:var(--fg)">${{playerName}}</span>
+      <span style="font-size:13px;color:var(--muted);margin-left:8px">${{label}} · ${{n}} game${{n!==1?'s':''}}</span>
+      ${{n < 10 ? '<span style="font-size:11px;color:var(--miss);margin-left:8px">⚠ small sample</span>' : ''}}
+    </div>
+
+    <div style="display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap">
+      <div style="font-size:12px;color:var(--muted)">Avg <span style="color:var(--fg);font-weight:600">${{avg}}</span></div>
+      <div style="font-size:12px;color:var(--muted)">Med <span style="color:var(--fg);font-weight:600">${{med}}</span></div>
+      <div style="font-size:12px;color:var(--muted)">Min <span style="color:var(--fg);font-weight:600">${{mn}}</span></div>
+      <div style="font-size:12px;color:var(--muted)">Max <span style="color:var(--fg);font-weight:600">${{mx}}</span></div>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;margin-bottom:20px;font-size:13px">
+      <thead>
+        <tr style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em">
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Tier</th>
+          <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border)">Hit Rate</th>
+          <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border)">Hits / Games</th>
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)"></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${{tierRows.map(r => {{
+          const pct      = r.pct !== null ? r.pct.toFixed(1) + '%' : '—';
+          const barW     = r.pct !== null ? Math.round(r.pct) : 0;
+          const barColor = r.pct === null ? 'var(--muted)' : r.pct >= 70 ? color : 'var(--muted)';
+          return `<tr>
+            <td style="padding:6px 8px;color:var(--fg);font-weight:600">${{label}} ${{r.tier}}+</td>
+            <td style="padding:6px 8px;text-align:right;color:${{barColor}};font-weight:${{r.pct !== null && r.pct >= 70 ? '700' : '400'}}">${{pct}}</td>
+            <td style="padding:6px 8px;text-align:right;color:var(--muted)">${{r.hits}}/${{r.n}}</td>
+            <td style="padding:6px 8px;width:120px">
+              <div style="height:6px;border-radius:3px;background:var(--border);overflow:hidden">
+                <div style="height:100%;width:${{barW}}%;background:${{barColor}};border-radius:3px"></div>
+              </div>
+            </td>
+          </tr>`;
+        }}).join('')}}
+      </tbody>
+    </table>`;
+
+  const displayGames = [...filtered].sort((a,b) => b.date.localeCompare(a.date));
+
+  html += `
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Game Log</div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead>
+        <tr style="color:var(--muted);font-size:11px">
+          <th style="text-align:left;padding:5px 8px;border-bottom:1px solid var(--border)">Date</th>
+          <th style="text-align:left;padding:5px 8px;border-bottom:1px solid var(--border)">Opp</th>
+          <th style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">H/A</th>
+          <th style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">Spread</th>
+          <th style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">Result</th>
+          <th style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">Margin</th>
+          <th style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">Rest</th>
+          <th style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">Mins</th>
+          <th style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border);color:${{color}}">${{label}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${{displayGames.map(g => {{
+          const val      = g[stat];
+          const valColor = val !== null && val !== undefined && tiers.length && val >= tiers[0] ? color : 'var(--fg)';
+          const restLabel = g.rest === null ? '—' : g.rest === 0 ? 'B2B' : g.rest === 3 ? '3+' : String(g.rest);
+          const wonLabel  = g.won === true  ? '<span style="color:var(--hit)">W</span>'
+                          : g.won === false ? '<span style="color:var(--miss)">L</span>' : '—';
+          return `<tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:5px 8px;color:var(--muted)">${{g.date}}</td>
+            <td style="padding:5px 8px;color:var(--fg)">${{g.opp || '—'}}</td>
+            <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.ha || '—'}}</td>
+            <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.spread_abs !== null && g.spread_abs !== undefined ? g.spread_abs : '—'}}</td>
+            <td style="padding:5px 8px;text-align:center">${{wonLabel}}</td>
+            <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.margin !== null && g.margin !== undefined ? '+'+g.margin : '—'}}</td>
+            <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{restLabel}}</td>
+            <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.mins !== null && g.mins !== undefined ? g.mins : '—'}}</td>
+            <td style="padding:5px 8px;text-align:center;font-weight:700;color:${{valColor}}">${{val !== null && val !== undefined ? val : '—'}}</td>
+          </tr>`;
+        }}).join('')}}
+      </tbody>
+    </table>
+    </div>`;
+
+  out.innerHTML = html;
+}}
+
+renderResearch();
 </script>
 </body>
 </html>"""

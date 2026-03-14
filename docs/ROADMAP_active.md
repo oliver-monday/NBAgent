@@ -84,18 +84,6 @@ Root cause of both: model evaluates gate condition correctly mid-analysis but do
 
 Watch list for graded data: `ast_hard_gate` false-skip rate (White confirmed = 1/3 minimum); `reb_floor_skip` entries (all 5 look clean — strict greater-than rule firing correctly); `volatile_weak_combo` calibration (Doncic 60%, Green 61% reasoning well-supported).
 
-#### W6 — H8 Prompt Cleanup: Remove Positional DvP for PTS/REB/AST
-**Status: QUEUED — implement next session**
-
-H8 backtest (March 12, 6,137 instances) returned REVERT for PTS/REB/AST: positional DvP lift advantage is −0.051 to −0.060 across all three — team-level is consistently more predictive. The `DvP [POS]` annotation in the analyst prompt for these stats is adding noise and mild signal inversion, not useful context. 3PM positional DvP returned KEEP (+0.106 lift advantage) — different mechanism (perimeter defense is genuinely position-specific).
-
-**Required changes (next session — touch `analyst.py` only):**
-- Remove `DvP [POS]` annotation from `build_quant_context()` for PTS, REB, AST stat lines — revert to team-level `opp_today=` format for those three
-- Do NOT remove `compute_positional_dvp()` from `quant.py` — keep the `positional_dvp` field in `player_stats.json` (3PM signal is valid; field useful for future analyses)
-- For 3PM: positional DvP backtest verdict is KEEP — but 3PM DvP was previously excluded as noise per prior decision. The activation question (inject positional DvP for 3PM specifically) is a separate prompt-design decision; do not auto-activate without explicit discussion. Leave 3PM unchanged for now.
-- Net effect: ~2 lines removed per player from quant context block; ~0 risk (annotation-only removal)
-
----
 
 ### Pending Backtests
 
@@ -220,71 +208,9 @@ H15c — Mean miss margin by opponent (misses only):
 
 ---
 
-### H16 — 3PA Volume Gate for 3PM Tier Picks
-**Status: QUEUED — data confirmed ready; run when backtest slot available**
-**Data confirmed:** `fg3a` fully backfilled in `player_game_log.csv` for entire 2025-26 season (confirmed March 13, 2026)
-**Mode: `--mode 3pa-volume-gate`**
+**H16 — 3PA Volume Gate:** backtest implemented, pending first run. See ROADMAP_resolved.md.
 
-**Hypothesis:** 3PM tier hit rates are meaningfully higher for players above a 3PA-per-game threshold than below it, independent of 3P%. 3PM is a volume-gated counting stat: unlike PTS (accumulated through multiple shot types) or AST (scales with usage/minutes), 3PM has a hard upstream dependency — you can only make threes you attempt. A low-volume shooter hitting T2 3PM requires both a hot shooting night AND above-average attempt volume — double-dependency that the current tier hit rate does not capture. A high-volume shooter hitting T2 3PM only needs a normal shooting night on their typical attempt load.
-
-**Motivating case (March 12, 2026):** Cade Cunningham 3PM T2 — 0 actual, 2 3PA attempted. Cunningham is a distributor-first player (league leader in AST), situational scorer, and a mid-range-primary shooter who increases 3PA volume only when teammates underperform or game context demands it. His 7/10 hit rate at T2 3PM reflects games where he entered a high-attempt mode — but his baseline 3PA average does not support T2 as a reliable floor pick. The current system sees the historical rate without seeing the attempt-volume precondition.
-
-**Three separable sub-hypotheses:**
-
-1. **H16a — 3PA Volume Buckets vs. Tier Hit Rate:** Does 3PM tier hit rate differ meaningfully across 3PA volume buckets? Compute each player's avg 3PA per game in their L10 window at pick time (using `fg3a` from `player_game_log.csv`). Bucket into: ≤3 / 3–5 / 5+ avg 3PA. Compare tier hit rates within each bucket across all whitelisted players. Primary metric: hit rate at best qualifying 3PM tier (T1/T2/T3) per bucket. If the ≤3 bucket hits materially below the 5+ bucket at the same tier, the attempt floor is doing real predictive work.
-
-2. **H16b — 3PA × 3P% Interaction:** Is there a meaningful interaction between 3PA volume and 3P% efficiency? Four profiles to test: (a) high-volume + high-%, (b) high-volume + low-%, (c) low-volume + high-%, (d) low-volume + low-%. Define thresholds from the data distribution (e.g., ≥5 3PA as high-volume, ≥37% 3P% as high-efficiency — adjust based on sample). If (c) and (d) both underperform (a) and (b), volume is the dominant gate. If (b) underperforms (c), efficiency matters more than volume. This determines whether a gate should be 3PA-only, 3P%-only, or a joint condition.
-
-3. **H16c — Game-Level 3PA Floor Predictiveness:** Does the number of 3PA *in a given game* predict whether the 3PM tier pick hits in that specific game? For each game in the historical pick set, compute actual 3PA and compare hit/miss at the 3PM tier. Plot hit rate as a function of actual 3PA ≥1, ≥2, ≥3, ≥4, ≥5+. If hit rate rises sharply above a threshold (e.g., 3PA ≥ 4 → 85% hit rate vs. 55% overall), this validates the mechanism and motivates a quant field surfacing per-game 3PA distribution. Note: this is *post-hoc* (we see actual 3PA after the game) — it validates the mechanism, not a pre-game gate.
-
-**Data requirements:** All inputs confirmed in existing CSVs.
-- `player_game_log.csv` — `fg3a` (attempts) and `fg3m` (makes) per game, fully backfilled
-- `data/picks.json` — all graded 3PM picks with `result`, `pick_value`, `actual_value`
-- `player_whitelist.csv` — for player identification; position column available if position-specific analysis warranted
-
-**Key design decisions:**
-- **Population:** All graded 3PM picks in `picks.json` with `result` in `("HIT", "MISS")` and `voided != True`.
-- **L10 avg 3PA computation:** For each pick, look back at the player's 10 most recent non-DNP games in `player_game_log.csv` prior to the pick date. Compute mean `fg3a` — this is the "at pick time" volume signal. Use the same L10 window as all other quant fields for consistency.
-- **Minimum sample gate:** ≥15 3PM picks per player before including in aggregate bucket analysis. Players below threshold reported separately — do not discard.
-- **DNP exclusion:** Standard — exclude `dnp == "1"` rows from the L10 window computation.
-- **Tier normalization:** Compare within tier (T1 vs. T1, T2 vs. T2) — do not mix tiers across buckets. A low-volume player may still hit T1 reliably; the question is whether T2+ qualification is volume-gated.
-- **Bucket thresholds:** Use ≤3 / 3–5 / 5+ as starting buckets (motivated by domain intuition — adjust based on data distribution if most players cluster in one bucket).
-
-**Output structure:**
-```
-H16a — Tier hit rate by avg L10 3PA bucket:
-  ≤3 3PA avg: T1 hit rate X% (n=N), T2 hit rate X% (n=N)
-  3-5 3PA avg: T1 hit rate X% (n=N), T2 hit rate X% (n=N)
-  5+ 3PA avg:  T1 hit rate X% (n=N), T2 hit rate X% (n=N)
-  Baseline (all 3PM picks): T1 X%, T2 X%
-
-H16b — Tier hit rate by 3PA × 3P% profile:
-  High-vol/High-%: hit rate X% (n=N)
-  High-vol/Low-%:  hit rate X% (n=N)
-  Low-vol/High-%:  hit rate X% (n=N)
-  Low-vol/Low-%:   hit rate X% (n=N)
-
-H16c — Game-level 3PA vs. hit rate (post-hoc):
-  3PA ≥ 1: hit rate X% (n=N)
-  3PA ≥ 2: hit rate X% (n=N)
-  3PA ≥ 3: hit rate X% (n=N)
-  3PA ≥ 4: hit rate X% (n=N)
-  3PA ≥ 5: hit rate X% (n=N)
-```
-
-**Verdict criteria:**
-- **Actionable signal (H16a):** ≤3 bucket hit rate at T2 is ≥15pp below 5+ bucket with ≥15 picks per bucket → warrants a minimum avg_3pa_l10 gate in analyst prompt (e.g., "do not pick T2 3PM if avg_3pa_l10 < N")
-- **Actionable signal (H16b):** Clear interaction effect (e.g., low-volume / high-% underperforms high-volume / high-% by ≥15pp) → gate should be 3PA-volume-only, not 3P%-adjusted
-- **Actionable signal (H16c):** Hit rate rises ≥20pp above a specific 3PA game-floor → validates mechanism; motivates surfacing L10 3PA distribution in quant output
-- **Weak signal:** 8–14pp gap in H16a → annotation only; surface avg_3pa_l10 as context without hard gate
-- **Noise:** <8pp gap or insufficient sample per bucket → close; accept that current tier hit rates adequately capture 3PA variance
-
-**If signal confirmed:** Two-step implementation consistent with annotation-first discipline.
-- Step 1 (quant): Add `avg_3pa_l10` field to `player_stats.json` per-player 3PM section — trivial addition given `fg3a` already in game log.
-- Step 2 (analyst prompt): Hard gate in KEY RULES block — "if `avg_3pa_l10 < N` (threshold from backtest), do not pick 3PM at T2 or above; T1 only if hit rate qualifies at ≥70%." If H16b shows 3P% interaction matters, gate can incorporate both fields.
-- No directive rule until backtest validates the threshold. Annotation-only phase (surfacing `avg_3pa_l10` in quant context) can ship independently before the gate rule is validated.
-
-**Scope:** `agents/backtest.py` only — add `--mode 3pa-volume-gate` mode. No production files touched until verdict confirmed.
+**H17 — Spread Context vs. Tier Hit Rate:** FIRST RUN COMPLETE — March 13, 2026 (327 picks). Current binary split (≤6 vs >6) is NOISE — 1.2pp gap. No spread threshold produces a meaningful hit rate gap; best single threshold (10.5) yields only 4.8pp gap. Gradient sparse due to NBA half-point spread clustering. Verdict: insufficient signal — spread magnitude does not predict tier hit rate at current sample. Re-run at full-season completion to confirm noise verdict before closing. See ROADMAP_resolved.md.
 
 ---
 
