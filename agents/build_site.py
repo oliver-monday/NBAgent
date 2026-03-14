@@ -499,54 +499,27 @@ def build_explorer_data() -> dict:
         master["game_date"] = pd.to_datetime(master["game_date"], errors="coerce")
         master = master.dropna(subset=["game_date"])
 
-        # Normalize team abbrevs in master
-        for col in ["home_team_abbrev", "away_team_abbrev"]:
-            if col in master.columns:
-                master[col] = master[col].str.strip().str.upper().map(
-                    lambda x: _ABBR_NORM.get(x, x)
-                )
+        # Normalize game_id join key — same pattern as quant.py
+        gl["_gid"]     = gl["game_id"].astype(str).str.split(".").str[0].str.strip()
+        master["_gid"] = master["game_id"].astype(str).str.split(".").str[0].str.strip()
 
-        # Build game context lookup keyed by (game_date_str, team_abbrev)
-        # Provides spread_abs, won, margin for each team in each game
-        game_ctx: dict = {}
-        for _, row in master.iterrows():
-            gd = row["game_date"].strftime("%Y-%m-%d") if pd.notna(row["game_date"]) else None
-            if not gd:
-                continue
-            home = str(row.get("home_team_abbrev", "") or "").strip().upper()
-            away = str(row.get("away_team_abbrev", "") or "").strip().upper()
-            home = _ABBR_NORM.get(home, home)
-            away = _ABBR_NORM.get(away, away)
+        # Columns needed from master
+        master_cols = ["_gid", "home_team_abbrev", "away_team_abbrev",
+                       "home_spread", "away_spread", "home_score", "away_score"]
+        master_cols = [c for c in master_cols if c in master.columns]
 
-            # Spread
-            try:
-                spread_abs = abs(float(str(row.get("home_spread", "") or "").strip()))
-            except (ValueError, TypeError):
-                spread_abs = None
+        # Deduplicate master on _gid before merging (safety)
+        master_slim = master[master_cols].drop_duplicates(subset=["_gid"])
 
-            # Game result
-            try:
-                home_score = float(str(row.get("home_score", "") or "").strip())
-                away_score = float(str(row.get("away_score", "") or "").strip())
-                home_won = home_score > away_score
-                margin = abs(home_score - away_score)
-            except (ValueError, TypeError):
-                home_won = None
-                margin = None
+        # Left join — keep all game log rows; unmatched get NaN context
+        merged = gl.merge(master_slim, on="_gid", how="left")
 
-            if home:
-                game_ctx[(gd, home)] = {
-                    "spread_abs": round(spread_abs, 1) if spread_abs is not None else None,
-                    "won": home_won,
-                    "margin": int(margin) if margin is not None else None,
-                }
-            if away:
-                away_won = (not home_won) if home_won is not None else None
-                game_ctx[(gd, away)] = {
-                    "spread_abs": round(spread_abs, 1) if spread_abs is not None else None,
-                    "won": away_won,
-                    "margin": int(margin) if margin is not None else None,
-                }
+        # Diagnostic: report match rate during build
+        spread_col = "home_spread" if "home_spread" in merged.columns else None
+        matched = int(merged[spread_col].notna().sum()) if spread_col else 0
+        total   = len(merged)
+        pct     = (100 * matched // total) if total else 0
+        print(f"[build_explorer_data] spread join: {matched}/{total} rows matched ({pct}%)")
 
         # Build per-player game records
         def safe_int(val):
@@ -555,10 +528,21 @@ def build_explorer_data() -> dict:
             except (ValueError, TypeError):
                 return None
 
-        gl_sorted = gl.sort_values(["player_name", "game_date"], ascending=[True, True])
+        def safe_float(val):
+            try:
+                if val is None:
+                    return None
+                s = str(val).strip()
+                if s.lower() in ("nan", "none", ""):
+                    return None
+                return float(s)
+            except (ValueError, TypeError):
+                return None
+
+        merged_sorted = merged.sort_values(["player_name", "game_date"], ascending=[True, True])
 
         result: dict = {}
-        for player_name, grp in gl_sorted.groupby("player_name"):
+        for player_name, grp in merged_sorted.groupby("player_name"):
             grp = grp.sort_values("game_date", ascending=True).reset_index(drop=True)
             records = []
             prev_date = None
@@ -582,27 +566,62 @@ def build_explorer_data() -> dict:
                 tpm  = safe_int(row.get("tpm"))
                 mins = safe_int(row.get("minutes"))
 
-                # H/A and opponent are already in game_log
+                # H/A and opponent — from game log
                 ha  = str(row.get("home_away", "") or "").strip().upper()
                 opp = str(row.get("opp_abbrev", "") or "").strip().upper()
                 opp = _ABBR_NORM.get(opp, opp)
 
-                # Spread and result from master join
-                ctx = game_ctx.get((gd_str, team), {})
+                # Determine home/away from master columns to derive signed spread
+                home_abbrev = str(row.get("home_team_abbrev", "") or "").strip().upper()
+                away_abbrev = str(row.get("away_team_abbrev", "") or "").strip().upper()
+                home_norm = _ABBR_NORM.get(home_abbrev, home_abbrev)
+                away_norm = _ABBR_NORM.get(away_abbrev, away_abbrev)
+                is_home = (team == home_norm)
+                is_away = (team == away_norm)
+
+                # Signed spread from player's perspective
+                # home_spread is negative when home team is the favorite
+                home_spread_val = safe_float(row.get("home_spread"))
+                away_spread_val = safe_float(row.get("away_spread"))
+
+                if is_home and home_spread_val is not None:
+                    player_spread = round(home_spread_val, 1)
+                elif is_away and away_spread_val is not None:
+                    player_spread = round(away_spread_val, 1)
+                elif is_home and away_spread_val is not None:
+                    player_spread = round(-away_spread_val, 1)
+                elif is_away and home_spread_val is not None:
+                    player_spread = round(-home_spread_val, 1)
+                else:
+                    player_spread = None
+
+                spread_abs = round(abs(player_spread), 1) if player_spread is not None else None
+
+                # Game result and margin
+                home_score = safe_float(row.get("home_score"))
+                away_score = safe_float(row.get("away_score"))
+                if home_score is not None and away_score is not None:
+                    home_won = home_score > away_score
+                    margin   = round(abs(home_score - away_score), 0)
+                    won      = home_won if is_home else (not home_won if is_away else None)
+                else:
+                    won    = None
+                    margin = None
 
                 records.append({
-                    "date":       gd_str,
-                    "pts":        pts,
-                    "reb":        reb,
-                    "ast":        ast,
-                    "tpm":        tpm,
-                    "mins":       mins,
-                    "rest":       rest_bucket,
-                    "ha":         ha if ha else None,
-                    "opp":        opp if opp else None,
-                    "spread_abs": ctx.get("spread_abs"),
-                    "won":        ctx.get("won"),
-                    "margin":     ctx.get("margin"),
+                    "date":          gd_str,
+                    "pts":           pts,
+                    "reb":           reb,
+                    "ast":           ast,
+                    "tpm":           tpm,
+                    "mins":          mins,
+                    "rest":          rest_bucket,
+                    "ha":            ha if ha else None,
+                    "opp":           opp if opp else None,
+                    "player_spread": player_spread,
+                    "spread_abs":    spread_abs,
+                    "won":           won,
+                    "margin":        int(margin) if margin is not None else None,
                 })
 
             if records:
@@ -801,10 +820,11 @@ def generate_html(d: dict) -> str:
 
     .tabs {{ display: flex; gap: 4px; padding: 12px 20px 0;
              border-bottom: 1px solid var(--border); background: var(--surface);
-             position: sticky; top: 53px; z-index: 9; }}
+             position: sticky; top: 53px; z-index: 9; overflow-x: auto; white-space: nowrap; }}
     .tab {{ padding: 8px 16px; border-radius: 6px 6px 0 0; cursor: pointer;
             font-size: 13px; font-weight: 500; color: var(--muted); border: none;
-            background: none; border-bottom: 2px solid transparent; transition: all 0.15s; }}
+            background: none; border-bottom: 2px solid transparent; transition: all 0.15s;
+            white-space: nowrap; }}
     .tab.active {{ color: var(--text); border-bottom-color: var(--accent); }}
     .tab:hover:not(.active) {{ color: var(--text); }}
 
@@ -2030,8 +2050,7 @@ function renderResearch() {{
     <div style="max-width:780px;margin:0 auto;padding:16px 0">
       <div style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--fg)">Player Explorer</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:20px">
-        Full-season game log. Select a player and any combination of filters, then hit Search.
-        Results are descriptive — small samples shown as-is.
+        Customizable search of the 2025-26 season game log.
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px">
@@ -2071,6 +2090,15 @@ function renderResearch() {{
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3+</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Fav / Dog</div>
+          <select id="ex-favdog" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            <option value="fav">Favorite</option>
+            <option value="dog">Underdog</option>
           </select>
         </div>
 
@@ -2124,6 +2152,7 @@ function runExplorer() {{
   const spreadFilter = document.getElementById('ex-spread').value;
   const resultFilter = document.getElementById('ex-result').value;
   const oppFilter    = document.getElementById('ex-opp').value;
+  const favdogFilter = document.getElementById('ex-favdog').value;
   const out          = document.getElementById('ex-results');
 
   if (!playerName) {{
@@ -2140,6 +2169,11 @@ function runExplorer() {{
     if (resultFilter) {{
       if (resultFilter === 'W' && g.won !== true)  return false;
       if (resultFilter === 'L' && g.won !== false) return false;
+    }}
+    if (favdogFilter) {{
+      if (g.player_spread === null || g.player_spread === undefined) return false;
+      if (favdogFilter === 'fav' && g.player_spread >= 0) return false;
+      if (favdogFilter === 'dog' && g.player_spread <= 0) return false;
     }}
     if (spreadFilter) {{
       if (g.spread_abs === null || g.spread_abs === undefined) return false;
@@ -2252,7 +2286,7 @@ function runExplorer() {{
             <td style="padding:5px 8px;color:var(--muted)">${{g.date}}</td>
             <td style="padding:5px 8px;color:var(--fg)">${{g.opp || '—'}}</td>
             <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.ha || '—'}}</td>
-            <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.spread_abs !== null && g.spread_abs !== undefined ? g.spread_abs : '—'}}</td>
+            <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.player_spread !== null && g.player_spread !== undefined ? g.player_spread : '—'}}</td>
             <td style="padding:5px 8px;text-align:center">${{wonLabel}}</td>
             <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{g.margin !== null && g.margin !== undefined ? '+'+g.margin : '—'}}</td>
             <td style="padding:5px 8px;text-align:center;color:var(--muted)">${{restLabel}}</td>

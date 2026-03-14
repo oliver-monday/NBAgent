@@ -12,6 +12,19 @@
 ### Untested Hypotheses (backtest designs documented in `docs/BACKTESTS.md`)
 - **H9 — Player × Opponent H2H Splits** — Does a player's historical hit rate against today's specific opponent predict next-game performance better than the population-level opp_defense rating? Requires near-complete season sample (~mid-April 2026). See Active Queue entry M1 for implementation design.
 
+### Odds Integration
+**Two-phase implementation. Phase 1 is an April target; Phase 2 is offseason.**
+
+**Phase 1 — Data collection (April 2026):** Wire a player prop odds aggregator API (OddsAPI recommended starting point — free tier available) into a new daily ingest step. Fetch prop lines for whitelisted players, write to `data/odds_today.json`, append `market_implied_prob` and `edge_pct` to each pick in `picks.json` at analyst write time. No UI changes, no betting behavior changes. Goal: accumulate odds-tagged pick history through the playoffs so offseason analysis can answer "were our highest-edge picks actually our best picks?" Four weeks of tagged data by season end is the minimum useful sample.
+
+**Phase 2 — Decision support UI (offseason / next season):** Kelly sizing display on pick cards (bet X% of bankroll), edge highlighting (system confidence vs. market implied), "market disagrees" flag when market implied prob is >10pp above system confidence. The three numbers surfaced per pick: market implied probability (prop line → percentage), edge (system confidence − implied), Kelly fraction (edge / odds → recommended bet size as % of bankroll). Output is a single actionable number per pick — no statistics background required to use it.
+
+**Platform note:** Primary execution on Kalshi (CA-legal prediction market, mirrors major books). Kalshi has no official API and displays round payout estimates rather than precise vig-adjusted lines. Odds ingest pulls from aggregator (not Kalshi directly) for analytical precision; execution remains manual. Kelly sizing math is still valid even if Kalshi rounds the displayed payout — size the bet correctly, execute at the closest available line.
+
+**Prerequisite for Phase 1:** Confirm OddsAPI covers NBA player props at sufficient coverage for whitelisted players before committing to it. Check free tier rate limits against daily ingest timing.
+
+**Relationship to existing features:** "Stay Away?" badge (frontend roadmap) is the near-term version of the same risk-surface instinct and should be built first — it uses existing quant fields with no odds dependency. Odds data enhances the badge later (market disagreement becomes one additional signal).
+
 ### Technical Debt
 - **Prompt caching** — system prompt and player context in `analyst.py` are strong candidates for Anthropic's prompt caching feature. Will meaningfully reduce cost once daily volume grows.
 - **`quant.py` runs twice** — once in `ingest.yml` and once in `analyst.yml`. This is intentional (ensures freshness) but adds ~10s to runtime. Low priority.

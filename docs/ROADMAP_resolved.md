@@ -389,23 +389,29 @@ Backtest mode added to `agents/backtest.py`. Tests whether 3PM tier hit rates ar
 ---
 
 ### Player Explorer — Research Tab
-**Status: ✅ IMPLEMENTED (March 13, 2026)**
+**Status: ✅ IMPLEMENTED (March 13, 2026) | ✅ JOIN + SPREAD FIX (March 14, 2026)**
 
 Fifth tab added to the static frontend via `agents/build_site.py`. Fully static — no LLM calls, no server. Deployed automatically on the next site build.
 
 **Features:**
 - Player dropdown (all active whitelisted players, alphabetical)
 - Stat selector (PTS / REB / AST / 3PM)
-- Context filters: Home/Away, Rest Days (B2B / 1 / 2 / 3+), Spread bucket (5 buckets), Game Result (W/L), Opponent
+- Context filters: Home/Away, Rest Days (B2B / 1 / 2 / 3+), **Fav/Dog** (Favorite / Underdog), Spread bucket (5 buckets, uses spread_abs), Game Result (W/L), Opponent
 - Tier hit rate table: shows hit rate + hit count bar for each tier at the selected stat; green-highlighted when ≥70%
 - Distribution stats: Avg / Median / Min / Max across filtered games
-- Full game log table: Date, Opp, H/A, Spread, Result, Margin, Rest, Mins, Stat value (colored when above lowest tier)
+- Full game log table: Date, Opp, H/A, Spread (signed — negative means team was favored), Result, Margin, Rest, Mins, Stat value (colored when above lowest tier)
 - Small-sample warning (⚠) when fewer than 10 games match
 
 **Implementation:**
-- `build_explorer_data()` — new Python function; loads `player_game_log.csv` + `nba_master.csv`; joins on `(game_date, team_abbrev)` for spread and game result context; uses game_log's own `home_away` + `opp_abbrev` fields directly; rest_day bucket computed per-player rolling; returns `{player_name: [game_records]}` for active whitelisted players only; graceful `{}` on any error
+- `build_explorer_data()` — new Python function; loads `player_game_log.csv` + `nba_master.csv`; joins on `game_id` (`_gid` normalization matching quant.py pattern); stores both `player_spread` (signed: negative=favorite, positive=underdog) and `spread_abs`; rest_day bucket computed per-player rolling; returns `{player_name: [game_records]}` for active whitelisted players only; graceful `{}` on any error; prints diagnostic match rate
 - Wired into `build_site()` alongside other loaders; embedded as `DATA.explorer` in the HTML JS block
 - `renderResearch()` + `runExplorer()` — vanilla JS; inline styles consistent with existing render functions; filter logic entirely client-side
+
+**Fix (March 14, 2026):**
+- `build_explorer_data()` was originally joining on `(game_date, team_abbrev)`, causing ~0% match rate for spread/result/margin. Fixed to join on `game_id` (_gid normalization), achieving 87%+ match rate.
+- `player_spread` (signed) added alongside `spread_abs`. Negative = player's team was favored. Derived from `home_spread`/`away_spread` in nba_master.csv based on home/away determination from master columns.
+- Fav/Dog filter added: filters to games where `player_spread < 0` (Favorite) or `player_spread > 0` (Underdog). Positioned left of Spread dropdown in the UI.
+- Game log table Spread column now shows signed `player_spread` instead of `spread_abs`.
 
 ---
 
