@@ -440,6 +440,14 @@ def grade_picks(picks: list[dict], game_log: pd.DataFrame) -> list[dict]:
 
     for pick in picks:
         p = pick.copy()
+
+        # Fix 1A — skip voided picks at grading time; preserve result=null sentinel
+        if p.get("voided") is True:
+            p["result"] = None
+            p["actual_value"] = None
+            graded.append(p)
+            continue
+
         player_name = p.get("player_name", "")
         prop_type   = p.get("prop_type", "")
         pick_value  = p.get("pick_value")
@@ -476,6 +484,22 @@ def grade_picks(picks: list[dict], game_log: pd.DataFrame) -> list[dict]:
                 p["result"] = "MISS"
 
         graded.append(p)
+
+    # Fix 1B — detect post-hoc late DNPs: void_reason set but voided not flipped
+    # A pick graded MISS with actual=0.0 and a non-empty void_reason is a late DNP
+    for p in graded:
+        if (
+            p.get("result") == "MISS"
+            and p.get("actual_value") == 0.0
+            and p.get("void_reason")
+            and not p.get("voided")
+        ):
+            p["voided"] = True
+            p["result"] = None
+            p["actual_value"] = None
+            print(f"[auditor] LATE_DNP_PROMOTED: {p.get('player_name')} "
+                  f"{p.get('prop_type')} {p.get('pick_value')} — "
+                  f"void_reason='{p.get('void_reason')}' → voided=True, result=null")
 
     return graded
 
