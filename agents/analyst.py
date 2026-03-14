@@ -890,18 +890,8 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
         b2b_hit_rates      = s.get("b2b_hit_rates") or {}
         minutes_floor_data = s.get("minutes_floor") or {}
 
-        # DvP line — one line per player showing positional defense ratings for all stats
-        dvp         = s.get("positional_dvp") or {}
-        source_tag  = "" if dvp.get("source") == "positional" else " (team-lvl)"
-        dvp_pos     = dvp.get("position", "")
-        defense_line = (
-            f"  DvP [{dvp_pos}]{source_tag}: "
-            f"PTS={dvp.get('pts_rating', '?')} "
-            f"REB={dvp.get('reb_rating', '?')} "
-            f"AST={dvp.get('ast_rating', '?')} "
-            f"3PM={dvp.get('tpm_rating', '?')} "
-            f"(n={dvp.get('n', 0)})"
-        ) if dvp else ""
+        # Team-level opp defense ratings — used for opp_today= annotations on PTS/AST stat lines
+        opp_def_all = s.get("opp_defense") or {}
 
         # Momentum line — L10 record + avg margin for both teams
         momentum_line = ""
@@ -1015,8 +1005,15 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
                     shoot_flag += f" [FG_MARGIN_NEG:{int(round(fsm_margin * 100))}%]"
                 # safe or missing: no annotation — baseline, don't clutter
 
+            # opp_today= annotation: team-level defense rating, PTS and AST only (pre-P1 format)
+            if stat in ("PTS", "AST"):
+                opp_rating = (opp_def_all.get(stat) or {}).get("rating", "?")
+                opp_today_str = f" opp_today={opp_rating}"
+            else:
+                opp_today_str = ""
+
             stat_parts.append(
-                f"  {stat}: tier={tier} overall={overall_pct}% "
+                f"  {stat}: tier={tier} overall={overall_pct}%{opp_today_str} "
                 f"vs_soft={soft_str} vs_tough={tough_str} "
                 f"competitive={comp_str} blowout_games={blow_str} "
                 f"trend={trend}{b2b_field}{bb_field}{vol_tag}{shoot_flag}"
@@ -1047,7 +1044,6 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             lines.append(
                 f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
-                + (defense_line + "\n" if defense_line else "")
                 + (momentum_line + "\n" if momentum_line else "")
                 + (opp_absence_str + "\n" if opp_absence_str else "")
                 + "\n".join(stat_parts)
@@ -1321,33 +1317,20 @@ These numbers are computed from the full season game log — larger sample than 
 "vs_soft" / "vs_tough" = hit rate at this tier across the full season, split by opponent defensive quality.
 
 KEY RULES — MATCHUP QUALITY:
-- The DvP line shows today's opponent's defense rating for this player's position.
-  Use the DvP PTS rating (when source=positional) as the primary signal for matchup quality.
+- opp_today= on PTS and AST stat lines shows today's opponent's team-level defense rating.
+  Use this as the primary signal for matchup quality on those stats.
 - vs_soft / vs_tough on each stat line show this player's historical hit rate split by
-  opponent defensive quality — use these together with the DvP rating for confirmation.
-- If the DvP rating is "tough" AND vs_tough drops materially below overall (e.g. 80% → 50%),
+  opponent defensive quality — use these together with opp_today= for confirmation.
+- If opp_today=tough AND vs_tough drops materially below overall (e.g. 80% → 50%),
   downgrade confidence or move to a lower tier.
-- If the DvP rating is "soft" AND vs_soft is significantly higher than overall, you may pick
+- If opp_today=soft AND vs_soft is significantly higher than overall, you may pick
   a higher tier than the overall rate alone suggests.
-- "n/a" on vs_soft/vs_tough means insufficient sample (<3 games) — fall back to DvP line only.
+- "n/a" on vs_soft/vs_tough means insufficient sample (<3 games) — fall back to opp_today= only.
 
-OPPONENT DEFENSE — POSITIONAL DvP:
-Each player has a "DvP [POS]" line showing position-specific allowed averages for PTS/REB/AST/3PM
-against today's opponent. Ratings are soft/mid/tough, ranked within that position group across
-all 30 teams (not team-level overall).
+OPPONENT DEFENSE:
+Stat-specific rules:
 
-  When source is positional (no "team-lvl" tag): use the per-stat rating directly — it reflects
-  how that opponent defends this player's specific position group. More precise than team-level.
-
-  When source is team-level fallback (tagged "team-lvl"): the positional sample was too small
-  (<10 games). Treat with normal weight as before.
-
-  The (n=) value is the number of player-game observations behind the rating.
-  Weight more heavily when n ≥ 20. Treat n < 15 with mild skepticism even if source=positional.
-
-Stat-specific rules remain unchanged:
-
-  PTS / AST: use the positional DvP rating as the primary defense signal when source=positional.
+  PTS / AST: use the opp_today= rating on each stat line as the primary defense signal.
     Soft = favorable (upgrade bias or higher confidence).
     Tough = unfavorable (downgrade one tier or reduce confidence by 5–10%).
 
@@ -1355,15 +1338,15 @@ Stat-specific rules remain unchanged:
     If you are considering an AST pick at T4 or higher AND either of the following is true:
       (a) the player's position is PF or C, OR
       (b) the player's raw_avgs AST is below 4.0 per game
-    → the opponent's AST DvP rating MUST be "soft" to proceed.
-    → If the AST DvP rating is "mid" or "tough", SKIP this pick entirely — regardless of overall
+    → the opponent's AST opp_today rating MUST be "soft" to proceed.
+    → If the AST opp_today rating is "mid" or "tough", SKIP this pick entirely — regardless of overall
       hit rate, confidence, or other signals. This gate is unconditional.
     This prevents low-volume or frontcourt passers from being picked at AST T4+ against defenses
     that historically suppress assists at that position.
 
-  REB: positional DvP does NOT make REB a valid defense signal. Do not use REB rating as
+  REB: opp_defense does NOT make REB a valid defense signal. Do not use REB rating as
     justification for a REB over. Rebounds are driven by pace, opponent FG%, and frontcourt
-    competition — none captured by allowed-per-position averages. Ignore REB rating entirely.
+    competition — not captured by allowed-per-team averages. Ignore REB rating entirely.
 
   3PM: opp_defense is NOISE regardless of positional granularity (lift variance 0.053 across
     6,437 instances, corrected grading). Do not weight 3PM rating in either direction.
@@ -1590,8 +1573,8 @@ KEY RULES — FG% SAFETY MARGIN (H11 — backtested, 537 instances):
 
 KEY RULES — HIGH CONFIDENCE GATE (81%+): Before assigning confidence_pct of 81 or higher, all three of the following conditions must be met. If any condition fails, cap confidence at 80% or lower — do not round up.
 Condition A — Rest/availability: Player is NOT on a back-to-back (on_back_to_back = false), OR player averages ≥30 minutes per game in their last 10 games as a confirmed starter. Non-stars on B2B nights have demonstrated DNP and minutes-restriction risk that makes 81%+ confidence structurally unsound regardless of historical hit rate.
-Condition B — Defense signal quality: The opp_defense or DvP rating used to justify the pick must come from the quant data (positional DvP with n ≥ 15, or team-level opp_defense rank). Do not assign 81%+ based on a general "soft/tough" label alone — require the underlying rank and allowed average to confirm it. If the quant data is unavailable or contradicts the label, treat the matchup as neutral and remove it as a confidence-boosting factor.
-Condition C — Confirming signals: At least two independent signals must support the pick beyond hit rate alone. Qualifying signals: favorable DvP rating (confirmed by quant rank), iron_floor tag, consistent volatility tag, soft blowout_risk context, rest advantage (≥2 rest days), or a pre-game news note confirming full availability and normal role. Hit rate alone — even 9/10 or 10/10 — does not satisfy Condition C by itself.
+Condition B — Defense signal quality: The opp_today= or opp_defense rating used to justify the pick must come from the quant data (team-level opp_defense rank). Do not assign 81%+ based on a general "soft/tough" label alone — require the underlying rank and allowed average to confirm it. If the quant data is unavailable or contradicts the label, treat the matchup as neutral and remove it as a confidence-boosting factor.
+Condition C — Confirming signals: At least two independent signals must support the pick beyond hit rate alone. Qualifying signals: favorable opp_today= rating (confirmed by quant rank), iron_floor tag, consistent volatility tag, soft blowout_risk context, rest advantage (≥2 rest days), or a pre-game news note confirming full availability and normal role. Hit rate alone — even 9/10 or 10/10 — does not satisfy Condition C by itself.
 
 {quant_context if quant_context else "No quant stats available."}
 
@@ -1693,6 +1676,7 @@ JSON schema:
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
 - direction is always OVER.
+- hit_rate_display must be exactly "N/N" format — e.g. "9/10" or "7/10". No parentheticals, no commentary, no additional text. The frontend parses this field as a bare fraction.
 - iron_floor must be true if and only if the quant stat line showed [iron_floor]. Otherwise false.
 - top_pick must be true for exactly the picks you flagged in the TOP PICKS step above. All others must be false.
 - Only include picks with confidence_pct >= 70.

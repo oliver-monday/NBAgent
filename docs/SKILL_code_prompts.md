@@ -216,9 +216,11 @@ pass — not optional.
 
 After verification passes, update the following docs to reflect this implementation:
 
-- `docs/ROADMAP.md` — move this item from the active queue to Resolved, or add it as a
-  new Resolved entry if it wasn't previously tracked. Include the implementation date and
-  a one-line summary of what was done.
+- `docs/ROADMAP_active.md` — if the item was in the active queue, move it to Resolved by
+  adding a pointer entry ("see ROADMAP_resolved.md") and removing the full entry. If it's
+  a new open item, add it here.
+- `docs/ROADMAP_resolved.md` — add a new Resolved entry with implementation date and a
+  one-line summary of what was done.
 - `docs/SESSION_CONTEXT.md` — update any affected schema descriptions, function
   signatures, or "what's live vs. pending" state. If a new field was added to
   `player_stats.json` or `picks.json`, update the schema tables.
@@ -232,7 +234,7 @@ After verification passes, update the following docs to reflect this implementat
 ```
 
 **Rules:**
-- Always update `ROADMAP.md` and `SESSION_CONTEXT.md` — these are the two most
+- Always update `ROADMAP_active.md` / `ROADMAP_resolved.md` and `SESSION_CONTEXT.md` — these are the two most
   critical for future session continuity.
 - Only update `AGENTS.md`, `DATA.md`, `CLAUDE.md`, `README.md` when those docs are
   actually affected. Do not make cosmetic edits.
@@ -416,7 +418,7 @@ Before handing a prompt to Code, verify:
 - [ ] Verification section has at least one mathematical invariant
 - [ ] File summary table is present and accurate
 - [ ] If directive signal: backtest-first decision is documented
-- [ ] Docs Update section is present with ROADMAP.md and SESSION_CONTEXT.md as mandatory targets
+- [ ] Docs Update section is present with ROADMAP_active.md / ROADMAP_resolved.md and SESSION_CONTEXT.md as mandatory targets
 
 ---
 

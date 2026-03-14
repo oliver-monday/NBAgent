@@ -72,7 +72,9 @@ NBAgent/
 │   ├── SESSION_CONTEXT.md      # Session handoff — current schema, function signatures, design decisions, known gotchas
 │   ├── AGENTS.md               # Agent logic, config, schemas
 │   ├── DATA.md                 # All CSV/JSON schemas, player whitelist with current roster, team abbreviation notes
-│   ├── ROADMAP.md              # Resolved bugs, open items, improvement proposals
+│   ├── ROADMAP_active.md       # Open items, active queue, watch items, pending backtests
+│   ├── ROADMAP_resolved.md     # Historical log — resolved issues, completed improvements
+│   ├── ROADMAP_Offseason.md    # Deferred improvements, off-season plan
 │   └── BACKTESTS.md            # Completed backtest log — findings, verdicts, and implementation status
 ├── .github/workflows/
 │   ├── ingest.yml              # ~7 AM PT daily — ingests ESPN data, runs quant
@@ -240,5 +242,7 @@ Never describe an agent as "operational," claim a "first real run," or treat man
 - **@docs/SESSION_CONTEXT.md** — Load this first on every new session. Dense handoff: current player_stats.json schema, live prompt format, all function signatures, design decisions, backtest verdicts, known gotchas, and active queue. Replaces the need to re-derive implementation state from source code.
 - **@docs/AGENTS.md** — Quant computations, Analyst prompt design, Parlay scoring logic, Auditor grading, all output schemas
 - **@docs/DATA.md** — All CSV/JSON schemas, player whitelist with current roster, team abbreviation notes
-- **@docs/ROADMAP.md** — Resolved bugs, open items, improvement proposals with implementation priority
+- **@docs/ROADMAP_active.md** — Open items, active queue, watch items, pending backtests
+- **@docs/ROADMAP_resolved.md** — Historical log of resolved issues and completed improvements
+- **@docs/ROADMAP_Offseason.md** — Deferred improvements and off-season plan
 - **@docs/BACKTESTS.md** — Completed backtest log — findings, verdicts, and implementation status for all hypotheses tested

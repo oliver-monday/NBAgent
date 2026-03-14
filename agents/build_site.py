@@ -1178,11 +1178,13 @@ function renderInjuries() {{
 
 // ── PICK CARD HELPERS ──
 function buildHitRate(p) {{
-  const frac = p.hit_rate_display || '';
-  if (!frac) return '';
-  // Parse "8/10" → fill %
-  const parts = frac.split('/');
-  const pct = parts.length === 2 ? Math.round(100 * parseInt(parts[0]) / parseInt(parts[1])) : 0;
+  const raw = p.hit_rate_display || '';
+  if (!raw) return '';
+  // Extract only the leading "N/N" fraction — discard any trailing analyst commentary
+  const match = raw.match(/^(\d+)\/(\d+)/);
+  if (!match) return '';
+  const frac = match[1] + '/' + match[2];
+  const pct = Math.round(100 * parseInt(match[1]) / parseInt(match[2]));
   const fillColor = pct >= 80 ? 'var(--hit)' : pct >= 70 ? 'var(--accent2)' : 'var(--muted)';
   return `
     <div class="hit-rate-block">

@@ -77,7 +77,9 @@ NBAgent/
 │   ├── AGENTS.md                # Agent logic, schemas, quant config
 │   ├── DATA.md                  # All CSV/JSON schemas
 │   ├── SESSION_CONTEXT.md       # Dense technical handoff for AI sessions
-│   ├── ROADMAP.md               # Issue log, improvement proposals, active queue
+│   ├── ROADMAP_active.md        # Open items, active queue, watch items, pending backtests
+│   ├── ROADMAP_resolved.md      # Historical log — resolved issues, completed improvements
+│   ├── ROADMAP_Offseason.md     # Deferred improvements, off-season plan
 │   └── BACKTESTS.md             # Signal analysis log — findings and verdicts
 └── .github/workflows/
     ├── ingest.yml               # 8 AM PT — ingest + quant
