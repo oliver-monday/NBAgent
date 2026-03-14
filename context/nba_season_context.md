@@ -62,6 +62,7 @@ For any player you think you know the team for, verify against this list first.
 **In-season 2025-26 (Feb 2026 trade deadline):**
 - Anthony Davis: DAL -> WAS (Davis has been on 3 teams in ~12 months)
 - James Harden: LAC -> CLE (traded for Darius Garland + picks)
+- Darius Garland: CLE -> LAC (same trade; debuted Mar 2, 2026 after toe rehab)
 - Jimmy Butler: MIA -> GSW (resolved months-long standoff; Butler then tore ACL and is OFS)
 - Ivica Zubac: LAC -> IND
 - Kristaps Porzingis: ATL -> GSW (Hawks received Jonathan Kuminga + Buddy Hield)
@@ -85,6 +86,13 @@ These players are out for the season. Their teammates' current stat lines alread
 - Jimmy Butler (GSW) — ACL torn Jan 19, 2026. OFS.
 - Zach LaVine (SAC) — Season-ending hand surgery, post-All-Star break Feb 2026.
 - Domantas Sabonis (SAC) — Torn meniscus, season-ending surgery Feb 2026.
+- Jaren Jackson Jr. (MEM) — Season-ending injury (confirm current status; listed as OFS as of mid-March 2026).
+
+---
+
+### PLAYER NOTES — AVAILABILITY AND ROLE CONTEXT
+
+**Darius Garland (LAC):** Chronic left toe issue that has followed him for over a year. Had toe surgery last offseason, missed 16 games with CLE before the Feb 2026 trade, and has already sat out at least one LAC game (Mar 13 vs CHI) with toe management. The Clippers are deliberately not playing him on back-to-backs — Kris Dunn starts at PG when Garland sits. In his five LAC appearances through Mar 13: 17.9 PPG / 6.7 APG, 25.4 min/g overall; last 3 games as starter: 21.7 PPG / 6.3 APG in 26.3 min. Role: clear #2 scorer/creator behind Kawhi Leonard. When healthy, operates as the primary ball-handler and pick-and-roll initiator when Kawhi is off-ball. **Availability is the primary risk factor — always check injury report before picking Garland.** He does not play B2B second nights.
 
 ---
 
@@ -165,7 +173,7 @@ Notable: Haliburton tore his Achilles in Q1 of Game 7 of the Finals. SGA average
 | UTA  | 52-20   | 49-33   | 37-45   | 31-51   | 17-65   |
 | WAS  | 34-38   | 35-47   | 35-47   | 15-67   | 18-64   |
 
-Last updated: 2026-03-12
+Last updated: 2026-03-14
 
 ---
 
@@ -174,5 +182,7 @@ Last updated: 2026-03-12
 Early-season system signals from H15 backtest (279 picks through Mar 12). Low sample — treat as watch items, not hard rules.
 
 **MIN — AST suppressor (watch item):** System hit rate on AST props vs. Minnesota is tracking at 57% (n=7), −26pp below AST baseline. Plausible mechanism: Chris Finch's switching scheme disrupts ball-handler assist opportunities. Do not fade AST picks vs. MIN on this alone, but apply extra scrutiny and prefer higher-confidence thresholds.
+
+**CLE — switching scheme / DvP aggregate mismatch (watch item):** CLE's team-level 3PM DvP rates as "soft" in aggregate data, but their switching scheme neutralizes off-ball guard perimeter looks in a way the aggregate number does not capture. Derrick White's March 8 model_gap misses (PTS + 3PM) are the prototype case. Do not fade picks vs. CLE on this alone, but apply extra scrutiny to perimeter-dependent props (3PM, guard PTS) against Cleveland and prefer higher-confidence thresholds. Pattern to watch: if similar misses emerge for other known switching teams (MIN, BOS, MIL), consider a broader switching-scheme DvP discount rule.
 
 **SAS — floor compression pattern (watch item):** On misses vs. San Antonio, players are missing well below their tier threshold (mean miss margin −6.0, n=3 misses). Suggests scheme or pace is compressing counting stats structurally, not variance-style near-misses. Sample too small to act on — flag for reconfirmation when H15 reruns at ≥400 picks.

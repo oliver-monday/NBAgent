@@ -302,13 +302,21 @@ def run() -> None:
                     unchanged += 1  # already high or already moderate — no change
 
         else:
-            # Not listed or PROBABLE — clear any stale flags from a prior run
-            had_flag = p.get("voided") or p.get("lineup_risk")
-            p["voided"] = False
-            p.pop("lineup_risk", None)
-            if had_flag:
-                print(f"[lineup_watch] CLEAR → {label} (no longer listed as injured)")
-            unchanged += 1
+            # Not listed or PROBABLE — clear any stale flags from a prior run.
+            # NEVER clear a void that has void_reason set — that void was confirmed
+            # (player ruled OUT/DNP). Rotowire post-game roster resets to PROB/unlisted
+            # for all active players, which must not undo an intentional void.
+            # Only clear speculative lineup_risk flags (DOUBTFUL/QUESTIONABLE).
+            if p.get("voided") and p.get("void_reason"):
+                unchanged += 1  # sticky void — do not clear
+            else:
+                had_flag = p.get("voided") or p.get("lineup_risk")
+                p["voided"] = False
+                p.pop("lineup_risk", None)
+                if had_flag:
+                    print(f"[lineup_watch] CLEAR → {label} (no longer listed as injured)")
+                else:
+                    unchanged += 1
 
     if not debug:
         save_picks(picks)

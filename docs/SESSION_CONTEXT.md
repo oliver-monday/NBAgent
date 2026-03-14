@@ -410,6 +410,7 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEV
 - Severity is sticky upward — picks never downgraded
 - Name matching uses last-name + team-abbrev key to handle Rotowire abbreviated player name format
 - Stale flag clearing: status improvements between hourly runs (e.g., DOUBTFUL → NOT_LISTED) now remove prior `voided`/`lineup_risk` flags
+- **Sticky void guard (March 14, 2026):** CLEAR block guards against clearing confirmed voids. If `voided=True` AND `void_reason` is set, the pick is never un-voided — Rotowire post-game roster resets (which move all players back to PROB/unlisted) cannot undo a confirmed OUT. Speculative `lineup_risk` flags (DOUBTFUL/QUESTIONABLE) still clear normally when status improves.
 
 ---
 

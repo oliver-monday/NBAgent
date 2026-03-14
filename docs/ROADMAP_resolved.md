@@ -6,6 +6,7 @@ All resolved bugs, completed improvements, and closed hypotheses. See `docs/ROAD
 
 | Issue | Fix Applied |
 |-------|-------------|
+| `lineup_watch.py` sticky void bug (March 14, 2026) | CLEAR block now guards against clearing `voided=True` + `void_reason` picks. Rotowire post-game roster resets move all active players back to PROB/unlisted — previously this un-voided confirmed OUT picks. Fix: `else` branch checks `p.get("voided") and p.get("void_reason")` before clearing; sticky voids are left untouched. Speculative `lineup_risk` flags (DOUBTFUL/QUESTIONABLE) still clear normally. `agents/lineup_watch.py` only. |
 | `lineups_today.json` snapshot clobbered by hourly Rotowire refreshes (March 12, 2026) | `write_lineups_json()` overwrote `snapshot_at_analyst_run` on every `injuries.yml` run, causing `lineup_update.py` to always skip with "no snapshot found." Fix: read existing file and carry forward the key before constructing payload. `ingest/rotowire_injuries_only.py` only. |
 | `lineup_update.py` reasoning overhaul (March 12, 2026) | Added `load_player_stats()`, `build_pick_quant_summary()`, `classify_absent_player()`, `build_absent_player_profiles()`. System prompt rewritten with 4-step reasoning framework, role-tag-based absent player classification, and explicit opponent-side defensive anchor logic. Per-pick quant context injected. `player_stats` passed through `main()` → `call_lineup_update()`. |
 | API key "balance too low" error | Create new API key after adding credits — old key had sync issue |
