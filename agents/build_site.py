@@ -1552,7 +1552,7 @@ function renderResults() {{
   const la = DATA.last_audit;
   if (la && la.total_picks > 0) {{
     const laVoids   = la.voided_picks || 0;
-    const laValid   = la.total_picks - laVoids;
+    const laValid   = (la.hits || 0) + (la.misses || 0);
     const laHitRate = laValid > 0 ? Math.round(10 * 100 * la.hits / laValid) / 10 : 0;
     document.getElementById('yesterday-pct').textContent = laHitRate + '%';
     const voidedStr = laVoids > 0 ? ` · ${{laVoids}} voided` : '';
@@ -1771,7 +1771,7 @@ function renderAudit() {{
       <h3>Last Audit — ${{a.date}}</h3>
       ${{(()=>{{
         const aVoids = a.voided_picks || 0;
-        const aValid = a.total_picks - aVoids;
+        const aValid = (a.hits || 0) + (a.misses || 0);
         const aHitRate = aValid > 0 ? Math.round(10 * 100 * a.hits / aValid) / 10 : 0;
         return `<div style="display:flex;gap:24px;flex-wrap:wrap">
           <div><div style="font-size:11px;color:var(--muted)">Hit Rate</div><div style="font-size:24px;font-weight:700;color:var(--accent2)">${{aHitRate}}%</div></div>
