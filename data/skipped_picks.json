@@ -13,10 +13,10 @@
       "dvp_3pm_rating": "tough",
       "explanation": "trend=down AND tough 3PM DvP fires mandatory hard skip \u2014 no 3PM pick at any tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-13",
@@ -33,10 +33,10 @@
       "gate_requirement": "pick_tier must be strictly less than l10_3rd_lowest",
       "result": "4 is not strictly less than 4 \u2014 no valid tier below T4 in quant data"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-13",
@@ -53,10 +53,10 @@
       "gate_requirement": "pick_tier must be strictly less than l10_3rd_lowest",
       "result": "4 is not strictly less than 4 \u2014 no valid tier below T4 in quant data"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-13",
@@ -73,10 +73,10 @@
       "gate_requirement": "pick_tier must be strictly less than l10_3rd_lowest",
       "result": "4 is not strictly less than 4 \u2014 no valid tier below T4 in quant data"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-13",
@@ -94,10 +94,10 @@
       "dvp_ast_rating": "mid",
       "result": "mid DvP fails the gate \u2014 skip T4 AST"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-13",
@@ -116,10 +116,10 @@
       "fg_margin_flag": "FG_MARGIN_THIN:6% also triggers tier drop to T20",
       "additional": "FG_MARGIN_THIN forces drop to T20; T20 not in quant at qualifying rate; overall skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 42.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 42.0 \u2265 tier 25"
   },
   {
     "date": "2026-03-13",
@@ -137,10 +137,10 @@
       "t20_hit_rate": "not qualifying in quant \u2014 volatile_weak_combo also applies at 70% + VOLATILE",
       "result": "No valid PTS tier after drops and VOLATILE skip rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 28.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 28.0 \u2265 tier 25"
   },
   {
     "date": "2026-03-13",
@@ -158,10 +158,10 @@
       "t10_volatile_check": "VOLATILE + 7/10 at T15+ skip rule does not apply to T10",
       "note": "Step to T10 valid; however T10 not in quant data for Flagg \u2014 no PTS pick generated"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-13",
@@ -180,10 +180,10 @@
       "fg_margin_flag": "FG_MARGIN_THIN:10% \u2014 borderline, drop to T15",
       "t15_check": "Not in quant at T15 qualifying rate \u2014 skip PTS entirely"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 17.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 17.0 < tier 20"
   },
   {
     "date": "2026-03-13",
@@ -202,10 +202,10 @@
       "fg_cold_flag": "FG_COLD:-12% (below 15% threshold, informational only)",
       "result": "Skip PTS entirely per VOLATILE weak combo rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 24.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 24.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-13",
@@ -225,9 +225,9 @@
       "min_floor_rule": "min_floor < 24 on T15 \u2192 mandatory step to T10",
       "combined": "Both FG_MARGIN_THIN and min_floor_step fire; drop to T10. VOLATILE + 8/10 at T15 also fires skip but T10 would be valid if hit rate \u226570%. T10 not shown in quant at qualifying rate \u2014 skip."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 29.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 29.0 \u2265 tier 15"
   }
 ]

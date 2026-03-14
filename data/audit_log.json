@@ -1331,5 +1331,137 @@
         "Cross-game parlays with zero lineup overlap and no shared game-script exposure (Reaves/LAL, Giannis/MIL, SGA/OKC \u2014 three entirely different games) demonstrated clean independence: when one leg outperforms dramatically (Giannis 31 vs. 20 needed, SGA 35 vs. 25 needed), the cushion absorbs any single-leg near-miss. Prioritize parlays where at least two legs are from games with spread_abs < 10 to minimize blowout game-script interference across the entire ticket."
       ]
     }
+  },
+  {
+    "date": "2026-03-13",
+    "total_picks": 25,
+    "voided_picks": 0,
+    "hits": 21,
+    "misses": 4,
+    "no_data": 0,
+    "hit_rate_pct": 84.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0
+      },
+      "REB": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 10,
+        "hits": 8,
+        "hit_rate_pct": 80.0
+      },
+      "3PM": {
+        "picks": 6,
+        "hits": 5,
+        "hit_rate_pct": 83.3
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 14,
+        "hits": 12,
+        "hit_rate_pct": 85.7,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 11,
+        "hits": 9,
+        "hit_rate_pct": 81.8,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Iron-floor AST T2 legs (pick_value=2) across independent games posted a near-perfect rate: Kawhi Leonard, Brandon Ingram, Anthony Edwards, Amen Thompson, and Donovan Mitchell all cleared 2 AST \u2014 these ultra-conservative thresholds continue to be the system's most reliable single-leg building block.",
+      "The CLE blowout (won by 33) did not compromise Harden's PTS, REB, AST, or 3PM floors \u2014 the blowout cap mechanic at 74% correctly priced in uncertainty while still qualifying all four legs, all of which hit. Star usage on the winning side in blowouts is durable at conservative tiers.",
+      "RJ Barrett's T10 PTS pick (95% consistent tag, up trend, mid DvP) produced 22 points \u2014 the combination of consistent tag + up trend + conservative tier proved accurate even against a non-soft defensive opponent, validating that the consistent tag can override mid-DvP concerns at deeply conservative thresholds.",
+      "Cade Cunningham's AST T8 pick, taken with VOLATILE -5% and BLOWOUT_RISK cap to 74%, still hit with 15 assists against MEM (DET won by 16). The risk-adjusted confidence was appropriate \u2014 the pick qualified on adjusted merit and delivered well above threshold.",
+      "Amen Thompson's VOLATILE -5% adjustment landing the PTS pick at exactly 70% (the floor) still hit with 23 points, confirming that the volatility penalty is a calibration tool, not a disqualifier \u2014 picks that survive the VOLATILE deduction to reach exactly 70% remain viable when soft DvP and up trend both confirm."
+    ],
+    "lessons": [
+      "Alperen Sengun's DNP (0 min, 0 PTS, 0 AST) was not flagged pre-game despite being NOT_LISTED at injury check \u2014 both picks (PTS and AST) missed with actual_value=0.0. The workflow failed to void these picks when the player did not play. The injury_status_at_check of NOT_LISTED masked a real availability risk. A same-day afternoon lineup re-check closer to tip-off should be mandatory for any player with a recent game-log gap or load management history; DNP inference at 0 minutes is too late.",
+      "Donovan Mitchell's 3PM miss (actual=1, pick=2) occurred in a 33-point CLE blowout where Mitchell played only 29 minutes \u2014 the step-down from T2 to T1 due to trend=down and BLOWOUT -10% still produced a 75% confidence pick that missed. In blowout scenarios on the winning side, shooting volume for secondary prop types (3PM) is particularly vulnerable to early benching even at conservative tiers; the BLOWOUT_RISK deduction may need a stricter threshold for 3PM specifically on the winning team when spread_abs \u2265 12.",
+      "Julius Randle's AST T2 miss (actual=1, pick=2) against GS's tough AST DvP is partially explained by the MIN AST suppressor watch item (Chris Finch's switching scheme) interacting with GS's own defensive structure \u2014 Randle played only 27 minutes and recorded just 1 assist. The system correctly blocked T4 due to tough AST DvP and the PF position gate, but still ran T2 at 80%. The MIN AST suppressor watch item should reduce T2 AST confidence by at least 5pp when both a tough AST DvP and the MIN suppressor flag co-occur on a non-primary ball-handler."
+    ],
+    "recommendations": [
+      "Implement a mandatory same-day final lineup confirmation step (within 60-90 minutes of tip-off) for any player whose injury_status_at_check is NOT_LISTED but who has missed or been limited in any of the prior 3 games. Sengun's dual-miss DNP (0 PTS, 0 AST, 0 min) was entirely preventable with a later availability check.",
+      "For 3PM picks on the winning side of games with spread_abs \u2265 12, apply an additional -5pp deduction beyond the standard BLOWOUT -10% (total -15pp from base), or hard-cap 3PM confidence at 70% in these scenarios. Mitchell's 3PM miss shows that shooting volume compresses faster than PTS/AST in blowout wins due to early benching and reduced fourth-quarter minutes.",
+      "When the MIN AST suppressor watch item is active AND the opponent also carries a tough AST DvP rating, apply a minimum -10pp adjustment to ALL AST tiers (including T2) for non-primary ball-handlers. Randle's T2 AST miss (1 actual vs. 2 pick) was the product of two compounding suppressor signals that the system treated as independent \u2014 they are not.",
+      "Alperen Sengun's two picks (PTS and AST) were included in two separate parlays ('Iron Floor Trio' and 'Scottie-Mitchell Cross-Game Lock'), causing both parlays to miss on a single DNP event. Enforce a rule: no single player may appear in more than one parlay on the same day. Player concentration across parlays converts a single availability event into a multi-parlay loss.",
+      "The 3PM step-down rule (trend=down \u2192 mandatory T2\u2192T1 step) combined with iron_floor did not prevent Mitchell's 3PM miss. Consider adding a hard skip rule for 3PM when both trend=down AND blowout_risk=True are simultaneously present, regardless of iron_floor status \u2014 the iron_floor tag on 3PM appears to provide less protection than on PTS/AST in compressed blowout minutes."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Alperen Sengun",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 0.0,
+        "miss_classification": "workflow_gap",
+        "tier_walk_flag": null,
+        "root_cause": "Workflow gap: Sengun did not play (0 minutes, 0 PTS per DNP inferred from game log). The pick was not voided pre-game despite the player ultimately not playing. injury_status_at_check was NOT_LISTED at the time of the evening check (21:53 PT), meaning no pre-game OUT flag existed to trigger a void \u2014 but the player still did not dress. This is a workflow timing failure: the final lineup confirmation did not occur close enough to tip-off to catch the late DNP. The original reasoning (90% at T10, 12-game hit streak, soft DvP, home rest) was otherwise sound based on available data; the miss is entirely attributable to availability, not analytical error. No amendment was present on this pick."
+      },
+      {
+        "player_name": "Alperen Sengun",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 0.0,
+        "miss_classification": "workflow_gap",
+        "tier_walk_flag": null,
+        "root_cause": "Workflow gap: same DNP event as Sengun PTS \u2014 0 minutes played, 0 AST recorded. injury_status_at_check was NOT_LISTED, no pre-game OUT flag triggered a void, and the pick ran despite the player not dressing. The tier_walk correctly noted trend=down limiting confidence to floor (70%), and the analytical reasoning was appropriate given available data. The miss is entirely a workflow timing failure \u2014 the afternoon lineup agent did not catch a late DNP. No amendment was present. Per audit policy, no analytical lessons are generated from this miss."
+      },
+      {
+        "player_name": "Donovan Mitchell",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: CLE @ DAL final 138-105, CLE won by 33 \u2014 BLOWOUT. Mitchell played only 29 minutes, consistent with early benching on the winning side once the lead was secure. STEP 1 \u2014 Activity confirmed (29 min played, 1 3PM made, 8 AST per other picks hitting). STEP 2 \u2014 Classification: model_gap_rule. The signal (spread=13.5, BLOWOUT_RISK) was present in the pick object and the system applied BLOWOUT -10% and the trend=down step-down from T2 to T1, landing at 75% confidence. However, the miss reveals that 3PM props for the winning team in a 33-point blowout are more vulnerable than PTS or AST at the same tier \u2014 Mitchell's minutes were compressed and shooting opportunities declined in garbage time. The rule correctly flagged blowout risk but did not go far enough: a hard skip or deeper cap specifically for 3PM on winning-side players when spread_abs \u2265 12 would have caught this. STEP 3 \u2014 Original reasoning cited iron_floor and step-down logic correctly; the blind spot was 3PM-specific volume compression under blowout conditions. STEP 4 \u2014 Hit rate was 8/10 (85% overall) at T2 before adjustments; the 1-for-3 result on 3PM in a blowout is within the tail risk of an 85% base rate but is directionally consistent with blowout suppression. STEP 5 \u2014 Tier walk correctly executed step-down T2\u2192T1; no skip error. The issue is the rule not hard-capping 3PM in blowout scenarios. STEP 6 \u2014 No amendment present."
+      },
+      {
+        "player_name": "Julius Randle",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: MIN @ GS final 127-117, MIN won by 10 \u2014 COMPETITIVE. Game script is not a causal factor; this was a close-to-normal game environment. STEP 1 \u2014 Activity confirmed (27 min played, per post-game news; Randle recorded 1 AST). STEP 2 \u2014 Classification: model_gap_rule. The system correctly blocked T4 AST (tough DvP + PF position gate) and fell back to T2 at 95% (consistent tag), conservatively capped to 80% citing the MIN AST suppressor watch item and down trend. Despite this, Randle recorded only 1 assist \u2014 below the T2 threshold of 2. The miss reveals that the MIN AST suppressor watch item (-26pp below baseline, Chris Finch's switching scheme) was identified as a risk but not sufficiently weighted: the system applied conservative confidence (80%) but still ran the pick. When the MIN AST suppressor watch item co-occurs with a tough opponent AST DvP, the two signals compound in a way the current rules do not fully capture. STEP 3 \u2014 Original reasoning noted 'T2 is a very low bar for Randle' and cited the consistent tag \u2014 this was a reasonable thesis, but the reasoning underweighted the dual-suppressor interaction (MIN scheme + GS tough DvP + trend=down + only 27 min). STEP 4 \u2014 Hit rate was 10/10 (95% overall) at T2 on the consistent tag; a miss here is statistically unusual but not impossible (5% expected miss rate), though the compounding suppressor context elevated actual miss probability above model expectation. STEP 5 \u2014 Tier walk correctly blocked T4 and fell to T2; no walk error. The gap is in the confidence adjustment, not the tier selection. STEP 6 \u2014 No amendment present."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 4,
+      "hits": 1,
+      "misses": 3,
+      "partial": 0,
+      "parlay_summary": "1/4 parlay session \u2014 Sengun's DNP (0 min) was the single failure point that killed two parlays ('Iron Floor Trio' and 'Scottie-Mitchell Cross-Game Lock'), while Randle's 1-assist miss ended the 'Multi-Game AST Sweep'; only 'Scorers Plus Floor' swept cleanly.",
+      "parlay_lessons": [
+        "Alperen Sengun appeared as the anchor scorer leg in two separate parlays on the same day ('Iron Floor Trio' PTS and 'Scottie-Mitchell Cross-Game Lock' PTS) \u2014 his single DNP event caused both to miss simultaneously. Enforce a strict one-player-per-parlay-card rule: no player may appear in more than one parlay on the same date, regardless of how strong their individual pick looks. Concentration risk across parlays is as dangerous as within a single parlay.",
+        "The 'Multi-Game AST Sweep' used three T2 AST legs (all pick_value=2) across independent games \u2014 a structurally sound design \u2014 but the Randle leg carried a known MIN AST suppressor risk and a tough opponent DvP that together elevated miss probability above the advertised 95% hit rate. When building an AST sweep parlay, exclude any leg where two compounding AST suppressor signals (scheme + opponent DvP) co-exist, even at T2; replace with a leg from a game without suppressor flags.",
+        "The one winning parlay ('Scorers Plus Floor') succeeded because all three legs were fully independent games (TOR vs PHX, MIN vs GS, CLE vs DAL) with no shared players, no shared game, and mixed prop types (PTS + AST + REB) \u2014 this cross-prop, cross-game independence structure is the template for durable parlay construction and should be the default architecture."
+      ],
+      "parlay_reinforcements": [
+        "The 'Scorers Plus Floor' structure \u2014 one up-trending scorer PTS leg (Barrett T10, 95% consistent) anchoring two separate ultra-conservative floor legs (Edwards AST T2, Mitchell REB T2) across three fully independent games \u2014 is the most resilient parlay architecture the system has produced this session. Replicate this pattern: one 'proven scorer' PTS anchor + two non-correlated iron-floor legs in different games and different prop types.",
+        "Cross-prop diversity within a parlay (mixing PTS + AST + REB across different players and games) provides structural insurance that a single game script or scheme matchup cannot collapse the entire ticket \u2014 the 'Scorers Plus Floor' hit precisely because no two legs shared a game or prop type, making each leg's success condition fully independent of the others.",
+        "T2 AST legs (pick_value=2) remain the single most reliable parlay building block when the player is a consistent primary creator with soft or mid DvP and no suppressor flags \u2014 Kawhi Leonard (3 actual), Brandon Ingram (3 actual), Anthony Edwards (5 actual), and Amen Thompson (8 actual) all cleared T2 AST comfortably, confirming this leg type as a high-confidence anchor for future parlays."
+      ]
+    }
   }
 ]
