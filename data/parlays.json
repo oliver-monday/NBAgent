@@ -2298,5 +2298,55 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-15",
+    "parlays": [
+      {
+        "label": "Sunday Volume Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "DET",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "OKC",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "James Harden",
+            "team": "CLE",
+            "opponent": "DAL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.4966,
+        "correlation": "positive",
+        "rationale": "Three independent volume_game scorers across three games with 10/10 hit rates and ultra-low thresholds.",
+        "date": "2026-03-15",
+        "id": "parlay_2026-03-15_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
