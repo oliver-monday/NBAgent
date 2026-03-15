@@ -1271,6 +1271,7 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
 - REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
 - REB props — pick value gate: The pick value must be strictly below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. The pick tier must be strictly less than this floor value — an exact match is not sufficient. Rationale: when the 3rd-lowest L10 value equals the pick threshold exactly, there is zero variance buffer. A single outlier game (even for a player with a 10/10 hit rate) breaks the streak with no protective cushion. If the intended tier equals or exceeds this floor, move down one tier. If no valid tier exists strictly below the floor, skip the REB prop entirely.
+  Exception — T4 minimum tier: This exact-match gate does NOT apply when pick_value = 4 (the minimum valid REB tier). At T4, there is no lower valid tier to step to, so the zero-buffer logic does not apply in the same way — validate T4 picks on hit rate merit alone. The gate still fires normally for pick_value ≥ 6.
 - REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 78% confidence minimum AND the floor gate must pass before any REB pick is output.
 - Tier walk-down discipline: Always evaluate tiers from highest to lowest for the stat.
   Never select a tier if the tier immediately above it also qualifies (≥70% hit rate in
@@ -1348,6 +1349,12 @@ Stat-specific rules:
       hit rate, confidence, or other signals. This gate is unconditional.
     This prevents low-volume or frontcourt passers from being picked at AST T4+ against defenses
     that historically suppress assists at that position.
+    Exception — elite playmakers: This gate does NOT apply to players whose raw_avgs AST is
+    ≥ 8.0 per game. A player averaging 8+ APG is a primary playmaking engine regardless of
+    position — the positional gate was not designed for this profile. These players may be
+    evaluated for AST T4+ picks against any defensive rating using normal tier and hit-rate
+    logic. (This exemption applies to the AST volume criterion only — if you are applying
+    the gate because of low raw_avgs AST below 4.0, the ≥8.0 threshold is irrelevant.)
 
   REB: opp_defense does NOT make REB a valid defense signal. Do not use REB rating as
     justification for a REB over. Rebounds are driven by pace, opponent FG%, and frontcourt
@@ -1898,7 +1905,90 @@ def reconcile_pick_values(picks: list[dict]) -> list[dict]:
     return picks
 
 
+def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
+    """
+    Remove picks whose tier_walk reasoning explicitly concludes with a skip decision.
+
+    This is a Python enforcement layer for cases where the model correctly identifies
+    that a pick should be skipped in its own reasoning (tier_walk) but emits it anyway.
+    Only filters on unambiguous skip language — does not attempt to re-evaluate
+    the pick's merit. Conservative: when in doubt, leave the pick.
+
+    Filters a pick if ALL of the following are true:
+      1. tier_walk contains explicit skip-conclusion language (see SKIP_CONCLUSIONS below)
+      2. The skip language appears after a confidence calculation (contains a '%')
+      3. The skip language is not immediately followed by an override/proceed signal
+
+    Logs every filtered pick with the matching phrase so it can be audited.
+    Returns the filtered pick list.
+    """
+    import re
+
+    # Phrases that unambiguously conclude "skip this pick"
+    # Must appear after a percentage calculation to be considered a skip conclusion
+    SKIP_CONCLUSIONS = [
+        r"below\s+(?:the\s+)?(?:70|threshold)[^\w]*skip",
+        r"(?:→|->)\s*(?:65|64|63|62|61|60)\s*%[^\w]*skip",
+        r"drops?\s+(?:confidence\s+)?to\s+\d{2}\s*%[^\w]*below[^\w]*(?:70|threshold)[^\w]*skip",
+        r"confidence\s*(?:=|:)?\s*\d{2}\s*%[^\w]*skip",
+        r"\d{2}\s*%\s*[-–—]\s*below\s+(?:70|threshold|floor)[^\w]*skip",
+    ]
+
+    # Signals that indicate the model reconsidered and chose to proceed anyway
+    # If these appear AFTER the skip language, leave the pick alone
+    OVERRIDE_SIGNALS = [
+        "proceed", "pick anyway", "still qualifies", "exception applies",
+        "iron_floor overrides", "override",
+    ]
+
+    compiled = [re.compile(p, re.IGNORECASE) for p in SKIP_CONCLUSIONS]
+
+    kept    = []
+    removed = []
+
+    for pick in picks:
+        tier_walk   = (pick.get("tier_walk") or "").strip()
+        player_name = pick.get("player_name", "?")
+        prop_type   = pick.get("prop_type", "?")
+        pick_value  = pick.get("pick_value", "?")
+
+        if not tier_walk:
+            kept.append(pick)
+            continue
+
+        matched_phrase = None
+        for pattern in compiled:
+            m = pattern.search(tier_walk)
+            if m:
+                matched_phrase = m.group(0)
+                # Check for override signal AFTER the skip language
+                text_after = tier_walk[m.end():]
+                if any(sig.lower() in text_after.lower() for sig in OVERRIDE_SIGNALS):
+                    matched_phrase = None  # Model reconsidered — leave pick
+                break
+
+        if matched_phrase:
+            removed.append(pick)
+            print(
+                f"[analyst] SELF_SKIP_FILTERED: {player_name} {prop_type} T{pick_value} — "
+                f"tier_walk concluded skip: '{matched_phrase[:80]}'"
+            )
+        else:
+            kept.append(pick)
+
+    if removed:
+        print(
+            f"[analyst] Self-skip filter: removed {len(removed)} pick(s) "
+            f"that analyst reasoning had already concluded should be skipped."
+        )
+
+    return kept
+
+
 def save_picks(picks: list[dict]):
+    # Filter out picks where analyst's own tier_walk reasoning concluded skip
+    picks = filter_self_skip_picks(picks)
+
     # Reconcile pick_value against tier_walk step-down documentation
     picks = reconcile_pick_values(picks)
 

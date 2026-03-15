@@ -97,6 +97,8 @@ Root cause of both: model evaluates gate condition correctly mid-analysis but do
 
 Watch list for graded data: `ast_hard_gate` false-skip rate (White confirmed = 1/3 minimum); `reb_floor_skip` entries (all 5 look clean — strict greater-than rule firing correctly); `volatile_weak_combo` calibration (Doncic 60%, Green 61% reasoning well-supported).
 
+**Updates (2026-03-15):** Jokic `ast_hard_gate` false skip addressed — elite playmaker exemption (≥8.0 APG) added to prompt; monitoring continues for non-elite-playmaker frontcourt cases. `reb_floor_skip` T4 false skip cluster (Reaves, White, Kawhi — 100% false skip rate at T4) addressed — T4 exemption added to prompt; monitoring continues for pick_value ≥ 6 cases. `workflow_gap` miss class addressed — `filter_self_skip_picks()` Python gate added to `save_picks()`: picks whose own `tier_walk` concludes skip are removed before writing to `picks.json` (6 workflow_gap misses this season; prototype: Pritchard PTS T10 March 14).
+
 
 ### Pending Backtests
 

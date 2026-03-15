@@ -351,8 +351,12 @@ def fetch_espn_news(athlete_id: str) -> tuple[list[dict], bool]:
 
 def fetch_web_narratives(missed_players: list[dict]) -> dict[str, str]:
     """
-    For each missed-pick player, run a Brave web search for a game recap
-    and return {player_name_lower: raw_snippet_text}.
+    For each missed-pick player, run two Brave web searches and combine results:
+      1. "{name} {team} NBA recap {date}" — game recap (existing query)
+      2. "{name} injury" — injury-specific query to catch mid-game exits
+
+    Returns {player_name_lower: raw_snippet_text} with combined snippets from
+    both queries. Deduplicates snippets by title to avoid repeat content.
 
     missed_players is a list of dicts: [{"name": str, "team": str, "prop": str,
     "pick_value": str, "actual": str, "minutes": float|None}]
@@ -368,16 +372,14 @@ def fetch_web_narratives(missed_players: list[dict]) -> dict[str, str]:
     results: dict[str, str] = {}
     date_str = YESTERDAY.strftime("%B %-d, %Y")   # e.g. "March 10, 2026"
 
-    for player in missed_players:
-        name  = player["name"]
-        team  = player.get("team", "")
-        query = f"{name} {team} NBA recap {date_str}"
+    def _brave_query(query: str) -> list[str]:
+        """Run a single Brave query and return a list of 'title: description' snippet strings."""
         try:
             resp = requests.get(
                 BRAVE_SEARCH_URL,
                 headers={
-                    "Accept":              "application/json",
-                    "Accept-Encoding":     "gzip",
+                    "Accept":               "application/json",
+                    "Accept-Encoding":      "gzip",
                     "X-Subscription-Token": api_key,
                 },
                 params={"q": query, "count": 3, "search_lang": "en"},
@@ -391,13 +393,41 @@ def fetch_web_narratives(missed_players: list[dict]) -> dict[str, str]:
                 description = result.get("description", "")
                 if title or description:
                     snippets.append(f"{title}: {description}")
-            if snippets:
-                results[name.lower()] = "\n".join(snippets)
-                print(f"[post_game_reporter] web search OK: {name} ({len(snippets)} snippets)")
-            else:
-                print(f"[post_game_reporter] web search: no snippets for {name}")
+            return snippets
         except Exception as e:
-            print(f"[post_game_reporter] WARNING: web search failed for {name}: {e}")
+            print(f"[post_game_reporter] WARNING: Brave query failed ({query!r}): {e}")
+            return []
+
+    for player in missed_players:
+        name = player["name"]
+        team = player.get("team", "")
+
+        # Query 1: game recap
+        recap_query    = f"{name} {team} NBA recap {date_str}"
+        recap_snippets = _brave_query(recap_query)
+
+        # Query 2: injury-specific (catches mid-game exits not in recap results)
+        injury_query    = f"{name} injury"
+        injury_snippets = _brave_query(injury_query)
+
+        # Combine, deduplicating by title prefix (first ~40 chars)
+        seen_titles: set[str] = set()
+        combined: list[str]   = []
+        for snippet in recap_snippets + injury_snippets:
+            title_key = snippet[:40].lower()
+            if title_key not in seen_titles:
+                seen_titles.add(title_key)
+                combined.append(snippet)
+
+        if combined:
+            results[name.lower()] = "\n".join(combined)
+            print(
+                f"[post_game_reporter] web search OK: {name} "
+                f"({len(recap_snippets)} recap + {len(injury_snippets)} injury snippets, "
+                f"{len(combined)} unique)"
+            )
+        else:
+            print(f"[post_game_reporter] web search: no snippets for {name}")
 
     return results
 
