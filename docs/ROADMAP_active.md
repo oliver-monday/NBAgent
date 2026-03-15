@@ -88,16 +88,10 @@ Derrick White's two model_gap misses (PTS + 3PM, March 8) expose a gap: CLE's ag
 
 Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) raised the question of whether FG_COLD ≥ -15% should trigger a hard tier step-down on PTS picks rather than remaining annotation-only. H10 backtest verdict (521 instances) found FG_COLD lift=1.128 (counterintuitively positive) — confidence penalties were removed on that basis. However, the H10 backtest evaluated confidence adjustments, not tier step-downs; these are distinct mechanisms. A tier step-down at high FG_COLD values is an open question the backtest did not directly address. **Do not act until 3–5 additional FG_COLD ≥ -15% PTS misses accumulate in the audit log. If a pattern emerges, revisit whether a tier-step rule is warranted at high thresholds (≥ -15% or ≥ -18%) without conflicting with the H10 annotation-only verdict on confidence.**
 
-#### W5 — Skip Validation: First Data (March 12, 2026)
-**Status: WATCH — first graded data arrives tomorrow morning**
+#### W5 — Skip Validation Monitoring
+**Status: WATCH — ongoing**
 
-March 12 produced 18 skips across 10 players / 6 rules. Two confirmed false skips visible before grading: (1) **Derrick White AST T4** — `ast_hard_gate` should not fire for SG with AST avg >4.0; model reasoned correctly in `rule_context` ("gate technically does NOT fire") then skipped anyway — prompt discipline failure. (2) **Derrick White 3PM T2** — labeled `3pm_trend_down_tough_dvp` but `rule_context` notes DvP is soft, not tough — rule should not have fired; correct action was step-down to T1, not hard skip.
-
-Root cause of both: model evaluates gate condition correctly mid-analysis but does not honor that reasoning in the final skip decision. Pending prompt fix: add output discipline instruction — if model determines a gate condition does NOT fire, it must proceed to confidence calculation, not record a skip. Also: `skip_reason` must reflect the rule that actually triggered, not one evaluated and rejected. **Do not ship fix until tomorrow's graded data confirms false skip rate for `ast_hard_gate`.**
-
-Watch list for graded data: `ast_hard_gate` false-skip rate (White confirmed = 1/3 minimum); `reb_floor_skip` entries (all 5 look clean — strict greater-than rule firing correctly); `volatile_weak_combo` calibration (Doncic 60%, Green 61% reasoning well-supported).
-
-**Updates (2026-03-15):** Jokic `ast_hard_gate` false skip addressed — elite playmaker exemption (≥8.0 APG) added to prompt; monitoring continues for non-elite-playmaker frontcourt cases. `reb_floor_skip` T4 false skip cluster (Reaves, White, Kawhi — 100% false skip rate at T4) addressed — T4 exemption added to prompt; monitoring continues for pick_value ≥ 6 cases. `workflow_gap` miss class addressed — `filter_self_skip_picks()` Python gate added to `save_picks()`: picks whose own `tier_walk` concludes skip are removed before writing to `picks.json` (6 workflow_gap misses this season; prototype: Pritchard PTS T10 March 14).
+`ast_hard_gate` Jokic false skip addressed — elite playmaker exemption (≥8.0 APG) added to prompt 2026-03-15; monitoring continues for non-elite-playmaker frontcourt cases. `reb_floor_skip` T4 false skip cluster (100% false skip rate at T4) addressed — T4 exemption added to prompt 2026-03-15; monitoring continues for pick_value ≥ 6 cases. `workflow_gap` miss class addressed — `filter_self_skip_picks()` Python gate added 2026-03-15. Accumulate skip validation data; revisit remaining rules at ≥200 total graded skips.
 
 
 ### Pending Backtests
@@ -125,6 +119,14 @@ Tests whether REB tier hit rate drops when opponent has elite individual rebound
 ### H17 — Spread Context vs. Tier Hit Rate
 **Status: FIRST RUN COMPLETE — NOISE verdict (Mar 13, 327 picks). Re-run at ≥500 picks.**
 **Mode: `--mode spread-context`** | Full results in `docs/BACKTESTS.md`.
+
+---
+
+### H18 — Wembanyama Rim Deterrent Effect
+**Status: DESIGNED — research phase first, backtest pending data dependency check**
+**ETA: late March / early April 2026**
+
+Hypothesis: Wemby suppresses inside-the-arc scorers specifically (drive/mid-range-heavy), not perimeter-first players — making the existing SAS watch item too broad. Motivated by Miller 2-14 FG vs SAS (March 14) while Ball/Knueppel/Bridges were unaffected. Research phase: manually check current SAS miss set for 2PA vs 3PA clustering before writing backtest code. Data dependency: confirm `tpa` and `fga` columns exist in `player_game_log.csv`; schema expansion required if absent. Full design in `docs/h18_wemby_rim_deterrent.md`.
 
 ---
 
