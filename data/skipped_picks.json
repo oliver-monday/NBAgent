@@ -14,10 +14,10 @@
       "gate_requirement": "pick_value must be strictly less than 3rd-lowest L10 REB",
       "result": "2 is not strictly less than 2 \u2014 no variance buffer"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 2"
   },
   {
     "date": "2026-03-14",
@@ -34,10 +34,10 @@
       "gate_requirement": "pick_value must be strictly less than 3rd-lowest L10 REB",
       "result": "2 is not strictly less than 2 \u2014 no variance buffer"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 2"
   },
   {
     "date": "2026-03-14",
@@ -57,10 +57,10 @@
       "b2b_rate": "67%",
       "additional_context": "VOLATILE + 7/10 at T25 (T15+) triggers skip; FG_MARGIN_THIN:4% also blocks at T25; B2B b2b=67% below qualifying threshold"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 31.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 31.0 \u2265 tier 25"
   },
   {
     "date": "2026-03-14",
@@ -77,10 +77,10 @@
       "gate_requirement": "pick_value must be strictly less than 3rd-lowest L10 REB",
       "result": "4 is not strictly less than 4 \u2014 no variance buffer"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-14",
@@ -99,10 +99,10 @@
       "gate_requirement": "C position at T4+ requires opp_today=soft",
       "result": "opp_today=mid blocks T6 AST pick for center"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 14.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 14.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-14",
@@ -121,10 +121,10 @@
       "volatile_tag": true,
       "additional": "FG_MARGIN_THIN:4% forces step from T20\u2192T15; at T15 with VOLATILE -5% and tough opp_today: base T15 rate unlisted but opp_today=tough, vs_tough=57% well below 70% threshold \u2014 no valid tier qualifies"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 20.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 20.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-14",
@@ -143,10 +143,10 @@
       "t15_evaluation": "VOLATILE -5% on T15: quant shows overall=80% at T20; T15 not explicitly listed but implied higher; after step T15 estimated ~85% before VOLATILE; -5%=80%; qualifies at T15 \u2192 pick T15 at 70% net after all adjustments",
       "volatile_tag": true
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 20"
   },
   {
     "date": "2026-03-14",
@@ -166,10 +166,10 @@
       "blowout_risk": true,
       "spread_abs": 20.5
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 16.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 16.0 < tier 20"
   },
   {
     "date": "2026-03-14",
@@ -188,10 +188,10 @@
       "t10_evaluation": "9/10 at T15 implies T10 nearly certain; after step T10 qualifies at ~78%; pick T10",
       "volatile_tag": false
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 17.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 17.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-14",
@@ -211,9 +211,9 @@
       "threshold": "70%",
       "result": "VOLATILE -5% drops 70% to 65% \u2014 below minimum threshold; T10 is below T15 so weak-combo skip rule doesn't trigger but confidence floor breach does"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 10"
   }
 ]
