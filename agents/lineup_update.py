@@ -97,13 +97,13 @@ def compute_without_player_rates(
     Returns dict keyed by prop_type → {tier → hit_rate, n} for qualifying tiers.
     Returns {} when sample < 3 games (too small to show).
 
-    Tiers checked: PTS [10,15,20,25,30], REB [2,4,6,8], AST [2,4,6], 3PM [1,2,3]
+    Tiers checked: PTS [10,15,20,25,30], REB [4,6,8], AST [2,4,6], 3PM [1,2,3]
     Hit condition: actual >= tier (NBAgent convention — exact hit counts as HIT)
     DNP exclusion for teammate: exclude rows where teammate dnp=="1"
     """
     TIERS = {
         "PTS": [10, 15, 20, 25, 30],
-        "REB": [2, 4, 6, 8],
+        "REB": [4, 6, 8],
         "AST": [2, 4, 6],
         "3PM": [1, 2, 3],
     }

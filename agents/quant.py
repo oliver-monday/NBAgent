@@ -68,7 +68,7 @@ REST_DENSE_THRESHOLD = 4    # games in REST_DENSE_DAYS window = dense schedule
 
 # Tier definitions
 PTS_TIERS = [10, 15, 20, 25, 30]
-REB_TIERS = [2, 4, 6, 8, 10, 12]
+REB_TIERS = [4, 6, 8, 10, 12]
 AST_TIERS = [2, 4, 6, 8, 10, 12]
 TPM_TIERS = [1, 2, 3, 4]
 

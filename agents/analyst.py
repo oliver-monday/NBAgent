@@ -54,7 +54,7 @@ LARGE_SLATE_THRESHOLD = 30
 # Valid tier values per prop type — mirrors tier definitions in quant.py and the analyst prompt
 VALID_TIERS = {
     "PTS": [10, 15, 20, 25, 30],
-    "REB": [2, 4, 6, 8, 10, 12],
+    "REB": [4, 6, 8, 10, 12],
     "AST": [2, 4, 6, 8, 10, 12],
     "3PM": [1, 2, 3, 4],
 }
@@ -1231,7 +1231,7 @@ This system targets fixed tier thresholds that match how parlays are structured 
 Do NOT pick arbitrary lines. Only use values from these tiers:
 
   PTS tiers:  10 / 15 / 20 / 25 / 30
-  REB tiers:  2 / 4 / 6 / 8 / 10 / 12
+  REB tiers:  4 / 6 / 8 / 10 / 12
   AST tiers:  2 / 4 / 6 / 8 / 10 / 12
   3PM tiers:  1 / 2 / 3 / 4
 
