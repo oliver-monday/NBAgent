@@ -1,0 +1,129 @@
+[
+  {
+    "date": "2026-03-15",
+    "generated_at": "2026-03-15T10:30:22.163695-07:00",
+    "triggered_by_player": "Shai Gilgeous-Alexander",
+    "triggered_by_team": "OKC",
+    "trigger_tags": [
+      "high_usage"
+    ],
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "suggested_tier": 15,
+    "tier_hit_rate_pct": 70,
+    "without_player_tier": null,
+    "without_player_hit_rate_pct": null,
+    "without_player_n": null,
+    "trend": "stable",
+    "volatility": "volatile",
+    "caution": "volatile player; no without-player history",
+    "reasoning": "PTS T15 overall=70%; trend=stable; triggered by Shai Gilgeous-Alexander OUT [high_usage]"
+  },
+  {
+    "date": "2026-03-15",
+    "generated_at": "2026-03-15T10:30:22.163695-07:00",
+    "triggered_by_player": "Shai Gilgeous-Alexander",
+    "triggered_by_team": "OKC",
+    "trigger_tags": [
+      "high_usage"
+    ],
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "prop_type": "REB",
+    "suggested_tier": 4,
+    "tier_hit_rate_pct": 70,
+    "without_player_tier": null,
+    "without_player_hit_rate_pct": null,
+    "without_player_n": null,
+    "trend": "down",
+    "volatility": "volatile",
+    "caution": "volatile player; trend=down; no without-player history",
+    "reasoning": "REB T4 overall=70%; trend=down; triggered by Shai Gilgeous-Alexander OUT [high_usage]"
+  },
+  {
+    "date": "2026-03-15",
+    "generated_at": "2026-03-15T10:30:22.163695-07:00",
+    "triggered_by_player": "Shai Gilgeous-Alexander",
+    "triggered_by_team": "OKC",
+    "trigger_tags": [
+      "high_usage"
+    ],
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "prop_type": "AST",
+    "suggested_tier": 4,
+    "tier_hit_rate_pct": 70,
+    "without_player_tier": null,
+    "without_player_hit_rate_pct": null,
+    "without_player_n": null,
+    "trend": "down",
+    "volatility": "volatile",
+    "caution": "volatile player; trend=down; no without-player history",
+    "reasoning": "AST T4 overall=70%; trend=down; triggered by Shai Gilgeous-Alexander OUT [high_usage]"
+  },
+  {
+    "date": "2026-03-15",
+    "generated_at": "2026-03-15T10:30:22.163695-07:00",
+    "triggered_by_player": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "trigger_tags": [
+      "high_usage"
+    ],
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "suggested_tier": 10,
+    "tier_hit_rate_pct": 85,
+    "without_player_tier": null,
+    "without_player_hit_rate_pct": null,
+    "without_player_n": null,
+    "trend": "stable",
+    "volatility": "moderate",
+    "caution": "no without-player history",
+    "reasoning": "PTS T10 overall=85%; trend=stable; triggered by Donovan Mitchell OUT [high_usage]"
+  },
+  {
+    "date": "2026-03-15",
+    "generated_at": "2026-03-15T10:30:22.163695-07:00",
+    "triggered_by_player": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "trigger_tags": [
+      "high_usage"
+    ],
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "prop_type": "REB",
+    "suggested_tier": 8,
+    "tier_hit_rate_pct": 75,
+    "without_player_tier": null,
+    "without_player_hit_rate_pct": null,
+    "without_player_n": null,
+    "trend": "down",
+    "volatility": "volatile",
+    "caution": "volatile player; trend=down; no without-player history",
+    "reasoning": "REB T8 overall=75%; trend=down; triggered by Donovan Mitchell OUT [high_usage]"
+  },
+  {
+    "date": "2026-03-15",
+    "generated_at": "2026-03-15T10:30:22.163695-07:00",
+    "triggered_by_player": "Giannis Antetokounmpo",
+    "triggered_by_team": "MIL",
+    "trigger_tags": [
+      "defensive_anchor"
+    ],
+    "player_name": "Pascal Siakam",
+    "team": "IND",
+    "prop_type": "PTS",
+    "suggested_tier": 15,
+    "tier_hit_rate_pct": 70,
+    "without_player_tier": null,
+    "without_player_hit_rate_pct": null,
+    "without_player_n": null,
+    "trend": "down",
+    "volatility": "consistent",
+    "caution": "trend=down",
+    "reasoning": "PTS T15 overall=70%; opponent Giannis Antetokounmpo OUT [defensive_anchor]; trend=down",
+    "side": "opponent"
+  }
+]

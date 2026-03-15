@@ -524,7 +524,16 @@
     "opp_defense_rating": "soft",
     "reasoning": "Dominant rebounder with 8+ in 8 of 10 games; ATL allows big rebounding nights to forwards.",
     "result": "MISS",
-    "actual_value": 5.0
+    "actual_value": 5.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Giannis Antetokounmpo (MIL) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Giannis is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-04",
@@ -592,7 +601,16 @@
     "opp_defense_rating": "mid",
     "reasoning": "Consistent frontcourt rebounder; SAS weak rebounding unit outside Wembanyama creates opportunities.",
     "result": "MISS",
-    "actual_value": 0.0
+    "actual_value": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Cunningham OUT increases Thompson's role and minutes; more possessions flow through him improving rebounding opportunities."
+    }
   },
   {
     "date": "2026-03-05",
@@ -711,7 +729,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "High-usage initiator who routinely generates assists as a secondary creator for TOR.",
     "result": "HIT",
-    "actual_value": 2.0
+    "actual_value": 2.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT removes DET primary creator; Ingram faces less defensive attention, easier passing lanes for assists."
+    }
   },
   {
     "date": "2026-03-05",
@@ -745,7 +770,16 @@
     "opp_defense_rating": "mid",
     "reasoning": "Elite playmaker consistently generating double-digit assist opportunities as DET's primary facilitator.",
     "result": "HIT",
-    "actual_value": 8.0
+    "actual_value": 8.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Cunningham is OUT; pick is void. Confidence marked unchanged at original floor as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-05",
@@ -796,7 +830,14 @@
     "opp_defense_rating": "soft",
     "reasoning": "Iron floor designation; DAL vulnerable frontcourt inflates opponent boards providing extra opportunities.",
     "result": "MISS",
-    "actual_value": 5.0
+    "actual_value": 5.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Mitchell and Harden OUT weakens CLE rebounding corps; Flagg faces diminished frontcourt competition for boards."
+    }
   },
   {
     "date": "2026-03-05",
@@ -898,7 +939,16 @@
     "opp_defense_rating": "mid",
     "reasoning": "Elite rebounder on massive recent form streak; SAS weak rebounding unit outside Wembanyama helps.",
     "result": "HIT",
-    "actual_value": 7.0
+    "actual_value": 7.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT means more DET possessions flow through bigs; Duren gets increased paint touches and board opportunities."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1289,7 +1339,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "Perfect 10/10 hit rate; consistent scorer with enough volume to clear 10 regardless of MIN's defense.",
     "result": "HIT",
-    "actual_value": 25.0
+    "actual_value": 25.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Cunningham OUT removes primary DET creator; Barrett faces weaker defensive structure with redistributed offensive pressure."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1323,7 +1380,14 @@
     "opp_defense_rating": "tough",
     "reasoning": "High-volume wing who hits at least 1 three in most games despite tough defensive contexts.",
     "result": "HIT",
-    "actual_value": 4.0
+    "actual_value": 4.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Cunningham OUT reduces DET defensive coordination; Barrett gets cleaner perimeter looks. Already soft opp_def tag."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1357,7 +1421,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "Consistent volume scorer in TOR's system; MIN elite rim protection reduces paint but 15 floor is stable.",
     "result": "HIT",
-    "actual_value": 16.0
+    "actual_value": 16.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 89,
+      "revised_reasoning": "Cunningham OUT weakens DET defense; Barnes faces diminished resistance, amplifying already strong vs_tough rate."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1374,7 +1445,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "Active rebounder who consistently hits 6; MIN's Gobert presence slightly competes but Barnes floor holds.",
     "result": "MISS",
-    "actual_value": 2.0
+    "actual_value": 2.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT reduces DET rim presence indirectly; Barnes boards against weaker frontcourt organization."
+    }
   },
   {
     "date": "2026-03-05",
@@ -2218,7 +2296,16 @@
     "tier_walk": "AST: 12\u21922/10 10\u21923/10 8\u21928/10\u2713",
     "reasoning": "8/10 at T8 meets ceiling rule; VOLATILE -5%, BLOWOUT_RISK -5% applied, primary ball handler.",
     "result": "NO_DATA",
-    "actual_value": null
+    "actual_value": null,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Cunningham is OUT; pick is void. Confidence marked unchanged at original floor as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-07",
@@ -2735,7 +2822,17 @@
     "iron_floor": true,
     "reasoning": "Iron-floor 9/10 T4; soft BOS AST DvP and Mitchell's playmaking role firmly established.",
     "result": "HIT",
-    "actual_value": 5.0
+    "actual_value": 5.0,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Mitchell is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-08",
@@ -2773,7 +2870,17 @@
     "iron_floor": false,
     "reasoning": "Consistent 9/10 T4; 5 rest days and soft BOS REB DvP; floor well above T4 threshold.",
     "result": "HIT",
-    "actual_value": 8.0
+    "actual_value": 8.0,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Mitchell and Harden OUT means more CLE possessions; Mobley's rebounding role expands with increased frontcourt responsibility."
+    }
   },
   {
     "date": "2026-03-08",
@@ -2849,7 +2956,16 @@
     "iron_floor": false,
     "reasoning": "8/10 at T8; soft MIA AST defense and Cunningham's elite playmaking role support this floor.",
     "result": "HIT",
-    "actual_value": 10.0
+    "actual_value": 10.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Cunningham is OUT; pick is void. Confidence marked unchanged at original floor as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-08",
@@ -2868,7 +2984,16 @@
     "iron_floor": false,
     "reasoning": "B2B rate 86% at T6; Duren's rim-running role in DET system produces consistent board volume.",
     "result": "MISS",
-    "actual_value": 5.0
+    "actual_value": 5.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT means more DET possessions flow through bigs; Duren gets increased paint touches and board opportunities."
+    }
   },
   {
     "date": "2026-03-08",
@@ -3058,7 +3183,14 @@
     "iron_floor": false,
     "reasoning": "Consistent 9/10 at T10; blowout_games 89% confirms Barrett scores even in lopsided TOR wins.",
     "result": "HIT",
-    "actual_value": 31.0
+    "actual_value": 31.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Cunningham OUT removes primary DET creator; Barrett faces weaker defensive structure with redistributed offensive pressure."
+    }
   },
   {
     "date": "2026-03-08",
@@ -3077,7 +3209,14 @@
     "iron_floor": false,
     "reasoning": "8/10 at T1 with up trend; Barrett's shot volume in TOR system ensures at least one three attempt.",
     "result": "HIT",
-    "actual_value": 3.0
+    "actual_value": 3.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Cunningham OUT reduces DET defensive coordination; Barrett gets cleaner perimeter looks. Already soft opp_def tag."
+    }
   },
   {
     "date": "2026-03-08",
@@ -3566,7 +3705,17 @@
     "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Mitchell is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-09",
@@ -3610,7 +3759,17 @@
     "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Mitchell and Harden OUT means more CLE possessions; Mobley's rebounding role expands with increased frontcourt responsibility."
+    }
   },
   {
     "date": "2026-03-09",
@@ -4146,7 +4305,16 @@
     "actual_value": 15.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Cunningham is OUT; pick is void. Confidence marked unchanged at original floor as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-10",
@@ -4212,7 +4380,14 @@
     "actual_value": 25.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Cunningham OUT removes primary DET creator; Barrett faces weaker defensive structure with redistributed offensive pressure."
+    }
   },
   {
     "date": "2026-03-10",
@@ -4678,7 +4853,14 @@
     "actual_value": 24.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 89,
+      "revised_reasoning": "Cunningham OUT weakens DET defense; Barnes faces diminished resistance, amplifying already strong vs_tough rate."
+    }
   },
   {
     "date": "2026-03-10",
@@ -4722,7 +4904,14 @@
     "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT removes DET primary creator; Ingram faces less defensive attention, easier passing lanes for assists."
+    }
   },
   {
     "date": "2026-03-10",
@@ -5056,7 +5245,17 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Mitchell is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-11",
@@ -5122,7 +5321,17 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-11",
@@ -5144,7 +5353,17 @@
     "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-11",
@@ -5166,7 +5385,17 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-11",
@@ -5628,7 +5857,14 @@
     "actual_value": 16.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Cunningham OUT removes primary DET creator; Barrett faces weaker defensive structure with redistributed offensive pressure."
+    }
   },
   {
     "date": "2026-03-11",
@@ -5650,7 +5886,14 @@
     "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Cunningham OUT reduces DET defensive coordination; Barrett gets cleaner perimeter looks. Already soft opp_def tag."
+    }
   },
   {
     "date": "2026-03-11",
@@ -5672,7 +5915,14 @@
     "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT reduces DET rim presence indirectly; Barnes boards against weaker frontcourt organization."
+    }
   },
   {
     "date": "2026-03-12",
@@ -5804,7 +6054,16 @@
     "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Cunningham is OUT; pick is void. Confidence marked unchanged at original floor as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-12",
@@ -5870,7 +6129,14 @@
     "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Mitchell and Harden OUT weakens CLE rebounding corps; Flagg faces diminished frontcourt competition for boards."
+    }
   },
   {
     "date": "2026-03-12",
@@ -6164,7 +6430,16 @@
     "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Giannis Antetokounmpo (MIL) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Giannis is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-12",
@@ -6340,7 +6615,16 @@
     "actual_value": 10.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT means more DET possessions flow through bigs; Duren gets increased paint touches and board opportunities."
+    }
   },
   {
     "date": "2026-03-12",
@@ -6964,7 +7248,14 @@
     "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT removes DET primary creator; Ingram faces less defensive attention, easier passing lanes for assists."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7010,7 +7301,16 @@
     "actual_value": 15.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Cunningham is OUT; pick is void. Confidence marked unchanged at original floor as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7056,7 +7356,17 @@
     "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Mitchell is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7148,7 +7458,17 @@
     "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7171,7 +7491,17 @@
     "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7194,7 +7524,17 @@
     "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7332,7 +7672,14 @@
     "actual_value": 22.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Cunningham OUT removes primary DET creator; Barrett faces weaker defensive structure with redistributed offensive pressure."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7355,7 +7702,14 @@
     "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Cunningham OUT reduces DET defensive coordination; Barrett gets cleaner perimeter looks. Already soft opp_def tag."
+    }
   },
   {
     "date": "2026-03-13",
@@ -7378,7 +7732,14 @@
     "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT reduces DET rim presence indirectly; Barnes boards against weaker frontcourt organization."
+    }
   },
   {
     "date": "2026-03-13",
@@ -8439,7 +8800,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Cunningham OUT removes primary DET creator; Barrett faces weaker defensive structure with redistributed offensive pressure."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8462,7 +8832,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Cunningham OUT reduces DET defensive coordination; Barrett gets cleaner perimeter looks. Already soft opp_def tag."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8485,7 +8864,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 89,
+      "revised_reasoning": "Cunningham OUT weakens DET defense; Barnes faces diminished resistance, amplifying already strong vs_tough rate."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8508,7 +8896,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT reduces DET rim presence indirectly; Barnes boards against weaker frontcourt organization."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8555,7 +8952,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Cunningham is OUT; pick is void. Confidence marked unchanged at original floor as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8578,7 +8984,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT means more DET possessions flow through bigs; Duren gets increased paint touches and board opportunities."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8601,7 +9016,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Cunningham OUT removes DET primary creator; Ingram faces less defensive attention, easier passing lanes for assists."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8648,7 +9072,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8671,7 +9105,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8694,7 +9138,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Harden is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8741,7 +9195,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Mitchell is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8764,7 +9228,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Mitchell and Harden OUT redistributes CLE offensive usage heavily to Mobley; soft DAL defense amplifies upside despite VOLATILE tag."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8787,7 +9261,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Mitchell and Harden OUT means more CLE possessions; Mobley's rebounding role expands with increased frontcourt responsibility."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8810,7 +9294,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "James Harden (CLE) OUT \u2014 had picks this morning (detected via picks.json)",
+        "Donovan Mitchell (CLE) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Mitchell and Harden OUT weakens CLE rebounding corps; Flagg faces diminished frontcourt competition for boards."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8857,7 +9351,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Giannis Antetokounmpo (MIL) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Giannis is OUT; pick is void. Confidence held at original as pick cannot be graded."
+    }
   },
   {
     "date": "2026-03-15",
@@ -8903,7 +9406,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T10:30:20.535220-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+      ],
+      "updated_at": "2026-03-15T10:30:22.163695-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Cunningham OUT increases Thompson's role and minutes; more possessions flow through him improving rebounding opportunities."
+    }
   },
   {
     "date": "2026-03-15",
