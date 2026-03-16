@@ -91,7 +91,7 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 #### W5 — Skip Validation Monitoring
 **Status: WATCH — ongoing**
 
-`ast_hard_gate` Jokic false skip addressed — elite playmaker exemption (≥8.0 APG) added to prompt 2026-03-15; monitoring continues for non-elite-playmaker frontcourt cases. `reb_floor_skip` T4 false skip cluster (100% false skip rate at T4) addressed — T4 exemption added to prompt 2026-03-15; monitoring continues for pick_value ≥ 6 cases. `workflow_gap` miss class addressed — `filter_self_skip_picks()` Python gate added 2026-03-15. Accumulate skip validation data; revisit remaining rules at ≥200 total graded skips.
+`ast_hard_gate` Jokic false skip addressed — elite playmaker exemption (≥8.0 APG) added to prompt 2026-03-15; monitoring continues for non-elite-playmaker frontcourt cases. `reb_floor_skip` T4 false skip cluster (100% false skip rate at T4) addressed — T4 exemption added to prompt 2026-03-15; monitoring continues for pick_value ≥ 6 cases. `workflow_gap` miss class addressed — `filter_self_skip_picks()` Python gate added 2026-03-15. **Floor gate enforcement gap closed 2026-03-16** — 4 floor gate failure patterns added to `filter_self_skip_picks()` SKIP_CONCLUSIONS; prototype: Thompson REB T4 floor gate SKIP filed at 78% after lineup amendment override. Accumulate skip validation data; revisit remaining rules at ≥200 total graded skips.
 
 
 ### Pending Backtests

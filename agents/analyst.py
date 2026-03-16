@@ -999,6 +999,7 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
         dense_schedule   = s.get("dense_schedule", False)
         b2b_hit_rates      = s.get("b2b_hit_rates") or {}
         minutes_floor_data = s.get("minutes_floor") or {}
+        games_available    = s.get("games_available", 10)
 
         # Team-level opp defense ratings — used for opp_today= annotations on PTS/AST stat lines
         opp_def_all = s.get("opp_defense") or {}
@@ -1156,8 +1157,9 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
                 rest_flag = ""
             dense_flag = " DENSE" if dense_schedule else ""
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
+            ga_flag    = f" [SHORT_SAMPLE:{games_available}g]" if games_available < 8 else ""
             lines.append(
-                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
+                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{ga_flag}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
                 + (momentum_line  + "\n" if momentum_line  else "")
                 + (teammates_line + "\n" if teammates_line else "")
                 + (opp_absence_str + "\n" if opp_absence_str else "")
@@ -1566,6 +1568,25 @@ KEY RULES — REST & FATIGUE:
 - When "DENSE" is shown (even without B2B): cumulative fatigue is likely.
   → Reduce confidence by 5–10% across all stats for that player.
 - rest_days ≥ 3 = well-rested; no downward adjustment needed.
+
+RETURN FROM INJURY — SHORT SAMPLE INSTABILITY:
+- When a player header shows [SHORT_SAMPLE:Ng] (fewer than 8 played games in L10 window),
+  the player has recently returned from injury or missed an extended stretch. Their L10
+  statistical floor has not restabilized — early return games frequently show compressed
+  minutes, conservative role, and below-normal production that will skew the floor downward.
+- For REB and AST props: apply a mandatory one-tier step-down from your normal best tier.
+  If the stepped-down tier does not qualify (hit rate <70%), skip the prop entirely.
+  Rationale: REB and AST are heavily role- and minutes-dependent; a returning player's
+  floor in these categories is unreliable until they have 8+ games of consistent usage.
+- For PTS props: apply a confidence reduction of 5% and do not pick above T15 unless the
+  player has ≥7 games in the L10 window at T20+ with a consistent or up trend.
+  Rationale: elite scorers re-establish their scoring floor faster than role-dependent
+  stats, but the L10 sample instability still warrants caution at higher tiers.
+- Do NOT apply this rule if the player's games_available is 8 or higher — the [SHORT_SAMPLE]
+  flag will not appear in that case.
+- Do NOT apply this rule to ignore iron_floor tags — iron_floor reflects the historical
+  record and is still informative even in a short window. But short sample + iron_floor is
+  not sufficient to override the mandatory REB/AST step-down.
 
 MINUTES FLOOR — THRESHOLD EVENT FRAGILITY:
 - The min_floor= value in each player header is the 10th-percentile of their L10 minutes.
@@ -2141,8 +2162,10 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
     the pick's merit. Conservative: when in doubt, leave the pick.
 
     Filters a pick if ALL of the following are true:
-      1. tier_walk contains explicit skip-conclusion language (see SKIP_CONCLUSIONS below)
-      2. The skip language appears after a confidence calculation (contains a '%')
+      1. tier_walk contains explicit skip-conclusion language (see SKIP_CONCLUSIONS below),
+         including both confidence-below-threshold phrases and floor gate failure phrases
+      2. The skip language appears after a confidence calculation (contains a '%'),
+         OR the skip is a floor gate failure (which fires before confidence arithmetic)
       3. The skip language is not immediately followed by an override/proceed signal
 
     Logs every filtered pick with the matching phrase so it can be audited.
@@ -2158,6 +2181,12 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
         r"drops?\s+(?:confidence\s+)?to\s+\d{2}\s*%[^\w]*below[^\w]*(?:70|threshold)[^\w]*skip",
         r"confidence\s*(?:=|:)?\s*\d{2}\s*%[^\w]*skip",
         r"\d{2}\s*%\s*[-–—]\s*below\s+(?:70|threshold|floor)[^\w]*skip",
+        # Floor gate failure phrases — catches REB/AST floor gate SKIP conclusions
+        # (these fire before confidence arithmetic so no % check required)
+        r"floor\s+gate\s+fails?",
+        r"no\s+variance\s+buffer[^\w]*(?:floor\s+gate|skip)",
+        r"3rd.lowest[^\w]*(?:=|equals?)[^\w]*\d+[^\w]*(?:equals?|=)[^\w]*(?:pick\s+value|T\d)[^\w]*(?:floor\s+gate|skip|no\s+buffer)",
+        r"SKIP[^\w]*3rd.lowest",
     ]
 
     # Signals that indicate the model reconsidered and chose to proceed anyway
