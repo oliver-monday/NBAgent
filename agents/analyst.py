@@ -822,6 +822,116 @@ def load_player_profiles(player_stats: dict) -> str:
     return "\n\n".join(blocks)
 
 
+def build_player_leaderboard(game_log: pd.DataFrame, whitelist: set) -> str:
+    """
+    Build a compact per-stat leaderboard of whitelisted players ranked by:
+      - Season average (all non-DNP games in the log)
+      - L20 average (last 20 non-DNP games)
+
+    Both rankings shown side by side — season reveals established elite status;
+    L20 reveals who is surging or declining relative to their season baseline.
+
+    Only includes active whitelisted players (same tuple filter as build_player_context).
+    Top 15 per stat per ranking. Stats: PTS, REB, AST, 3PM.
+
+    Returns a formatted ## WHITELISTED PLAYER RANKINGS block, or "" on any error.
+    """
+    if game_log.empty or not whitelist:
+        return ""
+
+    try:
+        # Apply whitelist filter — same logic as build_player_context()
+        mask = game_log.apply(
+            lambda r: (
+                r["player_name"].strip().lower(),
+                r["team_abbrev"].strip().upper()
+            ) in whitelist,
+            axis=1
+        )
+        wl_log = game_log[mask].copy()
+
+        if wl_log.empty:
+            return ""
+
+        # Exclude DNPs
+        wl_log = wl_log[wl_log["dnp"].astype(str) != "1"].copy()
+        wl_log["game_date"] = pd.to_datetime(wl_log["game_date"], errors="coerce")
+        wl_log = wl_log.dropna(subset=["game_date"])
+
+        STAT_COLS = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+        TOP_N = 15
+
+        lines = ["## WHITELISTED PLAYER RANKINGS — SEASON vs L20"]
+        lines.append(
+            "Use to identify elite-tier players (high season avg) and surging/declining "
+            "players (L20 diverging from season). Ranks are among whitelisted players only."
+        )
+        lines.append("")
+
+        for stat, col in STAT_COLS.items():
+            if col not in wl_log.columns:
+                continue
+
+            wl_log[col] = pd.to_numeric(wl_log[col], errors="coerce")
+
+            # Season averages — all games in log
+            season_avgs = (
+                wl_log.groupby("player_name")[col]
+                .mean()
+                .round(1)
+                .sort_values(ascending=False)
+                .head(TOP_N)
+            )
+
+            # L20 averages — last 20 games per player (newest first)
+            l20_avgs: dict[str, float] = {}
+            for pname, grp in wl_log.groupby("player_name"):
+                recent = grp.sort_values("game_date", ascending=False).head(20)
+                if len(recent) >= 5:  # min 5 games to show L20
+                    l20_avgs[pname] = round(recent[col].mean(), 1)
+
+            # Build ranked rows — season rank as primary ordering
+            rows = []
+            for rank, (pname, s_avg) in enumerate(season_avgs.items(), start=1):
+                l20_val = l20_avgs.get(pname)
+                # Determine L20 rank among players who have L20 data
+                if l20_val is not None and l20_avgs:
+                    l20_sorted = sorted(l20_avgs.items(), key=lambda x: x[1], reverse=True)
+                    l20_rank = next(
+                        (i + 1 for i, (n, _) in enumerate(l20_sorted) if n == pname),
+                        None
+                    )
+                else:
+                    l20_rank = None
+
+                # Arrow showing season→L20 rank movement
+                if l20_rank is not None:
+                    delta = rank - l20_rank  # positive = moved up in L20
+                    if delta >= 3:
+                        arrow = "↑"
+                    elif delta <= -3:
+                        arrow = "↓"
+                    else:
+                        arrow = "→"
+                    l20_str = f"L20:{l20_val}({arrow}{l20_rank})"
+                else:
+                    l20_str = "L20:—"
+
+                rows.append(f"{rank}. {pname} {s_avg} [{l20_str}]")
+
+            if rows:
+                lines.append(f"{stat}: " + "  |  ".join(rows))
+
+        lines.append("")
+        result = "\n".join(lines)
+        print(f"[analyst] Player leaderboard built ({TOP_N} per stat, season + L20)")
+        return result
+
+    except Exception as e:
+        print(f"[analyst] WARNING: could not build player leaderboard: {e}")
+        return ""
+
+
 def build_quant_context(player_stats: dict, lineup_context: dict | None = None) -> str:
     """
     Build a compact quant stats block for the prompt.
@@ -1148,7 +1258,7 @@ def load_audit_summary() -> str:
 
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "", lineups_section: str = "") -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "", leaderboard: str = "", lineups_section: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -1163,6 +1273,7 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
 
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
+    leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
     lineups_block           = f"{lineups_section}\n\n" if lineups_section else ""
 
     player_profiles_section = (
@@ -1314,7 +1425,7 @@ selection signals.
 {lineups_block}{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{team_defense_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{leaderboard_section}{team_defense_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2105,6 +2216,7 @@ def main():
     season_context  = load_season_context()
     playoff_picture = render_playoff_picture()
     team_defense    = format_team_defense_section()
+    leaderboard     = build_player_leaderboard(game_log, whitelist)
     lineups_section = format_lineups_section(today_teams=set(teams_today))
 
     picks_run_at = dt.datetime.now(ET).isoformat()
@@ -2149,6 +2261,7 @@ def main():
         player_profiles=player_profiles,
         playoff_picture=playoff_picture,
         team_defense=team_defense,
+        leaderboard=leaderboard,
         lineups_section=lineups_section,
     )
 
