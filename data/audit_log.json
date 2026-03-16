@@ -1605,5 +1605,125 @@
         "The Cross-Game Volume Mix parlay succeeded by pairing a high-variance scorer (Reaves, 32 actual) with two low-threshold, high-floor secondary props (Bane AST T2, 4 actual; LaMelo PTS T10, 17 actual) \u2014 this structure distributes risk across prop types and game scripts, ensuring that even a moderate outcome from the anchor scorer would have carried the card. Prioritize parlay legs that combine one high-upside PTS anchor with two independent low-threshold (T1-T2) props from separate games."
       ]
     }
+  },
+  {
+    "date": "2026-03-15",
+    "total_picks": 25,
+    "voided_picks": 5,
+    "hits": 22,
+    "misses": 3,
+    "no_data": 0,
+    "hit_rate_pct": 88.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 10,
+        "hits": 9,
+        "hit_rate_pct": 90.0
+      },
+      "AST": {
+        "picks": 7,
+        "hits": 6,
+        "hit_rate_pct": 85.7
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 8,
+        "hits": 7,
+        "hit_rate_pct": 87.5,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 15,
+        "hits": 13,
+        "hit_rate_pct": 86.7,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Ultra-conservative PTS thresholds (T10) with 10/10 or 9/10 hit rates went 5/5 \u2014 the system's strongest signal is volume-floor scoring props at deeply conservative tiers. RJ Barrett (27), Julius Randle (32), Scottie Barnes (14), Evan Mobley (18), and Chet Holmgren (21) all cleared T10 comfortably. Continue anchoring PTS selection at T10 with consistent tags.",
+      "REB T4 iron-floor or near-iron picks with 3rd-lowest L10 strictly below 4 proved extremely reliable: Randle (7 REB vs T4), Duren (11 REB vs T4), Flagg (6 REB vs T4), Mobley (11 REB vs T4), and Gobert (7 REB vs T6) all hit. The strictly-less-than floor gate correctly filtered out Hartenstein and Thompson (both 3rd-lowest = pick value exactly), of which Thompson missed badly (1 REB). The gate is functioning as designed.",
+      "AST T2 picks at 9/10 or 10/10 hit rates were 5/5 on hittable legs (Randle, Edwards, Ingram excluded due to 0 AST miss, Mitchell, SGA). The T2 conservative step-down for AST props on non-primary ball-handlers remains the right structural call \u2014 the one AST miss (Ingram) was at T2 with a 10/10 rate, suggesting the threshold itself was sound but the outcome was a genuine outlier.",
+      "The lineup amendment system correctly identified upside for absence-beneficiaries \u2014 Duren (11 REB, amended up to 85%), Barnes (10 REB, amended up to 85%), Mobley (11 REB, amended up to 80%) all well exceeded their thresholds. When a primary creator goes OUT and a big man inherits rebounding/scoring load against a weakened defense, the upward amendment logic is directionally accurate and should continue to be trusted.",
+      "Picks on the winning side of COMPETITIVE games (margin 10-19) showed no systematic compression \u2014 OKC's SGA (10 AST, 2 3PM), Holmgren (21 PTS), and TOR's Barrett (27 PTS), Barnes (14 PTS, 10 REB) all hit well above threshold. COMPETITIVE game script is genuinely neutral context and does not require confidence penalties."
+    ],
+    "lessons": [
+      "Brandon Ingram's AST miss (0 actual vs T2 pick) with a 10/10 hit rate and 39 minutes played is a true variance outlier \u2014 no injury exit, full minutes, game was COMPETITIVE (TOR won by 11). However, the 10/10 AST T2 rate means one zero-assist game in L10 is statistically plausible. Flag: AST props for forwards (SF) who operate as secondary creators are more susceptible to zero-assist outliers than PG/SG primary ball-handlers even at T2; the zero-assist game is the tail risk that T2 still exposes. Consider whether a minimum L10 floor check (e.g., no more than 1 game with 0 AST in L10) should be added as a gate for AST SF/PF picks.",
+      "James Harden's 3PM miss (1 actual vs T2 = 2 threshold) occurred in a game CLE won by 10 (COMPETITIVE). The tier_walk correctly flagged a LARGE SPREAD blowout cap was applied (spread_abs=16.5), but the final spread was only 10 points \u2014 the blowout did not materialize at the extreme level anticipated. The pick was made with spread-based concern already priced in at 74%. This is a variance miss on a 10/10 T2 rate \u2014 Harden hit 1/2 of threshold. However, note that the lineup agent marked this pick as void (Harden OUT) yet actual_value = 1.0 and the pick graded as a MISS, meaning Harden played 38 minutes despite the OUT flag. The workflow flagged him OUT but he played \u2014 this is a data-integrity flag: the lineup update's triggered_by field listed 'James Harden OUT' but box score shows 38 minutes. Do not penalize the Analyst for this pick's selection logic; investigate whether the OUT report was retracted pre-tip and the lineup agent did not re-check.",
+      "Ausar Thompson's REB miss (1 actual vs T4) was correctly flagged as a SKIP by the floor gate (3rd-lowest L10 = 4, equal to pick value \u2014 no strictly-less buffer). The pick ran at 78% despite the analyst's own tier_walk concluding 'SKIP.' This represents a workflow execution gap: the system computed SKIP in the tier_walk but still filed the pick. Reinforce the rule: if tier_walk concludes SKIP at all valid REB tiers, the pick must not be submitted regardless of lineup update direction. The Cunningham OUT amendment pushed confidence to 78% (up direction), but the absence of a strictly-less floor buffer should have been a hard block."
+    ],
+    "recommendations": [
+      "Add a hard zero-assist floor check for AST picks on SF/PF positions: if L10 contains any game with 0 AST, require the hit rate at the selected tier to be 10/10 (not 9/10) before filing. Ingram had 10/10 at T2 but still produced 0 AST in a game with 39 minutes \u2014 the zero-assist game that is possible even at T2 is the relevant risk for non-PG creators.",
+      "Implement a hard block on any pick where the tier_walk field contains the word 'SKIP' or 'floor gate FAILS' \u2014 regardless of lineup amendments. Ausar Thompson's miss was predicted by the analyst's own floor gate logic but the pick ran anyway. The lineup agent's upward amendment should never override a SKIP determination from the floor gate; these are independent checks and the floor gate must take precedence.",
+      "Investigate the James Harden OUT data-integrity issue: the lineup agent flagged Harden as OUT pre-game (triggered_by: 'James Harden OUT'), yet box score shows 38 minutes played and actual stats were recorded. If the OUT designation was a false positive or was retracted, the void should have been cancelled. Build a pre-tip status re-check into the pipeline: if a player was flagged OUT by the lineup agent but has a valid tip-off window remaining, re-query injury status within 30 minutes of game start and un-void if status changed to active.",
+      "For 3PM props on CLE players in large-spread games: the LARGE SPREAD cap (spread \u2265 13, cap at 74-80%) and the actual blowout outcome diverged \u2014 the game finished at a 10-point margin, not the anticipated blowout. Harden's 3PM miss was a genuine variance outcome, but the cap logic correctly reduced exposure. No rule change needed; reinforce that the spread-based cap is a prudent constraint even when the blowout doesn't materialize, as it correctly sizes confidence for tail-risk scenarios.",
+      "Continue using the T4 REB floor gate with strict inequality (3rd-lowest must be strictly less than pick value) as a hard filter. The two picks that were flagged SKIP by this gate (Hartenstein and Thompson) had actual values of 12 and 1 respectively \u2014 one hit the floor easily (Hartenstein, would have been a hit) and one missed badly (Thompson, 1 REB). The gate correctly identified both as lacking a reliable floor buffer. The asymmetric outcome (one would have hit, one badly missed) validates the gate as a conservative but correct risk filter over the long run."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Brandon Ingram",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 0.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0: TOR vs DET \u2014 TOR won by 11, COMPETITIVE game. No blowout script effect. STEP 1: Ingram logged 39 minutes; non-zero output in other categories (full participant). The 0 AST result is a within-game distributional outlier, not a DNP or injury exit. STEP 2: Classified as variance. The 10/10 AST T2 hit rate is the system's highest-confidence AST floor \u2014 a 0-assist game against this baseline is a genuine low-probability tail event. No quant signal, injury flag, or scheme mismatch was available at pick time that would have predicted a zero. STEP 3: Original reasoning ('10/10 AST T2 consistent; reliable floor regardless of DvP in competitive game') was structurally sound \u2014 the T2 threshold is deliberately conservative for exactly this reason. The reasoning correctly identified the floor but could not price a rare zero-assist game for a forward. STEP 4: 10/10 hit rate at T2 means one miss in L10 is within statistical expectation; this is the tail event that a 90%+ implied rate acknowledges. STEP 5: Tier walk correctly stepped from T4 (borderline gate, skipped) to T2 (10/10, confirmed). No tier_skip_error. STEP 6: Lineup amendment direction = 'unchanged' \u2014 no revision triggered by Cunningham OUT for this TOR-side pick. No amendment commentary required. Structural note: SF/PF AST props at T2 carry zero-assist tail risk even at 10/10 \u2014 consider adding a L10 zero-count gate."
+      },
+      {
+        "player_name": "James Harden",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0: CLE vs DAL \u2014 CLE won by 10, COMPETITIVE game. Pre-game spread was 16.5, but actual margin was 10; the anticipated blowout did not materialize. STEP 1: Harden logged 38 minutes per post-game news context, producing real stats including 1 3PM. STEP 2: Classified as variance. The pick carried a large-spread blowout cap already applied (confidence reduced to 74%), and the actual outcome was a near-miss at 1/2 \u2014 within normal shooting variance for a volume perimeter player. Data-integrity flag: lineup agent listed Harden as OUT pre-game (triggered_by), yet box score shows 38 minutes played. This suggests the OUT report was either a false positive or was retracted pre-tip. The pick was not voided despite the agent flagging it; this is a pipeline integrity issue separate from selection quality. STEP 3: Original reasoning ('10/10 3PM T2 consistent; blowout cap applied; DAL defense is soft for perimeter') correctly identified the floor and applied a conservative cap. The cap reduced confidence appropriately. The miss at 1 vs threshold 2 is a single-make shortfall on a high-volume 3PM prop \u2014 within variance. STEP 4: 10/10 T2 hit rate supports this as a sound pick; the miss does not indicate a systematic flaw. STEP 5: Tier walk stepped from T3 (pace gate not confirmed, capped at T2) to T2 (10/10, 92% base). Conservative and correct. No tier_skip_error. STEP 6: Amendment direction = 'down' (Harden OUT flag); pick still ran and missed. Amendment correctly flagged OUT risk \u2014 revised to 74%, but the pick ran as the player was apparently active. Phrase: 'Amendment correctly flagged downside risk (Harden OUT triggered). Revised to 74% \u2014 pick ran and missed by 1 make.' This is a workflow gap on the OUT/active status re-check, not a selection error."
+      },
+      {
+        "player_name": "Ausar Thompson",
+        "prop_type": "REB",
+        "pick_value": 4,
+        "actual_value": 1.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0: DET @ TOR \u2014 TOR won by 11, COMPETITIVE game. No blowout game-script compression applicable. STEP 1: Thompson logged 24 minutes; 1 REB in that time is a legitimate but very low output. Full participant. STEP 2: Classified as model_gap_rule. The analyst's own tier_walk explicitly concluded 'SKIP: 3rd-lowest L10 REB=4 equals T4; no variance buffer; floor gate fails.' Despite this SKIP determination, the pick was submitted at 78% confidence \u2014 likely because the lineup amendment (Cunningham OUT, direction='up', revised to 78%) overrode the floor gate conclusion. The rule gap: the system currently permits a lineup amendment's upward revision to supersede a SKIP from the floor gate, when it should not. The floor gate and lineup amendment are independent checks; the floor gate must be a hard block. STEP 3: Original reasoning ('SKIP: 3rd-lowest L10 REB=4 equals T4; no variance buffer; floor gate fails') correctly identified the skip condition. The pick should never have been filed \u2014 this was an execution failure in how the lineup amendment interacted with the floor gate output. STEP 4: 9/10 hit rate at T4 is strong in isolation, but the 3rd-lowest = pick value (no buffer) was the disqualifying factor. The 1 REB outcome (well below floor) confirms the floor gate's concern. STEP 5: Tier walk flag is null (the walk itself was correct \u2014 it said SKIP). The issue is post-walk execution: the pick ran despite the SKIP. STEP 6: Amendment direction = 'up' (Cunningham OUT). Amendment flagged upside (revised to 78%) but pick missed badly (1 REB vs T4). The amendment's upside rationale ('more possessions and rebounding opportunities') did not materialize \u2014 likely because Thompson's 24 minutes limited his role even with Cunningham out. Amendment missed the real risk: role/minutes compression for a secondary player on a team that lost by 11."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 1/1 sweep on the Sunday Volume Sweep \u2014 anchored by Barrett (27 PTS) and Randle (32 PTS) against ultra-low T10 thresholds; Harden leg recorded null but parlay graded HIT with 2/3 legs confirmed.",
+      "parlay_lessons": [
+        "The Sunday Volume Sweep included a James Harden leg that the lineup agent flagged as void (player OUT pre-game), yet the parlay was graded HIT with legs_hit=2 and Harden's leg returning null. This structural fragility \u2014 a voided/null leg passing through to a parlay HIT \u2014 should be audited: define whether a null leg constitutes a push (parlay grades on remaining legs) or a miss. If the rule is 'null = push on remaining legs,' document it explicitly. If it should be a void of the full parlay, the pipeline needs a guard. This session it worked in the system's favor, but the ambiguity is a risk that could produce an incorrect graded result in the future."
+      ],
+      "parlay_reinforcements": [
+        "Multi-game ultra-low PTS threshold parlays (T10 OVER across independent games) are the strongest structural leg combination \u2014 Barrett and Randle both cleared their T10 thresholds by 17+ points each, confirming that stacking volume-floor PTS legs across unrelated games with 9/10 or 10/10 consistent hit rates provides genuine parlay resilience. Continue building parlays around 2\u20133 T10 PTS legs with consistent tags as the structural core.",
+        "Including a third leg at a slightly lower confidence tier (Harden at 74% vs Barrett 84% / Randle 80%) as the 'swing leg' in a parlay is sound construction \u2014 the two high-confidence anchors provide the floor, and the swing leg either boosts the return or is the lone miss without sinking the card. The implied odds of +101 on a 3-leg parlay with this confidence profile represent good value relative to the system's baseline hit rates."
+      ]
+    }
   }
 ]

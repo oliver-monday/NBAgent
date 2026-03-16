@@ -14,10 +14,10 @@
       "volatile_tag": true,
       "reason": "VOLATILE + 7/10 at T25 (>=T15) triggers mandatory skip per volatile_weak_combo rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 19.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 19.0 < tier 25"
   },
   {
     "date": "2026-03-15",
@@ -33,10 +33,10 @@
       "tier_considered": 20,
       "reason": "FG_MARGIN_THIN:6% below 10% safety floor; drop from T20 \u2014 but T20 also only 7/10=70% and VOLATILE_WEAK_COMBO applies; primary skip is volatile_weak_combo at T25/T20"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 19.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 19.0 < tier 20"
   },
   {
     "date": "2026-03-15",
@@ -53,10 +53,10 @@
       "volatile_tag": true,
       "reason": "VOLATILE + 8/10 at T20 (>=T15) triggers mandatory skip; stepped to T15 which also qualifies as volatile_weak_combo skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 26.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 26.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-15",
@@ -73,10 +73,10 @@
       "volatile_tag": true,
       "reason": "VOLATILE + 8/10 at T15 triggers mandatory skip; both T20 and T15 blocked by volatile_weak_combo"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 26.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 26.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-15",
@@ -93,10 +93,10 @@
       "spread_abs": 16.5,
       "reason": "trend=down AND BLOWOUT_RISK=True (spread_abs>8, CLE heavily favored); mandatory skip all 3PM tiers including T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
   },
   {
     "date": "2026-03-15",
@@ -113,10 +113,10 @@
       "volatile_tag": true,
       "reason": "VOLATILE + 8/10 at T15 triggers mandatory skip per volatile_weak_combo rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-15",
@@ -134,10 +134,10 @@
       "stepped_to": 10,
       "reason": "FG_COLD:-16% exceeds -15% threshold; mandatory step-down T15->T10; T10 also blocked by BLOWOUT_SECONDARY_SCORER (DAL +16.5 underdog, Flagg not primary scorer); PTS prop skipped"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 27.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 27.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-15",
@@ -154,10 +154,10 @@
       "primary_scorer": false,
       "reason": "DAL is +16.5 underdog; Flagg is not team PPG leader; secondary scorer on large underdog PTS pick skipped"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 27.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 27.0 \u2265 tier 10"
   },
   {
     "date": "2026-03-15",
@@ -174,10 +174,10 @@
       "note": "trend=down; after step-down to T1: VOLATILE + trend=down; DAL is underdog so BLOWOUT_RISK does not apply to favored-team winning-side rule; however trend=down step-down lands at T1 which is minimum tier; apply 3pm_trend_down_tough_dvp check: DvP not tough; but VOLATILE + T1 + trend=down: T1 is borderline; proceed to step-down \u2192 T1 is the result but VOLATILE makes it very marginal; skip based on volatile_weak_combo at T1",
       "reason": "trend=down step-down to T1; VOLATILE tag makes T1 structurally fragile; skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-15",
@@ -194,10 +194,10 @@
       "opp_today_rating": "mid",
       "reason": "AST T4+: position PF triggers hard gate; opp_today=mid is not soft; gate requires soft opponent for PF; skip T4"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-15",
@@ -213,10 +213,10 @@
       "pick_value": 4,
       "reason": "3rd-lowest L10 REB=4 equals T4 pick value; strict less than gate fails; no valid tier below T4 exists"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-15",
@@ -232,10 +232,10 @@
       "pick_value": 4,
       "reason": "3rd-lowest L10 REB=4 equals T4 pick value; strict less than gate fails; no valid tier below T4 exists"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 4"
   },
   {
     "date": "2026-03-15",
@@ -251,10 +251,10 @@
       "pick_value": 4,
       "reason": "3rd-lowest L10 REB=4 equals T4 pick value; strict less than gate fails; no valid tier below T4 exists"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-15",
@@ -271,10 +271,10 @@
       "volatile_tag": true,
       "reason": "VOLATILE + 7/10 at T15 triggers mandatory skip per volatile_weak_combo rule; opp_today=tough further reduces confidence"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 34.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 34.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-15",
@@ -293,7 +293,7 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]
