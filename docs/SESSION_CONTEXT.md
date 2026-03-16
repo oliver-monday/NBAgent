@@ -57,7 +57,8 @@ injuries and lineups are fresh before picks are generated.
 ```
 team, whitelisted_teammates,  ← sorted list of other active whitelisted players on same team playing today; [] when none
 opponent, games_available, last_updated,
-on_back_to_back, rest_days, games_last_7, dense_schedule,
+on_back_to_back,   ← player-level (2026-03-15): True only if team in b2b_teams AND player's most recent game_date == yesterday; rested players (OUT/load mgmt yesterday) get False even if team played
+rest_days, games_last_7, dense_schedule,
 b2b_hit_rates, today_spread, spread_abs, blowout_risk,
 tier_hit_rates, matchup_tier_hit_rates, spread_split_hit_rates,
 best_tiers, trend, home_away_splits,
@@ -329,7 +330,9 @@ touched — the sub-object is additive, not destructive.
 - Constants: `MODEL = "claude-sonnet-4-6"`, `MAX_TOKENS = 2048`, `CUTOFF_MINUTES = 20`
 - `_ABBR_NORM` dict + `_norm(abbr)` — same normalization pattern as rest of codebase
 - `OPPORTUNITY_FLAGS_JSON = DATA / "opportunity_flags.json"` — cumulative suggestion file
-- `_OPPORTUNITY_TRIGGER_TAGS = {"defensive_anchor", "rim_anchor", "high_usage"}` — role tags that trigger teammate opportunity scan; `"perimeter_threat"` and `"role_player"` do NOT trigger
+- `SKIPPED_PICKS_JSON = DATA / "skipped_picks.json"` — read by `load_morning_skips()` for annotation
+- `ESPN_SCOREBOARD_URL` — ESPN scoreboard API used by `fetch_live_spreads()`
+- `_OPPORTUNITY_TRIGGER_TAGS = {"defensive_anchor", "rim_anchor", "high_usage"}` — role tags; **used only by `classify_absent_player()` / amendment path now**; opportunity surfacing no longer uses tag gating (redesign 2026-03-15)
 - `load_game_map() → dict[str, str]` — `{norm_team_abbr: game_time_utc}` from `nba_master.csv`; used to check tip-off cutoff per pick
 - `game_is_actionable(game_time_utc, now_et) → bool` — True if tip-off > CUTOFF_MINUTES away; True on parse failure (safe default — don't skip on bad data)
 - `compute_lineup_diff(lineups, injuries, today_picks=None) → list[dict]` — **TWO-SOURCE detection (March 14, 2026):** Source 1 (snapshot starters): players in `snapshot_at_analyst_run` now OUT/DOUBTFUL in injury report or silently dropped from starters. Source 2 (picks-based): players with open (ungraded) picks today who appear OUT/DOUBTFUL in injuries OR have `voided=True` in picks (lineup_watch already confirmed OUT). Both sources run; results merged and deduplicated via `(player_name_lower, norm_team)` 2-tuple. Each change dict carries a `"source": "snapshot" | "picks"` field. Root cause fixed: stars who aren't in Rotowire projected starters (load management, post-snapshot status shifts, bench players) were completely invisible to the original snapshot-only diff.
@@ -342,9 +345,11 @@ touched — the sub-object is additive, not destructive.
 - `call_lineup_update(affected_picks, changes, rotowire_context="", player_stats=None) → list[dict]` — single Claude call with 4-step reasoning framework (identify role, determine direction, calibrate magnitude using quant, apply default rule); system prompt now uses absent player profiles and per-pick quant context; `rotowire_context` injected when non-empty; returns `[{player_name, prop_type, direction, revised_confidence_pct, revised_reasoning}]`
 - `apply_amendments(all_picks, amendments, affected_picks, changes, now_iso) → tuple[int,int,int]` — writes `lineup_update` sub-objects in-place to `all_picks`; returns `(n_amended, n_up, n_down)`; keyed by `(player_name_lower, prop_type)`
 - `load_game_log() → pd.DataFrame | None` — reads `data/player_game_log.csv`; returns None gracefully on missing/error
+- `fetch_live_spreads() → dict[str, float | None]` — fetches current spreads from ESPN scoreboard API; returns `{norm_team: signed_spread}`; negative = favored; returns `{}` on any error (graceful degradation — spread delta omitted from cards without blocking run)
+- `load_morning_skips() → dict[str, list[str]]` — reads `data/skipped_picks.json`; filters to TODAY_STR; returns `{player_name_lower: [skip_reason, ...]}` for opportunity card annotation
 - `compute_without_player_rates(teammate_name, absent_player_name, game_log) → dict` — looks up historical games where absent player had dnp=="1" or minutes in ("","0"); computes hit rates at each tier for the teammate in those games; returns `{stat: {tier, hit_rate, n}}` for qualifying tiers (≥0.70 and n≥3); returns `{}` when insufficient history
-- `build_opportunity_suggestions(changes, today_picks, player_stats, game_log, now_iso) → list[dict]` — for each qualifying absence (trigger tag in `_OPPORTUNITY_TRIGGER_TAGS`), scans whitelisted teammates NOT in today's picks (teammate scan) AND opponent players for `defensive_anchor`/`rim_anchor` absences (opponent scan). **Opponent scan (March 14, 2026):** gated on `defensive_anchor | rim_anchor` trigger tags only (not `high_usage`); resolves opponent team via `player_stats` opponent field; emits suggestions with `"side": "opponent"` field; covers PTS/REB/3PM props (AST unaffected by defensive absence). Teammate scan emits `"side": "teammate"` (default). Deduplicates via `(date, player_name_lower, prop_type, triggered_by_lower)` 4-tuple.
-- `save_opportunity_flags(suggestions) → None` — appends to `data/opportunity_flags.json`; deduplicates; atomic write via `.tmp` rename
+- `build_opportunity_suggestions(changes, today_picks, player_stats, game_log, now_iso) → list[dict]` — **(redesigned 2026-03-15)** for each confirmed absence (new_absence), scans ALL whitelisted teammates AND opponents with no role-tag gating; includes skipped-this-morning players (annotated, not blocked); deduplicates by `(player_name_lower, prop_type)` — one card per player per prop; annotates with live spread delta (≥3pt moves via `fetch_live_spreads()`), morning context ("picked this morning" / "skipped this morning (reason)"), and without-player historical rates for teammate-side suggestions. Suggestion schema: `{date, generated_at, triggered_by_player, triggered_by_team, side ("teammate"|"opponent"), player_name, team, prop_type, suggested_tier, tier_hit_rate_pct, without_player_hit_rate_pct, without_player_n, spread_delta, trend, volatility, morning_context, reasoning}`.
+- `save_opportunity_flags(suggestions) → None` — appends to `data/opportunity_flags.json`; deduplicates by `(date, player_name_lower, prop_type)` — 3-field key (was 4-field including triggered_by_player); atomic write via `.tmp` rename
 - `main()` — accepts `--debug` flag (argparse). Debug mode: prints full diagnostic (snapshot teams found, changes detected with source labels, affected picks count, opportunity suggestions) without making LLM call or writing any files. Picks are loaded BEFORE `compute_lineup_diff()` call so `today_picks` can be passed as second detection source. Run with: `python agents/lineup_update.py --debug`
 
 **`lineup_update` sub-object schema (written to affected picks):**

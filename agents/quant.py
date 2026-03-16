@@ -1742,7 +1742,16 @@ def build_player_stats(
         minutes_trend     = compute_minutes_trend(games_10, games_5)
         minutes_floor     = compute_minutes_floor(grp)
         raw_avgs          = {stat: round(games_10[STAT_COL[stat]].mean(), 1) for stat in TIERS}
-        on_b2b            = team in b2b_teams
+        # B2B flag: True only if BOTH the team played yesterday AND this player
+        # appeared in yesterday's game. A player who sat out (DNP, load management,
+        # injury rest) is rested regardless of team schedule — do not apply B2B
+        # hit rates or the B2B annotation to a player who did not play last night.
+        _yesterday_str = (TODAY - dt.timedelta(days=1)).strftime("%Y-%m-%d")
+        _player_played_yesterday = (
+            not grp.empty
+            and str(grp["game_date"].iloc[0]) == _yesterday_str
+        )
+        on_b2b = (team in b2b_teams) and _player_played_yesterday
         opp_context       = opp_defense.get(opponent) if opponent else None
 
         # Positional DvP — position-specific opponent defense rating

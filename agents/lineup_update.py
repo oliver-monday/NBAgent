@@ -85,6 +85,101 @@ def load_game_log() -> "pd.DataFrame | None":
         return None
 
 
+ESPN_SCOREBOARD_URL = (
+    "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
+)
+
+
+def fetch_live_spreads() -> dict[str, "float | None"]:
+    """
+    Fetch current point spreads from ESPN scoreboard API for today's games.
+    Returns {norm_team_abbr: signed_spread} where negative = favored.
+
+    Example: {"OKC": -9.5, "MIN": 9.5, "CLE": -16.5, "DAL": 16.5}
+
+    Returns {} on any network or parse error — never crashes.
+    Graceful degradation: if ESPN is unavailable, spread delta is omitted
+    from opportunity cards without blocking the rest of the run.
+    """
+    try:
+        import requests as _requests
+        resp = _requests.get(ESPN_SCOREBOARD_URL, timeout=8)
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception as e:
+        print(f"[lineup_update] WARNING: could not fetch live spreads: {e}")
+        return {}
+
+    result: dict[str, "float | None"] = {}
+    for event in data.get("events", []):
+        for comp in event.get("competitions", []):
+            odds_list = comp.get("odds", [])
+            if not odds_list:
+                continue
+            # Use first odds provider entry — details field contains the spread line
+            odds = odds_list[0]
+            details = odds.get("details", "")  # e.g. "OKC -9.5" or "MIN +9.5"
+            if not details:
+                continue
+
+            # Parse "TEAM ±X.X" format
+            parts = details.strip().split()
+            if len(parts) != 2:
+                continue
+            try:
+                spread_val = float(parts[1])
+            except ValueError:
+                continue
+
+            # Match each competitor to get their side of the spread
+            competitors = comp.get("competitors", [])
+            for comp_entry in competitors:
+                abbr = _norm(
+                    str(comp_entry.get("team", {}).get("abbreviation", "") or "")
+                )
+                if not abbr:
+                    continue
+                # The details field shows the favored team with negative spread.
+                # Determine which side each team is on from home/away context.
+                # home_team_abbr from details prefix — match by string start.
+                fav_abbr = _norm(parts[0]) if parts else ""
+                if abbr == fav_abbr:
+                    result[abbr] = -abs(spread_val)
+                else:
+                    result[abbr] = abs(spread_val)
+
+    print(f"[lineup_update] live spreads fetched for {len(result)} teams")
+    return result
+
+
+SKIPPED_PICKS_JSON = DATA / "skipped_picks.json"
+
+
+def load_morning_skips() -> dict[str, list[str]]:
+    """
+    Load today's skip records from skipped_picks.json.
+    Returns {player_name_lower: [skip_reason, ...]} for quick lookup.
+    Used to annotate opportunity cards with morning skip context.
+    """
+    if not SKIPPED_PICKS_JSON.exists():
+        return {}
+    try:
+        with open(SKIPPED_PICKS_JSON) as fh:
+            skips = json.load(fh)
+        result: dict[str, list[str]] = {}
+        for s in skips:
+            if s.get("date") != TODAY_STR:
+                continue
+            name = (s.get("player_name") or "").strip().lower()
+            reason = s.get("skip_reason") or ""
+            if name and reason:
+                result.setdefault(name, []).append(reason)
+        return result
+    except Exception as e:
+        print(f"[lineup_update] WARNING: could not load skipped_picks: {e}")
+        return {}
+
+
 def compute_without_player_rates(
     teammate_name: str,
     absent_player_name: str,
@@ -175,232 +270,193 @@ def build_opportunity_suggestions(
     now_iso: str,
 ) -> list[dict]:
     """
-    For each qualifying absence (high-impact absent player), find whitelisted
-    teammates who were NOT picked this morning and have a qualifying tier.
+    For each whitelisted player going OUT today, surface whitelisted teammates
+    and opponents who have qualifying quant tiers — as fresh-look candidates
+    given the changed game context.
 
-    Returns list of suggestion dicts — one per qualifying player × prop_type.
-    Empty list when no qualifying absences or no teammate opportunities found.
+    Includes players who were skipped this morning (context changed).
+    Deduplicates by (player_name, prop_type) — one card per player per prop.
+    Annotates each card with live spread delta when available.
+
+    Returns list of suggestion dicts. Empty list when no qualifying absences
+    or no whitelisted players with qualifying tiers found.
     """
-    # Build set of already-picked (player_name_lower, team) to avoid re-surfacing
-    picked_keys: set = {
-        (p["player_name"].strip().lower(), _norm(p.get("team", "")))
+    # Only process confirmed absences (OUT or DOUBTFUL)
+    absence_changes = [c for c in changes if c.get("change_type") == "new_absence"]
+    if not absence_changes:
+        return []
+
+    # Morning spread from player_stats (written at analyst run time)
+    # Map: norm_team → spread_abs (positive float, team's perspective unsigned)
+    morning_spreads: dict[str, float] = {}
+    for ps_data in player_stats.values():
+        team = _norm(ps_data.get("team", ""))
+        sa   = ps_data.get("spread_abs")
+        if team and sa is not None and team not in morning_spreads:
+            morning_spreads[team] = float(sa)
+
+    # Live spreads from ESPN — graceful empty dict on failure
+    live_spreads = fetch_live_spreads()
+
+    # Morning skips — for annotation only, not gating
+    morning_skips = load_morning_skips()
+
+    # Build set of players already picked this morning (for annotation)
+    picked_keys: set[tuple[str, str]] = {
+        (p["player_name"].strip().lower(), p.get("prop_type", ""))
         for p in today_picks
+        if not p.get("voided", False)
     }
 
-    suggestions: list[dict] = []
+    # Dedup: (player_name_lower, prop_type) → best suggestion so far
+    # Keeps the suggestion with the highest tier_hit_rate_pct when multiple
+    # absences trigger the same player/prop.
+    seen: dict[tuple[str, str], dict] = {}
 
-    for change in changes:
-        if change.get("change_type") != "new_absence":
-            continue
-
+    for change in absence_changes:
         absent_name = change["player_name"]
         absent_team = _norm(change["team"])
 
-        # Check if this absence qualifies as high-impact
-        profile = classify_absent_player(absent_name, absent_team, player_stats, today_picks=today_picks)
-        trigger_tags = set(profile.get("role_tags", [])) & _OPPORTUNITY_TRIGGER_TAGS
-        if not trigger_tags:
-            print(
-                f"[lineup_update] opportunity: {absent_name} has no trigger tags "
-                f"({profile.get('role_tags', [])}) — skipping teammate scan"
-            )
-            continue
-
-        print(
-            f"[lineup_update] opportunity triggered: {absent_name} ({absent_team}) "
-            f"tags={sorted(trigger_tags)} — scanning teammates"
-        )
-
-        # Find whitelisted teammates in player_stats who weren't picked
-        for tm_name, tm_stats in player_stats.items():
-            if _norm(tm_stats.get("team", "")) != absent_team:
-                continue
-            if (tm_name.strip().lower(), absent_team) in picked_keys:
-                continue  # Already has a morning pick — lineup_update amends it instead
-
-            best_tiers  = tm_stats.get("best_tiers") or {}
-            trends      = tm_stats.get("trend") or {}
-            volatility  = tm_stats.get("volatility") or {}
-
-            # Compute without-absent-player rates if game_log available
-            without_rates: dict = {}
-            if game_log is not None:
-                without_rates = compute_without_player_rates(
-                    tm_name, absent_name, game_log
-                )
-                if without_rates:
-                    print(
-                        f"[lineup_update] opportunity: {tm_name} has without-"
-                        f"{absent_name.split()[-1]} data for "
-                        f"{list(without_rates.keys())}"
-                    )
-
-            for prop in ("PTS", "REB", "AST", "3PM"):
-                best = best_tiers.get(prop)
-                if not best:
-                    continue
-
-                tier    = best["tier"]
-                base_hr = best["hit_rate"]
-                trend   = trends.get(prop, "stable")
-                vol     = (volatility.get(prop) or {}).get("label", "")
-
-                # Check without-player rates — prefer if available and qualifying
-                without_tier_data = None
-                without_hr        = None
-                without_n         = None
-                if without_rates.get(prop):
-                    wrates = without_rates[prop]
-                    best_without_tier = max(
-                        (t for t in wrates if wrates[t]["hit_rate"] >= 0.70),
-                        default=None
-                    )
-                    if best_without_tier is not None:
-                        without_hr        = wrates[best_without_tier]["hit_rate"]
-                        without_n         = wrates[best_without_tier]["n"]
-                        without_tier_data = best_without_tier
-
-                # Overall rate must qualify (≥70%) to surface
-                if base_hr < 0.70:
-                    continue
-
-                # Build caution flags
-                caution_parts: list[str] = []
-                if vol == "volatile":
-                    caution_parts.append("volatile player")
-                if trend == "down":
-                    caution_parts.append("trend=down")
-                if without_n is not None and without_n < 5:
-                    caution_parts.append(f"small without-sample (n={without_n})")
-                elif without_n is None:
-                    caution_parts.append("no without-player history")
-
-                # Build reasoning summary
-                reason_parts = [
-                    f"{prop} T{tier} overall={int(round(base_hr*100))}%",
-                ]
-                if without_hr is not None:
-                    reason_parts.append(
-                        f"{int(round(without_hr*100))}% in {without_n}g without "
-                        f"{absent_name.split()[-1]}"
-                    )
-                reason_parts.append(f"trend={trend}")
-                if trigger_tags:
-                    reason_parts.append(
-                        f"triggered by {absent_name} OUT "
-                        f"[{', '.join(sorted(trigger_tags))}]"
-                    )
-                reasoning = "; ".join(reason_parts)
-
-                suggestions.append({
-                    "date":                        TODAY_STR,
-                    "generated_at":                now_iso,
-                    "triggered_by_player":         absent_name,
-                    "triggered_by_team":           absent_team,
-                    "trigger_tags":                sorted(trigger_tags),
-                    "player_name":                 tm_name,
-                    "team":                        absent_team,
-                    "prop_type":                   prop,
-                    "suggested_tier":              tier,
-                    "tier_hit_rate_pct":           int(round(base_hr * 100)),
-                    "without_player_tier":         without_tier_data,
-                    "without_player_hit_rate_pct": int(round(without_hr * 100)) if without_hr is not None else None,
-                    "without_player_n":            without_n,
-                    "trend":                       trend,
-                    "volatility":                  vol or "moderate",
-                    "caution":                     "; ".join(caution_parts) if caution_parts else None,
-                    "reasoning":                   reasoning,
-                })
-
-        # ── Opponent scan (defensive_anchor / rim_anchor absences only) ──────
-        # When an elite defender goes OUT, the opposing team's offensive players
-        # get easier looks, higher FGA, and more paint access.
-        # Only run this for tags that have a clear opponent-side impact.
-        opponent_trigger_tags = {"defensive_anchor", "rim_anchor"}
-        if not (trigger_tags & opponent_trigger_tags):
-            continue  # skip opponent scan for high_usage/primary_creator — impact is team-side only
-
-        # Find which team is playing absent_team today
-        # Use player_stats to find a player on absent_team and read their opponent
-        opponent_team: str | None = None
-        for ps_name, ps_data in player_stats.items():
+        # Determine opposing team from player_stats
+        opponent_team: "str | None" = None
+        for ps_data in player_stats.values():
             if _norm(ps_data.get("team", "")) == absent_team:
-                opp_candidate = _norm(ps_data.get("opponent", ""))
-                if opp_candidate:
-                    opponent_team = opp_candidate
+                opp = _norm(ps_data.get("opponent", ""))
+                if opp:
+                    opponent_team = opp
                     break
 
-        if not opponent_team:
-            print(
-                f"[lineup_update] opportunity: could not determine opponent for "
-                f"{absent_team} — skipping opponent scan"
-            )
-            continue
-
         print(
-            f"[lineup_update] opportunity: scanning opponent {opponent_team} "
-            f"picks for {absent_name} defensive absence"
+            f"[lineup_update] opportunity: {absent_name} ({absent_team}) OUT — "
+            f"scanning teammates + opponent {opponent_team or '?'}"
         )
 
-        for tm_name, tm_stats in player_stats.items():
-            if _norm(tm_stats.get("team", "")) != opponent_team:
-                continue
-            if (tm_name.strip().lower(), opponent_team) in picked_keys:
-                # Already picked this morning — the LLM amendment path will handle upward revision
-                # Don't surface as an opportunity (it's already in the picks card)
+        # Compute spread delta for this game
+        spread_delta_str: str = ""
+        if opponent_team:
+            morning_sa = morning_spreads.get(absent_team) or morning_spreads.get(opponent_team)
+            live_sa_team = live_spreads.get(absent_team)
+            live_sa_opp  = live_spreads.get(opponent_team)
+            # Use whichever live value we got; convert to abs for comparison
+            live_sa = abs(live_sa_team) if live_sa_team is not None else (
+                      abs(live_sa_opp)  if live_sa_opp  is not None else None)
+            if morning_sa is not None and live_sa is not None:
+                delta = live_sa - morning_sa
+                if abs(delta) >= 3.0:
+                    direction = "larger" if delta > 0 else "smaller"
+                    spread_delta_str = (
+                        f"spread moved {abs(delta):.1f}pts {direction} since morning "
+                        f"(was {morning_sa:.1f}, now {live_sa:.1f})"
+                    )
+
+        # Scan both teams
+        teams_to_scan = [
+            (absent_team,   "teammate"),
+            (opponent_team, "opponent"),
+        ]
+
+        for scan_team, side in teams_to_scan:
+            if not scan_team:
                 continue
 
-            best_tiers = tm_stats.get("best_tiers") or {}
-            trends     = tm_stats.get("trend") or {}
-            volatility = tm_stats.get("volatility") or {}
-
-            for prop in ("PTS", "REB", "3PM"):  # AST unaffected by defensive absence
-                best = best_tiers.get(prop)
-                if not best:
+            for tm_name, tm_stats in player_stats.items():
+                if _norm(tm_stats.get("team", "")) != scan_team:
                     continue
 
-                tier    = best["tier"]
-                base_hr = best["hit_rate"]
-                trend   = trends.get(prop, "stable")
-                vol     = (volatility.get(prop) or {}).get("label", "")
+                best_tiers = tm_stats.get("best_tiers") or {}
+                trends     = tm_stats.get("trend") or {}
+                volatility = tm_stats.get("volatility") or {}
+                name_lower = tm_name.strip().lower()
 
-                if base_hr < 0.70:
-                    continue
+                for prop in ("PTS", "REB", "AST", "3PM"):
+                    best = best_tiers.get(prop)
+                    if not best:
+                        continue
 
-                caution_parts: list[str] = []
-                if vol == "volatile":
-                    caution_parts.append("volatile player")
-                if trend == "down":
-                    caution_parts.append("trend=down")
+                    tier    = best["tier"]
+                    base_hr = best["hit_rate"]
 
-                reason_parts = [
-                    f"{prop} T{tier} overall={int(round(base_hr*100))}%",
-                    f"opponent {absent_name} OUT [{', '.join(sorted(trigger_tags & opponent_trigger_tags))}]",
-                    f"trend={trend}",
-                ]
-                reasoning = "; ".join(reason_parts)
+                    if base_hr < 0.70:
+                        continue
 
-                suggestions.append({
-                    "date":                        TODAY_STR,
-                    "generated_at":                now_iso,
-                    "triggered_by_player":         absent_name,
-                    "triggered_by_team":           absent_team,
-                    "trigger_tags":                sorted(trigger_tags & opponent_trigger_tags),
-                    "player_name":                 tm_name,
-                    "team":                        opponent_team,
-                    "prop_type":                   prop,
-                    "suggested_tier":              tier,
-                    "tier_hit_rate_pct":           int(round(base_hr * 100)),
-                    "without_player_tier":         None,
-                    "without_player_hit_rate_pct": None,
-                    "without_player_n":            None,
-                    "trend":                       trend,
-                    "volatility":                  vol or "moderate",
-                    "caution":                     "; ".join(caution_parts) if caution_parts else None,
-                    "reasoning":                   reasoning,
-                    "side":                        "opponent",  # new field — distinguishes from teammate suggestions
-                })
+                    dedup_key = (name_lower, prop)
 
+                    # Build the suggestion
+                    trend   = trends.get(prop, "stable")
+                    vol     = (volatility.get(prop) or {}).get("label", "moderate")
+
+                    # Morning context annotation
+                    already_picked = (name_lower, prop) in picked_keys
+                    skip_reasons   = morning_skips.get(name_lower, [])
+                    morning_context = ""
+                    if already_picked:
+                        morning_context = "picked this morning"
+                    elif skip_reasons:
+                        morning_context = f"skipped this morning ({', '.join(skip_reasons[:2])})"
+
+                    # Without-absent-player historical rates (reuse existing function)
+                    without_hr: "float | None" = None
+                    without_n:  "int | None"   = None
+                    if side == "teammate" and game_log is not None:
+                        without_rates = compute_without_player_rates(
+                            tm_name, absent_name, game_log
+                        )
+                        prop_without = without_rates.get(prop, {})
+                        if prop_without:
+                            best_wt = max(
+                                (t for t in prop_without if prop_without[t]["hit_rate"] >= 0.70),
+                                default=None,
+                            )
+                            if best_wt is not None:
+                                without_hr = prop_without[best_wt]["hit_rate"]
+                                without_n  = prop_without[best_wt]["n"]
+
+                    # Reasoning summary
+                    reason_parts = [
+                        f"{prop} T{tier} {int(round(base_hr*100))}% overall",
+                        f"trend={trend}",
+                        f"[{vol}]",
+                    ]
+                    if without_hr is not None and without_n is not None and without_n >= 3:
+                        reason_parts.append(
+                            f"{int(round(without_hr*100))}% in {without_n}g "
+                            f"without {absent_name.split()[-1]}"
+                        )
+                    if spread_delta_str:
+                        reason_parts.append(spread_delta_str)
+                    if morning_context:
+                        reason_parts.append(morning_context)
+
+                    suggestion = {
+                        "date":                        TODAY_STR,
+                        "generated_at":                now_iso,
+                        "triggered_by_player":         absent_name,
+                        "triggered_by_team":           absent_team,
+                        "side":                        side,  # "teammate" or "opponent"
+                        "player_name":                 tm_name,
+                        "team":                        scan_team,
+                        "prop_type":                   prop,
+                        "suggested_tier":              tier,
+                        "tier_hit_rate_pct":           int(round(base_hr * 100)),
+                        "without_player_hit_rate_pct": int(round(without_hr * 100)) if without_hr is not None else None,
+                        "without_player_n":            without_n,
+                        "spread_delta":                spread_delta_str or None,
+                        "trend":                       trend,
+                        "volatility":                  vol,
+                        "morning_context":             morning_context or None,
+                        "reasoning":                   "; ".join(reason_parts),
+                    }
+
+                    # Dedup: keep higher hit rate if same player/prop seen before
+                    existing = seen.get(dedup_key)
+                    if existing is None or base_hr > existing["tier_hit_rate_pct"] / 100:
+                        seen[dedup_key] = suggestion
+
+    suggestions = list(seen.values())
+    print(
+        f"[lineup_update] opportunity: {len(suggestions)} unique player/prop "
+        f"suggestion(s) from {len(absence_changes)} absence(s)"
+    )
     return suggestions
 
 
@@ -421,13 +477,12 @@ def save_opportunity_flags(suggestions: list[dict]) -> None:
         except Exception:
             existing = []
 
-    # Dedup key
+    # Dedup key — one card per (player, prop) per day regardless of trigger source
     def _key(s: dict) -> tuple:
         return (
             s.get("date", ""),
             s.get("player_name", "").strip().lower(),
             s.get("prop_type", ""),
-            s.get("triggered_by_player", "").strip().lower(),
         )
 
     existing_keys: set = {_key(e) for e in existing}
@@ -1238,9 +1293,9 @@ def main() -> None:
     else:
         print("[lineup_update] no actionable picks affected by changes — skipping LLM call")
 
-    # ── Opportunity surfacing — runs unconditionally whenever changes exist ─────
-    qualifying_absences = [c for c in changes if c.get("change_type") == "new_absence"]
-    if qualifying_absences:
+    # ── Opportunity surfacing — runs whenever any absence changes exist ─────────
+    has_absences = any(c.get("change_type") == "new_absence" for c in changes)
+    if has_absences:
         game_log = load_game_log()
         suggestions = build_opportunity_suggestions(
             changes=changes,
