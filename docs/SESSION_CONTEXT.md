@@ -128,6 +128,7 @@ the positional sample had < 10 games. `n=` is the number of player-game observat
 9. `## TEAM DEFENSIVE PROFILES` — auto-generated from `data/team_defense_narratives.json` (last 15g PPG allowed + rank, updates daily via quant.py)
 10. `## PLAYER RECENT GAME LOGS` (last 10 games per whitelisted player)
 11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS`
+    - **KEY FRAMEWORK — HOW TO REASON WHEN RULES CONFLICT** (inserted before all KEY RULES blocks): 5-level priority order (hard skips → mandatory tier steps → confidence penalties → caps → positive signals); PENALTY STACK LIMIT (>3 independent penalties → re-examine or skip; B2B + DENSE double-counting example); TIER_WALK FORMAT standard (✓ marks, step notation, clean confidence chain, no skip conclusions in emitted picks); SANITY CHECK 4-point gate (tier vs. actual floor, honest confidence, self-skip consistency, smell test); ON COMPLEX SLATES (evaluate independently, quality over volume); PLAYER TIER CONTEXT (leaderboard as ground truth for elite status, anchors 27.0 PPG exemption); CONFIDENCE THRESHOLD IS A FLOOR, NOT A TARGET (no rounding up from sub-70% assessment)
     - KEY RULES — MATCHUP QUALITY (DvP + vs_soft/vs_tough interaction)
     - OPPONENT DEFENSE — POSITIONAL DvP (stat-specific rules, REB/3PM exclusions)
     - SELECTION RULES (offensive-first REB floor rule, tier ceiling conditions, tier walk-down discipline; **LINEUP CONTEXT** rule — use ## PROJECTED LINEUPS as ground truth for who is playing)

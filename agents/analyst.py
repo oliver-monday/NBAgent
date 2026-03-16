@@ -1378,7 +1378,8 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 - Factor in teammate injuries (affects usage/role) and back-to-back fatigue
 - Use SEASON CONTEXT to distinguish stable baselines from genuine injury-driven role changes
 - Pick as many qualifying props as there are — don't limit volume artificially
-- Only output picks with confidence_pct ≥ 70
+- Only output picks with confidence_pct ≥ 70. This is a floor, not a target —
+  do not round up from a lower honest assessment to meet it. See KEY FRAMEWORK above.
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
 - REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
 - REB props — pick value gate: The pick value must be strictly below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. The pick tier must be strictly less than this floor value — an exact match is not sufficient. Rationale: when the 3rd-lowest L10 value equals the pick threshold exactly, there is zero variance buffer. A single outlier game (even for a player with a 10/10 hit rate) breaks the streak with no protective cushion. If the intended tier equals or exceeds this floor, move down one tier. If no valid tier exists strictly below the floor, skip the REB prop entirely.
@@ -1432,6 +1433,87 @@ selection signals.
 These numbers are computed from the full season game log — larger sample than the L10 above.
 "overall" = hit rate at this tier across last 10 games.
 "vs_soft" / "vs_tough" = hit rate at this tier across the full season, split by opponent defensive quality.
+
+KEY FRAMEWORK — HOW TO REASON WHEN RULES CONFLICT:
+
+The rules below can conflict. When they do, use this priority order:
+
+  1. HARD SKIPS — absolute, no override. volatile_weak_combo, blowout_secondary_scorer,
+     ast_hard_gate, 3pm_blowout_trend_down, and all other named skip rules execute
+     unconditionally. If a hard skip fires, the pick does not exist. Period.
+
+  2. MANDATORY TIER STEPS — execute first, then re-evaluate from the new tier.
+     min_floor < 24 → step down. FG_COLD ≥ 15% on T15+ → step down. After stepping,
+     re-check whether the new tier qualifies on hit rate. If it does not, skip.
+     These steps happen before any confidence arithmetic.
+
+  3. CONFIDENCE PENALTIES — apply cumulatively after tier is set.
+     VOLATILE -5%, BLOWOUT -10%, B2B rate substitution, DENSE -5–10%.
+     Floor is 70%: if cumulative penalties push below 70%, the pick fails on merit —
+     skip it. Do not round up to 70% to force a qualifying pick.
+
+  4. CONFIDENCE CAPS — applied last, after all penalties.
+     spread_abs > 8 → 80% ceiling. spread_abs ≥ 12 → 74% ceiling.
+     Caps are ceilings, not targets. A pick capped at 74% should be stated as 74%,
+     not inflated to 80% because the cap "allows" it.
+
+  5. POSITIVE SIGNALS — offset penalties where explicitly documented.
+     iron_floor, consistent tag, soft DvP, favorable rest. These can reduce the
+     net penalty but cannot push confidence above a cap ceiling.
+
+PENALTY STACK LIMIT: If more than 3 independent confidence penalties apply to a single pick,
+stop and re-examine. Either the pick is genuinely marginal and should be skipped, or some
+penalties are redundant (e.g. B2B rate already prices in fatigue — also applying DENSE -5%
+is double-counting). Document each penalty in tier_walk and ask: is this adjustment
+independent of the others? If not, drop the weakest one. A pick that requires 4+ penalties
+to stay above 70% is not a confident pick — skip it.
+
+TIER_WALK FORMAT — document the final state clearly:
+  - Each tier checked: "T25→8/10✓" or "T20→5/10 skip"
+  - Mandatory steps: "min_floor<24 → step T15→T10"
+  - Confidence chain as a clean sequence: "80% base → VOLATILE -5% → 75% → spread cap → 74% final"
+  - The final selected tier must be unambiguously marked ✓
+  - Do NOT embed skip conclusions ("→ SKIP") in tier_walk for picks you are emitting.
+    If you conclude skip at any point in the reasoning, do not emit the pick.
+
+SANITY CHECK — before finalizing each pick, verify:
+  1. Is the final tier consistent with this player's actual statistical floor?
+     A T10 PTS pick on a player whose L10 minimum is 17 points is incoherent.
+     Check: does the tier you selected reflect a genuine uncertainty, or did
+     the penalty cascade produce a tier that real game outcomes contradict?
+  2. Is the stated confidence honestly derived? If hit rate is 9/10 but confidence
+     is 74%, the tier_walk must show clearly why (caps applied, not fabricated).
+  3. Did your own reasoning conclude "skip" at any step? If yes, do not emit the pick.
+     filter_self_skip_picks() runs in Python as a backstop, but eliminate the
+     contradiction at source — don't rely on post-processing to catch your errors.
+  4. Does the pick pass the smell test? You have domain knowledge. A T10 PTS pick
+     on the league's leading scorer is almost certainly wrong regardless of what
+     the penalty arithmetic produced. Trust that signal — skip or re-examine.
+
+ON COMPLEX SLATES: Today's slate may include blowout games, B2B players, VOLATILE scorers,
+FG_COLD flags, and players returning from injury — all simultaneously. This is normal. Each
+player is evaluated independently. A 16-point spread in one game does not affect picks in
+other games. When multiple risk signals co-occur on a single player:
+  - Apply them in the priority order above
+  - Trust the output — if the output is a skip, the skip is correct
+  - Do not force picks to meet a volume target. The system generates enough picks
+    across a full slate that individual skips are preferable to low-confidence
+    forced picks. Quality over quantity on every player.
+
+PLAYER TIER CONTEXT — use the leaderboard: The ## WHITELISTED PLAYER RANKINGS block shows
+current season and L20 averages. Use this as ground truth for player quality standing —
+do not rely on training knowledge for who is "elite" this season. Rankings shift with trades,
+injuries, and role changes. A player ranked #1 in PTS among whitelisted players has a
+structurally different floor than a player ranked #12, and should be treated accordingly
+regardless of what your training data suggests about their historical status. The ELITE SCORER
+BLOWOUT EXEMPTION (raw_avgs PTS ≥ 27.0) is most reliably applied when you have verified the
+player's current season ranking in the leaderboard block.
+
+CONFIDENCE THRESHOLD IS A FLOOR, NOT A TARGET: 70% is the minimum threshold for emitting a
+pick, not a number to land on. If your honest assessment after all adjustments is 65%, skip
+the pick — do not adjust your stated confidence upward to clear the threshold. A pick stated
+at exactly 70% must genuinely reflect 70% conviction. Rounding up from 65% is a skip
+masquerading as a pick, and the auditor will find it.
 
 KEY RULES — MATCHUP QUALITY:
 - opp_today= on PTS and AST stat lines shows today's opponent's team-level defense rating.
