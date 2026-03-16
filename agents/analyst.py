@@ -1496,6 +1496,21 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     74% regardless of hit rate, iron_floor tag, or blowout-resilient signals. The larger the
     margin, the more likely conservative Q4 rotations suppress counting stats — even elite
     scorers are not immune. This cap applies to the favored team's players only.
+  → ELITE SCORER BLOWOUT EXEMPTION: A player whose raw_avgs PTS (shown in quant data) is
+    ≥ 27.0 per game is exempt from ALL blowout-driven PTS confidence caps and tier step-downs.
+    This includes the BLOWOUT -10% penalty, the spread_abs > 8 → cap 80% rule, and the
+    LARGE SPREAD PTS CAP ≥ 12 → cap 74% rule. Rationale: a player averaging 27+ PPG has a
+    structural scoring floor that blowout game script does not reliably compress — their
+    minutes are protected regardless of score differential, and their counting stats at
+    conservative tiers (T20, T25) are near-certain. Applying the same blowout penalties as
+    a role player produces absurd outputs (e.g. T10 for a 30-PPG player). Apply normal tier
+    selection and confidence logic for these players — blowout context is informational, not
+    penalizing. The 27.0 threshold applies to raw_avgs PTS only; REB/AST/3PM props for the
+    same player are still subject to normal blowout rules.
+    Example players currently meeting this threshold: Shai Gilgeous-Alexander.
+    Note: this exemption does not remove the BLOWOUT_RISK annotation from the pick or
+    override the BLOWOUT_SECONDARY_SCORER SKIP for non-primary scorers — it applies
+    only to primary elite scorers on the favored team.
 - "competitive" split = historical hit rate in close games (spread_abs ≤ 6.5).
   "blowout_games" split = historical hit rate in non-competitive games (spread_abs > 6.5).
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
@@ -1859,9 +1874,11 @@ def reconcile_pick_values(picks: list[dict]) -> list[dict]:
             if candidate < pick_value:
                 final_tier = candidate
 
-        # ── Strategy 2 (fallback): if no ✓ and no step keyword matched, look for
-        # the rightmost valid tier mentioned after any → in the string. ─────────
-        if final_tier is None:
+        # ── Strategy 2 (fallback): if Strategy 1 found a ✓-qualified tier but no
+        # step destination, scan for →T{N} arrow patterns as a fallback.
+        # Gated on check_hits being non-empty — if there were no ✓ marks at all,
+        # Strategy 2 could falsely match unrelated tier mentions in the text. ────
+        if final_tier is None and check_hits:
             arrow_hits = []
             for m in re.finditer(r"(?:→|->)\s*T?(\d+)", tier_walk, re.IGNORECASE):
                 val = int(m.group(1))
@@ -1890,6 +1907,22 @@ def reconcile_pick_values(picks: list[dict]) -> list[dict]:
                 f"parsed tier {final_tier} > pick_value {pick_value}, skipping"
             )
             continue
+
+        # One-tier-step guard: only accept steps of exactly one tier at a time.
+        # Multi-tier jumps (e.g., T20→T10) are suspicious — the tier_walk text likely
+        # mentioned both tiers in context, not as a genuine two-step cascade. Require
+        # that the parsed destination equals the next valid tier below pick_value.
+        if pick_value in valid:
+            current_idx = valid.index(pick_value)
+            if current_idx > 0:
+                next_lower_tier = valid[current_idx - 1]
+                if final_tier != next_lower_tier:
+                    print(
+                        f"[analyst] RECONCILE_SKIP: {name} {prop_type} — "
+                        f"parsed step {pick_value}→{final_tier} spans more than one tier "
+                        f"(expected {next_lower_tier}), skipping"
+                    )
+                    continue
 
         old_val = pick_value
         pick["pick_value"] = final_tier
