@@ -1505,33 +1505,54 @@ function renderPicks() {{
     html += `</div></div></div>`;
   }});
 
-  // ── Opportunity flags — amber cards below main picks ─────────────────────
+  // ── Opportunity flags — amber/blue cards below main picks ───────────────
   const opps = (DATA.opportunity_flags || []).filter(f => f.date === DATA.today_str);
   if (opps.length) {{
     html += `<div class="section-header" style="margin-top:24px;color:#F5A623;">⚡ OPPORTUNITIES — Late-Scratch Pickups</div>`;
     opps.forEach(opp => {{
-      const cautions = (opp.caution_flags || []);
-      const cautionHtml = cautions.length
-        ? `<div style="margin-top:6px;font-size:11px;color:var(--muted);">⚠ ${{cautions.join(' · ')}}</div>`
-        : '';
-      const tiers = opp.qualifying_tiers || {{}};
-      const tierLines = Object.entries(tiers).map(([stat, info]) => {{
-        const hr = info.hit_rate !== undefined ? ` ${{Math.round(info.hit_rate*100)}}%` : '';
-        const n  = info.n !== undefined ? ` (n=${{info.n}})` : '';
-        return `<span style="margin-right:10px;color:#F5A623;font-weight:600">${{stat}} ≥${{info.tier}}</span><span style="color:var(--muted);font-size:11px">${{hr}}${{n}}</span>`;
-      }}).join('<br>');
       const triggeredBy = opp.triggered_by || 'Unknown absence';
+      const sideLabel   = opp.side === 'opponent' ? ' (opp)' : '';
+      const cardType    = opp.card_type || 'new_pick';
+
+      // New-pick rows (qualifying_tiers)
+      const qtiers  = opp.qualifying_tiers || {{}};
+      const qtLines = Object.entries(qtiers).map(([stat, info]) => {{
+        const hr  = info.hit_rate_pct !== undefined ? `${{info.hit_rate_pct}}%` : '';
+        const whr = info.without_player_hit_rate_pct !== undefined
+          ? ` · ${{info.without_player_hit_rate_pct}}% w/o ${{triggeredBy.split(' ').pop()}}`
+          : '';
+        return `<div style="margin:3px 0"><span style="color:#F5A623;font-weight:600">${{stat}} T${{info.tier}}</span>` +
+               ` <span style="color:var(--muted);font-size:11px">${{hr}}${{whr}}</span></div>`;
+      }}).join('');
+
+      // Upgrade rows (upgrade_tiers — existing pick, higher tier now available)
+      const utiers  = opp.upgrade_tiers || {{}};
+      const utLines = Object.entries(utiers).map(([stat, info]) => {{
+        const hr      = info.hit_rate_pct !== undefined ? ` ${{info.hit_rate_pct}}%` : '';
+        const morning = info.morning_tier !== undefined ? `T${{info.morning_tier}}→` : '';
+        return `<div style="margin:3px 0"><span style="color:#64B5F6;font-weight:600">${{stat}} ${{morning}}T${{info.tier}}</span>` +
+               ` <span style="color:var(--muted);font-size:11px">${{hr}} (upgrade)</span></div>`;
+      }}).join('');
+
+      const tierContent = (qtLines + utLines) ||
+        `<span style="color:var(--muted)">No qualifying tiers</span>`;
+
+      const rightColor = cardType === 'upgrade' ? '#64B5F6' : '#F5A623';
+      const rightLabel = cardType === 'upgrade' ? 'UPGRADE' : cardType === 'mixed' ? 'MIXED' : 'OPPORTUNITY';
+      const rightSub   = cardType === 'upgrade' ? 'Better tier<br>available'
+                       : cardType === 'mixed'   ? 'New + upgrade'
+                       :                          'Not picked<br>this morning';
+
       html += `
-        <div class="pick-card" style="border-color:#F5A623;border-left-width:4px;">
+        <div class="pick-card" style="border-color:${{rightColor}};border-left-width:4px;">
           <div class="pick-main">
             <div class="player">${{opp.player_name}} <span style="font-size:11px;color:var(--muted)">(${{opp.team}})</span></div>
-            <div style="margin:4px 0;font-size:12px;color:var(--muted)">Triggered by: ${{triggeredBy}}</div>
-            <div style="margin-top:4px;font-size:12px;">${{tierLines || 'No qualifying tiers'}}</div>
-            ${{cautionHtml}}
+            <div style="margin:4px 0;font-size:12px;color:var(--muted)">↗ Triggered by: ${{triggeredBy}}${{sideLabel}}</div>
+            <div style="margin-top:4px;font-size:12px;">${{tierContent}}</div>
           </div>
           <div class="pick-right">
-            <div style="font-size:11px;color:#F5A623;font-weight:700;text-align:center;margin-bottom:4px;">OPPORTUNITY</div>
-            <div style="font-size:11px;color:var(--muted);text-align:center;">Not picked<br>this morning</div>
+            <div style="font-size:11px;color:${{rightColor}};font-weight:700;text-align:center;margin-bottom:4px;">${{rightLabel}}</div>
+            <div style="font-size:11px;color:var(--muted);text-align:center;">${{rightSub}}</div>
           </div>
         </div>`;
     }});

@@ -301,17 +301,18 @@ def build_opportunity_suggestions(
     # Morning skips — for annotation only, not gating
     morning_skips = load_morning_skips()
 
-    # Build set of players already picked this morning (for annotation)
-    picked_keys: set[tuple[str, str]] = {
-        (p["player_name"].strip().lower(), p.get("prop_type", ""))
+    # Build dict of players already picked this morning: (name_lower, prop) → {tier, confidence}
+    morning_picks_map: dict[tuple[str, str], dict] = {
+        (p["player_name"].strip().lower(), p.get("prop_type", "")): {
+            "tier": p.get("pick_value"),
+            "confidence_pct": p.get("confidence_pct"),
+        }
         for p in today_picks
-        if not p.get("voided", False)
+        if not p.get("voided", False) and p.get("pick_value") is not None
     }
 
-    # Dedup: (player_name_lower, prop_type) → best suggestion so far
-    # Keeps the suggestion with the highest tier_hit_rate_pct when multiple
-    # absences trigger the same player/prop.
-    seen: dict[tuple[str, str], dict] = {}
+    # Dedup: player_name_lower → best suggestion so far (one card per player)
+    seen: dict[str, dict] = {}
 
     for change in absence_changes:
         absent_name = change["player_name"]
@@ -368,6 +369,15 @@ def build_opportunity_suggestions(
                 volatility = tm_stats.get("volatility") or {}
                 name_lower = tm_name.strip().lower()
 
+                # Skip absent player — they cannot benefit from their own absence
+                if name_lower == absent_name.strip().lower():
+                    continue
+
+                # Build qualifying_tiers (new picks) and upgrade_tiers (better tier
+                # than the morning pick) across all props for this player.
+                qualifying_tiers: dict[str, dict] = {}
+                upgrade_tiers:    dict[str, dict] = {}
+
                 for prop in ("PTS", "REB", "AST", "3PM"):
                     best = best_tiers.get(prop)
                     if not best:
@@ -375,26 +385,13 @@ def build_opportunity_suggestions(
 
                     tier    = best["tier"]
                     base_hr = best["hit_rate"]
-
                     if base_hr < 0.70:
                         continue
 
-                    dedup_key = (name_lower, prop)
+                    trend = trends.get(prop, "stable")
+                    vol   = (volatility.get(prop) or {}).get("label", "moderate")
 
-                    # Build the suggestion
-                    trend   = trends.get(prop, "stable")
-                    vol     = (volatility.get(prop) or {}).get("label", "moderate")
-
-                    # Morning context annotation
-                    already_picked = (name_lower, prop) in picked_keys
-                    skip_reasons   = morning_skips.get(name_lower, [])
-                    morning_context = ""
-                    if already_picked:
-                        morning_context = "picked this morning"
-                    elif skip_reasons:
-                        morning_context = f"skipped this morning ({', '.join(skip_reasons[:2])})"
-
-                    # Without-absent-player historical rates (reuse existing function)
+                    # Without-absent-player historical rates (teammate side only)
                     without_hr: "float | None" = None
                     without_n:  "int | None"   = None
                     if side == "teammate" and game_log is not None:
@@ -411,51 +408,87 @@ def build_opportunity_suggestions(
                                 without_hr = prop_without[best_wt]["hit_rate"]
                                 without_n  = prop_without[best_wt]["n"]
 
-                    # Reasoning summary
-                    reason_parts = [
-                        f"{prop} T{tier} {int(round(base_hr*100))}% overall",
-                        f"trend={trend}",
-                        f"[{vol}]",
-                    ]
-                    if without_hr is not None and without_n is not None and without_n >= 3:
-                        reason_parts.append(
-                            f"{int(round(without_hr*100))}% in {without_n}g "
-                            f"without {absent_name.split()[-1]}"
-                        )
-                    if spread_delta_str:
-                        reason_parts.append(spread_delta_str)
-                    if morning_context:
-                        reason_parts.append(morning_context)
-
-                    suggestion = {
-                        "date":                        TODAY_STR,
-                        "generated_at":                now_iso,
-                        "triggered_by_player":         absent_name,
-                        "triggered_by_team":           absent_team,
-                        "side":                        side,  # "teammate" or "opponent"
-                        "player_name":                 tm_name,
-                        "team":                        scan_team,
-                        "prop_type":                   prop,
-                        "suggested_tier":              tier,
-                        "tier_hit_rate_pct":           int(round(base_hr * 100)),
-                        "without_player_hit_rate_pct": int(round(without_hr * 100)) if without_hr is not None else None,
-                        "without_player_n":            without_n,
-                        "spread_delta":                spread_delta_str or None,
-                        "trend":                       trend,
-                        "volatility":                  vol,
-                        "morning_context":             morning_context or None,
-                        "reasoning":                   "; ".join(reason_parts),
+                    tier_entry: dict = {
+                        "tier":         tier,
+                        "hit_rate_pct": int(round(base_hr * 100)),
+                        "trend":        trend,
+                        "volatility":   vol,
                     }
+                    if without_hr is not None and without_n is not None and without_n >= 3:
+                        tier_entry["without_player_hit_rate_pct"] = int(round(without_hr * 100))
+                        tier_entry["without_player_n"]            = without_n
 
-                    # Dedup: keep higher hit rate if same player/prop seen before
-                    existing = seen.get(dedup_key)
-                    if existing is None or base_hr > existing["tier_hit_rate_pct"] / 100:
-                        seen[dedup_key] = suggestion
+                    existing_pick = morning_picks_map.get((name_lower, prop))
+                    if existing_pick is None:
+                        qualifying_tiers[prop] = tier_entry
+                    else:
+                        # Upgrade: quant best tier is higher than the morning pick tier
+                        morning_tier = existing_pick.get("tier")
+                        if morning_tier is not None and tier > morning_tier:
+                            tier_entry["morning_tier"]           = morning_tier
+                            tier_entry["morning_confidence_pct"] = existing_pick.get("confidence_pct")
+                            upgrade_tiers[prop] = tier_entry
+
+                # Skip if nothing actionable for this player
+                if not qualifying_tiers and not upgrade_tiers:
+                    continue
+
+                # Determine card type
+                if qualifying_tiers and upgrade_tiers:
+                    card_type = "mixed"
+                elif qualifying_tiers:
+                    card_type = "new_pick"
+                else:
+                    card_type = "upgrade"
+
+                # Morning skip annotation
+                skip_reasons    = morning_skips.get(name_lower, [])
+                morning_context = (
+                    f"skipped this morning ({', '.join(skip_reasons[:2])})"
+                    if skip_reasons else None
+                )
+
+                # Build reasoning summary
+                all_tiers = {**qualifying_tiers, **upgrade_tiers}
+                reason_parts = [
+                    f"{ct} T{td['tier']} {td['hit_rate_pct']}% [{td['trend']}]"
+                    for ct, td in all_tiers.items()
+                ]
+                if spread_delta_str:
+                    reason_parts.append(spread_delta_str)
+                if morning_context:
+                    reason_parts.append(morning_context)
+
+                suggestion = {
+                    "date":              TODAY_STR,
+                    "generated_at":      now_iso,
+                    "triggered_by":      absent_name,
+                    "triggered_by_team": absent_team,
+                    "side":              side,
+                    "player_name":       tm_name,
+                    "team":              scan_team,
+                    "card_type":         card_type,
+                    "qualifying_tiers":  qualifying_tiers,
+                    "upgrade_tiers":     upgrade_tiers,
+                    "spread_delta":      spread_delta_str or None,
+                    "morning_context":   morning_context,
+                    "reasoning":         "; ".join(reason_parts),
+                }
+
+                # Dedup by player name — keep card with more total actionable props
+                dedup_key = name_lower
+                existing  = seen.get(dedup_key)
+                if existing is None or (
+                    len(qualifying_tiers) + len(upgrade_tiers)
+                    > len(existing.get("qualifying_tiers", {}))
+                    + len(existing.get("upgrade_tiers", {}))
+                ):
+                    seen[dedup_key] = suggestion
 
     suggestions = list(seen.values())
     print(
-        f"[lineup_update] opportunity: {len(suggestions)} unique player/prop "
-        f"suggestion(s) from {len(absence_changes)} absence(s)"
+        f"[lineup_update] opportunity: {len(suggestions)} unique player "
+        f"card(s) from {len(absence_changes)} absence(s)"
     )
     return suggestions
 
@@ -463,8 +496,8 @@ def build_opportunity_suggestions(
 def save_opportunity_flags(suggestions: list[dict]) -> None:
     """
     Append today's suggestions to the cumulative opportunity_flags.json.
-    Deduplicates by (date, player_name, prop_type, triggered_by_player) so
-    repeated hourly runs don't create duplicate entries.
+    Deduplicates by (date, player_name, triggered_by) so repeated hourly runs
+    don't create duplicate entries. One card per player per triggering absence.
     """
     # Load existing
     existing: list[dict] = []
@@ -477,12 +510,12 @@ def save_opportunity_flags(suggestions: list[dict]) -> None:
         except Exception:
             existing = []
 
-    # Dedup key — one card per (player, prop) per day regardless of trigger source
+    # Dedup key — one card per (player, triggering absence) per day
     def _key(s: dict) -> tuple:
         return (
             s.get("date", ""),
             s.get("player_name", "").strip().lower(),
-            s.get("prop_type", ""),
+            s.get("triggered_by", "").strip().lower(),
         )
 
     existing_keys: set = {_key(e) for e in existing}
@@ -1308,7 +1341,19 @@ def main() -> None:
             if debug:
                 print(f"[lineup_update] DEBUG: opportunity suggestions (not saved in debug mode):")
                 for s in suggestions:
-                    print(f"  {s['player_name']} ({s['team']}) {s['prop_type']} T{s['suggested_tier']} — {s['reasoning']}")
+                    qt_str = ", ".join(
+                        f"{p} T{d['tier']} {d['hit_rate_pct']}%"
+                        for p, d in s.get("qualifying_tiers", {}).items()
+                    ) or "—"
+                    up_str = ", ".join(
+                        f"{p} T{d['morning_tier']}→T{d['tier']}"
+                        for p, d in s.get("upgrade_tiers", {}).items()
+                    ) or "—"
+                    print(
+                        f"  {s['player_name']} ({s['team']}) [{s['card_type']}] "
+                        f"new={qt_str} upgrade={up_str} "
+                        f"← {s['triggered_by']} ({s['side']})"
+                    )
             else:
                 save_opportunity_flags(suggestions)
                 print(f"[lineup_update] opportunity: {len(suggestions)} suggestion(s) surfaced")
