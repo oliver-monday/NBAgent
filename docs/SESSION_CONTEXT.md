@@ -37,9 +37,10 @@ team_defense_narratives.json  (per-team last-15g PPG allowed + rank, auto-genera
                                → opportunity_flags.json (teammate suggestions when qualifying absence detected, hourly)
 
     ↓ post_game_reporter.py    → post_game_news.json (ESPN exit/DNP news for yesterday's picks)
+    ↓ picks_review_YYYY-MM-DD.json (human-produced, committed before auditor.yml runs — see below)
     ↓ auditor.py (next morning)
-picks.json + parlays.json  (result fields filled)
-audit_log.json + audit_summary.json  (written, injury_exclusions in denominator)
+picks.json + parlays.json  (result fields filled; human_verdict + trim_reasons tagged from review file)
+audit_log.json + audit_summary.json  (written; human_flag_precision block in audit_summary)
     ↓ build_site.py
 site/index.html  (deployed to GitHub Pages)
 ```
@@ -373,7 +374,9 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEV
 - `build_absence_context(graded_picks)` → returns `## YESTERDAY'S NOTABLE ABSENCES` block (players voided or OUT at check time) or ""
 - `load_game_results() → dict[str, dict]` — reads `nba_master.csv` for YESTERDAY_STR; returns `{team_abbrev: {home, away, home_score, away_score, margin, winner}}` keyed by BOTH home and away team abbrev (O(1) lookup from either side); skips rows where scores can't be cast to int; returns `{}` on any exception; logs game count. Motivating failure: Durant and Jokic played in the same game (HOU/DEN 36-pt blowout, March 11) — auditor couldn't identify the game context without a Brave Search hit, causing asymmetric miss classification.
 - `build_game_results_block(game_results: dict) → str` — deduplicates via `seen` set on `{home}_{away}` key; labels each game `BLOWOUT` (margin ≥ 20), `COMPETITIVE` (10–19), or `CLOSE` (<10); sorts lines alphabetically; returns `## GAME RESULTS — YESTERDAY\n...` block; returns `""` if no games
-- `save_audit_summary(audit_log, all_skips=None)` → writes `data/audit_summary.json`; per-prop and overall denominators exclude `injury_event` picks; `injury_exclusions` key in both per-prop and overall dicts; when `all_skips` provided, rolls up per-rule false skip rates into `"skip_validation"` key in the summary; `overall.voided` accumulates `voided_picks` across all audit entries (older entries without the field return 0 via `.get()`)
+- `save_audit_summary(audit_log, all_skips=None)` → writes `data/audit_summary.json`; per-prop and overall denominators exclude `injury_event` picks; `injury_exclusions` key in both per-prop and overall dicts; when `all_skips` provided, rolls up per-rule false skip rates into `"skip_validation"` key in the summary; `overall.voided` accumulates `voided_picks` across all audit entries (older entries without the field return 0 via `.get()`); `"human_flag_precision"` block (added 2026-03-16) reads `picks.json` directly, groups all graded picks by `human_verdict`, computes `{hits, misses, total, hit_rate_pct}` per verdict type across full season — accumulates automatically without explicit audit_log entries
+- `load_picks_review(date_str: str) → dict[tuple, dict]` — reads `data/picks_review_{date_str}.json`; returns `{(player_name_lower, prop_type, pick_value): entry_dict}`; returns `{}` gracefully when file absent (prints no-op log); called in `main()` with `YESTERDAY_STR` after `grade_picks()`
+- `apply_human_verdicts(graded_picks, review) → list[dict]` — tags each pick in-place with `human_verdict` ("keep"/"trim"/"manual_skip"/None) and `trim_reasons` (list/[]); returns same list; no-op (returns unchanged) when `review` is empty; called in `main()` after `load_picks_review()`
 - `build_audit_prompt()` — splits `graded_picks` into `voided_picks` (player confirmed OUT, `voided=True`) and `active_picks` at the top of the function before any counting; all hit/miss/no_data counts, prop_breakdown, conf_breakdown, and `hits_and_misses` use `active_picks` only; `build_absence_context()` still receives full `graded_picks` (voided players ARE the absences it surfaces); OUTPUT FORMAT schema now emits both `"total_picks"` (active only) and `"voided_picks"`; summary line shows `active | voided | hits | misses` separately. Motivating fix: voided picks were inflating total_picks and appearing as NO_DATA, docking the system's hit rate for picks correctly voided before tip-off.
 - `load_skipped_picks() → list[dict]` — reads `data/skipped_picks.json`; returns `[]` gracefully if missing
 - `build_game_log_rows_for_yesterday() → dict[str, dict]` — reads `player_game_log.csv` for YESTERDAY_STR; returns `{player_name_lower: row_dict}` for non-DNP rows; used by `grade_skips()`
@@ -601,6 +604,28 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 | Backtest | `agents/backtest.py` — standalone, reads CSVs, writes JSON, no production impact |
 | Frontend change | `build_site.py` only — triggers on next injury refresh or analyst run |
 | Lineup update rules | `agents/lineup_update.py` `call_lineup_update()` system/user prompt; also `classify_absent_player()` role_tag thresholds for absence impact tuning |
+| Daily picks review | `data/picks_review_YYYY-MM-DD.json` only — human-produced in Claude chat session, committed before auditor.yml runs |
+
+---
+
+## data/picks_review_YYYY-MM-DD.json
+
+Human-produced daily picks review file. Written in Claude chat sessions each morning after reviewing the day's picks. Committed to the repo **before `auditor.yml` runs** so the auditor can join against it.
+
+**Schema:** `[{date, player_name, team, prop_type, pick_value, verdict, trim_reasons}]`
+
+**Verdicts:** `"keep"` (clean pick) | `"trim"` (marginally weak; exclude from parlay core) | `"manual_skip"` (should not have been filed; workflow/analyst error)
+
+**Join key:** `(player_name.strip().lower(), prop_type, pick_value)` — date is for reference only (all entries should match yesterday's date when the auditor reads the file)
+
+**Consumers:**
+- `auditor.py` — `load_picks_review(YESTERDAY_STR)` + `apply_human_verdicts()` → writes `human_verdict` and `trim_reasons` fields to `picks.json`; `save_audit_summary()` rolls up `human_flag_precision` block tracking season hit/miss rates by verdict type
+- `parlay.py` — `load_todays_picks_review()` (TODAY_STR) → excludes `manual_skip` picks from candidate pool; allows max 1 `trim` pick per card only with ≥2 clean anchors
+- `build_site.py` — renders amber `⚠ Caution` badge on `trim` picks, red `⚠ Flagged` badge on `manual_skip` picks, with inline `trim_reasons`
+
+**Graceful degradation:** All three consumers return no-op (empty/unchanged) when the file is absent for the date — no crash, no silent error.
+
+**NOT automated** — `data/picks_review_YYYY-MM-DD.json` is never written by any agent. `analyst.py`, `quant.py`, `lineup_update.py`, `lineup_watch.py` do not read or write this file.
 
 ---
 

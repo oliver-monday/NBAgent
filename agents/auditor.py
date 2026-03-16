@@ -41,6 +41,7 @@ POST_GAME_NEWS_JSON  = DATA / "post_game_news.json"
 STANDINGS_JSON       = DATA / "standings_today.json"
 SKIPPED_PICKS_JSON   = DATA / "skipped_picks.json"
 MASTER_CSV           = DATA / "nba_master.csv"
+PICKS_REVIEW_DIR     = DATA  # daily files: data/picks_review_YYYY-MM-DD.json
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -349,6 +350,66 @@ def load_skipped_picks() -> list[dict]:
     except Exception as e:
         print(f"[auditor] WARNING: could not load skipped_picks.json: {e}")
         return []
+
+
+def load_picks_review(date_str: str) -> dict[tuple, dict]:
+    """
+    Load the human picks review file for the given date.
+    Returns a dict keyed by (player_name_lower, prop_type, pick_value) → review entry.
+    Returns {} gracefully if file is absent or malformed.
+    """
+    path = DATA / f"picks_review_{date_str}.json"
+    if not path.exists():
+        print(f"[auditor] No picks review file found for {date_str} — skipping human_verdict tagging")
+        return {}
+    try:
+        with open(path) as fh:
+            entries = json.load(fh)
+        if not isinstance(entries, list):
+            return {}
+        result: dict[tuple, dict] = {}
+        for e in entries:
+            name    = (e.get("player_name") or "").strip().lower()
+            pt      = e.get("prop_type", "")
+            pv      = e.get("pick_value")
+            verdict = e.get("verdict", "")
+            if name and pt and pv is not None and verdict in ("keep", "trim", "manual_skip"):
+                result[(name, pt, pv)] = e
+        print(f"[auditor] Loaded picks review for {date_str}: {len(result)} reviewed picks")
+        return result
+    except Exception as e:
+        print(f"[auditor] WARNING: could not load picks review: {e}")
+        return {}
+
+
+def apply_human_verdicts(
+    graded_picks: list[dict],
+    review: dict[tuple, dict],
+) -> list[dict]:
+    """
+    Tag each graded pick with human_verdict from the review file.
+    Modifies picks in-place and returns the list.
+    verdict values: "keep" | "trim" | "manual_skip" | None (not reviewed)
+    trim_reasons list is also copied across when present.
+    """
+    if not review:
+        return graded_picks
+    tagged = 0
+    for p in graded_picks:
+        name  = (p.get("player_name") or "").strip().lower()
+        pt    = p.get("prop_type", "")
+        pv    = p.get("pick_value")
+        key   = (name, pt, pv)
+        entry = review.get(key)
+        if entry:
+            p["human_verdict"] = entry.get("verdict")
+            p["trim_reasons"]  = entry.get("trim_reasons", [])
+            tagged += 1
+        else:
+            p["human_verdict"] = None
+            p["trim_reasons"]  = []
+    print(f"[auditor] human_verdict: tagged {tagged}/{len(graded_picks)} picks from review file")
+    return graded_picks
 
 
 def build_game_log_rows_for_yesterday() -> dict[str, dict]:
@@ -1234,6 +1295,33 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
                 ) if gradeable_skips > 0 else None,
             }
 
+    # ── Human flag precision rollup ────────────────────────────────────────
+    # Accumulate hit/miss counts by human_verdict across all graded picks
+    # in picks.json (which has been updated by save_audit() before this call).
+    human_flag_precision: dict = {}
+    try:
+        if PICKS_JSON.exists():
+            with open(PICKS_JSON) as fh:
+                all_picks_for_precision = json.load(fh)
+            verdict_buckets: dict = defaultdict(lambda: {"hits": 0, "misses": 0})
+            for px in all_picks_for_precision:
+                verdict = px.get("human_verdict")
+                result  = px.get("result")
+                if verdict in ("trim", "manual_skip", "keep") and result in ("HIT", "MISS"):
+                    verdict_buckets[verdict]["hits"]   += (1 if result == "HIT" else 0)
+                    verdict_buckets[verdict]["misses"] += (1 if result == "MISS" else 0)
+            for verdict, counts in verdict_buckets.items():
+                total = counts["hits"] + counts["misses"]
+                human_flag_precision[verdict] = {
+                    "hits":         counts["hits"],
+                    "misses":       counts["misses"],
+                    "total":        total,
+                    "hit_rate_pct": round(counts["hits"] / total * 100, 1) if total > 0 else None,
+                }
+    except Exception as e:
+        print(f"[auditor] WARNING: could not compute human_flag_precision: {e}")
+        human_flag_precision = {}
+
     summary = {
         "generated_at":    TODAY.strftime("%Y-%m-%d"),
         "entries_included": len(audit_log),
@@ -1258,6 +1346,7 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         "recent_reinforcements":   recent_reinforcements[-10:],
         "recent_recommendations":  recent_recommendations[-10:],
         "skip_validation":         skip_validation,
+        "human_flag_precision":    human_flag_precision,
     }
 
     with open(AUDIT_SUMMARY_JSON, "w") as f:
@@ -1519,6 +1608,10 @@ def main():
     print(f"[auditor] Loaded {len(game_log)} game log rows")
 
     graded_picks = grade_picks(picks, game_log)
+
+    # Apply human verdicts from the daily picks review file (if present)
+    picks_review = load_picks_review(YESTERDAY_STR)
+    graded_picks = apply_human_verdicts(graded_picks, picks_review)
 
     hits   = sum(1 for p in graded_picks if p["result"] == "HIT")
     misses = sum(1 for p in graded_picks if p["result"] == "MISS")

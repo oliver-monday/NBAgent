@@ -41,6 +41,7 @@ PLAYER_STATS_JSON = DATA / "player_stats.json"
 PARLAYS_JSON      = DATA / "parlays.json"
 AUDIT_LOG_JSON    = DATA / "audit_log.json"
 INJURIES_JSON     = DATA / "injuries_today.json"
+PICKS_REVIEW_DIR  = DATA  # daily files: data/picks_review_YYYY-MM-DD.json
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -145,7 +146,8 @@ def load_todays_picks() -> list[dict]:
     with open(PICKS_JSON) as f:
         all_picks = json.load(f)
 
-    out_players = _load_out_players()
+    out_players  = _load_out_players()
+    picks_review = load_todays_picks_review()
 
     picks = []
     for p in all_picks:
@@ -159,11 +161,24 @@ def load_todays_picks() -> list[dict]:
             continue
         # Hard exclude OUT/DOUBTFUL even if not yet voided by lineup_watch
         if out_players:
-            last = _extract_last(p.get("player_name") or "")
+            last   = _extract_last(p.get("player_name") or "")
             norm_t = _norm_team(p.get("team") or "")
             if (last, norm_t) in out_players:
                 print(f"[parlay] EXCLUDED (OUT/DOUBTFUL): {p.get('player_name')} ({p.get('team')})")
                 continue
+        # Apply human review verdict
+        review_key = (
+            (p.get("player_name") or "").strip().lower(),
+            p.get("prop_type", ""),
+            p.get("pick_value"),
+        )
+        verdict = picks_review.get(review_key)
+        if verdict == "manual_skip":
+            print(f"[parlay] EXCLUDED (manual_skip): {p.get('player_name')} {p.get('prop_type')} T{p.get('pick_value')}")
+            continue
+        # Carry verdict through for use in build_candidates()
+        p = p.copy()
+        p["_human_verdict"] = verdict  # "trim", "keep", or None
         picks.append(p)
     return picks
 
@@ -173,6 +188,34 @@ def load_player_stats() -> dict:
         return {}
     with open(PLAYER_STATS_JSON) as f:
         return json.load(f)
+
+
+def load_todays_picks_review() -> dict[tuple, str]:
+    """
+    Load today's picks review file.
+    Returns {(player_name_lower, prop_type, pick_value): verdict} for quick lookup.
+    Returns {} gracefully if file is absent or malformed.
+    verdict values: "keep" | "trim" | "manual_skip"
+    """
+    path = DATA / f"picks_review_{TODAY_STR}.json"
+    if not path.exists():
+        return {}
+    try:
+        with open(path) as fh:
+            entries = json.load(fh)
+        result: dict[tuple, str] = {}
+        for e in entries:
+            name    = (e.get("player_name") or "").strip().lower()
+            pt      = e.get("prop_type", "")
+            pv      = e.get("pick_value")
+            verdict = e.get("verdict", "")
+            if name and pt and pv is not None and verdict in ("keep", "trim", "manual_skip"):
+                result[(name, pt, pv)] = verdict
+        print(f"[parlay] Loaded picks review: {len(result)} entries")
+        return result
+    except Exception as e:
+        print(f"[parlay] WARNING: could not load picks review: {e}")
+        return {}
 
 
 def load_parlay_audit_feedback() -> str:
@@ -372,6 +415,15 @@ def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
                         break
             if has_negative:
                 continue
+
+            # Human review: exclude combos with >1 trim pick,
+            # or trim picks without ≥2 clean anchors
+            trim_legs  = [l for l in legs if l.get("_human_verdict") == "trim"]
+            clean_legs = [l for l in legs if l.get("_human_verdict") != "trim"]
+            if len(trim_legs) > 1:
+                continue  # max 1 trim pick per card
+            if trim_legs and len(clean_legs) < 2:
+                continue  # trim picks require ≥2 clean anchors
 
             scored = score_combination(legs, player_stats)
             candidates.append(scored)

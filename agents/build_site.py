@@ -854,6 +854,14 @@ def generate_html(d: dict) -> str:
     .risk-badge-moderate {{ display: inline-block; font-size: 10px; font-weight: 700;
                             padding: 2px 7px; border-radius: 4px;
                             background: rgba(234,179,8,0.15); color: #eab308; }}
+    .review-badge-trim {{ display: inline-block; font-size: 10px; font-weight: 700;
+                          padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;
+                          background: rgba(245,166,35,0.12); color: #F5A623;
+                          border: 1px solid rgba(245,166,35,0.3); margin-right: 4px; }}
+    .review-badge-skip {{ display: inline-block; font-size: 10px; font-weight: 700;
+                          padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;
+                          background: rgba(239,68,68,0.10); color: #ef4444;
+                          border: 1px solid rgba(239,68,68,0.25); margin-right: 4px; }}
     .parlay-risk-banner {{ font-size: 11px; font-weight: 600; color: #f97316;
                            padding: 5px 8px; margin-top: 6px;
                            background: rgba(249,115,22,0.08);
@@ -1464,6 +1472,18 @@ function renderPicks() {{
       const ha         = p.home_away === 'H' ? 'vs' : '@';
       const streakSpan = streakPill(ps[pt]);
       const voidedCls  = p.voided ? ' voided' : '';
+      const reviewVerdict = p.human_verdict || '';
+      const reviewBadge = reviewVerdict === 'trim'
+        ? `<span class="review-badge-trim">⚠ Caution</span>`
+        : reviewVerdict === 'manual_skip'
+          ? `<span class="review-badge-skip">⚠ Flagged</span>`
+          : '';
+      const reviewReasons = (p.trim_reasons && p.trim_reasons.length && reviewVerdict !== '')
+        ? `<span style="font-size:10px;color:var(--muted);margin-left:4px">${{p.trim_reasons.join(' · ')}}</span>`
+        : '';
+      const reviewHtml = reviewBadge
+        ? `<div style="margin-top:4px">${{reviewBadge}}${{reviewReasons}}</div>`
+        : '';
       const statusBadge = p.voided
         ? `<div style="margin-top:4px"><span class="void-badge">VOIDED — Player OUT</span></div>`
         : p.lineup_risk === 'high'
@@ -1476,6 +1496,7 @@ function renderPicks() {{
           <div class="pick-main">
             <div class="player">${{p.player_name}}</div>
             ${{statusBadge}}
+            ${{reviewHtml}}
             ${{buildMicroStats(p, streakSpan)}}
             ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
             ${{(function() {{
