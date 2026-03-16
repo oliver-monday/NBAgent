@@ -2348,5 +2348,145 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-16",
+    "parlays": [
+      {
+        "label": "Monday Scorer Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "ATL",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Darius Garland",
+            "team": "LAC",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kevin Durant",
+            "team": "HOU",
+            "opponent": "LAL",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.4966,
+        "correlation": "independent",
+        "rationale": "Three independent volume scorers across three games; Banchero 10/10 and Garland 6/6 anchor Durant's swing leg.",
+        "date": "2026-03-16",
+        "id": "parlay_2026-03-16_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Cross-Game Floor Lock",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Jalen Johnson",
+            "team": "ATL",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Luka Doncic",
+            "team": "LAL",
+            "opponent": "HOU",
+            "prop_type": "PTS",
+            "pick_value": 25,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Cooper Flagg",
+            "team": "DAL",
+            "opponent": "NO",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "positive",
+        "rationale": "Up-trending elite scorers Johnson and Doncic anchor ultra-low REB floor from Flagg across three independent games.",
+        "date": "2026-03-16",
+        "id": "parlay_2026-03-16_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Volume Mix Diversifier",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "LeBron James",
+            "team": "LAL",
+            "opponent": "HOU",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "ATL",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "BOS",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.512,
+        "correlation": "independent",
+        "rationale": "Cross-prop diversity across three games with Booker's 10/10 3PM floor and Bane's 9/10 AST insulating LeBron's PTS anchor.",
+        "date": "2026-03-16",
+        "id": "parlay_2026-03-16_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
