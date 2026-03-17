@@ -2488,5 +2488,55 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-17",
+    "parlays": [
+      {
+        "label": "Triple Floor Lock",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "OKC",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "PHX",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Chet Holmgren",
+            "team": "OKC",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "independent",
+        "rationale": "Three iron-floor thresholds across three games; 9/10 hit rates and volume_game tags minimize single-leg failure risk.",
+        "date": "2026-03-17",
+        "id": "parlay_2026-03-17_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
