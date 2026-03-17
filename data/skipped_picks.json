@@ -14,10 +14,10 @@
       "volatile_tag": true,
       "note": "VOLATILE + 7/10 at T15 triggers hard skip; B2B rate at T10 (70%) minus VOLATILE -5% = 65% < 70% floor, no valid tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 21.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 21.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-16",
@@ -34,10 +34,10 @@
       "volatile_tag": true,
       "note": "VOLATILE + 8/10 at T20 (T15+) triggers hard skip; stepped down to T15 (9/10) which qualifies"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 18.0 < tier 20"
   },
   {
     "date": "2026-03-16",
@@ -53,10 +53,10 @@
       "tier_dropped_to": 15,
       "tier_15_hit_rate": "check: L10 \u226515: 21,22,35,18,30,14,25,17,30,22 = 9/10 but FG_MARGIN_THIN fires at T20 \u2192 drop to T15. T15 qualifies but VOLATILE + 7-8/10 also present. Note: vs_soft=46% and vs_tough=50% vs overall 75% \u2014 material DvP drop. Bane is VOLATILE at T15 with FG_MARGIN_THIN \u2192 step to T15, check hit rate. Actually FG_MARGIN_THIN rule drops from T20 to T15 only; T15 is valid if hit rate qualifies. Re-examining: skipping T20 due to FG_MARGIN_THIN:9%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 18.0 < tier 20"
   },
   {
     "date": "2026-03-16",
@@ -73,10 +73,10 @@
       "volatile_tag": true,
       "note": "VOLATILE -5% plus tough DvP -5% drops 75% base to 65% < 70% floor; iron_floor protects tier but not confidence level"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-16",
@@ -92,9 +92,9 @@
       "hit_rate_at_tier": "9/10",
       "zero_ast_in_l10": true
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 2"
   }
 ]

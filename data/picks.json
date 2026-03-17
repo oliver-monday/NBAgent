@@ -9836,7 +9836,12 @@
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "trend=down with min_floor=21.6 < 24 is fragile",
+      "T10 only qualifying tier \u2014 no fallback"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -9861,7 +9866,9 @@
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -9880,8 +9887,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Eight of last 10 cleared T10; up trend, 3 rest days, and mid-tier defense supports floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -9893,7 +9900,13 @@
       "direction": "up",
       "revised_confidence_pct": 75,
       "revised_reasoning": "Sengun OUT redistributes usage to Thompson; volatile tag limits revision, but up trend amplifies scoring upside."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE secondary player at 70-75% band",
+      "away game",
+      "modest floor"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -9912,8 +9925,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Soft AST defense and up trend; 75% base hit rate supports T4 floor at minimum confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -9925,7 +9938,13 @@
       "direction": "up",
       "revised_confidence_pct": 75,
       "revised_reasoning": "Sengun OUT as primary creator elevates Thompson's playmaking role; soft AST defense and up trend support modest bump."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "70% floor after VOLATILE",
+      "non-primary creator",
+      "confidence scraping floor"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -9944,8 +9963,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Eight of last 10 cleared T15 on an up streak; tough defense partially offset by trend and rest.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -9957,7 +9976,12 @@
       "direction": "up",
       "revised_confidence_pct": 82,
       "revised_reasoning": "Sengun OUT removes defensive anchor; Reaves benefits from easier paint drives and higher FG% vs. weakened HOU frontcourt."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "vs_tough=71% vs 80% overall \u2014 material drop",
+      "road underdog context"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -9976,8 +10000,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Strong 9/10 hit rate at T2 with up trend; tough defense still shows 83% vs_tough rate.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -9989,7 +10013,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Sengun absence doesn't meaningfully alter Reaves' assist volume; existing 9/10 hit rate and up trend hold firm."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10008,8 +10034,8 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "Consistent tag, up trend, 9/10 hit rate; strong perimeter shooter with 2 rest days.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10021,7 +10047,9 @@
       "direction": "up",
       "revised_confidence_pct": 87,
       "revised_reasoning": "Sengun OUT as defensive anchor means less help-side deterrence; more kick-out 3s for Reaves on broken paint possessions."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10040,11 +10068,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "B2B rate 70% minus VOLATILE -5% drops below 70% floor; no valid PTS tier qualifies.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "tier_walk concludes SKIP \u2014 B2B rate 70% minus VOLATILE -5% = 65% below floor; slipped through enforcement gate"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -10063,11 +10095,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron floor at T4; 9/10 hit rate and T4 exempt from 25th-pct gate; stable trend on B2B.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10086,8 +10120,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Perfect 6/6 hit rate with consistent tag; capped at 80% due to blowout risk spread.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 25.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10099,7 +10133,9 @@
       "direction": "up",
       "revised_confidence_pct": 85,
       "revised_reasoning": "Kawhi OUT as high-usage scorer forces Garland into primary offensive role; more shot volume lifts already-perfect hit rate."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10118,8 +10154,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Primary ball-handler with 5/6 hit rate at T6; elevated assist load if Kawhi is limited today.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10131,7 +10167,13 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "Kawhi OUT elevates Garland to sole creator; volatile tag limits revision but usage lift directly boosts assist opportunities."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "amendment revised DOWN",
+      "only 6 games sample",
+      "role shifts to scoring without Kawhi \u2014 cuts AST volume"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -10150,8 +10192,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Perfect 6/6 hit rate at T2 with consistent tag; volume 3PM shooter capped at blowout spread.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10163,7 +10205,9 @@
       "direction": "up",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Kawhi OUT as perimeter threat means defense focuses less on Garland off-ball; more open 3PM looks on already-perfect rate."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10182,11 +10226,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron floor at T2; 9/10 hit rate with 100% vs tough defense split; up trend in Atlanta.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10205,11 +10251,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Consistent tag with perfect 10/10 hit rate; up trend shooter with 3 rest days in Boston.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10228,11 +10276,18 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Eight of last 10 cleared T10; VOLATILE discount leaves minimum confidence at tough BOS defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE at 70% floor",
+      "min_floor=23.8 < 24 fragile",
+      "road vs 2nd-best defense in L15",
+      "PHX blowout underdog"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -10251,11 +10306,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Up trending shooter; 84% hit rate at T1 even in high-volume recent run against Boston.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10274,11 +10331,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Nine of last 10 cleared T15 at home against tough ORL defense; up trend with full rest.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10297,11 +10356,17 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Elite playmaker exemption applies; 8/10 hit rate at T6 with up trend at home.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "T6 AST aggressive",
+      "vs_tough drops to 74% from 80% overall",
+      "ORL switching-style defense"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -10320,11 +10385,16 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Primary ball-handler elite playmaker exemption; T4 at minimum confidence with soft MEM defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "internally conflicted tier_walk \u2014 model recalculated mid-reasoning",
+      "70% base quant floor only"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -10349,7 +10419,11 @@
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "player voided OUT \u2014 pick is moot; SAS floor-compression watch item also active"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -10374,7 +10448,9 @@
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10399,7 +10475,9 @@
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10418,8 +10496,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "T20 blocked by volatile-weak-combo; T15 at 9/10 qualifies with VOLATILE penalty applied.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 18.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10431,7 +10509,9 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "Sengun OUT redistributes usage to Durant as next primary scorer; volatile tag limits full revision despite direct upside."
-    }
+    },
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10450,8 +10530,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Nine of last 10 cleared T4; 3rd-lowest L10 REB=5 strictly above pick value of 4.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10463,7 +10543,9 @@
       "direction": "up",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Sengun OUT removes HOU's rim anchor; Durant competes for more boards with less frontcourt competition on both ends."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10482,8 +10564,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Nine of last 10 cleared T2 AST against soft LAL defense; stable trend with 3 rest days.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10495,7 +10577,9 @@
       "direction": "up",
       "revised_confidence_pct": 83,
       "revised_reasoning": "Sengun OUT as primary creator shifts playmaking burden to Durant; soft LAL AST defense amplifies upside."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10514,8 +10598,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Nine of last 10 cleared T15; strong volume scorer with consistent blowout-sensitive context noted.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10527,7 +10611,9 @@
       "direction": "up",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Sengun OUT removes defensive anchor; LeBron gets easier paint access, higher FG%, and more volume vs. weakened HOU frontcourt."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10546,8 +10632,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Perfect 10/10 hit rate with consistent tag; primary ball-handler vs tough defense still at 92%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10559,7 +10645,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Sengun absence doesn't directly affect LeBron's assist volume; iron-floor consistent tag and 10/10 hit rate remain intact."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10578,8 +10666,8 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "Elite scorer exemption; 9/10 hit rate at T25, up trend, 10-game hit streak vs any defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 36.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10591,7 +10679,9 @@
       "direction": "up",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Sengun OUT as defensive anchor gives Luka easier paint penetration and higher FG%; up trend amplifies elite scorer upside."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10610,8 +10700,8 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Elite playmaker exemption; 8/10 hit rate at T6 at minimum confidence after VOLATILE penalty.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
     "voided": false,
@@ -10623,7 +10713,13 @@
       "direction": "unchanged",
       "revised_confidence_pct": 70,
       "revised_reasoning": "Sengun absence doesn't meaningfully shift Luka's assist generation; volatile tag and stable trend keep confidence at floor."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE at 70% floor",
+      "T6 marginal AST tier",
+      "away game"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -10642,11 +10738,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Nine of last 10 cleared T2 3PM; stable trend against soft MEM defense allowing most PPG.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-16",
@@ -10665,10 +10763,12 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "Consistent tag, perfect 10/10 recent hit rate at T15; up trend with safe minutes floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-16T22:03:31.937082-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
