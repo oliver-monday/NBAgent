@@ -370,5 +370,152 @@
     "spread_delta": null,
     "morning_context": null,
     "reasoning": "REB T6 80% [up]; 3PM T4 70% [up]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T14:53:54.254077-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "teammate",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "consistent"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "consistent"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "consistent"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T10 70% [stable]; AST T2 70% [stable]; 3PM T1 70% [up]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T14:53:54.254077-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "moderate",
+        "morning_tier": 1,
+        "morning_confidence_pct": 76
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 80% [up]; 3PM T2 90% [down]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T14:53:54.254077-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "moderate"
+      },
+      "3PM": {
+        "tier": 3,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate",
+        "morning_tier": 10,
+        "morning_confidence_pct": 78
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 85% [down]; 3PM T3 75% [stable]; PTS T15 85% [stable]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T14:53:54.254077-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 3,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate",
+        "morning_tier": 10,
+        "morning_confidence_pct": 76
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 95,
+        "trend": "down",
+        "volatility": "consistent",
+        "morning_tier": 2,
+        "morning_confidence_pct": 76
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 75% [stable]; 3PM T3 70% [stable]; PTS T15 90% [stable]; AST T4 95% [down]"
   }
 ]
