@@ -430,6 +430,8 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEV
 
 ## Known Edge Cases and Gotchas
 
+**`call_analyst()` JSON repair fallback (added 2026-03-17):** `parse_claude_response()` (implemented inside `call_analyst()`) now has a two-step repair fallback that fires when `json.loads(raw)` raises an exception — triggered by a 2026-03-17 run failure where Claude produced structurally valid JSON with a bad character inside a `tier_walk` string field. Step 1: `json_repair` library (`from json_repair import repair_json`). Step 2: character sanitization — char-by-char scan that replaces literal `\n`/`\r`/`\t` inside JSON string values with their escaped forms. Both `except` blocks (object-format path and flat-array fallback path) call `_repair_json(raw)` before `sys.exit(1)`. The happy path (valid JSON) is completely unchanged. Repair logs `[analyst] WARNING: JSON repair via ... succeeded` so the pick run continues with visible evidence in the Actions log. `json-repair` is installed in `analyst.yml` pip install step.
+
 **Team abbreviation variants:** `nba_master.csv` uses legacy 2-char forms (`GS`, `SA`, `NO`,
 `UTAH`, `WSH`). `_ABBR_NORM` dict + normalization helpers exist in THREE places: `analyst.py`
 (`_norm_team()`), `parlay.py` (`_norm_team()`), and `build_site.py` (`normAbbr()` JS). Also in

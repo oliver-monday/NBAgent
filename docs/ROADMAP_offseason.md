@@ -35,3 +35,26 @@ Design philosophy: the Analyst already has a solid quantitative matchup foundati
 **Where:** Offseason project. No current-season code changes.
 
 ---
+## Research
+
+#### **RAG with a purpose-built NBA knowledge base**
+
+This is the option I'd actually push you toward first, because it solves 80% of the staleness problem without fine-tuning complexity. You build a structured, queryable database of NBA facts — rosters, role changes, coach schemes, recent performance narratives — and your agents retrieve only what's relevant before each reasoning call.
+
+**The key difference from what you have now:** instead of a static nba_season_context.md that gets injected whole, you have a database where the agent asks "what do I need to know about Darius Garland today?" and gets back a focused, current, authoritative answer. The retrieval is dynamic; the database is continuously updated.
+
+**Cost:** Mostly your time. Vector databases (Pinecone, Weaviate, or even a simple local setup) have free tiers. The embedding API calls are pennies. The real investment is building the ingestion pipeline that keeps the database current.
+
+**Technical barrier:** Medium. This is closer to what you've already built — it's Python scripting and API calls, not ML training. With Claude as a coding partner it's achievable.
+
+---
+
+#### **Fine-tuning an existing model**
+
+Fine-tuning means taking a pre-trained model and continuing to train it on your specific domain data — not from scratch, just adjusting the weights to reinforce NBA-specific knowledge. Anthropic doesn't currently offer fine-tuning on Claude, but OpenAI does on GPT-4o, and open-source models (Llama 3, Mistral) can be fine-tuned on your own hardware or cloud.
+
+**What this would actually buy you:** a model that has corrected factual priors on rosters, trades, and current-season context. It would still use the same underlying reasoning architecture — it just wouldn't "think" Luka is a Maverick at a weights level.
+
+**Cost reality:** Fine-tuning GPT-4o through OpenAI's API costs roughly $25 per million training tokens. A comprehensive NBA dataset — play-by-play logs, box scores, roster moves, news archives for 2023-2026 — might run 50-200 million tokens depending on how thorough you are. So $1,250–$5,000 for the training run, plus ongoing re-training as the season progresses (you'd want to re-fine-tune monthly to stay current). The data preparation is the harder part — getting all that into clean training format is weeks of work, or a developer you'd need to hire.
+
+**Technical barrier for you personally:** High. Fine-tuning requires understanding training data formatting (JSONL with prompt/completion pairs), running training jobs via API or cloud GPU, and evaluating whether the fine-tuned model actually improved. This is doable but would need either a technical collaborator or significant learning investment.

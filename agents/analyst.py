@@ -1956,6 +1956,65 @@ skips rules:
 
 # ── Claude call ──────────────────────────────────────────────────────
 
+def _repair_json(raw: str) -> dict | list | None:
+    """
+    Attempt to repair malformed JSON from Claude's response.
+    Returns parsed object/list on success, None on failure.
+    Called only after json.loads() has already failed.
+    """
+    # --- Attempt 1: json_repair library ---
+    try:
+        from json_repair import repair_json  # type: ignore
+        repaired = repair_json(raw)
+        result = json.loads(repaired)
+        print("[analyst] WARNING: JSON repair via json_repair succeeded — pick run continuing")
+        return result
+    except ImportError:
+        pass  # library not installed; fall through to manual repair
+    except Exception:
+        pass  # json_repair failed; fall through to manual repair
+
+    # --- Attempt 2: targeted control-character sanitization ---
+    # Escape raw newlines and tab characters inside JSON string values.
+    # This handles the most common LLM JSON breakage: an unescaped newline
+    # or apostrophe-adjacent character inside a tier_walk or reasoning field.
+    try:
+        sanitized_chars = []
+        in_string = False
+        escape_next = False
+        for ch in raw:
+            if escape_next:
+                sanitized_chars.append(ch)
+                escape_next = False
+                continue
+            if ch == '\\':
+                sanitized_chars.append(ch)
+                escape_next = True
+                continue
+            if ch == '"':
+                in_string = not in_string
+                sanitized_chars.append(ch)
+                continue
+            if in_string and ch == '\n':
+                sanitized_chars.append('\\n')
+                continue
+            if in_string and ch == '\r':
+                sanitized_chars.append('\\r')
+                continue
+            if in_string and ch == '\t':
+                sanitized_chars.append('\\t')
+                continue
+            sanitized_chars.append(ch)
+        sanitized = "".join(sanitized_chars)
+        result = json.loads(sanitized)
+        print("[analyst] WARNING: JSON repair via character sanitization succeeded — pick run continuing")
+        return result
+    except Exception:
+        pass  # sanitization also failed
+
+    return None  # all repair attempts failed
+
+
 def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict]]:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
@@ -2009,7 +2068,18 @@ def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict
                 skips = []
             return picks, skips
         except Exception as e:
-            print(f"[analyst] ERROR parsing Claude object response: {e}")
+            print(f"[analyst] WARNING: json.loads failed ({e}) — attempting JSON repair")
+            repaired = _repair_json(raw)
+            if repaired is not None and isinstance(repaired, dict):
+                picks = repaired.get("picks", [])
+                skips = repaired.get("skips", [])
+                if not isinstance(picks, list):
+                    picks = []
+                if not isinstance(skips, list):
+                    skips = []
+                return picks, skips
+            print(f"[analyst] ERROR: JSON repair failed — cannot parse Claude response")
+            print(f"[analyst] Original error: {e}")
             print(f"[analyst] Raw response (first 500 chars):\n{raw[:500]}")
             sys.exit(1)
     else:
@@ -2027,7 +2097,13 @@ def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict
             print(f"[analyst] WARNING: received old flat-array format — no skip records")
             return picks, []
         except Exception as e:
-            print(f"[analyst] ERROR parsing Claude response: {e}")
+            print(f"[analyst] WARNING: json.loads failed ({e}) — attempting JSON repair")
+            repaired = _repair_json(raw)
+            if repaired is not None and isinstance(repaired, list):
+                print(f"[analyst] WARNING: received old flat-array format via repair — no skip records")
+                return repaired, []
+            print(f"[analyst] ERROR: JSON repair failed — cannot parse Claude response")
+            print(f"[analyst] Original error: {e}")
             print(f"[analyst] Raw response (first 500 chars):\n{raw[:500]}")
             sys.exit(1)
 
