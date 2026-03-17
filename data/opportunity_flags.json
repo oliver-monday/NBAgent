@@ -517,5 +517,112 @@
     "spread_delta": null,
     "morning_context": null,
     "reasoning": "REB T4 75% [stable]; 3PM T3 70% [stable]; PTS T15 90% [stable]; AST T4 95% [down]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T15:18:04.561742-07:00",
+    "triggered_by": "Giannis Antetokounmpo",
+    "triggered_by_team": "MIL",
+    "side": "opponent",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "card_type": "upgrade",
+    "qualifying_tiers": {},
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile",
+        "morning_tier": 15,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T20 80% [stable]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T15:18:04.561742-07:00",
+    "triggered_by": "Giannis Antetokounmpo",
+    "triggered_by_team": "MIL",
+    "side": "opponent",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "morning_tier": 10,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T6 80% [stable]; PTS T15 75% [up]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T15:18:04.561742-07:00",
+    "triggered_by": "Giannis Antetokounmpo",
+    "triggered_by_team": "MIL",
+    "side": "opponent",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "card_type": "upgrade",
+    "qualifying_tiers": {},
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 86,
+        "trend": "stable",
+        "volatility": "moderate",
+        "morning_tier": 10,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 86% [stable]"
+  },
+  {
+    "date": "2026-03-17",
+    "generated_at": "2026-03-17T15:18:04.561742-07:00",
+    "triggered_by": "Giannis Antetokounmpo",
+    "triggered_by_team": "MIL",
+    "side": "opponent",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate"
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T10 85% [stable]; REB T8 75% [down]"
   }
 ]
