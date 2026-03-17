@@ -160,7 +160,7 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 - `playerprops/player_whitelist.csv` — (name, team) tuple filter
 
 **Prompt section order (canonical):**
-1. Task framing + tier system intro
+1. Task framing + knowledge staleness awareness block + tier system intro
 2. Hit definition
 3. Tier ceiling rules with backtest evidence
 4. `## TODAY'S GAMES`
@@ -169,9 +169,10 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 6. `## PRE-GAME NEWS` (conditional)
 7. `## SEASON CONTEXT` — SEASON FACTS only (from `nba_season_context.md`)
 8. `## PLAYOFF PICTURE` — auto-generated from `standings_today.json`
+8a. `## WHITELISTED PLAYER RANKINGS — SEASON vs L20` — top 15 per stat, season avg + L20 avg with ↑/↓/→ arrows; built from already-loaded game log; anchors elite scorer recognition
 9. `## TEAM DEFENSIVE PROFILES` — auto-generated from `team_defense_narratives.json` (last 15g, updates daily)
 10. `## PLAYER RECENT GAME LOGS`
-11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` (with all KEY RULES blocks)
+11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` — includes: KEY FRAMEWORK (5-level rule conflict priority order, PENALTY STACK LIMIT, TIER_WALK FORMAT, SANITY CHECK, CONFIDENCE THRESHOLD IS A FLOOR), KEY RULES — MATCHUP QUALITY, OPPONENT DEFENSE — POSITIONAL DvP, SELECTION RULES, KEY RULES — REST & FATIGUE (including RETURN FROM INJURY — SHORT SAMPLE INSTABILITY for `[SHORT_SAMPLE:Ng]` players), KEY RULES — SEQUENTIAL GAME CONTEXT, KEY RULES — SPREAD / BLOWOUT RISK, KEY RULES — VOLATILITY, KEY RULES — HIGH CONFIDENCE GATE, INJURY EXCLUSION
 12. `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS`
 13. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS`
 14. `## ROLLING PERFORMANCE SUMMARY`
@@ -216,9 +217,11 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 
 **Logic flow:**
 1. Load today's picks with `confidence_pct ≥ 70` and `result == null`
+1a. Load `picks_review_TODAY.json`; exclude any pick with `verdict == "manual_skip"` from candidate pool; tag remaining picks with `_human_verdict` ("trim"/"keep"/null)
 2. Build all 2–6 leg combinations (no duplicate players)
 3. Filter: implied odds must be +100 to +600 American
 4. Filter: skip combos with `scoring_rivals` or `board_rivals` between same-team players
+4a. Filter: skip combos with >1 trim-verdict pick; trim picks require ≥2 clean-verdict anchors (non-trim legs)
 5. Score each combo on: confidence product, floor confidence, correlation quality, game spread
 6. Send top 15 scored combos to Claude → returns 3–5 curated parlays
 
@@ -291,6 +294,7 @@ CORR_BONUS = {
 
 **Inputs consumed (in addition to picks.json / parlays.json):**
 - `data/standings_today.json` — auditor receives the same playoff picture snapshot as the analyst, since it grades picks made with that information available
+- `data/picks_review_YYYY-MM-DD.json` — optional human-produced daily review file; read by `load_picks_review()` to tag `human_verdict` + `trim_reasons` on graded picks; graceful no-op when absent
 
 **Grading logic:**
 - Matches picks to `player_game_log.csv` by `(player_name.lower(), team_abbrev)` for yesterday's date
@@ -315,7 +319,8 @@ CORR_BONUS = {
     "prop_type": "string",
     "pick_value": number,
     "actual_value": number,
-    "root_cause": "string"
+    "root_cause": "string",
+    "miss_classification": "selection_error|model_gap_signal|model_gap_rule|variance|injury_event|workflow_gap"
   }],
   "parlay_results": {
     "total": number,
@@ -328,7 +333,7 @@ CORR_BONUS = {
 }
 ```
 
-Also updates `picks.json` and `parlays.json` in-place with graded results.
+Also updates `picks.json` and `parlays.json` in-place with graded results. Calls `load_picks_review(YESTERDAY_STR)` + `apply_human_verdicts()` to tag `human_verdict` ("keep"/"trim"/"manual_skip"/null) and `trim_reasons` (list/[]) on each graded pick from the daily review file (no-op when file absent). `save_audit_summary()` produces a `human_flag_precision` block in `audit_summary.json` — reads all picks from `picks.json`, groups by `human_verdict`, computes `{hits, misses, total, hit_rate_pct}` per verdict type over full season history.
 
 ---
 
@@ -376,16 +381,44 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are **n
 badge beneath reasoning. Clicking expands a detail panel showing triggered_by, revised reasoning
 (with revised confidence %), and the original morning reasoning.
 
+**Opportunity suggestion schema (written/appended to `data/opportunity_flags.json`):**
+```json
+{
+  "date":              "YYYY-MM-DD",
+  "generated_at":      "ISO timestamp",
+  "triggered_by":      "Absent Player Name",
+  "triggered_by_team": "abbrev",
+  "side":              "teammate|opponent",
+  "player_name":       "string",
+  "team":              "abbrev",
+  "card_type":         "new_pick|upgrade|mixed",
+  "qualifying_tiers":  {
+    "PTS": {"tier": 20, "hit_rate_pct": 78, "trend": "up", "volatility": "consistent",
+            "without_player_hit_rate_pct": 82, "without_player_n": 6}
+  },
+  "upgrade_tiers": {
+    "AST": {"tier": 8, "hit_rate_pct": 75, "trend": "stable", "volatility": "moderate",
+            "morning_tier": 6, "morning_confidence_pct": 78}
+  },
+  "spread_delta":    "string|null",
+  "morning_context": "string|null",
+  "reasoning":       "string"
+}
+```
+
+One card per player per triggering absence (deduped by `(date, player_name_lower, triggered_by_lower)`). `qualifying_tiers`: props ≥70% hit rate where player has no morning pick. `upgrade_tiers`: props where quant best tier > morning pick tier. Both dicts optional; player skipped when both empty. `without_player_*` fields optional (teammate side only, requires ≥3 historical without-player games).
+
 ---
 
 ## build_site.py — Frontend Generator
 
 Pure Python, no JS dependencies in output. Reads all data files, writes `site/index.html`.
 
-**Four tabs:**
-1. **Today's Picks** — injury report dropdown, pick cards grouped by game (collapsible), sorted by prop type then confidence. Each card: player, micro-stat pills (trend + opp defense), reasoning, hit rate bar, confidence.
-2. **Parlays** — historical stats banner (hidden until data exists), parlay cards with leg rows showing player/team, stat value + colored prop badge, confidence, result icon post-grading. Correlation badge + rationale on each card.
-3. **Results** — overall hit rate banner, 4 per-prop streak cards, 30-day hit rate trend chart (vanilla canvas), full pick history table.
-4. **Audit Log** — latest auditor entry: hit rate stats, what worked, what to avoid, analyst instructions.
+**Five tabs:**
+1. **Today's Picks** — injury report dropdown, pick cards grouped by game (collapsible), sorted by prop type then confidence. Each card: player, micro-stat pills (trend + opp defense), reasoning, hit rate bar, confidence. Voided picks show VOIDED badge. DOUBTFUL/QUESTIONABLE picks show risk pills. Lineup Update shows ↑/↓ badge with expandable amendment detail. Review badges: ⚠ Caution (amber) for `trim` verdict, ⚠ Flagged (red) for `manual_skip` verdict — shown below status badge when picks_review file present; includes inline trim_reasons.
+2. **Parlays** — historical stats banner (hidden until data exists), parlay cards with leg rows showing player/team, stat value + colored prop badge, confidence, result icon post-grading. Correlation badge + rationale on each card. Opportunity flags shown as per-player cards with `qualifying_tiers` (amber "OPPORTUNITY" rows) and `upgrade_tiers` (blue "UPGRADE" rows showing T{morning}→T{new}); `card_type` label ("OPPORTUNITY"/"UPGRADE"/"MIXED"); opponent-side cards show "(opp)" suffix.
+3. **Results** — overall hit rate banner, named stat cards (Overall/Yesterday/Props/Top Picks/Daily Hit Rate), 30-day hit rate trend chart (vanilla canvas), collapsible full pick history drawer.
+4. **Audit Log** — latest auditor entry: hit rate stats, what worked, what to avoid, analyst instructions. Skip validation table.
+5. **Research** — player game log explorer; filter by player, stat, home/away, rest days, spread bucket, game result, opponent; renders tier hit rate table with bar charts, distribution stats, and full game log. Static — no LLM calls, fully client-side.
 
 **Triggered by:** end of `analyst.yml` AND end of each `injuries.yml` run (so injury data stays fresh on the live site without needing a full analyst run).

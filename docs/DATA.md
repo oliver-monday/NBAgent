@@ -69,6 +69,7 @@ Quant output. One entry per whitelisted player playing today.
 {
   "Player Name": {
     "team": "abbrev",
+    "whitelisted_teammates": ["Name1", "Name2"],  // sorted list of other active whitelisted players on same team playing today; [] when none
     "opponent": "abbrev",
     "games_available": 20,
     "last_updated": "YYYY-MM-DD",
@@ -124,6 +125,11 @@ Quant output. One entry per whitelisted player playing today.
       "REB": {...}, "AST": {...}, "3PM": {...}
     },
     "game_pace": {"combined_pts_avg": 224.1, "pace_tag": "high", "source": "h2h"},
+    "team_momentum": {                        // null if no completed games data
+      "team":     {"l10_wins": 7, "l10_losses": 3, "l10_pct": 0.70, "l10_margin": 5.2, "tag": "hot"},
+      "opponent": {"l10_wins": 4, "l10_losses": 6, "l10_pct": 0.40, "l10_margin": -1.8, "tag": "neutral"}
+    },
+    "def_recency": "soft|tough|null",         // opponent L5 vs L15 PTS-allowed divergence ≥8%; null when neutral or insufficient data
     "teammate_correlations": {
       "Teammate Name": {
         "shared_games": 18,
@@ -259,9 +265,62 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
   "reasoning": "string",
   "result": "HIT|MISS|NO_DATA|null",  // null until auditor runs; voided=True picks always have result=null
   "actual_value": number|null,          // null until auditor runs; voided=True picks always have actual_value=null
-  "game_time": "7:30 PM PT"
+  "game_time": "7:30 PM PT",
+  "human_verdict": "keep|trim|manual_skip|null",  // tagged by auditor from picks_review file; null when not reviewed
+  "trim_reasons":  ["string"] | []                // reasons from review file; [] when not reviewed
 }]
 ```
+
+### picks_review_YYYY-MM-DD.json
+Human-produced daily review file. Written manually in Claude chat sessions; committed before `auditor.yml` runs. **NOT written by any agent.**
+```json
+// Filename: data/picks_review_YYYY-MM-DD.json (yesterday's date when auditor runs)
+[{
+  "date":         "YYYY-MM-DD",
+  "player_name":  "string",
+  "team":         "abbrev",
+  "prop_type":    "PTS|REB|AST|3PM",
+  "pick_value":   number,
+  "verdict":      "keep|trim|manual_skip",
+  "trim_reasons": ["string"]  // required when verdict=="trim"; [] otherwise
+}]
+```
+
+Join key (used by auditor): `(player_name.strip().lower(), prop_type, pick_value)`.
+Verdicts: `"keep"` (clean pick) | `"trim"` (marginally weak; excluded from parlay core) | `"manual_skip"` (should not have been filed).
+Consumers: `auditor.py` (tags picks), `parlay.py` (excludes manual_skip; limits trim legs), `build_site.py` (renders review badges).
+
+### opportunity_flags.json
+Written/appended by `lineup_update.py` hourly when qualifying player absences are detected. Cumulative — not overwritten daily. Deduped by `(date, player_name_lower, triggered_by_lower)` — one card per player per triggering absence.
+```json
+[{
+  "date":              "YYYY-MM-DD",
+  "generated_at":      "ISO timestamp",
+  "triggered_by":      "Absent Player Name",
+  "triggered_by_team": "abbrev",
+  "side":              "teammate|opponent",
+  "player_name":       "string",
+  "team":              "abbrev",
+  "card_type":         "new_pick|upgrade|mixed",
+  "qualifying_tiers":  {
+    "PTS": {
+      "tier": 20, "hit_rate_pct": 78, "trend": "up", "volatility": "consistent",
+      "without_player_hit_rate_pct": 82, "without_player_n": 6  // optional
+    }
+  },
+  "upgrade_tiers": {
+    "AST": {
+      "tier": 8, "hit_rate_pct": 75, "trend": "stable", "volatility": "moderate",
+      "morning_tier": 6, "morning_confidence_pct": 78
+    }
+  },
+  "spread_delta":    "string|null",
+  "morning_context": "string|null",
+  "reasoning":       "string"
+}]
+```
+
+`qualifying_tiers`: props ≥70% hit rate where player has no morning pick. `upgrade_tiers`: props where quant best tier > morning pick tier. Both optional; player card not emitted when both empty. `without_player_*` fields optional (teammate side only, ≥3 historical without-player games required). Has no grading integration — opportunity card accuracy not tracked by auditor.
 
 ### parlays.json
 List of daily bundles. Each bundle contains the day's parlays.
@@ -303,13 +362,16 @@ List of daily bundles. Each bundle contains the day's parlays.
 ### audit_log.json
 List of daily audit entries. See `AGENTS.md` for full schema.
 
+### audit_summary.json
+Rolled-up season stats written fresh after every auditor run by `save_audit_summary()`. Consumed by `analyst.py` as `## ROLLING PERFORMANCE SUMMARY`. Key blocks: `overall` (season hit rates, injury_exclusions, voided count), `prop_type_breakdown` (per-stat rates), `confidence_calibration` (per-band actual vs stated), `skip_validation` (per-rule false skip rates), `human_flag_precision` (season hit/miss rates grouped by `human_verdict` — "keep"/"trim"/"manual_skip" — computed from `picks.json` directly; accumulates automatically without explicit audit_log entries).
+
 ---
 
 ## Player Whitelist
 
-**File:** `playerprops/player_whitelist.csv`  
-**Columns:** `team_abbr, team_abbr_alt, player_name, active`  
-**Filter logic:** `(player_name.lower(), team_abbr.upper())` tuple — filters on both name AND current team to prevent traded players appearing under old teams.  
+**File:** `playerprops/player_whitelist.csv`
+**Columns:** `team_abbr, team_abbr_alt, player_name, active, position`
+**Filter logic:** `(player_name.lower(), team_abbr.upper())` tuple — filters on both name AND current team to prevent traded players appearing under old teams. `position` column used by Quant for positional DvP computation.  
 **Maintenance:** Toggle `active=0/1` rather than deleting rows — keeps historical picks attributable.
 
 **Philosophy:** Established starters and consistent high-minute players only. Exclude: volatile bench players, injury-prone players on extended absences, players mid-role-change with insufficient data.

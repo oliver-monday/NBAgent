@@ -39,7 +39,7 @@ NBAgent/
 │   ├── lineup_watch.py       # Deterministic post-process — voids OUT picks, flags DOUBTFUL/QUESTIONABLE; runs after each injury refresh
 │   ├── lineup_update.py      # Afternoon amendment agent — diffs morning lineup snapshot vs current, calls Claude, writes lineup_update sub-objects to picks
 │   ├── backtest.py           # Standalone retrospective signal analysis — multiple modes (see docs/BACKTESTS.md)
-│   └── build_site.py         # Static site generator (4-tab dark theme SPA); renders voided/risk/update badges
+│   └── build_site.py         # Static site generator (5-tab dark theme SPA); renders voided/risk/update/review badges
 ├── ingest/
 │   ├── espn_daily_ingest.py        # Game slate + spreads + standings from ESPN API → nba_master.csv, standings_today.json
 │   ├── espn_player_ingest.py       # Player box scores → player_game_log.csv, team_game_log.csv, player_dim.csv
@@ -62,7 +62,8 @@ NBAgent/
 │   ├── skipped_picks.json              # Today's rule-forced skips (null grading fields); graded each morning by auditor; overwritten daily
 │   ├── parlays.json                    # All parlays with results
 │   ├── audit_log.json                  # Daily auditor entries — full graded pick details
-│   ├── audit_summary.json              # Rolled-up season stats — consumed by Analyst as Rolling Performance Summary; includes skip_validation block
+│   ├── audit_summary.json              # Rolled-up season stats — consumed by Analyst as Rolling Performance Summary; includes skip_validation + human_flag_precision blocks
+│   ├── picks_review_YYYY-MM-DD.json    # Human-produced daily review file — verdicts: keep/trim/manual_skip; committed before auditor.yml runs; NOT written by any agent
 │   └── context_flags.md                # Staleness flags written by pre_game_reporter.py; picked up by analyst via ⚠ CONTEXT FLAG mechanism
 ├── playerprops/
 │   └── player_whitelist.csv    # Active player tracking list — (player_name, team_abbr) tuple filter; includes position column for DvP
@@ -110,7 +111,7 @@ post_game_reporter.py runs as first step of auditor.yml (fetches ESPN + Brave Se
 | analyst.py | claude-sonnet-4-6 / opus-4-6 | 16384 | player_stats.json, injuries, lineups, audit_log (last 5), audit_summary, nba_season_context, standings, team_defense_narratives, pre_game_news | picks.json (append), skipped_picks.json |
 | parlay.py | claude-sonnet-4-6 | 4096 | picks.json, player_stats.json, audit_log (last 3 parlay feedback) | parlays.json (append) |
 | post_game_reporter.py | claude-sonnet-4-6 | 2048 | picks.json (yesterday), ESPN athlete news, Brave Search | post_game_news.json |
-| auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings | audit_log.json, audit_summary.json, updates picks + parlays in-place, grades skipped_picks.json |
+| auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings, picks_review_YYYY-MM-DD.json (optional) | audit_log.json, audit_summary.json, updates picks + parlays in-place, grades skipped_picks.json |
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |
 | lineup_update.py | claude-sonnet-4-6 | 2048 | lineups_today.json (snapshot), injuries_today.json, picks.json, nba_master.csv | picks.json (lineup_update sub-object on affected picks) |
 
@@ -122,7 +123,7 @@ Full agent details → **@docs/AGENTS.md**
 
 - **`audit_summary.json`** is generated fresh after every auditor run by `save_audit_summary()`. The Analyst reads it as `## ROLLING PERFORMANCE SUMMARY` — provides season hit rates, per-prop rates, miss classification totals, and `skip_validation` per-rule false skip rates. Returns empty string if fewer than 3 audit entries exist (graceful cold-start).
 - **`player_stats.json`** is consumed by three agents: Analyst (pick generation), Parlay (correlation tags, spread context), and Auditor (audit context injection for root-cause grading). Do not change its schema without checking all three consumers.
-- **`picks.json`** is mutated in-place by four separate processes in sequence: Analyst appends new picks, lineup_watch.py mutates voided/risk fields, lineup_update.py writes `lineup_update` sub-objects (hourly, conditional on changes), Auditor grades results. Always read the full file before writing — never overwrite with a subset.
+- **`picks.json`** is mutated in-place by four separate processes in sequence: Analyst appends new picks, lineup_watch.py mutates voided/risk fields, lineup_update.py writes `lineup_update` sub-objects (hourly, conditional on changes), Auditor grades results and tags `human_verdict`/`trim_reasons` from `picks_review_YYYY-MM-DD.json`. Always read the full file before writing — never overwrite with a subset.
 - **`skipped_picks.json`** is written fresh each morning by analyst (null grading fields), then graded by auditor the next morning. Committed by both `analyst.yml` and `auditor.yml`. Accumulates only today's skips — not a historical archive.
 - **`context/nba_season_context.md`** is injected into BOTH `analyst.py` and `auditor.py` prompts. Updates to this file affect both agents.
 - **`pre_game_news.json`** staleness flags are picked up by `analyst.py` via the `⚠ CONTEXT FLAG` mechanism — Python-detected stale facts in `nba_season_context.md` are surfaced to the analyst as warnings without modifying the context file automatically.
@@ -183,6 +184,8 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 | `iron_floor` | Analyst | `true` when quant stat line showed `[iron_floor]`; Claude copies directly from context |
 | `top_pick` | Analyst | `true` for 2–4 analyst-declared best picks of the day; `false` for all others; used by `build_site.py` `get_top_picks()` as primary selection signal |
 | `lineup_update` | lineup_update.py | Sub-object: `{triggered_by, updated_at, direction, revised_confidence_pct, revised_reasoning}`; written hourly when starter changes detected; overwritten on each run |
+| `human_verdict` | auditor.py | `"keep"/"trim"/"manual_skip"/null` — tagged from daily `picks_review_YYYY-MM-DD.json`; null when pick not reviewed |
+| `trim_reasons` | auditor.py | List of strings from review file; `[]` when not reviewed or verdict is `"keep"` |
 
 ---
 
@@ -204,7 +207,7 @@ Five-tab dark theme SPA deployed to GitHub Pages via `build_site.py`.
 
 | Tab | Content |
 |-----|---------|
-| Today's Picks | Injury report dropdown, pick cards grouped by game (collapsible). Voided picks show strikethrough + VOIDED badge. DOUBTFUL/QUESTIONABLE picks show risk pills. Lineup Update shows ↑/↓ badge with expandable amendment detail. |
+| Today's Picks | Injury report dropdown, pick cards grouped by game (collapsible). Voided picks show strikethrough + VOIDED badge. DOUBTFUL/QUESTIONABLE picks show risk pills. Lineup Update shows ↑/↓ badge with expandable amendment detail. Review badges: ⚠ Caution (amber, trim verdict) and ⚠ Flagged (red, manual_skip verdict) shown below status badge when picks_review file present. |
 | Parlays | Historical stats banner (hidden until graded history exists). Parlay cards with leg rows, implied odds, correlation badge, result once graded. "⚠ Leg at risk" banner when any leg player is voided. |
 | Results | Overall hit rate banner, 4 per-prop streak cards, 30-day hit rate trend chart (vanilla canvas), full pick history table. |
 | Audit Log | Latest auditor entry — hit rate stats, what worked, what to avoid, analyst instructions. Skip validation table. |
