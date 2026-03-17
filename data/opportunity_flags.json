@@ -258,5 +258,117 @@
     "volatility": "consistent",
     "morning_context": null,
     "reasoning": "3PM T1 95% overall; trend=up; [consistent]"
+  },
+  {
+    "date": "2026-03-16",
+    "generated_at": "2026-03-16T17:01:04.021316-07:00",
+    "triggered_by": "Alperen Sengun",
+    "triggered_by_team": "HOU",
+    "side": "teammate",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "morning_tier": 2,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T6 70% [stable]; AST T4 75% [up]"
+  },
+  {
+    "date": "2026-03-16",
+    "generated_at": "2026-03-16T17:01:04.021316-07:00",
+    "triggered_by": "Alperen Sengun",
+    "triggered_by_team": "HOU",
+    "side": "teammate",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (volatile_weak_combo)",
+    "reasoning": "3PM T2 75% [down]; skipped this morning (volatile_weak_combo)"
+  },
+  {
+    "date": "2026-03-16",
+    "generated_at": "2026-03-16T17:01:04.021316-07:00",
+    "triggered_by": "Alperen Sengun",
+    "triggered_by_team": "HOU",
+    "side": "opponent",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 95,
+        "trend": "stable",
+        "volatility": "consistent",
+        "morning_tier": 2,
+        "morning_confidence_pct": 80
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 75% [stable]; AST T4 95% [stable]"
+  },
+  {
+    "date": "2026-03-16",
+    "generated_at": "2026-03-16T17:01:04.021316-07:00",
+    "triggered_by": "Alperen Sengun",
+    "triggered_by_team": "HOU",
+    "side": "opponent",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T6 80% [up]; 3PM T4 70% [up]"
   }
 ]
