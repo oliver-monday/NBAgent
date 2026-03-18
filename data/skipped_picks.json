@@ -1,1 +1,63 @@
-[]
+[
+  {
+    "date": "2026-03-18",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "GS",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_no_valid_tier",
+    "rule_context": {
+      "fg_margin_pct": 9,
+      "tier_stepped_to": 15,
+      "lower_tier_qualifies": true,
+      "note": "FG_MARGIN_THIN:9% forces step from T20 to T15; T15 pick emitted instead"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-18",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "BKN",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": true,
+      "hit_rate": "7/10",
+      "blowout_penalty": true,
+      "post_penalty_confidence": 55,
+      "note": "VOLATILE -5% + BLOWOUT -10% push below 70% floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-18",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "opponent": "MEM",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "blowout_risk": true,
+      "spread_abs": 13.5,
+      "note": "trend=down + BLOWOUT_RISK=True (DEN favored) triggers unconditional 3PM skip including T1"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  }
+]
