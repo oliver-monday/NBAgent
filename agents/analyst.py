@@ -1551,6 +1551,15 @@ Stat-specific rules:
     logic. (This exemption applies to the AST volume criterion only — if you are applying
     the gate because of low raw_avgs AST below 4.0, the ≥8.0 threshold is irrelevant.)
 
+  VOLATILE + HIGH AST TIER BLOCK: When a player carries the VOLATILE tag (shown as [volatile]
+    in their volatility field) AND the selected AST tier is T6 or higher, do NOT pick the AST
+    prop regardless of elite playmaker exemption status. The elite playmaker exemption
+    (raw_avgs AST >= 8.0) protects against the minimum floor gate — it does not protect against
+    floor instability. A VOLATILE tag means the player's AST floor is genuinely unpredictable,
+    and T6+ AST picks on volatile playmakers have confirmed miss history even at high
+    season-level hit rates. Apply this as a hard SKIP: VOLATILE + AST tier >= T6 = SKIP,
+    no exceptions.
+
   REB: opp_defense does NOT make REB a valid defense signal. Do not use REB rating as
     justification for a REB over. Rebounds are driven by pace, opponent FG%, and frontcourt
     competition — not captured by allowed-per-team averages. Ignore REB rating entirely.
@@ -1568,6 +1577,19 @@ KEY RULES — REST & FATIGUE:
 - When "DENSE" is shown (even without B2B): cumulative fatigue is likely.
   → Reduce confidence by 5–10% across all stats for that player.
 - rest_days ≥ 3 = well-rested; no downward adjustment needed.
+
+IRON-FLOOR B2B ROAD GATE: The iron_floor tag does NOT override the B2B + tough defense gate
+for AST props on non-primary ball-handlers. Apply this gate when ALL of the following are true:
+  - on_back_to_back = True
+  - home_away = "A" (road game)
+  - opp_defense rating = "tough"
+  - raw_avgs AST < 6.0 (non-primary ball-handler)
+When all four conditions are met, require opp_defense = "soft" as a prerequisite for any AST
+pick, regardless of iron_floor status. If opp_defense is "mid" or "tough", SKIP the AST pick.
+Rationale: iron_floor reflects a structural historical minimum across all game contexts. On B2B
+road games against championship-caliber defenses, wings with modest assist averages (SF/SG,
+AST avg < 6.0) are operating in a situational context that the historical iron_floor pattern
+does not capture. The floor is for stable contexts — this is not a stable context.
 
 RETURN FROM INJURY — SHORT SAMPLE INSTABILITY:
 - When a player header shows [SHORT_SAMPLE:Ng] (fewer than 8 played games in L10 window),
@@ -1742,6 +1764,11 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     Note: this exemption does not remove the BLOWOUT_RISK annotation from the pick or
     override the BLOWOUT_SECONDARY_SCORER SKIP for non-primary scorers — it applies
     only to primary elite scorers on the favored team.
+    Exception to the exemption: when spread_abs >= 15, apply the full blowout confidence cap
+    (74% maximum) to ALL players regardless of elite scorer status. At extreme spreads (15+),
+    even elite scorers face minutes compression and early rest — the exemption applies only in
+    the 8–14 spread range. Do not apply the exemption at spread_abs >= 15 under any
+    circumstances.
 - "competitive" split = historical hit rate in close games (spread_abs ≤ 6.5).
   "blowout_games" split = historical hit rate in non-competitive games (spread_abs > 6.5).
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
@@ -1938,6 +1965,16 @@ Criteria for a top pick (must meet most of these):
 - iron_floor is true, OR trend is up with a strong recent game log
 
 Do not force exactly 4 if fewer genuinely qualify. 2 strong top picks beats 4 weak ones.
+
+3PM TOP-PICK RESTRICTION: Do not designate a 3PM pick as top_pick=true unless iron_floor=true
+is confirmed for that prop. A 9/10 or 10/10 hit rate on 3PM at T1 or T2 does NOT qualify for
+top_pick without iron_floor confirmation — even with a consistent volatility tag and high
+confidence. 3PM props have binary outcome variance (0 makes vs N makes) that the tier hit rate
+system cannot fully capture. Reserve top_pick designation for 3PM picks where the structural
+floor guarantee (iron_floor) is present, indicating the player has not posted zero makes in
+their recent window. Without iron_floor, cap 3PM confidence at 80% maximum and exclude from
+top_pick regardless of hit rate or confidence band.
+
 Set top_pick: true on exactly these picks in the JSON output. All other picks get top_pick: false.
 
 ## OUTPUT FORMAT — EMIT THIS FIRST, BEFORE ANY OTHER TEXT

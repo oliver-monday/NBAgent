@@ -748,6 +748,17 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
     p_partial = sum(1 for p in graded_parlays if p["result"] == "PARTIAL")
 
     hits_and_misses = [p for p in active_picks if p["result"] in ("HIT", "MISS")]
+
+    # Annotate picks where post_game_news indicates injury_exit — gives Claude
+    # a direct signal in the pick object, independent of the news block parsing.
+    if post_game_news:
+        for p in hits_and_misses:
+            name_lower = (p.get("player_name") or "").strip().lower()
+            news_entry = post_game_news.get(name_lower, {})
+            if news_entry.get("event_type") == "injury_exit":
+                p["post_game_event"] = "injury_exit"
+                p["post_game_detail"] = news_entry.get("detail", "")
+
     picks_block   = json.dumps(hits_and_misses, indent=2)
     no_data_block_str = json.dumps(no_data, indent=2) if no_data else "[]"
     parlays_block = json.dumps(graded_parlays, indent=2) if graded_parlays else "[]"
@@ -952,15 +963,39 @@ other stat fields before concluding DNP. Do not conclude DNP or lineup failure u
 are zero AND no minutes evidence exists.
 
 STEP 2 — CHECK INJURY STATUS, THEN CLASSIFY THE MISS as exactly one of:
-  First, inspect the pick object's injury_status_at_check and voided fields before
-  choosing any classification. Prefer injury_event or workflow_gap when the evidence
-  supports them — these take priority over selection_error, model_gap_signal, model_gap_rule, or variance.
+
+  FAST PATH — CHECK POST-GAME NEWS FIRST:
+  Before reading the pick object fields, look up the player's name (lowercase) in
+  ## POST-GAME NEWS CONTEXT. If event_type = "injury_exit" is listed there:
+    → Classify as "injury_event" immediately.
+    → Do NOT proceed to model_gap_rule, model_gap_signal, or variance analysis.
+    → Root cause: one sentence: "In-game injury exit confirmed by post-game news —
+      [detail from news entry]. Player active at pick time; miss not attributable to
+      pick selection logic."
+    → Do NOT write a lesson or recommendation for this miss.
+  This fast path applies regardless of confidence level ("confirmed" or "inferred").
+  An inferred injury exit from injury language in ESPN news is still a stronger
+  signal than box score analysis alone — do not override it with game-script reasoning.
+  Also check the pick object itself: if post_game_event = "injury_exit" is set on the
+  pick, that is a direct annotation from the post-game news pipeline — treat it the
+  same as finding injury_exit in the news block above.
+
+  If no injury_exit event in POST-GAME NEWS and no post_game_event field on the pick,
+  inspect the pick object's injury_status_at_check and voided fields before choosing
+  any classification. Prefer injury_event or workflow_gap when the evidence supports
+  them — these take priority over selection_error, model_gap_signal, model_gap_rule, or variance.
 
   - "injury_event": player was confirmed active at pick time (injury_status_at_check
     was NOT_LISTED or QUESTIONABLE) but exited the game mid-game due to injury.
-    Evidence: non-zero minutes logged but near-zero stats across ALL categories,
-    and/or actual output near-zero despite no pre-game red flag. Use this when an
-    in-game injury exit explains the miss, not a pre-game availability failure.
+    Evidence: very low minutes logged (< 10 minutes) regardless of individual stat
+    values — a player can score 6 PTS in 5 minutes and still be an injury_exit if
+    they were forced out with a Q1 injury. Also applies when stats are near-zero
+    across all categories with confirmed low minutes. Check the POST-GAME NEWS CONTEXT
+    block first: if event_type = "injury_exit" is listed for the player (with any
+    confidence level), that is the authoritative classification — use injury_event
+    regardless of what the individual stat values show. Do NOT classify as
+    model_gap_rule, model_gap_signal, or variance when POST-GAME NEWS CONTEXT
+    shows an injury exit event for this player.
   - "workflow_gap": player was listed OUT or DOUBTFUL pre-game (injury_status_at_check
     = "OUT" or "DOUBTFUL" on the pick object) but voided = false. This is a timing
     or workflow failure — lineup_watch did not void the pick before game time. Use

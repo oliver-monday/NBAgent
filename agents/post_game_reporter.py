@@ -528,6 +528,13 @@ _INJURY_EXIT_TERMS = [
     "left the game", "left early", "did not return", "exited", "left in",
     "injured during", "forced from", "helped off", "came off injured",
     "left with", "suffered", "sustained",
+    # Additional terms for mid-game exit patterns not covered by above
+    "ruled out for the remainder", "ruled out for remainder",
+    "did not finish", "did not complete",
+    "spasms", "spasm",
+    "hard fall", "took a fall", "fell hard",
+    "carted off", "stretchered",
+    "could not return", "unable to return",
 ]
 _DNP_TERMS = [
     "did not play", "dnp", "inactive", "sat out", "scratched",
@@ -704,6 +711,31 @@ def main() -> None:
             print(
                 f"[post_game_reporter] ⚠ {name}: injury language detected"
                 f" ('{inj_term}') but minutes normal ({minutes} min) — no promotion, check manually"
+            )
+
+        # Promote minutes_restriction → injury_exit when injury language detected
+        # in ESPN news AND classification came from box score inference (not news match).
+        # This catches mid-game injury exits where ESPN news mentions the injury
+        # but the exact phrasing didn't match _INJURY_EXIT_TERMS.
+        # Only promote when classification is box-score-inferred (from_news=False)
+        # to avoid overriding confirmed news-based minutes_restriction classifications.
+        if (
+            event_type == "minutes_restriction"
+            and not from_news       # box score inference path, not a news term match
+            and inj_detected        # injury language is present in ESPN news
+            and minutes is not None
+            and minutes < MINUTES_LOW_THRESHOLD
+        ):
+            event_type = "injury_exit"
+            detail = (
+                f"Promoted from minutes_restriction: injury language detected in ESPN news "
+                f"(matched: '{inj_term}') and player logged only {minutes:.0f} minutes. "
+                f"Likely mid-game injury exit — exact classification inferred, not confirmed."
+            )
+            from_news = True
+            print(
+                f"[post_game_reporter] ↑ {name}: promoted minutes_restriction → injury_exit"
+                f" (injury term: '{inj_term}', {minutes:.0f} min)"
             )
 
         confidence   = "confirmed" if from_news else "inferred"
