@@ -1846,5 +1846,181 @@
         "The 'Volume Mix Diversifier' succeeded through genuine cross-prop independence: PTS, AST, and 3PM across three separate games with no shared game context. The Booker 3PM T1 (10/10 consistent) and Bane AST T2 iron-floor legs both carried asymmetric upside risk profiles \u2014 low pick values against high hit rates \u2014 that structurally minimized leg failure probability. Diversifying prop types across independent games (not just independent games with the same prop type) should be a standing parlay construction principle."
       ]
     }
+  },
+  {
+    "date": "2026-03-17",
+    "total_picks": 32,
+    "voided_picks": 4,
+    "hits": 23,
+    "misses": 9,
+    "no_data": 0,
+    "hit_rate_pct": 71.9,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 13,
+        "hits": 10,
+        "hit_rate_pct": 76.9
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 10,
+        "hits": 6,
+        "hit_rate_pct": 60.0
+      },
+      "3PM": {
+        "picks": 7,
+        "hits": 5,
+        "hit_rate_pct": 71.4
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 14,
+        "hits": 9,
+        "hit_rate_pct": 64.3,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 18,
+        "hits": 14,
+        "hit_rate_pct": 77.8,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Iron-floor AST T2/T4 picks at low thresholds (\u22642 AST) proved robust: Miller AST (2.0 actual), Randle AST (2.0 actual), Knueppel AST (2.0 actual), and Ball AST (13.0 actual) all cleared. The consistent tag on low-threshold AST floors remains highly reliable and should continue to be prioritized.",
+      "The blowout-game CHA lineup (Miller, Knueppel, Ball vs MIA) swept all four picks with comfortable margins after Bam Adebayo was confirmed OUT. Absence-driven lineup updates correctly revised confidence upward (Miller PTS to 82%, Ball PTS to 81%) and the game produced a 30-point CHA blowout, validating the amendment logic for rim-protection absences on scoring props.",
+      "Elite scorer blowout exemption worked as designed: Donovan Mitchell hit 19 PTS on a T15 pick (actual margin 4 above floor) despite the game being close, and Devin Booker exploded for 34 PTS on a T10 pick, demonstrating that the step-down cascade with exemption still yields high-value floors for volume scorers.",
+      "The VOLATILE-weak-combo cascade correctly de-risked picks that would have failed at higher tiers: Mitchell PTS was blocked at T20 (would have needed 20+, he scored 19) and Green PTS was blocked at T20/T15 (he scored only 9). The cascade to T10 (pick_value 10) saved both from misses \u2014 confirming the hard skip rule adds genuine protective value.",
+      "Harden's four-prop sweep (PTS 27, REB 5, AST 6, 3PM 2) against soft MIL defense with Giannis OUT validated the soft-DvP + anchor-absence combination for multi-prop coverage on primary ball-handlers. The amendment agent's upward revisions (PTS to 80%, AST to 79%) correctly reflected the Giannis absence impact."
+    ],
+    "lessons": [
+      "AST props remain the weakest prop type at 60.0% hit rate (6/10), dragged down by three misses: Cunningham AST (0 actual \u2014 minutes restriction), Mitchell AST (3 actual, iron-floor 10/10 missed), and Bane AST (1 actual, iron-floor 9/10 missed). The iron_floor tag is providing false confidence on AST props when external suppression factors (minutes restrictions, B2B fatigue, scheme-specific suppression) are present. Iron-floor AST tags should not override situation-specific caution signals.",
+      "Cade Cunningham's PTS and AST both missed badly (6 PTS, 0 AST actual) because he played only 5 minutes \u2014 a clear minutes restriction. The post-game news confirms this. Despite a blowout spread context (DET favored by 18.5), the pick was not voided and the tier_walk's blowout-resilient classification was applied. The key failure: the model had no mechanism to anticipate a mid-game minutes cap on a star player in a blowout. This is a model_gap_rule \u2014 the large-spread blowout should have triggered a harder skip on secondary-to-primary scorer usage (Cunningham's AST especially), or at minimum flagged that blowout games create highest DNP/restriction risk for primary ball-handlers.",
+      "Nikola Jokic PTS missed severely (8 actual vs 15 pick) despite iron-floor T20 and elite scorer blowout exemption. He played only 25 minutes \u2014 in a 28-point DEN blowout, Jokic was almost certainly rested early. The elite scorer exemption incorrectly protected this pick from blowout penalties. The exemption assumes elite scorers keep scoring in blowouts, but when spread_abs exceeds ~15, even elite scorers face minutes compression. A hard minutes-compression rule for spread_abs \u2265 15 should be added \u2014 either mandatory tier step-down or hard cap at 74% \u2014 even for exempt players.",
+      "Donovan Mitchell's AST (3 actual vs 4 pick) and 3PM (1 actual vs 2 pick) both missed in a competitive CLE win (+7 margin). The iron-floor AST tag (10/10 recent hit rate) gave false confidence \u2014 Mitchell had 3 AST in a game where CLE won by 7 and he scored 19. The 3PM miss (1 vs 2 needed) in a non-blowout context with iron_floor should be re-examined: iron_floor 3PM picks at T2 still miss 1-in-8 times and the specific CLE switching-scheme watch item (CLE 3PM DvP rates as soft in aggregate but switching scheme neutralizes perimeter looks) may be suppressing Mitchell's own perimeter efficiency when he plays away from home.",
+      "Desmond Bane's AST miss (1 actual vs 2 pick) on a B2B road game at OKC \u2014 the toughest defensive environment available \u2014 represents a compounding risk that was insufficiently penalized. The tier_walk correctly identified b2b=90% AST as the key anchor, but OKC's defensive scheme is tough and Bane played 36 minutes (full game) on a B2B road night and generated only 1 AST. The pick was reasonable at 80% but the iron_floor tag on a B2B road game vs a championship-caliber defense should carry an additional -5% or require opp=soft gate, consistent with the AST T4+ gate logic that was already partially in the tier_walk."
+    ],
+    "recommendations": [
+      "Add a hard PTS confidence cap of 74% for any player with spread_abs \u2265 15, even for elite scorers with the blowout exemption. Jokic (25 min, 8 PTS in a 28-point DEN blowout) confirms that at extreme spreads, resting happens regardless of star status. The exemption should only waive the spread cap in the 8\u201314 range, not at 15+.",
+      "Implement a 'minutes restriction risk' flag for large-spread blowout games (spread_abs \u2265 15): when the favored team's primary ball-handler or second star has a VOLATILE or trend=down PTS tag, downgrade both their PTS and AST by one full tier and cap confidence at 70%. Cunningham (5 min, 6 PTS, 0 AST) is the prototype case \u2014 the blowout-resilient tag was inapplicable when the player was actively managed out of the game.",
+      "Revise the iron_floor AST tag to NOT override the B2B + tough-defense gate for any player not classified as a primary ball-handler (raw_avgs AST < 6.0). Bane (SF, ~5 AST avg) on a B2B road game vs OKC should have had his AST pick gated at opp=soft required. The iron_floor tag is designed for structural minimums, not situational floors \u2014 on B2B road games vs top defenses, apply the T4+ gate regardless of iron_floor status.",
+      "Apply an explicit away-B2B penalty of -5% to all AST picks for non-primary-ball-handler wings (position SF/SG, raw_avgs AST < 6.0). The current B2B rate uses season-wide b2b data that may not disaggregate home vs road B2B games. Bane's miss and the general AST underperformance (60%) suggest B2B road AST picks for wings are structurally weaker than the aggregate b2b rate implies.",
+      "For the CLE switching-scheme watch item: extend the scope from opponent-facing (perimeter guards scoring vs CLE) to CLE players' own 3PM props when CLE is the visiting team. Mitchell's 3PM miss (1 actual vs 2 needed) in a competitive road game suggests that when CLE plays on the road in competitive games, Mitchell's 3PM generation may be suppressed by defensive attention. Add a road-game -5% penalty to Mitchell 3PM picks when the game is projected CLOSE or COMPETITIVE, bringing the effective cap to 70-72% for T2 picks in that context."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Cade Cunningham",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 6.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: DET @ WSH final 130\u2013117, DET won by 13 (COMPETITIVE label). However, post-game news confirms Cunningham logged only 5 minutes \u2014 this is a minutes restriction, not a blowout garbage-time scenario. STEP 1: Cunningham recorded 6 PTS in 5 minutes \u2014 not a DNP, but severely limited. STEP 2: Post-game news explicitly classifies this as MINUTES RESTRICTION (5.0 min played). With only 5 minutes of playing time, hitting a T10 floor (pick_value 10) was impossible regardless of hit rate. STEP 3: The original reasoning cited 'Cunningham hits 15+ in 8/10 vs soft WSH defense' \u2014 the hit rate was sound, but the reasoning had no mechanism to anticipate an active minutes restriction in a game that wasn't even a blowout (DET won by 13, not 20+). STEP 4: Hit rate was 8/10 at pick time \u2014 strong historical data. The miss is not explained by the statistical record. STEP 5: Tier_walk correctly identified T15\u2192T10 cascade with blowout-resilient offset. The tier was reasonable given available data. STEP 6: No lineup update was triggered for Cunningham pre-game. The root failure is structural: the model has no mechanism to flag mid-game minutes restrictions for players in blowout-adjacent spreads (spread_abs=18.5). The large spread should activate a 'primary scorer restriction risk' flag \u2014 at spread_abs \u2265 15, even star players on the favored team may be actively managed. This signal existed in the quant (BLOWOUT_RISK=True, large spread) but the rule threshold was too permissive, making this a model_gap_rule miss."
+      },
+      {
+        "player_name": "Cade Cunningham",
+        "prop_type": "AST",
+        "pick_value": 8,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: DET @ WSH 130\u2013117, DET won by 13 (COMPETITIVE). Post-game news confirms minutes restriction at 5 minutes. STEP 1: Cunningham recorded 0 AST in 5 minutes \u2014 near-zero across all stats consistent with the confirmed minutes restriction, not a DNP. STEP 2: Minutes restriction (5 min played) fully explains the 0 AST \u2014 Cunningham cannot accumulate 8 assists in 5 minutes of play. STEP 3: The original reasoning cited 'Cunningham averages nearly 10 APG and WSH defense is soft; blowout cap limits confidence.' The reasoning correctly flagged blowout risk and capped at 74%, but AST at pick_value=8 is an extremely aggressive threshold to clear in any restricted-minute scenario. STEP 4: Hit rate was 8/10 at T8 \u2014 solid on paper, but irrelevant when playing 5 minutes. STEP 5: Tier_walk identified T8 as marginal (7/10=70%), with the quant's best tier being T8 at 8/10 (85%). The spread cap was correctly applied. The walk was sound; the failure was the inability to anticipate a restriction event. STEP 6: No lineup update was triggered. Same structural failure as the PTS miss: spread_abs=18.5 on the favored team's primary ball-handler should trigger an AST skip or mandatory downgrade. A T8 AST pick at 74% confidence in a potential blowout is exactly the scenario where the rule should enforce a harder exit \u2014 the signal (large spread + favored team primary creator) was present but the rule didn't enforce a skip. Model_gap_rule: the data signal existed, the rule was too permissive."
+      },
+      {
+        "player_name": "Desmond Bane",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: OKC @ ORL 113\u2013108, OKC won by 5 (CLOSE). Game was competitive throughout \u2014 no blowout suppression applicable. STEP 1: Bane played 36 minutes (full game per post-game news). He recorded 1 AST in 36 minutes of a close road game vs the defending champions \u2014 he was active and playing full minutes. STEP 2: No injury, no DNP, no restriction. This is a genuine statistical outcome \u2014 Bane generated 1 AST instead of the required 2 in a competitive road game. STEP 3: Original reasoning cited 'Iron-floor AST T2 with 90% B2B rate; Bane consistently distributes even on back-to-backs.' The b2b=90% AST rate was the primary anchor, and the pick logic was sound. The 9/10 recent hit rate and iron_floor tag correctly identified this as a reliable floor. STEP 4: Hit rate 9/10 at T2 \u2014 Bane generating only 1 AST represents the 1-in-10 miss scenario that the historical data acknowledges. STEP 5: Tier_walk correctly identified T2 as the qualifying tier after confirming the T4+ gate did not apply. The walk was thorough and produced the correct tier. STEP 6: No lineup update was triggered. The pick was at 80% confidence going into a close game \u2014 Bane played full minutes on a B2B road game in a 5-point loss at OKC. In a tightly contested game against a top defense, Bane likely functioned primarily as a scorer/cutter rather than a distributor. This is within normal variance for a 9/10 historical hit rate \u2014 the one-in-ten outcome materialized. Note: while the lesson section flags a potential B2B road penalty for wings, this specific miss is best classified as variance given the game script (CLOSE, not suppressive) and full minutes played."
+      },
+      {
+        "player_name": "Devin Booker",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3.0,
+        "miss_classification": "model_gap_signal",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: PHX @ MIN 104\u2013116, MIN won by 12 (COMPETITIVE). PHX was the away underdog \u2014 no blowout script for PHX. STEP 1: Booker played 35 minutes (confirmed post-game news), scored 34 PTS, hit 1+ 3PM. He was fully active and his PTS and 3PM both hit. The AST specifically fell short at 3. STEP 2: No injury, no restriction. Booker was healthy and active. The miss is a pure statistical outcome on the AST prop. STEP 3: Original reasoning cited 'Iron-floor AST T4 on a B2B; Booker had 6 AST last game and is PHX's primary playmaker.' The prior-game 6-AST recency bias may have overweighted Booker's playmaking ceiling \u2014 with 34 PTS, Booker was in scorer mode not distributor mode. The tension between high-scoring games and assist accumulation is a signal the system doesn't explicitly model. STEP 4: Hit rate 7/10 at T4 \u2014 already the weakest AST hit rate among the picks taken. The iron_floor tag partially obscured this marginal rate. STEP 5: Tier_walk correctly identified T4 with VOLATILE -5% and MIN AST suppressor watch item applied. The walk was thorough. STEP 6: No lineup update was triggered. The core miss driver is a signal the model doesn't capture: when a player produces a career-level scoring output (34 PTS), their assist generation is typically compressed because they are operating in isolation/hero-ball mode rather than distributing. The MIN AST suppressor watch item was flagged in the tier_walk but the -3% applied wasn't sufficient to push below threshold. This is model_gap_signal: the system lacks a 'high-PTS game suppresses AST' interaction term that would have reduced confidence on this prop, particularly on B2B road games where PHX's offensive scheme concentrates usage in Booker's scoring."
+      },
+      {
+        "player_name": "Donovan Mitchell",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: CLE @ MIL 123\u2013116, CLE won by 7 (CLOSE). Competitive road win \u2014 no blowout suppression for either team. STEP 1: Mitchell played 34 minutes (confirmed post-game), scored 19 PTS, hit 1 3PM. He was fully active and generating production across other categories. The AST specifically came in at 3 vs the required 4. STEP 2: No injury, no restriction. Full minutes, high production \u2014 a clean 1-AST miss on the floor. STEP 3: Original reasoning cited 'Iron-floor, consistent-tagged T4 AST vs soft MIL defense; Mitchell hit 4+ assists in all 10 recent games.' The 10/10 hit rate made this appear near-certain. The reasoning was sound by all available metrics. STEP 4: This is the most alarming miss given the 10/10 historical rate. However, 10/10 represents ~90-95% actual probability, not 100% \u2014 a miss was statistically due eventually. STEP 5: Tier_walk correctly identified T4 as the qualifying tier (10/10=100% recent hit rate, VOLATILE+T6 block correctly applied). The walk produced the ideal tier. STEP 6: Amendment flagged upside (revised to 85%) after Giannis OUT \u2014 pick still missed. The amendment correctly identified the favorable conditions (Giannis absence softens MIL defense, more drive-and-kick opportunities) but the actual game outcome had Mitchell distributing less than his seasonal norm \u2014 3 AST in a game CLE won by 7 on the road. In a competitive road win where CLE controlled pace, Mitchell may have been more in scoring mode. The iron_floor tag, consistent label, and 10/10 rate all indicated this was sound \u2014 the outcome was within the acknowledged ~5-10% miss probability for this tier. Classified as variance."
+      },
+      {
+        "player_name": "Donovan Mitchell",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: CLE @ MIL 123\u2013116, CLE won by 7 (CLOSE). Competitive road win \u2014 no blowout suppression. STEP 1: Mitchell played 34 minutes, scored 19, logged 1 3PM. Fully active \u2014 only the 3PM prop fell short by 1. STEP 2: No injury, no restriction. A genuine statistical miss. STEP 3: Original reasoning cited 'Iron-floor 3PM T2 with 85% hit rate; stable trend and strong vs-tough record support this floor.' The reasoning was correct but missed the CLE switching-scheme watch item that is explicitly documented in the SEASON CONTEXT. STEP 4: Hit rate 8/10 at T2. Not a 9 or 10/10 \u2014 the pick was within normal variance territory for 3PM. However, the CLE watch item is specifically about CLE's switching scheme neutralizing perimeter guard looks \u2014 this applies to OPPONENTS of CLE, but Mitchell IS CLE. The nuance here is whether MIL's defense (not CLE's) neutralizes Mitchell's 3PM. MIL has Giannis OUT, so the defensive pressure would be reduced. The miss appears structural: Mitchell generated only 1 3PM in 34 road minutes in a competitive game. STEP 5: Tier_walk correctly identified T2 with iron_floor and blowout-resilient net -5% applied. The walk was sound. STEP 6: Amendment flagged upside (revised to 79%) after Giannis OUT \u2014 pick still missed. The amendment missed the real risk: in competitive road games, Mitchell's 3PM generation has shown to be inconsistent (CLE switching-scheme watch item is documented, and the road-game-competitive context is the opposite of the suppressive blowout scenario). The 3PM T2 iron_floor tag overcorrected confidence by ignoring the away-competitive-game context for 3PM generation. This is model_gap_rule: the data signal (road game, competitive spread, 3PM generation sensitivity) was present in the quant context but the rule didn't apply a road-competitive penalty to 3PM picks for iron_floor-tagged players."
+      },
+      {
+        "player_name": "Jalen Green",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 9.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: PHX @ MIN 104\u2013116, MIN won by 12 (COMPETITIVE). PHX was the away underdog \u2014 no blowout suppression for PHX players from a game-script perspective, though MIN won by 12. STEP 1: Green played 27 minutes (confirmed post-game), scored 9 PTS. One point below the T10 threshold. STEP 2: No injury, no restriction. Jalen Green (now on PHX per roster context) was active and playing significant minutes. The miss is by exactly 1 point. STEP 3: Original reasoning cited 'Jalen Green's B2B scoring is 100% at T10; VOLATILE penalty applied but trend=up supports floor.' The reasoning was sound \u2014 100% B2B rate, trend=up, VOLATILE already penalized to 76%. STEP 4: Hit rate 8/10 at T10 from quant (actual L10 count was 9/10). VOLATILE tag was correctly applied. A 1-point miss on a T10 floor after the VOLATILE-weak-combo blocked T20 and T15 is within normal variance for a volatile scorer. STEP 5: Tier_walk correctly cascaded: T20 hard skip (VOLATILE+7/10), T15 hard skip (VOLATILE+7/10), T10 qualifying tier (8/10 quant). The cascade was correctly executed, and T10 was the analytically sound landing tier. STEP 6: No lineup update was triggered. Green scoring 9 in 27 minutes on a B2B road game against MIN's defense (allowed 116 PPG to PHX \u2014 competitive game) is a one-point miss at the floor tier. VOLATILE scorers by definition have this outcome embedded in the historical rate. Classified as variance \u2014 the tier selection was correct, the penalty was applied, and the outcome fell just outside the threshold."
+      },
+      {
+        "player_name": "Nikola Jokic",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 8.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: PHI @ DEN 96\u2013124, DEN won by 28 (BLOWOUT). DEN was heavily favored (spread_abs=15.5) and covered comprehensively. STEP 1: Jokic played 25 minutes (confirmed post-game news) and scored only 8 PTS. This is a clear case of early exit/rest in a blowout \u2014 he played just 25 minutes in a game DEN won by 28, consistent with being rested once the outcome was decided in the third quarter. STEP 2: No formal DNP or injury \u2014 Jokic played 25 minutes but was clearly managed out of the game with a large lead. STEP 3: Original reasoning cited 'Iron-floor T20 with elite scorer blowout exemption; Jokic hits 20+ in 9/10 vs soft PHI defense.' The elite scorer exemption was the critical error: it waived all blowout penalties and caps based on the premise that elite scorers keep producing in blowouts. However at spread_abs=15.5 \u2014 a historic blowout territory \u2014 even Jokic faces aggressive minutes management. The quant data showed blowout_games=80% for Jokic PTS (vs 96% competitive) \u2014 the exemption actively ignored this lower blowout rate and overrode it. STEP 4: Hit rate 9/10 at T20 overall. But the blowout-specific rate of 80% and the extreme spread (15.5) were warning signs that were exempted away. STEP 5: Tier_walk correctly identified T20 as the qualifying tier with iron_floor and applied the elite scorer exemption. The walk logic was internally consistent but the exemption itself is the flawed rule. The signal (extreme spread, blowout_games=80%) existed in quant data. STEP 6: No lineup update was triggered. Root failure: the elite scorer blowout exemption has no upper bound on spread_abs. At spread_abs \u2265 15, resting elite scorers with 25 minutes played is a known coaching behavior. The exemption should be modified to apply only when spread_abs < 15, preserving full blowout penalties (including -10% and spread caps) at extreme margins even for elite scorers. Model_gap_rule: the blowout signal and Jokic's blowout-specific hit rate both existed in quant data; the exemption rule threshold was too permissive."
+      },
+      {
+        "player_name": "Nikola Jokic",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: PHI @ DEN 96\u2013124, DEN won by 28 (BLOWOUT). Same game context as the Jokic PTS miss. STEP 1: Jokic played 25 minutes and scored 8 PTS \u2014 he was active but limited. 0 3PM in 25 minutes in a blowout is consistent with limited volume of shot attempts. STEP 2: No injury. The tier_walk correctly identified this pick as a SKIP (confidence fell to 60% after VOLATILE -5% + blowout net -5% penalties), and this skip recommendation was correct. STEP 3: The pick was labeled 'SKIP' in the reasoning \u2014 meaning this was a pick the system's own logic correctly recommended skipping but the pick was still submitted. The tier_walk explicitly states 'SKIP \u2014 60% < 70%.' STEP 4: Hit rate 7/10 at T1 from quant. After VOLATILE and blowout penalties, the system's own rules said to skip. STEP 5: The tier_walk is internally consistent and correct \u2014 the cascade properly reached the SKIP conclusion. The issue is that this pick appears in the graded results despite the SKIP recommendation, suggesting the skip output was not properly handled in the final submission pipeline. STEP 6: No lineup update triggered. This pick should not have been submitted. The tier_walk correctly reached a SKIP conclusion. The miss is classified as model_gap_rule because the skip rule fired correctly but the submission pipeline included it anyway \u2014 either a workflow issue where SKIP records are being graded as active picks, or the system needs a harder enforcement gate that prevents SKIP-flagged picks from being submitted to the grading queue."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 0,
+      "misses": 1,
+      "partial": 0,
+      "parlay_summary": "0/1 \u2014 the Desmond Bane AST leg failed (1 actual vs 2 needed) on a B2B road game at OKC, busting an otherwise clean parlay with Randle (32 PTS) and Holmgren (20 PTS) both covering comfortably.",
+      "parlay_lessons": [
+        "Never anchor a parlay on a B2B road AST pick for a non-primary ball-handler against a top defense. The Bane AST leg carried the highest structural risk of the three \u2014 B2B road, OKC's championship-caliber defense, SF position with modest AST volume (~5 avg). Even at 9/10 historical hit rate, the combination of B2B fatigue + road setting + elite defensive scheme creates a compounding suppression risk that the individual leg analysis did not sufficiently penalize. A parlay leg that requires a non-creator wing to distribute in a close road game on the second night should require opp=soft as a gate, not just opp=mid."
+      ],
+      "parlay_reinforcements": [
+        "The two-leg core of PTS floors for high-usage players in favorable matchups (Randle 10+ PTS with Edwards OUT, Holmgren 10+ PTS with iron-floor/consistent tags) proved highly reliable \u2014 Randle hit 32 and Holmgren hit 20. Future multi-game parlays should prioritize 2-3 low-threshold PTS floors (T10 or below) for volume scorers with absence-driven usage boosts or iron-floor tags as the structural backbone, reserving the 'swing leg' for props with higher baseline confidence rather than marginal AST floors on wings in difficult road contexts.",
+        "The correlation logic (independent legs across three separate games) was correctly structured and avoided same-game correlation risk. Cross-game parlays with independent outcomes remain the preferred structure \u2014 had all three legs been from games with structural alignment, a single blowout could have busted multiple legs simultaneously. The OKC vs ORL / MIN vs PHX / ORL vs OKC spread avoided any shared game-script dependency."
+      ]
+    }
   }
 ]
