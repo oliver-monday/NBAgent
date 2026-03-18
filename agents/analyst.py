@@ -1441,8 +1441,8 @@ KEY FRAMEWORK — HOW TO REASON WHEN RULES CONFLICT:
 The rules below can conflict. When they do, use this priority order:
 
   1. HARD SKIPS — absolute, no override. volatile_weak_combo, blowout_secondary_scorer,
-     ast_hard_gate, 3pm_blowout_trend_down, and all other named skip rules execute
-     unconditionally. If a hard skip fires, the pick does not exist. Period.
+     ast_hard_gate, 3pm_blowout_trend_down, volatile_ast_t6, and all other named skip
+     rules execute unconditionally. If a hard skip fires, the pick does not exist. Period.
 
   2. MANDATORY TIER STEPS — execute first, then re-evaluate from the new tier.
      min_floor < 24 → step down. FG_COLD ≥ 15% on T15+ → step down. After stepping,
@@ -1676,6 +1676,23 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   rules and secondary-scorer skip rules — not this rule. The mechanism here is specific to
   winning-side players whose minutes get compressed when the game is decided early.
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
+- 3PM confidence ceiling — 80% maximum for non-iron-floor picks:
+  Do not assign confidence_pct above 80 on any 3PM pick unless iron_floor=true on that
+  stat. This cap applies regardless of hit rate, trend, consistent tag, or soft matchup.
+  Rationale: 3PM props have binary outcome variance (0-for-game is always possible for
+  any shooter) that the tier and hit-rate system cannot fully price. A 9/10 hit rate on
+  a 3PM prop means the player goes 0-for in approximately 10% of games — and when they
+  do, the miss is always maximal (actual=0 vs any threshold). Confidence above 80% on
+  a non-iron-floor 3PM pick overstates the system's ability to distinguish those games.
+  Audit evidence: Austin Reaves 3PM T1 at 84% confidence (top_pick=true), 9/10 hit rate,
+  consistent tag — actual 0, miss. The 81–85% band on 3PM props ran at 50% over the
+  sample period, consistent with overcalibration at high confidence on this prop type.
+  Application: after all penalties and caps are applied, if the resulting confidence_pct
+  for a 3PM pick exceeds 80, reduce it to 80. If iron_floor=true on the 3PM stat, the
+  80% cap does not apply — iron_floor reflects a confirmed volume floor that provides
+  structural protection against the 0-for-game scenario.
+  top_pick ineligibility: Do not set top_pick=true on any 3PM pick unless iron_floor=true.
+  A 3PM pick without iron_floor is not a structural top pick regardless of hit rate.
 
 KEY RULES — INJURY STATUS ON SHOOTING PROPS:
 - When a player carries a QUESTIONABLE status in the injury report, check the injury
@@ -1788,6 +1805,47 @@ KEY RULES — VOLATILITY:
   gate rules respectively. Exception: if the player has [iron_floor] on this stat AND
   trend=up, this skip does not apply — the iron_floor tag elevates the floor reliability
   above the 8/10 baseline.
+- VOLATILE AST skip — high-tier primary ball-handlers: If BOTH of the following are true,
+  SKIP the AST pick entirely. Do not pick at a lower tier.
+    1. The stat is tagged [VOLATILE]
+    2. The selected AST tier is T6 or higher
+  This rule applies regardless of elite playmaker exemption status. The elite playmaker
+  exemption (raw_avgs AST >= 8.0) protects against the low-volume position gate in the
+  AST T4+ HARD GATE — it does not override floor instability signaled by [VOLATILE].
+  A player who averages 8+ APG but carries a [VOLATILE] tag has a distribution-wide
+  assist floor: their L10 range may span 4-13, making T6 structurally fragile regardless
+  of their average. The 30th-percentile outcome of a VOLATILE elite playmaker IS the floor
+  of their range, and T6 sits exactly at that floor.
+  Audit evidence: Luka Doncic AST T6, actual 4 — L10 range 4-13, VOLATILE tag present,
+  elite playmaker exemption invoked to override gate, pick missed at the exact floor value.
+  Exception: if the player has [iron_floor] on their AST stat AND trend=up AND the tier is
+  exactly T6, this skip does not apply — iron_floor at T6 with an up trend represents a
+  confirmed floor above the threshold value. T8 or higher skips regardless of iron_floor.
+- VOLATILE tag neutralizes absence-driven upside arguments:
+  When a pick carries [VOLATILE] on the relevant stat, do not raise confidence on the
+  basis of a key teammate or opponent player being OUT. Treat such absences as
+  confidence-neutral — direction unchanged, not direction up.
+  Rationale: the [VOLATILE] tag signals that the player's counting-stat output is
+  distribution-wide — their floor is genuinely unreliable. Increased usage from an
+  absence does not stabilize a volatile floor; it merely shifts the distribution
+  upward while leaving the floor intact. A VOLATILE scorer who gets more usage in a
+  given game can just as easily produce a floor-scraping night as a ceiling night.
+  The amendment logic's job is to identify genuine structural changes — a VOLATILE
+  player absorbing usage from an absent teammate is NOT a structural change. It is
+  an opportunity argument layered on top of a floor instability signal.
+  Rule: if [VOLATILE] appears on a stat's annotation AND the primary justification
+  for raising confidence is a teammate/opponent absence (OUT, DOUBTFUL), hold
+  confidence at your pre-amendment assessment. If the absence creates a genuine
+  structural floor change (e.g., the absent player was the primary ball-handler and
+  the VOLATILE player now handles all creation duties), that is a role change, not
+  an absence — evaluate it as a role reassignment with explicit reasoning about why
+  the floor itself has changed, not just the opportunity.
+  Audit evidence: Kevin Durant PTS (VOLATILE) amended from 74% to 79% citing
+  Sengun OUT redistributing paint usage. Durant scored 18 on a T20 threshold — the
+  volatile floor materialized exactly as the tag predicted.
+  This rule does NOT apply to: non-VOLATILE picks (absence-driven upside is valid
+  reasoning for moderate and consistent players); or picks where [iron_floor]=true
+  (iron_floor overrides floor instability concerns on the specific tier).
 
 KEY RULES — SHOOTING EFFICIENCY REGRESSION:
 - [FG_HOT:+X%] and [FG_COLD:-X%] annotations are generally informational. Do not apply any

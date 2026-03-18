@@ -1,0 +1,326 @@
+[
+  {
+    "date": "2026-03-17",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "manual_skip",
+    "trim_reasons": ["tier_walk hard skip fired: trend=down AND BLOWOUT_RISK=True triggers 3PM blowout skip rule"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "manual_skip",
+    "trim_reasons": ["BLOWOUT net -5% + VOLATILE -5% pushes final confidence to ~60% — below 70% floor; pick should not have been filed"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": ["NOTE: pick filed at T6; tier_walk cascade via VOLATILE+AST>=T6 block correctly resolves to T4; keeping at T4 level"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": ["volatile_weak_combo: VOLATILE + 7/10 at T15 — new hard-skip rule catches this automatically going forward"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": ["big-man 3PM structurally fragile — low attempt volume, game-dependent", "VOLATILE tag adds binary outcome risk on prop type already prone to 0-for nights"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": ["VOLATILE + road underdog at 74% — floor-scraping confidence", "MIL home defense is legitimately tough for Mitchell scoring"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": ["only qualifying tier after volatile_weak_combo cascade from T15", "exactly at 70% floor — no margin", "internally conflicted tier_walk confidence oscillation"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": ["volatile_weak_combo: VOLATILE + 8/10 at T20 — new hard-skip rule catches this automatically going forward", "L10 includes four sub-20 nights"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": ["floor gate fires: 3rd-lowest L10 REB = 6, not strictly less than pick_value=6", "pick as filed appears to be reconciliation error — should be T4"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": ["T6+ AST ceiling calibrates at 65.1% season-wide", "MIL switch-heavy defense suppresses ball-handler assist opportunities — same mechanism as MIN AST watch item"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": ["exactly at 70% floor", "documented T2 3PM miss history in system", "tier_walk internally uncertain about confidence assignment"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "prop_type": "AST",
+    "pick_value": 8,
+    "verdict": "trim",
+    "trim_reasons": ["T8 AST aggressive for parlay inclusion", "blowout garbage-time risk if DET dominates WSH early and starters sit"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": ["NOTE: initially flagged volatile_weak_combo; revised KEEP — Anthony Edwards OUT removes MIN's primary defender and scheme anchor; PHX-MIN is 6th/7th seed head-to-head with playoff stakes; Booker's competitive game floor is well above T20"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": ["MIN AST suppressor watch item applicable", "B2B — Booker likely in scoring mode after 40-pt game, not playmaking mode", "even with Edwards OUT, Booker's AST ceiling limited by aggressive shot-taking in close game"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": ["NOTE: Edwards OUT + playoff stakes context strengthens this further; T10 is very conservative for Green's recent scoring output"]
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-17",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": ["vs_tough material drop against OKC defense", "road game vs defending champions — likely blowout context limits Banchero minutes/usage in second half", "74% at T15 is marginal against this opponent class"]
+  }
+]
