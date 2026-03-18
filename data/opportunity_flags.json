@@ -624,5 +624,77 @@
     "spread_delta": null,
     "morning_context": null,
     "reasoning": "PTS T10 85% [stable]; REB T8 75% [down]"
+  },
+  {
+    "date": "2026-03-18",
+    "generated_at": "2026-03-18T11:36:15.824572-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "teammate",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T8 75% [stable]"
+  },
+  {
+    "date": "2026-03-18",
+    "generated_at": "2026-03-18T11:36:15.824572-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "teammate",
+    "player_name": "Isaiah Hartenstein",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "consistent"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 85% [down]; AST T2 70% [stable]"
+  },
+  {
+    "date": "2026-03-18",
+    "generated_at": "2026-03-18T11:36:15.824572-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "teammate",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 70% [up]"
   }
 ]
