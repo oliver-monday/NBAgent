@@ -696,5 +696,45 @@
     "spread_delta": null,
     "morning_context": null,
     "reasoning": "REB T4 70% [up]"
+  },
+  {
+    "date": "2026-03-19",
+    "generated_at": "2026-03-19T11:32:17.312072-07:00",
+    "triggered_by": "Darius Garland",
+    "triggered_by_team": "LAC",
+    "side": "teammate",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 25,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 95,
+        "trend": "down",
+        "volatility": "consistent"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "moderate"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 95,
+        "trend": "up",
+        "volatility": "consistent"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T25 80% [stable]; REB T4 95% [down]; AST T2 90% [down]; 3PM T1 95% [up]"
   }
 ]
