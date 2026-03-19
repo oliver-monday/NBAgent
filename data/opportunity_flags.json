@@ -736,5 +736,148 @@
     "spread_delta": null,
     "morning_context": null,
     "reasoning": "PTS T25 80% [stable]; REB T4 95% [down]; AST T2 90% [down]; 3PM T1 95% [up]"
+  },
+  {
+    "date": "2026-03-19",
+    "generated_at": "2026-03-19T16:42:40.574467-07:00",
+    "triggered_by": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "side": "teammate",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 4.0pts smaller since morning (was 13.5, now 9.5)",
+    "morning_context": null,
+    "reasoning": "PTS T15 75% [up]; spread moved 4.0pts smaller since morning (was 13.5, now 9.5)"
+  },
+  {
+    "date": "2026-03-19",
+    "generated_at": "2026-03-19T16:42:40.574467-07:00",
+    "triggered_by": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "side": "teammate",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 87,
+        "trend": "down",
+        "volatility": "moderate"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 87,
+        "trend": "stable",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 87,
+        "trend": "stable",
+        "volatility": "moderate",
+        "morning_tier": 10,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": "spread moved 4.0pts smaller since morning (was 13.5, now 9.5)",
+    "morning_context": null,
+    "reasoning": "AST T6 87% [down]; 3PM T2 87% [stable]; PTS T15 87% [stable]; spread moved 4.0pts smaller since morning (was 13.5, now 9.5)"
+  },
+  {
+    "date": "2026-03-19",
+    "generated_at": "2026-03-19T16:42:40.574467-07:00",
+    "triggered_by": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "side": "teammate",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate"
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 4.0pts smaller since morning (was 13.5, now 9.5)",
+    "morning_context": null,
+    "reasoning": "PTS T10 85% [stable]; REB T8 75% [down]; spread moved 4.0pts smaller since morning (was 13.5, now 9.5)"
+  },
+  {
+    "date": "2026-03-19",
+    "generated_at": "2026-03-19T16:42:40.574467-07:00",
+    "triggered_by": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "side": "opponent",
+    "player_name": "Josh Giddey",
+    "team": "CHI",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 4.0pts smaller since morning (was 13.5, now 9.5)",
+    "morning_context": null,
+    "reasoning": "AST T4 70% [up]; spread moved 4.0pts smaller since morning (was 13.5, now 9.5)"
+  },
+  {
+    "date": "2026-03-19",
+    "generated_at": "2026-03-19T16:42:40.574467-07:00",
+    "triggered_by": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "side": "opponent",
+    "player_name": "Matas Buzelis",
+    "team": "CHI",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "moderate"
+      },
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 85,
+        "trend": "up",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 4.0pts smaller since morning (was 13.5, now 9.5)",
+    "morning_context": "skipped this morning (volatile_weak_combo)",
+    "reasoning": "PTS T15 80% [up]; REB T6 70% [up]; 3PM T2 85% [up]; spread moved 4.0pts smaller since morning (was 13.5, now 9.5); skipped this morning (volatile_weak_combo)"
   }
 ]
