@@ -14,10 +14,10 @@
       "lower_tier_qualifies": true,
       "note": "FG_MARGIN_THIN:9% forces step from T20 to T15; T15 pick emitted instead"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 32.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 32.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-18",
@@ -37,8 +37,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-03-18",
@@ -55,9 +55,9 @@
       "spread_abs": 13.5,
       "note": "trend=down + BLOWOUT_RISK=True (DEN favored) triggers unconditional 3PM skip including T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   }
 ]
