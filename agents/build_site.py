@@ -23,6 +23,9 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SITE = ROOT / "site"
 
+PT = ZoneInfo("America/Los_Angeles")
+TODAY_STR = dt.datetime.now(PT).strftime("%Y-%m-%d")
+
 PICKS_JSON              = DATA / "picks.json"
 PARLAYS_JSON            = DATA / "parlays.json"
 AUDIT_LOG_JSON          = DATA / "audit_log.json"
@@ -38,10 +41,6 @@ _ABBR_NORM = {
     "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
     "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
 }
-
-PT = ZoneInfo("America/Los_Angeles")
-TODAY_STR = dt.datetime.now(PT).strftime("%Y-%m-%d")
-
 
 def load_json(path: Path, default):
     if not path.exists():
