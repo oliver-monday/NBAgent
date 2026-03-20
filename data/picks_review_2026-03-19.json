@@ -1,0 +1,232 @@
+[
+  {
+    "date": "2026-03-19",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 25,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Third scoring option behind Doncic (30+ streak) and LeBron; usage concentration compresses Reaves ceiling on nights LAL offense runs through its stars",
+      "B2B road context (same archetype as Mar 18 miss \u2014 14 actual vs 15 threshold); variance at this tier is concentrated in exactly this game profile",
+      "Keep standalone as low-priority; exclude from parlays"
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "non_pick",
+    "trim_reasons": [
+      "System concluded ast_hard_gate skip in tier_walk (PF position + tough defense) but pick appears in active picks \u2014 filter_self_skip_picks did not catch it",
+      "Do not play \u2014 system own conclusion was mandatory skip; pick is a workflow gap"
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "vs_tough=65% is meaningfully below the 9/10 overall rate \u2014 ORL defense is tough and that split is the operative number here",
+      "T15 on a role player at 74% with a 65% tough-defense split is marginal; CHA wins are often high-usage LaMelo games that compress Knueppel scoring role",
+      "Keep standalone low-priority; exclude from parlays"
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "voided",
+    "trim_reasons": [
+      "Correct lineup scratch \u2014 voided by system"
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Darius Garland",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "voided",
+    "trim_reasons": [
+      "Correct lineup scratch \u2014 Garland B2B management; Clippers do not play him on back-to-backs per season context note"
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": []
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [
+      "NOTE: system concluded blowout_secondary_scorer skip in tier_walk; filter_self_skip_picks did not catch it \u2014 workflow gap",
+      "Human override: PHX motivated to avoid play-in (39-31, fighting for playoff seeding vs SAS); Green at T10 is a floor pick in a game PHX will compete in",
+      "Treat as human-judgment keep; monitor filter_self_skip_picks gap for Code fix"
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Marginal T2\u2192T1 walk at exactly 70% base confidence; SAS is the #2 team in the West with a tough defense",
+      "PHX competitive motivation supports Green playing full minutes but shot-selection under pressure may not favor 3PM volume",
+      "T1 3PM for secondary scorer on road vs elite defense in a game PHX needs to win \u2014 too many variables compressing perimeter opportunities"
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": []
+  }
+]

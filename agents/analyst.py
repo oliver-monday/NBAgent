@@ -1382,6 +1382,16 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
 - Pick as many qualifying props as there are — don't limit volume artificially
 - Only output picks with confidence_pct ≥ 70. This is a floor, not a target —
   do not round up from a lower honest assessment to meet it. See KEY FRAMEWORK above.
+- 3PM CONFIDENCE FLOOR: For 3PM props specifically, the minimum confidence is 75%, not 70%.
+  Do not output any 3PM pick with confidence_pct below 75. A 3PM pick that qualifies at
+  71%, 72%, 73%, or 74% does not meet the bar — skip it entirely (no skip record needed,
+  as no hard rule fired; the pick simply did not clear the prop-specific floor).
+  Rationale: 3PM props have binary outcome risk (0-for-game is always possible for any
+  shooter regardless of tier) and thin risk/reward at low thresholds (T1 iron_floor prices
+  near -500 to -1000 on most platforms). The 5pp higher floor filters the most marginal
+  3PM picks while preserving structurally sound iron_floor picks at 78%+ confidence.
+  This floor applies after all penalties and caps — if confidence after VOLATILE deduction,
+  blowout cap, and trend step-down lands below 75%, skip the 3PM pick.
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
 - REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
 - REB props — pick value gate: The pick value must be strictly below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. The pick tier must be strictly less than this floor value — an exact match is not sufficient. Rationale: when the 3rd-lowest L10 value equals the pick threshold exactly, there is zero variance buffer. A single outlier game (even for a player with a 10/10 hit rate) breaks the streak with no protective cushion. If the intended tier equals or exceeds this floor, move down one tier. If no valid tier exists strictly below the floor, skip the REB prop entirely.
@@ -1410,6 +1420,16 @@ Treat them as requiring exceptional justification — do not pick them by defaul
     tier specifically, require ≥80% hit rate in the player's recent window (8+/10 at the ≥25
     tier) before selecting. The tier calibrates below floor league-wide; a higher individual bar
     is needed to compensate. Essentially never select PTS T30 — season hit rate 56.8% (n=81).
+  PTS T25 BLOWOUT HARD SKIP: If spread_abs >= 15 AND the player's team is the favored side
+    (negative spread), do NOT select PTS T25 or T30 for any player regardless of hit rate,
+    iron_floor tag, or elite scorer status. This is a hard skip — do not apply a confidence
+    cap and proceed. Emit a skip record with skip_reason=blowout_t25_skip.
+    Rationale: confirmed three times (Jokic Mar 17: spread_abs=15.5, 25min, 8 PTS; SGA Mar 18:
+    spread_abs=19.5, 26min, 20 PTS; manually caught pre-game). At extreme spreads, even elite
+    scorers face early rest and role subordination that makes T25 structurally unachievable.
+    The current cap-at-74% approach still generates the pick; a hard skip prevents it entirely.
+    Note: T20 and below for elite scorers in spread_abs 15+ games are still subject to the
+    existing spread_abs >= 15 cap rule (74% max) — this hard skip applies only to T25 and T30.
 
   3PM T2: calibrates at 71.4% (n=441) — above the 70% threshold. No ceiling rule needed.
   3PM T3+: actual season hit rate 58.6% (n=157). Only select if player has hit 7+/10 at this
@@ -1768,7 +1788,8 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     (74% maximum) to ALL players regardless of elite scorer status. At extreme spreads (15+),
     even elite scorers face minutes compression and early rest — the exemption applies only in
     the 8–14 spread range. Do not apply the exemption at spread_abs >= 15 under any
-    circumstances.
+    circumstances. Additionally, PTS T25 and T30 are hard-skipped entirely at spread_abs >= 15
+    on the favored side — see PTS T25 BLOWOUT HARD SKIP rule in TIER CEILING RULES above.
 - "competitive" split = historical hit rate in close games (spread_abs ≤ 6.5).
   "blowout_games" split = historical hit rate in non-competitive games (spread_abs > 6.5).
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
@@ -1905,13 +1926,20 @@ KEY RULES — FG% SAFETY MARGIN (H11 — backtested, 537 instances):
   Backtested hit rate at this margin: 57.6% across 165 instances (19.8pp below safe picks).
   57.6% is below the system's 70% pick threshold.
   → DO NOT pick at the flagged tier. Drop exactly one tier and re-evaluate.
-  → If the lower tier also qualifies (≥70% hit rate), pick there instead.
-  → If no lower tier qualifies, skip the PTS prop and consider REB/AST instead.
-  → Document the tier drop in tier_walk and reasoning fields.
+  → If the lower tier qualifies (≥70% hit rate), pick there instead.
+  → If the lower tier also fails, continue stepping down through remaining PTS tiers (T20 → T15 → T10).
+  → Only skip the PTS prop entirely if T10 also fails to qualify after the full step-down cascade.
+  → Document each step in the tier_walk field with the reason for each drop.
   This rule overrides positive signals at the same tier (iron_floor, soft defense, etc.).
   A FG_MARGIN_THIN player with iron_floor is still a borderline shooter — drop the tier.
+  Rationale: FG_MARGIN_THIN identifies a shooting-margin risk at the specific tier flagged,
+  not a blanket unselectability. A player who regularly scores 25+ always has a valid floor
+  at T15 or T10 even when T20 is unsound due to thin margin. Skipping entirely when the
+  step-down tier's *other* gates fail (e.g. VOLATILE, vs_tough) was producing false skips
+  on strong scorers (Brown T20 skip → actual 32 PTS).
+  Skip reason label when prop is ultimately skipped after full cascade: fg_margin_thin_tier_step
 - [FG_MARGIN_NEG:X%]: margin is negative — player's season FG% is below breakeven.
-  Apply the same tier-drop rule. This flag is rare for whitelisted players.
+  Apply the same full step-down cascade. This flag is rare for whitelisted players.
 - If the flag is absent: player has a safe margin (≥10%). No adjustment needed.
 - This rule applies to PTS props only. REB/AST/3PM are unaffected.
 
@@ -2019,7 +2047,7 @@ JSON schema:
       "prop_type": "PTS | REB | AST | 3PM",
       "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
       "direction": "OVER",
-      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_no_valid_tier | reb_floor_skip | fg_cold_tier_step",
+      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | fg_cold_tier_step | blowout_t25_skip",
       "rule_context": {{
         ... fields specific to this skip_reason as defined in the rules above ...
       }}
@@ -2358,6 +2386,15 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
         r"no\s+variance\s+buffer[^\w]*(?:floor\s+gate|skip)",
         r"3rd.lowest[^\w]*(?:=|equals?)[^\w]*\d+[^\w]*(?:equals?|=)[^\w]*(?:pick\s+value|T\d)[^\w]*(?:floor\s+gate|skip|no\s+buffer)",
         r"SKIP[^\w]*3rd.lowest",
+        # Named hard-gate skip phrases — fire before confidence arithmetic
+        # These appear when a rule fires unconditionally (ast_hard_gate, blowout_secondary_scorer, etc.)
+        r"HARD\s+GATE\s+FIRES",
+        r"BLOWOUT_SECONDARY_SCORER\s+SKIP\s+fires",
+        r"hard\s+gate\s+fires",
+        r"(?:volatile_weak_combo|ast_hard_gate|blowout_secondary_scorer|3pm_blowout_trend_down|reb_floor_skip|blowout_t25_skip|fg_margin_thin_tier_step)\s+(?:fires|skip)",
+        r"SKIP\s+(?:T\d+\s+)?(?:AST|PTS|REB|3PM)[^\w]*(?:hard\s+gate|mandatory\s+skip|no\s+valid\s+tier)",
+        r"mandatory\s+skip",
+        r"Record\s+as\s+skip",
     ]
 
     # Signals that indicate the model reconsidered and chose to proceed anyway
