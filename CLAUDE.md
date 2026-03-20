@@ -21,7 +21,7 @@ A self-improving multi-agent system that runs entirely via GitHub Actions. Every
 11. Builds and deploys a static frontend to GitHub Pages
 
 Picks: **PTS / REB / AST / 3PM** — OVER only, ≥70% confidence.
-API cost: ~$0.36/day (analyst + parlay + auditor combined at current slate sizes).
+API cost: ~$0.60/day (analyst + parlay + auditor combined at current slate sizes).
 
 ---
 
@@ -223,7 +223,7 @@ Site rebuilds at end of every Analyst workflow run AND after every hourly injury
 - Comfortable reading logs and identifying errors
 - Strong NBA domain knowledge — push back on stale basketball intel
 - Goal: autonomous daily operation, frontend shared with friends/family
-- API billing: pay-as-you-go on console.anthropic.com (~$0.36/day; separate from Claude Pro subscription)
+- API billing: pay-as-you-go on console.anthropic.com (~$0.60/day; separate from Claude Pro subscription)
 
 ## Ground Truth Convention
 

@@ -94,6 +94,9 @@ These players are out for the season. Their teammates' current stat lines alread
 
 **Darius Garland (LAC):** Chronic left toe issue that has followed him for over a year. Had toe surgery last offseason, missed 16 games with CLE before the Feb 2026 trade, and has already sat out at least one LAC game (Mar 13 vs CHI) with toe management. The Clippers are deliberately not playing him on back-to-backs — Kris Dunn starts at PG when Garland sits. In his five LAC appearances through Mar 13: 17.9 PPG / 6.7 APG, 25.4 min/g overall; last 3 games as starter: 21.7 PPG / 6.3 APG in 26.3 min. Role: clear #2 scorer/creator behind Kawhi Leonard. When healthy, operates as the primary ball-handler and pick-and-roll initiator when Kawhi is off-ball. **Availability is the primary risk factor — always check injury report before picking Garland.** He does not play B2B second nights.
 
+**Stephon Castle (SAS):** Second-year guard (drafted 2024, Rd 1 Pk 4). Won Rookie of the Year 2024-25. Now a full starter in year two — numbers across the board: 16.5 PPG / 5.0 REB / 7.1 APG / 1.2 SPG in 29.8 min/g (59 GS in 59 GP). The primary playmaker and floor general for SAS, running the offense alongside De'Aaron Fox (who handles more isolation/scoring duties). Castle's AST volume (7.1 per game, team leader) is legitimate pick territory — his role has not been compressed by Fox's arrival; the two coexist with Castle as the initiator and Fox as the finisher. GTD designation as of March 19 — always check injury report. Note: training data will show Castle as a rookie or not at all; his current role and production are significantly ahead of any prior-year estimates.
+
+
 ---
 
 ### RECENT PLAYOFF HISTORY
