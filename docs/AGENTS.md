@@ -139,10 +139,16 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 
 ---
 
-## analyst.py — Pick Generator
+## analyst.py — Pick Generator (Three-Stage Scout → Pick → Review Pipeline)
 
-**Model:** `claude-sonnet-4-6` (`claude-opus-4-6` when >30 active players post injury pre-filter)
-**MAX_TOKENS:** `16384` (large slates can produce 30+ picks)
+**Architecture:** Three-stage LLM pipeline with single-call fallback. Scout (context-heavy, no rules) produces a 20–25 player shortlist. Pick (rules-heavy, filtered context) generates picks from the shortlist. Review (adversarial stress-test) flags structural vulnerabilities in each pick. Falls back to original single-call path if Scout fails or <5 shortlisted players match quant stats. Review failure is non-fatal — picks are already saved before Review runs.
+
+**Scout model:** `claude-sonnet-4-6` (`claude-opus-4-6` when >30 active players post injury pre-filter)
+**Pick model:** `claude-sonnet-4-6` (always Sonnet — shortlist ~20 players, never triggers Opus threshold)
+**Review model:** `claude-sonnet-4-6` (always Sonnet)
+**SCOUT_MAX_TOKENS:** `4096` (compact JSON shortlist output)
+**MAX_TOKENS:** `32000` (Pick call — rules + filtered quant context)
+**Review max_tokens:** `4096` (verdict JSON array)
 **RECENT_GAME_WINDOW:** `10` games per player
 **AUDIT_CONTEXT_ENTRIES:** `5` most recent entries
 
@@ -159,7 +165,48 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 - `data/lineups_today.json` — projected starting lineups from rotowire_injuries_only.py; formatted by `format_lineups_section()` and injected as `## PROJECTED LINEUPS` section; staleness-checked against today's date
 - `playerprops/player_whitelist.csv` — (name, team) tuple filter
 
-**Prompt section order (canonical):**
+**Scout prompt sections (Stage 1 — `build_scout_prompt()`):**
+1. Task framing + knowledge staleness awareness block
+2. `## TODAY'S GAMES`
+3. `## CURRENT INJURY REPORT`
+4. `## PROJECTED LINEUPS`
+5. `## PRE-GAME NEWS` (conditional)
+6. `## SEASON CONTEXT`
+7. `## PLAYOFF PICTURE`
+8. `## WHITELISTED PLAYER RANKINGS`
+9. `## TEAM DEFENSIVE PROFILES`
+10. `## PLAYER PROFILES`
+11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` (data only, no rules)
+12. `## OUTPUT FORMAT` — `{"slate_read": str, "shortlist": [...], "omitted": [...]}`
+
+**Pick prompt sections (Stage 2 — `build_pick_prompt()`):**
+1. Task framing + tier system intro
+2. Hit definition + tier ceiling rules
+3. `## SCOUT SHORTLIST` (from Scout output)
+4. `## TODAY'S GAMES`
+5. `## CURRENT INJURY REPORT`
+6. All KEY RULES blocks (KEY FRAMEWORK, MATCHUP QUALITY, DvP, SELECTION, REST & FATIGUE, SEQUENTIAL GAME CONTEXT, SPREAD/BLOWOUT, VOLATILITY, HIGH CONFIDENCE GATE, INJURY EXCLUSION)
+7. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` (filtered to shortlisted players only)
+8. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS`
+9. `## ROLLING PERFORMANCE SUMMARY`
+10. `## ANALYSIS APPROACH` (modified to reference Scout shortlist)
+11. `## OUTPUT FORMAT`
+
+**Review prompt sections (Stage 3 — `build_review_prompt()`):**
+1. Role framing — adversarial stress-tester
+2. Structural vulnerability taxonomy (volatility, B2B suppression, blowout game script, minutes fragility, dense schedule fatigue, REB slump persistence, FT-dependent PTS)
+3. Calibration guidance — expected 2–4 flags per typical 12-pick slate; over-flagging and under-flagging failure modes
+4. Scope boundaries — what Review is NOT (no re-litigating tier selection, no training priors, no flagging already-priced risks)
+5. `## HISTORICAL MISS PATTERNS` — extracted from `audit_summary` (miss classifications + recent lessons)
+6. `## TODAY'S PICKS — VULNERABILITY CARDS` — per-pick cards from `build_review_context()` (schedule, volatility, opp_defense, spread, minutes floor, B2B hit rates, bounce_back, FT safety margin, abbreviated tier_walk)
+7. `## OUTPUT FORMAT` — JSON array of `{player_name, team, prop_type, pick_value, verdict, vulnerability, confidence_in_flag}`
+
+**Review inputs:** Pick output (list of picks), `player_stats.json` (filtered to shortlisted players), `audit_summary.json`
+**Review output:** `data/picks_review_YYYY-MM-DD.json` in existing picks_review schema with `source: "auto"` field
+**Review failure behavior:** Non-fatal — `call_review()` returns `None` on any failure; picks are already saved; day runs normally without a picks_review file
+**Manual review priority:** `apply_review_flags()` skips writing if `picks_review_YYYY-MM-DD.json` already exists
+
+**Fallback prompt sections (single-call — `build_prompt()`, unchanged):**
 1. Task framing + knowledge staleness awareness block + tier system intro
 2. Hit definition
 3. Tier ceiling rules with backtest evidence

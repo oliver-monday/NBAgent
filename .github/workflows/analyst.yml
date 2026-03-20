@@ -77,6 +77,13 @@ jobs:
             fi
           done
 
+          for f in data/picks_review_*.json; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
           if [ "$CHANGED" -eq 0 ]; then
             echo "No changes to commit."
           else

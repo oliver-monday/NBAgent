@@ -30,6 +30,7 @@ AUDIT_SUMMARY_JSON      = DATA / "audit_summary.json"
 MASTER_CSV              = DATA / "nba_master.csv"
 INJURIES_JSON           = DATA / "injuries_today.json"
 OPPORTUNITY_FLAGS_JSON  = DATA / "opportunity_flags.json"
+PICKS_REVIEW_JSON       = DATA / f"picks_review_{TODAY_STR}.json"
 WHITELIST_CSV           = ROOT / "playerprops" / "player_whitelist.csv"
 
 # Team abbreviation normalization — nba_master.csv sometimes uses legacy short forms
@@ -681,6 +682,22 @@ def build_site():
     opportunity_flags = load_opportunity_flags()
     explorer_data     = build_explorer_data()
 
+    # Build set of (name_lower, prop_type, pick_value) for auto-reviewed picks today
+    auto_review_keys: set[tuple] = set()
+    try:
+        if PICKS_REVIEW_JSON.exists():
+            review_entries = load_json(PICKS_REVIEW_JSON, [])
+            for e in review_entries:
+                if e.get("source") == "auto":
+                    key = (
+                        (e.get("player_name") or "").strip().lower(),
+                        e.get("prop_type", ""),
+                        e.get("pick_value"),
+                    )
+                    auto_review_keys.add(key)
+    except Exception:
+        pass
+
     today_picks = [p for p in picks if p.get("date") == TODAY_STR]
     past_picks  = [p for p in picks if p.get("date") != TODAY_STR
                    and p.get("result") in ("HIT", "MISS")]
@@ -694,6 +711,9 @@ def build_site():
     # Attach game time to today's picks
     for p in today_picks:
         p["game_time"] = game_times.get(str(p.get("team", "")).upper(), "")
+        name_lower = (p.get("player_name") or "").strip().lower()
+        key = (name_lower, p.get("prop_type", ""), p.get("pick_value"))
+        p["auto_reviewed"] = key in auto_review_keys
 
     top_picks = get_top_picks(today_picks)
 
@@ -1473,10 +1493,11 @@ function renderPicks() {{
       const streakSpan = streakPill(ps[pt]);
       const voidedCls  = p.voided ? ' voided' : '';
       const reviewVerdict = p.human_verdict || '';
+      const isAutoReview  = p.auto_reviewed === true;
       const reviewBadge = reviewVerdict === 'trim'
-        ? `<span class="review-badge-trim">⚠ Caution</span>`
+        ? `<span class="review-badge-trim">${{isAutoReview ? '🤖 Auto-Review' : '⚠ Caution'}}</span>`
         : reviewVerdict === 'manual_skip'
-          ? `<span class="review-badge-skip">⚠ Flagged</span>`
+          ? `<span class="review-badge-skip">${{isAutoReview ? '🤖 Stay Away' : '⚠ Flagged'}}</span>`
           : '';
       const reviewReasons = (p.trim_reasons && p.trim_reasons.length && reviewVerdict !== '')
         ? `<span style="font-size:10px;color:var(--muted);margin-left:4px">${{p.trim_reasons.join(' · ')}}</span>`

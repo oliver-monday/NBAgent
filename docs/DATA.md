@@ -272,7 +272,7 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
 ```
 
 ### picks_review_YYYY-MM-DD.json
-Human-produced daily review file. Written manually in Claude chat sessions; committed before `auditor.yml` runs. **NOT written by any agent.**
+Daily review file. Written by the Review agent (`analyst.py` Stage 3) or manually in Claude chat sessions; committed before `auditor.yml` runs. Manual files take priority — Review skips writing if the file already exists.
 ```json
 // Filename: data/picks_review_YYYY-MM-DD.json (yesterday's date when auditor runs)
 [{
@@ -282,12 +282,14 @@ Human-produced daily review file. Written manually in Claude chat sessions; comm
   "prop_type":    "PTS|REB|AST|3PM",
   "pick_value":   number,
   "verdict":      "keep|trim|manual_skip",
-  "trim_reasons": ["string"]  // required when verdict=="trim"; [] otherwise
+  "trim_reasons": ["string"],  // required when verdict=="trim"; [] otherwise
+  "source":       "auto"       // "auto" for Review-generated; absent on manual files
 }]
 ```
 
 Join key (used by auditor): `(player_name.strip().lower(), prop_type, pick_value)`.
 Verdicts: `"keep"` (clean pick) | `"trim"` (marginally weak; excluded from parlay core) | `"manual_skip"` (should not have been filed).
+`source` field: `"auto"` when written by the Review agent; absent on manually-produced files. Auditor ignores `source` — it joins on name/prop/value only. `build_site.py` reads `source` to distinguish auto-review badges (`🤖 Auto-Review` / `🤖 Stay Away`) from manual badges (`⚠ Caution` / `⚠ Flagged`).
 Consumers: `auditor.py` (tags picks), `parlay.py` (excludes manual_skip; limits trim legs), `build_site.py` (renders review badges).
 
 ### opportunity_flags.json
