@@ -1,42 +1,42 @@
 {
-  "generated_at": "2026-03-19",
-  "entries_included": 15,
+  "generated_at": "2026-03-20",
+  "entries_included": 16,
   "overall": {
-    "total_picks": 511,
-    "voided": 25,
-    "hits": 421,
-    "misses": 74,
+    "total_picks": 532,
+    "voided": 27,
+    "hits": 441,
+    "misses": 75,
     "injury_exclusions": 2,
-    "hit_rate_pct": 85.4
+    "hit_rate_pct": 85.8
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 167,
-      "hits": 134,
+      "picks": 176,
+      "hits": 143,
       "injury_exclusions": 1,
-      "hit_rate_pct": 80.7
+      "hit_rate_pct": 81.7
     },
     "REB": {
-      "picks": 85,
-      "hits": 73,
+      "picks": 88,
+      "hits": 76,
       "injury_exclusions": 0,
-      "hit_rate_pct": 85.9
+      "hit_rate_pct": 86.4
     },
     "AST": {
-      "picks": 142,
-      "hits": 114,
+      "picks": 148,
+      "hits": 120,
       "injury_exclusions": 1,
-      "hit_rate_pct": 80.9
+      "hit_rate_pct": 81.6
     },
     "3PM": {
-      "picks": 93,
-      "hits": 75,
+      "picks": 96,
+      "hits": 77,
       "injury_exclusions": 0,
-      "hit_rate_pct": 80.6
+      "hit_rate_pct": 80.2
     }
   },
   "miss_classification_totals": {
-    "variance": 28,
+    "variance": 29,
     "selection_error": 4,
     "model_gap_signal": 4,
     "model_gap_rule": 19,
@@ -45,14 +45,14 @@
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 170,
-      "hits": 134,
-      "hit_rate_pct": 78.8
+      "picks": 182,
+      "hits": 146,
+      "hit_rate_pct": 80.2
     },
     "76-80": {
-      "picks": 249,
-      "hits": 217,
-      "hit_rate_pct": 87.1
+      "picks": 258,
+      "hits": 225,
+      "hit_rate_pct": 87.2
     },
     "81-85": {
       "picks": 40,
@@ -66,49 +66,56 @@
     }
   },
   "parlay_summary": {
-    "total": 52,
-    "hits": 30,
+    "total": 53,
+    "hits": 31,
     "misses": 17,
     "partial": 5
   },
   "recent_lessons": [
-    "AST props ran at 60.0% hit rate on the day (with Cunningham voided, two genuine misses: Mitchell AST (3 actual, iron-floor 10/10 missed in competitive road game) and Bane AST (1 actual, iron-floor 9/10 missed B2B road at OKC). Iron-floor AST tags should not override situation-specific caution signals (B2B fatigue, scheme-specific suppression). Cunningham AST excluded: voided post-hoc per Q1 injury exit.",
-    "Post-game reporter failed to surface Cade Cunningham's Q1 injury exit (back spasms after hard fall, 5 min played, ruled out for remainder). Both Cunningham picks initially misclassified as model_gap_rule with a false blowout-management narrative. Correct classification: injury_event. Both picks voided post-hoc per standard sportsbook treatment of mid-game injury exits. Fix deployed 2026-03-18: extended _INJURY_EXIT_TERMS in post_game_reporter.py + auditor STEP 2 fast path to prevent recurrence.",
-    "Nikola Jokic PTS missed severely (8 actual vs 15 pick) despite iron-floor T20 and elite scorer blowout exemption. He played only 25 minutes \u2014 in a 28-point DEN blowout, Jokic was almost certainly rested early. The elite scorer exemption incorrectly protected this pick from blowout penalties. The exemption assumes elite scorers keep scoring in blowouts, but when spread_abs exceeds ~15, even elite scorers face minutes compression. A hard minutes-compression rule for spread_abs \u2265 15 should be added \u2014 either mandatory tier step-down or hard cap at 74% \u2014 even for exempt players.",
     "Donovan Mitchell's AST (3 actual vs 4 pick) and 3PM (1 actual vs 2 pick) both missed in a competitive CLE win (+7 margin). The iron-floor AST tag (10/10 recent hit rate) gave false confidence \u2014 Mitchell had 3 AST in a game where CLE won by 7 and he scored 19. The 3PM miss (1 vs 2 needed) in a non-blowout context with iron_floor should be re-examined: iron_floor 3PM picks at T2 still miss 1-in-8 times and the specific CLE switching-scheme watch item (CLE 3PM DvP rates as soft in aggregate but switching scheme neutralizes perimeter looks) may be suppressing Mitchell's own perimeter efficiency when he plays away from home.",
     "Desmond Bane's AST miss (1 actual vs 2 pick) on a B2B road game at OKC \u2014 the toughest defensive environment available \u2014 represents a compounding risk that was insufficiently penalized. The tier_walk correctly identified b2b=90% AST as the key anchor, but OKC's defensive scheme is tough and Bane played 36 minutes (full game) on a B2B road night and generated only 1 AST. The pick was reasonable at 80% but the iron_floor tag on a B2B road game vs a championship-caliber defense should carry an additional -5% or require opp=soft gate, consistent with the AST T4+ gate logic that was already partially in the tier_walk.",
     "Derrick White AST=4 OVER missed badly (actual: 1 assist, 31 min) despite 8/10 hit rate and T4 tier. The BOS blowout (21-pt win) over GSW severely compressed possession count in the second half, and a secondary perimeter playmaker's assist accumulation is the prop type most vulnerable to garbage-time truncation \u2014 this is a structural model_gap_rule failure where the BLOWOUT -10% penalty was insufficient for AST props on non-primary creators in large-margin games.",
     "Kawhi Leonard AST=2 OVER missed (actual: 1 assist, 29 min) in a COMPETITIVE game (LAC lost by 15 to NO), with the consistent/10/10 tag providing false confidence. The trend=down signal was present and the pick was kept at 80%; in a road loss where LAC was outplayed, a veteran wing's assist production collapses as offensive structure breaks down. The road-loss game script combined with trend=down was insufficiently penalized.",
     "SGA PTS=25 OVER missed (actual: 20 PTS in 26 min) in a 29-pt OKC blowout win \u2014 the human verdict was 'manual_skip' and trim_reasons explicitly flagged this exact archetype (Jokic Mar 17 prototype). The pick was correctly identified as Stay Away pre-game; the system's hard cap at 74% and blowout risk flag functioned as designed, but the T25 threshold remains structurally fragile in blowout-projected games even for elite scorers. This is not a new lesson but a confirmation that T25 PTS in spread_abs\u226515 games should be a hard skip, not just a capped pick.",
     "SGA 3PM=1 OVER missed (actual: 0 made threes, 26 min) in the same 29-pt OKC blowout \u2014 with 26 minutes of play this was not a DNP, but blowout-driven shot selection compression (likely relying on drives/free throws rather than catch-and-shoot opportunities with the game decided) suppressed three-point attempts. The spread_abs\u226515 hard cap at 74% for 3PM was applied but the pick survived; the 3pm_blowout_trend_down skip rule that correctly eliminated Murray's pick does not fire when trend=up, creating an asymmetric gap \u2014 blowout risk for 3PM should suppress regardless of trend direction when spread_abs\u226519.",
-    "Austin Reaves PTS=15 OVER missed (actual: 14 PTS, 39 min) in a CLOSE game (LAL won by 8) \u2014 one point short. The human trim correctly identified Reaves as the third scoring option behind LeBron (30 PTS) and Doncic (40 PTS) in a competitive road game where primary usage was concentrated. At 9/10 hit rate the miss is within variance, but the road + third-option + tough defense combination compressed Reaves's ceiling exactly as flagged. The trim reason was prescient; this is borderline variance/model_gap_rule regarding usage concentration modeling."
+    "Austin Reaves PTS=15 OVER missed (actual: 14 PTS, 39 min) in a CLOSE game (LAL won by 8) \u2014 one point short. The human trim correctly identified Reaves as the third scoring option behind LeBron (30 PTS) and Doncic (40 PTS) in a competitive road game where primary usage was concentrated. At 9/10 hit rate the miss is within variance, but the road + third-option + tough defense combination compressed Reaves's ceiling exactly as flagged. The trim reason was prescient; this is borderline variance/model_gap_rule regarding usage concentration modeling.",
+    "3PM props remain the system's weakest category at 66.7% this session (2/3), with Devin Booker's 0-for-3PM miss being the only pick failure of the entire day. Even a 10/10 recent hit rate at T1 (95% season rate) does not protect against 3PM variance in a tight 1-point game where shot selection may have been constrained by game-script pressure in the final minutes \u2014 the 3PM confidence ceiling of 80% (no iron_floor) exists precisely because this variance risk is structural, not player-specific.",
+    "The Booker 3PM miss occurred in a PHX-SA game decided by 1 point (CLOSE game script), meaning game-script pressure likely suppressed pull-up 3PM opportunities in the final possessions in favor of higher-percentage shots. The system has no mechanism to discount 3PM props in sub-5-point games where shot-selection optimization away from threes is predictable \u2014 this is a model_gap_signal candidate for future rule development.",
+    "The Paolo Banchero AST T4 pick was routed correctly via the PF hard gate skip, but the actual result (7 AST) shows the pick would have hit \u2014 in a 19-point CHA blowout win for ORL, Banchero had expanded usage and passing opportunities. The gate's conservatism is structurally sound, but the system should note that COMPETITIVE blowout wins (ORL won by 19) may loosen the PF AST gate constraint when the player's team is the winning side with heavy garbage-time usage absorption."
   ],
   "recent_reinforcements": [
-    "Iron-floor AST T2/T4 picks at low thresholds (\u22642 AST) proved robust: Miller AST (2.0 actual), Randle AST (2.0 actual), Knueppel AST (2.0 actual), and Ball AST (13.0 actual) all cleared. The consistent tag on low-threshold AST floors remains highly reliable and should continue to be prioritized.",
-    "The blowout-game CHA lineup (Miller, Knueppel, Ball vs MIA) swept all four picks with comfortable margins after Bam Adebayo was confirmed OUT. Absence-driven lineup updates correctly revised confidence upward (Miller PTS to 82%, Ball PTS to 81%) and the game produced a 30-point CHA blowout, validating the amendment logic for rim-protection absences on scoring props.",
-    "Elite scorer blowout exemption worked as designed: Donovan Mitchell hit 19 PTS on a T15 pick (actual margin 4 above floor) despite the game being close, and Devin Booker exploded for 34 PTS on a T10 pick, demonstrating that the step-down cascade with exemption still yields high-value floors for volume scorers.",
-    "The VOLATILE-weak-combo cascade correctly de-risked picks that would have failed at higher tiers: Mitchell PTS was blocked at T20 (would have needed 20+, he scored 19) and Green PTS was blocked at T20/T15 (he scored only 9). The cascade to T10 (pick_value 10) saved both from misses \u2014 confirming the hard skip rule adds genuine protective value.",
-    "Harden's four-prop sweep (PTS 27, REB 5, AST 6, 3PM 2) against soft MIL defense with Giannis OUT validated the soft-DvP + anchor-absence combination for multi-prop coverage on primary ball-handlers. The amendment agent's upward revisions (PTS to 80%, AST to 79%) correctly reflected the Giannis absence impact.",
     "Ultra-low PTS floor picks (T10, pick_value=10) with 10/10 hit rates and consistent tags were the session's most reliable producers \u2014 Sengun (27), Barnes (18), Barrett (23), Randle (21) all cleared their thresholds comfortably, reinforcing that T10 floors with consistent tags are the system's highest-value archetype.",
     "The blowout spread cap rule (spread_abs\u226512 \u2192 hard cap 74%) correctly throttled confidence on Jokic PTS and Julius Randle PTS; both still hit, confirming the cap is conservative rather than punitive, and the underlying picks were sound.",
     "Trend=up picks outperformed their confidence band: Amen Thompson (26 PTS vs 10 threshold, 70% confidence), Luka Doncic (40 PTS vs 25 threshold, 74% confidence), and Jalen Johnson (17 PTS vs 10 threshold, 80% confidence) all cleared by wide margins, validating the trend=up signal as a meaningful positive indicator.",
     "Iron-floor tags survived blowout game scripts without failure: Chet Holmgren (11 PTS, 22 min in a 29-pt OKC blowout win) cleared T10 despite heavy minutes compression, confirming iron-floor designation provides genuine protection at low thresholds.",
-    "The 76-80% confidence band dramatically outperformed expectation at 93.3% actual vs 78.0% expected \u2014 picks in this band (Sengun AST, Kawhi 3PM, Barrett 3PM, Barnes REB, LeBron AST, Jaylen Brown AST) were well-calibrated selections and should be prioritized as parlay anchors."
+    "The 76-80% confidence band dramatically outperformed expectation at 93.3% actual vs 78.0% expected \u2014 picks in this band (Sengun AST, Kawhi 3PM, Barrett 3PM, Barnes REB, LeBron AST, Jaylen Brown AST) were well-calibrated selections and should be prioritized as parlay anchors.",
+    "Ultra-low PTS floors (T10) enforced by min_floor step-down rules delivered 100% on session: LaMelo Ball (20 actual vs 10 threshold), LeBron James (19 vs 10), Paolo Banchero (20 vs 10), and Jalen Green (17 vs 10) all hit comfortably \u2014 the mechanical tier step-down is working as designed when volatile or short-sample B2B conditions are present.",
+    "Iron-floor AST picks at T2 continued to be automatic: Desmond Bane (2 actual = 2 threshold, exact hit), Brandon Miller (8 actual vs 2), and LeBron James (10 vs 2) all cleared with massive margin \u2014 the iron-floor T2 AST category remains the system's most reliable leg type for parlays and standalone plays.",
+    "The PF/C AST hard gate worked correctly on Paolo Banchero AST T4 \u2014 the pick was flagged as a mandatory skip due to PF position plus tough opponent, and Banchero finished with 7 AST (a hit it would have been), but the gate fired appropriately given the structural uncertainty; one hit does not invalidate the gate's protective function.",
+    "Blowout-resilient REB picks held in two large-spread games: Evan Mobley (14 actual vs 6 threshold in CLE's 5-point road win) and Jalen Duren (11 actual vs 4 threshold in DET's 22-point blowout win) both cleared substantially \u2014 the blowout_games percentage tag is a reliable positive signal for REB even when spread is large.",
+    "James Harden's T10 PTS floor pick in the blowout-spread CLE-CHI game (spread 13.5, actual 36 points) validated that the blowout cap rule is appropriately conservative rather than a skip trigger \u2014 capping confidence at 74% rather than skipping the pick preserved a strong outcome while managing stated confidence correctly."
   ],
   "recent_recommendations": [
-    "The 76\u201380% confidence band going 13/13 confirms this is the system's optimal operating zone for this sample. When constructing parlays and standalone slates, weight selections in the 76\u201380% band over both the 70\u201375% band (higher miss risk on secondary players) and the 81\u201385% band (overcalibration risk on 3PM/VOLATILE props). Prioritize AST T2\u2013T4 floors and REB T4 exact-match picks within this band as the most reliable structural anchors.",
-    "Add a hard PTS confidence cap of 74% for any player with spread_abs \u2265 15, even for elite scorers with the blowout exemption. Jokic (25 min, 8 PTS in a 28-point DEN blowout) confirms that at extreme spreads, resting happens regardless of star status. The exemption should only waive the spread cap in the 8\u201314 range, not at 15+.",
-    "Revise the iron_floor AST tag to NOT override the B2B + tough-defense gate for any player not classified as a primary ball-handler (raw_avgs AST < 6.0). Bane (SF, ~5 AST avg) on a B2B road game vs OKC should have had his AST pick gated at opp=soft required. The iron_floor tag is designed for structural minimums, not situational floors \u2014 on B2B road games vs top defenses, apply the T4+ gate regardless of iron_floor status.",
-    "Apply an explicit away-B2B penalty of -5% to all AST picks for non-primary-ball-handler wings (position SF/SG, raw_avgs AST < 6.0). The current B2B rate uses season-wide b2b data that may not disaggregate home vs road B2B games. Bane's miss and the general AST underperformance (60%) suggest B2B road AST picks for wings are structurally weaker than the aggregate b2b rate implies.",
-    "For the CLE switching-scheme watch item: extend the scope from opponent-facing (perimeter guards scoring vs CLE) to CLE players' own 3PM props when CLE is the visiting team. Mitchell's 3PM miss (1 actual vs 2 needed) in a competitive road game suggests that when CLE plays on the road in competitive games, Mitchell's 3PM generation may be suppressed by defensive attention. Add a road-game -5% penalty to Mitchell 3PM picks when the game is projected CLOSE or COMPETITIVE, bringing the effective cap to 70-72% for T2 picks in that context.",
     "Implement a blowout AST hard skip rule for non-primary-creator perimeter players (guards/wings not tagged as primary ball-handler) when spread_abs\u226515 and the pick is on the winning team's side \u2014 Derrick White AST=4 is the prototype; the BLOWOUT -10% penalty is insufficient for secondary AST accumulation in games that are effectively decided by halftime.",
     "Add a 'road loss game script' penalty for AST props on non-primary creators: when opp_defense_rating is mid/tough, trend=down, and the team ultimately loses by 10+ (COMPETITIVE loss), apply an additional -8% to AST confidence, or skip AST picks entirely for non-PG-role players on road teams projected as underdogs by more than 5 points.",
     "For spread_abs\u226519 blowout-projected games, escalate the 3PM skip rule to fire regardless of trend direction \u2014 the current 3pm_blowout_trend_down skip correctly eliminated Murray but left SGA 3PM active because trend=up. A hard skip for 3PM in spread_abs\u226519 games (both trend directions) would eliminate the asymmetry and is supported by SGA's 0-for-3PM outcome in 26 minutes of a 29-pt blowout.",
     "Treat T25 PTS picks in spread_abs\u226515 games as a structural hard skip rather than a capped pick \u2014 the SGA PTS=25 manual_skip was correctly identified by the human but the system still generated the pick at 74%. The Jokic Mar 17 archetype has now been confirmed twice; encode it as a rule: T25 PTS + spread_abs\u226515 = skip, even for iron-floor elite scorers.",
-    "For Austin Reaves-type third-option scorers in CLOSE road games against tough defenses, consider adding a 'usage concentration' penalty when two teammates are projected or trending at T25+ PTS on the same game \u2014 Doncic (T25) and LeBron (T15) absorbing primary usage in a close game is a predictable ceiling suppressor for the third option that the current model does not price."
+    "For Austin Reaves-type third-option scorers in CLOSE road games against tough defenses, consider adding a 'usage concentration' penalty when two teammates are projected or trending at T25+ PTS on the same game \u2014 Doncic (T25) and LeBron (T15) absorbing primary usage in a close game is a predictable ceiling suppressor for the third option that the current model does not price.",
+    "For 3PM props with pick_value=1 (T1) in games with a final-possession win probability above ~60% for the opponent (close game, spread \u22643), apply an additional -5% confidence discount to account for shot-selection optimization away from threes in clutch moments. Booker's 0 3PM in a 1-point SA win is the prototype: even elite 3PM shooters suppress volume in late-game shot-clock management scenarios. Tag games with spread_abs \u22643 as 'clutch game context' and cap 3PM T1 confidence at 74% instead of 80%.",
+    "The Jalen Green PTS secondary-scorer skip rule fired correctly in tier_walk but was not caught by filter_self_skip_picks \u2014 the human override kept the pick and it hit (17 actual vs 10 threshold), but the workflow gap is real. Prioritize a code fix so that any pick where tier_walk concludes with a skip directive is automatically excluded from the active pick set, preventing human override from being the only safety net.",
+    "Donovan Mitchell was confirmed OUT pre-game, making his parlay leg a NO_DATA result that resolved as null \u2014 the parlay still hit because the other two legs cleared, but a 3-leg parlay with a DNP leg is effectively a 2-leg parlay at runtime. Add a rule: any parlay containing a player with GTD or QUESTIONABLE injury status at pick time should flag that leg as 'fragile' and reduce parlay confidence product by 15% per fragile leg. Mitchell was confirmed OUT by game time; earlier detection would have allowed substitution.",
+    "The Kon Knueppel PTS T15 pick (hit, 17 actual vs 15 threshold) carried a vs_tough split of only 65% \u2014 materially below the 9/10 overall rate. The human trim correctly excluded this from parlays. Codify this as a rule: when vs_tough < 70% and the opponent's defense is rated 'tough', require either (a) stepping down one tier or (b) capping confidence at 70% regardless of overall hit rate. Do not allow T15 PTS picks for non-star role players against tough defenses when the tough-defense split is below the system's 70% qualifying threshold.",
+    "Austin Reaves PTS was trimmed from parlays due to third-option scorer concentration risk behind Doncic and LeBron \u2014 and Reaves hit 18 vs 15 threshold in a close LAL win. However, the trim rationale referenced a Mar 18 miss archetype (road B2B). Validate whether B2B road third-option scorer compression is a persistent pattern by tracking Reaves' B2B away PTS over the next 10 games. If the actual B2B away rate at T15 stays above 70%, consider restoring parlay eligibility \u2014 the trim may be overcautious given the LAL offense is running through Doncic and LeBron but Reaves still hits floors in close games."
   ],
   "skip_validation": {
-    "fg_margin_thin_no_valid_tier": {
+    "ast_hard_gate": {
+      "total": 1,
+      "false_skips": 1,
+      "correct_skips": 0,
+      "no_data": 0,
+      "false_skip_rate": 100.0
+    },
+    "blowout_secondary_scorer": {
       "total": 1,
       "false_skips": 1,
       "correct_skips": 0,
@@ -116,15 +123,22 @@
       "false_skip_rate": 100.0
     },
     "volatile_weak_combo": {
-      "total": 1,
+      "total": 3,
       "false_skips": 0,
-      "correct_skips": 0,
+      "correct_skips": 2,
       "no_data": 1,
-      "false_skip_rate": null
+      "false_skip_rate": 0.0
     },
-    "3pm_blowout_trend_down": {
+    "fg_margin_thin_no_valid_tier": {
       "total": 1,
       "false_skips": 1,
+      "correct_skips": 0,
+      "no_data": 0,
+      "false_skip_rate": 100.0
+    },
+    "3pm_trend_down_tough_dvp": {
+      "total": 2,
+      "false_skips": 2,
       "correct_skips": 0,
       "no_data": 0,
       "false_skip_rate": 100.0
@@ -132,16 +146,16 @@
   },
   "human_flag_precision": {
     "trim": {
-      "hits": 12,
+      "hits": 15,
       "misses": 2,
-      "total": 14,
-      "hit_rate_pct": 85.7
+      "total": 17,
+      "hit_rate_pct": 88.2
     },
     "keep": {
-      "hits": 35,
-      "misses": 4,
-      "total": 39,
-      "hit_rate_pct": 89.7
+      "hits": 51,
+      "misses": 5,
+      "total": 56,
+      "hit_rate_pct": 91.1
     },
     "manual_skip": {
       "hits": 1,

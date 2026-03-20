@@ -2162,5 +2162,107 @@
         "The iron-floor REB anchor (Cooper Flagg, T4, pick_value=4, iron_floor=true) provided clean pass-through value in a COMPETITIVE game without requiring favorable game script \u2014 iron-floor REB legs at T4 in competitive game contexts should be a standing structural option for 3-leg parlays needing a low-volatility connector between two PTS legs."
       ]
     }
+  },
+  {
+    "date": "2026-03-19",
+    "total_picks": 21,
+    "voided_picks": 2,
+    "hits": 20,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 95.2,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 9,
+        "hits": 9,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 12,
+        "hits": 12,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 9,
+        "hits": 8,
+        "hit_rate_pct": 88.9,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Ultra-low PTS floors (T10) enforced by min_floor step-down rules delivered 100% on session: LaMelo Ball (20 actual vs 10 threshold), LeBron James (19 vs 10), Paolo Banchero (20 vs 10), and Jalen Green (17 vs 10) all hit comfortably \u2014 the mechanical tier step-down is working as designed when volatile or short-sample B2B conditions are present.",
+      "Iron-floor AST picks at T2 continued to be automatic: Desmond Bane (2 actual = 2 threshold, exact hit), Brandon Miller (8 actual vs 2), and LeBron James (10 vs 2) all cleared with massive margin \u2014 the iron-floor T2 AST category remains the system's most reliable leg type for parlays and standalone plays.",
+      "The PF/C AST hard gate worked correctly on Paolo Banchero AST T4 \u2014 the pick was flagged as a mandatory skip due to PF position plus tough opponent, and Banchero finished with 7 AST (a hit it would have been), but the gate fired appropriately given the structural uncertainty; one hit does not invalidate the gate's protective function.",
+      "Blowout-resilient REB picks held in two large-spread games: Evan Mobley (14 actual vs 6 threshold in CLE's 5-point road win) and Jalen Duren (11 actual vs 4 threshold in DET's 22-point blowout win) both cleared substantially \u2014 the blowout_games percentage tag is a reliable positive signal for REB even when spread is large.",
+      "James Harden's T10 PTS floor pick in the blowout-spread CLE-CHI game (spread 13.5, actual 36 points) validated that the blowout cap rule is appropriately conservative rather than a skip trigger \u2014 capping confidence at 74% rather than skipping the pick preserved a strong outcome while managing stated confidence correctly."
+    ],
+    "lessons": [
+      "3PM props remain the system's weakest category at 66.7% this session (2/3), with Devin Booker's 0-for-3PM miss being the only pick failure of the entire day. Even a 10/10 recent hit rate at T1 (95% season rate) does not protect against 3PM variance in a tight 1-point game where shot selection may have been constrained by game-script pressure in the final minutes \u2014 the 3PM confidence ceiling of 80% (no iron_floor) exists precisely because this variance risk is structural, not player-specific.",
+      "The Booker 3PM miss occurred in a PHX-SA game decided by 1 point (CLOSE game script), meaning game-script pressure likely suppressed pull-up 3PM opportunities in the final possessions in favor of higher-percentage shots. The system has no mechanism to discount 3PM props in sub-5-point games where shot-selection optimization away from threes is predictable \u2014 this is a model_gap_signal candidate for future rule development.",
+      "The Paolo Banchero AST T4 pick was routed correctly via the PF hard gate skip, but the actual result (7 AST) shows the pick would have hit \u2014 in a 19-point CHA blowout win for ORL, Banchero had expanded usage and passing opportunities. The gate's conservatism is structurally sound, but the system should note that COMPETITIVE blowout wins (ORL won by 19) may loosen the PF AST gate constraint when the player's team is the winning side with heavy garbage-time usage absorption."
+    ],
+    "recommendations": [
+      "For 3PM props with pick_value=1 (T1) in games with a final-possession win probability above ~60% for the opponent (close game, spread \u22643), apply an additional -5% confidence discount to account for shot-selection optimization away from threes in clutch moments. Booker's 0 3PM in a 1-point SA win is the prototype: even elite 3PM shooters suppress volume in late-game shot-clock management scenarios. Tag games with spread_abs \u22643 as 'clutch game context' and cap 3PM T1 confidence at 74% instead of 80%.",
+      "The Jalen Green PTS secondary-scorer skip rule fired correctly in tier_walk but was not caught by filter_self_skip_picks \u2014 the human override kept the pick and it hit (17 actual vs 10 threshold), but the workflow gap is real. Prioritize a code fix so that any pick where tier_walk concludes with a skip directive is automatically excluded from the active pick set, preventing human override from being the only safety net.",
+      "Donovan Mitchell was confirmed OUT pre-game, making his parlay leg a NO_DATA result that resolved as null \u2014 the parlay still hit because the other two legs cleared, but a 3-leg parlay with a DNP leg is effectively a 2-leg parlay at runtime. Add a rule: any parlay containing a player with GTD or QUESTIONABLE injury status at pick time should flag that leg as 'fragile' and reduce parlay confidence product by 15% per fragile leg. Mitchell was confirmed OUT by game time; earlier detection would have allowed substitution.",
+      "The Kon Knueppel PTS T15 pick (hit, 17 actual vs 15 threshold) carried a vs_tough split of only 65% \u2014 materially below the 9/10 overall rate. The human trim correctly excluded this from parlays. Codify this as a rule: when vs_tough < 70% and the opponent's defense is rated 'tough', require either (a) stepping down one tier or (b) capping confidence at 70% regardless of overall hit rate. Do not allow T15 PTS picks for non-star role players against tough defenses when the tough-defense split is below the system's 70% qualifying threshold.",
+      "Austin Reaves PTS was trimmed from parlays due to third-option scorer concentration risk behind Doncic and LeBron \u2014 and Reaves hit 18 vs 15 threshold in a close LAL win. However, the trim rationale referenced a Mar 18 miss archetype (road B2B). Validate whether B2B road third-option scorer compression is a persistent pattern by tracking Reaves' B2B away PTS over the next 10 games. If the actual B2B away rate at T15 stays above 70%, consider restoring parlay eligibility \u2014 the trim may be overcautious given the LAL offense is running through Doncic and LeBron but Reaves still hits floors in close games."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Devin Booker",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: PHX @ SA final 100-101, SA won by 1 (CLOSE). This is the tightest possible game script \u2014 a 1-point game almost certainly decided in the final possession, which structurally suppresses pull-up 3PM volume in favor of higher-percentage shots in clutch moments. STEP 1 \u2014 Booker played 34 minutes with non-zero output confirmed in post-game news (active, no injury exit). Actual 3PM = 0. STEP 2 \u2014 No injury exit in POST-GAME NEWS CONTEXT. injury_status_at_check = NOT_LISTED. Miss classification: variance. The pick was anchored on a 10/10 recent hit rate at T1 and a 95% season hit rate \u2014 among the system's strongest available signals. The [consistent] tag was present. trend = up. No blowout skip applied (PHX was the underdog/losing side, not the winning-side being compressed). The analytical framework was sound: a consistent elite 3PM shooter at the minimum threshold (\u22651) hitting 10/10 recently is a legitimate high-confidence pick. The 0-for-3PM outcome is within normal statistical variance for any single-game 3PM prop \u2014 even a 90%+ hitter misses approximately 1 in 10 games, and a 1-point game with late-game shot-selection optimization away from threes makes this the expected tail-outcome scenario. STEP 3 \u2014 The original reasoning ('10/10 at T1, consistent tag, trend=up; no blowout suppression as underdog team') correctly identified all material factors available at pick time. No analytical error in the reasoning. STEP 4 \u2014 10/10 hit rate at T1 is the strongest possible recent form signal; a miss here is low-probability variance, not a structural failure. STEP 5 \u2014 Tier walk selected T1 (quant = 95% season rate) after T2 marginal qualification (7/10 = 70%); this was the correct tier selection per walk-down rules \u2014 T1 offered higher confidence and T2 was borderline. No tier_walk_flag. STEP 6 \u2014 No lineup_update amendment present. The 3PM confidence ceiling of 80% (no iron_floor cap) was correctly applied. The miss reflects that even well-calibrated 3PM props at the minimum threshold carry irreducible single-game variance, compounded by a clutch game-script that systematically favors higher-percentage shot selection over three-point volume in the final minutes."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 1/1 parlay hit anchored by iron-floor AST legs \u2014 Banchero T10 PTS and Reaves T4 AST both cleared with substantial margin; Mitchell DNP leg resolved as null but parlay counted as a hit with 2/2 active legs covering.",
+      "parlay_lessons": [
+        "The Thursday Floor Lock technically hit, but the Donovan Mitchell AST leg (pick_value 4, confidence 78%) resolved as null due to his confirmed pre-game DNP \u2014 the parlay was effectively a 2-leg bet at runtime, not the 3-leg structure the confidence product of 0.4992 assumed. Any parlay with a GTD or injury-listed player should either be held until lineup confirmation or have that leg's confidence product replaced with a 'fragile leg discount' (e.g. 50% placeholder) so implied odds reflect the real risk of a leg collapsing before tip-off. The Mitchell absence was flagged in YESTERDAY'S NOTABLE ABSENCES \u2014 a pre-game parlay review step checking that section against active parlay legs would have caught this and allowed a substitution leg."
+      ],
+      "parlay_reinforcements": [
+        "The multi-game independent correlation structure worked exactly as designed: three legs across three separate games (ORL-CHA, LAL-MIA, CLE-CHI) with no shared game script or teammate correlation meant that no single game outcome could cascade across all legs \u2014 the parlay's structural integrity was sound and this independence framework should be the default template for 3-leg floor-lock parlays.",
+        "Ultra-low floor legs (PTS T10 for Banchero, AST T2/T4 for Reaves) with 80%+ individual confidence are the correct anchors for parlay construction \u2014 both cleared with margins of 10 and 2 points respectively above threshold, confirming that conservative tier selection on high-usage players produces the parlay durability the system needs at +100 implied odds."
+      ]
+    }
   }
 ]

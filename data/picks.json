@@ -13026,11 +13026,13 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "10/10 B2B rate, trend=up, elite scorer floor, no blowout risk in close game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 60.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13049,11 +13051,13 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "10/10 recent hit rate, consistent tag, 16-game hit streak, strong floor vs any defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13072,11 +13076,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 hit rate, 7-game hit streak, solid floor even against tough CHA defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13095,11 +13101,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron-floor T2 AST, 9/10 hit rate, strong vs tough defenses at 94%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13118,11 +13126,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "10/10 hit rate at T1, consistent tag, stable trend, no blowout risk.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13147,7 +13157,9 @@
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13166,11 +13178,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron-floor T2 AST, 10/10 hit rate, consistent tag, durable floor regardless of defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13189,11 +13203,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Stepped to T10 per min_floor rule; 10/10 at T10, trend=up, home game advantage.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13212,11 +13228,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "10/10 at T4, consistent tag, home game; selected T4 over T6 for safety margin.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13235,11 +13253,17 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 overall but vs_tough only 65%; stable trend, home game, conservative confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "vs_tough=65% is meaningfully below the 9/10 overall rate \u2014 ORL defense is tough and that split is the operative number here",
+      "T15 on a role player at 74% with a 65% tough-defense split is marginal; CHA wins are often high-usage LaMelo games that compress Knueppel scoring role",
+      "Keep standalone low-priority; exclude from parlays"
+    ]
   },
   {
     "date": "2026-03-19",
@@ -13258,11 +13282,17 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 hit rate, trend=up, but road B2B with Doncic+LeBron usage concentration risk.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Third scoring option behind Doncic (30+ streak) and LeBron; usage concentration compresses Reaves ceiling on nights LAL offense runs through its stars",
+      "B2B road context (same archetype as Mar 18 miss \u2014 14 actual vs 15 threshold); variance at this tier is concentrated in exactly this game profile",
+      "Keep standalone as low-priority; exclude from parlays"
+    ]
   },
   {
     "date": "2026-03-19",
@@ -13281,11 +13311,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 at T4, 100% B2B rate, consistent tag, strong road assist production trend=up.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13304,11 +13336,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Stepped to T10 for B2B caution; 10/10 floor, conservative for road usage concentration.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13327,11 +13361,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "10/10 at T4, stepped to T2 for B2B; consistent tag but trend=down warrants caution.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13356,7 +13392,9 @@
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13375,11 +13413,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 hit rate vs soft CHI defense; blowout spread cap limits confidence to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 36.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13398,11 +13438,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 REB hit rate, strong in blowout games 100%; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13421,11 +13463,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "8/10 at T6, blowout_games 96%, trend=up; spread cap applied conservatively.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13444,11 +13488,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "10/10 at T1, consistent tag, trend=up; no blowout suppression as underdog team.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13467,11 +13513,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "8/10 at T4, consistent, 96% blowout hit rate; min_floor caution applied.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 11.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13490,11 +13538,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "AST T4+ hard gate fires: PF position + tough defense \u2192 mandatory skip.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-19",
@@ -13513,11 +13563,17 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Secondary scorer skip fires: PHX underdog +9.5, Green not primary scorer.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [
+      "NOTE: system concluded blowout_secondary_scorer skip in tier_walk; filter_self_skip_picks did not catch it \u2014 workflow gap",
+      "Human override: PHX motivated to avoid play-in (39-31, fighting for playoff seeding vs SAS); Green at T10 is a floor pick in a game PHX will compete in",
+      "Treat as human-judgment keep; monitor filter_self_skip_picks gap for Code fix"
+    ]
   },
   {
     "date": "2026-03-19",
@@ -13536,10 +13592,16 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "7/10 at T2, trend=up, strong vs tough defenses; marginally qualifies at exactly 70%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-19T21:58:29.248932-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Marginal T2\u2192T1 walk at exactly 70% base confidence; SAS is the #2 team in the West with a tough defense",
+      "PHX competitive motivation supports Green playing full minutes but shot-selection under pressure may not favor 3PM volume",
+      "T1 3PM for secondary scorer on road vs elite defense in a game PHX needs to win \u2014 too many variables compressing perimeter opportunities"
+    ]
   }
 ]

@@ -14,10 +14,10 @@
       "opp_today_rating": "tough",
       "gate_triggered": "PF position + opp_today=tough with raw_avgs_ast < 8.0"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-19",
@@ -34,10 +34,10 @@
       "player_role": "secondary scorer (Booker is primary PPG leader)",
       "gate_triggered": "underdog spread +8 or worse + not primary scoring option"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 17.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 17.0 \u2265 tier 10"
   },
   {
     "date": "2026-03-19",
@@ -55,10 +55,10 @@
       "b2b_rate": "4/12 (33%)",
       "note": "VOLATILE + 8/10 at T15 fires volatile_weak_combo skip; B2B 33% rate would further compress below 70%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 13.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 13.0 < tier 15"
   },
   {
     "date": "2026-03-19",
@@ -77,8 +77,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-03-19",
@@ -95,10 +95,10 @@
       "tier_15_hit_rate": "check: from L10: 0,20,21,83,24,24,21,23,24,29 \u2014 games\u226515: 20,21,83,24,24,21,23,24,29=9/10 but also VOLATILE+opp_today=tough+vs_tough=41% makes T15 unsound",
       "note": "FG_MARGIN_THIN:3% forces step T20\u2192T15. At T15: VOLATILE tag + vs_tough=41% (very low) + trend=up but 0 points last game (DNP/0min). Min_floor=22.5<24 would further step T15\u2192T10. At T10: VOLATILE+8/10 at T10 (below T15 threshold for volatile_weak_combo but opp_today=tough and vs_tough=41% at T15 makes this structurally weak). Ultimately no valid tier qualifies cleanly."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 28.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 28.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-19",
@@ -115,10 +115,10 @@
       "volatile_tag": true,
       "note": "trend=down + tough DvP fires hard skip for all 3PM including T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 3"
   },
   {
     "date": "2026-03-19",
@@ -135,10 +135,10 @@
       "tier": 6,
       "note": "VOLATILE + AST tier T6 = hard skip per VOLATILE AST high-tier block rule. VOLATILE + AST_tier\u2265T6 = SKIP regardless of elite playmaker exemption."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 6"
   },
   {
     "date": "2026-03-19",
@@ -153,9 +153,9 @@
       "note": "3PM tier=4 at 75% (7/10). 3PM T3+ season hit rate 58.6% < 70% \u2014 T4 fails calibration ceiling. Also VOLATILE+iron_floor but overall=75% at T4. Walk down: T3\u2192check: games\u22653 in L10: 7,4,4,9,4,5,7,3,3,4=check \u22653: 7,4,4,9,4,5,7,3,3,4=10/10 but 3PM T3+ ceiling rule requires 7+/10 \u2713 AND high pace tag. No high pace tag confirmed. Cannot select T3+. T2\u2192games\u22652: 7,4,4,9,4,5,7,3,3,4=10/10 but VOLATILE tag on 3PM. iron_floor present. At T2: VOLATILE+iron_floor+trend=up: VOLATILE+T2 doesn't fire volatile_weak_combo (T15+ rule only for PTS). 3PM T2 calibrates at 71.4% \u2014 above threshold. But VOLATILE tag: -5% deduction. 10/10=100%-5%=95% \u2192 cap 80%. B2B: b2b=71%(7g) \u2192 use b2b rate: 71%-5%VOLATILE=66% \u2192 below 70% SKIP. So T2 fails on B2B rate. T1\u2192b2b rate: 71% from overall perspective, T1 would be higher but no specific b2b data for T1. Conservative: skip.",
       "tier": 4
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
   }
 ]
