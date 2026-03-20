@@ -1747,6 +1747,19 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   A player on the losing-side team in a blowout is subject to the existing BLOWOUT_RISK
   rules and secondary-scorer skip rules — not this rule. The mechanism here is specific to
   winning-side players whose minutes get compressed when the game is decided early.
+- 3PM hard skip — extreme blowout regardless of trend (spread_abs ≥ 19):
+  If BLOWOUT_RISK=True AND spread_abs ≥ 19, SKIP all 3PM picks for ALL players on the
+  favored team, regardless of trend direction. This rule fires even when trend=up or
+  trend=stable. Do not apply step-downs — skip outright including T1.
+  Rationale: SGA went 0-for-3 on threes in a 29-point OKC blowout win on 2026-03-18
+  despite trend=up and a 9/10 T1 hit rate. At spread_abs ≥ 19 the game is effectively
+  decided before tip-off — shot selection collapses toward drives and free throws
+  regardless of the player's trend or role. The existing trend=down rule correctly handles
+  moderate blowouts; this companion rule closes the gap for extreme spreads where even
+  trend=up players face structural volume compression.
+  This rule is additive to the trend=down rule: if trend=down AND spread_abs ≥ 8, the
+  trend=down rule fires first. If trend=up or stable AND spread_abs ≥ 19, this rule fires.
+  skip_reason: 3pm_blowout_trend_down (reuse existing enum for auditor consistency).
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
 - 3PM confidence ceiling — 80% maximum for non-iron-floor picks:
   Do not assign confidence_pct above 80 on any 3PM pick unless iron_floor=true on that
@@ -1825,19 +1838,22 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
     in even when BLOWOUT_RISK is False — the pattern may be real.
 - When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
-- BLOWOUT_RISK SECONDARY SCORER SKIP: When a player's pick has BLOWOUT_RISK flagged AND the
-  player's team is the large underdog (spread of +8 or worse, i.e. the player's team is
-  expected to lose by 8+ points), AND the player is not the team's primary scoring option
-  (i.e. the player does not lead the team in PPG or is not the designated first option in the
-  stat line), do NOT select any PTS pick for this player regardless of hit rate. Do not apply
-  the -5% BLOWOUT_RISK deduction and proceed — skip the PTS pick entirely. Secondary scorers
-  on large underdogs face asymmetric usage compression in the second half of blowout games:
-  they accumulate playing time without scoring efficiency as the game deteriorates, and their
-  aggregate T-pick hit rates do not price in this game-script effect. The spread threshold
-  (+8 or worse) is the point at which blowout probability is high enough to make this a
-  reliable skip rather than a marginal reduction. Primary scorers (team PPG leaders, first
-  options) are exempt from this skip because their usage is more protected even in blowout
-  scenarios. If in doubt about whether a player is a primary or secondary scorer, apply the skip.
+- BLOWOUT_RISK SECONDARY SCORER SKIP: When BLOWOUT_RISK=True is shown in a player's quant
+  header (meaning the player's team is the heavily favored side, spread_abs > 8), AND the
+  player is not the team's primary scoring option (i.e. the player does not lead the team in
+  PPG or is not the designated first option), do NOT select any PTS pick for this player
+  regardless of hit rate. Skip the PTS pick entirely. Secondary scorers on heavily favored
+  teams face asymmetric usage compression in the second half of blowout games: stars get
+  pulled in Q4 garbage time, and secondary scorers' minutes and shot attempts compress when
+  the game is decided early. Their aggregate tier hit rates do not price in this game-script
+  effect.
+  CRITICAL DIRECTION CHECK: This rule applies ONLY to the favored side — players whose quant
+  header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players. A secondary
+  scorer on a large underdog faces a different game-script (possible increased usage in
+  catch-up attempts) and this rule has no jurisdiction. When in doubt, check the quant
+  header: if BLOWOUT_RISK=True is not shown, this rule does not fire.
+  Primary scorers (team PPG leaders, first options) are exempt from this skip because their
+  usage is more protected even in blowout scenarios.
 
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
@@ -2685,6 +2701,19 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   A player on the losing-side team in a blowout is subject to the existing BLOWOUT_RISK
   rules and secondary-scorer skip rules — not this rule. The mechanism here is specific to
   winning-side players whose minutes get compressed when the game is decided early.
+- 3PM hard skip — extreme blowout regardless of trend (spread_abs ≥ 19):
+  If BLOWOUT_RISK=True AND spread_abs ≥ 19, SKIP all 3PM picks for ALL players on the
+  favored team, regardless of trend direction. This rule fires even when trend=up or
+  trend=stable. Do not apply step-downs — skip outright including T1.
+  Rationale: SGA went 0-for-3 on threes in a 29-point OKC blowout win on 2026-03-18
+  despite trend=up and a 9/10 T1 hit rate. At spread_abs ≥ 19 the game is effectively
+  decided before tip-off — shot selection collapses toward drives and free throws
+  regardless of the player's trend or role. The existing trend=down rule correctly handles
+  moderate blowouts; this companion rule closes the gap for extreme spreads where even
+  trend=up players face structural volume compression.
+  This rule is additive to the trend=down rule: if trend=down AND spread_abs ≥ 8, the
+  trend=down rule fires first. If trend=up or stable AND spread_abs ≥ 19, this rule fires.
+  skip_reason: 3pm_blowout_trend_down (reuse existing enum for auditor consistency).
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
 - 3PM confidence ceiling — 80% maximum for non-iron-floor picks:
   Do not assign confidence_pct above 80 on any 3PM pick unless iron_floor=true on that
@@ -2763,19 +2792,22 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
     in even when BLOWOUT_RISK is False — the pattern may be real.
 - When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
-- BLOWOUT_RISK SECONDARY SCORER SKIP: When a player's pick has BLOWOUT_RISK flagged AND the
-  player's team is the large underdog (spread of +8 or worse, i.e. the player's team is
-  expected to lose by 8+ points), AND the player is not the team's primary scoring option
-  (i.e. the player does not lead the team in PPG or is not the designated first option in the
-  stat line), do NOT select any PTS pick for this player regardless of hit rate. Do not apply
-  the -5% BLOWOUT_RISK deduction and proceed — skip the PTS pick entirely. Secondary scorers
-  on large underdogs face asymmetric usage compression in the second half of blowout games:
-  they accumulate playing time without scoring efficiency as the game deteriorates, and their
-  aggregate T-pick hit rates do not price in this game-script effect. The spread threshold
-  (+8 or worse) is the point at which blowout probability is high enough to make this a
-  reliable skip rather than a marginal reduction. Primary scorers (team PPG leaders, first
-  options) are exempt from this skip because their usage is more protected even in blowout
-  scenarios. If in doubt about whether a player is a primary or secondary scorer, apply the skip.
+- BLOWOUT_RISK SECONDARY SCORER SKIP: When BLOWOUT_RISK=True is shown in a player's quant
+  header (meaning the player's team is the heavily favored side, spread_abs > 8), AND the
+  player is not the team's primary scoring option (i.e. the player does not lead the team in
+  PPG or is not the designated first option), do NOT select any PTS pick for this player
+  regardless of hit rate. Skip the PTS pick entirely. Secondary scorers on heavily favored
+  teams face asymmetric usage compression in the second half of blowout games: stars get
+  pulled in Q4 garbage time, and secondary scorers' minutes and shot attempts compress when
+  the game is decided early. Their aggregate tier hit rates do not price in this game-script
+  effect.
+  CRITICAL DIRECTION CHECK: This rule applies ONLY to the favored side — players whose quant
+  header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players. A secondary
+  scorer on a large underdog faces a different game-script (possible increased usage in
+  catch-up attempts) and this rule has no jurisdiction. When in doubt, check the quant
+  header: if BLOWOUT_RISK=True is not shown, this rule does not fire.
+  Primary scorers (team PPG leaders, first options) are exempt from this skip because their
+  usage is more protected even in blowout scenarios.
 
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
