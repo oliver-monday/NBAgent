@@ -2698,49 +2698,39 @@
             "prop_type": "PTS",
             "pick_value": 10,
             "direction": "OVER",
-            "confidence_pct": 95,
+            "confidence_pct": 90,
             "correlation_role": "scorer"
           },
           {
-            "player_name": "Nikola Jokic",
-            "team": "DEN",
-            "opponent": "TOR",
-            "prop_type": "PTS",
-            "pick_value": 20,
-            "direction": "OVER",
-            "confidence_pct": 80,
-            "correlation_role": "scorer"
-          },
-          {
-            "player_name": "Jalen Duren",
-            "team": "DET",
-            "opponent": "GS",
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "DEN",
             "prop_type": "REB",
             "pick_value": 4,
             "direction": "OVER",
-            "confidence_pct": 80,
+            "confidence_pct": 85,
             "correlation_role": "rebounder"
           },
           {
-            "player_name": "Jalen Johnson",
-            "team": "ATL",
-            "opponent": "HOU",
-            "prop_type": "PTS",
-            "pick_value": 15,
+            "player_name": "Jaylen Brown",
+            "team": "BOS",
+            "opponent": "MEM",
+            "prop_type": "AST",
+            "pick_value": 2,
             "direction": "OVER",
             "confidence_pct": 80,
-            "correlation_role": "scorer"
+            "correlation_role": "independent"
           }
         ],
-        "implied_odds": "+106",
-        "confidence_product": 0.4864,
+        "implied_odds": "+104",
+        "confidence_product": 0.612,
         "correlation": "independent",
-        "rationale": "Four games, all 80%+ floor, ultra-low PTS thresholds vs soft/mid defenses with volume_game tags.",
+        "rationale": "Three independent games, all ultra-low floors with 9-10/10 hit rates and no shared game-script risk.",
         "date": "2026-03-20",
         "id": "parlay_2026-03-20_01",
         "result": null,
         "legs_hit": null,
-        "legs_total": 4
+        "legs_total": 3
       }
     ]
   }
