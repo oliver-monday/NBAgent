@@ -3243,6 +3243,21 @@ def build_review_prompt(
 
 Today is {TODAY_STR}.
 
+## STEP 0 — SKIP-ESCAPE CHECK (do this FIRST, before any adversarial assessment)
+Before evaluating any pick, scan its `reasoning` field for explicit skip language.
+If a pick's reasoning contains any of the following phrases, that pick escaped the
+filter incorrectly and must be flagged regardless of its statistical merits:
+- "mandatory hard skip"
+- "HARD SKIP fires"
+- "HARD GATE FIRES"
+- "hard gate fires"
+- "see skip record"
+- "triggers mandatory"
+For any such pick: set verdict = "stay_away", confidence_in_flag = "high", and set
+vulnerability = "Pick's own reasoning concluded a hard rule skip fired — this pick
+should not be active. Filter escape."
+Do not apply adversarial assessment to these picks — the skip language is dispositive.
+
 ## YOUR ROLE — ADVERSARIAL STRESS-TESTER
 The Pick agent has already applied the full statistical rulebook and produced today's picks.
 Your job is NOT to re-check the rules or re-evaluate the statistics. Assume Pick did those
@@ -3808,6 +3823,8 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
         # These appear when a rule fires unconditionally (ast_hard_gate, blowout_secondary_scorer, etc.)
         r"HARD\s+GATE\s+FIRES",
         r"BLOWOUT_SECONDARY_SCORER\s+SKIP\s+fires",
+        r"HARD\s+SKIP\s+fires",
+        r"mandatory\s+hard\s+skip",
         r"hard\s+gate\s+fires",
         r"(?:volatile_weak_combo|ast_hard_gate|blowout_secondary_scorer|3pm_blowout_trend_down|reb_floor_skip|blowout_t25_skip|fg_margin_thin_tier_step)\s+(?:fires|skip)",
         r"SKIP\s+(?:T\d+\s+)?(?:AST|PTS|REB|3PM)[^\w]*(?:hard\s+gate|mandatory\s+skip|no\s+valid\s+tier)",
