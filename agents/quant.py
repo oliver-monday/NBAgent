@@ -1638,6 +1638,98 @@ def build_bounce_back_profiles(
     return profiles
 
 
+def compute_teammate_absence_splits(
+    player_log: pd.DataFrame,
+    player_name: str,
+    team: str,
+    whitelist: set,
+) -> dict | None:
+    """
+    For the given player, identify their top-PPG whitelisted teammate on the same team
+    and compute the player's per-stat averages and tier hit rates in games where that
+    teammate was absent (DNP or not in log for that game_id).
+    Returns a dict with teammate name, their avg PPG, sample size, and the player's
+    raw_avgs + tier_hit_rates in the absence window.
+    Returns None if fewer than 3 qualifying absence games exist, or no teammates found.
+    """
+    MIN_ABSENCE_GAMES = 3
+    team_upper = team.upper()
+    # Get all whitelisted teammates on same team (excluding the player themselves)
+    team_log = player_log[player_log["team_abbrev"].str.upper() == team_upper].copy()
+    if whitelist:
+        mask = team_log.apply(
+            lambda r: (
+                r["player_name"].strip().lower(),
+                r["team_abbrev"].strip().upper()
+            ) in whitelist,
+            axis=1
+        )
+        team_log = team_log[mask].copy()
+    teammates = [p for p in team_log["player_name"].unique() if p != player_name]
+    if not teammates:
+        return None
+    # Identify top-PPG teammate by season average (non-DNP games)
+    top_teammate = None
+    top_avg_pts = 0.0
+    for tm in teammates:
+        tm_games = team_log[
+            (team_log["player_name"] == tm) &
+            (pd.to_numeric(team_log["dnp"], errors="coerce").fillna(0) != 1)
+        ]
+        if len(tm_games) < 5:
+            continue
+        avg_pts = float(tm_games["pts"].mean())
+        if avg_pts > top_avg_pts:
+            top_avg_pts = avg_pts
+            top_teammate = tm
+    if top_teammate is None:
+        return None
+    # Find all game_ids where top_teammate was absent:
+    # absent = DNP row exists OR no row at all for that game_id
+    all_team_game_ids = set(
+        player_log[player_log["team_abbrev"].str.upper() == team_upper]["game_id"].unique()
+    )
+    tm_active_game_ids = set(
+        team_log[
+            (team_log["player_name"] == top_teammate) &
+            (pd.to_numeric(team_log["dnp"], errors="coerce").fillna(0) != 1)
+        ]["game_id"].unique()
+    )
+    absent_game_ids = all_team_game_ids - tm_active_game_ids
+    if len(absent_game_ids) < MIN_ABSENCE_GAMES:
+        return None
+    # Get the player's active (non-DNP) games in those absent game_ids
+    player_full_log = player_log[player_log["player_name"] == player_name].copy()
+    dnp_mask = pd.to_numeric(player_full_log["dnp"], errors="coerce").fillna(0) == 1
+    player_active = player_full_log[~dnp_mask]
+    absence_games = player_active[player_active["game_id"].isin(absent_game_ids)].copy()
+    n = len(absence_games)
+    if n < MIN_ABSENCE_GAMES:
+        return None
+    # Compute raw averages and tier hit rates for each stat
+    raw_avgs = {}
+    tier_hit_rates = {}
+    for stat in ("PTS", "REB", "AST", "3PM"):
+        col = STAT_COL[stat]
+        if col not in absence_games.columns:
+            continue
+        valid = absence_games[absence_games[col].notna()]
+        if len(valid) == 0:
+            continue
+        raw_avgs[stat] = round(float(valid[col].mean()), 1)
+        tier_hit_rates[stat] = {
+            str(t): round(float((valid[col] >= t).sum() / len(valid)), 3)
+            for t in TIERS[stat]
+        }
+    return {
+        "teammate_name": top_teammate,
+        "teammate_avg_pts": round(top_avg_pts, 1),
+        "n_games": n,
+        "raw_avgs": raw_avgs,
+        "tier_hit_rates": tier_hit_rates,
+    }
+
+
 def build_player_stats(
     player_log: pd.DataFrame,
     b2b_teams: set[str],
@@ -1820,6 +1912,11 @@ def build_player_stats(
         bb_raw = bounce_back_profiles.get(player_name, {})
         bounce_back = {stat: bb_raw.get(stat) for stat in TIERS}
 
+        # Teammate absence splits — performance baseline when top-PPG teammate is out
+        key_teammate_absent = compute_teammate_absence_splits(
+            player_log, player_name, team, whitelist
+        )
+
         stats_out[player_name] = {
             "team": team,
             "whitelisted_teammates": sorted(teammate_corr.keys()),
@@ -1848,6 +1945,7 @@ def build_player_stats(
             "game_pace": pace_ctx,
             "teammate_correlations": teammate_corr,
             "bounce_back": bounce_back,
+            "key_teammate_absent": key_teammate_absent,
             "volatility": volatility,
             "shooting_regression": shooting_regression,
             "ft_safety_margin": ft_safety_margin,

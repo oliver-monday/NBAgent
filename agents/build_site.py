@@ -681,19 +681,23 @@ def build_site():
     opportunity_flags = load_opportunity_flags()
     explorer_data     = build_explorer_data()
 
-    # Build set of (name_lower, prop_type, pick_value) for auto-reviewed picks today
-    auto_review_keys: set[tuple] = set()
+    # Build lookup dict from review file: key → {verdict, trim_reasons, auto_reviewed}
+    # Covers both auto (source="auto") and manual (no source field) review entries.
+    review_lookup: dict[tuple, dict] = {}
     try:
         if PICKS_REVIEW_JSON.exists():
             review_entries = load_json(PICKS_REVIEW_JSON, [])
             for e in review_entries:
-                if e.get("source") == "auto":
-                    key = (
-                        (e.get("player_name") or "").strip().lower(),
-                        e.get("prop_type", ""),
-                        e.get("pick_value"),
-                    )
-                    auto_review_keys.add(key)
+                key = (
+                    (e.get("player_name") or "").strip().lower(),
+                    e.get("prop_type", ""),
+                    e.get("pick_value"),
+                )
+                review_lookup[key] = {
+                    "verdict":       e.get("verdict", ""),
+                    "trim_reasons":  e.get("trim_reasons") or [],
+                    "auto_reviewed": e.get("source") == "auto",
+                }
     except Exception:
         pass
 
@@ -707,12 +711,20 @@ def build_site():
     tp_total  = len(past_top_picks)
     tp_pct    = round(100 * tp_hits / tp_total, 1) if tp_total else 0
 
-    # Attach game time to today's picks
+    # Attach game time and review verdict to today's picks
     for p in today_picks:
         p["game_time"] = game_times.get(str(p.get("team", "")).upper(), "")
         name_lower = (p.get("player_name") or "").strip().lower()
         key = (name_lower, p.get("prop_type", ""), p.get("pick_value"))
-        p["auto_reviewed"] = key in auto_review_keys
+        review_entry = review_lookup.get(key)
+        if review_entry:
+            p["human_verdict"]  = review_entry["verdict"]
+            p["trim_reasons"]   = review_entry["trim_reasons"]
+            p["auto_reviewed"]  = review_entry["auto_reviewed"]
+        else:
+            p["human_verdict"]  = ""
+            p["trim_reasons"]   = []
+            p["auto_reviewed"]  = False
 
     top_picks = get_top_picks(today_picks)
 

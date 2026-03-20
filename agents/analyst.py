@@ -40,6 +40,7 @@ STANDINGS_JSON                = DATA / "standings_today.json"
 TEAM_DEFENSE_NARRATIVES_JSON = DATA / "team_defense_narratives.json"
 LINEUPS_JSON                 = DATA / "lineups_today.json"
 SKIPPED_PICKS_JSON           = DATA / "skipped_picks.json"
+SCOUT_OMITTED_JSON           = DATA / f"scout_omitted_{TODAY_STR}.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -1033,6 +1034,33 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
         wt = s.get("whitelisted_teammates") or []
         teammates_line = f"  Teammates (active/whitelisted): {', '.join(wt)}" if wt else ""
 
+        # Key teammate absence split — shown when n >= 3
+        kta = s.get("key_teammate_absent")
+        kta_line = ""
+        if kta and kta.get("n_games", 0) >= 3:
+            tm_name   = kta["teammate_name"]
+            tm_pts    = kta["teammate_avg_pts"]
+            n_abs     = kta["n_games"]
+            kta_parts = []
+            for _st in ("PTS", "REB", "AST", "3PM"):
+                _avg  = (kta.get("raw_avgs") or {}).get(_st)
+                _thrs = (kta.get("tier_hit_rates") or {}).get(_st)
+                if _avg is None or not _thrs:
+                    continue
+                # Show best 1–2 tiers (hit rate >= 50%) for readability
+                _tier_strs = []
+                for _t in VALID_TIERS.get(_st, []):
+                    _hr = _thrs.get(str(_t))
+                    if _hr is not None and _hr >= 0.50:
+                        _tier_strs.append(f"T{_t}={int(round(_hr*100))}%")
+                if _tier_strs:
+                    kta_parts.append(f"{_st} avg={_avg} {' '.join(_tier_strs[:2])}")
+            if kta_parts:
+                kta_line = (
+                    f"  Without {tm_name} (their avg={tm_pts}pts, n={n_abs}g): "
+                    + " | ".join(kta_parts)
+                )
+
         stat_parts = []
         bounce_back_all    = s.get("bounce_back") or {}
         volatility_all     = s.get("volatility") or {}
@@ -1163,6 +1191,7 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
                 f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{ga_flag}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
                 + (momentum_line  + "\n" if momentum_line  else "")
                 + (teammates_line + "\n" if teammates_line else "")
+                + (kta_line      + "\n" if kta_line       else "")
                 + (opp_absence_str + "\n" if opp_absence_str else "")
                 + "\n".join(stat_parts)
             )
@@ -2221,7 +2250,7 @@ def call_scout(prompt: str, model: str = MODEL) -> list[dict] | None:
                 raw_chunks.append(text)
     except Exception as e:
         print(f"[analyst] Scout API call failed: {e} — falling back to single-call mode")
-        return None
+        return None, []
 
     raw = "".join(raw_chunks).strip()
 
@@ -2236,7 +2265,7 @@ def call_scout(prompt: str, model: str = MODEL) -> list[dict] | None:
     brace_idx = raw.find('{')
     if brace_idx == -1:
         print("[analyst] Scout parse failed: no JSON object found — falling back to single-call mode")
-        return None
+        return None, []
     if brace_idx > 0:
         print(f"[analyst] Scout: {brace_idx} chars of prose before JSON — extracting")
         raw = raw[brace_idx:]
@@ -2256,23 +2285,27 @@ def call_scout(prompt: str, model: str = MODEL) -> list[dict] | None:
 
     if data is None or not isinstance(data, dict):
         print("[analyst] Scout parse failed: could not parse JSON object — falling back to single-call mode")
-        return None
+        return None, []
 
     shortlist = data.get("shortlist")
     if not isinstance(shortlist, list):
         print("[analyst] Scout parse failed: 'shortlist' key missing or not a list — falling back to single-call mode")
-        return None
+        return None, []
 
     if len(shortlist) == 0:
         print("[analyst] Scout returned empty shortlist — falling back to single-call mode")
-        return None
+        return None, []
 
     slate_read = data.get("slate_read", "")
     if slate_read:
         print(f"[analyst] Scout slate read: {slate_read}")
 
-    print(f"[analyst] Scout call complete — {len(shortlist)} players shortlisted")
-    return shortlist
+    omitted = data.get("omitted", [])
+    if not isinstance(omitted, list):
+        omitted = []
+    print(f"[analyst] Scout call complete — {len(shortlist)} players shortlisted, "
+          f"{len(omitted)} omitted")
+    return shortlist, omitted
 
 
 def build_pick_prompt(
@@ -2499,6 +2532,28 @@ Stat-specific rules:
 
   3PM: opp_defense is NOISE regardless of positional granularity (lift variance 0.053 across
     6,437 instances, corrected grading). Do not weight 3PM rating in either direction.
+
+KEY RULES — TEAMMATE ABSENCE USAGE ABSORPTION:
+When the injury report lists a player's top-PPG whitelisted teammate as OUT or DOUBTFUL,
+check the player's quant context for a line beginning "Without [teammate name]".
+If that line is present (n ≥ 3 games):
+- Use the "Without X" raw_avgs and tier hit rates as your PRIMARY evaluation baseline
+  for this player today — not the standard tier_hit_rates, which include games played
+  alongside the absent star and overstate the scoring floor.
+- Work top-down through the "Without X" tier hit rates to find the highest tier with
+  ≥70% hit rate. Apply all normal rules (VOLATILE, min_floor, blowout, etc.) to that tier.
+- Document the usage of the "Without X" baseline in the tier_walk field, e.g.:
+  "Without Edwards (n=8): PTS T15=75% → used as primary baseline; T20=50% fails."
+- Do not artificially inflate confidence because a star is absent — the "Without X"
+  hit rate data already captures the player's actual performance in those games.
+If the "Without X" line is absent (insufficient absence history):
+- Note the absence context in reasoning and apply normal rules to the standard quant
+  data, with the understanding that the tier hit rates may overstate reliability.
+- Apply a conservative one-tier step-down from the quant best_tier as a precaution,
+  unless a strong corroborating signal (iron_floor, very high vs_soft rate) justifies
+  the standard tier.
+If the teammate is playing today (not in injury report): ignore this rule entirely.
+Do not apply absence adjustments when the high-usage teammate is confirmed active.
 
 KEY RULES — REST & FATIGUE:
 - Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),
@@ -3883,6 +3938,21 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
     return kept
 
 
+def save_scout_omitted(omitted: list[dict]) -> None:
+    """
+    Persist Scout's omitted block to data/scout_omitted_YYYY-MM-DD.json.
+    Written once per day alongside picks_review. Used to audit whether Scout
+    incorrectly dropped candidates Pick would have selected.
+    """
+    with open(SCOUT_OMITTED_JSON, "w") as f:
+        json.dump(omitted, f, indent=2)
+    print(f"[analyst] Saved {len(omitted)} Scout omissions → {SCOUT_OMITTED_JSON}")
+    for entry in omitted:
+        name   = entry.get("player_name", "?")
+        reason = entry.get("reason", "no reason given")
+        print(f"  OMITTED: {name} — {reason}")
+
+
 def save_picks(picks: list[dict]):
     # Filter out picks where analyst's own tier_walk reasoning concluded skip
     picks = filter_self_skip_picks(picks)
@@ -4027,7 +4097,7 @@ def main():
         leaderboard=leaderboard, lineups_section=lineups_section,
     )
 
-    shortlist = call_scout(scout_prompt, model=scout_model)
+    shortlist, scout_omitted = call_scout(scout_prompt, model=scout_model)
 
     # ── Fallback: Scout failed — run single-call path unchanged ───────
     if shortlist is None:
@@ -4046,6 +4116,7 @@ def main():
         return
 
     # ── Stage 2: Pick ─────────────────────────────────────────────────
+    save_scout_omitted(scout_omitted)
     shortlist_names = {entry["player_name"] for entry in shortlist if isinstance(entry, dict)}
     print(f"[analyst] Scout shortlisted {len(shortlist_names)} players: {sorted(shortlist_names)}")
 
