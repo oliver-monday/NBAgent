@@ -2683,5 +2683,65 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-20",
+    "parlays": [
+      {
+        "label": "Friday Floor Lock",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "POR",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 95,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "TOR",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Jalen Duren",
+            "team": "DET",
+            "opponent": "GS",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Jalen Johnson",
+            "team": "ATL",
+            "opponent": "HOU",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+106",
+        "confidence_product": 0.4864,
+        "correlation": "independent",
+        "rationale": "Four games, all 80%+ floor, ultra-low PTS thresholds vs soft/mid defenses with volume_game tags.",
+        "date": "2026-03-20",
+        "id": "parlay_2026-03-20_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
+      }
+    ]
   }
 ]

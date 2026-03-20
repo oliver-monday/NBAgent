@@ -1,49 +1,50 @@
 [
   {
-    "date": "2026-03-19",
-    "player_name": "Paolo Banchero",
-    "team": "ORL",
-    "opponent": "CHA",
+    "date": "2026-03-20",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "TOR",
     "prop_type": "AST",
-    "tier_considered": 4,
+    "tier_considered": 8,
     "direction": "OVER",
     "skip_reason": "ast_hard_gate",
     "rule_context": {
-      "player_position": "PF",
-      "raw_avgs_ast": 4.7,
-      "opp_today_rating": "tough",
-      "gate_triggered": "PF position + opp_today=tough with raw_avgs_ast < 8.0"
+      "volatile_tag": true,
+      "ast_tier": 8,
+      "rule": "VOLATILE + AST tier >= T6 = hard skip regardless of hit rate or elite playmaker exemption"
     },
-    "actual_value": 7.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-19",
-    "player_name": "Jalen Green",
-    "team": "PHX",
-    "opponent": "SA",
-    "prop_type": "PTS",
-    "tier_considered": 10,
+    "date": "2026-03-20",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "TOR",
+    "prop_type": "REB",
+    "tier_considered": 12,
     "direction": "OVER",
-    "skip_reason": "blowout_secondary_scorer",
+    "skip_reason": "reb_floor_skip",
     "rule_context": {
-      "team_spread": "+9.5",
-      "spread_abs": 9.5,
-      "player_role": "secondary scorer (Booker is primary PPG leader)",
-      "gate_triggered": "underdog spread +8 or worse + not primary scoring option"
+      "overall_hit_rate": "8/10",
+      "vs_soft_hit_rate": "65%",
+      "vs_tough_hit_rate": "72%",
+      "competitive_hit_rate": "68%",
+      "blowout_hit_rate": "59%",
+      "note": "REB T12: 8/10 overall but vs_soft=65%, competitive=68%, blowout=59% \u2014 all below 70% system threshold in key splits. REB 78% minimum floor requires 78%+ confidence; after applying split adjustments, cannot reach 78% floor. T10 not a valid REB tier. Skip entirely."
     },
-    "actual_value": 17.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 17.0 \u2265 tier 10"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-19",
-    "player_name": "Matas Buzelis",
-    "team": "CHI",
-    "opponent": "CLE",
+    "date": "2026-03-20",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "opponent": "HOU",
     "prop_type": "PTS",
     "tier_considered": 15,
     "direction": "OVER",
@@ -52,110 +53,109 @@
       "volatile_tag": true,
       "hit_rate_at_tier": "8/10",
       "tier": 15,
-      "b2b_rate": "4/12 (33%)",
-      "note": "VOLATILE + 8/10 at T15 fires volatile_weak_combo skip; B2B 33% rate would further compress below 70%"
-    },
-    "actual_value": 13.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 13.0 < tier 15"
-  },
-  {
-    "date": "2026-03-19",
-    "player_name": "Donovan Mitchell",
-    "team": "CLE",
-    "opponent": "CHI",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
-    "rule_context": {
-      "volatile_tag": true,
-      "hit_rate_at_tier": "8/10",
-      "tier": 20,
-      "note": "VOLATILE + 8/10 (75% after -5%) at T20 fires volatile_weak_combo; trend=down adds further pressure"
+      "rule": "VOLATILE + 8/10 at T15+ = hard skip"
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-19",
-    "player_name": "Bam Adebayo",
-    "team": "MIA",
-    "opponent": "LAL",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "fg_margin_thin_no_valid_tier",
-    "rule_context": {
-      "fg_margin_thin_pct": 3,
-      "tier_dropped_to": 15,
-      "tier_15_hit_rate": "check: from L10: 0,20,21,83,24,24,21,23,24,29 \u2014 games\u226515: 20,21,83,24,24,21,23,24,29=9/10 but also VOLATILE+opp_today=tough+vs_tough=41% makes T15 unsound",
-      "note": "FG_MARGIN_THIN:3% forces step T20\u2192T15. At T15: VOLATILE tag + vs_tough=41% (very low) + trend=up but 0 points last game (DNP/0min). Min_floor=22.5<24 would further step T15\u2192T10. At T10: VOLATILE+8/10 at T10 (below T15 threshold for volatile_weak_combo but opp_today=tough and vs_tough=41% at T15 makes this structurally weak). Ultimately no valid tier qualifies cleanly."
-    },
-    "actual_value": 28.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 28.0 \u2265 tier 20"
-  },
-  {
-    "date": "2026-03-19",
-    "player_name": "Kon Knueppel",
-    "team": "CHA",
-    "opponent": "ORL",
-    "prop_type": "3PM",
-    "tier_considered": 3,
-    "direction": "OVER",
-    "skip_reason": "3pm_trend_down_tough_dvp",
-    "rule_context": {
-      "trend": "down",
-      "opp_dvp_3pm_rating": "tough",
-      "volatile_tag": true,
-      "note": "trend=down + tough DvP fires hard skip for all 3PM including T1"
-    },
-    "actual_value": 4.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 4.0 \u2265 tier 3"
-  },
-  {
-    "date": "2026-03-19",
-    "player_name": "Luka Doncic",
-    "team": "LAL",
-    "opponent": "MIA",
+    "date": "2026-03-20",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "opponent": "HOU",
     "prop_type": "AST",
     "tier_considered": 6,
     "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
+    "skip_reason": "ast_hard_gate",
     "rule_context": {
       "volatile_tag": true,
-      "hit_rate_at_tier": "7/10",
-      "tier": 6,
-      "note": "VOLATILE + AST tier T6 = hard skip per VOLATILE AST high-tier block rule. VOLATILE + AST_tier\u2265T6 = SKIP regardless of elite playmaker exemption."
+      "ast_tier": 6,
+      "rule": "VOLATILE + AST tier >= T6 = hard skip regardless of hit rate"
     },
-    "actual_value": 3.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 3.0 < tier 6"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-19",
-    "player_name": "Luka Doncic",
-    "team": "LAL",
-    "opponent": "MIA",
-    "prop_type": "3PM",
+    "date": "2026-03-20",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "MEM",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "blowout_t25_skip",
+    "rule_context": {
+      "spread_abs": 15.5,
+      "favored_team": "BOS",
+      "rule": "spread_abs >= 15 AND player on favored side \u2192 PTS T25 hard skip"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "MEM",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_tier_step",
+    "rule_context": {
+      "fg_margin_flag": "FG_MARGIN_THIN:8%",
+      "flagged_tier": 20,
+      "step_down_to": 15,
+      "note": "FG_MARGIN_THIN below 10% safety floor at T20; mandatory step to T15. Pick emitted at T15."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "opponent": "GS",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": false,
+      "competitive_hit_rate": "55%",
+      "note": "PTS T15: overall=70% (7/10) BUT competitive=55% materially below 70% system threshold. B2B game with min_floor=14.7 < 24 \u2192 mandatory step T15\u2192T10. At T10: hit rate sufficient but min_floor<24 requires step from T15; T10 is the step-down destination. However, min_floor=14.7 is extremely thin \u2014 below even 20-minute threshold for REB/AST caution. Additionally B2B rate at T15=78% but competitive=55% creates structural concern. Emitting as skip due to min_floor extreme fragility at T15 tier; no T10 PTS pick emitted as the competitive suppression risk remains real even at T10 given min_floor=14.7."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "opponent": "DEN",
+    "prop_type": "AST",
     "tier_considered": 4,
     "direction": "OVER",
-    "skip_reason": "3pm_trend_down_tough_dvp",
+    "skip_reason": "ast_hard_gate",
     "rule_context": {
-      "note": "3PM tier=4 at 75% (7/10). 3PM T3+ season hit rate 58.6% < 70% \u2014 T4 fails calibration ceiling. Also VOLATILE+iron_floor but overall=75% at T4. Walk down: T3\u2192check: games\u22653 in L10: 7,4,4,9,4,5,7,3,3,4=check \u22653: 7,4,4,9,4,5,7,3,3,4=10/10 but 3PM T3+ ceiling rule requires 7+/10 \u2713 AND high pace tag. No high pace tag confirmed. Cannot select T3+. T2\u2192games\u22652: 7,4,4,9,4,5,7,3,3,4=10/10 but VOLATILE tag on 3PM. iron_floor present. At T2: VOLATILE+iron_floor+trend=up: VOLATILE+T2 doesn't fire volatile_weak_combo (T15+ rule only for PTS). 3PM T2 calibrates at 71.4% \u2014 above threshold. But VOLATILE tag: -5% deduction. 10/10=100%-5%=95% \u2192 cap 80%. B2B: b2b=71%(7g) \u2192 use b2b rate: 71%-5%VOLATILE=66% \u2192 below 70% SKIP. So T2 fails on B2B rate. T1\u2192b2b rate: 71% from overall perspective, T1 would be higher but no specific b2b data for T1. Conservative: skip.",
-      "tier": 4
+      "volatile_tag": true,
+      "ast_tier": 4,
+      "position": "PF/SF",
+      "opp_today": "soft",
+      "note": "VOLATILE tag present. At T4 with soft opponent, AST hard gate passes for position/defense. However VOLATILE + AST evaluation: T4 is below T6 threshold so VOLATILE+T6 hard block does not fire. Hit rate=75% (7/10) VOLATILE \u2192 -5% \u2192 70% floor exactly. Borderline \u2014 trend=down applies no mandatory step for AST but with VOLATILE deduction landing exactly at 70% floor with no margin, and bb_lift=1.11 on miss side, skip on merit (insufficient margin)."
     },
-    "actual_value": 9.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]

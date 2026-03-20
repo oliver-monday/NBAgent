@@ -1,0 +1,166 @@
+[
+  {
+    "date": "2026-03-20",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 21.6 on a T10 PTS pick means a single foul-trouble or lineup-adjustment game \u2014 plausible against a tough ATL defense \u2014 lands Sengun below 24 minutes and makes the floor contingent on run, not guaranteed. The tough opponent further compresses his scoring ceiling on nights where paint touches are contested."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Jokic's AST is explicitly volatile (sigma=0.47) and the T6 floor sits at the exact threshold where a single low-creator night \u2014 realistic against a tough TOR defense that can sag and eliminate passing lanes \u2014 produces a miss; the wide distribution means the 70% hit rate is a genuine statistical average over a wide range, not a compressed floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B with a min_floor of only 14.7 (vs. avg 25.6) means a minutes restriction \u2014 common on B2Bs for big men \u2014 could easily drop Duren below the rebound threshold; the post-miss bounce-back hit rate of 55% (+0.66 lift) is also the weakest on today's slate, signaling REB slump-persistence risk if he missed recently."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Johnson's AST volatility is elevated (sigma=0.366) and the post-miss bounce-back rate of 57% is materially below his overall 80% hit rate, meaning a sequential slump scenario is structurally plausible; as a road underdog against HOU's defense, game-script pressure that forces ATL into catch-up mode can paradoxically reduce structured half-court passing opportunities for the primary handler."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "TOR is a +6.5 road underdog against DEN, creating meaningful Q4 blowout-loss risk where Barnes \u2014 as a secondary option on a losing team \u2014 may see reduced late-game usage once the game is decided; the def_recency delta shows DEN's defense has tightened recently (l5 below l15), adding a soft headwind even at the modest T10 floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Even after the blowout confidence cap was applied, a -15.5 spread creates genuine Q4 rest risk for Brown as a star on a dominant road favorite \u2014 the penalty priced confidence down but cannot eliminate the structural scenario where BOS leads by 25 in the third quarter and Brown sits the entire fourth, making the 15-point floor dependent on early-game volume that blowout scripts do not guarantee."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-20",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "White is a secondary scorer on a -15.5 blowout favorite with a min_floor of 26.1 \u2014 a floor that requires meaningful fourth-quarter minutes that are structurally unlikely in a large blowout; the historical audit confirms star-reduction in garbage time, and as a role player White faces compounded risk: both his minutes and shot attempts compress when the game is decided early, making the T10 floor contingent on a game script that the spread argues against."
+    ],
+    "source": "auto"
+  }
+]
