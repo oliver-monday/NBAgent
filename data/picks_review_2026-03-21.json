@@ -1,0 +1,134 @@
+[
+  {
+    "date": "2026-03-21",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "OKC is a -20.5 favorite, creating genuine blowout-rest risk in Q4 \u2014 SGA is a star who may be pulled early when the game is decided, compressing his assist opportunities. Per audit lessons, losing-side blowout AST penalties are now documented; the winning-side mirror (star rest in a runaway win) similarly truncates counting stats for a player whose AST floor depends on sustained minutes."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The -20.5 spread is extreme and the min_floor of 25.6 is below 27 \u2014 if OKC blows WSH out early (the most likely game script given this spread), Holmgren sits in Q4, putting a single low-minutes game squarely within normal variance that would threaten a T10 floor that already required a Without-SGA baseline adjustment to pass."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 25,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The post_miss bounce-back hit rate for REB is only 65% \u2014 per audit history, REB is confirmed slump-persistent, and a miss last game meaningfully degrades the forward-looking floor. With 70% confidence already at the low end of the threshold, the 65% post-miss rate suggests the effective hit rate today is closer to or below the minimum bar."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "LeBron's pick is explicitly built on a Without-Luka baseline (6-game sample), but Luka is listed QUES not OUT \u2014 if Luka plays, the usage and shot-volume assumptions underpinning the T15 floor revert to a shared-load context. A last-minute Luka availability confirmation dissolves the structural basis of this pick mid-game."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "LAC is a -7.5 favorite and the audit record flags that sub-5-point game scripts suppress 3PM shot selection in favor of higher-percentage looks \u2014 in a blowout context the inverse risk applies: Kawhi may be rested in Q4 before reaching his typical 3PM volume, and the T2 qualifier relied on a Without-Garland baseline (68% hit rate) that is already below the standard 70% threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-21",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "This pick is structurally contingent on Luka Doncic being out \u2014 the T4 vs_tough=100% qualifier and the Without-Luka baseline both collapse if Luka is active (he is QUES, not confirmed OUT). A Luka game-time play introduction would redirect playmaking responsibilities away from Reaves and fundamentally invalidate the assist floor this pick is built on."
+    ],
+    "source": "auto"
+  }
+]
