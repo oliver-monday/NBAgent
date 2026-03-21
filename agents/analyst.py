@@ -40,11 +40,12 @@ STANDINGS_JSON                = DATA / "standings_today.json"
 TEAM_DEFENSE_NARRATIVES_JSON = DATA / "team_defense_narratives.json"
 LINEUPS_JSON                 = DATA / "lineups_today.json"
 SKIPPED_PICKS_JSON           = DATA / "skipped_picks.json"
-SCOUT_OMITTED_JSON           = DATA / f"scout_omitted_{TODAY_STR}.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
+
+SCOUT_OMITTED_JSON           = DATA / f"scout_omitted_{TODAY_STR}.json"
 
 # ── Config ───────────────────────────────────────────────────────────
 MODEL         = "claude-sonnet-4-6"   # default model
