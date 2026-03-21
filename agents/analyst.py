@@ -2242,7 +2242,7 @@ After the closing }} you may add a brief optional note (3 lines maximum). Nothin
 """
 
 
-def call_scout(prompt: str, model: str = MODEL) -> list[dict] | None:
+def call_scout(prompt: str, model: str = MODEL) -> tuple[list[dict] | None, list[dict]]:
     """
     Call Claude with the Scout prompt. Returns the shortlist list on success.
     Returns None on any parse failure — caller triggers fallback to single-call mode.
@@ -3201,8 +3201,8 @@ def build_review_context(picks: list[dict], player_stats: dict) -> str:
         opp_def    = (s.get("opp_defense") or {}).get(prop, {})
         opp_rating = opp_def.get("rating", "unknown")
 
-        # Volatility
-        vol_label  = (s.get("volatility") or {}).get(prop, "unknown")
+        # Volatility — volatility[prop] is a dict {label, sigma, n}, not a string
+        vol_label  = ((s.get("volatility") or {}).get(prop) or {}).get("label", "unknown")
 
         # B2B hit rate at this tier
         b2b_hr_data = (s.get("b2b_hit_rates") or {}).get(prop)
@@ -3214,7 +3214,7 @@ def build_review_context(picks: list[dict], player_stats: dict) -> str:
             b2b_tier_hr = (b2b_hr_data.get("hit_rates") or {}).get(tier_str)
 
         # Bounce back
-        bb   = (s.get("bounce_back") or {}).get(prop, {})
+        bb   = (s.get("bounce_back") or {}).get(prop) or {}
         bb_pm_hr  = bb.get("post_miss_hit_rate")
         bb_lift   = bb.get("lift")
         bb_typ_ms = bb.get("typical_miss")
