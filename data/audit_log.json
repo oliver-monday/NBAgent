@@ -2264,5 +2264,116 @@
         "Ultra-low floor legs (PTS T10 for Banchero, AST T2/T4 for Reaves) with 80%+ individual confidence are the correct anchors for parlay construction \u2014 both cleared with margins of 10 and 2 points respectively above threshold, confirming that conservative tier selection on high-usage players produces the parlay durability the system needs at +100 implied odds."
       ]
     }
+  },
+  {
+    "date": "2026-03-20",
+    "total_picks": 13,
+    "voided_picks": 0,
+    "hits": 11,
+    "misses": 2,
+    "no_data": 0,
+    "hit_rate_pct": 84.6,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 8,
+        "hits": 7,
+        "hit_rate_pct": 87.5
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0
+      },
+      "3PM": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Ultra-low PTS floors (T10) with 9-10/10 recent hit rates delivered reliably: Randle (19), Thompson (14), Sengun (15), Barnes (15), and White (14) all cleared T10 comfortably \u2014 reinforcing that T10 floors for high-usage starters are the system's most bankable prop type regardless of defensive context.",
+      "Iron-floor tags proved their value: Jokic (22 vs T20) and Brown (30 vs T15) both hit by wide margins, validating that iron-floor players \u2014 even with trend=down or blowout-risk flags \u2014 retain a production floor the system can rely on at depressed confidence.",
+      "Blowout-resilient AST at low tiers held even in a wide-margin game: Brown's T2 AST (actual 6) cleared easily in the BOS-MEM game (BOS won by 5 \u2014 ultimately closer than spread implied), and the 96% blowout hit rate signal in the pick object was accurate forward-looking evidence that low-tier AST for secondary creators survives game-script pressure.",
+      "The HOU blowout win (22-pt margin) did not suppress either HOU scorer: both Sengun (15 pts, 32 min) and Thompson (14 pts, 34 min) logged normal minutes and cleared their T10 floors \u2014 suggesting HOU's blowout wins may not trigger the same star-rest compression seen on elite road favorites, a pattern worth tracking going forward.",
+      "Randle's dual-prop (PTS+AST) produced clean hits (19 PTS / 4 AST vs T10/T2) in a CLOSE game (MIN won by 4), validating that high hit-rate multi-prop selections on the same player are viable when the player's floor tiers are independently low and game-script risk is limited by a tight spread."
+    ],
+    "lessons": [
+      "Jalen Johnson's AST miss (actual 3 vs T6) in a 22-point blowout loss for ATL is a clear model_gap_rule event: the BLOWOUT_RISK signal was present (ATL was a road underdog, HOU won by 22), yet no AST-specific blowout penalty was applied to Johnson's pick despite his role as the primary playmaker \u2014 losing-side blowout scripts compress half-court possession count and structured creation opportunities for ball-handlers, and this must trigger an AST confidence penalty equivalent to the PTS blowout penalty when the player is on the losing side of a spread \u226510.",
+      "Johnson's PTS miss (actual 14 vs T15) in the same blowout context is borderline variance/model_gap_rule: a 9/10 player at T15 missing by 1 point in a 22-point blowout loss is not a pure selection error, but the blowout-loss context (ATL trailing by large margins in the second half) structurally reduces the primary forward's scoring volume \u2014 the model's blowout penalty for PTS should account for losing-side players, not just winning-side star-rest scenarios.",
+      "AST props at T6 and above carry meaningful single-game variance (Johnson's sigma=0.366 was flagged in trim_reasons) \u2014 the 74% confidence on an 8/10 AST T6 was reasonable in isolation, but the combination of volatile AST, road underdog status, and blowout risk created a correlated downside that the individual pick confidence did not fully price. When two or more of these factors co-occur on an AST prop at T6+, apply an additional 5pp discount or require 9+/10 hit rate to proceed."
+    ],
+    "recommendations": [
+      "Implement a losing-side blowout AST penalty: when a player's team is the underdog and the pre-game spread implies a potential blowout (spread_abs \u2265 10 against them), apply a -10pp AST confidence penalty equivalent to the existing winning-side blowout PTS penalty. Johnson's 74% AST T6 pick should have been flagged to ~64% or skipped entirely given ATL's road underdog spread context.",
+      "For AST props at T6 and above on non-elite playmakers (raw_avgs AST < 8.0), require at least 9/10 recent hit rate AND soft or mid defense to proceed at any confidence above 70%. Johnson's 8/10 / T6 / mid-defense / volatile combination is a prototype case where the tier ceiling rule should impose a higher gate than currently enforced.",
+      "Validate the HOU blowout-win star-minutes pattern going forward: Sengun and Thompson both played 32\u201334 minutes in a 22-point HOU win, suggesting HOU does not heavily rest starters in blowout wins. If this pattern holds over \u22655 HOU blowout wins, create a HOU-specific blowout exception rule that does not apply the winning-side star-rest penalty to HOU rotation players.",
+      "The Jokic VOLATILE+AST T8 hard skip was correct procedurally (pick still hit 9/0), but the audit notes the hit \u2014 track VOLATILE+AST hard-skipped picks separately to evaluate whether the skip rule is correctly calibrated for elite playmakers with iron-floor PTS tags. If VOLATILE+AST skips hit at \u226570% over 10+ skip events, consider a tiered exemption for players with raw_avgs AST \u2265 8.0 and iron_floor=true on PTS.",
+      "Brown's T15 PTS pick at 74% with spread_abs=15.5 hit (actual 30) \u2014 but White's identical spread context (T10, 74%, same game) also hit (actual 14). Before applying the manual_skip override to secondary scorers in large-spread games, confirm whether the game-script risk materialized: BOS won by only 5, meaning the blowout-compression scenario never occurred. Flag large-spread picks for post-game review and track actual margin vs. predicted margin \u2014 if spread_abs \u2265 15 games regularly close to <10 margin, the blowout risk discount may be structurally over-applied."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jalen Johnson",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 14,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: ATL @ HOU final was 95\u2013117 \u2014 HOU won by 22, classified as BLOWOUT. ATL was on the losing side. STEP 1: Johnson played 32 minutes and scored 14 PTS \u2014 clearly active. STEP 2: No injury event; player was fully active (32 min). Post-game news shows no injury exit. Miss is 1 point below T15 threshold in a 22-point blowout loss. STEP 3: The analyst's reasoning cited 85% overall hit rate at T15 with strong splits across defensive contexts (vs_soft=92%, vs_tough=89%) and ATL 10-0 hot streak. The reasoning did not account for losing-side blowout game-script compression \u2014 in a 22-point loss, ATL's fourth-quarter possessions are structurally reduced as the game becomes decided, limiting Johnson's counting-stat ceiling. STEP 4: Hit rate was 9/10 (85%) \u2014 a miss on a near-perfect hit-rate player. This is within variance range for a T15 pick. STEP 5: Tier walk shows T15 with 9/10 overall, strong splits \u2014 no tier_skip or data_conflict. The T15 threshold was appropriate given the data. STEP 6: No lineup_update amendment present. Classification: variance \u2014 the pick was statistically sound (9/10 at T15), the miss margin was 1 point, and the losing-side blowout context was a contributing factor but not a signal the system had a specific rule to apply at pick time for PTS on the losing side. Note: the 1-point margin combined with blowout-loss context suggests a model_gap_rule component worth monitoring \u2014 if ATL losing-side blowout games consistently show Johnson below T15, a rule should be added. Insufficient sample to reclassify as model_gap_rule today."
+      },
+      {
+        "player_name": "Jalen Johnson",
+        "prop_type": "AST",
+        "pick_value": 6,
+        "actual_value": 3,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: ATL @ HOU final was 95\u2013117 \u2014 HOU won by 22, classified as BLOWOUT. ATL was the losing side by 22 points. STEP 1: Johnson played 32 minutes (confirmed active) with 3 assists \u2014 well below T6. STEP 2: No injury event. Full 32 minutes played. STEP 3: The analyst's reasoning cited primary playmaker role (Trae Young traded to WAS), 8/10 T6 rate, and trend=up. The reasoning correctly identified Johnson's role elevation but did not apply any blowout-loss penalty to the AST prop. In a 22-point blowout loss, the losing team's half-court offense degenerates as the game becomes uncompetitive \u2014 structured creation sequences compress, the primary ball-handler receives fewer quality possession setups in Q3/Q4, and catch-up isolation play further reduces assist opportunities. The trim_reasons also flagged a post-miss bounce-back rate of 57% and elevated sigma=0.366, confirming structural AST volatility. STEP 4: Hit rate was 8/10 \u2014 the pick had a baseline of 80% confidence but was capped at 74% for away context. Even so, a 3-assist result vs. a T6 pick is a meaningful miss (3 below threshold), not a near-miss. STEP 5: Tier walk shows T6 with 8/10 \u2014 the minimum qualifying rate for T6. No lower valid AST tier was evaluated as an alternative. The T6 ceiling rule requires explicit elevated role context and 7+/10, which was technically met, but the gap between 8/10 (minimum passing gate) and 9-10/10 (high-confidence gate) is meaningful at elevated AST tiers. STEP 6: No lineup_update amendment. Classification: model_gap_rule \u2014 the signal existed (ATL road underdog, spread_abs=3.5 per pick object but game became a 22-point blowout; losing-side blowout context is a known AST suppressor), but no AST-specific blowout-loss penalty rule exists in the current system. The rule handles winning-side blowout PTS risk but does not apply an equivalent penalty to the losing team's primary playmaker's AST props. A rule requiring a -10pp AST confidence penalty when spread context or blowout risk implies losing-side compression would have reduced this pick to ~64%, likely below the publication threshold."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 3/3 sweep of the Friday Floor Lock \u2014 all three ultra-low-floor legs cleared comfortably (Randle 19 PTS, Barnes 8 REB, Brown 6 AST), each exceeding threshold by wide margins.",
+      "parlay_lessons": [
+        "The Friday Floor Lock's Brown AST leg (T2, spread_abs=15.5, BOS favored by 15.5) was the structural vulnerability in this parlay \u2014 the game ultimately closed at BOS +5 rather than a blowout, so the risk never materialized, but a true 20+ point blowout win for BOS would have put Brown's garbage-time minutes at risk even at a T2 AST floor. When including a leg from a large-spread favorite, prefer AST legs only when the blowout hit rate for that player is explicitly \u226590% (Brown's was 96%, which cleared the bar) \u2014 do not rely solely on the low tier to absorb blowout risk if the player is a secondary scorer with compressible minutes."
+      ],
+      "parlay_reinforcements": [
+        "The three-game independence structure (MIN vs POR, TOR vs DEN, BOS vs MEM) eliminated correlated game-script risk entirely \u2014 no two legs shared a game, meaning no single blowout or upset outcome could cascade across legs. Multi-game parlays built exclusively on independent game pairs with 9-10/10 hit rate legs at low floors (T2\u2013T4) represent the highest-confidence parlay structure in the system and should be prioritized when available.",
+        "Mixing prop types across legs (PTS + REB + AST) rather than stacking the same prop type reduced variance: each leg responded to different in-game variables (scoring volume, rebounding position, ball-movement), so a game-script that suppressed one prop type (e.g., low pace reducing PTS) would not simultaneously suppress all three. Heterogeneous prop-type parlays at low tier floors are structurally more resilient than same-type stacks."
+      ]
+    }
   }
 ]

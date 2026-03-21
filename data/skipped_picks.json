@@ -16,10 +16,10 @@
       "trend": "up",
       "exception_check": "iron_floor required for exception at T6; not present at T8 in any case"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 8"
   },
   {
     "date": "2026-03-20",
@@ -37,10 +37,10 @@
       "confidence_after_volatile": "70%",
       "reb_minimum_floor": "78%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 8"
   },
   {
     "date": "2026-03-20",
@@ -59,10 +59,10 @@
       "ast_trend": "down",
       "blowout_games_ast": "93% historically but auditor confirmed structural model gap for secondary creators in actual blowouts"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 4"
   },
   {
     "date": "2026-03-20",
@@ -81,10 +81,10 @@
       "vs_tough": "61%",
       "reb_minimum_floor": "78%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-20",
@@ -102,10 +102,10 @@
       "rule": "AST T4+ hard gate: player is non-PG with raw_avgs AST < 8.0 (elite exemption inapplicable), opp_today=tough \u2192 gate requires soft. Tough opponent \u2192 SKIP. Additionally VOLATILE tag present which would reduce confidence further.",
       "vs_tough": "62%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-20",
@@ -122,10 +122,10 @@
       "rule": "VOLATILE -5% \u2192 65%, below 78% REB minimum floor. Skip.",
       "reb_minimum_floor": "78%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-20",
@@ -144,10 +144,10 @@
       "rule": "VOLATILE -5% \u2192 65%, below 78% REB minimum floor. Also vs_soft=64% and vs_tough=62% below 70% qualifying threshold. Skip on multiple grounds.",
       "reb_minimum_floor": "78%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-03-20",
@@ -165,10 +165,10 @@
       "rule": "3PM trend=down AND BLOWOUT_RISK=True \u2192 hard skip all 3PM picks including T1. Iron_floor not present on 3PM.",
       "volatile_tag": true
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-20",
@@ -186,10 +186,10 @@
       "rule": "3PM trend=down AND BLOWOUT_RISK=True \u2192 hard skip all 3PM picks including T1. VOLATILE tag also present.",
       "volatile_tag": true
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-03-20",
@@ -208,10 +208,10 @@
       "post_miss_penalty": "-5%",
       "adjusted_confidence": "75%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-20",
@@ -230,9 +230,9 @@
       "adjusted_confidence": "70%",
       "note": "70% exactly at floor with VOLATILE and trend=down \u2014 skip per conservatism"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
   }
 ]

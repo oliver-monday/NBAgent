@@ -13621,11 +13621,13 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "10/10 recent hit rate, consistent tag, mid defense, no blowout risk.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13644,11 +13646,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 hit rate at T2, stable trend, vs_soft=100% supports easy floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13667,11 +13671,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 hit rate, consistent tag; min_floor<24 and tough defense temper confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 21.6 on a T10 PTS pick means a single foul-trouble or lineup-adjustment game \u2014 plausible against a tough ATL defense \u2014 lands Sengun below 24 minutes and makes the floor contingent on run, not guaranteed. The tough opponent further compresses his scoring ceiling on nights where paint touches are contested."
+    ]
   },
   {
     "date": "2026-03-20",
@@ -13690,11 +13698,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Solid T10 floor with 8/10 rate; tough ATL defense and HOU cold streak cap confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13713,11 +13723,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "85% overall hit rate at T15; strong splits across all defensive contexts, ATL 10-0 hot.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13736,11 +13748,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Primary playmaker role with 8/10 T6 rate; trend=up and consistent splits support floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Johnson's AST volatility is elevated (sigma=0.366) and the post-miss bounce-back rate of 57% is materially below his overall 80% hit rate, meaning a sequential slump scenario is structurally plausible; as a road underdog against HOU's defense, game-script pressure that forces ATL into catch-up mode can paradoxically reduce structured half-court passing opportunities for the primary handler."
+    ]
   },
   {
     "date": "2026-03-20",
@@ -13759,11 +13775,15 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "10/10 recent hit rate, consistent tag, soft DEN defense; near-perfect floor reliability.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "TOR is a +6.5 road underdog against DEN, creating meaningful Q4 blowout-loss risk where Barnes \u2014 as a secondary option on a losing team \u2014 may see reduced late-game usage once the game is decided; the def_recency delta shows DEN's defense has tightened recently (l5 below l15), adding a soft headwind even at the modest T10 floor."
+    ]
   },
   {
     "date": "2026-03-20",
@@ -13782,11 +13802,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 hit rate at T4 with elite cross-split consistency; T4 exemption gate clears cleanly.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13805,11 +13827,13 @@
     "iron_floor": true,
     "top_pick": true,
     "reasoning": "Iron-floor at T20 with 9/10 rate; vs_tough=85% holds against TOR defense strongly.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13828,11 +13852,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "VOLATILE tag with T8 AST triggers mandatory hard skip \u2014 see skip record.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13851,11 +13877,15 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "FG_MARGIN_THIN steps down to T15; spread_abs=15.5 caps at 74%; iron_floor anchors floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 30.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Even after the blowout confidence cap was applied, a -15.5 spread creates genuine Q4 rest risk for Brown as a star on a dominant road favorite \u2014 the penalty priced confidence down but cannot eliminate the structural scenario where BOS leads by 25 in the third quarter and Brown sits the entire fourth, making the 15-point floor dependent on early-game volume that blowout scripts do not guarantee."
+    ]
   },
   {
     "date": "2026-03-20",
@@ -13874,11 +13904,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 AST rate at T2 with 96% blowout hit rate; soft MEM defense and consistent tag.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-20",
@@ -13897,10 +13929,14 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "9/10 rate at T10, soft MEM defense; spread_abs=15.5 cap applies at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "White is a secondary scorer on a -15.5 blowout favorite with a min_floor of 26.1 \u2014 a floor that requires meaningful fourth-quarter minutes that are structurally unlikely in a large blowout; the historical audit confirms star-reduction in garbage time, and as a role player White faces compounded risk: both his minutes and shot attempts compress when the game is decided early, making the T10 floor contingent on a game script that the spread argues against."
+    ]
   }
 ]
