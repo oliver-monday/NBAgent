@@ -93,6 +93,7 @@ TPM_TIERS = [1, 2, 3, 4]
 - `shooting_regression` — `{fg_hot, fg_cold, fg_pct_l5, fg_pct_l20, n_l5, n_l20}`; P3 feature; recent FG% vs season baseline for regression context
 - `bounce_back` — per stat: `{post_miss_hit_rate, lift, iron_floor, n_misses, near_miss_rate, blowup_rate, typical_miss}`; Miss Anatomy fields (`near_miss_rate`, `blowup_rate`, `typical_miss`) are null if fewer than 5 misses; `near_miss_rate + blowup_rate == 1.0` when both non-null (they partition all misses)
 - `profile_narrative` — string or null; live statistical portrait rendered for players with ≥10 non-DNP games and a qualifying PTS best tier; computed fresh daily by `build_player_profiles()`; injected into analyst prompt as `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS`
+- `key_teammate_absent` — per-stat absence baseline for the top-PPG whitelisted teammate; computed by `compute_teammate_absence_splits()` (added 2026-03-20); schema: `{teammate_name, n_games, raw_avgs, best_tier_hit_rate, tier}`; null when fewer than 3 historical without-teammate games; surfaced as `Without [X]` line in `build_quant_context()`; Pick stage uses as primary evaluation signal when that teammate is OUT/DOUBTFUL
 
 **Additional quant output — `team_defense_narratives.json`:**
 - Written by `build_team_defense_narratives()`, called as part of the daily quant run
@@ -185,7 +186,7 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 3. `## SCOUT SHORTLIST` (from Scout output)
 4. `## TODAY'S GAMES`
 5. `## CURRENT INJURY REPORT`
-6. All KEY RULES blocks (KEY FRAMEWORK, MATCHUP QUALITY, DvP, SELECTION, REST & FATIGUE, SEQUENTIAL GAME CONTEXT, SPREAD/BLOWOUT, VOLATILITY, HIGH CONFIDENCE GATE, INJURY EXCLUSION)
+6. All KEY RULES blocks (KEY FRAMEWORK, MATCHUP QUALITY, DvP, SELECTION, REST & FATIGUE, SEQUENTIAL GAME CONTEXT, SPREAD/BLOWOUT, VOLATILITY, HIGH CONFIDENCE GATE, INJURY EXCLUSION, TEAMMATE ABSENCE USAGE ABSORPTION)
 7. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` (filtered to shortlisted players only)
 8. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS`
 9. `## ROLLING PERFORMANCE SUMMARY`
@@ -233,6 +234,11 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 - Output schema enforced strictly: `pick_value` must be a valid tier value
 - Player profiles are live statistical portraits (evidence), not hardcoded flags or verdicts — analyst reasons from them
 - Standings snapshot and team defense narratives are situational awareness only — no hard rules attached
+- **Any rulebook change must be applied to BOTH `build_prompt()` (fallback) AND `build_pick_prompt()` (Pick stage) identically** — they contain mirror copies of the full rulebook
+
+**Notable rule fixes (2026-03-20):**
+- BLOWOUT_RISK Secondary Scorer Skip: direction was inverted in prompt text (said "underdog" but BLOWOUT_RISK=True means favored side). Corrected + `CRITICAL DIRECTION CHECK` paragraph added to both functions.
+- 3PM extreme blowout hard skip (spread_abs ≥ 19): BLOWOUT_RISK=True AND spread_abs ≥ 19 → skip ALL 3PM regardless of trend direction; additive to existing trend=down rule; reuses `3pm_blowout_trend_down` skip_reason.
 
 **Output schema (appended to `picks.json`):**
 ```json
