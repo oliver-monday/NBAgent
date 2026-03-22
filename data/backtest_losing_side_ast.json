@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-03-22",
+  "mode": "losing-side-ast",
+  "hypothesis": "Underdog spread_abs >= 10 suppresses AST tier hit rate",
+  "proposed_rule": "-10pp AST confidence when team is underdog by spread_abs >= 10",
+  "rolling_window": 10,
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-21"
+  },
+  "total_ast_instances": 1866,
+  "spread_bucket_results": {
+    "fav_or_even": {
+      "n": 1454,
+      "hits": 1078,
+      "hit_rate": 0.7414
+    },
+    "underdog_6_9": {
+      "n": 147,
+      "hits": 111,
+      "hit_rate": 0.7551,
+      "lift": 1.0185
+    },
+    "underdog_10_14": {
+      "n": 43,
+      "hits": 33,
+      "hit_rate": 0.7674,
+      "lift": 1.0351
+    },
+    "underdog_15plus": {
+      "n": 11,
+      "hits": 8,
+      "hit_rate": 0.7273,
+      "lift": 0.981
+    },
+    "underdog_10plus": {
+      "n": 54,
+      "hits": 41,
+      "hit_rate": 0.7593,
+      "lift": 1.0241
+    }
+  },
+  "tier_breakdown_underdog_10plus": {
+    "T2": {
+      "n": 33,
+      "hits": 25,
+      "hit_rate": 0.7576
+    },
+    "T4": {
+      "n": 15,
+      "hits": 11,
+      "hit_rate": 0.7333
+    },
+    "T6": {
+      "n": 5,
+      "hits": 4,
+      "hit_rate": 0.8
+    },
+    "T8plus": {
+      "n": 1,
+      "hits": 1,
+      "hit_rate": 1.0
+    }
+  },
+  "role_breakdown_underdog_10plus": {
+    "primary_ball_handler": {
+      "n": 10,
+      "hits": 8,
+      "hit_rate": 0.8
+    },
+    "secondary": {
+      "n": 44,
+      "hits": 33,
+      "hit_rate": 0.75
+    }
+  },
+  "verdict": "no_signal",
+  "verdict_reason": "underdog_10plus hit rate 75.9% at or above baseline 74.1%",
+  "rule_recommendation": "Hypothesis not confirmed. No rule change."
+}

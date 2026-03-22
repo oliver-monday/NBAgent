@@ -2733,24 +2733,22 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   This skip rule is the sole exception — it applies only when BOTH conditions are met
   (trend=down AND tough DvP). A player with trend=down alone still uses the step-down rule.
   A player with tough DvP alone and trend=stable or up is unaffected.
-- 3PM hard skip — trend=down AND blowout_risk=True:
-  If a player's 3PM trend is "down" AND BLOWOUT_RISK=True is shown in their header (meaning
-  their team is heavily favored, spread_abs > 8), SKIP all 3PM picks for that player,
-  including T1. Do not apply the step-down rule — skip outright.
-  This rule overrides the [iron_floor] tag. Iron_floor reflects historical frequency of
-  hitting the tier; it does not protect against game-script volume compression in blowouts.
-  When a favored team's lead grows large, 3PM attempts decline disproportionately in the
-  fourth quarter — stars are benched, shot selection becomes conservative, and the floor on
-  3PM collapses regardless of the player's historical pattern.
-  Rationale: Donovan Mitchell 3PM T1 miss on 2026-03-13 in a 33-point CLE blowout win.
-  The system correctly applied BLOWOUT -10% and the trend=down step-down to T1, and the
-  pick still missed. The iron_floor tag was present and provided no protection. The
-  combination of declining trend + winning-side blowout makes even T1 3PM structurally
-  unreliable — the mechanics that produce zero makes are in play regardless of the tier floor.
-  Note: this skip applies only to BLOWOUT_RISK=True (favored team, spread_abs > 8).
-  A player on the losing-side team in a blowout is subject to the existing BLOWOUT_RISK
-  rules and secondary-scorer skip rules — not this rule. The mechanism here is specific to
-  winning-side players whose minutes get compressed when the game is decided early.
+- 3PM trend=down in blowout context (spread_abs 8–18):
+  When a player's 3PM trend is "down" AND BLOWOUT_RISK=True (spread_abs > 8 and < 19),
+  do NOT apply a hard skip. Apply the existing trend=down mandatory step-down rule instead
+  (one tier lower than your analytically selected floor). The step-down provides adequate
+  downside coverage.
+  Rationale: H19 backtest (2026-03-22, n=96–137) showed blowout_win 3PM hits at 78.8–79.2%
+  (lift=1.097–1.103) — above the 71.8% baseline. Players logging 24+ minutes in blowout
+  wins get catch-and-shoot opportunities in a relaxed offensive environment; the garbage-time
+  volume collapse that motivated the original hard skip only affects players below the
+  24-minute floor already excluded from pick consideration. The hard skip was blocking a
+  high-hit-rate population.
+  The trend=down step-down rule (defined in KEY RULES — SEQUENTIAL GAME CONTEXT) still
+  applies normally — step down one tier, and if the stepped-down tier does not qualify on
+  hit rate, skip the pick via normal merit evaluation.
+  Exception — extreme spreads: spread_abs ≥ 19 is handled by the separate unconditional
+  hard skip below (unchanged). Do not apply this relaxed rule at spread_abs ≥ 19.
 - 3PM hard skip — extreme blowout regardless of trend (spread_abs ≥ 19):
   If BLOWOUT_RISK=True AND spread_abs ≥ 19, SKIP all 3PM picks for ALL players on the
   favored team, regardless of trend direction. This rule fires even when trend=up or
@@ -2843,21 +2841,21 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     in even when BLOWOUT_RISK is False — the pattern may be real.
 - When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
 - BLOWOUT_RISK SECONDARY SCORER SKIP: When BLOWOUT_RISK=True is shown in a player's quant
-  header (meaning the player's team is the heavily favored side, spread_abs > 8), AND the
-  player is not the team's primary scoring option (i.e. the player does not lead the team in
-  PPG or is not the designated first option), do NOT select any PTS pick for this player
-  regardless of hit rate. Skip the PTS pick entirely. Secondary scorers on heavily favored
-  teams face asymmetric usage compression in the second half of blowout games: stars get
-  pulled in Q4 garbage time, and secondary scorers' minutes and shot attempts compress when
-  the game is decided early. Their aggregate tier hit rates do not price in this game-script
-  effect.
+  header AND spread_abs ≥ 15, AND the player is not the team's primary scoring option
+  (i.e. the player does not lead the team in PPG or is not the designated first option),
+  do NOT select any PTS pick for this player regardless of hit rate. Skip the PTS pick
+  entirely and emit a skip record with skip_reason=blowout_secondary_scorer.
+  At spread_abs ≥ 15, the blowout is near-certain before tip-off — secondary scorer minutes
+  compress meaningfully and aggregate tier hit rates do not price in this game-script risk.
+  At spread_abs 8–14 (BLOWOUT_RISK=True but below the ≥15 threshold): do NOT apply this
+  hard skip. Instead, apply the standard BLOWOUT_RISK confidence penalty (-10 to -15pp)
+  from KEY RULES — SPREAD / BLOWOUT RISK above. Secondary scorers at spread_abs 8–14 hit
+  PTS props at above-baseline rates (H19 backtest, n=140, lift=1.083) — the hard skip was
+  over-restricting picks that actually succeed.
   CRITICAL DIRECTION CHECK: This rule applies ONLY to the favored side — players whose quant
-  header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players. A secondary
-  scorer on a large underdog faces a different game-script (possible increased usage in
-  catch-up attempts) and this rule has no jurisdiction. When in doubt, check the quant
-  header: if BLOWOUT_RISK=True is not shown, this rule does not fire.
-  Primary scorers (team PPG leaders, first options) are exempt from this skip because their
-  usage is more protected even in blowout scenarios.
+  header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players.
+  Primary scorers (team PPG leaders, first options) are exempt from this skip at all spread
+  levels because their usage is more protected even in blowout scenarios.
 
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).

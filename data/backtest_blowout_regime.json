@@ -1,0 +1,203 @@
+{
+  "generated_at": "2026-03-22",
+  "mode": "blowout-regime",
+  "blowout_margin_pts": 15,
+  "min_minutes_gate": 24,
+  "rolling_window": 10,
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-21"
+  },
+  "results": {
+    "PTS": {
+      "baseline": {
+        "n": 1874,
+        "hit_rate": 0.745,
+        "avg_minutes": 33.7
+      },
+      "blowout_win_primary": {
+        "n": 145,
+        "hit_rate": 0.703,
+        "avg_minutes": 31.2,
+        "lift": 0.944
+      },
+      "blowout_win_secondary": {
+        "n": 140,
+        "hit_rate": 0.807,
+        "avg_minutes": 30.1,
+        "lift": 1.083
+      },
+      "blowout_loss_primary": {
+        "n": 99,
+        "hit_rate": 0.646,
+        "avg_minutes": 32.6,
+        "lift": 0.867
+      },
+      "blowout_loss_secondary": {
+        "n": 66,
+        "hit_rate": 0.667,
+        "avg_minutes": 31.1,
+        "lift": 0.895
+      },
+      "competitive_primary": {
+        "n": 486,
+        "hit_rate": 0.77,
+        "avg_minutes": 35.5,
+        "lift": 1.034
+      },
+      "competitive_secondary": {
+        "n": 431,
+        "hit_rate": 0.77,
+        "avg_minutes": 34.0,
+        "lift": 1.034
+      }
+    },
+    "REB": {
+      "baseline": {
+        "n": 1617,
+        "hit_rate": 0.719,
+        "avg_minutes": 33.5
+      },
+      "blowout_win_primary": {
+        "n": 109,
+        "hit_rate": 0.661,
+        "avg_minutes": 31.0,
+        "lift": 0.919
+      },
+      "blowout_win_secondary": {
+        "n": 128,
+        "hit_rate": 0.711,
+        "avg_minutes": 29.9,
+        "lift": 0.989
+      },
+      "blowout_loss_primary": {
+        "n": 78,
+        "hit_rate": 0.628,
+        "avg_minutes": 32.6,
+        "lift": 0.873
+      },
+      "blowout_loss_secondary": {
+        "n": 60,
+        "hit_rate": 0.617,
+        "avg_minutes": 31.0,
+        "lift": 0.858
+      },
+      "competitive_primary": {
+        "n": 400,
+        "hit_rate": 0.755,
+        "avg_minutes": 35.4,
+        "lift": 1.05
+      },
+      "competitive_secondary": {
+        "n": 401,
+        "hit_rate": 0.741,
+        "avg_minutes": 33.6,
+        "lift": 1.031
+      }
+    },
+    "AST": {
+      "baseline": {
+        "n": 1762,
+        "hit_rate": 0.76,
+        "avg_minutes": 33.9
+      },
+      "blowout_win_primary": {
+        "n": 137,
+        "hit_rate": 0.803,
+        "avg_minutes": 31.4,
+        "lift": 1.057
+      },
+      "blowout_win_secondary": {
+        "n": 128,
+        "hit_rate": 0.797,
+        "avg_minutes": 30.3,
+        "lift": 1.049
+      },
+      "blowout_loss_primary": {
+        "n": 95,
+        "hit_rate": 0.716,
+        "avg_minutes": 32.7,
+        "lift": 0.942
+      },
+      "blowout_loss_secondary": {
+        "n": 59,
+        "hit_rate": 0.542,
+        "avg_minutes": 31.3,
+        "lift": 0.713
+      },
+      "competitive_primary": {
+        "n": 467,
+        "hit_rate": 0.797,
+        "avg_minutes": 35.6,
+        "lift": 1.049
+      },
+      "competitive_secondary": {
+        "n": 397,
+        "hit_rate": 0.761,
+        "avg_minutes": 34.1,
+        "lift": 1.001
+      }
+    },
+    "3PM": {
+      "baseline": {
+        "n": 1438,
+        "hit_rate": 0.718,
+        "avg_minutes": 33.9
+      },
+      "blowout_win_primary": {
+        "n": 137,
+        "hit_rate": 0.788,
+        "avg_minutes": 31.2,
+        "lift": 1.097
+      },
+      "blowout_win_secondary": {
+        "n": 96,
+        "hit_rate": 0.792,
+        "avg_minutes": 30.1,
+        "lift": 1.103
+      },
+      "blowout_loss_primary": {
+        "n": 86,
+        "hit_rate": 0.651,
+        "avg_minutes": 32.6,
+        "lift": 0.907
+      },
+      "blowout_loss_secondary": {
+        "n": 38,
+        "hit_rate": 0.711,
+        "avg_minutes": 31.6,
+        "lift": 0.99
+      },
+      "competitive_primary": {
+        "n": 426,
+        "hit_rate": 0.735,
+        "avg_minutes": 35.6,
+        "lift": 1.024
+      },
+      "competitive_secondary": {
+        "n": 272,
+        "hit_rate": 0.706,
+        "avg_minutes": 34.2,
+        "lift": 0.983
+      }
+    }
+  },
+  "verdicts": {
+    "PTS": {
+      "blowout_win_secondary": "ELEVATED (lift=1.083, n=140) \u2014 unexpected; review minutes data",
+      "blowout_loss_secondary": "NEUTRAL (lift=0.895, n=66, avg_min=31.1) \u2014 no clear regime signal"
+    },
+    "REB": {
+      "blowout_win_secondary": "NEUTRAL (lift=0.989, n=128)",
+      "blowout_loss_secondary": "COLLAPSE_REGIME (lift=0.858, n=60, avg_min=31.0) \u2014 production suppressed even on losing side"
+    },
+    "AST": {
+      "blowout_win_secondary": "NEUTRAL (lift=1.049, n=128)",
+      "blowout_loss_secondary": "COLLAPSE_REGIME (lift=0.713, n=59, avg_min=31.3) \u2014 production suppressed even on losing side"
+    },
+    "3PM": {
+      "blowout_win_secondary": "ELEVATED (lift=1.103, n=96) \u2014 unexpected; review minutes data",
+      "blowout_loss_secondary": "NEUTRAL (lift=0.990, n=38, avg_min=31.6) \u2014 no clear regime signal"
+    }
+  }
+}

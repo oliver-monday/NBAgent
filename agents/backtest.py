@@ -123,6 +123,18 @@ H16_ACTIONABLE_DELTA  = 0.15   # ≥15pp gap low vs high → actionable signal
 H16_WEAK_DELTA        = 0.08   # 8–14pp gap → weak signal / annotation only
 THREE_PA_VOLUME_JSON  = DATA / "backtest_3pa_volume_gate.json"
 
+# H19 — In-game blowout regime
+H19_JSON               = DATA / "backtest_blowout_regime.json"
+H19_BLOWOUT_MARGIN     = 15    # final score margin ≥ this → blowout game
+H19_MIN_MINUTES_GATE   = 24    # minimum minutes played to include in analysis
+H19_MIN_N              = 15    # minimum instances for a verdict
+
+# H20 — Losing-side blowout AST suppression
+H20_JSON                = DATA / "backtest_losing_side_ast.json"
+H20_UNDERDOG_THRESHOLDS = [6.5, 10.0, 15.0]  # spread_abs breakpoints
+H20_PRIMARY_AST_AVG     = 6.0                 # rolling avg threshold for primary ball-handler
+H20_MIN_N               = 20                  # min instances per bucket for a verdict
+
 _ABBR_NORM_BT = {
     "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
     "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
@@ -2773,6 +2785,50 @@ def _print_post_blowout_report(
     print(f"{'═'*W}\n")
 
 
+def classify_player_role(
+    player_log: pd.DataFrame,
+    window: int = 20,
+) -> pd.DataFrame:
+    """
+    For each player-game row, classify the player as 'primary' or 'secondary' scorer
+    on their team for that game, based on their rolling PPG average vs. whitelisted
+    teammates on the same team.
+
+    Primary = player has the highest rolling avg PTS among all whitelisted players
+    on their team in that game's rolling window.
+    Secondary = any other whitelisted player on the same team.
+
+    Returns player_log with a new 'scorer_role' column: 'primary' or 'secondary'.
+    Uses shift(1).rolling(window) to avoid lookahead on the rolling average.
+    player_log must be sorted by player_name, game_date ascending (load_player_log
+    already does this).
+    """
+    df = player_log.copy()
+
+    # Compute rolling avg PTS per player (no lookahead)
+    df["_rolling_pts"] = (
+        df.groupby("player_name")["pts"]
+        .transform(lambda s: s.shift(1).rolling(window, min_periods=5).mean())
+    )
+
+    # For each (team_abbrev, game_date), find the player with highest rolling avg PTS
+    team_date_max = (
+        df.groupby(["team_abbrev", "game_date"])["_rolling_pts"]
+        .transform("max")
+    )
+
+    df["scorer_role"] = np.where(
+        df["_rolling_pts"] == team_date_max,
+        "primary",
+        "secondary",
+    )
+
+    # Fallback: if rolling avg is NaN (< min_periods), mark as unknown and exclude later
+    df.loc[df["_rolling_pts"].isna(), "scorer_role"] = "unknown"
+    df = df.drop(columns=["_rolling_pts"])
+    return df
+
+
 def run_post_blowout_analysis(
     player_log: pd.DataFrame, master_df: pd.DataFrame, args
 ) -> None:
@@ -5393,6 +5449,475 @@ def run_spread_context_analysis(picks: list, master: pd.DataFrame, args) -> None
     print(f"\n{'='*70}\n")
 
 
+# ── Losing-Side AST Suppression Backtest (H20) ────────────────────────
+
+def run_losing_side_ast_analysis(
+    player_log: pd.DataFrame,
+    master_df: pd.DataFrame,
+    args,
+) -> None:
+    """
+    H20 — Losing-side blowout AST suppression.
+
+    Tests whether pre-game underdog spread_abs >= 10 suppresses AST tier hit rate.
+    Segments by spread magnitude, AST tier, and player role (primary/secondary ball-handler).
+    Uses signed pre-game spread (positive = underdog) from nba_master.csv.
+    """
+    if master_df.empty:
+        print("[backtest] WARNING: master_df is empty — cannot run H20.")
+        return
+
+    window = getattr(args, "window", None) or ROLLING_WINDOW
+    print(f"[backtest] H20 losing-side-ast | window={window} | "
+          f"underdog thresholds={H20_UNDERDOG_THRESHOLDS}")
+
+    # ── Step 1: Build signed spread lookup ───────────────────────────────
+    # Same inline pattern as H19 — {(gid, team_upper): signed_spread}
+    spread_map: dict = {}
+    for _, row in master_df.iterrows():
+        gid  = str(row.get("game_id", "")).strip()
+        home = str(row.get("home_team_abbrev", "")).upper().strip()
+        away = str(row.get("away_team_abbrev", "")).upper().strip()
+        hs   = row.get("home_spread")
+        as_  = row.get("away_spread")
+        for team, spread in [(home, hs), (away, as_)]:
+            if team and not pd.isna(spread):
+                spread_map[(gid, team)] = float(spread)
+
+    df = player_log.copy()
+    df["_gid"]        = df["game_id"].astype(str).str.split(".").str[0].str.strip()
+    df["_team_upper"] = df["team_abbrev"].str.upper().str.strip()
+
+    df["signed_spread"] = df.apply(
+        lambda r: spread_map.get((r["_gid"], r["_team_upper"])),
+        axis=1,
+    )
+    df["is_underdog"] = df["signed_spread"].apply(
+        lambda s: bool(s > 0) if (s is not None and not pd.isna(s)) else None
+    )
+    df["spread_abs_h20"] = df["signed_spread"].apply(
+        lambda s: abs(s) if (s is not None and not pd.isna(s)) else None
+    )
+
+    # ── Step 2: Rolling AST avg for role classification ──────────────────
+    # No-lookahead: shift(1) before rolling
+    df["rolling_ast_avg"] = (
+        df.groupby("player_name")["ast"]
+        .transform(lambda s: s.shift(1).rolling(window, min_periods=5).mean())
+    )
+
+    # ── Step 3: Compute AST best tier + hit ──────────────────────────────
+    df = add_best_tiers(df, window=window)
+    qualified = df[df["best_tier_AST"].notna() & df["hit_actual_AST"].notna()].copy()
+
+    print(f"[backtest] H20 qualified AST instances: {len(qualified):,}")
+
+    # ── Step 4: Classify spread bucket ───────────────────────────────────
+    def classify_bucket(row) -> str:
+        s = row["signed_spread"]
+        a = row["spread_abs_h20"]
+        if s is None or pd.isna(s) or a is None or pd.isna(a):
+            return "no_spread_data"
+        if not row["is_underdog"]:
+            return "fav_or_even"
+        if a < H20_UNDERDOG_THRESHOLDS[0]:   # < 6.5
+            return "fav_or_even"
+        if a < H20_UNDERDOG_THRESHOLDS[1]:   # 6.5–9.9
+            return "underdog_6_9"
+        if a < H20_UNDERDOG_THRESHOLDS[2]:   # 10.0–14.9
+            return "underdog_10_14"
+        return "underdog_15plus"             # >= 15.0
+
+    qualified["spread_bucket"] = qualified.apply(classify_bucket, axis=1)
+    qualified["underdog_10plus"] = qualified["spread_bucket"].isin(
+        ["underdog_10_14", "underdog_15plus"]
+    )
+
+    # ── Step 5: Primary results — hit rate by spread bucket ──────────────
+    baseline_mask = qualified["spread_bucket"] == "fav_or_even"
+    baseline_n    = int(baseline_mask.sum())
+    baseline_hits = int(qualified.loc[baseline_mask, "hit_actual_AST"].sum())
+    baseline_rate = round(baseline_hits / baseline_n, 4) if baseline_n > 0 else None
+
+    bucket_results: dict = {
+        "fav_or_even": {
+            "n": baseline_n, "hits": baseline_hits, "hit_rate": baseline_rate
+        }
+    }
+    for bucket in ("underdog_6_9", "underdog_10_14", "underdog_15plus"):
+        sub = qualified[qualified["spread_bucket"] == bucket]
+        n   = len(sub)
+        h   = int(sub["hit_actual_AST"].sum()) if n > 0 else 0
+        hr  = round(h / n, 4) if n > 0 else None
+        lift = round(hr / baseline_rate, 4) if (hr is not None and baseline_rate) else None
+        bucket_results[bucket] = {"n": n, "hits": h, "hit_rate": hr, "lift": lift}
+
+    sub10 = qualified[qualified["underdog_10plus"]]
+    n10   = len(sub10)
+    h10   = int(sub10["hit_actual_AST"].sum()) if n10 > 0 else 0
+    hr10  = round(h10 / n10, 4) if n10 > 0 else None
+    lift10 = round(hr10 / baseline_rate, 4) if (hr10 is not None and baseline_rate) else None
+    bucket_results["underdog_10plus"] = {"n": n10, "hits": h10, "hit_rate": hr10, "lift": lift10}
+
+    # ── Step 6: Tier breakdown within underdog_10plus ────────────────────
+    tier_breakdown: dict = {}
+    for tier_label, tier_vals in [
+        ("T2",      [2.0]),
+        ("T4",      [4.0]),
+        ("T6",      [6.0]),
+        ("T8plus",  [8.0, 10.0, 12.0]),
+    ]:
+        sub = sub10[sub10["best_tier_AST"].isin(tier_vals)]
+        n   = len(sub)
+        h   = int(sub["hit_actual_AST"].sum()) if n > 0 else 0
+        hr  = round(h / n, 4) if n > 0 else None
+        tier_breakdown[tier_label] = {"n": n, "hits": h, "hit_rate": hr}
+
+    # ── Step 7: Role breakdown within underdog_10plus ────────────────────
+    role_breakdown: dict = {}
+    for role_label, mask in [
+        ("primary_ball_handler", sub10["rolling_ast_avg"] >= H20_PRIMARY_AST_AVG),
+        ("secondary",            sub10["rolling_ast_avg"] <  H20_PRIMARY_AST_AVG),
+    ]:
+        sub  = sub10[mask]
+        n    = len(sub)
+        h    = int(sub["hit_actual_AST"].sum()) if n > 0 else 0
+        hr   = round(h / n, 4) if n > 0 else None
+        role_breakdown[role_label] = {"n": n, "hits": h, "hit_rate": hr}
+
+    # ── Step 8: Verdict ───────────────────────────────────────────────────
+    if n10 < H20_MIN_N:
+        verdict = "insufficient_sample"
+        reason  = f"underdog_10plus n={n10} < H20_MIN_N={H20_MIN_N}"
+        rule_rec = "Defer — insufficient season sample. Rerun at season end or with multi-season data."
+    elif hr10 is None or baseline_rate is None:
+        verdict = "insufficient_sample"
+        reason  = "baseline or key bucket hit rate is None"
+        rule_rec = "Cannot evaluate — data issue."
+    else:
+        delta = round(baseline_rate - hr10, 4)
+        if delta >= 0.08:
+            verdict  = "confirmed_penalty"
+            reason   = f"underdog_10plus hit rate {hr10*100:.1f}% vs baseline {baseline_rate*100:.1f}% (delta={delta*100:.1f}pp >= 8pp)"
+            rule_rec = f"Ship -10pp AST confidence penalty when team is underdog by spread_abs >= 10."
+        elif delta >= 0.04:
+            verdict  = "weak_signal"
+            reason   = f"underdog_10plus hit rate {hr10*100:.1f}% vs baseline {baseline_rate*100:.1f}% (delta={delta*100:.1f}pp, 4-8pp range)"
+            rule_rec = "Consider -5pp penalty or raise threshold to spread_abs >= 12. Check tier breakdown."
+        elif delta > 0:
+            verdict  = "directional_only"
+            reason   = f"underdog_10plus hit rate {hr10*100:.1f}% vs baseline {baseline_rate*100:.1f}% (delta={delta*100:.1f}pp < 4pp)"
+            rule_rec = "Signal too weak to justify a penalty rule. No action."
+        else:
+            verdict  = "no_signal"
+            reason   = f"underdog_10plus hit rate {hr10*100:.1f}% at or above baseline {baseline_rate*100:.1f}%"
+            rule_rec = "Hypothesis not confirmed. No rule change."
+
+    # ── Step 9: Print report ──────────────────────────────────────────────
+    print(f"\n{'='*65}")
+    print(f"  H20 — LOSING-SIDE BLOWOUT AST SUPPRESSION")
+    print(f"  Proposed rule: -10pp AST confidence when underdog spread_abs >= 10")
+    print(f"  Date range: {player_log['game_date'].min().date()} → {player_log['game_date'].max().date()}")
+    print(f"{'='*65}")
+    print(f"\n  AST hit rate by spread bucket (baseline = fav_or_even):")
+    for bkt, res in bucket_results.items():
+        lift_str = f"  lift={res['lift']:.3f}" if res.get("lift") is not None else ""
+        marker   = "  ← KEY BUCKET" if bkt == "underdog_10plus" else ""
+        print(f"  {bkt:<22} n={res['n']:<5} hit_rate={((res['hit_rate'] or 0)*100):.1f}%{lift_str}{marker}")
+
+    print(f"\n  Tier breakdown (underdog_10plus only):")
+    for tier_label, res in tier_breakdown.items():
+        hr_str = f"{(res['hit_rate'] or 0)*100:.1f}%" if res["hit_rate"] is not None else "n/a"
+        print(f"    {tier_label:<8} n={res['n']:<4} hit_rate={hr_str}")
+
+    print(f"\n  Role breakdown (underdog_10plus only):")
+    for role_label, res in role_breakdown.items():
+        hr_str = f"{(res['hit_rate'] or 0)*100:.1f}%" if res["hit_rate"] is not None else "n/a"
+        print(f"    {role_label:<25} n={res['n']:<4} hit_rate={hr_str}")
+
+    print(f"\n  Verdict: {verdict.upper()}")
+    print(f"  Reason:  {reason}")
+    print(f"  Rule recommendation: {rule_rec}")
+    print(f"\n{'='*65}\n")
+
+    # ── Step 10: Write JSON ───────────────────────────────────────────────
+    out = {
+        "generated_at":          dt.date.today().isoformat(),
+        "mode":                  "losing-side-ast",
+        "hypothesis":            "Underdog spread_abs >= 10 suppresses AST tier hit rate",
+        "proposed_rule":         "-10pp AST confidence when team is underdog by spread_abs >= 10",
+        "rolling_window":        window,
+        "date_range": {
+            "start": str(player_log["game_date"].min().date()),
+            "end":   str(player_log["game_date"].max().date()),
+        },
+        "total_ast_instances":       len(qualified),
+        "spread_bucket_results":     bucket_results,
+        "tier_breakdown_underdog_10plus": tier_breakdown,
+        "role_breakdown_underdog_10plus": role_breakdown,
+        "verdict":               verdict,
+        "verdict_reason":        reason,
+        "rule_recommendation":   rule_rec,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else H20_JSON
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"[backtest] H20 results → {out_path}")
+
+
+# ── In-Game Blowout Regime Backtest (H19) ─────────────────────────────
+
+def run_blowout_regime_analysis(
+    player_log: pd.DataFrame,
+    master_df: pd.DataFrame,
+    args,
+) -> None:
+    """
+    H19 — In-game blowout regime analysis.
+
+    Tests whether tier hit rates differ systematically for:
+      - Favored-side primary vs. secondary scorers in actual blowout wins (margin >= H19_BLOWOUT_MARGIN)
+      - Underdog-side primary vs. secondary scorers in actual blowout losses (margin >= H19_BLOWOUT_MARGIN)
+
+    Uses actual final score margin (not pre-game spread) to classify blowout games.
+    Applies a minimum-minutes gate (H19_MIN_MINUTES_GATE) to exclude garbage-time appearances.
+    Reuses build_game_result_lookup() from H6 for final-margin classification.
+    """
+    if master_df.empty:
+        print("[backtest] WARNING: master_df is empty — cannot run H19 blowout-regime analysis.")
+        return
+
+    STATS = ["PTS", "REB", "AST", "3PM"]
+    STAT_COL_MAP = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+    TIERS_MAP = {
+        "PTS": [10, 15, 20, 25, 30],
+        "REB": [4, 6, 8, 10, 12],
+        "AST": [2, 4, 6, 8, 10, 12],
+        "3PM": [1, 2, 3, 4],
+    }
+
+    window = getattr(args, "window", None) or ROLLING_WINDOW
+    print(f"[backtest] H19 blowout-regime | blowout_margin≥{H19_BLOWOUT_MARGIN} | "
+          f"min_minutes≥{H19_MIN_MINUTES_GATE} | window={window}")
+
+    # ── Step 1: Build game-level result lookup (reuse H6 function) ────────
+    # build_game_result_lookup uses POST_BLOWOUT_THRESHOLD=15 which equals H19_BLOWOUT_MARGIN.
+    result_lookup = build_game_result_lookup(master_df)
+
+    # ── Step 2: Build pre-game spread lookup for is_favorite ─────────────
+    # {(game_id_str, team_upper): signed_spread}
+    spread_map: dict = {}
+    for _, row in master_df.iterrows():
+        gid  = str(row.get("game_id", "")).strip()
+        home = str(row.get("home_team_abbrev", "")).upper().strip()
+        away = str(row.get("away_team_abbrev", "")).upper().strip()
+        hs   = row.get("home_spread")
+        as_  = row.get("away_spread")
+        for team, spread in [(home, hs), (away, as_)]:
+            if team and not pd.isna(spread):
+                spread_map[(gid, team)] = float(spread)
+
+    # ── Step 3: Classify scorer role ─────────────────────────────────────
+    df = classify_player_role(player_log, window=window)
+
+    # ── Step 4: Add game result + spread context per player-game ──────────
+    df["_date_str"] = df["game_date"].dt.strftime("%Y-%m-%d")
+    df["_team_upper"] = df["team_abbrev"].str.upper().str.strip()
+    df["_gid"] = df["game_id"].astype(str).str.split(".").str[0].str.strip()
+
+    df["game_result"] = df.apply(
+        lambda r: result_lookup.get((r["_team_upper"], r["_date_str"]), "neutral"),
+        axis=1,
+    )
+
+    df["signed_spread"] = df.apply(
+        lambda r: spread_map.get((r["_gid"], r["_team_upper"])),
+        axis=1,
+    )
+    df["is_favorite"] = df["signed_spread"].apply(
+        lambda s: (s < 0) if pd.notna(s) else None
+    )
+
+    # ── Step 5: Apply minutes gate ────────────────────────────────────────
+    df = df[df["minutes_raw"] >= H19_MIN_MINUTES_GATE].copy()
+
+    # ── Step 6: Build margin-aware lookup for blowout_win / blowout_loss ──
+    margin_lookup: dict = {}  # {(team_upper, date_str): actual_margin (positive = won)}
+    for _, row in master_df.iterrows():
+        home = str(row.get("home_team_abbrev", "")).upper().strip()
+        away = str(row.get("away_team_abbrev", "")).upper().strip()
+        game_date = row.get("game_date")
+        if pd.isna(game_date):
+            continue
+        date_str = pd.Timestamp(game_date).strftime("%Y-%m-%d")
+        home_score = pd.to_numeric(row.get("home_score"), errors="coerce")
+        away_score = pd.to_numeric(row.get("away_score"), errors="coerce")
+        if pd.isna(home_score) or pd.isna(away_score):
+            continue
+        home_margin = float(home_score) - float(away_score)
+        if home:
+            margin_lookup[(home, date_str)] = home_margin       # positive = home won
+        if away:
+            margin_lookup[(away, date_str)] = -home_margin      # positive = away won
+
+    df["actual_margin"] = df.apply(
+        lambda r: margin_lookup.get((r["_team_upper"], r["_date_str"])),
+        axis=1,
+    )
+
+    def _regime(row) -> str:
+        m = row["actual_margin"]
+        if pd.isna(m):
+            return "unknown"
+        if m >= H19_BLOWOUT_MARGIN:
+            return "blowout_win"
+        if m <= -H19_BLOWOUT_MARGIN:
+            return "blowout_loss"
+        return "competitive"
+
+    df["regime"] = df.apply(_regime, axis=1)
+
+    # ── Step 7: Compute best tier per player-game (rolling window) ────────
+    df = add_best_tiers(df, window=window)
+
+    # ── Step 8: Compute hit rates per cell ───────────────────────────────
+    def _hit_rate_cell(subset: pd.DataFrame, stat: str) -> dict:
+        """Compute hit rate and avg minutes for a player-game subset at best tier."""
+        col    = STAT_COL_MAP[stat]
+        bt_col = f"best_tier_{stat}"
+        valid  = subset[subset[bt_col].notna()].copy()
+        n = len(valid)
+        if n < 1:
+            return {"n": 0, "hit_rate": None, "lift": None, "avg_minutes": None}
+        hits = int(
+            valid.apply(lambda r: float(r[col]) >= float(r[bt_col]), axis=1).sum()
+        )
+        hr   = round(hits / n, 3)
+        mins = round(float(valid["minutes_raw"].mean()), 1)
+        return {"n": n, "hit_rate": hr, "avg_minutes": mins}
+
+    # Compute baseline (all instances, scorer_role != unknown)
+    baseline_df = df[df["scorer_role"] != "unknown"].copy()
+    results: dict = {}
+
+    for stat in STATS:
+        baseline    = _hit_rate_cell(baseline_df, stat)
+        baseline_hr = baseline.get("hit_rate") or 0.0
+        stat_results = {"baseline": baseline}
+
+        for regime in ("blowout_win", "blowout_loss", "competitive"):
+            regime_df = df[df["regime"] == regime].copy()
+            for role in ("primary", "secondary"):
+                cell_df = regime_df[regime_df["scorer_role"] == role].copy()
+                cell    = _hit_rate_cell(cell_df, stat)
+                if cell["hit_rate"] is not None and baseline_hr > 0:
+                    cell["lift"] = round(cell["hit_rate"] / baseline_hr, 3)
+                key = f"{regime}_{role}"
+                stat_results[key] = cell
+
+        results[stat] = stat_results
+
+    # ── Step 9: Verdict logic ─────────────────────────────────────────────
+    verdicts: dict = {}
+    for stat, stat_res in results.items():
+        baseline_hr = (stat_res["baseline"].get("hit_rate") or 0.0)
+        bw_sec  = stat_res.get("blowout_win_secondary", {})
+        bw_pri  = stat_res.get("blowout_win_primary", {})
+        bl_sec  = stat_res.get("blowout_loss_secondary", {})
+        bl_pri  = stat_res.get("blowout_loss_primary", {})
+
+        v = {}
+
+        # Favored-side secondary scorer suppression
+        if (bw_sec.get("n") or 0) >= H19_MIN_N and bw_sec.get("lift") is not None:
+            lift = bw_sec["lift"]
+            if lift < 0.88:
+                v["blowout_win_secondary"] = (
+                    f"SUPPRESSED (lift={lift:.3f}, n={bw_sec['n']}) — secondary scorers on winning side "
+                    f"hit tier at {bw_sec['hit_rate']*100:.1f}% vs {baseline_hr*100:.1f}% baseline"
+                )
+            elif lift > 1.05:
+                v["blowout_win_secondary"] = (
+                    f"ELEVATED (lift={lift:.3f}, n={bw_sec['n']}) — unexpected; review minutes data"
+                )
+            else:
+                v["blowout_win_secondary"] = f"NEUTRAL (lift={lift:.3f}, n={bw_sec['n']})"
+        else:
+            v["blowout_win_secondary"] = f"INSUFFICIENT_SAMPLE (n={(bw_sec.get('n') or 0)})"
+
+        # Underdog-side secondary scorer — desperation vs. collapse
+        if (bl_sec.get("n") or 0) >= H19_MIN_N and bl_sec.get("lift") is not None:
+            lift     = bl_sec["lift"]
+            avg_mins = bl_sec.get("avg_minutes") or 0
+            if lift >= 1.02:
+                v["blowout_loss_secondary"] = (
+                    f"DESPERATION_REGIME (lift={lift:.3f}, n={bl_sec['n']}, avg_min={avg_mins}) — "
+                    f"production maintained or elevated on losing side"
+                )
+            elif lift < 0.88:
+                v["blowout_loss_secondary"] = (
+                    f"COLLAPSE_REGIME (lift={lift:.3f}, n={bl_sec['n']}, avg_min={avg_mins}) — "
+                    f"production suppressed even on losing side"
+                )
+            else:
+                v["blowout_loss_secondary"] = (
+                    f"NEUTRAL (lift={lift:.3f}, n={bl_sec['n']}, avg_min={avg_mins}) — no clear regime signal"
+                )
+        else:
+            v["blowout_loss_secondary"] = f"INSUFFICIENT_SAMPLE (n={(bl_sec.get('n') or 0)})"
+
+        verdicts[stat] = v
+
+    # ── Step 10: Print report ─────────────────────────────────────────────
+    print(f"\n{'='*65}")
+    print(f"  H19 — IN-GAME BLOWOUT REGIME ANALYSIS")
+    print(f"  Blowout threshold: final margin ≥ {H19_BLOWOUT_MARGIN} pts")
+    print(f"  Minutes gate: ≥ {H19_MIN_MINUTES_GATE} min played")
+    print(f"  Date range: {player_log['game_date'].min().date()} → {player_log['game_date'].max().date()}")
+    print(f"{'='*65}")
+
+    for stat in STATS:
+        sr   = results[stat]
+        vd   = verdicts[stat]
+        base = sr["baseline"]
+        print(f"\n  {stat}  baseline: {(base.get('hit_rate') or 0)*100:.1f}%"
+              f" (n={base.get('n',0)}, avg_min={base.get('avg_minutes','?')})")
+        print(f"  {'─'*60}")
+        header = f"  {'Cell':<32} {'n':>5}  {'hit_rate':>9}  {'lift':>6}  {'avg_min':>7}"
+        print(header)
+        for regime in ("blowout_win", "blowout_loss", "competitive"):
+            for role in ("primary", "secondary"):
+                key  = f"{regime}_{role}"
+                cell = sr.get(key, {})
+                hr   = f"{cell['hit_rate']*100:.1f}%" if cell.get("hit_rate") is not None else "  n/a"
+                lft  = f"{cell['lift']:.3f}"          if cell.get("lift")     is not None else "   n/a"
+                mins = f"{cell['avg_minutes']:.1f}"   if cell.get("avg_minutes") is not None else "  n/a"
+                print(f"  {key:<32} {cell.get('n',0):>5}  {hr:>9}  {lft:>6}  {mins:>7}")
+        print(f"\n  Verdicts:")
+        for k, v_str in vd.items():
+            print(f"    {k}: {v_str}")
+
+    # ── Step 11: Write JSON output ────────────────────────────────────────
+    out = {
+        "generated_at":       dt.date.today().isoformat(),
+        "mode":               "blowout-regime",
+        "blowout_margin_pts": H19_BLOWOUT_MARGIN,
+        "min_minutes_gate":   H19_MIN_MINUTES_GATE,
+        "rolling_window":     window,
+        "date_range": {
+            "start": str(player_log["game_date"].min().date()),
+            "end":   str(player_log["game_date"].max().date()),
+        },
+        "results":  results,
+        "verdicts": verdicts,
+    }
+    out_path = Path(args.output) if getattr(args, "output", None) else H19_JSON
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n[backtest] H19 results → {out_path}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -5500,6 +6025,16 @@ def main():
             print("[backtest] No graded picks found — cannot run H17.")
             sys.exit(0)
         run_spread_context_analysis(picks, master_df, args)
+        sys.exit(0)
+
+    # ── In-game blowout regime (H19) ─────────────────────────────────────
+    if getattr(args, "mode", None) == "blowout-regime":
+        run_blowout_regime_analysis(player_log, master_df, args)
+        sys.exit(0)
+
+    # ── Losing-side AST suppression (H20) ────────────────────────────────
+    if getattr(args, "mode", None) == "losing-side-ast":
+        run_losing_side_ast_analysis(player_log, master_df, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

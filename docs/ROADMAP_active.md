@@ -132,6 +132,22 @@ Hypothesis: Wemby suppresses inside-the-arc scorers specifically (drive/mid-rang
 
 ---
 
+### H19 — In-Game Blowout Regime
+**Status: COMPLETE — MIXED verdict (Mar 22, 2026)**
+**Mode: `--mode blowout-regime`** | Full results in `docs/BACKTESTS.md`.
+
+Tests tier hit rates for primary vs. secondary scorers in actual blowout games (final margin ≥ 15) on both the winning (favored) and losing (underdog) sides. Minutes gate ≥ 24 min excludes garbage-time. Key finding: favored-side secondary scorers NOT suppressed (PTS lift=1.083); underdog-side AST secondary COLLAPSE (lift=0.713, n=59). Existing BLOWOUT_RISK rule unchanged. Underdog AST collapse flagged for future annotation-only rule.
+
+---
+
+### H20 — Losing-Side Blowout AST Suppression
+**Status: COMPLETE — NO_SIGNAL verdict (Mar 22, 2026)**
+**Mode: `--mode losing-side-ast`** | Full results in `docs/BACKTESTS.md`.
+
+Tests whether pre-game underdog spread_abs ≥ 10 suppresses AST tier hit rate. Result: underdog_10plus hit rate 75.9% vs baseline 74.1% (lift=1.024, n=54) — directionally opposite to suppression hypothesis. Rule NOT shipped. Motivated by Jalen Johnson AST miss (2026-03-21) in LAL blowout win. Full design and results in `docs/BACKTESTS.md`.
+
+---
+
 ## Improvement Proposals
 
 ### Current
