@@ -1,0 +1,190 @@
+[
+  {
+    "date": "2026-03-22",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK is real even after the confidence cap: DEN is an 8.5-point home favorite, and Jokic \u2014 the team's primary star \u2014 is the classic Q4 rest candidate when games are decided early. The floor_minutes of 29.5 vs avg 35.8 shows meaningful minutes variance, meaning a single early-decision game compresses his counting stats window despite a strong historical hit rate."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on AST plus BLOWOUT_RISK creates the exact correlated downside flagged in the historical miss lessons: blowout game scripts compress structured half-court creation opportunities, and Jokic's AST distribution is wide (volatile). Per audit history, two or more of {volatile AST, road-underdog/blowout spread, blowout risk} co-occurring on AST T6+ warrants heightened scrutiny \u2014 here blowout risk and volatile AST co-occur at exactly T6."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "MIN is a 10.5-point road underdog at BOS, creating a severe losing-side blowout-loss risk. Historical lessons explicitly flag that losing-side blowout scripts reduce the primary forward's scoring volume, and Randle's post_miss_hr of only 64% (lift=0.80) signals meaningful downside persistence. The Without-Edwards baseline elevates confidence, but a blowout loss context would structurally suppress his volume regardless."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "REB is confirmed slump-persistent per audit rules, and the post_miss_hr of 88% is solid but the T4 exact-match exemption (no lower valid tier) means this is the floor \u2014 one bad game produces a miss with no cushion. The 10.5-point spread on the losing side creates a blowout-loss scenario that historically compresses possession counts and rebounding opportunities for the trailing team's primary forward."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The Without-Brown baseline is a 7-game small sample (n=7), and the standard T15 did not qualify \u2014 meaning the pick's entire foundation rests on a thin sample. BOS is a 10.5-point favorite with BLOWOUT_RISK; in a blowout win, White is a secondary scorer who could see reduced minutes in garbage time, and his floor_minutes of 26.1 shows meaningful variance from the 30.1 average."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag on 3PM with a BLOWOUT_RISK game script on the favored side creates a structurally fragile pick: blowout wins reduce bench/secondary player minutes in Q4, directly compressing three-point attempt volume. The post_miss_hr of only 71% is the lowest on the slate for this prop type, and the tough opp_defense combined with volatile distribution means a single cold-shooting night \u2014 well within normal variance \u2014 produces a miss at a tier that offers minimal cushion."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BOS is a 10.5-point favorite with BLOWOUT_RISK, and even with iron_floor status, a blowout win creates genuine Q4 rest risk for a star at a T20 floor. The FG_MARGIN_THIN flag (8%) noted in the pick_reasoning means Brown is one off-shooting night from falling short, and the typical_miss of 10 pts below is the largest on the slate \u2014 signaling that when Brown misses, he misses badly."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on AST at T4 with a raw_avg of only 4.8 (very thin margin above the T4 floor) and a tough opp_defense means a single below-average playmaking game \u2014 structurally common for a frontcourt player \u2014 produces a miss. The post_miss_hr of 87% is reasonable but the distribution is wide enough that the 70% confidence reflects genuine single-game fragility."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-22",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B rest with a VOLATILE PTS tag is the sharpest structural vulnerability here: despite a strong b2b_hit_rate_T20 of 90% (n=10), the volatile distribution means single-game downside is wide, and the post_miss_hr of only 67% signals that when Booker misses on a tired night, he misses meaningfully. The combination of B2B fatigue and a volatile scorer at T20 with 7/10 recent form is structurally thinner than the b2b rate alone suggests."
+    ],
+    "source": "auto"
+  }
+]
