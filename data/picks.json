@@ -13956,11 +13956,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "SGA AST T4 hits 90% vs soft; soft WSH defense and trend up support floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "OKC is a -20.5 favorite, creating genuine blowout-rest risk in Q4 \u2014 SGA is a star who may be pulled early when the game is decided, compressing his assist opportunities. Per audit lessons, losing-side blowout AST penalties are now documented; the winning-side mirror (star rest in a runaway win) similarly truncates counting stats for a player whose AST floor depends on sustained minutes."
+    ]
   },
   {
     "date": "2026-03-21",
@@ -13979,11 +13983,15 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron-floor T10 with 100% vs soft and 92% blowout hit rate; SGA OUT boosts role.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "The -20.5 spread is extreme and the min_floor of 25.6 is below 27 \u2014 if OKC blows WSH out early (the most likely game script given this spread), Holmgren sits in Q4, putting a single low-minutes game squarely within normal variance that would threaten a T10 floor that already required a Without-SGA baseline adjustment to pass."
+    ]
   },
   {
     "date": "2026-03-21",
@@ -14008,7 +14016,9 @@
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-21",
@@ -14033,7 +14043,9 @@
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-21",
@@ -14058,7 +14070,11 @@
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "The post_miss bounce-back hit rate for REB is only 65% \u2014 per audit history, REB is confirmed slump-persistent, and a miss last game meaningfully degrades the forward-looking floor. With 70% confidence already at the low end of the threshold, the 65% post-miss rate suggests the effective hit rate today is closer to or below the minimum bar."
+    ]
   },
   {
     "date": "2026-03-21",
@@ -14077,11 +14093,15 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "LeBron PTS T15 hits 95% overall with consistent tag; 12-game streak in competitive matchup.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 12.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "LeBron's pick is explicitly built on a Without-Luka baseline (6-game sample), but Luka is listed QUES not OUT \u2014 if Luka plays, the usage and shot-volume assumptions underpinning the T15 floor revert to a shared-load context. A last-minute Luka availability confirmation dissolves the structural basis of this pick mid-game."
+    ]
   },
   {
     "date": "2026-03-21",
@@ -14100,11 +14120,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "LeBron AST iron-floor T4 hits 95% overall; elite playmaker exemption clears tough-defense gate.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-21",
@@ -14123,11 +14145,13 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "Banchero PTS T15 hits 95% with 17-game streak; consistent tag and competitive game protect floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 16.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-21",
@@ -14146,11 +14170,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Kawhi REB iron-floor T4 hits 95%; T4 exact-match exemption applies; QUES status limits confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-21",
@@ -14169,11 +14195,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Kawhi AST T2 hits 90% overall; soft DAL defense clears hard gate; trend=down and QUES reduce confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-21",
@@ -14192,11 +14220,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Kawhi 3PM T1 hits 95% overall with 100% vs all opponent types; trend up, soft DAL defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "LAC is a -7.5 favorite and the audit record flags that sub-5-point game scripts suppress 3PM shot selection in favor of higher-percentage looks \u2014 in a blowout context the inverse risk applies: Kawhi may be rested in Q4 before reaching his typical 3PM volume, and the T2 qualifier relied on a Without-Garland baseline (68% hit rate) that is already below the standard 70% threshold."
+    ]
   },
   {
     "date": "2026-03-21",
@@ -14215,10 +14247,14 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Reaves AST T2 hits 100% overall and 100% vs tough; consistent tag; QUES status caps confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "This pick is structurally contingent on Luka Doncic being out \u2014 the T4 vs_tough=100% qualifier and the Without-Luka baseline both collapse if Luka is active (he is QUES, not confirmed OUT). A Luka game-time play introduction would redirect playmaking responsibilities away from Reaves and fundamentally invalidate the assist floor this pick is built on."
+    ]
   }
 ]
