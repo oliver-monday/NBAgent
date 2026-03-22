@@ -1661,6 +1661,55 @@ RETURN FROM INJURY — SHORT SAMPLE INSTABILITY:
   record and is still informative even in a short window. But short sample + iron_floor is
   not sufficient to override the mandatory REB/AST step-down.
 
+WITHOUT-STAR BASELINE — TWO REQUIRED GATES:
+The quant context shows a "Without [Player X] (their avg=Ypt, n=Zg):" line when a key teammate
+has been absent for ≥3 recent games. This Without-Star data shows the player's hit rates and
+averages in a lineup without that teammate. Two gates govern its use:
+
+GATE 1 — CONFIRMED-OUT REQUIREMENT: A Without-Star baseline may only be used as the PRIMARY
+tier qualifier for a pick when the absent star is confirmed OUT in today's injury report or
+projected lineups section.
+  - If the star is listed as OUT or is absent from today's projected lineup: the
+    Without-Star tier hit rate may be used to qualify a tier, the same as any other
+    hit rate signal.
+  - If the star is listed as QUES, GTD, PROBABLE, or not listed in today's injury report:
+    fall back to the standard shared-lineup baseline (the overall= hit rate). If the
+    standard baseline qualifies a tier at ≥70%, use that tier. If the standard baseline
+    does not qualify any tier, skip the pick — do not use the Without-Star data to
+    manufacture a qualifying tier when the star's absence is uncertain.
+  - Do not assume the star is OUT based on recent game log absence patterns. Use only
+    today's injury report and projected lineups section as the source of truth.
+  Rationale: a QUES designation at pick time means the star may play. If they play,
+  the Without-Star usage and role assumptions are invalid mid-game, and a tier that
+  only qualified under the Without-Star baseline will be structurally unsupported once
+  the star enters the lineup. LeBron PTS T15 miss on 2026-03-21 (actual 12, Luka listed
+  QUES, Without-Luka n=6 used as sole qualifying path) is the prototype case.
+
+GATE 2 — MINIMUM SAMPLE GUARD: If the Without-X sample shown in the quant annotation is
+fewer than 10 games (n < 10), treat the Without-Star data as supplementary context only —
+do not use it as the sole qualifying path to a tier.
+  - n ≥ 10: Without-Star hit rates may serve as primary tier evidence (subject to Gate 1).
+  - n < 10: Without-Star data is informational only. Use the standard shared-lineup
+    baseline for tier selection. The Without-Star data may support a confidence
+    adjustment (e.g., note that usage is typically higher without the star), but it
+    cannot be the reason a tier qualifies. If the standard baseline does not qualify
+    any tier, skip the pick.
+  Rationale: six games is enough to observe a usage pattern but not enough to reliably
+  estimate a 70%+ hit rate — a single game sequence can move a small sample from
+  "qualifies" to "does not qualify." The 10-game threshold aligns with the general
+  quant window and provides a minimum reliability floor.
+  Note: n < 10 does NOT mean the data is useless. Use it in tier_walk reasoning to
+  note directional support (e.g., "Without-Luka n=6 suggests T15 usage, but sample
+  too small to qualify — using standard T10 baseline"). It informs but does not gate.
+
+GATE INTERACTION: Both gates must pass before Without-Star data may be used to qualify a
+tier. Gate 1 (OUT status) and Gate 2 (n ≥ 10) are independent checks — a confirmed-OUT
+star with only n=5 still fails Gate 2.
+
+Document in tier_walk whether Without-Star data was used (and which gate(s) applied):
+  - "Without-Luka (OUT confirmed, n=6 <10 — Gate 2 fail): using standard T10=85%✓"
+  - "Without-Luka (OUT confirmed, n=12 ✓): T15=95%✓ → primary qualifier"
+  - "Without-Luka (QUES — Gate 1 fail): using standard T10=80%✓"
 MINUTES FLOOR — THRESHOLD EVENT FRAGILITY:
 - The min_floor= value in each player header is the 10th-percentile of their L10 minutes.
   It represents the worst-case realistic playing time in recent games.
