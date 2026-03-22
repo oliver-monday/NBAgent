@@ -99,28 +99,24 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 ### Pending Backtests
 
 ### H15 — Opponent Team Pick Suppression / Lift
-**Status: FIRST RUN COMPLETE — rerun triggered at ≥400 graded picks (~Mar 20–25)**
+**Status: SECOND RUN COMPLETE (Mar 22, 538 picks) — HOU confirmed suppressor; nba_season_context.md updated**
 **Mode: `--mode opp-team-hit-rate`**
 
-First run (Mar 12, 279 picks): No suppressors cleared ±10pp/≥15 picks threshold. MIN×AST notable at −26.4pp (n=7). SAS floor compression (mean miss margin −6.0, n=3). Watch items added to `nba_season_context.md`. Full design in `docs/BACKTESTS.md`.
+Second run (Mar 22, 538 picks): **HOU confirmed system-wide suppressor** — 61.9% (n=21, −23.4pp). HOU PTS 63.6% (n=11), HOU AST 62.5% (n=8). MIN×AST deepened to 55.6% (n=9, −29.5pp) — below formal threshold but upgraded to active scrutiny. SAS floor compression strengthened (n=6, mean −5.0). All three notes updated in `nba_season_context.md`. Full results in `docs/BACKTESTS.md`. Re-run at end of season (≥600 picks) to check if any additional teams clear the suppressor gate.
 
 ---
 
 ### H14 — Elite Opposing Rebounder REB Suppression
-**Status: QUEUED — no new data required**
-**Mode: `--mode elite-opp-rebounder` | ETA: ~late March / early April 2026**
+**Status: COMPLETE — NO_SIGNAL verdict (Mar 22, 2026)**
+**Mode: `--mode elite-opp-rebounder`** | Full results in `docs/BACKTESTS.md`.
 
-Tests whether REB tier hit rate drops when opponent has elite individual rebounder (top-N season REB avg) or elite team OREB rate. Motivated by Sengun REB miss vs Jokic (Mar 11). Full design in `docs/BACKTESTS.md`.
+NO_SIGNAL at all three thresholds (8/10/12 REB/g). thresh=10.0: elite_present 70.3% vs no_elite 69.8% (delta=−0.5pp). H14b team REB flat. No rule change. Sengun vs. Jokic (Mar 11) was variance.
 
 ---
 
 ### H16 — 3PA Volume Gate
 **Status: IMPLEMENTED — verdict pending. Re-run at ~150+ 3PM picks.**
 **Mode: `--mode 3pa-volume-gate`** | Full results in `docs/BACKTESTS.md`.
-
-### H17 — Spread Context vs. Tier Hit Rate
-**Status: FIRST RUN COMPLETE — NOISE verdict (Mar 13, 327 picks). Re-run at ≥500 picks.**
-**Mode: `--mode spread-context`** | Full results in `docs/BACKTESTS.md`.
 
 ---
 
@@ -145,6 +141,14 @@ Tests tier hit rates for primary vs. secondary scorers in actual blowout games (
 **Mode: `--mode losing-side-ast`** | Full results in `docs/BACKTESTS.md`.
 
 Tests whether pre-game underdog spread_abs ≥ 10 suppresses AST tier hit rate. Result: underdog_10plus hit rate 75.9% vs baseline 74.1% (lift=1.024, n=54) — directionally opposite to suppression hypothesis. Rule NOT shipped. Motivated by Jalen Johnson AST miss (2026-03-21) in LAL blowout win. Full design and results in `docs/BACKTESTS.md`.
+
+---
+
+### H21 — Miss Anatomy: Near-Miss vs. Blowup Next-Game Prediction
+**Status: COMPLETE — NOISE verdict (Mar 22, 2026)**
+**Mode: `--mode miss-anatomy`** | Full results in `docs/BACKTESTS.md`.
+
+PTS delta 0.6pp, REB delta 2.0pp, AST delta 0.8pp — all below the 4pp noise threshold. Rule NOT shipped. `near_miss_rate`/`blowup_rate` fields remain in `player_stats.json` for Player Profiles only.
 
 ---
 

@@ -135,6 +135,21 @@ H20_UNDERDOG_THRESHOLDS = [6.5, 10.0, 15.0]  # spread_abs breakpoints
 H20_PRIMARY_AST_AVG     = 6.0                 # rolling avg threshold for primary ball-handler
 H20_MIN_N               = 20                  # min instances per bucket for a verdict
 
+# H14 — Elite opposing rebounder REB suppression
+H14_JSON                  = DATA / "backtest_elite_opp_rebounder.json"
+H14_ELITE_REB_THRESHOLDS  = [8.0, 10.0, 12.0]  # rolling avg REB thresholds to test
+H14_OPP_REB_WINDOW        = 15   # games for opponent player rolling avg (mirrors OPP_WINDOW)
+H14_OPP_MIN_GAMES         = 5    # min games for opponent player avg to qualify
+H14_MIN_N                 = 20   # min instances per bucket for a verdict
+H14_OREB_WINDOW           = 15   # games for team OREB rate rolling avg
+
+# H21 — Miss Anatomy: near-miss vs. blowup next-game prediction
+H21_JSON             = DATA / "backtest_miss_anatomy.json"
+H21_NEAR_MISS_THRESH = 2      # actual >= tier - this → near-miss
+H21_BLOWUP_THRESH    = 3      # actual < tier - this → blowup
+H21_MIN_MISSES       = 3      # min misses per player-stat combo for player-level analysis
+H21_MIN_N            = 15     # min next-game instances per bucket for a verdict
+
 _ABBR_NORM_BT = {
     "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
     "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
@@ -5449,6 +5464,266 @@ def run_spread_context_analysis(picks: list, master: pd.DataFrame, args) -> None
     print(f"\n{'='*70}\n")
 
 
+# ── Elite Opposing Rebounder REB Suppression (H14) ────────────────────
+
+def build_opp_rebounder_lookup(
+    player_log: pd.DataFrame,
+    team_log: pd.DataFrame,
+) -> dict:
+    """
+    H14 — Build two lookups for opposing rebounder context.
+    Returns a dict with two keys:
+      "elite_rebounder": {(game_id_str, team_upper): max_opp_reb_avg}
+          For each game x team, the maximum rolling REB avg among any opposing player
+          in that game (using only prior games for the rolling avg — no lookahead).
+          "team" here is the PLAYER's team — we look up the OPPONENT's top rebounder.
+      "opp_team_reb": {(game_id_str, team_upper): opp_team_reb_avg}
+          For each game x team, the opponent's rolling total REB (or OREB when available).
+          Uses team_game_log for team totals.
+    player_log is sorted ascending by (player_name, game_date) — use this for rolling avgs.
+    team_log is sorted ascending by game_date.
+    """
+    # ── Part A: Elite individual rebounder lookup ─────────────────────────
+    # For each player-game in the full (non-whitelisted) player_log,
+    # compute their rolling REB avg using only prior games.
+    # Then for each (game_id, opposing_team), find the max rolling avg.
+    # Use all players in log (not just whitelist) — we need opponent players too
+    all_log = player_log.copy()
+    all_log["game_id_str"] = (
+        all_log["game_id"].astype(str).str.split(".").str[0].str.strip()
+    )
+    all_log["team_upper"] = all_log["team_abbrev"].str.upper().str.strip()
+    all_log["opp_upper"]  = all_log["opp_abbrev"].str.upper().str.strip()
+
+    # Rolling REB avg per player (shift=1, no lookahead), min H14_OPP_MIN_GAMES games
+    all_log["rolling_reb_avg"] = (
+        all_log.groupby("player_name")["reb"]
+        .transform(
+            lambda s: s.shift(1).rolling(H14_OPP_REB_WINDOW, min_periods=H14_OPP_MIN_GAMES).mean()
+        )
+    )
+
+    # For each (game_id, team_that_is_facing_this_player), find max rolling_reb_avg
+    # i.e., for game G, player P on team T: opp_team = T → look at all players on opp_team
+    # group by (game_id_str, opp_upper) to get max rebounder on the opposing side
+    elite_lookup: dict = {}
+    for (gid, opp), grp in all_log.groupby(["game_id_str", "opp_upper"]):
+        max_avg = grp["rolling_reb_avg"].max()
+        if pd.notna(max_avg):
+            # Key: (game_id, player's team) — player's team is the opp_upper here
+            # because we want "the best rebounder facing player on team X in game G"
+            elite_lookup[(gid, str(opp).upper())] = float(max_avg)
+
+    # ── Part B: Team OREB rate lookup ─────────────────────────────────────
+    # team_game_log has team_reb (total team rebounds) per team per game.
+    # Proxy for OREB rate: we don't have separate OREB/DREB columns in team_game_log.
+    # Use total team rebounds as a proxy signal instead — higher total REB = more dominant.
+    # If team_log has oreb or dreb columns use them; otherwise skip this signal.
+    oreb_lookup: dict = {}
+    if not team_log.empty:
+        tl = team_log.copy()
+        tl["game_id_str"] = (
+            tl["game_id"].astype(str).str.split(".").str[0].str.strip()
+        )
+        tl["team_upper"] = tl["team_abbrev"].str.upper().str.strip()
+        tl["opp_upper"]  = tl["opp_abbrev"].str.upper().str.strip()
+
+        # Check if oreb column exists
+        if "team_oreb" in tl.columns:
+            tl["team_oreb"] = pd.to_numeric(tl["team_oreb"], errors="coerce").fillna(0)
+            tl["team_dreb"] = pd.to_numeric(tl.get("team_dreb", 0), errors="coerce").fillna(0)
+            # Rolling OREB avg per team (shift=1)
+            tl["rolling_oreb"] = (
+                tl.groupby("team_upper")["team_oreb"]
+                .transform(
+                    lambda s: s.shift(1).rolling(H14_OREB_WINDOW, min_periods=5).mean()
+                )
+            )
+            for (gid, team), grp in tl.groupby(["game_id_str", "team_upper"]):
+                oreb_val = grp["rolling_oreb"].iloc[0] if len(grp) > 0 else None
+                if pd.notna(oreb_val):
+                    # Key: player is on the OPPONENT of this team
+                    opp = grp["opp_upper"].iloc[0] if len(grp) > 0 else None
+                    if opp:
+                        oreb_lookup[(gid, str(opp).upper())] = float(oreb_val)
+        else:
+            # Fall back to total team_reb as proxy
+            tl["team_reb"] = pd.to_numeric(tl["team_reb"], errors="coerce").fillna(0)
+            tl["rolling_reb"] = (
+                tl.groupby("team_upper")["team_reb"]
+                .transform(
+                    lambda s: s.shift(1).rolling(H14_OREB_WINDOW, min_periods=5).mean()
+                )
+            )
+            for (gid, team), grp in tl.groupby(["game_id_str", "team_upper"]):
+                reb_val = grp["rolling_reb"].iloc[0] if len(grp) > 0 else None
+                if pd.notna(reb_val):
+                    opp = grp["opp_upper"].iloc[0] if len(grp) > 0 else None
+                    if opp:
+                        oreb_lookup[(gid, str(opp).upper())] = float(reb_val)
+
+    print(f"[backtest] H14 lookups: elite_rebounder={len(elite_lookup):,} | "
+          f"oreb={len(oreb_lookup):,}")
+    return {"elite_rebounder": elite_lookup, "opp_team_reb": oreb_lookup}
+
+
+def run_elite_opp_rebounder_analysis(
+    player_log: pd.DataFrame,
+    team_log: pd.DataFrame,
+    args,
+) -> None:
+    """
+    H14 — Elite opposing rebounder REB suppression.
+    Tests whether the presence of an elite opposing rebounder (rolling REB avg >= threshold)
+    or high opponent team REB total suppresses whitelisted players' REB tier hit rates.
+    """
+    window = getattr(args, "window", None) or ROLLING_WINDOW
+    print(f"[backtest] H14 elite-opp-rebounder | window={window} | "
+          f"thresholds={H14_ELITE_REB_THRESHOLDS}")
+
+    # ── Step 1: Build opponent rebounder lookups ──────────────────────────
+    lookups = build_opp_rebounder_lookup(player_log, team_log)
+    elite_lookup = lookups["elite_rebounder"]
+    oreb_lookup  = lookups["opp_team_reb"]
+
+    # ── Step 2: Compute REB best tier for whitelisted players ─────────────
+    df = add_best_tiers(player_log, window=window)
+    df["game_id_str"] = df["game_id"].astype(str).str.split(".").str[0].str.strip()
+    df["team_upper"]  = df["team_abbrev"].str.upper().str.strip()
+
+    # Join elite rebounder value for this player's game
+    df["opp_max_reb_avg"] = df.apply(
+        lambda r: elite_lookup.get((r["game_id_str"], r["team_upper"])),
+        axis=1,
+    )
+    df["opp_team_reb_avg"] = df.apply(
+        lambda r: oreb_lookup.get((r["game_id_str"], r["team_upper"])),
+        axis=1,
+    )
+
+    # Qualified REB instances only
+    qualified = df[
+        df["best_tier_REB"].notna() &
+        df["hit_actual_REB"].notna()
+    ].copy()
+    total_n = len(qualified)
+    baseline_hits = int(qualified["hit_actual_REB"].sum())
+    baseline_rate = round(baseline_hits / total_n, 4) if total_n > 0 else None
+    print(f"[backtest] H14 qualified REB instances: {total_n:,} | baseline: {baseline_rate}")
+
+    # ── Step 3: H14a — Elite individual rebounder analysis ───────────────
+    H14a_results: dict = {}
+    for thresh in H14_ELITE_REB_THRESHOLDS:
+        has_data   = qualified["opp_max_reb_avg"].notna()
+        elite_mask = has_data & (qualified["opp_max_reb_avg"] >= thresh)
+        other_mask = has_data & (qualified["opp_max_reb_avg"] <  thresh)
+        for label, mask in [("elite_present", elite_mask), ("no_elite", other_mask)]:
+            sub  = qualified[mask]
+            n    = len(sub)
+            h    = int(sub["hit_actual_REB"].sum()) if n > 0 else 0
+            hr   = round(h / n, 4) if n > 0 else None
+            lift = round(hr / baseline_rate, 4) if (hr is not None and baseline_rate) else None
+            H14a_results[f"thresh_{int(thresh)}_{label}"] = {
+                "threshold": thresh, "label": label,
+                "n": n, "hits": h, "hit_rate": hr, "lift": lift,
+            }
+
+    # ── Step 4: H14b — Team OREB rate analysis ────────────────────────────
+    H14b_results: dict = {}
+    if qualified["opp_team_reb_avg"].notna().sum() >= H14_MIN_N:
+        median_oreb = qualified["opp_team_reb_avg"].median()
+        high_mask   = qualified["opp_team_reb_avg"] >= median_oreb
+        low_mask    = qualified["opp_team_reb_avg"] <  median_oreb
+        for label, mask in [("high_opp_reb", high_mask), ("low_opp_reb", low_mask)]:
+            sub  = qualified[mask & qualified["opp_team_reb_avg"].notna()]
+            n    = len(sub)
+            h    = int(sub["hit_actual_REB"].sum()) if n > 0 else 0
+            hr   = round(h / n, 4) if n > 0 else None
+            lift = round(hr / baseline_rate, 4) if (hr is not None and baseline_rate) else None
+            H14b_results[label] = {
+                "n": n, "hits": h, "hit_rate": hr, "lift": lift,
+                "median_split": float(median_oreb) if pd.notna(median_oreb) else None,
+            }
+
+    # ── Step 5: Verdict ───────────────────────────────────────────────────
+    # Use T10.0 threshold (middle) as primary verdict threshold
+    elite_key   = "thresh_10_elite_present"
+    noelite_key = "thresh_10_no_elite"
+    ep = H14a_results.get(elite_key, {})
+    ne = H14a_results.get(noelite_key, {})
+    ep_hr = ep.get("hit_rate")
+    ne_hr = ne.get("hit_rate")
+    ep_n  = ep.get("n", 0)
+    if ep_n < H14_MIN_N or ep_hr is None or ne_hr is None:
+        verdict  = "insufficient_sample"
+        reason   = f"elite_present (thresh=10) n={ep_n} < {H14_MIN_N}"
+        rule_rec = "Insufficient sample. Rerun at end of season or next season."
+    else:
+        delta = round(ne_hr - ep_hr, 4)
+        if delta >= 0.08:
+            verdict  = "confirmed_suppression"
+            reason   = f"no_elite {ne_hr*100:.1f}% vs elite_present {ep_hr*100:.1f}% (delta={delta*100:.1f}pp >= 8pp)"
+            rule_rec = "Consider REB tier step-down or confidence penalty when opp has player with rolling REB avg >= 10.0."
+        elif delta >= 0.04:
+            verdict  = "weak_signal"
+            reason   = f"delta={delta*100:.1f}pp (4-8pp range)"
+            rule_rec = "Weak signal. Monitor; do not add directive rule yet."
+        else:
+            verdict  = "no_signal"
+            reason   = f"delta={delta*100:.1f}pp < 4pp"
+            rule_rec = "Hypothesis not confirmed. No rule change."
+
+    # ── Step 6: Print report ──────────────────────────────────────────────
+    print(f"\n{'='*65}")
+    print(f"  H14 — ELITE OPPOSING REBOUNDER REB SUPPRESSION")
+    print(f"  Baseline REB hit rate: {(baseline_rate or 0)*100:.1f}% (n={total_n:,})")
+    print(f"  Date range: {player_log['game_date'].min().date()} "
+          f"→ {player_log['game_date'].max().date()}")
+    print(f"{'='*65}")
+    print(f"\n  H14a — Elite individual rebounder (rolling avg >= threshold):")
+    for thresh in H14_ELITE_REB_THRESHOLDS:
+        ep_res = H14a_results.get(f"thresh_{int(thresh)}_elite_present", {})
+        ne_res = H14a_results.get(f"thresh_{int(thresh)}_no_elite", {})
+        ep_hr_s = f"{(ep_res.get('hit_rate') or 0)*100:.1f}%" if ep_res.get("hit_rate") else "n/a"
+        ne_hr_s = f"{(ne_res.get('hit_rate') or 0)*100:.1f}%" if ne_res.get("hit_rate") else "n/a"
+        lift_s  = f"lift={ep_res.get('lift'):.3f}" if ep_res.get("lift") else "lift=n/a"
+        print(f"    thresh >= {thresh}: elite n={ep_res.get('n',0):<4} hr={ep_hr_s}  "
+              f"no_elite n={ne_res.get('n',0):<4} hr={ne_hr_s}  {lift_s}")
+    if H14b_results:
+        print(f"\n  H14b — Team OREB/REB rate (median split):")
+        for label, res in H14b_results.items():
+            hr_s   = f"{(res.get('hit_rate') or 0)*100:.1f}%" if res.get("hit_rate") else "n/a"
+            lift_s = f"lift={res.get('lift'):.3f}" if res.get("lift") else "lift=n/a"
+            print(f"    {label:<18} n={res.get('n',0):<4} hr={hr_s}  {lift_s}")
+    print(f"\n  Verdict: {verdict.upper()}")
+    print(f"  Reason:  {reason}")
+    print(f"  Rule recommendation: {rule_rec}")
+    print(f"\n{'='*65}\n")
+
+    # ── Step 7: Write JSON ────────────────────────────────────────────────
+    out = {
+        "generated_at":        dt.date.today().isoformat(),
+        "mode":                "elite-opp-rebounder",
+        "hypothesis":          "Elite opposing rebounder (rolling REB avg >= threshold) suppresses REB tier hit rate",
+        "rolling_window":      window,
+        "date_range": {
+            "start": str(player_log["game_date"].min().date()),
+            "end":   str(player_log["game_date"].max().date()),
+        },
+        "total_reb_instances": total_n,
+        "baseline_hit_rate":   baseline_rate,
+        "H14a_individual":     H14a_results,
+        "H14b_team_reb":       H14b_results,
+        "verdict":             verdict,
+        "verdict_reason":      reason,
+        "rule_recommendation": rule_rec,
+    }
+    out_path = Path(args.output) if getattr(args, "output", None) else H14_JSON
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"[backtest] H14 results → {out_path}")
+
+
 # ── Losing-Side AST Suppression Backtest (H20) ────────────────────────
 
 def run_losing_side_ast_analysis(
@@ -5918,6 +6193,221 @@ def run_blowout_regime_analysis(
     print(f"\n[backtest] H19 results → {out_path}")
 
 
+# ── H21 — Miss Anatomy ────────────────────────────────────────────────
+
+def run_miss_anatomy_analysis(player_log: pd.DataFrame, args) -> None:
+    """
+    H21 — Miss Anatomy: near-miss vs. blowup next-game prediction.
+
+    For each player-stat combo with >= H21_MIN_MISSES misses at their best tier,
+    classify each miss as near-miss (actual >= tier - H21_NEAR_MISS_THRESH) or
+    blowup (actual < tier - H21_BLOWUP_THRESH). Then look at the next game's
+    result at the same tier and compare post-near-miss vs. post-blowup hit rates.
+
+    Also computes league-wide aggregates across all players.
+    Uses shift(1).rolling() to avoid lookahead on best tier selection.
+    """
+    window = getattr(args, "window", None) or ROLLING_WINDOW
+    print(f"[backtest] H21 miss-anatomy | window={window} | "
+          f"near_miss_thresh={H21_NEAR_MISS_THRESH} | blowup_thresh={H21_BLOWUP_THRESH}")
+
+    # ── Step 1: Compute best tiers ────────────────────────────────────────
+    df = add_best_tiers(player_log, window=window)
+
+    # ── Step 2: Build next-game lookup ────────────────────────────────────
+    # For each player-game-stat where a miss occurred, find the NEXT non-DNP game
+    # for that player and check the result at the same tier.
+
+    league_results: dict = {stat: {
+        "post_near_miss":  {"n": 0, "hits": 0},
+        "post_blowup":     {"n": 0, "hits": 0},
+        "post_other_miss": {"n": 0, "hits": 0},  # miss within (2, 3) gap — between thresholds
+    } for stat in STAT_COL}
+
+    # Player-level results: {(player_name, stat): {near_miss: {...}, blowup: {...}}}
+    player_results: dict = {}
+
+    for stat, col in STAT_COL.items():
+        best_col = f"best_tier_{stat}"
+        hit_col  = f"hit_actual_{stat}"
+
+        for player_name, grp in df.groupby("player_name"):
+            # Sort ascending — index order = chronological
+            grp = grp.sort_values("game_date").reset_index(drop=True)
+
+            misses = grp[
+                grp[best_col].notna() &
+                grp[hit_col].notna() &
+                (grp[hit_col] == 0)
+            ]
+
+            if len(misses) < H21_MIN_MISSES:
+                continue
+
+            key = (player_name, stat)
+            player_results[key] = {
+                "near_miss":  {"n": 0, "hits": 0},
+                "blowup":     {"n": 0, "hits": 0},
+                "other_miss": {"n": 0, "hits": 0},
+            }
+
+            for idx, miss_row in misses.iterrows():
+                tier   = miss_row[best_col]
+                actual = miss_row[col]
+                gap    = tier - actual  # positive = missed below tier
+
+                # Classify miss severity
+                if gap <= H21_NEAR_MISS_THRESH:
+                    severity = "near_miss"
+                elif gap >= H21_BLOWUP_THRESH:
+                    severity = "blowup"
+                else:
+                    severity = "other_miss"
+
+                # Find the next game for this player AFTER this miss
+                next_games = grp[
+                    (grp.index > idx) &
+                    grp[best_col].notna() &
+                    grp[hit_col].notna()
+                ]
+
+                if next_games.empty:
+                    continue  # no qualifying next game
+
+                next_game = next_games.iloc[0]
+
+                # Check if next game hit at same tier as the miss game
+                # (use SAME tier as miss game — tests whether this specific tier holds)
+                next_actual = next_game[col]
+                next_hit = int(next_actual >= tier)
+
+                # Record player-level
+                player_results[key][severity]["n"]    += 1
+                player_results[key][severity]["hits"] += next_hit
+
+                # Record league-level
+                league_key = "post_" + ("near_miss" if severity == "near_miss"
+                                         else "blowup" if severity == "blowup"
+                                         else "other_miss")
+                league_results[stat][league_key]["n"]    += 1
+                league_results[stat][league_key]["hits"] += next_hit
+
+    # ── Step 3: Compute league-level hit rates and verdict ────────────────
+    league_summary: dict = {}
+    for stat in STAT_COL:
+        lr = league_results[stat]
+        nm = lr["post_near_miss"]
+        bl = lr["post_blowup"]
+
+        nm_hr = round(nm["hits"] / nm["n"], 4) if nm["n"] > 0 else None
+        bl_hr = round(bl["hits"] / bl["n"], 4) if bl["n"] > 0 else None
+
+        if nm_hr is not None and bl_hr is not None and nm["n"] >= H21_MIN_N and bl["n"] >= H21_MIN_N:
+            delta = round(nm_hr - bl_hr, 4)
+            if delta >= 0.08:
+                verdict = "near_miss_lift"
+                reason  = f"post-near-miss {nm_hr*100:.1f}% vs post-blowup {bl_hr*100:.1f}% (delta={delta*100:.1f}pp >= 8pp)"
+            elif delta <= -0.08:
+                verdict = "blowup_lift"
+                reason  = f"post-blowup {bl_hr*100:.1f}% vs post-near-miss {nm_hr*100:.1f}% (delta={abs(delta)*100:.1f}pp >= 8pp, inverted)"
+            elif abs(delta) >= 0.04:
+                verdict = "weak_signal"
+                reason  = f"delta={delta*100:.1f}pp (4-8pp range)"
+            else:
+                verdict = "noise"
+                reason  = f"delta={delta*100:.1f}pp < 4pp"
+        else:
+            verdict = "insufficient_sample"
+            reason  = f"near_miss n={nm['n']}, blowup n={bl['n']} (need >= {H21_MIN_N} each)"
+
+        om = lr["post_other_miss"]
+        league_summary[stat] = {
+            "post_near_miss":  {**nm, "hit_rate": nm_hr},
+            "post_blowup":     {**bl, "hit_rate": bl_hr},
+            "post_other_miss": {**om, "hit_rate": round(om["hits"] / om["n"], 4)
+                                if om["n"] > 0 else None},
+            "verdict":         verdict,
+            "verdict_reason":  reason,
+        }
+
+    # ── Step 4: Summarize player-level results ────────────────────────────
+    # Flag players with strong separation (delta >= 15pp, min 3 games each bucket)
+    notable_players: list = []
+    for (player_name, stat), res in player_results.items():
+        nm = res["near_miss"]
+        bl = res["blowup"]
+        nm_hr = round(nm["hits"] / nm["n"], 4) if nm["n"] >= 3 else None
+        bl_hr = round(bl["hits"] / bl["n"], 4) if bl["n"] >= 3 else None
+        if nm_hr is not None and bl_hr is not None:
+            delta = nm_hr - bl_hr
+            if abs(delta) >= 0.15:
+                notable_players.append({
+                    "player":       player_name,
+                    "stat":         stat,
+                    "near_miss_n":  nm["n"],
+                    "near_miss_hr": nm_hr,
+                    "blowup_n":     bl["n"],
+                    "blowup_hr":    bl_hr,
+                    "delta":        round(delta, 4),
+                })
+    notable_players.sort(key=lambda x: abs(x["delta"]), reverse=True)
+
+    # ── Step 5: Print report ──────────────────────────────────────────────
+    print(f"\n{'='*68}")
+    print(f"  H21 — MISS ANATOMY: NEAR-MISS vs. BLOWUP NEXT-GAME PREDICTION")
+    print(f"  Near-miss: actual >= tier - {H21_NEAR_MISS_THRESH} | "
+          f"Blowup: actual < tier - {H21_BLOWUP_THRESH}")
+    print(f"  Date range: {player_log['game_date'].min().date()} "
+          f"-> {player_log['game_date'].max().date()}")
+    print(f"{'='*68}")
+
+    for stat in STAT_COL:
+        s = league_summary[stat]
+        nm = s["post_near_miss"]
+        bl = s["post_blowup"]
+        nm_str = f"{nm['hit_rate']*100:.1f}%" if nm.get("hit_rate") is not None else "n/a"
+        bl_str = f"{bl['hit_rate']*100:.1f}%" if bl.get("hit_rate") is not None else "n/a"
+        print(f"\n  {stat}:")
+        print(f"    post_near_miss  n={nm['n']:<4}  hit_rate={nm_str}")
+        print(f"    post_blowup     n={bl['n']:<4}  hit_rate={bl_str}")
+        print(f"    Verdict: {s['verdict'].upper()} -- {s['verdict_reason']}")
+
+    if notable_players:
+        print(f"\n  Notable players (|delta| >= 15pp, min 3 games each bucket):")
+        for p in notable_players[:10]:
+            direction = "near-miss lifts" if p["delta"] > 0 else "blowup lifts"
+            print(f"    {p['player']} {p['stat']}: {direction} "
+                  f"nm={p['near_miss_hr']*100:.0f}%(n={p['near_miss_n']}) "
+                  f"bl={p['blowup_hr']*100:.0f}%(n={p['blowup_n']}) "
+                  f"delta={p['delta']*100:+.0f}pp")
+    else:
+        print(f"\n  No notable per-player separation found (|delta| < 15pp in all cases).")
+
+    print(f"\n{'='*68}\n")
+
+    # ── Step 6: Write JSON ────────────────────────────────────────────────
+    out = {
+        "generated_at":    dt.date.today().isoformat(),
+        "mode":            "miss-anatomy",
+        "hypothesis":      "Near-miss severity (actual >= tier-2) predicts next-game hit rate better than blowup miss (actual < tier-3)",
+        "rolling_window":  window,
+        "near_miss_thresh": H21_NEAR_MISS_THRESH,
+        "blowup_thresh":   H21_BLOWUP_THRESH,
+        "date_range": {
+            "start": str(player_log["game_date"].min().date()),
+            "end":   str(player_log["game_date"].max().date()),
+        },
+        "league_summary":  league_summary,
+        "notable_players": notable_players[:20],
+        "total_player_stat_combos_evaluated": len(player_results),
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else H21_JSON
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"[backtest] H21 results -> {out_path}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -5932,7 +6422,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -6035,6 +6525,16 @@ def main():
     # ── Losing-side AST suppression (H20) ────────────────────────────────
     if getattr(args, "mode", None) == "losing-side-ast":
         run_losing_side_ast_analysis(player_log, master_df, args)
+        sys.exit(0)
+
+    # ── Miss anatomy (H21) ───────────────────────────────────────────────
+    if getattr(args, "mode", None) == "miss-anatomy":
+        run_miss_anatomy_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── Elite opposing rebounder (H14) ───────────────────────────────────
+    if getattr(args, "mode", None) == "elite-opp-rebounder":
+        run_elite_opp_rebounder_analysis(player_log, team_log, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

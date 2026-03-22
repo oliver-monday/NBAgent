@@ -617,12 +617,12 @@ names (e.g., "Jalen Brunson"), takes the last space-separated token. Both normal
 
 **Next backtests to run:**
 - **H9 — H2H Splits:** Run ~mid-April 2026
-- **H14 — Elite Opposing Rebounder:** Run ~late March / early April 2026 (`--mode elite-opp-rebounder`)
-- **H15 — Opp Team Hit Rate:** Re-run when picks ≥400 (est. ~Mar 20–25) (`--mode opp-team-hit-rate`)
+- **H14 — Elite Opposing Rebounder:** COMPLETE — NO_SIGNAL (Mar 22, 2026, n=1,709). thresh=10.0 delta=−0.5pp; H14b team REB flat. No rule change. CLOSED.
+- **H15 — Opp Team Hit Rate:** COMPLETE second run (Mar 22, n=538). HOU confirmed system-wide suppressor (61.9%, −23.4pp). `nba_season_context.md` updated. Re-run at ≥600 picks.
 - **H16 — 3PA Volume Gate:** Re-run at ~150+ 3PM picks (`--mode 3pa-volume-gate`)
-- **H17 — Spread Context:** Re-run at ≥500 picks to confirm NOISE verdict
+- **H17 — Spread Context:** COMPLETE second run (Mar 22, n=538) — NOISE confirmed. CLOSED. `--mode spread-context`. No rules warranted.
 - **H20 — Losing-Side AST:** COMPLETE — NO_SIGNAL (Mar 22, 2026, n=54). `--mode losing-side-ast` implemented in `backtest.py`. Rule not shipped.
-- **Miss Anatomy:** Validate `near_miss_rate`/`blowup_rate`. Fields live in `player_stats.json`; analyst wiring deferred until backtest (~late March 2026).
+- **H21 — Miss Anatomy:** COMPLETE — NOISE (Mar 22, 2026). PTS delta 0.6pp, REB delta 2.0pp, AST delta 0.8pp — all below 4pp threshold. Rule NOT shipped. `near_miss_rate`/`blowup_rate` remain in quant for Player Profiles only.
 
 **Confidence calibration check:** After 20+ audit days (~late March), compare per-band actual hit rates in `audit_summary.json` against stated confidence bands (70–75 / 76–80 / 81–85 / 86+).
 

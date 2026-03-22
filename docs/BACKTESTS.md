@@ -107,9 +107,9 @@ All findings applied. Full methodology preserved in git history. Key results:
 
 ### H15 — Opponent Team Pick Suppression / Lift
 
-**Status: IMPLEMENTED in backtest.py — ready to run ~late March 2026**
+**Status: SECOND RUN COMPLETE — HOU confirmed suppressor (Mar 22, 2026)**
 **Mode:** `--mode opp-team-hit-rate`
-**Output:** `data/backtest_opp_team_hit_rate.json` (not yet run)
+**Output:** `data/backtest_opp_team_hit_rate.json`
 
 **Question:** Do certain opponent teams systematically suppress or amplify the system's pick hit rate beyond what the `opp_defense` soft/mid/tough rating captures?
 
@@ -127,31 +127,179 @@ All findings applied. Full methodology preserved in git history. Key results:
 - H15a/H15b suppressor/amplifier verdict applied at ≥15 / ≥5 pick thresholds respectively. Opponents below threshold tagged `insufficient_sample`.
 - H15c includes overall miss margin distribution (mean, median, p25, p75) as baseline reference.
 
-**Run timing:** ~late March 2026 — no new data collection required; all inputs already in `picks.json`. Run alongside H8.
+**Run 1 — March 12, 2026 (279 picks, baseline 85.3%):** No suppressors cleared ±10pp/≥15 picks threshold. MIN×AST notable at −26.4pp (n=7). SAS floor compression (mean −6.0, n=3). Watch items added to `nba_season_context.md`.
 
-**If signal confirmed (H15a/b):** Implementation path is annotation-only first — `opp_team_suppressor` bool flag per prop type in `player_stats.json`; single annotation line in `build_quant_context()`. No tier-step or confidence rules without cross-season validation.
+**Run 2 — March 22, 2026 (538 picks, baseline 85.3%):**
 
-**If signal confirmed (H15c):** Floor compression evidence warrants note in `nba_season_context.md` or player profile conditional rendering for affected opponent matchups.
+H15a results (≥15 picks):
+
+| Opponent | n | Hit Rate | vs Baseline | Verdict |
+|----------|---|----------|-------------|---------|
+| HOU | 21 | 61.9% | −23.4pp | **SUPPRESSOR** |
+| MIN | 31 | 77.4% | −7.9pp | Neutral (watch) |
+| PHX | 18 | 77.8% | −7.5pp | Neutral |
+| SAS | 35 | 82.9% | −2.5pp | Neutral |
+| BOS | 21 | 95.2% | +9.9pp | Neutral (borderline amplifier) |
+| CHI | 22 | 95.5% | +10.1pp | Amplifier (small-sample artifact) |
+
+Notable H15b prop-specific signals (≥5 picks):
+
+| Matchup | n | Hit Rate | vs Prop Baseline | Verdict |
+|---------|---|----------|------------------|---------|
+| MIN × AST | 9 | 55.6% | −29.5pp vs 85.1% AST | Below threshold — active scrutiny |
+| HOU × PTS | 11 | 63.6% | −22.6pp vs 86.2% PTS | SUPPRESSOR |
+| HOU × AST | 8 | 62.5% | −22.6pp vs 85.1% AST | SUPPRESSOR |
+| CHA × AST | 6 | 66.7% | −18.4pp vs 85.1% AST | Below threshold |
+| GSW × AST | 7 | 71.4% | −13.6pp vs 85.1% AST | Below threshold |
+| DAL × 3PM | 7 | 71.4% | −12.4pp vs 83.8% 3PM | Below threshold |
+
+H15c miss margin (≥3 misses):
+
+| Opponent | Misses | Mean margin | Pattern |
+|----------|--------|-------------|---------|
+| SAS | 6 | −5.0 | Floor compression |
+| CHA | 3 | −5.0 | Floor compression (borderline n) |
+| HOU | 8 | −2.4 | Near-miss (tier overshoot) |
+| MIN | 7 | −1.6 | Near-miss (squeeze, not blow-out) |
+
+Overall miss margin baseline (n=79): mean=−2.7 | median=−2.0 | p25=−3.5 | p75=−1.0
+
+**Key findings:**
+
+1. **HOU is the project's first confirmed system-wide opponent suppressor.** 61.9% hit rate at n=21 clears both the ≥15 pick gate and ≥10pp suppressor threshold by a wide margin. PTS and AST both suppressed. Mechanism: Durant rim deterrence + Udoka switching scheme compress scoring and creation. HOU's H15c near-miss pattern (mean −2.4) suggests tier overshoot — the system is one tier too aggressive vs. Houston. `nba_season_context.md` updated with conservative tier guidance.
+
+2. **MIN × AST is the most alarming prop-specific signal in the dataset (55.6%, n=9, −29.5pp) but has not cleared the formal ≥15 pick gate.** Upgraded from watch to active scrutiny in `nba_season_context.md`. If signal holds to n=15+ by season end, a directive AST rule is warranted next season.
+
+3. **SAS floor compression is holding** (n=6, mean −5.0). Players missing vs. SAS are underperforming their historical floors by 5 units on average — structural suppression. `nba_season_context.md` note updated.
+
+4. **Amplifiers are small-sample noise.** CHI, BOS, MIA, MEM 100% cells range from n=5–11. Do not add positive confidence rules based on these.
+
+**Next run:** End of season (≥600 picks) — check whether additional teams cross the suppressor gate, and whether MIN × AST clears ≥15 picks for formal confirmation.
 
 ---
 
-### Miss Anatomy — Near-Miss vs. Blowup Next-Game Prediction
+### H14 — Elite Opposing Rebounder REB Suppression
 
-**Status: QUEUED — data accumulating, run ~late March 2026**
+**Status: COMPLETE — NO_SIGNAL verdict (2026-03-22)**
+**Mode:** `--mode elite-opp-rebounder`
+**Output:** `data/backtest_elite_opp_rebounder.json`
+**Sample:** 1,709 qualified REB instances, 2025-10-21 – 2026-03-21
+
+**Question:** Does the presence of an elite opposing rebounder (rolling REB avg ≥ 8/10/12) or high opponent team REB total suppress whitelisted players' REB tier hit rates?
+
+**Two sub-hypotheses:**
+- **H14a:** Individual: opponent's best rebounder rolling avg ≥ threshold → REB suppression
+- **H14b:** Team: opponent team total REB rate above median → REB suppression
+
+**Key design decisions:**
+- Rolling avg for opponent players uses all players in log (not just whitelisted) — opponent roster requires the full player population
+- shift(1).rolling() on all opponent player averages — no lookahead
+- Three thresholds tested: 8.0, 10.0, 12.0 REB/g rolling avg
+- Verdict anchored to threshold=10.0 as the primary decision threshold
+
+**H14a results:**
+
+| Threshold | elite_present n | elite hit rate | no_elite n | no_elite hit rate | lift |
+|-----------|-----------------|---------------|------------|-------------------|------|
+| ≥ 8.0 REB | 499 | 69.7% | 527 | 70.0% | 0.992 |
+| ≥ 10.0 REB | 202 | 70.3% | 824 | 69.8% | 1.000 |
+| ≥ 12.0 REB | 40 | 67.5% | 986 | 70.0% | 0.960 |
+
+Baseline REB hit rate: **70.3%** (n=1,709)
+
+**H14b results (team REB median split):**
+
+| Bucket | n | Hit Rate | Lift |
+|--------|---|----------|------|
+| high_opp_reb | 857 | 70.5% | 1.003 |
+| low_opp_reb | 852 | 70.1% | 0.997 |
+
+**Verdict: NO_SIGNAL**
+
+Delta at thresh=10.0: **−0.5pp** (no_elite 69.8% vs elite_present 70.3%) — directionally opposite to suppression hypothesis and well below the 4pp noise threshold. H14b team-level median split is essentially flat (70.5% vs 70.1%, lift difference 0.006). The hypothesis is not confirmed at any threshold.
+
+**Why:** Elite rebounders do not appear to claim a disproportionate share of available rebounds in a way that suppresses opposing whitelisted players' REB output at the tier-hit-rate level. The Sengun vs. Jokic motivating case may be a single-game variance event rather than a structural pattern.
+
+**Rule recommendation:** No action. Do not add any REB suppression rule based on opposing elite rebounder presence.
+
+---
+
+### H21 — Miss Anatomy: Near-Miss vs. Blowup Next-Game Prediction
+
+**Status: COMPLETE — NOISE verdict (2026-03-22)**
 **Mode:** `--mode miss-anatomy`
-**Output:** `data/backtest_miss_anatomy.json` (not yet run)
+**Output:** `data/backtest_miss_anatomy.json`
+**Sample:** 2,669 player-game rows, 48 players, 2025-10-21 – 2026-03-21
 
 **Question:** Does the severity of a miss (near-miss within 2 units vs. blowup 3+ units below tier) predict next-game hit rate differently?
 
-**Mechanism:** If a player narrowly missed a tier (near-miss), the underlying performance level is close to the threshold and a hit the next game is plausible. If a player was blown out (3+ units below tier), the miss may reflect a structural bad game rather than variance, and the next-game outlook may be worse.
+**Results:**
 
-**Relationship to Backtest 3 (Miss Severity):** Backtest 3 tested miss severity as a league-wide signal and found it flat or insufficiently sampled. Miss Anatomy tests the same hypothesis at the player level, using the `near_miss_rate` and `blowup_rate` fields now computed in `quant.py` (`build_bounce_back_profiles()`). The quant fields are live and feeding Player Profiles; the directive prompt rule (confidence modifier or tier-drop on high `blowup_rate`) is deferred until this backtest validates the signal.
+| Stat | post_near_miss | post_blowup | Delta | Verdict |
+|------|---------------|------------|-------|---------|
+| PTS | 66.2% (n=142) | 65.6% (n=363) | +0.6pp | NOISE |
+| REB | 60.0% (n=285) | 58.0% (n=193) | +2.0pp | NOISE |
+| AST | 64.9% (n=348) | 64.1% (n=106) | +0.8pp | NOISE |
+| 3PM | 63.9% (n=393) | 54.5% (n=11) | — | INSUFFICIENT_SAMPLE |
 
-**Data dependency:** `near_miss_rate` and `blowup_rate` fields are live in `player_stats.json` as of March 2026. Requires ~~2 weeks of accumulation for meaningful per-player samples (~~late March 2026).
+**Verdict: NOISE across all stats.** The null hypothesis holds — whether a previous miss was close (within 2 units) or bad (3+ units below tier) does not predict whether the player hits the same tier next game. Maximum delta is 2.0pp (REB), well below the 4pp threshold.
 
-**Priority:** High — quant fields already live. If signal validates, analyst wiring (annotation + prompt rule) ships immediately after.
+**Player-level notable separations** (≥15pp delta, min 3 games per bucket) are present but samples are too small (n=4–11) to be actionable — the deltas are variance at these sizes.
 
-**Deferred scope:** `analyst.py` annotation and directive confidence rule are explicitly NOT shipped until this backtest completes. See `miss_anatomy_quant_only.md` for rationale.
+**Rule recommendation:** Do NOT ship any directive rule based on `near_miss_rate` or `blowup_rate`. The quant fields remain in `player_stats.json` for Player Profiles conditional rendering (existing use unchanged). No analyst prompt changes required.
+
+---
+
+### H17 — Spread Context vs. Tier Hit Rate
+
+**Status: SECOND RUN COMPLETE — NOISE verdict confirmed (Mar 22, 2026)**
+**Mode:** `--mode spread-context`
+**Output:** `data/backtest_spread_context.json`
+**Sample:** 538 graded picks (PTS: 189, REB: 96, AST: 154, 3PM: 99), full 2025-26 season through March 21. Excluded (no spread match): 0. Baseline: 85.3%.
+
+**Question:** Does pregame spread magnitude predict tier pick hit rate? Does the relationship differ meaningfully across prop types? Is the existing binary competitive/blowout split at spread_abs=6 the right threshold?
+
+**Layer 1 — Overall hit rate by spread bucket:**
+
+| Bucket | Hit Rate | n | vs. Baseline |
+|--------|----------|---|--------------|
+| 0-3    | 85.2%    | 108 | −0.1pp |
+| 4-6    | 85.2%    | 155 | −0.2pp |
+| 7-9    | 87.2%    | 125 | +1.9pp |
+| 10-13  | 82.4%    | 74  | −2.9pp |
+| 14+    | 85.5%    | 76  | +0.2pp |
+
+**Layer 2 — Hit rate by prop type × spread bucket:**
+
+|     | 0-3       | 4-6       | 7-9       | 10-13     | 14+       |
+|-----|-----------|-----------|-----------|-----------|-----------|
+| PTS | 86.0%(43) | 83.6%(55) | 88.1%(42) | 92.3%(26) | 82.6%(23) |
+| REB | 80.0%(15) | 84.6%(26) | 88.5%(26) | 78.6%(14) | 93.3%(15) |
+| AST | 87.1%(31) | 82.0%(50) | 83.9%(31) | 80.0%(20) | 95.5%(22) |
+| 3PM | 84.2%(19) | 95.8%(24) | 88.5%(26) | 71.4%(14) | 68.8%(16) |
+
+**Layer 3 — Threshold validation:**
+
+Current binary split (≤6 vs >6): 85.2% (n=263) vs. 85.5% (n=275) — gap: **−0.3pp** (essentially zero). The existing threshold has no predictive power at all.
+
+Best single threshold search (4.0–12.0, step 0.5):
+- Rank 1: split at 9.5 → gap 3.6pp (≤9.5: 86.1% n=418 | >9.5: 82.5% n=120)
+- Rank 2: split at 10.0 → gap 3.5pp
+- Rank 3: split at 9.0 → gap 3.1pp
+
+Even the best threshold produces only 3.6pp gap — well below the ±10pp signal threshold applied to other backtest verdicts.
+
+**Continuous gradient:** Nearly empty — spread values cluster around half-points that span integer buckets (structural data artifact). Only spread_abs=1 (66.7%, n=6) and spread_abs=4 (80.0%, n=5) had ≥5 picks. No continuous trend visible.
+
+**Verdict: NOISE — confirmed at second run (n=538, +211 from first run of 327).**
+
+The overall spread-to-hit-rate relationship is flat. The current binary split at spread_abs=6 has essentially zero predictive value (−0.3pp gap). The most interesting cell-level signal is 3PM at 10-13 (71.4%, n=14) and 14+ (68.8%, n=16) — both below the 70% floor — but the blowout rules already implemented at spread_abs ≥ 8–15 address this population directly. No new spread-based rules warranted. The existing tier ceiling rules, blowout confidence caps, and BLOWOUT_RISK flag cover the cases where spread context provides genuine signal.
+
+**Rule recommendation:** No action. Existing rules already capture the meaningful spread-context effects. Do not add a spread bucket modifier or change the binary split threshold.
+
+**CLOSED.** NOISE confirmed at 538 picks (rerun Mar 22). Maximum bucket gap 2.9pp. Best threshold search finds 3.6pp at spread_abs ≥ 9.5 — insufficient for a rule. The spread_abs value at pick time has no meaningful predictive relationship with whether picks hit across the full population. Blowout rules in the system (BLOWOUT_RISK penalty, tier caps, skip rules) are justified by specific audited miss archetypes — not by this population-level signal, which is flat.
+
+**3PM × large spread footnote:** 3PM at spread_abs ≥ 10 ran 69–71% across both the 10-13 and 14+ buckets (combined n≈30). Below the 70% floor, but the sample is too small and the finding is contradicted by H19's blowout_win result (3PM hits at 79.2% for favored-side players with ≥24 min in actual blowouts). The population below 70% is likely the players already excluded by existing rules (trend=down, spread_abs ≥ 19 skip, etc.). Watch item at best — not actionable on its own.
 
 ---
 
@@ -293,8 +441,11 @@ Role breakdown (underdog_10plus): primary ball-handler 80.0% (n=10), secondary 7
 | Shot Volume / H13              | NOISE / CONFOUNDED                        | Median FGA sanity check failed                                                                                                         | ❌ Closed                                                                                     |
 | Positional DvP (H8)            | **REVERT (PTS/REB/AST) / KEEP (3PM)**     | Team-level beats positional on PTS/REB/AST (lift adv −0.05 to −0.06); 3PM positional lift adv +0.106. Inversion on PTS/REB frontcourt. | ⚠️ Remove `DvP [POS]` from prompt for PTS/REB/AST; retain field in quant; 3PM activation TBD |
 | Player × Opponent H2H (H9)     | QUEUED                                    | —                                                                                                                                      | ⏳ ~mid-April 2026                                                                            |
-| Miss Anatomy (player-level)    | QUEUED — quant fields live                | near_miss_rate / blowup_rate in player_stats.json                                                                                      | ⏳ ~late March 2026; analyst wiring deferred                                                  |
+| Opponent team hit rate (H15)   | **HOU CONFIRMED SUPPRESSOR** (2026-03-22, n=538) | HOU 61.9% (n=21, −23.4pp). MIN×AST 55.6% (n=9, −29.5pp) — active scrutiny, below formal gate. SAS floor compression (n=6, −5.0). | ✅ `nba_season_context.md` updated: HOU suppressor note added, MIN×AST upgraded, SAS note updated. Re-run at ≥600 picks. |
+| Spread context (H17)           | **NOISE — CLOSED** (2026-03-22, n=538) | Overall spread-to-hit-rate flat; current ≤6 vs >6 split gap = −0.3pp (zero). Best threshold 9.5 → 3.6pp gap — not actionable. 3PM ≥10 (n≈30, 69–71%) below floor but contradicted by H19 blowout_win finding. | ❌ CLOSED — no rules warranted. Blowout rules justified by specific miss archetypes, not this signal. |
+| Miss Anatomy / H21 (player-level) | **NOISE — CLOSED** (2026-03-22, n=1,482) | PTS delta 0.6pp, REB delta 2.0pp, AST delta 0.8pp — all below 4pp threshold. 3PM blowup n=11 (insufficient). No player-level signal at actionable sample sizes. | ❌ CLOSED — no directive rule shipped. `near_miss_rate`/`blowup_rate` remain in quant for Player Profiles only. |
 | In-game blowout regime (H19)       | **MIXED** (2026-03-22)                 | Favored secondary: ELEVATED not suppressed (PTS lift=1.083, 3PM lift=1.103). Underdog secondary AST: COLLAPSE (lift=0.713, n=59). Underdog REB secondary: COLLAPSE (lift=0.858, n=60). | ✅ Finding 1 applied (2026-03-22): secondary scorer skip narrowed to spread_abs ≥ 15 in `build_pick_prompt()`. ✅ Finding 2 applied (2026-03-22): 3PM blowout trend-down hard skip (spread_abs 8–18) retired; trend=down step-down applies instead. spread_abs ≥ 19 unconditional skip unchanged. Underdog AST collapse flagged for annotation-only rule. |
 | Losing-side AST suppression (H20) | **NO_SIGNAL** (2026-03-22)             | underdog_10plus 75.9% vs baseline 74.1% (lift=1.024, n=54); no suppression detected                                                   | ❌ Closed — no rule change; rerun with multi-season data if archetype persists in audit |
+| Elite opposing rebounder (H14)    | **NO_SIGNAL** (2026-03-22, n=1,709)   | thresh=10.0: elite_present 70.3% vs no_elite 69.8% (delta=−0.5pp). H14b team REB flat (70.5% vs 70.1%). No suppression at any threshold (8/10/12). | ❌ CLOSED — no rule change. Sengun vs. Jokic was variance. |
 
 

@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-03-22",
+  "mode": "elite-opp-rebounder",
+  "hypothesis": "Elite opposing rebounder (rolling REB avg >= threshold) suppresses REB tier hit rate",
+  "rolling_window": 10,
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-21"
+  },
+  "total_reb_instances": 1709,
+  "baseline_hit_rate": 0.7028,
+  "H14a_individual": {
+    "thresh_8_elite_present": {
+      "threshold": 8.0,
+      "label": "elite_present",
+      "n": 499,
+      "hits": 348,
+      "hit_rate": 0.6974,
+      "lift": 0.9923
+    },
+    "thresh_8_no_elite": {
+      "threshold": 8.0,
+      "label": "no_elite",
+      "n": 527,
+      "hits": 369,
+      "hit_rate": 0.7002,
+      "lift": 0.9963
+    },
+    "thresh_10_elite_present": {
+      "threshold": 10.0,
+      "label": "elite_present",
+      "n": 202,
+      "hits": 142,
+      "hit_rate": 0.703,
+      "lift": 1.0003
+    },
+    "thresh_10_no_elite": {
+      "threshold": 10.0,
+      "label": "no_elite",
+      "n": 824,
+      "hits": 575,
+      "hit_rate": 0.6978,
+      "lift": 0.9929
+    },
+    "thresh_12_elite_present": {
+      "threshold": 12.0,
+      "label": "elite_present",
+      "n": 40,
+      "hits": 27,
+      "hit_rate": 0.675,
+      "lift": 0.9604
+    },
+    "thresh_12_no_elite": {
+      "threshold": 12.0,
+      "label": "no_elite",
+      "n": 986,
+      "hits": 690,
+      "hit_rate": 0.6998,
+      "lift": 0.9957
+    }
+  },
+  "H14b_team_reb": {
+    "high_opp_reb": {
+      "n": 857,
+      "hits": 604,
+      "hit_rate": 0.7048,
+      "lift": 1.0028,
+      "median_split": 43.92307692307692
+    },
+    "low_opp_reb": {
+      "n": 852,
+      "hits": 597,
+      "hit_rate": 0.7007,
+      "lift": 0.997,
+      "median_split": 43.92307692307692
+    }
+  },
+  "verdict": "no_signal",
+  "verdict_reason": "delta=-0.5pp < 4pp",
+  "rule_recommendation": "Hypothesis not confirmed. No rule change."
+}

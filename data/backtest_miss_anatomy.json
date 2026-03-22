@@ -1,0 +1,273 @@
+{
+  "generated_at": "2026-03-22",
+  "mode": "miss-anatomy",
+  "hypothesis": "Near-miss severity (actual >= tier-2) predicts next-game hit rate better than blowup miss (actual < tier-3)",
+  "rolling_window": 10,
+  "near_miss_thresh": 2,
+  "blowup_thresh": 3,
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-03-21"
+  },
+  "league_summary": {
+    "PTS": {
+      "post_near_miss": {
+        "n": 142,
+        "hits": 94,
+        "hit_rate": 0.662
+      },
+      "post_blowup": {
+        "n": 363,
+        "hits": 238,
+        "hit_rate": 0.6556
+      },
+      "post_other_miss": {
+        "n": 0,
+        "hits": 0,
+        "hit_rate": null
+      },
+      "verdict": "noise",
+      "verdict_reason": "delta=0.6pp < 4pp"
+    },
+    "REB": {
+      "post_near_miss": {
+        "n": 285,
+        "hits": 171,
+        "hit_rate": 0.6
+      },
+      "post_blowup": {
+        "n": 193,
+        "hits": 112,
+        "hit_rate": 0.5803
+      },
+      "post_other_miss": {
+        "n": 0,
+        "hits": 0,
+        "hit_rate": null
+      },
+      "verdict": "noise",
+      "verdict_reason": "delta=2.0pp < 4pp"
+    },
+    "AST": {
+      "post_near_miss": {
+        "n": 348,
+        "hits": 226,
+        "hit_rate": 0.6494
+      },
+      "post_blowup": {
+        "n": 106,
+        "hits": 68,
+        "hit_rate": 0.6415
+      },
+      "post_other_miss": {
+        "n": 0,
+        "hits": 0,
+        "hit_rate": null
+      },
+      "verdict": "noise",
+      "verdict_reason": "delta=0.8pp < 4pp"
+    },
+    "3PM": {
+      "post_near_miss": {
+        "n": 393,
+        "hits": 251,
+        "hit_rate": 0.6387
+      },
+      "post_blowup": {
+        "n": 11,
+        "hits": 6,
+        "hit_rate": 0.5455
+      },
+      "post_other_miss": {
+        "n": 0,
+        "hits": 0,
+        "hit_rate": null
+      },
+      "verdict": "insufficient_sample",
+      "verdict_reason": "near_miss n=393, blowup n=11 (need >= 15 each)"
+    }
+  },
+  "notable_players": [
+    {
+      "player": "Scottie Barnes",
+      "stat": "REB",
+      "near_miss_n": 9,
+      "near_miss_hr": 0.7778,
+      "blowup_n": 6,
+      "blowup_hr": 0.1667,
+      "delta": 0.6111
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "PTS",
+      "near_miss_n": 5,
+      "near_miss_hr": 0.4,
+      "blowup_n": 8,
+      "blowup_hr": 1.0,
+      "delta": -0.6
+    },
+    {
+      "player": "Josh Giddey",
+      "stat": "AST",
+      "near_miss_n": 5,
+      "near_miss_hr": 1.0,
+      "blowup_n": 5,
+      "blowup_hr": 0.4,
+      "delta": 0.6
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "REB",
+      "near_miss_n": 9,
+      "near_miss_hr": 0.4444,
+      "blowup_n": 5,
+      "blowup_hr": 1.0,
+      "delta": -0.5556
+    },
+    {
+      "player": "Pascal Siakam",
+      "stat": "REB",
+      "near_miss_n": 4,
+      "near_miss_hr": 0.5,
+      "blowup_n": 4,
+      "blowup_hr": 1.0,
+      "delta": -0.5
+    },
+    {
+      "player": "Jaylen Brown",
+      "stat": "AST",
+      "near_miss_n": 9,
+      "near_miss_hr": 0.8889,
+      "blowup_n": 5,
+      "blowup_hr": 0.4,
+      "delta": 0.4889
+    },
+    {
+      "player": "Jalen Duren",
+      "stat": "PTS",
+      "near_miss_n": 4,
+      "near_miss_hr": 0.25,
+      "blowup_n": 11,
+      "blowup_hr": 0.7273,
+      "delta": -0.4773
+    },
+    {
+      "player": "Scottie Barnes",
+      "stat": "PTS",
+      "near_miss_n": 8,
+      "near_miss_hr": 0.875,
+      "blowup_n": 5,
+      "blowup_hr": 0.4,
+      "delta": 0.475
+    },
+    {
+      "player": "Isaiah Hartenstein",
+      "stat": "REB",
+      "near_miss_n": 7,
+      "near_miss_hr": 0.7143,
+      "blowup_n": 4,
+      "blowup_hr": 0.25,
+      "delta": 0.4643
+    },
+    {
+      "player": "Josh Giddey",
+      "stat": "REB",
+      "near_miss_n": 4,
+      "near_miss_hr": 0.75,
+      "blowup_n": 7,
+      "blowup_hr": 0.2857,
+      "delta": 0.4643
+    },
+    {
+      "player": "Norman Powell",
+      "stat": "PTS",
+      "near_miss_n": 5,
+      "near_miss_hr": 1.0,
+      "blowup_n": 9,
+      "blowup_hr": 0.5556,
+      "delta": 0.4444
+    },
+    {
+      "player": "Jalen Johnson",
+      "stat": "AST",
+      "near_miss_n": 5,
+      "near_miss_hr": 0.4,
+      "blowup_n": 6,
+      "blowup_hr": 0.8333,
+      "delta": -0.4333
+    },
+    {
+      "player": "Matas Buzelis",
+      "stat": "REB",
+      "near_miss_n": 7,
+      "near_miss_hr": 0.5714,
+      "blowup_n": 3,
+      "blowup_hr": 1.0,
+      "delta": -0.4286
+    },
+    {
+      "player": "Brandon Ingram",
+      "stat": "REB",
+      "near_miss_n": 10,
+      "near_miss_hr": 0.6,
+      "blowup_n": 6,
+      "blowup_hr": 1.0,
+      "delta": -0.4
+    },
+    {
+      "player": "Jamal Murray",
+      "stat": "REB",
+      "near_miss_n": 5,
+      "near_miss_hr": 0.4,
+      "blowup_n": 4,
+      "blowup_hr": 0.0,
+      "delta": 0.4
+    },
+    {
+      "player": "LaMelo Ball",
+      "stat": "AST",
+      "near_miss_n": 13,
+      "near_miss_hr": 0.6154,
+      "blowup_n": 4,
+      "blowup_hr": 1.0,
+      "delta": -0.3846
+    },
+    {
+      "player": "Jalen Duren",
+      "stat": "REB",
+      "near_miss_n": 5,
+      "near_miss_hr": 0.2,
+      "blowup_n": 12,
+      "blowup_hr": 0.5833,
+      "delta": -0.3833
+    },
+    {
+      "player": "Jarrett Allen",
+      "stat": "REB",
+      "near_miss_n": 4,
+      "near_miss_hr": 0.75,
+      "blowup_n": 5,
+      "blowup_hr": 0.4,
+      "delta": 0.35
+    },
+    {
+      "player": "Giannis Antetokounmpo",
+      "stat": "PTS",
+      "near_miss_n": 3,
+      "near_miss_hr": 1.0,
+      "blowup_n": 6,
+      "blowup_hr": 0.6667,
+      "delta": 0.3333
+    },
+    {
+      "player": "Giannis Antetokounmpo",
+      "stat": "REB",
+      "near_miss_n": 6,
+      "near_miss_hr": 0.6667,
+      "blowup_n": 4,
+      "blowup_hr": 1.0,
+      "delta": -0.3333
+    }
+  ],
+  "total_player_stat_combos_evaluated": 165
+}
