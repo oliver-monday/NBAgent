@@ -879,5 +879,123 @@
     "spread_delta": "spread moved 4.0pts smaller since morning (was 13.5, now 9.5)",
     "morning_context": "skipped this morning (volatile_weak_combo)",
     "reasoning": "PTS T15 80% [up]; REB T6 70% [up]; 3PM T2 85% [up]; spread moved 4.0pts smaller since morning (was 13.5, now 9.5); skipped this morning (volatile_weak_combo)"
+  },
+  {
+    "date": "2026-03-21",
+    "generated_at": "2026-03-21T20:20:53.003422-07:00",
+    "triggered_by": "Luka Doncic",
+    "triggered_by_team": "LAL",
+    "side": "teammate",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (3pm_blowout_trend_down)",
+    "reasoning": "PTS T15 85% [stable]; 3PM T1 90% [stable]; skipped this morning (3pm_blowout_trend_down)"
+  },
+  {
+    "date": "2026-03-21",
+    "generated_at": "2026-03-21T20:20:53.003422-07:00",
+    "triggered_by": "Luka Doncic",
+    "triggered_by_team": "LAL",
+    "side": "teammate",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 80% [up]"
+  },
+  {
+    "date": "2026-03-21",
+    "generated_at": "2026-03-21T20:20:53.003422-07:00",
+    "triggered_by": "Luka Doncic",
+    "triggered_by_team": "LAL",
+    "side": "opponent",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "moderate"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T20 70% [down]; AST T2 85% [down]; 3PM T2 70% [stable]"
+  },
+  {
+    "date": "2026-03-21",
+    "generated_at": "2026-03-21T20:20:53.003422-07:00",
+    "triggered_by": "Luka Doncic",
+    "triggered_by_team": "LAL",
+    "side": "opponent",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (ast_hard_gate, 3pm_blowout_trend_down)",
+    "reasoning": "REB T6 70% [stable]; AST T4 70% [stable]; 3PM T1 75% [down]; skipped this morning (ast_hard_gate, 3pm_blowout_trend_down)"
   }
 ]
