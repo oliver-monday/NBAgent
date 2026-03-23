@@ -1075,7 +1075,7 @@ def generate_html(d: dict) -> str:
     #trend-chart {{ width: 100%; height: 160px; display: block; }}
 
     /* History table */
-    .history-table {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
+    .history-table {{ min-width: 100%; border-collapse: collapse; font-size: 13px; }}
     .history-table th {{ text-align: left; font-size: 10px; font-weight: 600;
                          color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
                          padding: 8px 10px; border-bottom: 1px solid var(--border); }}
@@ -1171,12 +1171,12 @@ def generate_html(d: dict) -> str:
     .top-picks-divider {{ height: 1px; background: var(--border); margin: 20px 0 16px; }}
 
     /* History drawers */
-    .history-drawer {{ margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }}
+    .history-drawer {{ margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; overflow: visible; }}
     .drawer-header {{ background: var(--surface); padding: 12px 16px; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center;
       font-size: 13px; font-weight: 600; user-select: none; }}
     .drawer-header:hover {{ border-color: var(--accent); }}
-    .drawer-body {{ padding: 12px 16px; background: var(--bg); }}
+    .drawer-body {{ padding: 12px 16px 16px; background: var(--bg); overflow-x: auto; }}
     .drawer-chevron {{ font-size: 12px; color: var(--muted); transition: transform 0.2s; }}
     .drawer-chevron.open {{ transform: rotate(180deg); }}
   </style>
