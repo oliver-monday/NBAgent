@@ -1,0 +1,160 @@
+[
+  {
+    "date": "2026-03-23",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 25,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "3PM",
+    "pick_value": 3,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a 3PM pick means the distribution is genuinely wide game-to-game; even with iron_floor protection and a strong bounce-back rate, a single cold-shooting night from deep \u2014 well within normal variance for a volatile shooter \u2014 lands exactly at the threshold where iron_floor provides no statistical cushion beyond the base tier."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -15.5 creates genuine blowout game-script risk: if OKC pulls away early, SGA's minutes compress to the low 30s or below, and assist opportunities in a non-competitive second half collapse as OKC limits possessions and rests starters. Min_floor=31.4 leaves limited margin before a reduced-minutes game script pushes assist volume below 4."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a raw_avg of only 1.2 means SGA is one below-average three-point attempt night from missing this floor \u2014 the margin between average output and the threshold is razor-thin, and blowout garbage-time truncation of his playing time (spread=-15.5) reduces his total attempt volume."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -15.5 is a legitimate blowout risk for a non-elite scorer: Holmgren's min_floor=25.6 is close to the 24-minute fragility threshold, meaning a comfortable OKC lead in the third quarter regularly puts him on the bench earlier than his average suggests, compressing counting stats. Pick already received a blowout penalty but the structural rest risk for a secondary scorer in a double-digit blowout remains."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag on AST with a post_miss hit rate of only 53% and a bounce-back lift below 0.75 signals meaningful slump persistence; combined with a -13.5 blowout spread where ORL leading big suppresses half-court creation sequences, Banchero's assist volume is structurally fragile at a T4 floor that already sits near the minimum qualifying tier for his position."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD flag triggered a mandatory step-down already, and a typical_miss of 5.0 pts below threshold is the largest miss magnitude on the slate \u2014 meaning when Bane misses, he misses badly. Combined with a blowout spread (-13.5) that could compress his minutes, the downside distribution is materially wide despite the tier step-down."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Johnson carries a QUES designation per the pick_reasoning, meaning if he is limited or exits early due to the underlying injury, his minutes drop below the min_floor of 27.6 and PTS misses on reduced volume. The QUES risk is structural and not fully captured by a hit-rate based confidence number calibrated on healthy-game samples."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag on AST with a post_miss hit rate of only 57% (below the 65% concern threshold), combined with a QUES injury designation and a blowout spread (-13.5) that compresses half-court creation in a comfortable ATL lead \u2014 this pick is structurally fragile on three independent axes simultaneously: injury risk, volatility, and game-script suppression of assist volume near a high T6 floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B second night with a confirmed b2b hit rate of 75% at T10 \u2014 meaningfully below his overall 95% rate \u2014 is the primary structural vulnerability; the 20-percentage-point B2B suppression at this specific tier is a real floor shift, and the blowout spread (-12.5 as road underdog) means TOR losing big could further compress Barnes's counting-stat volume."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-23",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]

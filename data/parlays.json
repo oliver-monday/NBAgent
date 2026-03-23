@@ -2833,5 +2833,100 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-23",
+    "parlays": [
+      {
+        "label": "Monday Volume Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Luka Doncic",
+            "team": "LAL",
+            "opponent": "DET",
+            "prop_type": "PTS",
+            "pick_value": 25,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Chet Holmgren",
+            "team": "OKC",
+            "opponent": "PHI",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "UTAH",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+117",
+        "confidence_product": 0.4626,
+        "correlation": "positive",
+        "rationale": "Three-game independence with volume_game tags; Barnes ultra-low REB floor anchors against game-script risk per validated pattern.",
+        "date": "2026-03-23",
+        "id": "parlay_2026-03-23_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Soft Slate Scorers",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "IND",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Jalen Johnson",
+            "team": "ATL",
+            "opponent": "MEM",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "PHI",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "feeder"
+          }
+        ],
+        "implied_odds": "+128",
+        "confidence_product": 0.4052,
+        "correlation": "positive",
+        "rationale": "Banchero and Johnson exploit soft defenses in independent games; SGA AST adds heterogeneous prop type and decoupled game-script resilience.",
+        "date": "2026-03-23",
+        "id": "parlay_2026-03-23_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]

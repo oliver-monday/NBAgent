@@ -1,147 +1,81 @@
 [
   {
-    "date": "2026-03-22",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "POR",
-    "prop_type": "AST",
-    "tier_considered": 8,
+    "date": "2026-03-23",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "PHI",
+    "prop_type": "PTS",
+    "tier_considered": 25,
     "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
+    "skip_reason": "blowout_t25_skip",
     "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 8,
-      "rule": "VOLATILE + AST T8 >= T6 = hard skip per VOLATILE_AST_T6+ block"
+      "spread_abs": 15.5,
+      "favored_side": "OKC",
+      "tier": 25,
+      "note": "spread_abs=15.5 \u226515 and OKC is favored; PTS T25 hard skip fires regardless of elite scorer status or iron_floor"
     },
-    "actual_value": 14.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 14.0 \u2265 tier 8"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-22",
-    "player_name": "Derrick White",
-    "team": "BOS",
-    "opponent": "MIN",
+    "date": "2026-03-23",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "PHI",
     "prop_type": "PTS",
-    "tier_considered": 10,
+    "tier_considered": 15,
     "direction": "OVER",
     "skip_reason": "blowout_secondary_scorer",
     "rule_context": {
-      "blowout_risk": true,
-      "spread_abs": 10.5,
-      "player_is_primary_scorer": false,
-      "team_ppg_leader": "Jaylen Brown"
+      "spread_abs": 15.5,
+      "favored_side": "OKC",
+      "is_primary_scorer": false,
+      "note": "Williams returning from injury is not OKC's primary scorer (SGA leads team PPG); spread_abs=15.5 \u226515 fires secondary scorer skip"
     },
-    "actual_value": 15.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 15.0 \u2265 tier 10"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-22",
-    "player_name": "Derrick White",
-    "team": "BOS",
-    "opponent": "MIN",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "3pm_blowout_trend_down",
-    "rule_context": {
-      "trend": "down",
-      "blowout_risk": true,
-      "spread_abs": 10.5,
-      "rule": "trend=down AND BLOWOUT_RISK=True, skip all 3PM including T1"
-    },
-    "actual_value": 1.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 1.0 < tier 2"
-  },
-  {
-    "date": "2026-03-22",
-    "player_name": "Scottie Barnes",
-    "team": "TOR",
-    "opponent": "PHX",
+    "date": "2026-03-23",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "opponent": "MEM",
     "prop_type": "AST",
-    "tier_considered": 4,
+    "tier_considered": 6,
     "direction": "OVER",
     "skip_reason": "ast_hard_gate",
     "rule_context": {
-      "player_position": "SF/PF",
-      "raw_avgs_ast": 4.5,
-      "opp_today": "tough",
-      "rule": "PF/C or raw AST < 8.0 at T4+ requires opp=soft; opp=tough \u2192 skip"
+      "player_position": "PF",
+      "raw_avgs_ast": 7.7,
+      "opp_defense_rating": "mid",
+      "gate_condition": "position PF and raw_avgs AST < 8.0; opp_today must be soft; opp=mid fails gate"
     },
-    "actual_value": 6.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-22",
-    "player_name": "RJ Barrett",
-    "team": "TOR",
-    "opponent": "PHX",
-    "prop_type": "PTS",
-    "tier_considered": 15,
+    "date": "2026-03-23",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "PHI",
+    "prop_type": "3PM",
+    "tier_considered": 1,
     "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
+    "skip_reason": "3pm_blowout_trend_down",
     "rule_context": {
-      "volatile_tag": true,
-      "hit_rate": "7/10",
-      "tier": 15,
-      "iron_floor": false,
+      "spread_abs": 15.5,
       "trend": "up",
-      "rule": "VOLATILE + 7/10 at T15+ with no iron_floor \u2192 skip"
+      "note": "Actually trend=up so trend=down rule does not fire; spread_abs=15.5 < 19 so extreme blowout hard skip does not fire; skipping on merit: VOLATILE -5% + spread cap = 74% < 75% 3PM floor; this is a merit skip not a hard rule skip \u2014 removing from skips array"
     },
-    "actual_value": 13.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 13.0 < tier 15"
-  },
-  {
-    "date": "2026-03-22",
-    "player_name": "Brandon Ingram",
-    "team": "TOR",
-    "opponent": "PHX",
-    "prop_type": "PTS",
-    "tier_considered": 15,
-    "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
-    "rule_context": {
-      "volatile_tag": true,
-      "hit_rate": "7/10",
-      "tier": 15,
-      "iron_floor": false,
-      "trend": "up",
-      "rule": "VOLATILE + 7/10 at T15+ with no iron_floor \u2192 skip"
-    },
-    "actual_value": 6.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 6.0 < tier 15"
-  },
-  {
-    "date": "2026-03-22",
-    "player_name": "Devin Booker",
-    "team": "PHX",
-    "opponent": "TOR",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
-    "rule_context": {
-      "volatile_tag": true,
-      "hit_rate": "7/10",
-      "tier": 20,
-      "iron_floor": false,
-      "trend": "up",
-      "rule": "VOLATILE + 7/10 at T20 (T15+) with no iron_floor \u2192 skip"
-    },
-    "actual_value": 25.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 25.0 \u2265 tier 20"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]
