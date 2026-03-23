@@ -40,6 +40,7 @@ AUDIT_REPORTS_DIR   = DATA / "audit_reports"
 POST_GAME_NEWS_JSON  = DATA / "post_game_news.json"
 STANDINGS_JSON       = DATA / "standings_today.json"
 SKIPPED_PICKS_JSON   = DATA / "skipped_picks.json"
+SKIP_ARCHIVE_JSON    = DATA / "skipped_picks_archive.json"
 MASTER_CSV           = DATA / "nba_master.csv"
 PICKS_REVIEW_DIR     = DATA  # daily files: data/picks_review_YYYY-MM-DD.json
 
@@ -1162,6 +1163,28 @@ def call_auditor(prompt: str) -> dict:
 
 # ── Output ───────────────────────────────────────────────────────────
 
+def save_skip_archive(graded_skips: list[dict]) -> None:
+    """Append today's graded skip records to the persistent skip archive."""
+    if not graded_skips:
+        return
+    existing: list[dict] = []
+    if SKIP_ARCHIVE_JSON.exists():
+        try:
+            with open(SKIP_ARCHIVE_JSON) as f:
+                existing = json.load(f)
+            if not isinstance(existing, list):
+                existing = []
+        except Exception:
+            existing = []
+    # Remove any existing entries for the same date to prevent duplicates on re-run
+    date_str = graded_skips[0].get("date", YESTERDAY_STR)
+    existing = [s for s in existing if s.get("date") != date_str]
+    existing.extend(graded_skips)
+    with open(SKIP_ARCHIVE_JSON, "w") as f:
+        json.dump(existing, f, indent=2)
+    print(f"[auditor] Archived {len(graded_skips)} graded skips → {SKIP_ARCHIVE_JSON}")
+
+
 def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list[dict]):
     # Update picks.json with graded results
     all_picks = []
@@ -1215,6 +1238,7 @@ def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list
             print(f"[auditor] Graded {len(skips)} skip records → {SKIPPED_PICKS_JSON}")
         except Exception as e:
             print(f"[auditor] WARNING: could not write graded skips: {e}")
+        save_skip_archive(skips)
 
     save_audit_summary(existing_log, all_skips=skips if skips else None)
     save_audit_report(audit_entry, graded_picks, graded_parlays, skips=skips)

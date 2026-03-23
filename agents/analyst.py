@@ -2250,6 +2250,24 @@ For each shortlisted player, identify which prop types (PTS/REB/AST/3PM) are wor
 
 Use `priority: "high"` for players with multiple qualifying props, strong recent form, and minimal situational risk. Use `priority: "medium"` for players with one qualifying prop, meaningful risk flags, or borderline signal.
 
+## OMITTED BLOCK — REQUIRED, NOT OPTIONAL
+The `omitted` array must be populated every day. It captures two categories:
+
+1. Hard exclusions — players in the quant data who are not shortlisted at all: no qualifying
+   tier, confirmed OUT or heavy injury restriction, role eliminated by game script.
+
+2. Deprioritized candidates — players who ARE shortlisted but carry meaningful situational
+   risk that the Pick agent should weigh carefully. For any shortlisted player where you
+   assigned `priority: "medium"` due to a genuine structural concern (B2B second night,
+   extreme blowout risk as secondary scorer, VOLATILE tag on sole qualifying prop, thin
+   minutes floor near the 24-minute fragility threshold, QUES designation with role
+   uncertainty), add a corresponding entry in `omitted` summarizing that concern.
+   These are not exclusions — they are advisory flags. The player still appears on the
+   shortlist; the omitted entry makes the Scout's concern explicit and auditable.
+
+If every player on today's slate is a clean high-confidence candidate, state that explicitly
+with a single omitted entry: {{"player_name": "none", "reason": "all candidates clean today — no meaningful deprioritization flags", "risk_type": "none"}}. The omitted array must never be empty.
+
 ## TODAY'S GAMES
 {games_block}
 
@@ -2291,8 +2309,9 @@ Your response MUST begin with a JSON object at character 0. No preamble. No "Her
   ],
   "omitted": [
     {{{{
-      "player_name": "string — exact name from QUANT STATS",
-      "reason": "why omitted — e.g. no qualifying tier, injury news, game script eliminates prop, confirmed limited role"
+      "player_name": "string — exact name from QUANT STATS, or 'none' if all candidates clean",
+      "reason": "1–2 sentences: why excluded or deprioritized — be specific about the structural concern",
+      "risk_type": "hard_exclusion | deprioritized | none"
     }}}}
   ]
 }}}}

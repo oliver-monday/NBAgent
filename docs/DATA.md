@@ -364,6 +364,15 @@ List of daily bundles. Each bundle contains the day's parlays.
 ### audit_log.json
 List of daily audit entries. See `AGENTS.md` for full schema.
 
+### skipped_picks_archive.json
+Persistent append-log of all graded skip records accumulated across the season. Written by `save_skip_archive()` in `auditor.py` after each auditor run. Never overwritten — entries are deduplicated by date on re-run (same pattern as `audit_log.json`). Committed by `auditor.yml` alongside `audit_log.json`. Schema is identical to `skipped_picks.json` fields, accumulated across all dates:
+```
+date, player_name, team, opponent, prop_type, tier_considered, direction,
+skip_reason, rule_context,
+actual_value, would_have_hit, skip_verdict, skip_verdict_notes
+```
+`skip_verdict` values: `correct_skip` / `false_skip` / `no_data`. Enables longitudinal false-skip-rate analysis and retrospective skip-rule debugging across the full season (previously impossible because `skipped_picks.json` is overwritten each morning by the analyst).
+
 ### audit_summary.json
 Rolled-up season stats written fresh after every auditor run by `save_audit_summary()`. Consumed by `analyst.py` as `## ROLLING PERFORMANCE SUMMARY`. Key blocks: `overall` (season hit rates, injury_exclusions, voided count), `prop_type_breakdown` (per-stat rates), `confidence_calibration` (per-band actual vs stated), `skip_validation` (per-rule false skip rates), `human_flag_precision` (season hit/miss rates grouped by `human_verdict` — "keep"/"trim"/"manual_skip" — computed from `picks.json` directly; accumulates automatically without explicit audit_log entries).
 

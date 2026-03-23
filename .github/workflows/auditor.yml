@@ -53,7 +53,7 @@ jobs:
           git rebase --autostash origin/main
 
           CHANGED=0
-          for f in "data/picks.json" "data/audit_log.json" "data/audit_summary.json" "data/audit_reports/" "data/skipped_picks.json"; do
+          for f in "data/picks.json" "data/audit_log.json" "data/audit_summary.json" "data/audit_reports/" "data/skipped_picks.json" "data/skipped_picks_archive.json"; do
             if [ -e "$f" ] && [ -n "$(git status --porcelain "$f")" ]; then
               git add "$f"
               CHANGED=1
