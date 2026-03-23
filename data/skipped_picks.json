@@ -13,10 +13,10 @@
       "ast_tier": 8,
       "rule": "VOLATILE + AST T8 >= T6 = hard skip per VOLATILE_AST_T6+ block"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 14.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 14.0 \u2265 tier 8"
   },
   {
     "date": "2026-03-22",
@@ -33,10 +33,10 @@
       "player_is_primary_scorer": false,
       "team_ppg_leader": "Jaylen Brown"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 10"
   },
   {
     "date": "2026-03-22",
@@ -53,10 +53,10 @@
       "spread_abs": 10.5,
       "rule": "trend=down AND BLOWOUT_RISK=True, skip all 3PM including T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 2"
   },
   {
     "date": "2026-03-22",
@@ -73,10 +73,10 @@
       "opp_today": "tough",
       "rule": "PF/C or raw AST < 8.0 at T4+ requires opp=soft; opp=tough \u2192 skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-22",
@@ -95,10 +95,10 @@
       "trend": "up",
       "rule": "VOLATILE + 7/10 at T15+ with no iron_floor \u2192 skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 13.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 13.0 < tier 15"
   },
   {
     "date": "2026-03-22",
@@ -117,10 +117,10 @@
       "trend": "up",
       "rule": "VOLATILE + 7/10 at T15+ with no iron_floor \u2192 skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 6.0 < tier 15"
   },
   {
     "date": "2026-03-22",
@@ -139,9 +139,9 @@
       "trend": "up",
       "rule": "VOLATILE + 7/10 at T20 (T15+) with no iron_floor \u2192 skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 20"
   }
 ]

@@ -14274,11 +14274,15 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron-floor T20 for elite scorer vs mid POR defense; elite blowout exemption applies.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK is real even after the confidence cap: DEN is an 8.5-point home favorite, and Jokic \u2014 the team's primary star \u2014 is the classic Q4 rest candidate when games are decided early. The floor_minutes of 29.5 vs avg 35.8 shows meaningful minutes variance, meaning a single early-decision game compresses his counting stats window despite a strong historical hit rate."
+    ]
   },
   {
     "date": "2026-03-22",
@@ -14297,11 +14301,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "VOLATILE + AST T8 block fires \u2014 skip per hard rule.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on AST plus BLOWOUT_RISK creates the exact correlated downside flagged in the historical miss lessons: blowout game scripts compress structured half-court creation opportunities, and Jokic's AST distribution is wide (volatile). Per audit history, two or more of {volatile AST, road-underdog/blowout spread, blowout risk} co-occurring on AST T6+ warrants heightened scrutiny \u2014 here blowout risk and volatile AST co-occur at exactly T6."
+    ]
   },
   {
     "date": "2026-03-22",
@@ -14320,11 +14328,15 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "Without Edwards (n=13): T15=100%, consistent tag, 100% vs tough defenses historically.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "MIN is a 10.5-point road underdog at BOS, creating a severe losing-side blowout-loss risk. Historical lessons explicitly flag that losing-side blowout scripts reduce the primary forward's scoring volume, and Randle's post_miss_hr of only 64% (lift=0.80) signals meaningful downside persistence. The Without-Edwards baseline elevates confidence, but a blowout loss context would structurally suppress his volume regardless."
+    ]
   },
   {
     "date": "2026-03-22",
@@ -14343,11 +14355,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Without Edwards: T4=92%, solid floor even against tough BOS with trend-down penalty.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "REB is confirmed slump-persistent per audit rules, and the post_miss_hr of 88% is solid but the T4 exact-match exemption (no lower valid tier) means this is the floor \u2014 one bad game produces a miss with no cushion. The 10.5-point spread on the losing side creates a blowout-loss scenario that historically compresses possession counts and rebounding opportunities for the trailing team's primary forward."
+    ]
   },
   {
     "date": "2026-03-22",
@@ -14366,11 +14382,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Without Edwards T2 AST=100% in 13 games; even with losing-side blowout and tough defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-22",
@@ -14389,11 +14407,15 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron-floor T15 after FG_MARGIN_THIN step-down; Brown is BOS primary scorer vs mid MIN defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 29.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "BOS is a 10.5-point favorite with BLOWOUT_RISK, and even with iron_floor status, a blowout win creates genuine Q4 rest risk for a star at a T20 floor. The FG_MARGIN_THIN flag (8%) noted in the pick_reasoning means Brown is one off-shooting night from falling short, and the typical_miss of 10 pts below is the largest on the slate \u2014 signaling that when Brown misses, he misses badly."
+    ]
   },
   {
     "date": "2026-03-22",
@@ -14412,11 +14434,13 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "10/10 hit rate, consistent tag, 96% vs tough defenses; FG_COLD below mandatory threshold.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-22",
@@ -14435,11 +14459,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "90% overall at T4, 92% vs tough opponents, stable trend in competitive game script.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-22",
@@ -14458,11 +14484,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "VOLATILE + 7/10 at T15 \u2014 volatile_weak_combo skip fires; no iron_floor to invoke exception.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-22",
@@ -14481,11 +14509,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Barrett T2 AST=80% overall, 87% vs tough; VOLATILE -5% applied.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-22",
@@ -14504,11 +14534,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "T1 3PM after trend=down step from T2; 90% base capped at 80% per non-iron-floor 3PM ceiling.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-22",
@@ -14527,10 +14559,12 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "T2 AST=90% overall, 84% vs tough; competitive game script supports full playmaking volume.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
