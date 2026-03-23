@@ -1944,11 +1944,21 @@ KEY RULES — VOLATILITY:
   signal that this player's counting stats are distribution-wide; pairing it with T15+
   at these hit rates is structurally marginal regardless of DvP or trend context. The
   system generates enough picks that these combinations should be skipped in favor of
-  higher-confidence selections. This rule applies to PTS props only. VOLATILE + 7/10 or
-  8/10 at T15+ for REB or AST is handled by the existing 78% REB minimum floor and AST
-  gate rules respectively. Exception: if the player has [iron_floor] on this stat AND
-  trend=up, this skip does not apply — the iron_floor tag elevates the floor reliability
-  above the 8/10 baseline.
+  higher-confidence selections. This rule applies to PTS props only. Do NOT apply this
+  skip to AST picks below T6 — the VOLATILE AST skip rule governs those cases and its
+  threshold is T6, not T4. VOLATILE + 7/10 or 8/10 at T15+ for REB is handled by the
+  existing 78% REB minimum floor rule.
+  Exceptions — this skip does NOT apply when any of the following are true:
+    (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
+        floor reliability above the 8/10 baseline.
+    (b) The stat is AST AND the player's raw_avgs AST is ≥ 6.0 AND [iron_floor] is true
+        on their AST stat — elite passers with a confirmed structural floor are not
+        captured by the weak-combo rationale. Apply standard VOLATILE treatment instead
+        (-5% confidence deduction) and evaluate normally. Emit a pick, not a skip.
+        Rationale: Jokic (T8 AST, hit) and Barnes (T4 AST, hit) both triggered
+        volatile_weak_combo at 100% false skip rate. Players averaging 6+ APG with an
+        iron_floor have a confirmed assist floor that makes the 7/10 or 8/10 qualification
+        structurally sound, not marginal.
 - VOLATILE AST skip — high-tier primary ball-handlers: If BOTH of the following are true,
   SKIP the AST pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
@@ -2896,11 +2906,21 @@ KEY RULES — VOLATILITY:
   signal that this player's counting stats are distribution-wide; pairing it with T15+
   at these hit rates is structurally marginal regardless of DvP or trend context. The
   system generates enough picks that these combinations should be skipped in favor of
-  higher-confidence selections. This rule applies to PTS props only. VOLATILE + 7/10 or
-  8/10 at T15+ for REB or AST is handled by the existing 78% REB minimum floor and AST
-  gate rules respectively. Exception: if the player has [iron_floor] on this stat AND
-  trend=up, this skip does not apply — the iron_floor tag elevates the floor reliability
-  above the 8/10 baseline.
+  higher-confidence selections. This rule applies to PTS props only. Do NOT apply this
+  skip to AST picks below T6 — the VOLATILE AST skip rule governs those cases and its
+  threshold is T6, not T4. VOLATILE + 7/10 or 8/10 at T15+ for REB is handled by the
+  existing 78% REB minimum floor rule.
+  Exceptions — this skip does NOT apply when any of the following are true:
+    (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
+        floor reliability above the 8/10 baseline.
+    (b) The stat is AST AND the player's raw_avgs AST is ≥ 6.0 AND [iron_floor] is true
+        on their AST stat — elite passers with a confirmed structural floor are not
+        captured by the weak-combo rationale. Apply standard VOLATILE treatment instead
+        (-5% confidence deduction) and evaluate normally. Emit a pick, not a skip.
+        Rationale: Jokic (T8 AST, hit) and Barnes (T4 AST, hit) both triggered
+        volatile_weak_combo at 100% false skip rate. Players averaging 6+ APG with an
+        iron_floor have a confirmed assist floor that makes the 7/10 or 8/10 qualification
+        structurally sound, not marginal.
 - VOLATILE AST skip — high-tier primary ball-handlers: If BOTH of the following are true,
   SKIP the AST pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]

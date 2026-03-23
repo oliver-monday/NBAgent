@@ -98,57 +98,40 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 
 ### Pending Backtests
 
-### H15 — Opponent Team Pick Suppression / Lift
-**Status: SECOND RUN COMPLETE (Mar 22, 538 picks) — HOU confirmed suppressor; nba_season_context.md updated**
-**Mode: `--mode opp-team-hit-rate`**
+### H9 — Player × Opponent H2H Splits
+**Status: QUEUED — data accumulating**
+**Mode: `--mode h2h-splits`** | ETA: mid-April 2026 (near-complete season sample required)
 
-Second run (Mar 22, 538 picks): **HOU confirmed system-wide suppressor** — 61.9% (n=21, −23.4pp). HOU PTS 63.6% (n=11), HOU AST 62.5% (n=8). MIN×AST deepened to 55.6% (n=9, −29.5pp) — below formal threshold but upgraded to active scrutiny. SAS floor compression strengthened (n=6, mean −5.0). All three notes updated in `nba_season_context.md`. Full results in `docs/BACKTESTS.md`. Re-run at end of season (≥600 picks) to check if any additional teams clear the suppressor gate.
+Does a player's historical hit rate against today's specific opponent predict next-game performance better than the population-level opp_defense rating? Most opponents appear 2–4× per season — sample too thin until late April. Design in `docs/BACKTESTS.md`.
 
 ---
 
-### H14 — Elite Opposing Rebounder REB Suppression
-**Status: COMPLETE — NO_SIGNAL verdict (Mar 22, 2026)**
-**Mode: `--mode elite-opp-rebounder`** | Full results in `docs/BACKTESTS.md`.
+### H15 — Opponent Team Pick Suppression / Lift
+**Status: SECOND RUN COMPLETE (Mar 22, 538 picks) — re-run at ≥600 picks (end of season)**
+**Mode: `--mode opp-team-hit-rate`**
 
-NO_SIGNAL at all three thresholds (8/10/12 REB/g). thresh=10.0: elite_present 70.3% vs no_elite 69.8% (delta=−0.5pp). H14b team REB flat. No rule change. Sengun vs. Jokic (Mar 11) was variance.
+HOU confirmed system-wide suppressor (61.9%, n=21, −23.4pp). MIN×AST at 55.6% (n=9, −29.5pp) — active scrutiny, below formal gate. SAS floor compression (n=6, mean −5.0). All notes updated in `nba_season_context.md`. Full results in `docs/BACKTESTS.md`. One more rerun at season end to check if additional teams clear the ≥15 pick suppressor threshold.
 
 ---
 
 ### H16 — 3PA Volume Gate
-**Status: IMPLEMENTED — verdict pending. Re-run at ~150+ 3PM picks.**
-**Mode: `--mode 3pa-volume-gate`** | Full results in `docs/BACKTESTS.md`.
+**Status: IMPLEMENTED — verdict pending. Re-run at ~150+ 3PM picks (~April 1–3).**
+**Mode: `--mode 3pa-volume-gate`** | Currently 99/150 graded 3PM picks (as of Mar 22). Full results in `docs/BACKTESTS.md`.
 
 ---
 
-### H18 — Wembanyama Rim Deterrent Effect
-**Status: DESIGNED — research phase first, backtest pending data dependency check**
-**ETA: late March / early April 2026**
+### Completed This Session (Mar 22, 2026)
 
-Hypothesis: Wemby suppresses inside-the-arc scorers specifically (drive/mid-range-heavy), not perimeter-first players — making the existing SAS watch item too broad. Motivated by Miller 2-14 FG vs SAS (March 14) while Ball/Knueppel/Bridges were unaffected. Research phase: manually check current SAS miss set for 2PA vs 3PA clustering before writing backtest code. Data dependency: confirm `tpa` and `fga` columns exist in `player_game_log.csv`; schema expansion required if absent. Full design in `docs/h18_wemby_rim_deterrent.md`.
+All completed backtests logged in `docs/ROADMAP_resolved.md` and `docs/BACKTESTS.md`.
 
----
-
-### H19 — In-Game Blowout Regime
-**Status: COMPLETE — MIXED verdict (Mar 22, 2026)**
-**Mode: `--mode blowout-regime`** | Full results in `docs/BACKTESTS.md`.
-
-Tests tier hit rates for primary vs. secondary scorers in actual blowout games (final margin ≥ 15) on both the winning (favored) and losing (underdog) sides. Minutes gate ≥ 24 min excludes garbage-time. Key finding: favored-side secondary scorers NOT suppressed (PTS lift=1.083); underdog-side AST secondary COLLAPSE (lift=0.713, n=59). Existing BLOWOUT_RISK rule unchanged. Underdog AST collapse flagged for future annotation-only rule.
-
----
-
-### H20 — Losing-Side Blowout AST Suppression
-**Status: COMPLETE — NO_SIGNAL verdict (Mar 22, 2026)**
-**Mode: `--mode losing-side-ast`** | Full results in `docs/BACKTESTS.md`.
-
-Tests whether pre-game underdog spread_abs ≥ 10 suppresses AST tier hit rate. Result: underdog_10plus hit rate 75.9% vs baseline 74.1% (lift=1.024, n=54) — directionally opposite to suppression hypothesis. Rule NOT shipped. Motivated by Jalen Johnson AST miss (2026-03-21) in LAL blowout win. Full design and results in `docs/BACKTESTS.md`.
-
----
-
-### H21 — Miss Anatomy: Near-Miss vs. Blowup Next-Game Prediction
-**Status: COMPLETE — NOISE verdict (Mar 22, 2026)**
-**Mode: `--mode miss-anatomy`** | Full results in `docs/BACKTESTS.md`.
-
-PTS delta 0.6pp, REB delta 2.0pp, AST delta 0.8pp — all below the 4pp noise threshold. Rule NOT shipped. `near_miss_rate`/`blowup_rate` fields remain in `player_stats.json` for Player Profiles only.
+| Backtest | Verdict | Rule shipped? |
+|----------|---------|--------------|
+| H14 — Elite Opposing Rebounder | NO_SIGNAL (n=1,709, delta=−0.5pp at thresh=10) | No |
+| H17 — Spread Context | NOISE (n=538, best threshold gap 3.6pp) | No — CLOSED |
+| H18 — Wembanyama Rim Deterrent | NO_PATTERN (research phase — Miller classifies as perimeter, Q3 runs opposite direction) | No — CLOSED |
+| H19 — In-Game Blowout Regime | MIXED — secondary scorer skip narrowed to spread_abs ≥ 15; 3PM blowout skip retired for spread_abs 8–18 | ✅ Two rules updated |
+| H20 — Losing-Side Blowout AST | NO_SIGNAL (n=54, lift=1.024) | No |
+| H21 — Miss Anatomy | NOISE (max delta 2.0pp, all below 4pp threshold) | No |
 
 ---
 
