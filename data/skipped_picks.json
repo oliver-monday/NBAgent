@@ -1,81 +1,177 @@
 [
   {
-    "date": "2026-03-23",
-    "player_name": "Shai Gilgeous-Alexander",
-    "team": "OKC",
-    "opponent": "PHI",
+    "date": "2026-03-24",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "opponent": "SAC",
     "prop_type": "PTS",
     "tier_considered": 25,
     "direction": "OVER",
     "skip_reason": "blowout_t25_skip",
     "rule_context": {
-      "spread_abs": 15.5,
-      "favored_side": "OKC",
-      "tier": 25,
-      "note": "spread_abs=15.5 \u226515 and OKC is favored; PTS T25 hard skip fires regardless of elite scorer status or iron_floor"
+      "spread_abs": 16.5,
+      "favored_team": "CHA",
+      "player_team": "CHA"
     },
-    "actual_value": 22.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 22.0 < tier 25"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-23",
-    "player_name": "Jalen Williams",
-    "team": "OKC",
-    "opponent": "PHI",
+    "date": "2026-03-24",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "opponent": "SAC",
+    "prop_type": "3PM",
+    "tier_considered": 3,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "reason": "After VOLATILE -5% and blowout cap 74%, confidence falls below 75% 3PM minimum floor",
+      "confidence_after_penalties": 74,
+      "minimum_3pm_floor": 75
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-24",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "opponent": "SAC",
     "prop_type": "PTS",
     "tier_considered": 15,
     "direction": "OVER",
     "skip_reason": "blowout_secondary_scorer",
     "rule_context": {
-      "spread_abs": 15.5,
-      "favored_side": "OKC",
+      "spread_abs": 16.5,
+      "favored_team": "CHA",
+      "player_team": "CHA",
       "is_primary_scorer": false,
-      "note": "Williams returning from injury is not OKC's primary scorer (SGA leads team PPG); spread_abs=15.5 \u226515 fires secondary scorer skip"
-    },
-    "actual_value": 18.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 18.0 \u2265 tier 15"
-  },
-  {
-    "date": "2026-03-23",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "MEM",
-    "prop_type": "AST",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "ast_hard_gate",
-    "rule_context": {
-      "player_position": "PF",
-      "raw_avgs_ast": 7.7,
-      "opp_defense_rating": "mid",
-      "gate_condition": "position PF and raw_avgs AST < 8.0; opp_today must be soft; opp=mid fails gate"
+      "primary_scorer": "LaMelo Ball"
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-23",
-    "player_name": "Shai Gilgeous-Alexander",
-    "team": "OKC",
-    "opponent": "PHI",
+    "date": "2026-03-24",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "opponent": "SAC",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "reason": "Blowout cap 74% falls below 75% 3PM minimum confidence floor",
+      "confidence_after_penalties": 74,
+      "minimum_3pm_floor": 75
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-24",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "opponent": "SAC",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "blowout_secondary_scorer",
+    "rule_context": {
+      "spread_abs": 16.5,
+      "favored_team": "CHA",
+      "player_team": "CHA",
+      "is_primary_scorer": false,
+      "primary_scorer": "LaMelo Ball"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-24",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "opponent": "CLE",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
     "skip_reason": "3pm_blowout_trend_down",
     "rule_context": {
-      "spread_abs": 15.5,
-      "trend": "up",
-      "note": "Actually trend=up so trend=down rule does not fire; spread_abs=15.5 < 19 so extreme blowout hard skip does not fire; skipping on merit: VOLATILE -5% + spread cap = 74% < 75% 3PM floor; this is a merit skip not a hard rule skip \u2014 removing from skips array"
+      "reason": "B2B rate 73% falls below 75% 3PM minimum confidence floor",
+      "b2b_rate": 73,
+      "minimum_3pm_floor": 75
     },
-    "actual_value": 1.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-24",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "ORL",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "reason": "VOLATILE -5% + BLOWOUT -10% applied to 80% base yields 65%, below 70% floor",
+      "confidence_after_penalties": 65,
+      "iron_floor": true,
+      "note": "iron_floor protects tier but not confidence level"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-24",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "opponent": "ORL",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": true,
+      "hit_rate_fraction": "7/10",
+      "tier": 15,
+      "iron_floor": false
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-24",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "opponent": "ORL",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "reb_floor_skip",
+    "rule_context": {
+      "reason": "BLOWOUT -10% reduces 85% to 75%, below 78% REB minimum confidence floor; T4 similarly affected"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]
