@@ -2605,5 +2605,98 @@
         "The multi-game structure (MIN @ BOS + TOR @ PHX) provided genuine independence between the Randle REB leg and the two PHX legs: BOS winning by 10 and PHX winning by 22 were unrelated game outcomes, and Randle's rebounding volume was uncorrelated with either TOR player's performance. When building parlays across multiple games, combining a floor-anchored REB leg from one game with consistent-tag PTS and trend-supported 3PM legs from a separate game is a structurally sound approach that this card validated."
       ]
     }
+  },
+  {
+    "date": "2026-03-23",
+    "total_picks": 11,
+    "voided_picks": 1,
+    "hits": 11,
+    "misses": 0,
+    "no_data": 0,
+    "hit_rate_pct": 100.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 8,
+        "hits": 8,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Depleted-opponent matchup stacking continued to deliver: Luka Doncic PTS 25 OVER vs. a DET squad missing Cunningham/Stewart/Sasser produced 32 PTS (39 min), and Banchero PTS 15 OVER vs. IND \u2014 the league's softest defense \u2014 exploded for 39 PTS in 37 min. When a primary scorer faces a confirmed-depleted opponent in a close game, the conservative low-threshold tier (T25 for Luka, T15 for Banchero) provided enormous cushion while still qualifying at the system's required hit rate.",
+      "Ultra-low AST floors (T4 at 4+ for both Luka and SGA) proved resilient across game scripts: Luka hit 6 AST in a close DET game and SGA hit 5 AST despite a confirmed blowout (OKC +20) where minute compression was a documented risk. The 85\u201390% hit rate at T4 AST for elite playmakers is validated as a durable signal even under blowout conditions, though the blowout cap correctly constrained confidence and kept these picks out of headline roles.",
+      "Iron-floor REB anchors at ultra-low thresholds (Barnes T4 REB, Bane T2 AST) provided clean hits on a B2B second night and a blowout spread respectively \u2014 both outcomes exceeded threshold by significant margins (Barnes 7 REB vs. 4 floor; Bane 7 AST vs. 2 floor). When iron-floor protection is confirmed at a low absolute threshold against a depleted frontcourt (UTAH missing Kessler/Nurkic), these function as near-locks and are ideal parlay anchors.",
+      "The system's human verdict trim/manual-skip decisions correctly identified the structurally marginal picks (SGA 3PM, SGA AST, Holmgren PTS, Banchero AST, Barnes PTS) \u2014 all five hit on the day, but the trim flags were process-correct given VOLATILE tags, blowout spreads, and B2B penalties. Do not update selection logic to include these types more aggressively; the hits on a single session do not override the structural reasons for the flags.",
+      "Luka's 3PM iron-floor pick (T3, actual = 3 \u2014 exact threshold hit) validated the HIT-on-exact-threshold grading rule and confirmed that iron-floor 3PM picks at low tiers can function as parlay anchors when the VOLATILE penalty is the only disqualifying factor. The system correctly classified this as a trim on process grounds (VOLATILE drops confidence below 75% floor), but the result reinforces that iron-floor protection at T3 for elite shooters with trend=up is statistically sound."
+    ],
+    "lessons": [
+      "Five picks carried human verdict trim or manual_skip flags \u2014 all five hit \u2014 but this is a one-session sample and does not invalidate the trim logic. The structural risks flagged (VOLATILE 3PM with blowout spread, B2B second-night PTS suppression at T10, blowout cap on secondary scorer PTS) remain valid bases for downward confidence adjustment. The system should not relax VOLATILE or blowout-cap penalties based on a single clean session; these flags exist to protect against sessions where all five marginal picks miss simultaneously.",
+      "The Jalen Johnson DNP (confirmed OUT pre-game) was handled correctly by the voiding workflow for the individual pick, but his inclusion as a parlay leg in 'Soft Slate Scorers' created a structural parlay exposure that was not surfaced in the parlay rationale. The parlay hit because two legs covered and the parlay result was marked HIT despite a null leg \u2014 but the Parlay Agent should explicitly flag any leg where the player has a recent OUT history or a same-day injury designation, and require confirmation of availability before finalizing the parlay.",
+      "The session was concentrated in the 70\u201375% confidence band (8 of 11 picks), with zero picks in the 81%+ bands. While 100% hit rate at 70\u201375% is a strong session result, the calibration data now shows a structural gap: the system is not generating high-confidence picks (81%+) on most slates, likely because blowout caps and VOLATILE penalties are systematically pulling qualifying picks down into the 70\u201375% band. The Analyst should review whether the blowout spread cap thresholds (\u226512 \u2192 74% ceiling) are set too aggressively for primary scorers in matchups where the spread reflects opponent depletion rather than genuine garbage-time risk."
+    ],
+    "recommendations": [
+      "For Luka Doncic multi-prop stacking (PTS + AST), continue to use the T25 PTS / T4 AST combination when DET, WAS, or similarly depleted opponents appear \u2014 the 87% vs-tough PTS rate and 94% vs-tough AST rate provide structural justification. Do not upgrade to T30 PTS without confirming the T30 tier hit rate independently; the T25 tier produced 32 actual PTS with 7 units of cushion, validating tier selection.",
+      "For Scottie Barnes on B2B second nights: the T4 REB iron-floor pick is the correct primary selection (83% B2B hit rate, confirmed vs. depleted frontcourts), but the T10 PTS pick should be systematically deprioritized when the B2B rate falls to 75% and a blowout spread applies simultaneously \u2014 the double penalty (B2B suppression + blowout game-script) is not fully offset by the consistent tag alone. If both conditions are present, require B2B rate \u226580% at the selected PTS tier before including.",
+      "For SGA and Holmgren in games where OKC is favored by 15+: the blowout cap correctly constrained confidence to 74%, but the trim flags on SGA AST and Holmgren PTS were process-justified despite the hits. Maintain the current blowout cap rules for these player types. Do not add PHI as a 'soft' opponent bonus that overrides the blowout structure \u2014 the OKC blowout (won by 20) confirmed the structural risk was real even though stats cleared the thresholds.",
+      "For Paolo Banchero AST picks: the VOLATILE tag combined with the T4 floor and a blowout spread (\u221213.5 as home favorite) created a correctly identified manual-skip. Banchero's 6 actual AST was a hit on the day, but the skip was process-correct given 53% post-miss hit rate on VOLATILE AST. Re-evaluate Banchero AST only when VOLATILE tag is absent, trend is up, and the spread is \u22648 points \u2014 do not chase a single-session result here.",
+      "For the Parlay Agent: before finalizing any parlay leg, require a confirmed 'NOT_LISTED' injury status check for all players \u2014 not just at the time of pick generation, but as a pre-lock verification step. Jalen Johnson's OUT designation was known pre-game and correctly voided the individual pick, but the parlay leg was not removed. Implement a rule: any leg where injury_status_at_check is anything other than NOT_LISTED at lock time must be automatically removed from the parlay and replaced or the parlay must be reduced to a shorter card."
+    ],
+    "miss_details": [],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 2,
+      "hits": 2,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 2/2 sweep \u2014 'Monday Volume Sweep' hit 3/3 legs with each player exceeding threshold by significant margin, and 'Soft Slate Scorers' hit 2/2 gradeable legs despite Jalen Johnson's pre-game DNP rendering his leg null.",
+      "parlay_lessons": [
+        "The 'Soft Slate Scorers' parlay included Jalen Johnson (ATL PTS) as a leg despite Johnson having a recent injury history \u2014 his OUT designation was confirmed pre-game and voided the individual pick, but the parlay was not correspondingly adjusted before lock. The Parlay Agent must implement a hard rule: any leg voided due to pre-game OUT status must trigger an automatic parlay revision (removal of that leg and re-evaluation of the card as a shorter parlay) rather than allowing a null leg to persist in the parlay structure. A 3-leg parlay that silently becomes a 2-leg parlay mid-day is a structural integrity failure even when the remaining legs hit.",
+        "Both parlays relied on a common game \u2014 OKC vs. PHI \u2014 appearing in separate cards (Holmgren PTS in 'Monday Volume Sweep', SGA AST in 'Soft Slate Scorers'). The same-game blowout risk was already flagged in both individual picks; if OKC had lost or the game been close, both legs could have missed simultaneously across two separate parlays, concentrating single-game exposure. The Parlay Agent should track cross-parlay game concentration and flag when the same game appears in multiple parlays on the same card."
+      ],
+      "parlay_reinforcements": [
+        "The 'Monday Volume Sweep' three-leg structure (Luka PTS + Holmgren PTS + Barnes REB) worked because it combined a high-floor elite scorer (Luka T25, 8/10 hit rate), a low-absolute-threshold iron-floor pick (Barnes T4 REB, 9/10), and a secondary scorer in a depleted matchup (Holmgren T10 vs. PHI missing Embiid/Broome) \u2014 three independent games, three different prop types across scorer and rebounder roles. This heterogeneous multi-game structure with one ultra-low iron-floor anchor is the optimal parlay template: the anchor (Barnes REB 4+) insulates the card against game-script variance while the higher-ceiling legs drive payout.",
+        "Stacking a primary scorer's PTS against a confirmed depleted defense (Banchero T15 vs. IND, Luka T25 vs. depleted DET) with a heterogeneous third leg (SGA AST or Barnes REB) produced two separate winning parlays. The 'soft defense + depleted roster + conservative low-tier threshold' formula for the anchor scorer leg, combined with a structurally independent AST or REB leg as the third component, is validated as a repeatable parlay construction pattern \u2014 the scorer leg provides the statistical floor while the non-PTS leg decouples from game-script correlation."
+      ]
+    }
   }
 ]

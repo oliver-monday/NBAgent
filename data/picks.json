@@ -14584,11 +14584,13 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "85% overall at T25, 87% vs tough, trend=up, DET missing Cunningham/Stewart/Sasser.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 32.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-23",
@@ -14607,11 +14609,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "85% at T4, 94% vs tough defenses, spread=1.5 competitive game, depleted DET backcourt.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-23",
@@ -14630,11 +14634,15 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron_floor present but VOLATILE -5% drops confidence to 65%, below 75% 3PM minimum floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a 3PM pick means the distribution is genuinely wide game-to-game; even with iron_floor protection and a strong bounce-back rate, a single cold-shooting night from deep \u2014 well within normal variance for a volatile shooter \u2014 lands exactly at the threshold where iron_floor provides no statistical cushion beyond the base tier."
+    ]
   },
   {
     "date": "2026-03-23",
@@ -14653,11 +14661,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "85% at T4, 90% vs soft PHI, blowout cap applied; PHI missing all five key players.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Spread of -15.5 creates genuine blowout game-script risk: if OKC pulls away early, SGA's minutes compress to the low 30s or below, and assist opportunities in a non-competitive second half collapse as OKC limits possessions and rests starters. Min_floor=31.4 leaves limited margin before a reduced-minutes game script pushes assist volume below 4."
+    ]
   },
   {
     "date": "2026-03-23",
@@ -14676,11 +14688,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "After VOLATILE -5% and spread cap, confidence lands at 74%, below 75% 3PM minimum floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a raw_avg of only 1.2 means SGA is one below-average three-point attempt night from missing this floor \u2014 the margin between average output and the threshold is razor-thin, and blowout garbage-time truncation of his playing time (spread=-15.5) reduces his total attempt volume."
+    ]
   },
   {
     "date": "2026-03-23",
@@ -14699,11 +14715,15 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "90% at T10 with iron_floor, consistent tag; PHI missing Embiid and Broome; blowout cap 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Spread of -15.5 is a legitimate blowout risk for a non-elite scorer: Holmgren's min_floor=25.6 is close to the 24-minute fragility threshold, meaning a comfortable OKC lead in the third quarter regularly puts him on the bench earlier than his average suggests, compressing counting stats. Pick already received a blowout penalty but the structural rest risk for a secondary scorer in a double-digit blowout remains."
+    ]
   },
   {
     "date": "2026-03-23",
@@ -14722,11 +14742,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "95% at T15 consistent tag, IND worst defense in league; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 39.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-23",
@@ -14745,11 +14767,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "VOLATILE -5% drops T4 AST confidence to 65%, below minimum threshold; skip on merit.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag on AST with a post_miss hit rate of only 53% and a bounce-back lift below 0.75 signals meaningful slump persistence; combined with a -13.5 blowout spread where ORL leading big suppresses half-court creation sequences, Banchero's assist volume is structurally fragile at a T4 floor that already sits near the minimum qualifying tier for his position."
+    ]
   },
   {
     "date": "2026-03-23",
@@ -14768,11 +14794,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron_floor T2 AST at 85%, opp=soft IND; blowout cap binds at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-23",
@@ -14797,7 +14825,11 @@
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Johnson carries a QUES designation per the pick_reasoning, meaning if he is limited or exits early due to the underlying injury, his minutes drop below the min_floor of 27.6 and PTS misses on reduced volume. The QUES risk is structural and not fully captured by a hit-rate based confidence number calibrated on healthy-game samples."
+    ]
   },
   {
     "date": "2026-03-23",
@@ -14816,11 +14848,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "95% overall at T10, consistent tag; B2B rate 75%, blowout cap 74%; UTAH depleted frontcourt.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B second night with a confirmed b2b hit rate of 75% at T10 \u2014 meaningfully below his overall 95% rate \u2014 is the primary structural vulnerability; the 20-percentage-point B2B suppression at this specific tier is a real floor shift, and the blowout spread (-12.5 as road underdog) means TOR losing big could further compress Barnes's counting-stat volume."
+    ]
   },
   {
     "date": "2026-03-23",
@@ -14839,10 +14875,12 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "90% overall T4 REB, 83% on B2B; UTAH missing Kessler and Nurkic; consistent rebounds floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-23T22:04:21.862668-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
