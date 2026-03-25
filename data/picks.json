@@ -14900,11 +14900,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "min_floor step-down T15\u2192T10; 74% blowout cap governs vs soft SAC.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "CHA is a 16.5-point favorite, creating genuine Q4 rest risk for Ball even at the conservative T10 threshold. With a min_floor of only 21.8 (avg 27.5), a single blowout-shortened game keeps him dangerously close to the line."
+    ]
   },
   {
     "date": "2026-03-24",
@@ -14923,11 +14927,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "95% overall at T4 with 100% vs soft; blowout spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "The T4 AST floor is strong at 95% overall, but the blowout spread of -16.5 means CHA may run a diluted late-game rotation, compressing Ball's minutes below the floor needed to accumulate 4 assists. Min_floor of 21.8 is thin for a counting stat that requires playmaking opportunities."
+    ]
   },
   {
     "date": "2026-03-24",
@@ -14946,11 +14954,15 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "SKIP \u2014 blowout cap 74% falls below 3PM 75% minimum floor after VOLATILE penalty.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Ball is tagged VOLATILE on 3PM, and in a blowout the offense may not generate enough half-court possessions for him to reach 2 made threes before being rested. Iron_floor provides some protection but VOLATILE + blowout compression is the exact combination that produces miss outliers."
+    ]
   },
   {
     "date": "2026-03-24",
@@ -14969,11 +14981,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron-floor AST T2 at 95%; blowout cap at spread_abs=16.5 limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -14992,11 +15006,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "SKIP \u2014 blowout cap 74% falls below 3PM 75% minimum confidence floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15015,11 +15031,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "SKIP \u2014 blowout_secondary_scorer fires at spread_abs=16.5 for non-primary scorer.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "As a secondary scorer with no iron_floor, Knueppel's post_miss bounce-back rate of only 72% is the weakest on the slate \u2014 combined with a -16.5 blowout spread and a min_floor of 23.7, a garbage-time minutes collapse puts 15 PTS at genuine risk. The bear case here is meaningfully stronger than for Miller."
+    ]
   },
   {
     "date": "2026-03-24",
@@ -15038,11 +15058,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "90% AST T2 overall with 96% blowout hit; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15061,11 +15083,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "B2B rate 80% minus underdog blowout penalty yields 70%; consistent tag at T15.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 36.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15084,11 +15108,13 @@
     "iron_floor": false,
     "top_pick": true,
     "reasoning": "100% B2B rebound rate with Allen out; consistent tag holds even on trend-down.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15107,11 +15133,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "Iron-floor AST T2 at 82% B2B rate; underdog blowout penalty brings to 72%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15130,11 +15158,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "SKIP \u2014 B2B 3PM rate 73% falls below the 75% minimum 3PM confidence floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B second night with a b2b_hit_rate_T1 of only 73% \u2014 the thinnest B2B rate on the slate \u2014 means roughly 1-in-4 B2B games Bane misses even this low floor. On a neutral-momentum team on the road against a mid defense, there is no structural tailwind to offset the B2B suppression."
+    ]
   },
   {
     "date": "2026-03-24",
@@ -15153,11 +15185,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "88% overall at T15 with ORL depleted; blowout penalty yields 78%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 26.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15176,11 +15210,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "88% overall REB T4 with 100% vs soft; blowout penalty nets exactly 78%.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15199,11 +15235,15 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "Primary facilitator at 88% AST T6; tough defense and blowout cap yield 73%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "T6 AST against a tough ORL defense carries the historical lesson directly: tough-defense road AST picks are structurally fragile, and while Harden is at home, ORL's defense suppresses creation. The actual season hit rate at T6 is flagged at 65.1%, meaning the 88% recent-window rate may not be representative of the true underlying distribution."
+    ]
   },
   {
     "date": "2026-03-24",
@@ -15222,11 +15262,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "88% 3PM T2 in small CLE sample; blowout penalty and non-iron-floor cap yield 75%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15245,11 +15287,13 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "90% AST T4 overall; blowout and tough-defense penalties yield 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15268,11 +15312,13 @@
     "iron_floor": true,
     "top_pick": false,
     "reasoning": "SKIP \u2014 VOLATILE -5% + BLOWOUT -10% pushes T2 3PM below 70% floor despite iron_floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-24",
@@ -15291,10 +15337,12 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "SKIP \u2014 BLOWOUT -10% reduces T6 to 75%, below 78% REB minimum confidence floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
