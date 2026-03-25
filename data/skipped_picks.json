@@ -1,177 +1,105 @@
 [
   {
-    "date": "2026-03-24",
-    "player_name": "LaMelo Ball",
-    "team": "CHA",
-    "opponent": "SAC",
-    "prop_type": "PTS",
-    "tier_considered": 25,
-    "direction": "OVER",
-    "skip_reason": "blowout_t25_skip",
-    "rule_context": {
-      "spread_abs": 16.5,
-      "favored_team": "CHA",
-      "player_team": "CHA"
-    },
-    "actual_value": 20.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 20.0 < tier 25"
-  },
-  {
-    "date": "2026-03-24",
-    "player_name": "LaMelo Ball",
-    "team": "CHA",
-    "opponent": "SAC",
-    "prop_type": "3PM",
-    "tier_considered": 3,
-    "direction": "OVER",
-    "skip_reason": "3pm_blowout_trend_down",
-    "rule_context": {
-      "reason": "After VOLATILE -5% and blowout cap 74%, confidence falls below 75% 3PM minimum floor",
-      "confidence_after_penalties": 74,
-      "minimum_3pm_floor": 75
-    },
-    "actual_value": 6.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 6.0 \u2265 tier 3"
-  },
-  {
-    "date": "2026-03-24",
-    "player_name": "Brandon Miller",
-    "team": "CHA",
-    "opponent": "SAC",
-    "prop_type": "PTS",
-    "tier_considered": 15,
-    "direction": "OVER",
-    "skip_reason": "blowout_secondary_scorer",
-    "rule_context": {
-      "spread_abs": 16.5,
-      "favored_team": "CHA",
-      "player_team": "CHA",
-      "is_primary_scorer": false,
-      "primary_scorer": "LaMelo Ball"
-    },
-    "actual_value": 13.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 13.0 < tier 15"
-  },
-  {
-    "date": "2026-03-24",
-    "player_name": "Brandon Miller",
-    "team": "CHA",
-    "opponent": "SAC",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "3pm_blowout_trend_down",
-    "rule_context": {
-      "reason": "Blowout cap 74% falls below 75% 3PM minimum confidence floor",
-      "confidence_after_penalties": 74,
-      "minimum_3pm_floor": 75
-    },
-    "actual_value": 3.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
-  },
-  {
-    "date": "2026-03-24",
-    "player_name": "Kon Knueppel",
-    "team": "CHA",
-    "opponent": "SAC",
-    "prop_type": "PTS",
-    "tier_considered": 15,
-    "direction": "OVER",
-    "skip_reason": "blowout_secondary_scorer",
-    "rule_context": {
-      "spread_abs": 16.5,
-      "favored_team": "CHA",
-      "player_team": "CHA",
-      "is_primary_scorer": false,
-      "primary_scorer": "LaMelo Ball"
-    },
-    "actual_value": 14.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 14.0 < tier 15"
-  },
-  {
-    "date": "2026-03-24",
-    "player_name": "Desmond Bane",
-    "team": "ORL",
-    "opponent": "CLE",
+    "date": "2026-03-25",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "opponent": "IND",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
     "skip_reason": "3pm_blowout_trend_down",
     "rule_context": {
-      "reason": "B2B rate 73% falls below 75% 3PM minimum confidence floor",
-      "b2b_rate": 73,
-      "minimum_3pm_floor": 75
+      "trend": "down",
+      "blowout_risk": true,
+      "spread_abs": 10.5,
+      "step_down_result": "below_minimum_tier",
+      "note": "trend=down mandatory step-down from T1 goes below minimum valid 3PM tier; blowout context relaxed hard skip to step-down, but no lower tier exists"
     },
-    "actual_value": 1.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-24",
+    "date": "2026-03-25",
     "player_name": "Donovan Mitchell",
     "team": "CLE",
-    "opponent": "ORL",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "3pm_blowout_trend_down",
-    "rule_context": {
-      "reason": "VOLATILE -5% + BLOWOUT -10% applied to 80% base yields 65%, below 70% floor",
-      "confidence_after_penalties": 65,
-      "iron_floor": true,
-      "note": "iron_floor protects tier but not confidence level"
-    },
-    "actual_value": 3.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
-  },
-  {
-    "date": "2026-03-24",
-    "player_name": "Evan Mobley",
-    "team": "CLE",
-    "opponent": "ORL",
+    "opponent": "MIA",
     "prop_type": "PTS",
-    "tier_considered": 15,
+    "tier_considered": 20,
     "direction": "OVER",
     "skip_reason": "volatile_weak_combo",
     "rule_context": {
       "volatile_tag": true,
-      "hit_rate_fraction": "7/10",
-      "tier": 15,
-      "iron_floor": false
+      "hit_rate": "7/10",
+      "tier": 20,
+      "iron_floor": false,
+      "trend": "stable",
+      "note": "VOLATILE + 7/10 at T20 (\u2265T15) fires hard skip; stepped to T15 instead"
     },
-    "actual_value": 19.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 19.0 \u2265 tier 15"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-24",
-    "player_name": "Evan Mobley",
-    "team": "CLE",
-    "opponent": "ORL",
-    "prop_type": "REB",
-    "tier_considered": 6,
+    "date": "2026-03-25",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "opponent": "TOR",
+    "prop_type": "PTS",
+    "tier_considered": 25,
     "direction": "OVER",
-    "skip_reason": "reb_floor_skip",
+    "skip_reason": "fg_margin_thin_tier_step",
     "rule_context": {
-      "reason": "BLOWOUT -10% reduces 85% to 75%, below 78% REB minimum confidence floor; T4 similarly affected"
+      "fg_margin_thin_pct": 4,
+      "tier_stepped_from": 25,
+      "tier_stepped_to": 20,
+      "note": "FG_MARGIN_THIN:4% forces step from T25; VOLATILE weak combo then fires at T20 (estimated 8/10); cascade continues to T15"
     },
-    "actual_value": 9.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "DAL",
+    "prop_type": "AST",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": true,
+      "b2b_hit_rate": "50%",
+      "tier": 8,
+      "note": "VOLATILE + AST T6+ hard skip fires; B2B rate 50% at T8 additionally disqualifying"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "opponent": "IND",
+    "prop_type": "3PM",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": true,
+      "overall_hit_rate": "7/10",
+      "tier": 4,
+      "note": "3PM T4: 7/10 overall with VOLATILE; 3PM T3+ ceiling requires 7/10 AND high pace \u2014 pace not confirmed; vs_soft=64% and vs_tough=57% below threshold; T2 step: VOLATILE+iron_floor at T2 would need trend=up for exception but trend=up present \u2014 evaluating T2: 70%=7/10 VOLATILE weak combo fires at T2 also (T2\u2265T15 not applicable for 3PM \u2014 weak combo rule is PTS only). Re-evaluating: VOLATILE weak combo skip is PTS only per rules. 3PM T4 drops to T3: T3+ ceiling 7+/10 AND high pace. Checking T2: overall not shown at T2 but iron_floor present. VOLATILE AST skip doesn't apply to 3PM. For 3PM: VOLATILE -5% applies to confidence only. T2 iron_floor: pick T2 \u2192 skipping this skip record and emitting pick instead"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]

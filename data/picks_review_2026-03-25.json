@@ -1,0 +1,198 @@
+[
+  {
+    "date": "2026-03-25",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 25,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Blowout risk at -10.5 spread is real: even after the blowout penalty was applied, Doncic as the primary star faces genuine Q4 rest risk when LAL leads big, and the FG_MARGIN_THIN flag at exactly the 10% boundary means one cold-shooting night shaves him below 25. The structural floor is contingent on minutes/game-script cooperation, not guaranteed."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Reaves' quant best_tier is T1 yet the pick is placed at T2, meaning the floor is at a tier the quant data does not confirm as qualifying \u2014 the T2 label is doing work the data doesn't support. In a blowout where LAL empties the bench in Q4, Reaves' shot volume compresses precisely when he needs a second make to clear T2."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B with b2b_hit_rate listed as insufficient (<5g), meaning there is no reliable B2B baseline \u2014 the 89% overall rate may not translate today. Harden's min_floor of 29 vs avg 35 represents a meaningful 6-minute gap, and a load-management-lite B2B rest scenario could easily push minutes toward that floor, threatening a T15 prop that requires sustained volume."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B with no usable b2b_hit_rate data is the core issue: Harden's AST production historically requires sustained half-court creation sequences, and compressed B2B minutes (floor=29) directly reduce his opportunity count. The prior audit flagged Harden AST as volatile in contested games; this is a close spread (-2.5) meaning MIA defense stays engaged all four quarters."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with B2B creates a structurally wide distribution: even though b2b_hit_rate_T15=100% over 10 games is strong, prior audit history shows Mitchell's PTS floor is fragile against engaged defenses in close games, and the typical_miss of 3.5 pts below threshold means a miss lands around 11-12 PTS \u2014 well short. Confidence is already at the 70% floor, leaving no margin for the volatility penalty's real-world tail."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B at -12.5 spread is the sharpest structural vulnerability on this card: even with a 100% B2B hit rate at T20, a blowout of this magnitude creates genuine Q4 rest risk for Jokic specifically \u2014 DEN has strong incentive to sit him early in the fourth when the game is decided. The spread exceeds the implicit blowout threshold and team_momentum is only neutral, meaning garbage-time management is plausible."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "SGA's raw_avg_3PM of 1.2 is razor-thin above the T1 threshold, and the VOLATILE tag means his three-point output is genuinely lumpy \u2014 the 80% overall hit rate at T1 is respectable but a single cold-shooting night (typical_miss = 1.0 below threshold means he hits zero threes) produces a miss. Against a tough BOS defense that suppresses volume, this is the most fragile prop on SGA's card."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "FG_MARGIN_THIN at only 4% combined with VOLATILE tag forced a step down to T15 \u2014 but Kawhi's min_floor of 24.8 means a single normal low-minutes game (within his established variance) puts him at ~25 minutes where scoring 15 is not assured. The 4% FG margin means he is one cold-shooting half from a miss, and his volatility means the distribution tail is wide enough that 70% confidence overstates structural reliability at this margin."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
