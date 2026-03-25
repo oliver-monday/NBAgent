@@ -4,6 +4,17 @@
 
 ## Open Items
 
+### Frontend
+
+#### Per-player streak pills on pick cards
+**Deferred from 2026-03-25** (removed system-wide streak pill as incorrect stopgap)
+
+Compute each player's individual hit streak at their specific pick tier from `picks.json` history at site build time. Display a streak pill on the pick card only when ≥3 consecutive hits at that player's exact `pick_value`. This is distinct from the system-wide prop-type streak counter that was removed — it would reflect the individual player's recent performance at that specific line, which is meaningful context.
+
+Implementation sketch: `build_site.py` reads `picks.json`, groups by `(player_name, prop_type, pick_value)`, walks backward from most recent graded pick counting consecutive HITs; if streak ≥ 3, attach `player_streak` count to the pick object and render pill in `buildMicroStats()`.
+
+---
+
 ### Matchup Signals Queue
 
 Design philosophy: the Analyst already has a solid quantitative matchup foundation (positional DvP, vs_soft/vs_tough splits, game pace, spread context). The following proposals address gaps where rolling averages give a misleading picture because something material has changed that the numbers alone cannot capture.

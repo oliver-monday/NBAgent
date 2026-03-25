@@ -1412,7 +1412,7 @@ function buildHitRate(p) {{
     </div>`;
 }}
 
-function buildMicroStats(p, streakSpan) {{
+function buildMicroStats(p) {{
   const pills = [];
   // Trend
   if (p.trend === 'up')   pills.push(`<span class="micro-pill up">↑ trending</span>`);
@@ -1422,8 +1422,6 @@ function buildMicroStats(p, streakSpan) {{
   if (def === 'soft')  pills.push(`<span class="micro-pill soft">soft def</span>`);
   if (def === 'tough') pills.push(`<span class="micro-pill tough">tough def</span>`);
   if (def === 'mid')   pills.push(`<span class="micro-pill">mid def</span>`);
-  // Streak pill (only if ≥5 — threshold enforced in streakPill())
-  if (streakSpan) pills.push(streakSpan);
   if (!pills.length) return '';
   return `<div class="micro-stats">${{pills.join('')}}</div>`;
 }}
@@ -1501,7 +1499,6 @@ function renderPicks() {{
     ).forEach(p => {{
       const pt         = p.prop_type;
       const ha         = p.home_away === 'H' ? 'vs' : '@';
-      const streakSpan = streakPill(ps[pt]);
       const voidedCls  = p.voided ? ' voided' : '';
       const reviewVerdict = p.human_verdict || '';
       const isAutoReview  = p.auto_reviewed === true;
@@ -1529,7 +1526,7 @@ function renderPicks() {{
             <div class="player">${{p.player_name}}</div>
             ${{statusBadge}}
             ${{reviewHtml}}
-            ${{buildMicroStats(p, streakSpan)}}
+            ${{buildMicroStats(p)}}
             ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
             ${{(function() {{
               const lu = p.lineup_update;
