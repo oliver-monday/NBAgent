@@ -4004,6 +4004,10 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
         r"SKIP\s+(?:T\d+\s+)?(?:AST|PTS|REB|3PM)[^\w]*(?:hard\s+gate|mandatory\s+skip|no\s+valid\s+tier)",
         r"mandatory\s+skip",
         r"Record\s+as\s+skip",
+        # Merit-floor skips — confidence falls below prop-type minimum floor after penalties
+        # Catches: "falls below 3PM 75% minimum floor", "below 78% REB minimum confidence floor"
+        r"falls?\s+below\s+(?:the\s+)?(?:3PM|REB|AST|PTS)\s+\d+%\s+minimum",
+        r"below\s+\d+%\s+(?:3PM|REB|AST|PTS)\s+minimum\s+(?:confidence\s+)?floor",
     ]
 
     # Signals that indicate the model reconsidered and chose to proceed anyway
