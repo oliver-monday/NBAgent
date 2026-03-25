@@ -267,7 +267,8 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
   "actual_value": number|null,          // null until auditor runs; voided=True picks always have actual_value=null
   "game_time": "7:30 PM PT",
   "human_verdict": "keep|trim|manual_skip|null",  // tagged by auditor from picks_review file; null when not reviewed
-  "trim_reasons":  ["string"] | []                // reasons from review file; [] when not reviewed
+  "trim_reasons":  ["string"] | [],               // reasons from review file; [] when not reviewed
+  "is_skip": false                                 // true when Analyst concluded skip; filtered by filter_self_skip_picks() before publication; defaults to false in save_picks() when field absent
 }]
 ```
 

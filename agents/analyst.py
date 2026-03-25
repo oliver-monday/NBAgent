@@ -628,8 +628,9 @@ def write_analyst_snapshot(lineups_path: Path, picks_run_at: str) -> None:
     except Exception:
         return
 
-    if raw.get("snapshot_at_analyst_run"):
-        return  # Already snapshotted this run — do not overwrite
+    existing = raw.get("snapshot_at_analyst_run") or {}
+    if existing.get("written_at", "")[:10] == TODAY_STR and existing.get("teams"):
+        return  # Already snapshotted today with valid data — do not overwrite
 
     snapshot: dict = {"written_at": picks_run_at, "teams": {}}
     for key, val in raw.items():
@@ -995,6 +996,7 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
         trends           = s.get("trend") or {}
         blowout_risk     = s.get("blowout_risk", False)
         spread_abs       = s.get("spread_abs")
+        today_spread     = s.get("today_spread")        # signed: neg = this team favored
         spread_splits    = s.get("spread_split_hit_rates") or {}
         on_b2b           = s.get("on_back_to_back", False)
         rest_days        = s.get("rest_days")
@@ -1176,7 +1178,12 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
         def_rec_str = " DEF↑" if def_recency == "soft" else " DEF↓" if def_recency == "tough" else ""
 
         if stat_parts:
-            spread_info  = f"spread_abs={spread_abs:.1f}" if spread_abs is not None else "spread=n/a"
+            if spread_abs is not None and today_spread is not None:
+                spread_info = f"spread={today_spread:+.1f}(abs={spread_abs:.1f})"
+            elif spread_abs is not None:
+                spread_info = f"spread_abs={spread_abs:.1f}"
+            else:
+                spread_info = "spread=n/a"
             blowout_flag = " BLOWOUT_RISK=True" if blowout_risk else ""
             # Rest/fatigue flags in header
             if on_b2b:
@@ -1536,9 +1543,10 @@ SANITY CHECK — before finalizing each pick, verify:
      the penalty cascade produce a tier that real game outcomes contradict?
   2. Is the stated confidence honestly derived? If hit rate is 9/10 but confidence
      is 74%, the tier_walk must show clearly why (caps applied, not fabricated).
-  3. Did your own reasoning conclude "skip" at any step? If yes, do not emit the pick.
-     filter_self_skip_picks() runs in Python as a backstop, but eliminate the
-     contradiction at source — don't rely on post-processing to catch your errors.
+  3. Did your own reasoning conclude "skip" at any step? If yes, set is_skip=true on
+     the pick object. This is mandatory — is_skip=true is the authoritative skip signal
+     and will be used to remove the pick before publication. Do not rely on tier_walk
+     language alone; the is_skip field is how Python knows to filter it.
   4. Does the pick pass the smell test? You have domain knowledge. A T10 PTS pick
      on the league's leading scorer is almost certainly wrong regardless of what
      the penalty arithmetic produced. Trust that signal — skip or re-examine.
@@ -2141,9 +2149,15 @@ JSON schema:
       "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
       "iron_floor": true or false,
       "top_pick": true or false,
+      "is_skip": true or false — MANDATORY. Set true if your tier_walk concludes this pick should be skipped for ANY reason (hard rule, step-down below minimum tier, confidence below floor, etc.). Set false for all picks you are genuinely emitting. A pick with is_skip=true in the picks array will be removed before publication — this is the authoritative skip signal.,
       "reasoning": "One tight sentence: key reason this floor holds today. Max 15 words."
     }}
   ],
+  CRITICAL: If your tier_walk concluded skip for a pick, set is_skip=true on that pick
+  object. Do NOT rely on skip language in tier_walk or reasoning to communicate this —
+  is_skip=true is the authoritative signal. Picks with is_skip=true are safe to include
+  in the picks array; they will be filtered before publication. This is preferable to
+  omitting them entirely, which loses the skip record.
   "skips": [
     {{
       "date": "{TODAY_STR}",
@@ -3090,9 +3104,10 @@ SANITY CHECK — before finalizing each pick, verify:
      the penalty cascade produce a tier that real game outcomes contradict?
   2. Is the stated confidence honestly derived? If hit rate is 9/10 but confidence
      is 74%, the tier_walk must show clearly why (caps applied, not fabricated).
-  3. Did your own reasoning conclude "skip" at any step? If yes, do not emit the pick.
-     filter_self_skip_picks() runs in Python as a backstop, but eliminate the
-     contradiction at source — don't rely on post-processing to catch your errors.
+  3. Did your own reasoning conclude "skip" at any step? If yes, set is_skip=true on
+     the pick object. This is mandatory — is_skip=true is the authoritative skip signal
+     and will be used to remove the pick before publication. Do not rely on tier_walk
+     language alone; the is_skip field is how Python knows to filter it.
   4. Does the pick pass the smell test? You have domain knowledge. A T10 PTS pick
      on the league's leading scorer is almost certainly wrong regardless of what
      the penalty arithmetic produced. Trust that signal — skip or re-examine.
@@ -3195,9 +3210,15 @@ JSON schema:
       "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
       "iron_floor": true or false,
       "top_pick": true or false,
+      "is_skip": true or false — MANDATORY. Set true if your tier_walk concludes this pick should be skipped for ANY reason (hard rule, step-down below minimum tier, confidence below floor, etc.). Set false for all picks you are genuinely emitting. A pick with is_skip=true in the picks array will be removed before publication — this is the authoritative skip signal.,
       "reasoning": "One tight sentence: key reason this floor holds today. Max 15 words."
     }}}}
   ],
+  CRITICAL: If your tier_walk concluded skip for a pick, set is_skip=true on that pick
+  object. Do NOT rely on skip language in tier_walk or reasoning to communicate this —
+  is_skip=true is the authoritative signal. Picks with is_skip=true are safe to include
+  in the picks array; they will be filtered before publication. This is preferable to
+  omitting them entirely, which loses the skip record.
   "skips": [
     {{{{
       "date": "{TODAY_STR}",
@@ -3420,7 +3441,11 @@ def build_review_prompt(
 Today is {TODAY_STR}.
 
 ## STEP 0 — SKIP-ESCAPE CHECK (do this FIRST, before any adversarial assessment)
-Before evaluating any pick, scan its `reasoning` field for explicit skip language.
+Before evaluating any pick, check its `is_skip` field first, then scan its `reasoning`
+field for explicit skip language. Either condition is sufficient to flag the pick.
+
+If a pick has `is_skip: true`, it escaped the Python filter and must be flagged.
+
 If a pick's reasoning contains any of the following phrases, that pick escaped the
 filter incorrectly and must be flagged regardless of its statistical merits:
 - "mandatory hard skip"
@@ -4011,6 +4036,13 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
         # Catches: "falls below 3PM 75% minimum floor", "below 78% REB minimum confidence floor"
         r"falls?\s+below\s+(?:the\s+)?(?:3PM|REB|AST|PTS)\s+\d+%\s+minimum",
         r"below\s+\d+%\s+(?:3PM|REB|AST|PTS)\s+minimum\s+(?:confidence\s+)?floor",
+        # Step-down-induced skips — tier step-down lands below minimum valid tier
+        # Catches: "Result: SKIP due to ...", "step-down fires", "below minimum valid tier",
+        # "no lower valid tier"
+        r"Result:\s*SKIP",
+        r"step.down\s+fires",
+        r"below\s+minimum\s+(?:valid\s+)?tier",
+        r"no\s+lower\s+(?:valid\s+)?tier",
     ]
 
     # Signals that indicate the model reconsidered and chose to proceed anyway
@@ -4030,6 +4062,14 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
         player_name = pick.get("player_name", "?")
         prop_type   = pick.get("prop_type", "?")
         pick_value  = pick.get("pick_value", "?")
+
+        # Primary gate: is_skip boolean field — authoritative, no parsing needed
+        if pick.get("is_skip") is True:
+            removed.append(pick)
+            print(
+                f"[analyst] SELF_SKIP_FILTERED (is_skip=true): {player_name} {prop_type} T{pick_value}"
+            )
+            continue
 
         if not tier_walk:
             kept.append(pick)
@@ -4106,6 +4146,8 @@ def save_picks(picks: list[dict]):
         p["actual_value"] = None
         if "iron_floor" not in p:
             p["iron_floor"] = False
+        if "is_skip" not in p:
+            p["is_skip"] = False
 
     updated = existing + picks
 
