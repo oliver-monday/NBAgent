@@ -96,6 +96,11 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 **Post-Game Reporter injury exit detection: fixed 2026-03-18.** Monitor next 2–3 low-minutes events to confirm `injury_exit` classification fires correctly for both the `_INJURY_EXIT_TERMS` direct path and the `minutes_restriction` → `injury_exit` promotion path. Close this watch item once two confirmed in-game exits are correctly classified in production.
 
 
+#### W6 — 3PM VOLATILE × iron_floor merit_below_floor false skip rate
+**Status: WATCH — accumulate merit_below_floor skip data through end of season + playoffs**
+
+The 75% 3PM confidence floor combined with VOLATILE -5% penalty routinely pushes VOLATILE-tagged 3PM picks with iron_floor below the selection threshold. Prior to the merit_below_floor rename (2026-03-25), these were mislabeled as 3pm_blowout_trend_down. Hypothesis: iron_floor protection on VOLATILE 3PM picks makes the -5% penalty overly conservative — the floor itself prevents catastrophic misses, so the confidence discount may be double-counting the risk. Population is thin in-season (~10–15 picks expected by season end); full analysis deferred to offseason pending Odds API integration (T1 3PM R/R at market odds is the key missing input before any floor adjustment is warranted). Do not act until offseason. Accumulate correctly-labeled skip records through playoffs.
+
 ### Pending Backtests
 
 ### H9 — Player × Opponent H2H Splits

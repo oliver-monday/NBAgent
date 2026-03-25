@@ -2153,7 +2153,8 @@ JSON schema:
       "prop_type": "PTS | REB | AST | 3PM",
       "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
       "direction": "OVER",
-      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | fg_cold_tier_step | blowout_t25_skip",
+      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
+      // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 78% REB, 70% general); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
       "rule_context": {{
         ... fields specific to this skip_reason as defined in the rules above ...
       }}
@@ -3206,7 +3207,8 @@ JSON schema:
       "prop_type": "PTS | REB | AST | 3PM",
       "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
       "direction": "OVER",
-      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | fg_cold_tier_step | blowout_t25_skip",
+      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
+      // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 78% REB, 70% general); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
       "rule_context": {{{{
         ... fields specific to this skip_reason as defined in the rules above ...
       }}}}
@@ -4001,6 +4003,7 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
         r"mandatory\s+hard\s+skip",
         r"hard\s+gate\s+fires",
         r"(?:volatile_weak_combo|ast_hard_gate|blowout_secondary_scorer|3pm_blowout_trend_down|reb_floor_skip|blowout_t25_skip|fg_margin_thin_tier_step)\s+(?:fires|skip)",
+        r"merit_below_floor",
         r"SKIP\s+(?:T\d+\s+)?(?:AST|PTS|REB|3PM)[^\w]*(?:hard\s+gate|mandatory\s+skip|no\s+valid\s+tier)",
         r"mandatory\s+skip",
         r"Record\s+as\s+skip",
