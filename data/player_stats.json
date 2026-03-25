@@ -698,7 +698,8 @@
           "3": 0.0,
           "4": 0.0
         }
-      }
+      },
+      "absence_trend": {}
     },
     "volatility": {
       "PTS": {
@@ -1497,7 +1498,8 @@
           "3": 0.0,
           "4": 0.0
         }
-      }
+      },
+      "absence_trend": {}
     },
     "volatility": {
       "PTS": {
@@ -2848,10 +2850,10 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "down",
-      "REB": "down",
-      "AST": "down",
-      "3PM": "down"
+      "PTS": "stable",
+      "REB": "stable",
+      "AST": "up",
+      "3PM": "stable"
     },
     "home_away_splits": {
       "PTS": {
@@ -3046,6 +3048,12 @@
           "3": 0.0,
           "4": 0.0
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "stable",
+        "AST": "up",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -3624,9 +3632,9 @@
       }
     },
     "trend": {
-      "PTS": "stable",
-      "REB": "stable",
-      "AST": "up",
+      "PTS": "down",
+      "REB": "down",
+      "AST": "down",
       "3PM": "down"
     },
     "home_away_splits": {
@@ -3831,6 +3839,12 @@
           "3": 0.556,
           "4": 0.222
         }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "down",
+        "AST": "down",
+        "3PM": "down"
       }
     },
     "volatility": {
@@ -4418,10 +4432,10 @@
       }
     },
     "trend": {
-      "PTS": "down",
-      "REB": "down",
-      "AST": "down",
-      "3PM": "stable"
+      "PTS": "up",
+      "REB": "up",
+      "AST": "up",
+      "3PM": "up"
     },
     "home_away_splits": {
       "PTS": {
@@ -4650,6 +4664,12 @@
           "3": 0.278,
           "4": 0.167
         }
+      },
+      "absence_trend": {
+        "PTS": "up",
+        "REB": "up",
+        "AST": "up",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -5242,10 +5262,10 @@
       }
     },
     "trend": {
-      "PTS": "down",
+      "PTS": "stable",
       "REB": "down",
-      "AST": "down",
-      "3PM": "down"
+      "AST": "up",
+      "3PM": "up"
     },
     "home_away_splits": {
       "PTS": {
@@ -5474,6 +5494,12 @@
           "3": 0.478,
           "4": 0.261
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "down",
+        "AST": "up",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -6066,10 +6092,10 @@
       }
     },
     "trend": {
-      "PTS": "down",
-      "REB": "down",
+      "PTS": "stable",
+      "REB": "stable",
       "AST": "stable",
-      "3PM": "down"
+      "3PM": "up"
     },
     "home_away_splits": {
       "PTS": {
@@ -6292,6 +6318,12 @@
           "3": 0.5,
           "4": 0.333
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "stable",
+        "AST": "stable",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -6879,10 +6911,10 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "up",
+      "PTS": "down",
       "REB": "stable",
-      "AST": "down",
-      "3PM": "down"
+      "AST": "up",
+      "3PM": "stable"
     },
     "home_away_splits": {
       "PTS": {
@@ -7105,6 +7137,12 @@
           "3": 0.0,
           "4": 0.0
         }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "stable",
+        "AST": "up",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -8480,6 +8518,811 @@
     },
     "profile_narrative": "Darius Garland \u2014 Scoring Portrait (L20 games, best PTS tier: T15):\n  Hit sequence: 16/20 (80%) | current: 2-hit streak | longest hit-streak: 9 | longest miss-streak: 2\n  Scoring channels: FG=80% FT=5% 3PM=15%  [FG-dependent]\n  B2B: insufficient sample (<5 games)\n  Blowout context: 4/5 (80%) in blowout games vs 3/5 (60%) competitive  (+20% vs competitive)  [blowout-resilient]\n  Minutes floor (L10): floor=22.5min avg=27.4min (ratio=0.82)"
   },
+  "De'Aaron Fox": {
+    "team": "SA",
+    "whitelisted_teammates": [
+      "Stephon Castle",
+      "Victor Wembanyama"
+    ],
+    "opponent": "MEM",
+    "games_available": 20,
+    "last_updated": "2026-03-25",
+    "on_back_to_back": false,
+    "rest_days": 2,
+    "games_last_7": 3,
+    "dense_schedule": false,
+    "b2b_hit_rates": {
+      "PTS": {
+        "hit_rates": {
+          "10": 0.923,
+          "15": 0.538,
+          "20": 0.231,
+          "25": 0.154,
+          "30": 0.077
+        },
+        "n": 13
+      },
+      "REB": {
+        "hit_rates": {
+          "4": 0.385,
+          "6": 0.154,
+          "8": 0.077,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 13
+      },
+      "AST": {
+        "hit_rates": {
+          "2": 1.0,
+          "4": 0.923,
+          "6": 0.538,
+          "8": 0.308,
+          "10": 0.077,
+          "12": 0.0
+        },
+        "n": 13
+      },
+      "3PM": {
+        "hit_rates": {
+          "1": 0.692,
+          "2": 0.615,
+          "3": 0.308,
+          "4": 0.0
+        },
+        "n": 13
+      }
+    },
+    "today_spread": -16.5,
+    "spread_abs": 16.5,
+    "blowout_risk": true,
+    "tier_hit_rates": {
+      "PTS": {
+        "10": 0.9,
+        "15": 0.65,
+        "20": 0.35,
+        "25": 0.2,
+        "30": 0.0
+      },
+      "REB": {
+        "4": 0.3,
+        "6": 0.15,
+        "8": 0.0,
+        "10": 0.0,
+        "12": 0.0
+      },
+      "AST": {
+        "2": 0.95,
+        "4": 0.85,
+        "6": 0.75,
+        "8": 0.3,
+        "10": 0.05,
+        "12": 0.0
+      },
+      "3PM": {
+        "1": 0.85,
+        "2": 0.45,
+        "3": 0.2,
+        "4": 0.1
+      }
+    },
+    "matchup_tier_hit_rates": {
+      "PTS": {
+        "10": {
+          "soft": {
+            "hit_rate": 0.905,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.818,
+            "n": 22
+          }
+        },
+        "15": {
+          "soft": {
+            "hit_rate": 0.667,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.667,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.636,
+            "n": 22
+          }
+        },
+        "20": {
+          "soft": {
+            "hit_rate": 0.429,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.429,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.455,
+            "n": 22
+          }
+        },
+        "25": {
+          "soft": {
+            "hit_rate": 0.286,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.286,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.273,
+            "n": 22
+          }
+        },
+        "30": {
+          "soft": {
+            "hit_rate": 0.048,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.095,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 22
+          }
+        }
+      },
+      "REB": {
+        "4": {
+          "soft": {
+            "hit_rate": 0.609,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.391,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.444,
+            "n": 18
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.087,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.174,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.167,
+            "n": 18
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.043,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.056,
+            "n": 18
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        }
+      },
+      "AST": {
+        "2": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.947,
+            "n": 19
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.864,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.913,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.737,
+            "n": 19
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.5,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.696,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.526,
+            "n": 19
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.227,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.391,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.368,
+            "n": 19
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.091,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.13,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.105,
+            "n": 19
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.045,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.043,
+            "n": 23
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 19
+          }
+        }
+      },
+      "3PM": {
+        "1": {
+          "soft": {
+            "hit_rate": 0.92,
+            "n": 25
+          },
+          "mid": {
+            "hit_rate": 0.944,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.714,
+            "n": 21
+          }
+        },
+        "2": {
+          "soft": {
+            "hit_rate": 0.6,
+            "n": 25
+          },
+          "mid": {
+            "hit_rate": 0.611,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.524,
+            "n": 21
+          }
+        },
+        "3": {
+          "soft": {
+            "hit_rate": 0.36,
+            "n": 25
+          },
+          "mid": {
+            "hit_rate": 0.222,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.238,
+            "n": 21
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.12,
+            "n": 25
+          },
+          "mid": {
+            "hit_rate": 0.111,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.143,
+            "n": 21
+          }
+        }
+      }
+    },
+    "spread_split_hit_rates": {
+      "PTS": {
+        "competitive": {
+          "hit_rates": {
+            "10": 0.933,
+            "15": 0.7,
+            "20": 0.633,
+            "25": 0.433,
+            "30": 0.033
+          },
+          "n": 30
+        },
+        "blowout": {
+          "hit_rates": {
+            "10": 0.897,
+            "15": 0.655,
+            "20": 0.276,
+            "25": 0.138,
+            "30": 0.069
+          },
+          "n": 29
+        }
+      },
+      "REB": {
+        "competitive": {
+          "hit_rates": {
+            "4": 0.533,
+            "6": 0.2,
+            "8": 0.067,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 30
+        },
+        "blowout": {
+          "hit_rates": {
+            "4": 0.483,
+            "6": 0.103,
+            "8": 0.0,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 29
+        }
+      },
+      "AST": {
+        "competitive": {
+          "hit_rates": {
+            "2": 0.967,
+            "4": 0.833,
+            "6": 0.567,
+            "8": 0.433,
+            "10": 0.167,
+            "12": 0.033
+          },
+          "n": 30
+        },
+        "blowout": {
+          "hit_rates": {
+            "2": 1.0,
+            "4": 0.828,
+            "6": 0.517,
+            "8": 0.207,
+            "10": 0.069,
+            "12": 0.034
+          },
+          "n": 29
+        }
+      },
+      "3PM": {
+        "competitive": {
+          "hit_rates": {
+            "1": 0.867,
+            "2": 0.567,
+            "3": 0.233,
+            "4": 0.167
+          },
+          "n": 30
+        },
+        "blowout": {
+          "hit_rates": {
+            "1": 0.828,
+            "2": 0.586,
+            "3": 0.31,
+            "4": 0.103
+          },
+          "n": 29
+        }
+      }
+    },
+    "best_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate": 0.9
+      },
+      "REB": null,
+      "AST": {
+        "tier": 6,
+        "hit_rate": 0.75
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate": 0.85
+      }
+    },
+    "trend": {
+      "PTS": "down",
+      "REB": "up",
+      "AST": "down",
+      "3PM": "stable"
+    },
+    "home_away_splits": {
+      "PTS": {
+        "H": {
+          "tier": 15,
+          "hit_rate": 0.75
+        },
+        "A": {
+          "tier": 10,
+          "hit_rate": 0.85
+        }
+      },
+      "REB": {
+        "H": null,
+        "A": null
+      },
+      "AST": {
+        "H": {
+          "tier": 4,
+          "hit_rate": 0.9
+        },
+        "A": {
+          "tier": 6,
+          "hit_rate": 0.7
+        }
+      },
+      "3PM": {
+        "H": {
+          "tier": 1,
+          "hit_rate": 0.85
+        },
+        "A": {
+          "tier": 1,
+          "hit_rate": 0.8
+        }
+      }
+    },
+    "minutes_trend": "stable",
+    "avg_minutes_last5": 27.8,
+    "minutes_floor": {
+      "floor_minutes": 25.6,
+      "avg_minutes": 30.7,
+      "n": 10
+    },
+    "raw_avgs": {
+      "PTS": 17.6,
+      "REB": 3.4,
+      "AST": 6.3,
+      "3PM": 1.6
+    },
+    "opp_defense": {
+      "PTS": {
+        "allowed_pg": 123.6,
+        "rank": 29,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "REB": {
+        "allowed_pg": 47.5,
+        "rank": 31,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "AST": {
+        "allowed_pg": 28.1,
+        "rank": 23,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "3PM": {
+        "allowed_pg": 13.9,
+        "rank": 24,
+        "n_teams": 32,
+        "rating": "soft"
+      }
+    },
+    "game_pace": {
+      "combined_pts_avg": 222.7,
+      "pace_tag": "high",
+      "source": "h2h"
+    },
+    "teammate_correlations": {
+      "Stephon Castle": {
+        "shared_games": 52,
+        "correlations": {
+          "AST_PTS": {
+            "r": -0.182,
+            "tag": "independent"
+          },
+          "PTS_PTS": {
+            "r": -0.043,
+            "tag": "independent"
+          },
+          "REB_REB": {
+            "r": 0.033,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": -0.185,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.146,
+            "tag": "independent"
+          }
+        }
+      },
+      "Victor Wembanyama": {
+        "shared_games": 49,
+        "correlations": {
+          "AST_PTS": {
+            "r": 0.169,
+            "tag": "feeder_target"
+          },
+          "PTS_PTS": {
+            "r": 0.284,
+            "tag": "volume_game"
+          },
+          "REB_REB": {
+            "r": 0.015,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": -0.098,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.221,
+            "tag": "independent"
+          }
+        }
+      }
+    },
+    "bounce_back": {
+      "PTS": {
+        "tier": 10,
+        "post_miss_hit_rate": 0.833,
+        "lift": 0.92,
+        "consecutive_miss_rate": 0.167,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 6,
+        "near_miss_rate": 0.5,
+        "blowup_rate": 0.5,
+        "typical_miss": 2.5
+      },
+      "REB": null,
+      "AST": {
+        "tier": 4,
+        "post_miss_hit_rate": 0.9,
+        "lift": 1.067,
+        "consecutive_miss_rate": 0.1,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 10,
+        "near_miss_rate": 0.9,
+        "blowup_rate": 0.1,
+        "typical_miss": 1.0
+      },
+      "3PM": {
+        "tier": 1,
+        "post_miss_hit_rate": 0.889,
+        "lift": 1.034,
+        "consecutive_miss_rate": 0.111,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 9,
+        "near_miss_rate": 1.0,
+        "blowup_rate": 0.0,
+        "typical_miss": 1.0
+      }
+    },
+    "key_teammate_absent": {
+      "teammate_name": "Victor Wembanyama",
+      "teammate_avg_pts": 24.2,
+      "n_games": 15,
+      "raw_avgs": {
+        "PTS": 24.8,
+        "REB": 4.0,
+        "AST": 6.3,
+        "3PM": 2.7
+      },
+      "tier_hit_rates": {
+        "PTS": {
+          "10": 1.0,
+          "15": 0.933,
+          "20": 0.8,
+          "25": 0.667,
+          "30": 0.133
+        },
+        "REB": {
+          "4": 0.667,
+          "6": 0.2,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "AST": {
+          "2": 1.0,
+          "4": 0.8,
+          "6": 0.467,
+          "8": 0.4,
+          "10": 0.133,
+          "12": 0.067
+        },
+        "3PM": {
+          "1": 1.0,
+          "2": 0.933,
+          "3": 0.467,
+          "4": 0.267
+        }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "up",
+        "AST": "down",
+        "3PM": "stable"
+      }
+    },
+    "volatility": {
+      "PTS": {
+        "label": "moderate",
+        "sigma": 0.308,
+        "n": 20
+      },
+      "AST": {
+        "label": "volatile",
+        "sigma": 0.444,
+        "n": 20
+      },
+      "3PM": {
+        "label": "moderate",
+        "sigma": 0.366,
+        "n": 20
+      }
+    },
+    "shooting_regression": {
+      "flag": "cold",
+      "fg_flag": "cold",
+      "fg_delta_pct": -0.121,
+      "l20_fg_pct": 0.502,
+      "l5_fg_pct": 0.441,
+      "l20_3p_pct": 0.323,
+      "l5_3p_pct": 0.304,
+      "3p_delta_pct": -0.058,
+      "games_with_shots": 64
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.502,
+      "season_ftm_avg": 0.95,
+      "season_fta_avg": 1.5,
+      "season_fga_avg": 13.65,
+      "season_3pm_avg": 1.6,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.273,
+          "margin": 0.229
+        },
+        "15": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.456,
+          "margin": 0.046
+        },
+        "20": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.639,
+          "margin": -0.137
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.822,
+          "margin": -0.321
+        },
+        "30": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.005,
+          "margin": -0.504
+        }
+      }
+    },
+    "team_momentum": {
+      "team": {
+        "l10_wins": 9,
+        "l10_losses": 1,
+        "l10_pct": 0.9,
+        "l10_margin": 11.9,
+        "tag": "hot"
+      },
+      "opponent": {
+        "l10_wins": 1,
+        "l10_losses": 9,
+        "l10_pct": 0.1,
+        "l10_margin": -13.3,
+        "tag": "cold"
+      }
+    },
+    "def_recency": {
+      "flag": null,
+      "l5_avg": 127.4,
+      "l15_avg": 123.6,
+      "delta_pct": 0.0307,
+      "n_l5": 5,
+      "n_l15": 15
+    },
+    "positional_dvp": {
+      "position": "PG",
+      "pts_rating": "soft",
+      "reb_rating": "soft",
+      "ast_rating": "mid",
+      "tpm_rating": "soft",
+      "n": 27,
+      "source": "positional"
+    },
+    "profile_narrative": "De'Aaron Fox \u2014 Scoring Portrait (L20 games, best PTS tier: T10):\n  Hit sequence: 17/20 (85%) | current: 12-hit streak | longest hit-streak: 12 | longest miss-streak: 2\n  Scoring channels: FG=85% FT=5% 3PM=10%  [FG-dependent]\n  B2B: 12/13 (92%) on B2B second nights  (+2% vs baseline 90%)  [B2B-resilient]\n  Blowout context: 26/29 (90%) in blowout games vs 28/30 (93%) competitive  (-4% vs competitive)  [blowout-mixed]\n  Miss anatomy (6 misses): 50% near-miss (\u22642u) / 50% blowup (>2u), typical shortfall=2.5u\n  Minutes floor (L10): floor=25.6min avg=30.7min (ratio=0.83)"
+  },
   "Derrick White": {
     "team": "BOS",
     "whitelisted_teammates": [
@@ -8968,8 +9811,8 @@
     },
     "trend": {
       "PTS": "stable",
-      "REB": "up",
-      "AST": "down",
+      "REB": "down",
+      "AST": "stable",
       "3PM": "stable"
     },
     "home_away_splits": {
@@ -9179,6 +10022,12 @@
           "3": 0.714,
           "4": 0.714
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "down",
+        "AST": "stable",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -9769,10 +10618,10 @@
       }
     },
     "trend": {
-      "PTS": "stable",
-      "REB": "stable",
-      "AST": "stable",
-      "3PM": "stable"
+      "PTS": "down",
+      "REB": "down",
+      "AST": "up",
+      "3PM": "down"
     },
     "home_away_splits": {
       "PTS": {
@@ -10009,6 +10858,12 @@
           "3": 0.708,
           "4": 0.521
         }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "down",
+        "AST": "up",
+        "3PM": "down"
       }
     },
     "volatility": {
@@ -10591,10 +11446,10 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "up",
-      "REB": "up",
-      "AST": "up",
-      "3PM": "down"
+      "PTS": "stable",
+      "REB": "stable",
+      "AST": "stable",
+      "3PM": "stable"
     },
     "home_away_splits": {
       "PTS": {
@@ -10831,6 +11686,12 @@
           "3": 0.167,
           "4": 0.167
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "stable",
+        "AST": "stable",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -12091,9 +12952,9 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "down",
-      "REB": "up",
-      "AST": "up",
+      "PTS": "up",
+      "REB": "stable",
+      "AST": "down",
       "3PM": "stable"
     },
     "home_away_splits": {
@@ -12314,6 +13175,12 @@
           "3": 0.0,
           "4": 0.0
         }
+      },
+      "absence_trend": {
+        "PTS": "up",
+        "REB": "stable",
+        "AST": "down",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -12889,9 +13756,9 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "up",
+      "PTS": "stable",
       "REB": "stable",
-      "AST": "down",
+      "AST": "stable",
       "3PM": "stable"
     },
     "home_away_splits": {
@@ -13087,6 +13954,12 @@
           "3": 0.0,
           "4": 0.0
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "stable",
+        "AST": "stable",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -14558,7 +15431,8 @@
           "3": 0.0,
           "4": 0.0
         }
-      }
+      },
+      "absence_trend": {}
     },
     "volatility": {
       "PTS": {
@@ -15141,10 +16015,10 @@
       }
     },
     "trend": {
-      "PTS": "stable",
-      "REB": "stable",
-      "AST": "up",
-      "3PM": "stable"
+      "PTS": "down",
+      "REB": "down",
+      "AST": "down",
+      "3PM": "down"
     },
     "home_away_splits": {
       "PTS": {
@@ -15331,6 +16205,12 @@
           "3": 0.417,
           "4": 0.333
         }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "down",
+        "AST": "down",
+        "3PM": "down"
       }
     },
     "volatility": {
@@ -16096,7 +16976,8 @@
           "3": 0.667,
           "4": 0.667
         }
-      }
+      },
+      "absence_trend": {}
     },
     "volatility": {
       "PTS": {
@@ -16684,8 +17565,8 @@
     },
     "trend": {
       "PTS": "stable",
-      "REB": "down",
-      "AST": "stable",
+      "REB": "stable",
+      "AST": "down",
       "3PM": "stable"
     },
     "home_away_splits": {
@@ -16903,6 +17784,12 @@
           "3": 0.0,
           "4": 0.0
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "stable",
+        "AST": "down",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -17485,10 +18372,10 @@
       }
     },
     "trend": {
-      "PTS": "up",
-      "REB": "stable",
-      "AST": "down",
-      "3PM": "up"
+      "PTS": "down",
+      "REB": "up",
+      "AST": "up",
+      "3PM": "down"
     },
     "home_away_splits": {
       "PTS": {
@@ -17697,6 +18584,12 @@
           "3": 0.259,
           "4": 0.172
         }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "up",
+        "AST": "up",
+        "3PM": "down"
       }
     },
     "volatility": {
@@ -19388,10 +20281,10 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "up",
+      "PTS": "down",
       "REB": "down",
-      "AST": "up",
-      "3PM": "up"
+      "AST": "down",
+      "3PM": "down"
     },
     "home_away_splits": {
       "PTS": {
@@ -19620,6 +20513,12 @@
           "3": 0.214,
           "4": 0.143
         }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "down",
+        "AST": "down",
+        "3PM": "down"
       }
     },
     "volatility": {
@@ -20208,8 +21107,8 @@
     "trend": {
       "PTS": "stable",
       "REB": "down",
-      "AST": "down",
-      "3PM": "up"
+      "AST": "stable",
+      "3PM": "down"
     },
     "home_away_splits": {
       "PTS": {
@@ -20402,6 +21301,12 @@
           "3": 0.447,
           "4": 0.277
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "down",
+        "AST": "stable",
+        "3PM": "down"
       }
     },
     "volatility": {
@@ -20995,7 +21900,7 @@
     },
     "trend": {
       "PTS": "stable",
-      "REB": "down",
+      "REB": "up",
       "AST": "down",
       "3PM": "up"
     },
@@ -21226,6 +22131,12 @@
           "3": 0.222,
           "4": 0.111
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "up",
+        "AST": "down",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -21330,6 +22241,1567 @@
       "source": "positional"
     },
     "profile_narrative": "Kevin Durant \u2014 Scoring Portrait (L20 games, best PTS tier: T20):\n  Hit sequence: 14/20 (70%) | current: 3-hit streak | longest hit-streak: 8 | longest miss-streak: 2\n  Scoring channels: FG=79% FT=11% 3PM=10%  [FG-dependent]\n  B2B: 11/12 (92%) on B2B second nights  (+12% vs baseline 80%)  [B2B-resilient]\n  Blowout context: 25/32 (78%) in blowout games vs 23/29 (79%) competitive  (-1% vs competitive)  [blowout-mixed]\n  Miss anatomy (13 misses): 54% near-miss (\u22642u) / 46% blowup (>2u), typical shortfall=2.0u\n  Minutes floor (L10): floor=29.6min avg=35.3min (ratio=0.84)"
+  },
+  "Keyonte George": {
+    "team": "UTAH",
+    "whitelisted_teammates": [
+      "Lauri Markkanen"
+    ],
+    "opponent": "WSH",
+    "games_available": 20,
+    "last_updated": "2026-03-25",
+    "on_back_to_back": false,
+    "rest_days": 2,
+    "games_last_7": 4,
+    "dense_schedule": false,
+    "b2b_hit_rates": {
+      "PTS": {
+        "hit_rates": {
+          "10": 1.0,
+          "15": 0.909,
+          "20": 0.545,
+          "25": 0.455,
+          "30": 0.182
+        },
+        "n": 11
+      },
+      "REB": {
+        "hit_rates": {
+          "4": 0.545,
+          "6": 0.182,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 11
+      },
+      "AST": {
+        "hit_rates": {
+          "2": 1.0,
+          "4": 0.818,
+          "6": 0.545,
+          "8": 0.091,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 11
+      },
+      "3PM": {
+        "hit_rates": {
+          "1": 0.909,
+          "2": 0.636,
+          "3": 0.455,
+          "4": 0.273
+        },
+        "n": 11
+      }
+    },
+    "today_spread": -4.5,
+    "spread_abs": 4.5,
+    "blowout_risk": false,
+    "tier_hit_rates": {
+      "PTS": {
+        "10": 0.8,
+        "15": 0.75,
+        "20": 0.5,
+        "25": 0.4,
+        "30": 0.25
+      },
+      "REB": {
+        "4": 0.2,
+        "6": 0.05,
+        "8": 0.0,
+        "10": 0.0,
+        "12": 0.0
+      },
+      "AST": {
+        "2": 0.8,
+        "4": 0.55,
+        "6": 0.3,
+        "8": 0.05,
+        "10": 0.0,
+        "12": 0.0
+      },
+      "3PM": {
+        "1": 0.7,
+        "2": 0.45,
+        "3": 0.4,
+        "4": 0.35
+      }
+    },
+    "matchup_tier_hit_rates": {
+      "PTS": {
+        "10": {
+          "soft": {
+            "hit_rate": 0.95,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.812,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.857,
+            "n": 21
+          }
+        },
+        "15": {
+          "soft": {
+            "hit_rate": 0.9,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.812,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.81,
+            "n": 21
+          }
+        },
+        "20": {
+          "soft": {
+            "hit_rate": 0.6,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.562,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.619,
+            "n": 21
+          }
+        },
+        "25": {
+          "soft": {
+            "hit_rate": 0.45,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.5,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.524,
+            "n": 21
+          }
+        },
+        "30": {
+          "soft": {
+            "hit_rate": 0.2,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.25,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.286,
+            "n": 21
+          }
+        }
+      },
+      "REB": {
+        "4": {
+          "soft": {
+            "hit_rate": 0.4,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.526,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.556,
+            "n": 18
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.25,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.158,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.167,
+            "n": 18
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.105,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 20
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        }
+      },
+      "AST": {
+        "2": {
+          "soft": {
+            "hit_rate": 0.947,
+            "n": 19
+          },
+          "mid": {
+            "hit_rate": 0.95,
+            "n": 20
+          },
+          "tough": {
+            "hit_rate": 0.889,
+            "n": 18
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.789,
+            "n": 19
+          },
+          "mid": {
+            "hit_rate": 0.75,
+            "n": 20
+          },
+          "tough": {
+            "hit_rate": 0.833,
+            "n": 18
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.684,
+            "n": 19
+          },
+          "mid": {
+            "hit_rate": 0.5,
+            "n": 20
+          },
+          "tough": {
+            "hit_rate": 0.667,
+            "n": 18
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.263,
+            "n": 19
+          },
+          "mid": {
+            "hit_rate": 0.3,
+            "n": 20
+          },
+          "tough": {
+            "hit_rate": 0.333,
+            "n": 18
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.053,
+            "n": 19
+          },
+          "mid": {
+            "hit_rate": 0.05,
+            "n": 20
+          },
+          "tough": {
+            "hit_rate": 0.111,
+            "n": 18
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 19
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 20
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        }
+      },
+      "3PM": {
+        "1": {
+          "soft": {
+            "hit_rate": 0.81,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.833,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.833,
+            "n": 18
+          }
+        },
+        "2": {
+          "soft": {
+            "hit_rate": 0.524,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.611,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.667,
+            "n": 18
+          }
+        },
+        "3": {
+          "soft": {
+            "hit_rate": 0.381,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.5,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.389,
+            "n": 18
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.333,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.389,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.278,
+            "n": 18
+          }
+        }
+      }
+    },
+    "spread_split_hit_rates": {
+      "PTS": {
+        "competitive": {
+          "hit_rates": {
+            "10": 0.905,
+            "15": 0.857,
+            "20": 0.476,
+            "25": 0.429,
+            "30": 0.143
+          },
+          "n": 21
+        },
+        "blowout": {
+          "hit_rates": {
+            "10": 0.903,
+            "15": 0.871,
+            "20": 0.742,
+            "25": 0.581,
+            "30": 0.355
+          },
+          "n": 31
+        }
+      },
+      "REB": {
+        "competitive": {
+          "hit_rates": {
+            "4": 0.381,
+            "6": 0.095,
+            "8": 0.048,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 21
+        },
+        "blowout": {
+          "hit_rates": {
+            "4": 0.613,
+            "6": 0.258,
+            "8": 0.032,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 31
+        }
+      },
+      "AST": {
+        "competitive": {
+          "hit_rates": {
+            "2": 0.952,
+            "4": 0.857,
+            "6": 0.667,
+            "8": 0.238,
+            "10": 0.143,
+            "12": 0.0
+          },
+          "n": 21
+        },
+        "blowout": {
+          "hit_rates": {
+            "2": 0.968,
+            "4": 0.774,
+            "6": 0.613,
+            "8": 0.387,
+            "10": 0.032,
+            "12": 0.0
+          },
+          "n": 31
+        }
+      },
+      "3PM": {
+        "competitive": {
+          "hit_rates": {
+            "1": 0.81,
+            "2": 0.476,
+            "3": 0.333,
+            "4": 0.238
+          },
+          "n": 21
+        },
+        "blowout": {
+          "hit_rates": {
+            "1": 0.903,
+            "2": 0.742,
+            "3": 0.516,
+            "4": 0.452
+          },
+          "n": 31
+        }
+      }
+    },
+    "best_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate": 0.75
+      },
+      "REB": null,
+      "AST": {
+        "tier": 2,
+        "hit_rate": 0.8
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate": 0.7
+      }
+    },
+    "trend": {
+      "PTS": "stable",
+      "REB": "down",
+      "AST": "down",
+      "3PM": "stable"
+    },
+    "home_away_splits": {
+      "PTS": {
+        "H": {
+          "tier": 15,
+          "hit_rate": 0.8
+        },
+        "A": {
+          "tier": 20,
+          "hit_rate": 0.7
+        }
+      },
+      "REB": {
+        "H": null,
+        "A": null
+      },
+      "AST": {
+        "H": {
+          "tier": 4,
+          "hit_rate": 0.75
+        },
+        "A": {
+          "tier": 4,
+          "hit_rate": 0.75
+        }
+      },
+      "3PM": {
+        "H": {
+          "tier": 1,
+          "hit_rate": 0.8
+        },
+        "A": {
+          "tier": 1,
+          "hit_rate": 0.8
+        }
+      }
+    },
+    "minutes_trend": "stable",
+    "avg_minutes_last5": 26.6,
+    "minutes_floor": {
+      "floor_minutes": 0.0,
+      "avg_minutes": 20.1,
+      "n": 10
+    },
+    "raw_avgs": {
+      "PTS": 20.1,
+      "REB": 2.2,
+      "AST": 3.9,
+      "3PM": 2.0
+    },
+    "opp_defense": {
+      "PTS": {
+        "allowed_pg": 128.9,
+        "rank": 32,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "REB": {
+        "allowed_pg": 49.5,
+        "rank": 32,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "AST": {
+        "allowed_pg": 30.1,
+        "rank": 29,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "3PM": {
+        "allowed_pg": 11.5,
+        "rank": 4,
+        "n_teams": 32,
+        "rating": "tough"
+      }
+    },
+    "game_pace": {
+      "combined_pts_avg": 230.7,
+      "pace_tag": "high",
+      "source": "avg"
+    },
+    "teammate_correlations": {
+      "Lauri Markkanen": {
+        "shared_games": 40,
+        "correlations": {
+          "AST_PTS": {
+            "r": 0.38,
+            "tag": "feeder_target"
+          },
+          "PTS_PTS": {
+            "r": 0.298,
+            "tag": "volume_game"
+          },
+          "REB_REB": {
+            "r": 0.251,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": -0.029,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.442,
+            "tag": "positively_correlated"
+          }
+        }
+      }
+    },
+    "bounce_back": {
+      "PTS": {
+        "tier": 15,
+        "post_miss_hit_rate": 0.75,
+        "lift": 0.891,
+        "consecutive_miss_rate": 0.25,
+        "max_consecutive_misses": 3,
+        "iron_floor": false,
+        "n_misses": 9,
+        "near_miss_rate": 0.111,
+        "blowup_rate": 0.889,
+        "typical_miss": 11.0
+      },
+      "REB": null,
+      "AST": {
+        "tier": 4,
+        "post_miss_hit_rate": 0.75,
+        "lift": 0.95,
+        "consecutive_miss_rate": 0.25,
+        "max_consecutive_misses": 3,
+        "iron_floor": false,
+        "n_misses": 12,
+        "near_miss_rate": 0.667,
+        "blowup_rate": 0.333,
+        "typical_miss": 2.0
+      },
+      "3PM": {
+        "tier": 1,
+        "post_miss_hit_rate": 0.7,
+        "lift": 0.849,
+        "consecutive_miss_rate": 0.3,
+        "max_consecutive_misses": 3,
+        "iron_floor": false,
+        "n_misses": 10,
+        "near_miss_rate": 1.0,
+        "blowup_rate": 0.0,
+        "typical_miss": 1.0
+      }
+    },
+    "key_teammate_absent": {
+      "teammate_name": "Lauri Markkanen",
+      "teammate_avg_pts": 26.7,
+      "n_games": 19,
+      "raw_avgs": {
+        "PTS": 23.3,
+        "REB": 2.6,
+        "AST": 4.7,
+        "3PM": 2.4
+      },
+      "tier_hit_rates": {
+        "PTS": {
+          "10": 0.895,
+          "15": 0.842,
+          "20": 0.632,
+          "25": 0.474,
+          "30": 0.263
+        },
+        "REB": {
+          "4": 0.263,
+          "6": 0.053,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "AST": {
+          "2": 1.0,
+          "4": 0.684,
+          "6": 0.316,
+          "8": 0.105,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "3PM": {
+          "1": 0.789,
+          "2": 0.526,
+          "3": 0.421,
+          "4": 0.421
+        }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "down",
+        "AST": "down",
+        "3PM": "stable"
+      }
+    },
+    "volatility": {
+      "PTS": {
+        "label": "moderate",
+        "sigma": 0.366,
+        "n": 20
+      },
+      "AST": {
+        "label": "consistent",
+        "sigma": 0.224,
+        "n": 20
+      },
+      "3PM": {
+        "label": "volatile",
+        "sigma": 0.41,
+        "n": 20
+      }
+    },
+    "shooting_regression": {
+      "flag": "neutral",
+      "fg_flag": "neutral",
+      "fg_delta_pct": -0.022,
+      "l20_fg_pct": 0.465,
+      "l5_fg_pct": 0.455,
+      "l20_3p_pct": 0.358,
+      "l5_3p_pct": 0.371,
+      "3p_delta_pct": 0.038,
+      "games_with_shots": 54
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.465,
+      "season_ftm_avg": 5.05,
+      "season_fta_avg": 5.85,
+      "season_fga_avg": 15.6,
+      "season_3pm_avg": 2.2,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.088,
+          "margin": 0.377
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.248,
+          "margin": 0.216
+        },
+        "20": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.409,
+          "margin": 0.056
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.569,
+          "margin": -0.104
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.729,
+          "margin": -0.264
+        }
+      }
+    },
+    "team_momentum": {
+      "team": {
+        "l10_wins": 3,
+        "l10_losses": 7,
+        "l10_pct": 0.3,
+        "l10_margin": -6.3,
+        "tag": "cold"
+      },
+      "opponent": {
+        "l10_wins": 0,
+        "l10_losses": 10,
+        "l10_pct": 0.0,
+        "l10_margin": -16.3,
+        "tag": "cold"
+      }
+    },
+    "def_recency": {
+      "flag": null,
+      "l5_avg": 129.8,
+      "l15_avg": 128.9,
+      "delta_pct": 0.007,
+      "n_l5": 5,
+      "n_l15": 15
+    },
+    "positional_dvp": {
+      "position": "PG",
+      "pts_rating": "soft",
+      "reb_rating": "mid",
+      "ast_rating": "soft",
+      "tpm_rating": "mid",
+      "n": 31,
+      "source": "positional"
+    },
+    "profile_narrative": "Keyonte George \u2014 Scoring Portrait (L20 games, best PTS tier: T15):\n  Hit sequence: 17/20 (85%) | current: 1-miss streak | longest hit-streak: 10 | longest miss-streak: 1\n  Scoring channels: FG=67% FT=23% 3PM=10%  [balanced]\n  B2B: 10/11 (91%) on B2B second nights  (+16% vs baseline 75%)  [B2B-resilient]\n  Blowout context: 27/31 (87%) in blowout games vs 18/21 (86%) competitive  (+1% vs competitive)  [blowout-resilient]\n  Miss anatomy (9 misses): 11% near-miss (\u22642u) / 89% blowup (>2u), typical shortfall=11.0u\n  Minutes floor (L10): floor=0.0min avg=20.1min (ratio=0.00)"
+  },
+  "Lauri Markkanen": {
+    "team": "UTAH",
+    "whitelisted_teammates": [
+      "Keyonte George"
+    ],
+    "opponent": "WSH",
+    "games_available": 20,
+    "last_updated": "2026-03-25",
+    "on_back_to_back": false,
+    "rest_days": 2,
+    "games_last_7": 4,
+    "dense_schedule": false,
+    "b2b_hit_rates": {
+      "PTS": {
+        "hit_rates": {
+          "10": 1.0,
+          "15": 1.0,
+          "20": 0.625,
+          "25": 0.5,
+          "30": 0.25
+        },
+        "n": 8
+      },
+      "REB": {
+        "hit_rates": {
+          "4": 0.75,
+          "6": 0.625,
+          "8": 0.375,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 8
+      },
+      "AST": {
+        "hit_rates": {
+          "2": 0.75,
+          "4": 0.25,
+          "6": 0.0,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 8
+      },
+      "3PM": {
+        "hit_rates": {
+          "1": 1.0,
+          "2": 0.75,
+          "3": 0.25,
+          "4": 0.25
+        },
+        "n": 8
+      }
+    },
+    "today_spread": -4.5,
+    "spread_abs": 4.5,
+    "blowout_risk": false,
+    "tier_hit_rates": {
+      "PTS": {
+        "10": 0.9,
+        "15": 0.9,
+        "20": 0.65,
+        "25": 0.55,
+        "30": 0.15
+      },
+      "REB": {
+        "4": 0.75,
+        "6": 0.5,
+        "8": 0.3,
+        "10": 0.15,
+        "12": 0.1
+      },
+      "AST": {
+        "2": 0.55,
+        "4": 0.2,
+        "6": 0.0,
+        "8": 0.0,
+        "10": 0.0,
+        "12": 0.0
+      },
+      "3PM": {
+        "1": 0.9,
+        "2": 0.75,
+        "3": 0.45,
+        "4": 0.1
+      }
+    },
+    "matchup_tier_hit_rates": {
+      "PTS": {
+        "10": {
+          "soft": {
+            "hit_rate": 0.933,
+            "n": 15
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.938,
+            "n": 16
+          }
+        },
+        "15": {
+          "soft": {
+            "hit_rate": 0.933,
+            "n": 15
+          },
+          "mid": {
+            "hit_rate": 0.923,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.938,
+            "n": 16
+          }
+        },
+        "20": {
+          "soft": {
+            "hit_rate": 0.667,
+            "n": 15
+          },
+          "mid": {
+            "hit_rate": 0.769,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.75,
+            "n": 16
+          }
+        },
+        "25": {
+          "soft": {
+            "hit_rate": 0.667,
+            "n": 15
+          },
+          "mid": {
+            "hit_rate": 0.538,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.562,
+            "n": 16
+          }
+        },
+        "30": {
+          "soft": {
+            "hit_rate": 0.467,
+            "n": 15
+          },
+          "mid": {
+            "hit_rate": 0.077,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.312,
+            "n": 16
+          }
+        }
+      },
+      "REB": {
+        "4": {
+          "soft": {
+            "hit_rate": 0.75,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.875,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.875,
+            "n": 16
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.75,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.562,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.562,
+            "n": 16
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.333,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.312,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.375,
+            "n": 16
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.167,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.125,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.062,
+            "n": 16
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.167,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.125,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 16
+          }
+        }
+      },
+      "AST": {
+        "2": {
+          "soft": {
+            "hit_rate": 0.833,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.647,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.533,
+            "n": 15
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.167,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.235,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.067,
+            "n": 15
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 15
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 15
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 15
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 15
+          }
+        }
+      },
+      "3PM": {
+        "1": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 14
+          },
+          "mid": {
+            "hit_rate": 0.933,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.867,
+            "n": 15
+          }
+        },
+        "2": {
+          "soft": {
+            "hit_rate": 0.857,
+            "n": 14
+          },
+          "mid": {
+            "hit_rate": 0.667,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.867,
+            "n": 15
+          }
+        },
+        "3": {
+          "soft": {
+            "hit_rate": 0.357,
+            "n": 14
+          },
+          "mid": {
+            "hit_rate": 0.333,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.733,
+            "n": 15
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.214,
+            "n": 14
+          },
+          "mid": {
+            "hit_rate": 0.133,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.333,
+            "n": 15
+          }
+        }
+      }
+    },
+    "spread_split_hit_rates": {
+      "PTS": {
+        "competitive": {
+          "hit_rates": {
+            "10": 0.941,
+            "15": 0.941,
+            "20": 0.824,
+            "25": 0.765,
+            "30": 0.588
+          },
+          "n": 17
+        },
+        "blowout": {
+          "hit_rates": {
+            "10": 1.0,
+            "15": 0.957,
+            "20": 0.739,
+            "25": 0.522,
+            "30": 0.13
+          },
+          "n": 23
+        }
+      },
+      "REB": {
+        "competitive": {
+          "hit_rates": {
+            "4": 0.824,
+            "6": 0.588,
+            "8": 0.235,
+            "10": 0.118,
+            "12": 0.118
+          },
+          "n": 17
+        },
+        "blowout": {
+          "hit_rates": {
+            "4": 0.913,
+            "6": 0.696,
+            "8": 0.478,
+            "10": 0.13,
+            "12": 0.087
+          },
+          "n": 23
+        }
+      },
+      "AST": {
+        "competitive": {
+          "hit_rates": {
+            "2": 0.706,
+            "4": 0.176,
+            "6": 0.0,
+            "8": 0.0,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 17
+        },
+        "blowout": {
+          "hit_rates": {
+            "2": 0.652,
+            "4": 0.13,
+            "6": 0.0,
+            "8": 0.0,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 23
+        }
+      },
+      "3PM": {
+        "competitive": {
+          "hit_rates": {
+            "1": 0.941,
+            "2": 0.824,
+            "3": 0.529,
+            "4": 0.353
+          },
+          "n": 17
+        },
+        "blowout": {
+          "hit_rates": {
+            "1": 0.957,
+            "2": 0.826,
+            "3": 0.435,
+            "4": 0.174
+          },
+          "n": 23
+        }
+      }
+    },
+    "best_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate": 0.9
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate": 0.75
+      },
+      "AST": null,
+      "3PM": {
+        "tier": 2,
+        "hit_rate": 0.75
+      }
+    },
+    "trend": {
+      "PTS": "stable",
+      "REB": "down",
+      "AST": "down",
+      "3PM": "stable"
+    },
+    "home_away_splits": {
+      "PTS": {
+        "H": {
+          "tier": 15,
+          "hit_rate": 0.9
+        },
+        "A": {
+          "tier": 20,
+          "hit_rate": 0.75
+        }
+      },
+      "REB": {
+        "H": {
+          "tier": 4,
+          "hit_rate": 0.8
+        },
+        "A": {
+          "tier": 4,
+          "hit_rate": 0.85
+        }
+      },
+      "AST": {
+        "H": {
+          "tier": 2,
+          "hit_rate": 0.8
+        },
+        "A": null
+      },
+      "3PM": {
+        "H": {
+          "tier": 2,
+          "hit_rate": 0.7
+        },
+        "A": {
+          "tier": 2,
+          "hit_rate": 0.85
+        }
+      }
+    },
+    "minutes_trend": "decreasing",
+    "avg_minutes_last5": 25.6,
+    "minutes_floor": {
+      "floor_minutes": 18.9,
+      "avg_minutes": 25.6,
+      "n": 10
+    },
+    "raw_avgs": {
+      "PTS": 22.8,
+      "REB": 6.0,
+      "AST": 1.9,
+      "3PM": 2.2
+    },
+    "opp_defense": {
+      "PTS": {
+        "allowed_pg": 128.9,
+        "rank": 32,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "REB": {
+        "allowed_pg": 49.5,
+        "rank": 32,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "AST": {
+        "allowed_pg": 30.1,
+        "rank": 29,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "3PM": {
+        "allowed_pg": 11.5,
+        "rank": 4,
+        "n_teams": 32,
+        "rating": "tough"
+      }
+    },
+    "game_pace": {
+      "combined_pts_avg": 230.7,
+      "pace_tag": "high",
+      "source": "avg"
+    },
+    "teammate_correlations": {
+      "Keyonte George": {
+        "shared_games": 40,
+        "correlations": {
+          "AST_PTS": {
+            "r": 0.38,
+            "tag": "feeder_target"
+          },
+          "PTS_PTS": {
+            "r": 0.298,
+            "tag": "volume_game"
+          },
+          "REB_REB": {
+            "r": 0.251,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": -0.029,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.442,
+            "tag": "positively_correlated"
+          }
+        }
+      }
+    },
+    "bounce_back": {
+      "PTS": {
+        "tier": 20,
+        "post_miss_hit_rate": 0.75,
+        "lift": 1.031,
+        "consecutive_miss_rate": 0.25,
+        "max_consecutive_misses": 3,
+        "iron_floor": false,
+        "n_misses": 12,
+        "near_miss_rate": 0.583,
+        "blowup_rate": 0.417,
+        "typical_miss": 2.0
+      },
+      "REB": {
+        "tier": 4,
+        "post_miss_hit_rate": 0.833,
+        "lift": 0.991,
+        "consecutive_miss_rate": 0.167,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 7,
+        "near_miss_rate": 0.714,
+        "blowup_rate": 0.286,
+        "typical_miss": 1.0
+      },
+      "AST": null,
+      "3PM": {
+        "tier": 2,
+        "post_miss_hit_rate": 0.75,
+        "lift": 0.943,
+        "consecutive_miss_rate": 0.25,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 9,
+        "near_miss_rate": 1.0,
+        "blowup_rate": 0.0,
+        "typical_miss": 1.0
+      }
+    },
+    "key_teammate_absent": {
+      "teammate_name": "Keyonte George",
+      "teammate_avg_pts": 23.6,
+      "n_games": 7,
+      "raw_avgs": {
+        "PTS": 22.3,
+        "REB": 6.0,
+        "AST": 2.1,
+        "3PM": 2.1
+      },
+      "tier_hit_rates": {
+        "PTS": {
+          "10": 1.0,
+          "15": 1.0,
+          "20": 0.429,
+          "25": 0.429,
+          "30": 0.0
+        },
+        "REB": {
+          "4": 0.714,
+          "6": 0.429,
+          "8": 0.286,
+          "10": 0.143,
+          "12": 0.0
+        },
+        "AST": {
+          "2": 0.714,
+          "4": 0.143,
+          "6": 0.0,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "3PM": {
+          "1": 1.0,
+          "2": 0.714,
+          "3": 0.429,
+          "4": 0.0
+        }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "down",
+        "AST": "down",
+        "3PM": "stable"
+      }
+    },
+    "volatility": {
+      "PTS": {
+        "label": "consistent",
+        "sigma": 0.0,
+        "n": 20
+      },
+      "REB": {
+        "label": "moderate",
+        "sigma": 0.366,
+        "n": 20
+      },
+      "3PM": {
+        "label": "volatile",
+        "sigma": 0.41,
+        "n": 20
+      }
+    },
+    "shooting_regression": {
+      "flag": "neutral",
+      "fg_flag": "neutral",
+      "fg_delta_pct": -0.013,
+      "l20_fg_pct": 0.483,
+      "l5_fg_pct": 0.476,
+      "l20_3p_pct": 0.348,
+      "l5_3p_pct": 0.333,
+      "3p_delta_pct": -0.041,
+      "games_with_shots": 42
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.483,
+      "season_ftm_avg": 5.2,
+      "season_fta_avg": 5.9,
+      "season_fga_avg": 18.75,
+      "season_3pm_avg": 2.45,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.063,
+          "margin": 0.42
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.196,
+          "margin": 0.287
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.329,
+          "margin": 0.153
+        },
+        "25": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.463,
+          "margin": 0.02
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.596,
+          "margin": -0.113
+        }
+      }
+    },
+    "team_momentum": {
+      "team": {
+        "l10_wins": 3,
+        "l10_losses": 7,
+        "l10_pct": 0.3,
+        "l10_margin": -6.3,
+        "tag": "cold"
+      },
+      "opponent": {
+        "l10_wins": 0,
+        "l10_losses": 10,
+        "l10_pct": 0.0,
+        "l10_margin": -16.3,
+        "tag": "cold"
+      }
+    },
+    "def_recency": {
+      "flag": null,
+      "l5_avg": 129.8,
+      "l15_avg": 128.9,
+      "delta_pct": 0.007,
+      "n_l5": 5,
+      "n_l15": 15
+    },
+    "positional_dvp": {
+      "position": "PF",
+      "pts_rating": "mid",
+      "reb_rating": "soft",
+      "ast_rating": "soft",
+      "tpm_rating": "tough",
+      "n": 23,
+      "source": "positional"
+    },
+    "profile_narrative": "Lauri Markkanen \u2014 Scoring Portrait (L20 games, best PTS tier: T15):\n  Hit sequence: 20/20 (100%) | current: 20-hit streak | longest hit-streak: 20 | longest miss-streak: 0\n  Scoring channels: FG=70% FT=20% 3PM=10%  [FG-dependent]\n  B2B: 8/8 (100%) on B2B second nights  (+10% vs baseline 90%)  [B2B-resilient]\n  Blowout context: 22/23 (96%) in blowout games vs 16/17 (94%) competitive  (+2% vs competitive)  [blowout-resilient]\n  Miss anatomy (12 misses): 58% near-miss (\u22642u) / 42% blowup (>2u), typical shortfall=2.0u\n  Minutes floor (L10): floor=18.9min avg=25.6min (ratio=0.74)"
   },
   "LeBron James": {
     "team": "LAL",
@@ -21815,10 +24287,10 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "stable",
-      "REB": "up",
-      "AST": "down",
-      "3PM": "down"
+      "PTS": "up",
+      "REB": "stable",
+      "AST": "stable",
+      "3PM": "up"
     },
     "home_away_splits": {
       "PTS": {
@@ -22044,6 +24516,12 @@
           "3": 0.167,
           "4": 0.0
         }
+      },
+      "absence_trend": {
+        "PTS": "up",
+        "REB": "stable",
+        "AST": "stable",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -22631,9 +25109,9 @@
       }
     },
     "trend": {
-      "PTS": "up",
-      "REB": "down",
-      "AST": "down",
+      "PTS": "stable",
+      "REB": "up",
+      "AST": "up",
       "3PM": "up"
     },
     "home_away_splits": {
@@ -22863,6 +25341,12 @@
           "3": 0.783,
           "4": 0.522
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "up",
+        "AST": "up",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -23451,8 +25935,8 @@
       }
     },
     "trend": {
-      "PTS": "stable",
-      "REB": "up",
+      "PTS": "up",
+      "REB": "stable",
       "AST": "down",
       "3PM": "up"
     },
@@ -23638,6 +26122,12 @@
           "3": 0.409,
           "4": 0.182
         }
+      },
+      "absence_trend": {
+        "PTS": "up",
+        "REB": "stable",
+        "AST": "down",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -24963,10 +27453,10 @@
       "3PM": null
     },
     "trend": {
-      "PTS": "up",
-      "REB": "up",
-      "AST": "up",
-      "3PM": "up"
+      "PTS": "down",
+      "REB": "stable",
+      "AST": "down",
+      "3PM": "stable"
     },
     "home_away_splits": {
       "PTS": {
@@ -25155,6 +27645,12 @@
           "3": 0.459,
           "4": 0.351
         }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "stable",
+        "AST": "down",
+        "3PM": "stable"
       }
     },
     "volatility": {},
@@ -27373,6 +29869,12 @@
           "3": 0.0,
           "4": 0.0
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "up",
+        "AST": "down",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -28708,8 +31210,8 @@
     "trend": {
       "PTS": "stable",
       "REB": "down",
-      "AST": "down",
-      "3PM": "up"
+      "AST": "stable",
+      "3PM": "stable"
     },
     "home_away_splits": {
       "PTS": {
@@ -28949,6 +31451,12 @@
           "3": 0.27,
           "4": 0.027
         }
+      },
+      "absence_trend": {
+        "PTS": "stable",
+        "REB": "down",
+        "AST": "stable",
+        "3PM": "stable"
       }
     },
     "volatility": {
@@ -29048,6 +31556,1494 @@
       "source": "positional"
     },
     "profile_narrative": "Shai Gilgeous-Alexander \u2014 Scoring Portrait (L20 games, best PTS tier: T25):\n  Hit sequence: 15/20 (75%) | current: 1-miss streak | longest hit-streak: 6 | longest miss-streak: 1\n  Scoring channels: FG=78% FT=17% 3PM=4%  [FG-dependent]\n  B2B: 7/9 (78%) on B2B second nights  (+3% vs baseline 75%)  [B2B-resilient]\n  Blowout context: 40/48 (83%) in blowout games vs 6/7 (86%) competitive  (-2% vs competitive)  [blowout-mixed]\n  Miss anatomy (10 misses): 30% near-miss (\u22642u) / 70% blowup (>2u), typical shortfall=3.5u\n  Minutes floor (L10): floor=28.7min avg=33.7min (ratio=0.85)"
+  },
+  "Stephen Curry": {
+    "team": "GS",
+    "whitelisted_teammates": [],
+    "opponent": "BKN",
+    "games_available": 20,
+    "last_updated": "2026-03-25",
+    "on_back_to_back": false,
+    "rest_days": 2,
+    "games_last_7": 4,
+    "dense_schedule": false,
+    "b2b_hit_rates": {
+      "PTS": {
+        "hit_rates": {
+          "10": 1.0,
+          "15": 1.0,
+          "20": 0.714,
+          "25": 0.714,
+          "30": 0.429
+        },
+        "n": 7
+      },
+      "REB": {
+        "hit_rates": {
+          "4": 0.286,
+          "6": 0.143,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 7
+      },
+      "AST": {
+        "hit_rates": {
+          "2": 1.0,
+          "4": 0.714,
+          "6": 0.286,
+          "8": 0.143,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 7
+      },
+      "3PM": {
+        "hit_rates": {
+          "1": 1.0,
+          "2": 1.0,
+          "3": 0.714,
+          "4": 0.571
+        },
+        "n": 7
+      }
+    },
+    "today_spread": -11.5,
+    "spread_abs": 11.5,
+    "blowout_risk": true,
+    "tier_hit_rates": {
+      "PTS": {
+        "10": 0.95,
+        "15": 0.9,
+        "20": 0.8,
+        "25": 0.7,
+        "30": 0.25
+      },
+      "REB": {
+        "4": 0.25,
+        "6": 0.1,
+        "8": 0.05,
+        "10": 0.05,
+        "12": 0.0
+      },
+      "AST": {
+        "2": 0.95,
+        "4": 0.8,
+        "6": 0.45,
+        "8": 0.15,
+        "10": 0.15,
+        "12": 0.0
+      },
+      "3PM": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 0.8,
+        "4": 0.65
+      }
+    },
+    "matchup_tier_hit_rates": {
+      "PTS": {
+        "10": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.867,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 1.0,
+            "n": 12
+          }
+        },
+        "15": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.8,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.833,
+            "n": 12
+          }
+        },
+        "20": {
+          "soft": {
+            "hit_rate": 0.833,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.667,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.75,
+            "n": 12
+          }
+        },
+        "25": {
+          "soft": {
+            "hit_rate": 0.667,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.667,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.583,
+            "n": 12
+          }
+        },
+        "30": {
+          "soft": {
+            "hit_rate": 0.333,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.467,
+            "n": 15
+          },
+          "tough": {
+            "hit_rate": 0.25,
+            "n": 12
+          }
+        }
+      },
+      "REB": {
+        "4": {
+          "soft": {
+            "hit_rate": 0.455,
+            "n": 11
+          },
+          "mid": {
+            "hit_rate": 0.529,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.273,
+            "n": 11
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.182,
+            "n": 11
+          },
+          "mid": {
+            "hit_rate": 0.235,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.091,
+            "n": 11
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 11
+          },
+          "mid": {
+            "hit_rate": 0.118,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 11
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 11
+          },
+          "mid": {
+            "hit_rate": 0.059,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 11
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 11
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 17
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 11
+          }
+        }
+      },
+      "AST": {
+        "2": {
+          "soft": {
+            "hit_rate": 0.917,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.929,
+            "n": 14
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.583,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.769,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.643,
+            "n": 14
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.25,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.462,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.286,
+            "n": 14
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.083,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.231,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.071,
+            "n": 14
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.083,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.154,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 14
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 13
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 14
+          }
+        }
+      },
+      "3PM": {
+        "1": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 11
+          },
+          "tough": {
+            "hit_rate": 1.0,
+            "n": 16
+          }
+        },
+        "2": {
+          "soft": {
+            "hit_rate": 0.917,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.909,
+            "n": 11
+          },
+          "tough": {
+            "hit_rate": 1.0,
+            "n": 16
+          }
+        },
+        "3": {
+          "soft": {
+            "hit_rate": 0.833,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.636,
+            "n": 11
+          },
+          "tough": {
+            "hit_rate": 0.812,
+            "n": 16
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.75,
+            "n": 12
+          },
+          "mid": {
+            "hit_rate": 0.636,
+            "n": 11
+          },
+          "tough": {
+            "hit_rate": 0.625,
+            "n": 16
+          }
+        }
+      }
+    },
+    "spread_split_hit_rates": {
+      "PTS": {
+        "competitive": {
+          "hit_rates": {
+            "10": 1.0,
+            "15": 0.947,
+            "20": 0.789,
+            "25": 0.737,
+            "30": 0.526
+          },
+          "n": 19
+        },
+        "blowout": {
+          "hit_rates": {
+            "10": 0.857,
+            "15": 0.714,
+            "20": 0.643,
+            "25": 0.5,
+            "30": 0.214
+          },
+          "n": 14
+        }
+      },
+      "REB": {
+        "competitive": {
+          "hit_rates": {
+            "4": 0.526,
+            "6": 0.316,
+            "8": 0.105,
+            "10": 0.053,
+            "12": 0.0
+          },
+          "n": 19
+        },
+        "blowout": {
+          "hit_rates": {
+            "4": 0.357,
+            "6": 0.0,
+            "8": 0.0,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 14
+        }
+      },
+      "AST": {
+        "competitive": {
+          "hit_rates": {
+            "2": 1.0,
+            "4": 0.789,
+            "6": 0.421,
+            "8": 0.105,
+            "10": 0.053,
+            "12": 0.0
+          },
+          "n": 19
+        },
+        "blowout": {
+          "hit_rates": {
+            "2": 0.929,
+            "4": 0.571,
+            "6": 0.214,
+            "8": 0.143,
+            "10": 0.143,
+            "12": 0.0
+          },
+          "n": 14
+        }
+      },
+      "3PM": {
+        "competitive": {
+          "hit_rates": {
+            "1": 1.0,
+            "2": 1.0,
+            "3": 0.842,
+            "4": 0.684
+          },
+          "n": 19
+        },
+        "blowout": {
+          "hit_rates": {
+            "1": 1.0,
+            "2": 0.857,
+            "3": 0.643,
+            "4": 0.643
+          },
+          "n": 14
+        }
+      }
+    },
+    "best_tiers": {
+      "PTS": {
+        "tier": 25,
+        "hit_rate": 0.7
+      },
+      "REB": null,
+      "AST": {
+        "tier": 4,
+        "hit_rate": 0.8
+      },
+      "3PM": {
+        "tier": 3,
+        "hit_rate": 0.8
+      }
+    },
+    "trend": {
+      "PTS": "stable",
+      "REB": "down",
+      "AST": "down",
+      "3PM": "stable"
+    },
+    "home_away_splits": {
+      "PTS": {
+        "H": {
+          "tier": 15,
+          "hit_rate": 0.85
+        },
+        "A": {
+          "tier": 25,
+          "hit_rate": 0.722
+        }
+      },
+      "REB": {
+        "H": null,
+        "A": null
+      },
+      "AST": {
+        "H": {
+          "tier": 4,
+          "hit_rate": 0.75
+        },
+        "A": {
+          "tier": 2,
+          "hit_rate": 0.889
+        }
+      },
+      "3PM": {
+        "H": {
+          "tier": 3,
+          "hit_rate": 0.7
+        },
+        "A": {
+          "tier": 4,
+          "hit_rate": 0.722
+        }
+      }
+    },
+    "minutes_trend": "decreasing",
+    "avg_minutes_last5": 28.0,
+    "minutes_floor": {
+      "floor_minutes": 25.0,
+      "avg_minutes": 29.0,
+      "n": 10
+    },
+    "raw_avgs": {
+      "PTS": 25.6,
+      "REB": 3.1,
+      "AST": 5.6,
+      "3PM": 4.0
+    },
+    "opp_defense": {
+      "PTS": {
+        "allowed_pg": 119.2,
+        "rank": 23,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "REB": {
+        "allowed_pg": 43.7,
+        "rank": 19,
+        "n_teams": 32,
+        "rating": "mid"
+      },
+      "AST": {
+        "allowed_pg": 27.9,
+        "rank": 21,
+        "n_teams": 32,
+        "rating": "mid"
+      },
+      "3PM": {
+        "allowed_pg": 12.9,
+        "rank": 15,
+        "n_teams": 32,
+        "rating": "mid"
+      }
+    },
+    "game_pace": {
+      "combined_pts_avg": 216.0,
+      "pace_tag": "mid",
+      "source": "avg"
+    },
+    "teammate_correlations": {},
+    "bounce_back": {
+      "PTS": {
+        "tier": 20,
+        "post_miss_hit_rate": 0.7,
+        "lift": 0.941,
+        "consecutive_miss_rate": 0.3,
+        "max_consecutive_misses": 3,
+        "iron_floor": false,
+        "n_misses": 10,
+        "near_miss_rate": 0.2,
+        "blowup_rate": 0.8,
+        "typical_miss": 5.5
+      },
+      "REB": null,
+      "AST": null,
+      "3PM": {
+        "tier": 3,
+        "post_miss_hit_rate": 1.0,
+        "lift": 1.3,
+        "consecutive_miss_rate": 0.0,
+        "max_consecutive_misses": 1,
+        "iron_floor": true,
+        "n_misses": 9,
+        "near_miss_rate": 1.0,
+        "blowup_rate": 0.0,
+        "typical_miss": 1.0
+      }
+    },
+    "key_teammate_absent": null,
+    "volatility": {
+      "PTS": {
+        "label": "volatile",
+        "sigma": 0.47,
+        "n": 20
+      },
+      "AST": {
+        "label": "volatile",
+        "sigma": 0.41,
+        "n": 20
+      },
+      "3PM": {
+        "label": "volatile",
+        "sigma": 0.41,
+        "n": 20
+      }
+    },
+    "shooting_regression": {
+      "flag": "neutral",
+      "fg_flag": "neutral",
+      "fg_delta_pct": -0.022,
+      "l20_fg_pct": 0.46,
+      "l5_fg_pct": 0.451,
+      "l20_3p_pct": 0.376,
+      "l5_3p_pct": 0.404,
+      "3p_delta_pct": 0.075,
+      "games_with_shots": 39
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.46,
+      "season_ftm_avg": 4.75,
+      "season_fta_avg": 5.0,
+      "season_fga_avg": 18.35,
+      "season_3pm_avg": 4.0,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.034,
+          "margin": 0.426
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.17,
+          "margin": 0.29
+        },
+        "20": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.307,
+          "margin": 0.154
+        },
+        "25": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.443,
+          "margin": 0.018
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.579,
+          "margin": -0.119
+        }
+      }
+    },
+    "team_momentum": {
+      "team": {
+        "l10_wins": 2,
+        "l10_losses": 8,
+        "l10_pct": 0.2,
+        "l10_margin": -6.6,
+        "tag": "cold"
+      },
+      "opponent": {
+        "l10_wins": 2,
+        "l10_losses": 8,
+        "l10_pct": 0.2,
+        "l10_margin": -13.1,
+        "tag": "cold"
+      }
+    },
+    "def_recency": {
+      "flag": null,
+      "l5_avg": 117.6,
+      "l15_avg": 119.2,
+      "delta_pct": -0.0134,
+      "n_l5": 5,
+      "n_l15": 15
+    },
+    "positional_dvp": {
+      "position": "PG",
+      "pts_rating": "tough",
+      "reb_rating": "tough",
+      "ast_rating": "soft",
+      "tpm_rating": "tough",
+      "n": 29,
+      "source": "positional"
+    },
+    "profile_narrative": "Stephen Curry \u2014 Scoring Portrait (L20 games, best PTS tier: T25):\n  Hit sequence: 14/20 (70%) | current: 1-miss streak | longest hit-streak: 8 | longest miss-streak: 3\n  Scoring channels: FG=66% FT=19% 3PM=16%  [balanced]\n  B2B: 5/7 (71%) on B2B second nights  (+1% vs baseline 70%)  [B2B-resilient]\n  Blowout context: 7/14 (50%) in blowout games vs 14/19 (74%) competitive  (-24% vs competitive)  [blowout-sensitive]\n  Miss anatomy (10 misses): 20% near-miss (\u22642u) / 80% blowup (>2u), typical shortfall=5.5u\n  Minutes floor (L10): floor=25.0min avg=29.0min (ratio=0.86)"
+  },
+  "Stephon Castle": {
+    "team": "SA",
+    "whitelisted_teammates": [
+      "De'Aaron Fox",
+      "Victor Wembanyama"
+    ],
+    "opponent": "MEM",
+    "games_available": 20,
+    "last_updated": "2026-03-25",
+    "on_back_to_back": false,
+    "rest_days": 2,
+    "games_last_7": 3,
+    "dense_schedule": false,
+    "b2b_hit_rates": {
+      "PTS": {
+        "hit_rates": {
+          "10": 0.75,
+          "15": 0.583,
+          "20": 0.083,
+          "25": 0.0,
+          "30": 0.0
+        },
+        "n": 12
+      },
+      "REB": {
+        "hit_rates": {
+          "4": 0.75,
+          "6": 0.333,
+          "8": 0.083,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 12
+      },
+      "AST": {
+        "hit_rates": {
+          "2": 1.0,
+          "4": 1.0,
+          "6": 0.583,
+          "8": 0.417,
+          "10": 0.167,
+          "12": 0.167
+        },
+        "n": 12
+      },
+      "3PM": {
+        "hit_rates": {
+          "1": 0.5,
+          "2": 0.083,
+          "3": 0.0,
+          "4": 0.0
+        },
+        "n": 12
+      }
+    },
+    "today_spread": -16.5,
+    "spread_abs": 16.5,
+    "blowout_risk": true,
+    "tier_hit_rates": {
+      "PTS": {
+        "10": 0.8,
+        "15": 0.65,
+        "20": 0.25,
+        "25": 0.1,
+        "30": 0.1
+      },
+      "REB": {
+        "4": 0.65,
+        "6": 0.45,
+        "8": 0.25,
+        "10": 0.1,
+        "12": 0.05
+      },
+      "AST": {
+        "2": 1.0,
+        "4": 0.95,
+        "6": 0.65,
+        "8": 0.45,
+        "10": 0.35,
+        "12": 0.15
+      },
+      "3PM": {
+        "1": 0.7,
+        "2": 0.35,
+        "3": 0.2,
+        "4": 0.05
+      }
+    },
+    "matchup_tier_hit_rates": {
+      "PTS": {
+        "10": {
+          "soft": {
+            "hit_rate": 0.864,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.833,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.857,
+            "n": 21
+          }
+        },
+        "15": {
+          "soft": {
+            "hit_rate": 0.773,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.611,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.714,
+            "n": 21
+          }
+        },
+        "20": {
+          "soft": {
+            "hit_rate": 0.227,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.222,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.286,
+            "n": 21
+          }
+        },
+        "25": {
+          "soft": {
+            "hit_rate": 0.045,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.056,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.095,
+            "n": 21
+          }
+        },
+        "30": {
+          "soft": {
+            "hit_rate": 0.045,
+            "n": 22
+          },
+          "mid": {
+            "hit_rate": 0.056,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.048,
+            "n": 21
+          }
+        }
+      },
+      "REB": {
+        "4": {
+          "soft": {
+            "hit_rate": 0.739,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.778,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.65,
+            "n": 20
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.522,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.5,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.3,
+            "n": 20
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.217,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.167,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.1,
+            "n": 20
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.087,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.056,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.05,
+            "n": 20
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.043,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 18
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 20
+          }
+        }
+      },
+      "AST": {
+        "2": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 24
+          },
+          "tough": {
+            "hit_rate": 1.0,
+            "n": 16
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.952,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.958,
+            "n": 24
+          },
+          "tough": {
+            "hit_rate": 0.875,
+            "n": 16
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.81,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.667,
+            "n": 24
+          },
+          "tough": {
+            "hit_rate": 0.5,
+            "n": 16
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.524,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.458,
+            "n": 24
+          },
+          "tough": {
+            "hit_rate": 0.312,
+            "n": 16
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.333,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.167,
+            "n": 24
+          },
+          "tough": {
+            "hit_rate": 0.188,
+            "n": 16
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.095,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.125,
+            "n": 24
+          },
+          "tough": {
+            "hit_rate": 0.062,
+            "n": 16
+          }
+        }
+      },
+      "3PM": {
+        "1": {
+          "soft": {
+            "hit_rate": 0.792,
+            "n": 24
+          },
+          "mid": {
+            "hit_rate": 0.571,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.688,
+            "n": 16
+          }
+        },
+        "2": {
+          "soft": {
+            "hit_rate": 0.25,
+            "n": 24
+          },
+          "mid": {
+            "hit_rate": 0.333,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.25,
+            "n": 16
+          }
+        },
+        "3": {
+          "soft": {
+            "hit_rate": 0.167,
+            "n": 24
+          },
+          "mid": {
+            "hit_rate": 0.143,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.062,
+            "n": 16
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.042,
+            "n": 24
+          },
+          "mid": {
+            "hit_rate": 0.048,
+            "n": 21
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 16
+          }
+        }
+      }
+    },
+    "spread_split_hit_rates": {
+      "PTS": {
+        "competitive": {
+          "hit_rates": {
+            "10": 0.857,
+            "15": 0.643,
+            "20": 0.214,
+            "25": 0.071,
+            "30": 0.036
+          },
+          "n": 28
+        },
+        "blowout": {
+          "hit_rates": {
+            "10": 0.885,
+            "15": 0.846,
+            "20": 0.308,
+            "25": 0.077,
+            "30": 0.077
+          },
+          "n": 26
+        }
+      },
+      "REB": {
+        "competitive": {
+          "hit_rates": {
+            "4": 0.75,
+            "6": 0.571,
+            "8": 0.214,
+            "10": 0.071,
+            "12": 0.0
+          },
+          "n": 28
+        },
+        "blowout": {
+          "hit_rates": {
+            "4": 0.615,
+            "6": 0.346,
+            "8": 0.154,
+            "10": 0.077,
+            "12": 0.038
+          },
+          "n": 26
+        }
+      },
+      "AST": {
+        "competitive": {
+          "hit_rates": {
+            "2": 1.0,
+            "4": 1.0,
+            "6": 0.714,
+            "8": 0.464,
+            "10": 0.286,
+            "12": 0.107
+          },
+          "n": 28
+        },
+        "blowout": {
+          "hit_rates": {
+            "2": 1.0,
+            "4": 0.885,
+            "6": 0.692,
+            "8": 0.462,
+            "10": 0.231,
+            "12": 0.115
+          },
+          "n": 26
+        }
+      },
+      "3PM": {
+        "competitive": {
+          "hit_rates": {
+            "1": 0.75,
+            "2": 0.357,
+            "3": 0.143,
+            "4": 0.036
+          },
+          "n": 28
+        },
+        "blowout": {
+          "hit_rates": {
+            "1": 0.654,
+            "2": 0.231,
+            "3": 0.154,
+            "4": 0.038
+          },
+          "n": 26
+        }
+      }
+    },
+    "best_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate": 0.8
+      },
+      "REB": null,
+      "AST": {
+        "tier": 4,
+        "hit_rate": 0.95
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate": 0.7
+      }
+    },
+    "trend": {
+      "PTS": "up",
+      "REB": "up",
+      "AST": "stable",
+      "3PM": "stable"
+    },
+    "home_away_splits": {
+      "PTS": {
+        "H": {
+          "tier": 15,
+          "hit_rate": 0.7
+        },
+        "A": {
+          "tier": 10,
+          "hit_rate": 0.8
+        }
+      },
+      "REB": {
+        "H": null,
+        "A": {
+          "tier": 4,
+          "hit_rate": 0.75
+        }
+      },
+      "AST": {
+        "H": {
+          "tier": 4,
+          "hit_rate": 0.9
+        },
+        "A": {
+          "tier": 4,
+          "hit_rate": 1.0
+        }
+      },
+      "3PM": {
+        "H": null,
+        "A": {
+          "tier": 1,
+          "hit_rate": 0.75
+        }
+      }
+    },
+    "minutes_trend": "stable",
+    "avg_minutes_last5": 29.0,
+    "minutes_floor": {
+      "floor_minutes": 21.9,
+      "avg_minutes": 29.5,
+      "n": 10
+    },
+    "raw_avgs": {
+      "PTS": 16.4,
+      "REB": 5.2,
+      "AST": 7.4,
+      "3PM": 1.3
+    },
+    "opp_defense": {
+      "PTS": {
+        "allowed_pg": 123.6,
+        "rank": 29,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "REB": {
+        "allowed_pg": 47.5,
+        "rank": 31,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "AST": {
+        "allowed_pg": 28.1,
+        "rank": 23,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "3PM": {
+        "allowed_pg": 13.9,
+        "rank": 24,
+        "n_teams": 32,
+        "rating": "soft"
+      }
+    },
+    "game_pace": {
+      "combined_pts_avg": 222.7,
+      "pace_tag": "high",
+      "source": "h2h"
+    },
+    "teammate_correlations": {
+      "De'Aaron Fox": {
+        "shared_games": 52,
+        "correlations": {
+          "AST_PTS": {
+            "r": -0.182,
+            "tag": "independent"
+          },
+          "PTS_PTS": {
+            "r": -0.043,
+            "tag": "independent"
+          },
+          "REB_REB": {
+            "r": 0.033,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": -0.185,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.146,
+            "tag": "independent"
+          }
+        }
+      },
+      "Victor Wembanyama": {
+        "shared_games": 55,
+        "correlations": {
+          "AST_PTS": {
+            "r": -0.001,
+            "tag": "independent"
+          },
+          "PTS_PTS": {
+            "r": -0.209,
+            "tag": "scoring_rivals"
+          },
+          "REB_REB": {
+            "r": 0.137,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": 0.075,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.021,
+            "tag": "independent"
+          }
+        }
+      }
+    },
+    "bounce_back": {
+      "PTS": {
+        "tier": 15,
+        "post_miss_hit_rate": 0.778,
+        "lift": 1.103,
+        "consecutive_miss_rate": 0.222,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 18,
+        "near_miss_rate": 0.389,
+        "blowup_rate": 0.611,
+        "typical_miss": 5.0
+      },
+      "REB": {
+        "tier": 4,
+        "post_miss_hit_rate": 0.882,
+        "lift": 1.223,
+        "consecutive_miss_rate": 0.118,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 17,
+        "near_miss_rate": 0.647,
+        "blowup_rate": 0.353,
+        "typical_miss": 2.0
+      },
+      "AST": null,
+      "3PM": null
+    },
+    "key_teammate_absent": {
+      "teammate_name": "Victor Wembanyama",
+      "teammate_avg_pts": 24.2,
+      "n_games": 6,
+      "raw_avgs": {
+        "PTS": 19.5,
+        "REB": 6.5,
+        "AST": 7.2,
+        "3PM": 1.7
+      },
+      "tier_hit_rates": {
+        "PTS": {
+          "10": 0.833,
+          "15": 0.833,
+          "20": 0.333,
+          "25": 0.333,
+          "30": 0.333
+        },
+        "REB": {
+          "4": 0.833,
+          "6": 0.5,
+          "8": 0.5,
+          "10": 0.333,
+          "12": 0.0
+        },
+        "AST": {
+          "2": 1.0,
+          "4": 1.0,
+          "6": 0.667,
+          "8": 0.5,
+          "10": 0.167,
+          "12": 0.0
+        },
+        "3PM": {
+          "1": 0.833,
+          "2": 0.333,
+          "3": 0.333,
+          "4": 0.167
+        }
+      },
+      "absence_trend": {
+        "PTS": "up",
+        "REB": "up",
+        "AST": "stable",
+        "3PM": "stable"
+      }
+    },
+    "volatility": {
+      "PTS": {
+        "label": "volatile",
+        "sigma": 0.41,
+        "n": 20
+      },
+      "AST": {
+        "label": "consistent",
+        "sigma": 0.224,
+        "n": 20
+      },
+      "3PM": {
+        "label": "volatile",
+        "sigma": 0.47,
+        "n": 20
+      }
+    },
+    "shooting_regression": {
+      "flag": "cold",
+      "fg_flag": "cold",
+      "fg_delta_pct": -0.14,
+      "l20_fg_pct": 0.496,
+      "l5_fg_pct": 0.426,
+      "l20_3p_pct": 0.397,
+      "l5_3p_pct": 0.45,
+      "3p_delta_pct": 0.133,
+      "games_with_shots": 61
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.496,
+      "season_ftm_avg": 2.05,
+      "season_fta_avg": 2.85,
+      "season_fga_avg": 11.4,
+      "season_3pm_avg": 1.3,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.292,
+          "margin": 0.204
+        },
+        "15": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.511,
+          "margin": -0.015
+        },
+        "20": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.73,
+          "margin": -0.235
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.95,
+          "margin": -0.454
+        },
+        "30": {
+          "flag": "impossible",
+          "breakeven_fg_pct": 1.169,
+          "margin": -0.673
+        }
+      }
+    },
+    "team_momentum": {
+      "team": {
+        "l10_wins": 9,
+        "l10_losses": 1,
+        "l10_pct": 0.9,
+        "l10_margin": 11.9,
+        "tag": "hot"
+      },
+      "opponent": {
+        "l10_wins": 1,
+        "l10_losses": 9,
+        "l10_pct": 0.1,
+        "l10_margin": -13.3,
+        "tag": "cold"
+      }
+    },
+    "def_recency": {
+      "flag": null,
+      "l5_avg": 127.4,
+      "l15_avg": 123.6,
+      "delta_pct": 0.0307,
+      "n_l5": 5,
+      "n_l15": 15
+    },
+    "positional_dvp": {
+      "position": "PG",
+      "pts_rating": "soft",
+      "reb_rating": "soft",
+      "ast_rating": "mid",
+      "tpm_rating": "soft",
+      "n": 27,
+      "source": "positional"
+    },
+    "profile_narrative": "Stephon Castle \u2014 Scoring Portrait (L20 games, best PTS tier: T10):\n  Hit sequence: 16/20 (80%) | current: 1-hit streak | longest hit-streak: 8 | longest miss-streak: 2\n  Scoring channels: FG=77% FT=14% 3PM=9%  [FG-dependent]\n  B2B: 9/12 (75%) on B2B second nights  (-5% vs baseline 80%)  [B2B-mixed]\n  Blowout context: 23/26 (88%) in blowout games vs 24/28 (86%) competitive  (+3% vs competitive)  [blowout-resilient]\n  Miss anatomy (18 misses): 39% near-miss (\u22642u) / 61% blowup (>2u), typical shortfall=5.0u\n  Minutes floor (L10): floor=21.9min avg=29.5min (ratio=0.74)"
   },
   "Tyler Herro": {
     "team": "MIA",
@@ -29536,7 +33532,7 @@
       "PTS": "up",
       "REB": "up",
       "AST": "up",
-      "3PM": "stable"
+      "3PM": "up"
     },
     "home_away_splits": {
       "PTS": {
@@ -29697,6 +33693,12 @@
           "3": 0.25,
           "4": 0.25
         }
+      },
+      "absence_trend": {
+        "PTS": "up",
+        "REB": "up",
+        "AST": "up",
+        "3PM": "up"
       }
     },
     "volatility": {
@@ -30501,5 +34503,832 @@
       "source": "positional"
     },
     "profile_narrative": "Tyrese Maxey \u2014 Scoring Portrait (L20 games, best PTS tier: T25):\n  Hit sequence: 14/20 (70%) | current: 2-hit streak | longest hit-streak: 6 | longest miss-streak: 3\n  Scoring channels: FG=67% FT=22% 3PM=11%  [balanced]\n  B2B: 8/12 (67%) on B2B second nights  (-3% vs baseline 70%)  [B2B-mixed]\n  Blowout context: 8/12 (67%) in blowout games vs 33/42 (79%) competitive  (-12% vs competitive)  [blowout-sensitive]\n  Miss anatomy (16 misses): 6% near-miss (\u22642u) / 94% blowup (>2u), typical shortfall=4.5u\n  Minutes floor (L10): floor=31.3min avg=35.8min (ratio=0.87)"
+  },
+  "Victor Wembanyama": {
+    "team": "SA",
+    "whitelisted_teammates": [
+      "De'Aaron Fox",
+      "Stephon Castle"
+    ],
+    "opponent": "MEM",
+    "games_available": 20,
+    "last_updated": "2026-03-25",
+    "on_back_to_back": false,
+    "rest_days": 2,
+    "games_last_7": 3,
+    "dense_schedule": false,
+    "b2b_hit_rates": {
+      "PTS": {
+        "hit_rates": {
+          "10": 1.0,
+          "15": 0.833,
+          "20": 0.583,
+          "25": 0.5,
+          "30": 0.0
+        },
+        "n": 12
+      },
+      "REB": {
+        "hit_rates": {
+          "4": 1.0,
+          "6": 1.0,
+          "8": 0.917,
+          "10": 0.583,
+          "12": 0.333
+        },
+        "n": 12
+      },
+      "AST": {
+        "hit_rates": {
+          "2": 0.833,
+          "4": 0.333,
+          "6": 0.083,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "n": 12
+      },
+      "3PM": {
+        "hit_rates": {
+          "1": 0.583,
+          "2": 0.583,
+          "3": 0.25,
+          "4": 0.167
+        },
+        "n": 12
+      }
+    },
+    "today_spread": -16.5,
+    "spread_abs": 16.5,
+    "blowout_risk": true,
+    "tier_hit_rates": {
+      "PTS": {
+        "10": 1.0,
+        "15": 0.85,
+        "20": 0.7,
+        "25": 0.55,
+        "30": 0.25
+      },
+      "REB": {
+        "4": 1.0,
+        "6": 1.0,
+        "8": 1.0,
+        "10": 0.65,
+        "12": 0.45
+      },
+      "AST": {
+        "2": 0.8,
+        "4": 0.45,
+        "6": 0.15,
+        "8": 0.05,
+        "10": 0.0,
+        "12": 0.0
+      },
+      "3PM": {
+        "1": 0.95,
+        "2": 0.55,
+        "3": 0.25,
+        "4": 0.25
+      }
+    },
+    "matchup_tier_hit_rates": {
+      "PTS": {
+        "10": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.952,
+            "n": 21
+          }
+        },
+        "15": {
+          "soft": {
+            "hit_rate": 0.905,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.812,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.905,
+            "n": 21
+          }
+        },
+        "20": {
+          "soft": {
+            "hit_rate": 0.762,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.688,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.571,
+            "n": 21
+          }
+        },
+        "25": {
+          "soft": {
+            "hit_rate": 0.667,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.5,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.381,
+            "n": 21
+          }
+        },
+        "30": {
+          "soft": {
+            "hit_rate": 0.333,
+            "n": 21
+          },
+          "mid": {
+            "hit_rate": 0.062,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.286,
+            "n": 21
+          }
+        }
+      },
+      "REB": {
+        "4": {
+          "soft": {
+            "hit_rate": 1.0,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 1.0,
+            "n": 19
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.913,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 1.0,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 1.0,
+            "n": 19
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.826,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.938,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.895,
+            "n": 19
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.609,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.625,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.632,
+            "n": 19
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.391,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.438,
+            "n": 16
+          },
+          "tough": {
+            "hit_rate": 0.526,
+            "n": 19
+          }
+        }
+      },
+      "AST": {
+        "2": {
+          "soft": {
+            "hit_rate": 0.778,
+            "n": 18
+          },
+          "mid": {
+            "hit_rate": 0.727,
+            "n": 22
+          },
+          "tough": {
+            "hit_rate": 0.778,
+            "n": 18
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.333,
+            "n": 18
+          },
+          "mid": {
+            "hit_rate": 0.364,
+            "n": 22
+          },
+          "tough": {
+            "hit_rate": 0.222,
+            "n": 18
+          }
+        },
+        "6": {
+          "soft": {
+            "hit_rate": 0.167,
+            "n": 18
+          },
+          "mid": {
+            "hit_rate": 0.091,
+            "n": 22
+          },
+          "tough": {
+            "hit_rate": 0.056,
+            "n": 18
+          }
+        },
+        "8": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 18
+          },
+          "mid": {
+            "hit_rate": 0.045,
+            "n": 22
+          },
+          "tough": {
+            "hit_rate": 0.056,
+            "n": 18
+          }
+        },
+        "10": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 18
+          },
+          "mid": {
+            "hit_rate": 0.045,
+            "n": 22
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        },
+        "12": {
+          "soft": {
+            "hit_rate": 0.0,
+            "n": 18
+          },
+          "mid": {
+            "hit_rate": 0.0,
+            "n": 22
+          },
+          "tough": {
+            "hit_rate": 0.0,
+            "n": 18
+          }
+        }
+      },
+      "3PM": {
+        "1": {
+          "soft": {
+            "hit_rate": 0.913,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.684,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.688,
+            "n": 16
+          }
+        },
+        "2": {
+          "soft": {
+            "hit_rate": 0.478,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.526,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.5,
+            "n": 16
+          }
+        },
+        "3": {
+          "soft": {
+            "hit_rate": 0.304,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.211,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.312,
+            "n": 16
+          }
+        },
+        "4": {
+          "soft": {
+            "hit_rate": 0.261,
+            "n": 23
+          },
+          "mid": {
+            "hit_rate": 0.053,
+            "n": 19
+          },
+          "tough": {
+            "hit_rate": 0.25,
+            "n": 16
+          }
+        }
+      }
+    },
+    "spread_split_hit_rates": {
+      "PTS": {
+        "competitive": {
+          "hit_rates": {
+            "10": 0.962,
+            "15": 0.885,
+            "20": 0.808,
+            "25": 0.654,
+            "30": 0.346
+          },
+          "n": 26
+        },
+        "blowout": {
+          "hit_rates": {
+            "10": 1.0,
+            "15": 0.84,
+            "20": 0.52,
+            "25": 0.32,
+            "30": 0.16
+          },
+          "n": 25
+        }
+      },
+      "REB": {
+        "competitive": {
+          "hit_rates": {
+            "4": 1.0,
+            "6": 0.962,
+            "8": 0.846,
+            "10": 0.577,
+            "12": 0.462
+          },
+          "n": 26
+        },
+        "blowout": {
+          "hit_rates": {
+            "4": 1.0,
+            "6": 0.96,
+            "8": 0.88,
+            "10": 0.64,
+            "12": 0.36
+          },
+          "n": 25
+        }
+      },
+      "AST": {
+        "competitive": {
+          "hit_rates": {
+            "2": 0.769,
+            "4": 0.308,
+            "6": 0.077,
+            "8": 0.077,
+            "10": 0.038,
+            "12": 0.0
+          },
+          "n": 26
+        },
+        "blowout": {
+          "hit_rates": {
+            "2": 0.76,
+            "4": 0.28,
+            "6": 0.12,
+            "8": 0.0,
+            "10": 0.0,
+            "12": 0.0
+          },
+          "n": 25
+        }
+      },
+      "3PM": {
+        "competitive": {
+          "hit_rates": {
+            "1": 0.769,
+            "2": 0.577,
+            "3": 0.346,
+            "4": 0.192
+          },
+          "n": 26
+        },
+        "blowout": {
+          "hit_rates": {
+            "1": 0.8,
+            "2": 0.44,
+            "3": 0.24,
+            "4": 0.24
+          },
+          "n": 25
+        }
+      }
+    },
+    "best_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate": 0.7
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate": 1.0
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate": 0.8
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate": 0.95
+      }
+    },
+    "trend": {
+      "PTS": "down",
+      "REB": "down",
+      "AST": "up",
+      "3PM": "down"
+    },
+    "home_away_splits": {
+      "PTS": {
+        "H": {
+          "tier": 20,
+          "hit_rate": 0.8
+        },
+        "A": {
+          "tier": 15,
+          "hit_rate": 0.8
+        }
+      },
+      "REB": {
+        "H": {
+          "tier": 10,
+          "hit_rate": 0.75
+        },
+        "A": {
+          "tier": 8,
+          "hit_rate": 0.8
+        }
+      },
+      "AST": {
+        "H": null,
+        "A": {
+          "tier": 2,
+          "hit_rate": 0.8
+        }
+      },
+      "3PM": {
+        "H": {
+          "tier": 1,
+          "hit_rate": 0.85
+        },
+        "A": {
+          "tier": 1,
+          "hit_rate": 0.75
+        }
+      }
+    },
+    "minutes_trend": "stable",
+    "avg_minutes_last5": 28.6,
+    "minutes_floor": {
+      "floor_minutes": 22.0,
+      "avg_minutes": 30.2,
+      "n": 10
+    },
+    "raw_avgs": {
+      "PTS": 24.6,
+      "REB": 11.2,
+      "AST": 3.4,
+      "3PM": 2.2
+    },
+    "opp_defense": {
+      "PTS": {
+        "allowed_pg": 123.6,
+        "rank": 29,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "REB": {
+        "allowed_pg": 47.5,
+        "rank": 31,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "AST": {
+        "allowed_pg": 28.1,
+        "rank": 23,
+        "n_teams": 32,
+        "rating": "soft"
+      },
+      "3PM": {
+        "allowed_pg": 13.9,
+        "rank": 24,
+        "n_teams": 32,
+        "rating": "soft"
+      }
+    },
+    "game_pace": {
+      "combined_pts_avg": 222.7,
+      "pace_tag": "high",
+      "source": "h2h"
+    },
+    "teammate_correlations": {
+      "De'Aaron Fox": {
+        "shared_games": 49,
+        "correlations": {
+          "AST_PTS": {
+            "r": 0.169,
+            "tag": "feeder_target"
+          },
+          "PTS_PTS": {
+            "r": 0.284,
+            "tag": "volume_game"
+          },
+          "REB_REB": {
+            "r": 0.015,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": -0.098,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.221,
+            "tag": "independent"
+          }
+        }
+      },
+      "Stephon Castle": {
+        "shared_games": 55,
+        "correlations": {
+          "AST_PTS": {
+            "r": -0.001,
+            "tag": "independent"
+          },
+          "PTS_PTS": {
+            "r": -0.209,
+            "tag": "scoring_rivals"
+          },
+          "REB_REB": {
+            "r": 0.137,
+            "tag": "independent"
+          },
+          "AST_AST": {
+            "r": 0.075,
+            "tag": "independent"
+          },
+          "PTS_REB": {
+            "r": 0.021,
+            "tag": "independent"
+          }
+        }
+      }
+    },
+    "bounce_back": {
+      "PTS": {
+        "tier": 15,
+        "post_miss_hit_rate": 0.714,
+        "lift": 0.812,
+        "consecutive_miss_rate": 0.286,
+        "max_consecutive_misses": 2,
+        "iron_floor": false,
+        "n_misses": 7,
+        "near_miss_rate": 0.286,
+        "blowup_rate": 0.714,
+        "typical_miss": 3.0
+      },
+      "REB": {
+        "tier": 8,
+        "post_miss_hit_rate": 0.714,
+        "lift": 0.812,
+        "consecutive_miss_rate": 0.286,
+        "max_consecutive_misses": 3,
+        "iron_floor": false,
+        "n_misses": 7,
+        "near_miss_rate": 0.714,
+        "blowup_rate": 0.286,
+        "typical_miss": 2.0
+      },
+      "AST": {
+        "tier": 2,
+        "post_miss_hit_rate": 0.714,
+        "lift": 0.942,
+        "consecutive_miss_rate": 0.286,
+        "max_consecutive_misses": 4,
+        "iron_floor": false,
+        "n_misses": 14,
+        "near_miss_rate": 1.0,
+        "blowup_rate": 0.0,
+        "typical_miss": 1.0
+      },
+      "3PM": {
+        "tier": 1,
+        "post_miss_hit_rate": 0.769,
+        "lift": 0.991,
+        "consecutive_miss_rate": 0.231,
+        "max_consecutive_misses": 3,
+        "iron_floor": false,
+        "n_misses": 13,
+        "near_miss_rate": 1.0,
+        "blowup_rate": 0.0,
+        "typical_miss": 1.0
+      }
+    },
+    "key_teammate_absent": {
+      "teammate_name": "De'Aaron Fox",
+      "teammate_avg_pts": 18.8,
+      "n_games": 9,
+      "raw_avgs": {
+        "PTS": 25.9,
+        "REB": 11.7,
+        "AST": 3.2,
+        "3PM": 0.7
+      },
+      "tier_hit_rates": {
+        "PTS": {
+          "10": 0.889,
+          "15": 0.889,
+          "20": 0.778,
+          "25": 0.556,
+          "30": 0.333
+        },
+        "REB": {
+          "4": 1.0,
+          "6": 1.0,
+          "8": 0.889,
+          "10": 0.556,
+          "12": 0.444
+        },
+        "AST": {
+          "2": 0.889,
+          "4": 0.444,
+          "6": 0.111,
+          "8": 0.0,
+          "10": 0.0,
+          "12": 0.0
+        },
+        "3PM": {
+          "1": 0.444,
+          "2": 0.111,
+          "3": 0.111,
+          "4": 0.0
+        }
+      },
+      "absence_trend": {
+        "PTS": "down",
+        "REB": "down",
+        "AST": "up",
+        "3PM": "down"
+      }
+    },
+    "volatility": {
+      "PTS": {
+        "label": "volatile",
+        "sigma": 0.47,
+        "n": 20
+      },
+      "REB": {
+        "label": "consistent",
+        "sigma": 0.0,
+        "n": 20
+      },
+      "AST": {
+        "label": "volatile",
+        "sigma": 0.41,
+        "n": 20
+      },
+      "3PM": {
+        "label": "consistent",
+        "sigma": 0.224,
+        "n": 20
+      }
+    },
+    "shooting_regression": {
+      "flag": "neutral",
+      "fg_flag": "neutral",
+      "fg_delta_pct": -0.034,
+      "l20_fg_pct": 0.496,
+      "l5_fg_pct": 0.479,
+      "l20_3p_pct": 0.331,
+      "l5_3p_pct": 0.235,
+      "3p_delta_pct": -0.289,
+      "games_with_shots": 58
+    },
+    "ft_safety_margin": {
+      "n_games": 20,
+      "season_fg_pct": 0.496,
+      "season_ftm_avg": 3.4,
+      "season_fta_avg": 4.1,
+      "season_fga_avg": 17.05,
+      "season_3pm_avg": 2.25,
+      "tiers": {
+        "10": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.128,
+          "margin": 0.368
+        },
+        "15": {
+          "flag": "safe",
+          "breakeven_fg_pct": 0.274,
+          "margin": 0.221
+        },
+        "20": {
+          "flag": "borderline",
+          "breakeven_fg_pct": 0.421,
+          "margin": 0.075
+        },
+        "25": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.567,
+          "margin": -0.072
+        },
+        "30": {
+          "flag": "fragile",
+          "breakeven_fg_pct": 0.714,
+          "margin": -0.218
+        }
+      }
+    },
+    "team_momentum": {
+      "team": {
+        "l10_wins": 9,
+        "l10_losses": 1,
+        "l10_pct": 0.9,
+        "l10_margin": 11.9,
+        "tag": "hot"
+      },
+      "opponent": {
+        "l10_wins": 1,
+        "l10_losses": 9,
+        "l10_pct": 0.1,
+        "l10_margin": -13.3,
+        "tag": "cold"
+      }
+    },
+    "def_recency": {
+      "flag": null,
+      "l5_avg": 127.4,
+      "l15_avg": 123.6,
+      "delta_pct": 0.0307,
+      "n_l5": 5,
+      "n_l15": 15
+    },
+    "positional_dvp": {
+      "position": "C",
+      "pts_rating": "mid",
+      "reb_rating": "soft",
+      "ast_rating": "soft",
+      "tpm_rating": "mid",
+      "n": 18,
+      "source": "positional"
+    },
+    "profile_narrative": "Victor Wembanyama \u2014 Scoring Portrait (L20 games, best PTS tier: T20):\n  Hit sequence: 13/20 (65%) | current: 3-hit streak | longest hit-streak: 6 | longest miss-streak: 3\n  Scoring channels: FG=76% FT=14% 3PM=10%  [FG-dependent]\n  B2B: 7/12 (58%) on B2B second nights  (-12% vs baseline 70%)  [B2B-sensitive]\n  Blowout context: 13/25 (52%) in blowout games vs 21/26 (81%) competitive  (-29% vs competitive)  [blowout-sensitive]\n  Miss anatomy (7 misses): 29% near-miss (\u22642u) / 71% blowup (>2u), typical shortfall=3.0u\n  Minutes floor (L10): floor=22.0min avg=30.2min (ratio=0.73)"
   }
 }

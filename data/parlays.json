@@ -2983,29 +2983,9 @@
     "date": "2026-03-25",
     "parlays": [
       {
-        "label": "Wednesday Volume Sweep",
+        "label": "Wednesday Floor Lock",
         "type": "multi_game",
         "legs": [
-          {
-            "player_name": "Julius Randle",
-            "team": "MIN",
-            "opponent": "HOU",
-            "prop_type": "PTS",
-            "pick_value": 15,
-            "direction": "OVER",
-            "confidence_pct": 80,
-            "correlation_role": "scorer"
-          },
-          {
-            "player_name": "Kawhi Leonard",
-            "team": "LAC",
-            "opponent": "TOR",
-            "prop_type": "REB",
-            "pick_value": 4,
-            "direction": "OVER",
-            "confidence_pct": 80,
-            "correlation_role": "rebounder"
-          },
           {
             "player_name": "James Harden",
             "team": "CLE",
@@ -3015,14 +2995,79 @@
             "direction": "OVER",
             "confidence_pct": 78,
             "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Luka Doncic",
+            "team": "LAL",
+            "opponent": "IND",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Kevin Durant",
+            "team": "HOU",
+            "opponent": "MIN",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
           }
         ],
         "implied_odds": "+100",
         "confidence_product": 0.4992,
-        "correlation": "positive",
-        "rationale": "Three-game heterogeneous stack: Randle trending up vs mid HOU, Kawhi iron-floor REB, Harden soft MIA matchup with volume_game tag.",
+        "correlation": "independent",
+        "rationale": "Three games, three prop types: soft PTS floor (CLE/MIA), elite facilitator vs soft IND, KD forward REB trend up.",
         "date": "2026-03-25",
         "id": "parlay_2026-03-25_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Iron Assist Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "LeBron James",
+            "team": "LAL",
+            "opponent": "IND",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Alperen Sengun",
+            "team": "HOU",
+            "opponent": "MIN",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "BOS",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.4838,
+        "correlation": "independent",
+        "rationale": "LeBron AST 10/10 iron floor vs soft IND anchors; Sengun ultra-low AST T2 with trend up; SGA elite scorer volume leg.",
+        "date": "2026-03-25",
+        "id": "parlay_2026-03-25_02",
         "result": null,
         "legs_hit": null,
         "legs_total": 3
