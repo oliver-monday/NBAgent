@@ -154,6 +154,34 @@ def load_whitelist() -> set:
         return set()
 
 
+def load_players_out_today() -> set[str]:
+    """
+    Read injuries_today.json and return the set of player names confirmed OUT or OFS.
+    These are the only statuses that mean a player will definitely not play today.
+    QUES/DOUBT/PROB/GTD are excluded — those players may still play.
+    Returns empty set if file is missing or unreadable.
+    """
+    INJURIES_JSON = DATA / "injuries_today.json"
+    out_statuses = {"OUT", "OFS"}
+    out_players: set[str] = set()
+    if not INJURIES_JSON.exists():
+        return out_players
+    try:
+        with open(INJURIES_JSON) as fh:
+            data = json.load(fh)
+        for team_entries in data.values():
+            if not isinstance(team_entries, list):
+                continue
+            for entry in team_entries:
+                if entry.get("status", "").upper() in out_statuses:
+                    name = entry.get("name", "").strip()
+                    if name:
+                        out_players.add(name)
+    except Exception as e:
+        print(f"[quant] Warning: could not load injuries_today.json: {e}")
+    return out_players
+
+
 def load_whitelist_positions() -> dict:
     """Returns {lowercase_player_name: position} for active players."""
     if not WHITELIST_CSV.exists():
@@ -1779,6 +1807,7 @@ def build_player_stats(
     position_map: dict | None = None,
     team_momentum: dict | None = None,
     opp_defense_recency: dict | None = None,
+    players_out_today: set[str] | None = None,
 ) -> dict:
 
     # Bounce-back profiles use full player_log (all season history, not today-filtered)
@@ -1951,10 +1980,16 @@ def build_player_stats(
             player_log, player_name, team, whitelist
         )
 
-        # Override standard trend with absence-aware trend when key teammate is out.
-        # Standard L5-vs-L20 trend crosses regime boundaries (pre/post star injury)
-        # and produces misleading labels. Use within-absence-window trend instead.
-        if key_teammate_absent and key_teammate_absent.get("absence_trend"):
+        # Override standard trend with absence-aware trend ONLY when the key teammate
+        # is confirmed OUT or OFS today. If the teammate is healthy/playing, the
+        # absence window is historical context only — do not override the live trend.
+        _out_set = players_out_today or set()
+        _teammate_name = (key_teammate_absent or {}).get("teammate_name", "")
+        if (
+            key_teammate_absent
+            and key_teammate_absent.get("absence_trend")
+            and _teammate_name in _out_set
+        ):
             absence_trend_override = key_teammate_absent["absence_trend"]
             for stat, val in absence_trend_override.items():
                 if stat in trend:
@@ -2318,6 +2353,9 @@ def main():
     teammate_correlations = build_teammate_correlations(player_log, teams_today, whitelist)
     print(f"[quant] Teammate correlations computed for {len(teammate_correlations)} players")
 
+    players_out_today = load_players_out_today()
+    print(f"[quant] Players confirmed OUT/OFS today: {len(players_out_today)}")
+
     player_stats = build_player_stats(
         player_log, b2b_teams, opp_defense, game_pace,
         todays_games, teammate_correlations, whitelist,
@@ -2327,6 +2365,7 @@ def main():
         position_map=position_map,
         team_momentum=team_momentum,
         opp_defense_recency=opp_defense_recency,
+        players_out_today=players_out_today,
     )
     print(f"[quant] Built stats cards for {len(player_stats)} players")
 

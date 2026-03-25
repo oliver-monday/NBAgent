@@ -45,7 +45,6 @@ ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
-SCOUT_OMITTED_JSON           = DATA / f"scout_omitted_{TODAY_STR}.json"
 
 # ── Config ───────────────────────────────────────────────────────────
 MODEL         = "claude-sonnet-4-6"   # default model
@@ -2274,30 +2273,6 @@ For each shortlisted player, identify which prop types (PTS/REB/AST/3PM) are wor
 
 Use `priority: "high"` for players with multiple qualifying props, strong recent form, and minimal situational risk. Use `priority: "medium"` for players with one qualifying prop, meaningful risk flags, or borderline signal.
 
-## OMITTED BLOCK — MANDATORY ACCOUNTING OF ALL PLAYERS
-
-Every player who appears in the QUANT STATS section below must be accounted for in your output — either on the shortlist OR in the omitted array. There are no exceptions.
-
-The omitted array must contain one entry per player who does NOT appear on the shortlist. This is not optional. An empty omitted array `[]` means you have failed to account for all players and will be treated as a prompt violation.
-
-Omitted entries fall into two categories:
-
-1. Hard exclusions — players in the quant data who are not shortlisted at all: no
-   qualifying tier, confirmed OUT or heavy injury restriction, role eliminated by
-   game script, or simply not worth Pick agent time today given the strength of
-   other candidates.
-
-2. Deprioritized candidates — players who ARE shortlisted but carry meaningful
-   situational risk the Pick agent should weigh carefully. For any shortlisted player
-   where you assigned `priority: "medium"` due to a genuine structural concern (B2B
-   second night, extreme blowout risk as secondary scorer, VOLATILE tag on sole
-   qualifying prop, thin minutes floor near the 24-minute fragility threshold, QUES
-   designation with role uncertainty), add a corresponding entry in `omitted`
-   summarizing that concern. These are not exclusions — they are advisory flags.
-
-The only valid exception: if every player in the quant stats today is shortlisted AND none
-carry meaningful risk flags, write a single sentinel entry: {{"player_name": "none", "reason": "all candidates shortlisted — no exclusions or meaningful deprioritization flags today", "risk_type": "none"}}. This exception applies only when the shortlist contains ALL players from quant stats.
-
 ## TODAY'S GAMES
 {games_block}
 
@@ -2336,21 +2311,12 @@ Your response MUST begin with a JSON object at character 0. No preamble. No "Her
       "risk_flags": ["list of concerns — e.g. b2b, blowout_risk, volatile, thin_minutes_floor, tough_defense, short_sample, dense_schedule"],
       "scout_note": "1–2 sentence overall read on this player today"
     }}}}
-  ],
-  "omitted": [
-    {{{{
-      "player_name": "string — exact name from QUANT STATS. One entry per non-shortlisted player. Use 'none' only if ALL quant stats players are on the shortlist.",
-      "reason": "1–2 sentences: why excluded or deprioritized — be specific about the structural concern",
-      "risk_type": "hard_exclusion | deprioritized | none"
-    }}}}
   ]
 }}}}
-
-After the closing }} you may add a brief optional note (3 lines maximum). Nothing more.
 """
 
 
-def call_scout(prompt: str, model: str = MODEL) -> tuple[list[dict] | None, list[dict]]:
+def call_scout(prompt: str, model: str = MODEL) -> list[dict] | None:
     """
     Call Claude with the Scout prompt. Returns the shortlist list on success.
     Returns None on any parse failure — caller triggers fallback to single-call mode.
@@ -2375,7 +2341,7 @@ def call_scout(prompt: str, model: str = MODEL) -> tuple[list[dict] | None, list
                 raw_chunks.append(text)
     except Exception as e:
         print(f"[analyst] Scout API call failed: {e} — falling back to single-call mode")
-        return None, []
+        return None
 
     raw = "".join(raw_chunks).strip()
 
@@ -2390,7 +2356,7 @@ def call_scout(prompt: str, model: str = MODEL) -> tuple[list[dict] | None, list
     brace_idx = raw.find('{')
     if brace_idx == -1:
         print("[analyst] Scout parse failed: no JSON object found — falling back to single-call mode")
-        return None, []
+        return None
     if brace_idx > 0:
         print(f"[analyst] Scout: {brace_idx} chars of prose before JSON — extracting")
         raw = raw[brace_idx:]
@@ -2410,40 +2376,23 @@ def call_scout(prompt: str, model: str = MODEL) -> tuple[list[dict] | None, list
 
     if data is None or not isinstance(data, dict):
         print("[analyst] Scout parse failed: could not parse JSON object — falling back to single-call mode")
-        return None, []
+        return None
 
     shortlist = data.get("shortlist")
     if not isinstance(shortlist, list):
         print("[analyst] Scout parse failed: 'shortlist' key missing or not a list — falling back to single-call mode")
-        return None, []
+        return None
 
     if len(shortlist) == 0:
         print("[analyst] Scout returned empty shortlist — falling back to single-call mode")
-        return None, []
+        return None
 
     slate_read = data.get("slate_read", "")
     if slate_read:
         print(f"[analyst] Scout slate read: {slate_read}")
 
-    omitted = data.get("omitted", [])
-    if not isinstance(omitted, list):
-        omitted = []
-
-    # Enforce: omitted must never be empty. If the Scout returned [], inject a
-    # sentinel entry so save_scout_omitted() always writes a non-empty file.
-    # This indicates a prompt compliance failure — log it clearly.
-    if len(omitted) == 0:
-        print("[analyst] WARNING: Scout returned empty omitted array — prompt compliance "
-              "failure. Injecting sentinel entry. Check Scout output for omitted block.")
-        omitted = [{
-            "player_name": "none",
-            "reason": "Scout returned empty omitted array — compliance failure; sentinel injected by call_scout()",
-            "risk_type": "none",
-        }]
-
-    print(f"[analyst] Scout call complete — {len(shortlist)} players shortlisted, "
-          f"{len(omitted)} omitted")
-    return shortlist, omitted
+    print(f"[analyst] Scout call complete — {len(shortlist)} players shortlisted")
+    return shortlist
 
 
 def build_pick_prompt(
@@ -4132,20 +4081,6 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
     return kept
 
 
-def save_scout_omitted(omitted: list[dict]) -> None:
-    """
-    Persist Scout's omitted block to data/scout_omitted_YYYY-MM-DD.json.
-    Written once per day alongside picks_review. Used to audit whether Scout
-    incorrectly dropped candidates Pick would have selected.
-    """
-    with open(SCOUT_OMITTED_JSON, "w") as f:
-        json.dump(omitted, f, indent=2)
-    print(f"[analyst] Saved {len(omitted)} Scout omissions → {SCOUT_OMITTED_JSON}")
-    for entry in omitted:
-        name   = entry.get("player_name", "?")
-        reason = entry.get("reason", "no reason given")
-        print(f"  OMITTED: {name} — {reason}")
-
 
 def save_picks(picks: list[dict]):
     # Filter out picks where analyst's own tier_walk reasoning concluded skip
@@ -4294,7 +4229,7 @@ def main():
         leaderboard=leaderboard, lineups_section=lineups_section,
     )
 
-    shortlist, scout_omitted = call_scout(scout_prompt, model=scout_model)
+    shortlist = call_scout(scout_prompt, model=scout_model)
 
     # ── Fallback: Scout failed — run single-call path unchanged ───────
     if shortlist is None:
@@ -4313,7 +4248,6 @@ def main():
         return
 
     # ── Stage 2: Pick ─────────────────────────────────────────────────
-    save_scout_omitted(scout_omitted)
     shortlist_names = {entry["player_name"] for entry in shortlist if isinstance(entry, dict)}
     print(f"[analyst] Scout shortlisted {len(shortlist_names)} players: {sorted(shortlist_names)}")
 
