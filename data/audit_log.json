@@ -2701,17 +2701,17 @@
   },
   {
     "date": "2026-03-24",
-    "total_picks": 18,
-    "voided_picks": 0,
+    "total_picks": 17,
+    "voided_picks": 1,
     "hits": 15,
-    "misses": 3,
+    "misses": 2,
     "no_data": 0,
-    "hit_rate_pct": 83.3,
+    "hit_rate_pct": 88.2,
     "prop_type_breakdown": {
       "PTS": {
-        "picks": 4,
+        "picks": 3,
         "hits": 3,
-        "hit_rate_pct": 75.0
+        "hit_rate_pct": 100.0
       },
       "REB": {
         "picks": 3,
@@ -2731,9 +2731,9 @@
     },
     "confidence_calibration": {
       "70-75": {
-        "picks": 15,
+        "picks": 14,
         "hits": 13,
-        "hit_rate_pct": 86.7,
+        "hit_rate_pct": 92.9,
         "expected_hit_rate_pct": 72.5
       },
       "76-80": {
@@ -2776,15 +2776,6 @@
       "Validate the 76-80% confidence band calibration \u2014 this session's 76-80% band hit rate was 66.7% (2/3) against an expected 78.0%, with both misses (Harden REB at 78%, Mitchell AST at 74% rounded up) falling in this range. The band is underperforming expected rate. In future sessions, picks in the 76-80% band should be treated with extra scrutiny equivalent to one tier step down, or the analyst should require a higher base hit rate (9/10 rather than 8/10) before assigning confidence in this band to avoid systematic over-placement in a calibration-weak zone."
     ],
     "miss_details": [
-      {
-        "player_name": "Kon Knueppel",
-        "prop_type": "PTS",
-        "pick_value": 15,
-        "actual_value": 14.0,
-        "miss_classification": "model_gap_rule",
-        "tier_walk_flag": "null",
-        "root_cause": "STEP 0: CHA vs SAC final score 134-90, CHA won by 44 \u2014 a BLOWOUT. Knueppel played only 21 minutes (confirmed by post-game news), consistent with heavy blowout minute compression for secondary scorers on the dominant side. STEP 1: Knueppel recorded 14 PTS \u2014 active, non-zero output, clear miss by 1 point. STEP 2: No injury event or workflow gap. The tier_walk explicitly classified this pick as SKIP under the blowout_secondary_scorer rule (spread_abs=16.5 \u2265 15 for non-primary scorer), yet the pick appeared as an active pick at 74% confidence. This is a model_gap_rule miss: the SKIP designation in the tier_walk did not propagate to a hard exclusion from the active pick pool. The system's own logic identified the blowout risk and issued a SKIP, but the post-processor assigned a confidence value and published the pick anyway. The 1-point miss margin is consistent with the pre-game concern \u2014 21 minutes of blowout garbage time was insufficient to reach 15 PTS for a secondary scorer. The 8/10 hit_rate_display reflects non-blowout contexts; blowout secondary scorer suppression was the operative risk and was already identified internally. No lineup_update amendment was present."
-      },
       {
         "player_name": "James Harden",
         "prop_type": "REB",

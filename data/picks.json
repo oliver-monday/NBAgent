@@ -15031,11 +15031,12 @@
     "iron_floor": false,
     "top_pick": false,
     "reasoning": "SKIP \u2014 blowout_secondary_scorer fires at spread_abs=16.5 for non-primary scorer.",
-    "result": "MISS",
     "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-24T22:04:37.418364-07:00",
-    "voided": false,
+    "voided": true,
+    "void_reason": "self_skip_leak: tier_walk contained SKIP designation (blowout_secondary_scorer); pick should not have been published",
+    "result": null,
     "human_verdict": "trim",
     "trim_reasons": [
       "As a secondary scorer with no iron_floor, Knueppel's post_miss bounce-back rate of only 72% is the weakest on the slate \u2014 combined with a -16.5 blowout spread and a min_floor of 23.7, a garbage-time minutes collapse puts 15 PTS at genuine risk. The bear case here is meaningfully stronger than for Miller."
