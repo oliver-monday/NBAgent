@@ -96,6 +96,11 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 **Post-Game Reporter injury exit detection: fixed 2026-03-18.** Monitor next 2–3 low-minutes events to confirm `injury_exit` classification fires correctly for both the `_INJURY_EXIT_TERMS` direct path and the `minutes_restriction` → `injury_exit` promotion path. Close this watch item once two confirmed in-game exits are correctly classified in production.
 
 
+#### W7 — Rotowire Parser Post-Fix Monitoring
+**Status: WATCH — monitor first production run post-fix**
+
+Rotowire parser rewrite deployed 2026-03-25 based on live HTML inspection. `parse_rotowire_lineups` (On/Off button anchor), `parse_projected_minutes` (logo img anchor), `parse_onoff_usage` (graceful JS-loaded skip). Monitor first Rotowire run post-fix for lineup parse success — expect `teams>0`, `starters>0` in Actions log. Close this watch item once two consecutive successful runs confirmed. If `teams=0` persists, Rotowire may have changed page structure again.
+
 #### W6 — 3PM VOLATILE × iron_floor merit_below_floor false skip rate
 **Status: WATCH — accumulate merit_below_floor skip data through end of season + playoffs**
 

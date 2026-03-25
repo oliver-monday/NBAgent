@@ -264,9 +264,10 @@ def parse_rotowire_injuries(html: str) -> Dict[str, List[Dict[str, str]]]:
 def parse_rotowire_lineups(html: str) -> dict:
     """
     Parse projected starting lineups from the Rotowire nba-lineups.php page.
-    The Expected Lineup section (PG→SG→SF→PF→C) appears before the MAY NOT PLAY
-    section within each team block. Position labels and player <a> tags are the
-    reliable structural anchors.
+
+    Uses the data-team attribute on the 'On/Off Court Stats' button as the team anchor —
+    the same reliable anchor used by parse_rotowire_injuries. The Expected Lineup section
+    for each team appears in the HTML immediately before its On/Off button.
 
     Returns {team_abbr: {"starters": [...], "confirmed": bool}} with only teams
     that have at least one starter entry.
@@ -280,100 +281,104 @@ def parse_rotowire_lineups(html: str) -> dict:
     lineups: dict = {}
 
     try:
-        soup = BeautifulSoup(html, "lxml")
+        # Find all On/Off Court Stats buttons — each carries data-team for one team.
+        # The Expected Lineup section for that team precedes this button in the HTML.
+        onoff_re = re.compile(
+            r'data-team="([A-Z]{2,3})"[^>]*>On/Off Court Stats</button>',
+            re.DOTALL,
+        )
+        matches = list(onoff_re.finditer(html))
+        if not matches:
+            print("[lineups] No On/Off Court Stats buttons found — page structure may have changed")
+            return {}
 
-        # Walk every <li> on the page. Position-labeled starter rows have:
-        #   - A descendant element whose stripped text is exactly a position abbrev
-        #   - An <a> tag with the player name
-        # Both conditions together are highly specific to the lineup table rows.
-        for li in soup.find_all("li"):
-            # Find a descendant with exactly a position label
-            pos_text = None
-            for desc in li.descendants:
-                if not hasattr(desc, "get_text"):
-                    continue
-                t = desc.get_text(strip=True).upper()
-                if t in POSITIONS:
-                    pos_text = t
-                    break
-            if not pos_text:
+        for i, m in enumerate(matches):
+            team = m.group(1).upper()
+            if team not in NBA_ABBREVS:
+                continue
+            if team in lineups:
                 continue
 
-            # Must have a player <a> link in the same <li>
-            a_tag = li.find("a")
-            if not a_tag:
-                continue
-            name = a_tag.get_text(strip=True)
-            if not name or len(name) < 3:
-                continue
+            # Grab the HTML chunk between the previous match end and this button start.
+            # This chunk contains the Expected Lineup section for this team.
+            prev_end = matches[i - 1].end() if i > 0 else 0
+            section_html = html[prev_end: m.start()]
 
-            # Check for an inline injury status on this starter
-            inj_status = None
-            for tag in li.find_all(True):
-                cls = " ".join(tag.get("class", []))
-                if "inj" in cls.lower() or "status" in cls.lower():
-                    raw = tag.get_text(strip=True)
-                    # Avoid picking up broad class names as status text
-                    if raw and len(raw) <= 20 and raw.upper() not in {"STATUS", "INJURY"}:
-                        inj_status = _short_status(raw)
-                        break
+            section_soup = BeautifulSoup(section_html, "lxml")
 
-            # Walk up ancestors to find team abbreviation
-            team = ""
+            starters: list[dict] = []
             confirmed = False
-            for ancestor in list(li.parents):
-                # data-team attribute takes precedence (used by buttons/containers)
-                dt = ancestor.get("data-team", "").upper()
-                if dt and dt in NBA_ABBREVS:
-                    team = dt
-                    break
-                # Look for a direct child element whose sole text is a team abbrev
-                # (e.g. <div class="lineup__abbrev">PHI</div>)
-                for child in ancestor.find_all(True, recursive=False):
-                    t = child.get_text(strip=True).upper()
-                    if t in NBA_ABBREVS:
-                        team = t
+            in_expected = False
+
+            for li in section_soup.find_all("li"):
+                text = li.get_text(" ", strip=True)
+
+                # Section boundary markers
+                if "Expected Lineup" in text and not li.find("a"):
+                    in_expected = True
+                    continue
+                if any(marker in text for marker in (
+                    "Projected Minutes", "On/Off Court Stats", "MAY NOT PLAY", "May Not Play",
+                )):
+                    in_expected = False
+                    continue
+                if re.search(r"\bConfirm", text, re.IGNORECASE):
+                    confirmed = True
+
+                if not in_expected:
+                    continue
+
+                # Position + player row: first word must be a position label
+                words = text.split()
+                if not words:
+                    continue
+                pos = words[0].upper()
+                if pos not in POSITIONS:
+                    continue
+
+                a_tag = li.find("a")
+                if not a_tag:
+                    continue
+
+                # title attribute holds the full name; link text may be abbreviated
+                name = a_tag.get("title", "").strip() or a_tag.get_text(strip=True)
+                if not name or len(name) < 3:
+                    continue
+
+                # Inline injury status — check for known status keywords in li text
+                inj_status = None
+                STATUS_WORDS = {"ques", "doubt", "out", "prob", "gtd", "ofs", "rest", "susp", "dtd"}
+                for word in words:
+                    w = word.lower().rstrip(".,")
+                    if w in STATUS_WORDS:
+                        inj_status = _short_status(word.rstrip(".,"))
                         break
-                if team:
-                    # Check for "Confirmed" text within this same ancestor section
-                    section_text = ancestor.get_text(" ", strip=True)
-                    if re.search(r"\bconfirm", section_text, re.IGNORECASE):
-                        confirmed = True
-                    break
 
-            if not team:
-                continue
+                # Deduplicate by position — first occurrence wins
+                if pos not in {s["position"] for s in starters}:
+                    starters.append({
+                        "position":      pos,
+                        "name":          name,
+                        "injury_status": inj_status,
+                    })
 
-            # Build or update the team entry
-            if team not in lineups:
-                lineups[team] = {"starters": [], "confirmed": False}
-            if confirmed:
-                lineups[team]["confirmed"] = True
-
-            # Deduplicate by position — keep first occurrence
-            existing_positions = {s["position"] for s in lineups[team]["starters"]}
-            if pos_text not in existing_positions:
-                lineups[team]["starters"].append({
-                    "position": pos_text,
-                    "name": name,
-                    "injury_status": inj_status,
-                })
+            if starters:
+                lineups[team] = {"starters": starters, "confirmed": confirmed}
 
     except Exception as e:
         print(f"[lineups] ERROR parsing lineups: {e}")
 
-    # Drop teams with zero starters (shouldn't happen but guard it)
+    # Drop teams with zero starters
     return {t: d for t, d in lineups.items() if d["starters"]}
 
 
 def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
     """
-    Parse the Projected Minutes panel from the Rotowire lineups page.
+    Parse the Projected Minutes panel from rotowire.com/basketball/projected-minutes.php.
 
-    For each team, iterates .lineups-viz containers and extracts per-player
-    projected minute integers, section (STARTERS/BENCH/OUT), and injury status.
-
-    Team key is read from the preceding button[data-team] attribute.
+    Team sections are anchored by team logo images with src pattern /100{ABBREV}.png.
+    Each section contains STARTERS / BENCH / MAY NOT PLAY / OUT sub-sections with
+    per-player projected minute integers and optional injury status.
 
     Returns:
         {
@@ -387,85 +392,100 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
     Returns {} on any parse error.
     """
     NBA_ABBREVS = {
-        "ATL","BOS","BKN","CHA","CHI","CLE","DAL","DEN","DET","GSW",
-        "HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK",
-        "OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS",
+        "ATL", "BOS", "BKN", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW",
+        "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN", "NOP", "NYK",
+        "OKC", "ORL", "PHI", "PHX", "POR", "SAC", "SAS", "TOR", "UTA", "WAS",
     }
+    SECTION_MAP = {
+        "starters":     "STARTERS",
+        "bench":        "BENCH",
+        "may not play": "MAY NOT PLAY",
+        "out":          "OUT",
+    }
+    STATUS_WORDS = {"questionable", "doubtful", "out", "probable", "gtd", "ofs",
+                    "rest", "susp", "dtd", "day-to-day"}
     result: dict[str, list[dict]] = {}
+
     try:
-        for viz in soup.find_all("div", class_="lineups-viz"):
-            # Identify team from the nearest preceding button[data-team]
-            team = ""
-            for sib in viz.find_previous_siblings():
-                dt_attr = sib.get("data-team", "").upper()
-                if dt_attr in NBA_ABBREVS:
-                    team = dt_attr
-                    break
-                # Also check descendants of sibling (button may be nested)
-                btn = sib.find("button", attrs={"data-team": True})
-                if btn:
-                    t = btn.get("data-team", "").upper()
-                    if t in NBA_ABBREVS:
-                        team = t
-                        break
-            if not team:
+        logo_re = re.compile(r'/100([A-Z]+)\.png', re.IGNORECASE)
+
+        for img in soup.find_all("img", src=logo_re):
+            m = logo_re.search(img.get("src", ""))
+            if not m:
+                continue
+            team = m.group(1).upper()
+            if team not in NBA_ABBREVS or team in result:
                 continue
 
-            current_section = "STARTERS"
-            players: list[dict] = []
-
-            for el in viz.descendants:
-                if not hasattr(el, "get"):
+            # Walk up ancestors to find a container with player links
+            player_link_re = re.compile(r'/basketball/player/')
+            for ancestor in img.parents:
+                player_links = ancestor.find_all("a", href=player_link_re)
+                if len(player_links) < 2:
                     continue
-                # Section header
-                cls = " ".join(el.get("class", []))
-                if "lineups-viz__title" in cls:
-                    text = el.get_text(strip=True).upper()
-                    if "BENCH" in text:
-                        current_section = "BENCH"
-                    elif "OUT" in text:
-                        current_section = "OUT"
-                    elif "START" in text:
-                        current_section = "STARTERS"
 
-                # Player row — anchor on player name element
-                if "lineups-viz__player-name" in cls:
-                    a = el.find("a")
-                    name = a.get_text(strip=True) if a else ""
-                    if not name:
+                # Check for "Subscriber Exclusive" gating — skip if present
+                if "Subscriber Exclusive" in ancestor.get_text():
+                    break  # This team's data is subscription-gated; stop here
+
+                players: list[dict] = []
+                current_section = "STARTERS"
+
+                # Walk all descendants in order to capture section headers and player rows
+                for el in ancestor.descendants:
+                    if not hasattr(el, "name"):
+                        # NavigableString — check for section headers
+                        text = str(el).strip()
+                        tl = text.lower()
+                        for key, val in SECTION_MAP.items():
+                            if tl == key:
+                                current_section = val
+                                break
                         continue
 
-                    # Projected minutes: nearest .minutes-meter__proj in same parent li
-                    parent_li = el.find_parent("li")
-                    minutes = None
+                    if el.name != "a":
+                        continue
+                    href = el.get("href", "")
+                    if "/basketball/player/" not in href:
+                        continue
+
+                    name = el.get_text(strip=True)
+                    if not name or len(name) < 2:
+                        continue
+
+                    # Extract minutes + injury status from parent element text
+                    parent = el.parent
+                    if not parent:
+                        continue
+                    full_text = parent.get_text(" ", strip=True)
+                    # Remove the player name from text to isolate status + minutes
+                    remainder = full_text.replace(name, "", 1).strip()
+
+                    minutes = 0
                     inj_status = None
-                    if parent_li:
-                        proj = parent_li.find(class_="minutes-meter__proj")
-                        if proj:
-                            raw = proj.get_text(strip=True)
-                            try:
-                                minutes = int(raw)
-                            except ValueError:
-                                minutes = 0
-                        inj_el = parent_li.find(class_="lineups-viz__inj")
-                        if inj_el:
-                            inj_status = inj_el.get_text(strip=True) or None
+                    for token in remainder.split():
+                        if token.isdigit():
+                            minutes = int(token)
+                        elif token.lower().rstrip(".,") in STATUS_WORDS:
+                            inj_status = _short_status(token.rstrip(".,"))
 
-                    players.append({
-                        "name":          name,
-                        "minutes":       minutes if minutes is not None else 0,
-                        "section":       current_section,
-                        "injury_status": inj_status,
-                    })
+                    # Deduplicate by name
+                    if name not in {p["name"] for p in players}:
+                        players.append({
+                            "name":          name,
+                            "minutes":       minutes,
+                            "section":       current_section,
+                            "injury_status": inj_status,
+                        })
 
-            if players:
-                result[team] = players
+                if players:
+                    result[team] = players
+                    break  # Found data for this team; stop walking up
 
     except Exception as e:
         print(f"[injuries] ERROR parsing projected minutes: {e}")
         return {}
 
-    # Health check: count how many players have a non-zero projected minute value
     populated = sum(
         1 for players in result.values()
         for p in players
@@ -478,132 +498,16 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
 
 def parse_onoff_usage(soup: BeautifulSoup) -> dict[str, list[dict]]:
     """
-    Parse the On/Off Court Stats panel from the Rotowire lineups page.
+    On/Off Court Stats are loaded via JavaScript after a button click and are not
+    present in the server-rendered HTML fetched by requests.get(). This function
+    always returns {} cleanly.
 
-    For each team, extracts per-player usage rate when listed players are off court,
-    usage change delta, minutes sample, and the names of absent players driving the calc.
-
-    The absent player names are resolved from the data-out attribute on the On/Off button
-    (comma-separated Rotowire IDs) mapped to player names in the same container.
-
-    Returns:
-        {
-          "LAL": [
-            {
-              "name": "LeBron James",
-              "usage_pct": 30.9,
-              "usage_change": 10.0,
-              "minutes_sample": 111,
-              "absent_players": ["Anthony Davis"]
-            },
-          ]
-        }
-    Returns {} on any parse error.
+    Keeping the function signature intact so callers in main() require no changes.
+    A future implementation using a headless browser (e.g. Playwright) could populate
+    this data; see ROADMAP_offseason.md for that deferred item.
     """
-    NBA_ABBREVS = {
-        "ATL","BOS","BKN","CHA","CHI","CLE","DAL","DEN","DET","GSW",
-        "HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK",
-        "OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS",
-    }
-    result: dict[str, list[dict]] = {}
-    try:
-        for viz in soup.find_all("div", class_="lineups-viz"):
-            # Identify team — same sibling-walk as parse_projected_minutes
-            team = ""
-            for sib in viz.find_previous_siblings():
-                dt_attr = sib.get("data-team", "").upper()
-                if dt_attr in NBA_ABBREVS:
-                    team = dt_attr
-                    break
-                btn = sib.find("button", attrs={"data-team": True})
-                if btn:
-                    t = btn.get("data-team", "").upper()
-                    if t in NBA_ABBREVS:
-                        team = t
-                        break
-            if not team:
-                continue
-
-            # Find On/Off screen container
-            onoff_screen = viz.find("div", class_="lineups-viz__off-usage-screen")
-            if not onoff_screen:
-                continue
-
-            # Resolve absent player names from data-out IDs
-            # The On/Off button carries data-out="id1,id2"; player <a> tags carry data-athlete-id
-            absent_ids: set[str] = set()
-            onoff_btn = viz.find("button", class_=lambda c: c and "onoff" in " ".join(c).lower())
-            if onoff_btn:
-                raw_out = onoff_btn.get("data-out", "")
-                absent_ids = {x.strip() for x in raw_out.split(",") if x.strip()}
-
-            # Build id→name map from all player links in this viz container
-            id_to_name: dict[str, str] = {}
-            for a in viz.find_all("a", attrs={"data-athlete-id": True}):
-                aid = a.get("data-athlete-id", "").strip()
-                name = a.get_text(strip=True)
-                if aid and name:
-                    id_to_name[aid] = name
-
-            absent_names = [id_to_name[i] for i in absent_ids if i in id_to_name]
-
-            players: list[dict] = []
-            for row in onoff_screen.find_all(
-                "div", class_="lineups-viz__onoff-off-usage-row"
-            ):
-                name_el = row.find(class_="lineups-viz__onoff-off-usage-name")
-                a = name_el.find("a") if name_el else None
-                name = a.get_text(strip=True) if a else ""
-                if not name:
-                    continue
-
-                # Usage % from title attribute on the meter bar
-                usage_pct = None
-                bar = row.find(class_="lineups-viz__onoff-off-usage-meter-bar")
-                if bar:
-                    raw = bar.get("title", "").strip()
-                    try:
-                        usage_pct = float(raw)
-                    except ValueError:
-                        pass
-
-                # Usage change delta
-                usage_change = None
-                delta_el = row.find(class_="lineups-viz__onoff-off-usage-change-meter-val")
-                if delta_el:
-                    raw = delta_el.get_text(strip=True).replace("+", "")
-                    try:
-                        usage_change = float(raw)
-                    except ValueError:
-                        pass
-
-                # Minutes sample
-                minutes_sample = None
-                min_el = row.find(class_="lineups-viz__onoff-off-usage-minutes")
-                if min_el:
-                    raw = min_el.get_text(strip=True).replace("min", "").strip()
-                    try:
-                        minutes_sample = int(raw)
-                    except ValueError:
-                        pass
-
-                players.append({
-                    "name":           name,
-                    "usage_pct":      usage_pct,
-                    "usage_change":   usage_change,
-                    "minutes_sample": minutes_sample,
-                    "absent_players": absent_names,
-                })
-
-            if players:
-                result[team] = players
-
-    except Exception as e:
-        print(f"[injuries] ERROR parsing on/off usage: {e}")
-        return {}
-
-    print(f"[injuries] onoff_usage: parsed {len(result)} teams")
-    return result
+    print("[injuries] onoff_usage: skipped (data is JS-loaded, not in server HTML)")
+    return {}
 
 
 def write_lineups_json(
