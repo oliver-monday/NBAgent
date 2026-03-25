@@ -4108,6 +4108,7 @@ def save_picks(picks: list[dict]):
     print(f"[analyst] Saved {len(picks)} picks for {TODAY_STR} → {PICKS_JSON}")
     for p in picks:
         print(f"  {p['player_name']} {p['prop_type']} OVER {p['pick_value']} ({p['confidence_pct']}%) — {p['reasoning'][:80]}...")
+    return picks
 
 
 def save_skips(skips: list[dict]) -> None:
@@ -4230,7 +4231,7 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        save_picks(picks)
+        picks = save_picks(picks)
         save_skips(skips)
         return
 
@@ -4258,7 +4259,7 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        save_picks(picks)
+        picks = save_picks(picks)
         save_skips(skips)
         return
 
@@ -4275,7 +4276,7 @@ def main():
     picks, skips = call_analyst(pick_prompt, model=MODEL)
     print(f"[analyst] Pick returned {len(picks)} picks, {len(skips)} skip records")
 
-    save_picks(picks)
+    picks = save_picks(picks)
     save_skips(skips)
 
     # ── Stage 3: Review ───────────────────────────────────────────────
