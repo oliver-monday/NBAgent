@@ -1728,12 +1728,39 @@ def compute_teammate_absence_splits(
             str(t): round(float((valid[col] >= t).sum() / len(valid)), 3)
             for t in TIERS[stat]
         }
+    # Absence-aware trend: L5 vs full absence window mean, scoped to the absence regime.
+    # Prevents standard L5-vs-L20 trend from crossing regime boundaries (e.g. pre/post
+    # star teammate injury) and producing misleading up/down labels.
+    absence_trend: dict = {}
+    if n >= TREND_SHORT_WINDOW:
+        absence_sorted = absence_games.sort_values("game_date", ascending=False)
+        for stat in ("PTS", "REB", "AST", "3PM"):
+            col = STAT_COL.get(stat)
+            if col is None or col not in absence_sorted.columns:
+                continue
+            full_vals = absence_sorted[col].dropna()
+            l5_vals   = absence_sorted.head(TREND_SHORT_WINDOW)[col].dropna()
+            if len(full_vals) == 0 or len(l5_vals) == 0:
+                continue
+            full_avg = float(full_vals.mean())
+            l5_avg   = float(l5_vals.mean())
+            if full_avg == 0:
+                absence_trend[stat] = "stable"
+                continue
+            delta = (l5_avg - full_avg) / full_avg
+            if delta > TREND_THRESHOLD:
+                absence_trend[stat] = "up"
+            elif delta < -TREND_THRESHOLD:
+                absence_trend[stat] = "down"
+            else:
+                absence_trend[stat] = "stable"
     return {
         "teammate_name": top_teammate,
         "teammate_avg_pts": round(top_avg_pts, 1),
         "n_games": n,
         "raw_avgs": raw_avgs,
         "tier_hit_rates": tier_hit_rates,
+        "absence_trend": absence_trend,  # per-stat trend within the absence window only
     }
 
 
@@ -1923,6 +1950,15 @@ def build_player_stats(
         key_teammate_absent = compute_teammate_absence_splits(
             player_log, player_name, team, whitelist
         )
+
+        # Override standard trend with absence-aware trend when key teammate is out.
+        # Standard L5-vs-L20 trend crosses regime boundaries (pre/post star injury)
+        # and produces misleading labels. Use within-absence-window trend instead.
+        if key_teammate_absent and key_teammate_absent.get("absence_trend"):
+            absence_trend_override = key_teammate_absent["absence_trend"]
+            for stat, val in absence_trend_override.items():
+                if stat in trend:
+                    trend[stat] = val
 
         stats_out[player_name] = {
             "team": team,
