@@ -122,6 +122,9 @@ def load_player_game_log() -> pd.DataFrame:
 def load_whitelist() -> set:
     """
     Returns set of (lowercase_name, uppercase_team) tuples for active players.
+    Includes tuples for both team_abbr AND team_abbr_alt (when non-empty) so
+    that ESPN short abbreviations (SA, GS, NY, UTAH) match alongside standard
+    NBA abbreviations (SAS, GSW, NYK, UTA).
     Filtering on both name AND team prevents traded players from appearing
     under their old team when game log rows for both teams exist.
     Empty set = no filtering.
@@ -132,11 +135,15 @@ def load_whitelist() -> set:
     try:
         df = pd.read_csv(WHITELIST_CSV, dtype=str)
         active = df[df["active"].astype(str).str.strip() == "1"]
-        pairs = set(zip(
-            active["player_name"].str.strip().str.lower(),
-            active["team_abbr"].str.strip().str.upper()
-        ))
-        print(f"[analyst] Whitelist loaded: {len(pairs)} active player-team pairs")
+        pairs: set = set()
+        for _, row in active.iterrows():
+            name = row["player_name"].strip().lower()
+            abbr = row["team_abbr"].strip().upper()
+            alt  = str(row.get("team_abbr_alt") or "").strip().upper()
+            pairs.add((name, abbr))
+            if alt:
+                pairs.add((name, alt))
+        print(f"[analyst] Whitelist loaded: {len(active)} players ({len(pairs)} name-team pairs incl. alt abbrevs)")
         return pairs
     except Exception as e:
         print(f"[analyst] WARNING: could not load whitelist: {e}")
@@ -165,8 +172,10 @@ def load_injuries(teams_today: list[str]) -> dict:
     try:
         with open(INJURIES_JSON, "r") as f:
             raw = json.load(f)
-        # Strip metadata keys, keep team dicts — filtered to today's teams only
-        teams_upper = {t.upper() for t in teams_today}
+        # injuries_today.json uses standard NBA abbrevs (SAS, GSW, NYK, UTA).
+        # teams_today uses ESPN abbrevs from nba_master.csv (SA, GS, NY, UTAH).
+        # Normalise teams_today through _ABBR_NORM so both sets match.
+        teams_upper = {_norm_team(t) for t in teams_today}
         return {k: v for k, v in raw.items() if isinstance(v, list) and k.upper() in teams_upper}
     except Exception:
         return {}
@@ -2265,23 +2274,29 @@ For each shortlisted player, identify which prop types (PTS/REB/AST/3PM) are wor
 
 Use `priority: "high"` for players with multiple qualifying props, strong recent form, and minimal situational risk. Use `priority: "medium"` for players with one qualifying prop, meaningful risk flags, or borderline signal.
 
-## OMITTED BLOCK — REQUIRED, NOT OPTIONAL
-The `omitted` array must be populated every day. It captures two categories:
+## OMITTED BLOCK — MANDATORY ACCOUNTING OF ALL PLAYERS
 
-1. Hard exclusions — players in the quant data who are not shortlisted at all: no qualifying
-   tier, confirmed OUT or heavy injury restriction, role eliminated by game script.
+Every player who appears in the QUANT STATS section below must be accounted for in your output — either on the shortlist OR in the omitted array. There are no exceptions.
 
-2. Deprioritized candidates — players who ARE shortlisted but carry meaningful situational
-   risk that the Pick agent should weigh carefully. For any shortlisted player where you
-   assigned `priority: "medium"` due to a genuine structural concern (B2B second night,
-   extreme blowout risk as secondary scorer, VOLATILE tag on sole qualifying prop, thin
-   minutes floor near the 24-minute fragility threshold, QUES designation with role
-   uncertainty), add a corresponding entry in `omitted` summarizing that concern.
-   These are not exclusions — they are advisory flags. The player still appears on the
-   shortlist; the omitted entry makes the Scout's concern explicit and auditable.
+The omitted array must contain one entry per player who does NOT appear on the shortlist. This is not optional. An empty omitted array `[]` means you have failed to account for all players and will be treated as a prompt violation.
 
-If every player on today's slate is a clean high-confidence candidate, state that explicitly
-with a single omitted entry: {{"player_name": "none", "reason": "all candidates clean today — no meaningful deprioritization flags", "risk_type": "none"}}. The omitted array must never be empty.
+Omitted entries fall into two categories:
+
+1. Hard exclusions — players in the quant data who are not shortlisted at all: no
+   qualifying tier, confirmed OUT or heavy injury restriction, role eliminated by
+   game script, or simply not worth Pick agent time today given the strength of
+   other candidates.
+
+2. Deprioritized candidates — players who ARE shortlisted but carry meaningful
+   situational risk the Pick agent should weigh carefully. For any shortlisted player
+   where you assigned `priority: "medium"` due to a genuine structural concern (B2B
+   second night, extreme blowout risk as secondary scorer, VOLATILE tag on sole
+   qualifying prop, thin minutes floor near the 24-minute fragility threshold, QUES
+   designation with role uncertainty), add a corresponding entry in `omitted`
+   summarizing that concern. These are not exclusions — they are advisory flags.
+
+The only valid exception: if every player in the quant stats today is shortlisted AND none
+carry meaningful risk flags, write a single sentinel entry: {{"player_name": "none", "reason": "all candidates shortlisted — no exclusions or meaningful deprioritization flags today", "risk_type": "none"}}. This exception applies only when the shortlist contains ALL players from quant stats.
 
 ## TODAY'S GAMES
 {games_block}
@@ -2324,7 +2339,7 @@ Your response MUST begin with a JSON object at character 0. No preamble. No "Her
   ],
   "omitted": [
     {{{{
-      "player_name": "string — exact name from QUANT STATS, or 'none' if all candidates clean",
+      "player_name": "string — exact name from QUANT STATS. One entry per non-shortlisted player. Use 'none' only if ALL quant stats players are on the shortlist.",
       "reason": "1–2 sentences: why excluded or deprioritized — be specific about the structural concern",
       "risk_type": "hard_exclusion | deprioritized | none"
     }}}}
@@ -2413,6 +2428,19 @@ def call_scout(prompt: str, model: str = MODEL) -> tuple[list[dict] | None, list
     omitted = data.get("omitted", [])
     if not isinstance(omitted, list):
         omitted = []
+
+    # Enforce: omitted must never be empty. If the Scout returned [], inject a
+    # sentinel entry so save_scout_omitted() always writes a non-empty file.
+    # This indicates a prompt compliance failure — log it clearly.
+    if len(omitted) == 0:
+        print("[analyst] WARNING: Scout returned empty omitted array — prompt compliance "
+              "failure. Injecting sentinel entry. Check Scout output for omitted block.")
+        omitted = [{
+            "player_name": "none",
+            "reason": "Scout returned empty omitted array — compliance failure; sentinel injected by call_scout()",
+            "risk_type": "none",
+        }]
+
     print(f"[analyst] Scout call complete — {len(shortlist)} players shortlisted, "
           f"{len(omitted)} omitted")
     return shortlist, omitted

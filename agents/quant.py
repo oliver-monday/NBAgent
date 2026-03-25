@@ -130,6 +130,9 @@ def load_todays_games() -> list[dict]:
 def load_whitelist() -> set:
     """
     Returns set of (lowercase_name, uppercase_team) tuples for active players.
+    Includes tuples for both team_abbr AND team_abbr_alt (when non-empty) so
+    that ESPN short abbreviations (SA, GS, NY, UTAH) match alongside standard
+    NBA abbreviations (SAS, GSW, NYK, UTA).
     Filtering on both name AND team prevents traded players from appearing
     under their old team when game log rows for both teams exist.
     """
@@ -138,10 +141,14 @@ def load_whitelist() -> set:
     try:
         df = pd.read_csv(WHITELIST_CSV, dtype=str)
         active = df[df["active"].astype(str).str.strip() == "1"]
-        pairs = set(zip(
-            active["player_name"].str.strip().str.lower(),
-            active["team_abbr"].str.strip().str.upper()
-        ))
+        pairs: set = set()
+        for _, row in active.iterrows():
+            name = row["player_name"].strip().lower()
+            abbr = row["team_abbr"].strip().upper()
+            alt  = str(row.get("team_abbr_alt") or "").strip().upper()
+            pairs.add((name, abbr))
+            if alt:
+                pairs.add((name, alt))
         return pairs
     except Exception:
         return set()

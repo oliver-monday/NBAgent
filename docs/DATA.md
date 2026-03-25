@@ -383,7 +383,8 @@ Rolled-up season stats written fresh after every auditor run by `save_audit_summ
 
 **File:** `playerprops/player_whitelist.csv`
 **Columns:** `team_abbr, team_abbr_alt, player_name, active, position`
-**Filter logic:** `(player_name.lower(), team_abbr.upper())` tuple — filters on both name AND current team to prevent traded players appearing under old teams. `position` column used by Quant for positional DvP computation.  
+**Filter logic:** `(player_name.lower(), team_abbr.upper())` tuple — filters on both name AND current team to prevent traded players appearing under old teams. `position` column used by Quant for positional DvP computation.
+**`team_abbr_alt`** — ESPN abbreviation when it differs from the standard NBA `team_abbr`. Read by `load_whitelist()` in both `quant.py` and `analyst.py` to generate alt tuples alongside the primary tuples. Empty string for most teams. Non-empty for: SAS→SA, NYK→NY, GSW→GS, UTA→UTAH. Without this, player_game_log.csv rows (which use ESPN abbrevs) would never match the whitelist, making those players invisible to quant and analyst.
 **Maintenance:** Toggle `active=0/1` rather than deleting rows — keeps historical picks attributable.
 
 **Philosophy:** Established starters and consistent high-minute players only. Exclude: volatile bench players, injury-prone players on extended absences, players mid-role-change with insufficient data.
