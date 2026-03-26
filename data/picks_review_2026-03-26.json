@@ -1,0 +1,122 @@
+[
+  {
+    "date": "2026-03-26",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -15.5 creates genuine Q4 rest risk for Banchero as a star on the favored side \u2014 even after the blowout penalty was applied and the tier was stepped down to T10, the structural risk of early garbage time remains. A 28.9-minute floor means a single blowout-compressed game sits right at the edge of delivering the counting stat."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "REB is the system's weakest prop type this session, and this pick combines blowout game-script risk (spread -15.5) with a post-miss bounce-back rate of only 71% \u2014 below the system's 78% REB confidence floor context. A blowout that compresses Banchero's minutes in Q4 could push his rebound total below 4 even with a strong overall average."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag on a T4 AST pick in a -15.5 blowout game is a compounding structural failure: assists dry up fastest in blowout game scripts as starters get pulled early, and the post-miss bounce-back rate of only 53% signals this stat is genuinely slump-persistent. The blowout penalty plus VOLATILE -5% already compressed confidence to 74%, but the floor here is contingent on Banchero playing meaningful minutes in all four quarters \u2014 exactly what a 15.5-point spread threatens."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The minutes floor of 21.8 against a tough NY defense is structurally fragile for a T10 PTS pick \u2014 any foul trouble or coach's load management decision in a close game (spread -1.5) lands Ball near or below threshold. A single low-minutes quarter pattern is well within normal variance for a player averaging only 26.9 minutes."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NY",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-26",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 3,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a 3PM T3 pick that cleared the ceiling rule at exactly the minimum threshold (7/10) leaves zero margin \u2014 one cold shooting night from a player whose distribution is confirmed wide drops this below 3. The iron_floor designation provides some protection, but 3PM variance is the highest of any prop type and the margin between 3 and a miss is a single make."
+    ],
+    "source": "auto"
+  }
+]

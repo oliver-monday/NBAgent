@@ -3073,5 +3073,55 @@
         "legs_total": 3
       }
     ]
+  },
+  {
+    "date": "2026-03-26",
+    "parlays": [
+      {
+        "label": "Hornets Assist Anchor",
+        "type": "same_game_stack",
+        "legs": [
+          {
+            "player_name": "LaMelo Ball",
+            "team": "CHA",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Kon Knueppel",
+            "team": "CHA",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "target"
+          },
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "NY",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+105",
+        "confidence_product": 0.4867,
+        "correlation": "positive",
+        "rationale": "LaMelo feeds Knueppel and Miller in CHA's mid-defense matchup; all three roles independently reinforced by feeder-target structure.",
+        "date": "2026-03-26",
+        "id": "parlay_2026-03-26_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
