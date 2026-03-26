@@ -453,8 +453,10 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
                     if not name or len(name) < 2:
                         continue
 
-                    # Extract minutes + injury status from parent element text
-                    parent = el.parent
+                    # Extract minutes + injury status from the enclosing <li>.
+                    # The minutes integer is a sibling of the <a> tag, not inside
+                    # its immediate parent wrapper — find_parent("li") is required.
+                    parent = el.find_parent("li") or el.parent
                     if not parent:
                         continue
                     full_text = parent.get_text(" ", strip=True)

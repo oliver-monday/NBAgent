@@ -1921,6 +1921,27 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   Primary scorers (team PPG leaders, first options) are exempt from this skip because their
   usage is more protected even in blowout scenarios.
 
+- ROAD UNDERDOG NEAR-THRESHOLD PTS PENALTY: When ALL of the following are true, apply
+  a -5% precautionary confidence reduction to the PTS pick before finalizing:
+    1. The player's team is the away team (home_away = "A")
+    2. The player's team is the underdog: today_spread > 0 (positive spread = underdog)
+       AND spread_abs is between 4 and 7 inclusive
+    3. The PTS pick has a near-threshold cushion: raw_avgs PTS − pick_value ≤ 5
+       (the player's season average is within 5 points of the tier threshold)
+  Rationale: moderate road underdogs face meaningful blowout risk not captured by the
+  pre-game spread. When BLOWOUT_RISK=False (spread < 8), no existing rule penalizes
+  the underdog side — but a 4–7 point road underdog can lose by 20+, and losing-side
+  players face Q4 minute compression that clips near-threshold scorers by exactly 1–2
+  points. Audit evidence: Barnes PTS T10 (raw_avg ~14, cushion=4) missed at 9 when
+  TOR lost by 25 as a 4.5-point road underdog. The -5% reduction is precautionary,
+  not disqualifying — the pick remains valid if confidence stays above the 70% PTS
+  floor after the deduction. This penalty stacks with other applicable adjustments.
+  This rule applies to PTS props only. It does NOT apply to REB, AST, or 3PM.
+  It does NOT apply to home underdogs or road underdogs with spread_abs < 4 (near-even)
+  or spread_abs > 7 (already handled by BLOWOUT_RISK=True logic at spread_abs ≥ 8).
+  It does NOT apply when the player has [iron_floor] on their PTS stat — iron_floor
+  confirms the player's scoring floor holds regardless of game script.
+
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
@@ -1949,24 +1970,23 @@ KEY RULES — VOLATILITY:
 - VOLATILE PTS skip — weak qualifying combination: If ALL of the following are true, SKIP
   the PTS pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
-    2. The overall hit rate at the selected tier is 7/10 (70%) OR 8/10 (80%)
-    3. The pick tier is T15 or higher
-  Rationale: VOLATILE players at T15+ with 7/10 or 8/10 hit rates represent the system's
+    2. The overall hit rate at the selected tier is exactly 7/10 (70%)
+    3. The pick tier is T20 or higher
+  Rationale: VOLATILE players at T20+ with a 7/10 (70%) hit rate represent the system's
   weakest qualifying combinations. After the mandatory -5% VOLATILE deduction, 7/10 lands
-  at the 70% floor with no margin. 8/10 lands at 75% — low enough that any cold game or
-  role compression produces a significant undershoot, not a near-miss. Audit evidence:
-  Brandon Ingram missed PTS O15 three times in 8 days — once at 7/10 and twice at 8/10 —
-  all classified as variance or model_gap, all at T15. The VOLATILE tag is the system's
-  signal that this player's counting stats are distribution-wide; pairing it with T15+
-  at these hit rates is structurally marginal regardless of DvP or trend context. The
-  system generates enough picks that these combinations should be skipped in favor of
-  higher-confidence selections. This rule applies to PTS props only. Do NOT apply this
-  skip to AST picks below T6 — the VOLATILE AST skip rule governs those cases and its
-  threshold is T6, not T4. VOLATILE + 7/10 or 8/10 at T15+ for REB is handled by the
+  at the 65% floor — below the PTS minimum and never a valid pick. 8/10 at any tier is
+  NOT a weak combination: 80% - 5% = 75%, a legitimate floor pick. Audit evidence:
+  Brandon Ingram missed PTS O15 at 7/10 three times in 8 days. Counter-evidence:
+  KD (T20, 8/10, actual 30) and Sengun (T15, 8/10, actual 30) were false skips — both
+  scored 10–15 points above their tier threshold. The 8/10 trigger was wrong; only 7/10
+  at T20+ warrants a hard skip. T15–T19 VOLATILE picks with 8/10 hit rates are evaluated
+  normally under standard VOLATILE treatment (-5% confidence deduction). This rule applies
+  to PTS props only. Do NOT apply this skip to AST picks below T6 — the VOLATILE AST
+  skip rule governs those cases. VOLATILE + 7/10 at T15–T19 for REB is handled by the
   existing 78% REB minimum floor rule.
   Exceptions — this skip does NOT apply when any of the following are true:
     (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
-        floor reliability above the 8/10 baseline.
+        floor reliability above the 7/10 baseline.
     (b) The stat is AST AND the player's raw_avgs AST is ≥ 6.0 AND [iron_floor] is true
         on their AST stat — elite passers with a confirmed structural floor are not
         captured by the weak-combo rationale. Apply standard VOLATILE treatment instead
@@ -2878,6 +2898,27 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   Primary scorers (team PPG leaders, first options) are exempt from this skip at all spread
   levels because their usage is more protected even in blowout scenarios.
 
+- ROAD UNDERDOG NEAR-THRESHOLD PTS PENALTY: When ALL of the following are true, apply
+  a -5% precautionary confidence reduction to the PTS pick before finalizing:
+    1. The player's team is the away team (home_away = "A")
+    2. The player's team is the underdog: today_spread > 0 (positive spread = underdog)
+       AND spread_abs is between 4 and 7 inclusive
+    3. The PTS pick has a near-threshold cushion: raw_avgs PTS − pick_value ≤ 5
+       (the player's season average is within 5 points of the tier threshold)
+  Rationale: moderate road underdogs face meaningful blowout risk not captured by the
+  pre-game spread. When BLOWOUT_RISK=False (spread < 8), no existing rule penalizes
+  the underdog side — but a 4–7 point road underdog can lose by 20+, and losing-side
+  players face Q4 minute compression that clips near-threshold scorers by exactly 1–2
+  points. Audit evidence: Barnes PTS T10 (raw_avg ~14, cushion=4) missed at 9 when
+  TOR lost by 25 as a 4.5-point road underdog. The -5% reduction is precautionary,
+  not disqualifying — the pick remains valid if confidence stays above the 70% PTS
+  floor after the deduction. This penalty stacks with other applicable adjustments.
+  This rule applies to PTS props only. It does NOT apply to REB, AST, or 3PM.
+  It does NOT apply to home underdogs or road underdogs with spread_abs < 4 (near-even)
+  or spread_abs > 7 (already handled by BLOWOUT_RISK=True logic at spread_abs ≥ 8).
+  It does NOT apply when the player has [iron_floor] on their PTS stat — iron_floor
+  confirms the player's scoring floor holds regardless of game script.
+
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
@@ -2906,24 +2947,23 @@ KEY RULES — VOLATILITY:
 - VOLATILE PTS skip — weak qualifying combination: If ALL of the following are true, SKIP
   the PTS pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
-    2. The overall hit rate at the selected tier is 7/10 (70%) OR 8/10 (80%)
-    3. The pick tier is T15 or higher
-  Rationale: VOLATILE players at T15+ with 7/10 or 8/10 hit rates represent the system's
+    2. The overall hit rate at the selected tier is exactly 7/10 (70%)
+    3. The pick tier is T20 or higher
+  Rationale: VOLATILE players at T20+ with a 7/10 (70%) hit rate represent the system's
   weakest qualifying combinations. After the mandatory -5% VOLATILE deduction, 7/10 lands
-  at the 70% floor with no margin. 8/10 lands at 75% — low enough that any cold game or
-  role compression produces a significant undershoot, not a near-miss. Audit evidence:
-  Brandon Ingram missed PTS O15 three times in 8 days — once at 7/10 and twice at 8/10 —
-  all classified as variance or model_gap, all at T15. The VOLATILE tag is the system's
-  signal that this player's counting stats are distribution-wide; pairing it with T15+
-  at these hit rates is structurally marginal regardless of DvP or trend context. The
-  system generates enough picks that these combinations should be skipped in favor of
-  higher-confidence selections. This rule applies to PTS props only. Do NOT apply this
-  skip to AST picks below T6 — the VOLATILE AST skip rule governs those cases and its
-  threshold is T6, not T4. VOLATILE + 7/10 or 8/10 at T15+ for REB is handled by the
+  at the 65% floor — below the PTS minimum and never a valid pick. 8/10 at any tier is
+  NOT a weak combination: 80% - 5% = 75%, a legitimate floor pick. Audit evidence:
+  Brandon Ingram missed PTS O15 at 7/10 three times in 8 days. Counter-evidence:
+  KD (T20, 8/10, actual 30) and Sengun (T15, 8/10, actual 30) were false skips — both
+  scored 10–15 points above their tier threshold. The 8/10 trigger was wrong; only 7/10
+  at T20+ warrants a hard skip. T15–T19 VOLATILE picks with 8/10 hit rates are evaluated
+  normally under standard VOLATILE treatment (-5% confidence deduction). This rule applies
+  to PTS props only. Do NOT apply this skip to AST picks below T6 — the VOLATILE AST
+  skip rule governs those cases. VOLATILE + 7/10 at T15–T19 for REB is handled by the
   existing 78% REB minimum floor rule.
   Exceptions — this skip does NOT apply when any of the following are true:
     (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
-        floor reliability above the 8/10 baseline.
+        floor reliability above the 7/10 baseline.
     (b) The stat is AST AND the player's raw_avgs AST is ≥ 6.0 AND [iron_floor] is true
         on their AST stat — elite passers with a confirmed structural floor are not
         captured by the weak-combo rationale. Apply standard VOLATILE treatment instead
