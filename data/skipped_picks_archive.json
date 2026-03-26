@@ -252,5 +252,131 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "opponent": "MIA",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "Auditor feedback: guard REB T4 requires raw_avg_reb \u22655.0. Harden is a guard-role facilitator. Additionally, prior session Harden REB T4 missed in a close game. 83% overall at T4 \u2192 B2B <5g step-down from T4 would go to below minimum REB tier. Also, Auditor recommendation to apply minimum raw_avg_reb \u22655.0 gate for guards at T4 \u2014 Harden's REB avg is guard-level. Merit below 78% floor after applying B2B <5g and guard REB concern.",
+      "hit_rate_at_tier": "8/10",
+      "confidence_after_penalties": 72
+    },
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "opponent": "IND",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "reason": "REB T6 VOLATILE + 8/10 hit rate: VOLATILE PTS skip rule applies to PTS only, but REB 78% floor applies. VOLATILE -5%: 80% \u2192 75% \u2014 below 78% REB minimum floor.",
+      "hit_rate_at_tier": "8/10",
+      "volatile_tag": true,
+      "confidence_after_volatile_penalty": 75,
+      "reb_minimum_floor": 78
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "opponent": "IND",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "reason": "trend=down mandatory step from T1 (minimum valid tier) \u2192 no lower tier exists \u2192 skip per rules. Blowout relaxation prevents hard skip but step-down rule still forces tier below minimum.",
+      "trend": "down",
+      "spread_abs": 10.5,
+      "blowout_risk": true,
+      "step_would_go_below_minimum_tier": true
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "opponent": "MIN",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "hit_rate_at_tier": "8/10",
+      "volatile_tag": true,
+      "tier": 20,
+      "iron_floor": false,
+      "trend": "stable",
+      "reason": "VOLATILE + 8/10 + T20 (\u2265T15) fires volatile_weak_combo hard skip; no iron_floor+trend=up exception."
+    },
+    "actual_value": 30.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 30.0 \u2265 tier 20"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "opponent": "MIN",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "hit_rate_at_tier": "8/10",
+      "volatile_tag": true,
+      "tier": 15,
+      "iron_floor": false,
+      "trend": "stable",
+      "reason": "VOLATILE + 8/10 + T15 fires volatile_weak_combo hard skip; no iron_floor+trend=up exception."
+    },
+    "actual_value": 30.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 30.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-03-25",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "BOS",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_tier_step",
+    "rule_context": {
+      "reason": "FG_MARGIN_THIN:9% (<10% safety floor) forces mandatory step T25\u2192T20. Additionally T25 ceiling rule requires \u226580% (8/10) recent hit rate; 75% (7.5/10) fails the \u226580% gate. Both rules fire independently forcing step to T20.",
+      "fg_margin": "9%",
+      "tier_stepped_from": 25,
+      "tier_stepped_to": 20,
+      "hit_rate_at_t25": "8/10"
+    },
+    "actual_value": 33.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 33.0 \u2265 tier 25"
   }
 ]

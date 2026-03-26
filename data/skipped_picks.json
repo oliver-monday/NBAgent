@@ -13,10 +13,10 @@
       "hit_rate_at_tier": "8/10",
       "confidence_after_penalties": 72
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-25",
@@ -34,10 +34,10 @@
       "confidence_after_volatile_penalty": 75,
       "reb_minimum_floor": 78
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-25",
@@ -55,10 +55,10 @@
       "blowout_risk": true,
       "step_would_go_below_minimum_tier": true
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-25",
@@ -77,10 +77,10 @@
       "trend": "stable",
       "reason": "VOLATILE + 8/10 + T20 (\u2265T15) fires volatile_weak_combo hard skip; no iron_floor+trend=up exception."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 30.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 30.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-25",
@@ -99,10 +99,10 @@
       "trend": "stable",
       "reason": "VOLATILE + 8/10 + T15 fires volatile_weak_combo hard skip; no iron_floor+trend=up exception."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 30.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 30.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-25",
@@ -120,9 +120,9 @@
       "tier_stepped_to": 20,
       "hit_rate_at_t25": "8/10"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 33.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 33.0 \u2265 tier 25"
   }
 ]

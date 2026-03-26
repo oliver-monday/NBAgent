@@ -15364,11 +15364,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T15 vs soft MIA defense; B2B <5g penalty applied, competitive spread ensures full minutes.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B with b2b_hit_rate listed as insufficient (<5g), meaning there is no reliable B2B baseline \u2014 the 89% overall rate may not translate today. Harden's min_floor of 29 vs avg 35 represents a meaningful 6-minute gap, and a load-management-lite B2B rest scenario could easily push minutes toward that floor, threatening a T15 prop that requires sustained volume."
+    ]
   },
   {
     "date": "2026-03-25",
@@ -15388,11 +15392,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Primary playmaker 9/10 at T6; stepped to T4 per B2B <5g rule; mid defense, competitive spread.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15412,11 +15418,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T2, stepped to T1 per B2B <5g rule; trend=up, competitive spread supports volume.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15436,11 +15444,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Elite scorer 9/10 at T25 vs worst NBA defense; blowout exemption applies, spread cap \u2192 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 43.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Blowout risk at -10.5 spread is real: even after the blowout penalty was applied, Doncic as the primary star faces genuine Q4 rest risk when LAL leads big, and the FG_MARGIN_THIN flag at exactly the 10% boundary means one cold-shooting night shaves him below 25. The structural floor is contingent on minutes/game-script cooperation, not guaranteed."
+    ]
   },
   {
     "date": "2026-03-25",
@@ -15460,11 +15472,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T4 with 100% blowout hit rate; elite playmaker vs league-worst IND defense, spread cap 80%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15484,11 +15498,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Averaging 3.7 3PM without Reaves; trend=up vs softest defense; VOLATILE -5% applied, 75% final.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15508,11 +15524,13 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "10/10 at T10 with consistent tag; FG_HOT, mid LAC defense, no blowout risk, road underdog.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15532,11 +15550,13 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "9/10 at T4 REB with trend=up; T4 exact-match exemption, no blowout risk, Barnes leads TOR rebounding.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15556,11 +15576,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 at T4 AST with trend=up; VOLATILE -5% applied, exactly at 70% floor, trend supports holding.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15580,11 +15602,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T4 REB with trend=up; KD is frontcourt player averaging 6+ REB, T4 exemption applies.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15604,11 +15628,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "10/10 at T2 [consistent]; T2 floor survives MIN suppressor; trend=down and suppressor net to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15628,11 +15654,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 at T2, trend=up; VOLATILE -5% applied; competitive MIN game supports full volume.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15652,11 +15680,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T15 vs soft IND; blowout penalty -10% applied; min_floor=32.4 protects minutes floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 23.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15676,11 +15706,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 overall but 58% blowout hit rate; blowout penalty pulls to exactly 70% floor at T4.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15700,11 +15732,13 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "10/10 at T4 [iron_floor][consistent]; 92% blowout hit rate; elite playmaker vs soft IND; spread cap 80%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15724,11 +15758,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 at T6 for center averaging 9 REB in recent sample; competitive game ensures full minutes.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15748,11 +15784,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "10/10 [consistent] at T2; MIN suppressor irrelevant at 2-assist threshold; trend=up, competitive game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15772,11 +15810,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN forces T25\u2192T20; iron_floor context and elite scorer status support T20 floor vs BOS.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 33.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15796,11 +15836,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T4 with vs_tough=93%; SGA's AST rate actually improves vs tough defenses, competitive game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15820,11 +15862,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 at T1 with vs_tough=95%; VOLATILE -5% applied; competitive BOS game supports full volume.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "SGA's raw_avg_3PM of 1.2 is razor-thin above the T1 threshold, and the VOLATILE tag means his three-point output is genuinely lumpy \u2014 the 80% overall hit rate at T1 is respectable but a single cold-shooting night (typical_miss = 1.0 below threshold means he hits zero threes) produces a miss. Against a tough BOS defense that suppresses volume, this is the most fragile prop on SGA's card."
+    ]
   },
   {
     "date": "2026-03-25",
@@ -15844,11 +15890,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Edwards OUT; Without-Edwards T15=93% (n=14); well-rested home game vs mid HOU defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": null,
+    "trim_reasons": []
   },
   {
     "date": "2026-03-25",
@@ -15868,10 +15916,12 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Without Edwards T2=100% (n=14); HOU suppressor minimal at 2-assist threshold; home, rested.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-25T22:17:23.926875-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
