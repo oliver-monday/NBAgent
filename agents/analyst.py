@@ -210,6 +210,35 @@ def load_out_players() -> set[tuple[str, str]]:
     return excluded
 
 
+def load_players_out_today() -> set[str]:
+    """
+    Return full player names confirmed OUT or OFS in today's injury report.
+    Used to gate the 'Without [X]' context line in build_quant_context() —
+    the line should only render when the key teammate is actually absent today.
+    QUES/DOUBTFUL/PROB/GTD excluded — those players may still play.
+    Returns empty set if file missing or unreadable.
+    """
+    out_statuses = {"OUT", "OFS"}
+    out_names: set[str] = set()
+    if not INJURIES_JSON.exists():
+        return out_names
+    try:
+        with open(INJURIES_JSON, "r") as f:
+            raw = json.load(f)
+        for entries in raw.values():
+            if not isinstance(entries, list):
+                continue
+            for entry in entries:
+                status = (entry.get("status") or "").upper().strip()
+                if status in out_statuses:
+                    name = (entry.get("player_name") or entry.get("name") or "").strip()
+                    if name:
+                        out_names.add(name)
+    except Exception:
+        pass
+    return out_names
+
+
 def load_audit_feedback() -> list[dict]:
     if not AUDIT_LOG_JSON.exists():
         return []
@@ -944,7 +973,7 @@ def build_player_leaderboard(game_log: pd.DataFrame, whitelist: set) -> str:
         return ""
 
 
-def build_quant_context(player_stats: dict, lineup_context: dict | None = None) -> str:
+def build_quant_context(player_stats: dict, lineup_context: dict | None = None, players_out_today: set[str] | None = None) -> str:
     """
     Build a compact quant stats block for the prompt.
     Shows pre-computed best tiers and matchup-specific hit rates (vs_soft, vs_tough)
@@ -1045,10 +1074,11 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None) 
         wt = s.get("whitelisted_teammates") or []
         teammates_line = f"  Teammates (active/whitelisted): {', '.join(wt)}" if wt else ""
 
-        # Key teammate absence split — shown when n >= 3
+        # Key teammate absence split — shown only when teammate is confirmed OUT/OFS today
+        _out_set = players_out_today or set()
         kta = s.get("key_teammate_absent")
         kta_line = ""
-        if kta and kta.get("n_games", 0) >= 3:
+        if kta and kta.get("n_games", 0) >= 3 and kta.get("teammate_name", "") in _out_set:
             tm_name   = kta["teammate_name"]
             tm_pts    = kta["teammate_avg_pts"]
             n_abs     = kta["n_games"]
@@ -4236,7 +4266,9 @@ def main():
         player_stats = filtered_stats
         print(f"[analyst] After injury pre-filter: {len(player_stats)} players remaining")
 
-    quant_context = build_quant_context(player_stats, lineup_context=lineup_context)
+    _players_out_names = load_players_out_today()
+
+    quant_context = build_quant_context(player_stats, lineup_context=lineup_context, players_out_today=_players_out_names)
 
     player_profiles = load_player_profiles(player_stats)
     if player_profiles:
@@ -4314,7 +4346,7 @@ def main():
         save_skips(skips)
         return
 
-    filtered_quant_context = build_quant_context(filtered_stats, lineup_context=lineup_context)
+    filtered_quant_context = build_quant_context(filtered_stats, lineup_context=lineup_context, players_out_today=_players_out_names)
     print(f"[analyst] Pick quant context built for {len(filtered_stats)} shortlisted players")
 
     print(f"[analyst] Pick call using {MODEL} (shortlist: {len(filtered_stats)} players)")

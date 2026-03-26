@@ -70,7 +70,7 @@ jobs:
           git rebase --autostash origin/main
 
           CHANGED=0
-          for f in "data/picks.json" "data/parlays.json" "data/player_stats.json" "data/lineups_today.json" "data/skipped_picks.json" "data/standings_today.json" "data/opportunity_flags.json"; do
+          for f in "data/picks.json" "data/parlays.json" "data/player_stats.json" "data/lineups_today.json" "data/skipped_picks.json" "data/standings_today.json" "data/opportunity_flags.json" "data/pre_game_news.json" "data/team_defense_narratives.json"; do
             if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
               git add "$f"
               CHANGED=1
