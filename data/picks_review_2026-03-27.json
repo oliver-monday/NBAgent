@@ -1,0 +1,150 @@
+[
+  {
+    "date": "2026-03-27",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -19.5 is an extreme blowout scenario; even with the penalty applied, SGA is a primary scorer who may see reduced fourth-quarter minutes entirely, compressing his assist opportunities. AST counting stats are more game-script dependent than PTS, and a dominant first-half performance by OKC could push SGA to the bench before he accumulates the full assist total."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "REB",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with an -18.5 blowout spread creates meaningful floor fragility: Jokic's min_floor of 29.5 is already discounted from his 36.1 average, and a blowout game script compresses minutes for stars \u2014 a game decided by Q3 could see Jokic sit Q4 entirely, leaving him short of 10 rebounds. The VOLATILE classification means his distribution is wide enough that even a full-minutes game carries miss risk at T10+."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "PTS",
+    "pick_value": 25,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus a min_floor of only 25.9 on a PTS T25 pick is structurally fragile \u2014 Kawhi's minutes are notoriously managed, and a single load-management rotation or early foul trouble puts the floor in jeopardy. The FG_MARGIN_THIN flag already forced a step-down to T20 per the reasoning, meaning this is sitting right at the safety threshold with a volatile scorer whose usage can fluctuate sharply."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Historical audit explicitly flags Harden REB T4 as a documented miss category \u2014 guard REB props at T4 carry intrinsic variance beyond the quoted hit rate, and Harden is a secondary rebounder by role whose counting stat is sensitive to game flow and opponent front-court activity. The 8/10 baseline is the minimum qualifying rate, leaving no cushion."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "This exact pick \u2014 Barnes PTS T10 \u2014 is a documented audit miss from last session (missed at actual_value=9 in a blowout) and the same structural setup recurs: BLOWOUT_RISK present, Barnes is on the favored side this time, but the T10 threshold has essentially zero margin given his 9/10 rate sits right at the floor. A single suppressed-minutes quarter on any game-script deviation produces a miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The post-miss REB bounce-back rate of 65% is materially below the 90% baseline hit rate \u2014 if Barnes missed rebounds last game, his expected hit rate today is significantly compressed. Combined with BLOWOUT_RISK and the audit lesson that REB is the weakest prop type this session, this carry genuine floor fragility."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -13.5 is a blowout scenario, and KD's post_miss_hr is only 75% \u2014 if he missed assists last game, the compounded risk of blowout-driven Q4 rest suppressing his assist total is meaningful. KD's AST average of 4.7 provides cushion over T2, but in a game decided early, he could exit before accumulating even 3 assists."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag plus a min_floor of only 21.6 on a PTS pick \u2014 in a -13.5 blowout game where HOU is heavily favored, Sengun as a frontcourt reserve scorer is the first player pulled when the game is decided. A single blowout outcome drops him to 20\u201322 minutes, which the 21.6 floor reflects as essentially the minimum viable scenario, leaving zero margin for variance. VOLATILE distribution at a compressed minutes floor in a blowout game is the clearest structural failure condition."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-27",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Same blowout + minutes fragility applies: min_floor of 21.6 means Sengun's assist accumulation is entirely contingent on playing meaningful minutes, and a -13.5 blowout script routinely reduces his floor below the point where 3 assists (clearing T2) is achievable. The 10/10 hit rate is impressive but was built in games where he played full minutes."
+    ],
+    "source": "auto"
+  }
+]

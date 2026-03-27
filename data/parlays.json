@@ -3146,5 +3146,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-03-27",
+    "parlays": [
+      {
+        "label": "Harden-Barnes Volume Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "James Harden",
+            "team": "CLE",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "NO",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "IND",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+117",
+        "confidence_product": 0.4598,
+        "correlation": "positive",
+        "rationale": "Volume-game tag on Harden vs soft MIA anchors two conservative floors across three independent games.",
+        "date": "2026-03-27",
+        "id": "parlay_2026-03-27_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
