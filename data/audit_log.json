@@ -2923,5 +2923,96 @@
         "Multi-game parlay structures with fully independent legs across three separate games (no same-game correlation) provided clean diversification: when the KD REB miss occurred in the Wednesday Floor Lock, it was a single-game event that did not cascade to the other legs. Independent multi-game construction is the correct structural choice for 3-leg parlays at this confidence level (~49-50% implied joint probability), as it prevents a shared game-script event (blowout, pace variance) from collapsing multiple legs simultaneously."
       ]
     }
+  },
+  {
+    "date": "2026-03-26",
+    "total_picks": 11,
+    "voided_picks": 0,
+    "hits": 11,
+    "misses": 0,
+    "no_data": 0,
+    "hit_rate_pct": 100.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 7,
+        "hits": 7,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Blowout-capped picks still delivered: all three Banchero props (PTS T10, REB T4, AST T4) were capped at 74% due to the -15.5 spread vs. depleted SAC, yet Banchero posted 30 PTS / 9 REB / 7 AST in 38 minutes \u2014 reinforcing that the blowout cap is a calibration tool, not a kill switch, and that elite primary scorers on favored teams against soft defenses will frequently clear even modest thresholds comfortably.",
+      "Iron-floor AST props at T2 were the most reliable structural play of the session: Desmond Bane AST T2 (90% hit rate, HIT 6), Brandon Miller AST T2 (100% hit rate, HIT 3), and LaMelo Ball AST T4 (95% hit rate, HIT 6) all cleared with room to spare. Low-threshold AST picks on primary ball-handlers and active secondary playmakers in competitive games remain a high-floor selection strategy.",
+      "The depleted-opponent stack logic proved correct: three CHA players (Ball PTS, Ball AST, Knueppel AST, Miller PTS, Miller AST, Miller 3PM) were selected against NYK missing key playmakers in a competitive H game (CHA won by 11). All six CHA picks hit, validating the approach of concentrating picks on the favored-by-usage side when opponent personnel is depleted.",
+      "Kon Knueppel AST T2 at 78% (9/10 hit rate, trend up) hit 8 assists \u2014 a 6-unit clearance over the T2 threshold. The upward trend tag on a secondary playmaker in a competitive home game with reduced opponent creation pressure is a reliable signal worth continuing to target.",
+      "Brandon Miller's 3PM iron-floor VOLATILE T2 pick cleared at 75% confidence (HIT 4), demonstrating that iron-floor status on a VOLATILE 3PM prop with a stable trend can still produce in a competitive game context \u2014 the iron floor provided the structural floor even with the VOLATILE penalty applied."
+    ],
+    "lessons": [
+      "No misses this session \u2014 no analytical failures to log. However, three picks were human-flagged as trims: Banchero PTS/REB (blowout + minutes compression risk on a -15.5 spread), Banchero AST (VOLATILE tag compounding blowout script risk), LaMelo Ball PTS (minutes floor 21.8 below the 24-minute PTS safety threshold), and Miller 3PM (VOLATILE + exact minimum 7/10 threshold clearance). All four hit comfortably \u2014 Banchero played 38 minutes in what was ultimately a 4-point game, Ball scored 22 in 36 minutes, and Miller hit 4 threes. The SAC vs ORL final was 121-117 (CLOSE, not a blowout), which invalidated the -15.5 pre-game spread blowout concern retroactively. This is a calibration reminder: spread-based blowout penalties are pre-game risk adjustments, not deterministic outcomes \u2014 a tight final score on a large spread game is within normal variance and the underlying tier quality still drives results.",
+      "The proj_min=0 flag on Karl-Anthony Towns triggered a precautionary -5% confidence reduction in the tier walk, landing at 74%. Towns played 22 minutes and scored 13 points (HIT). The proj_min=0 field appears to be a data artifact or placeholder rather than a true projection \u2014 future runs should document this field's behavior more precisely and avoid applying ad-hoc confidence penalties when the player is NOT_LISTED on the injury report and full quant data is present. A formal rule clarifying when proj_min=0 should trigger a skip vs. a penalty vs. no action would prevent inconsistent handling."
+    ],
+    "recommendations": [
+      "Formalize the proj_min=0 handling rule: when a player shows proj_min=0 in their quant header but is NOT_LISTED on the injury report and full hit-rate/tier data is populated, do NOT apply an ad-hoc confidence penalty. Instead, flag the field as a data artifact and proceed on injury report status alone. If proj_min=0 genuinely indicates non-participation, it should surface as an OUT in the injury report \u2014 that is the authoritative pipeline source. This session's KAT pick showed the penalty was unnecessary.",
+      "Maintain the AST iron-floor T2 strategy as a core selection pattern: Bane (9/10, T2), Miller (10/10, T2), and Ball (9/10, T4) all hit with substantial clearance. Low-threshold AST picks on primary and secondary playmakers in competitive games with soft-to-mid opponent AST defense are among the system's most reliable prop types. Continue prioritizing these when qualifying, especially in same-game stacks.",
+      "Revisit the Banchero blowout AST pick classification: the VOLATILE tag on a T4 AST prop in a -15.5 spread game correctly triggered a human skip recommendation, but the actual game finished as a 4-point CLOSE game (ORL 121, SAC 117). The pre-game spread did not materialize into a blowout. Going forward, when the VOLATILE tag and blowout cap combine to compress confidence below 72%, consider whether the pick should be skipped entirely at selection time rather than carried at reduced confidence \u2014 the risk-adjusted value of a 70% VOLATILE AST in a projected blowout is marginal, and the slot is better used on a cleaner prop.",
+      "Monitor the ORL vs. SAC game-script calibration: the pre-game spread was -15.5 favoring ORL, yet the final margin was only 4 points (SAC covered by a wide margin). This is a notable spread miss \u2014 the system applied blowout caps to three Banchero props based on a spread that did not reflect the actual game. Over time, tracking pre-game spread vs. actual margin calibration will help quantify how often large spreads vs. depleted opponents (SAC is 19-55, eliminated) produce genuine blowouts vs. competitive games, which should inform the blowout cap threshold for opponent-quality-adjusted spreads.",
+      "For the next CHA slate, continue targeting Brandon Miller AST T2 as a structural anchor: 10/10 iron-floor consistent tag, 3 assists again tonight (HIT), upward trend. This prop has the highest structural confidence on the CHA roster and should be a default consideration whenever Miller is active in a home game with mid-or-softer AST defense opposition."
+    ],
+    "miss_details": [],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 1/1 sweep \u2014 the Hornets Assist Anchor same-game stack hit all three legs with LaMelo (6 AST), Knueppel (8 AST), and Miller (21 PTS) clearing their thresholds comfortably in CHA's 11-point competitive win over NYK.",
+      "parlay_lessons": [
+        "The structural risk on this parlay was concentration: all three legs came from the same team (CHA) in the same game, meaning a single game-script disruption \u2014 foul trouble for Ball, a blowout loss collapsing starters' minutes, or a NYK defensive adjustment suppressing creation \u2014 would have voided the correlation benefit and killed all three legs simultaneously. Same-game stacks amplify both upside and downside through shared game-script exposure; the Parlay Agent should always note the single-point-of-failure risk when all legs share one team, and consider whether a mixed-game hedge leg could reduce catastrophic miss risk on future 3-leg same-team stacks."
+      ],
+      "parlay_reinforcements": [
+        "The feeder-target-scorer correlation structure worked precisely as designed: LaMelo Ball (feeder, 6 AST) distributed to Knueppel (target, 8 AST) and Miller (scorer, 21 PTS) within the same offensive system, and the depleted NYK defense (missing key playmakers) created the open creation lanes the stack required. Same-game stacks built on a primary ball-handler as feeder with secondary playmakers as targets are the system's most validated parlay structure \u2014 this result adds another data point confirming the logic.",
+        "Pairing an iron-floor AST leg (Miller AST T2, 100% hit rate) with a high-confidence feeder leg (Ball AST T4, 95% hit rate) as the parlay foundation and using the scorer leg (Miller PTS T15, 85% hit rate) as the ceiling-chasing third leg is a structurally sound 3-leg construction: the two AST legs provide a near-certain correlation floor while the PTS leg adds implied odds value. This leg-ordering approach \u2014 anchor on iron-floor props, chase with the scoring prop \u2014 should be the default same-game stack template for CHA games going forward."
+      ]
+    }
   }
 ]

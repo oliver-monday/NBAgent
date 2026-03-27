@@ -13,10 +13,10 @@
       "favored_team": "ORL",
       "player_team": "ORL"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 30.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 30.0 \u2265 tier 25"
   },
   {
     "date": "2026-03-26",
@@ -34,10 +34,10 @@
       "prop_minimum_floor": 75,
       "note": "VOLATILE -5% reduces 3PM confidence to 70%, below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-26",
@@ -55,10 +55,10 @@
       "primary_scorer": "Paolo Banchero",
       "note": "FG_COLD:-17% forced step from T15 to T10; at T10 blowout_secondary_scorer fires at spread_abs=15.5"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 23.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 23.0 \u2265 tier 10"
   },
   {
     "date": "2026-03-26",
@@ -74,10 +74,10 @@
       "spread_abs": 15.5,
       "note": "trend=down step-down from T1 produces no valid tier; skip fires"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-26",
@@ -92,10 +92,10 @@
       "pick_value": 10,
       "note": "25th-pct gate unverifiable from available data; confidence after proj_min=0 concern falls below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 10"
   },
   {
     "date": "2026-03-26",
@@ -111,10 +111,10 @@
       "spread_abs": 1.5,
       "note": "trend=down mandatory step-down from T1 produces no valid tier; skip fires regardless of spread"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-26",
@@ -132,10 +132,10 @@
       "iron_floor": false,
       "trend": "down"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 26.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 26.0 \u2265 tier 15"
   },
   {
     "date": "2026-03-26",
@@ -152,10 +152,10 @@
       "threshold": 30,
       "note": "trend=down AND avg_minutes\u226430; hard skip all 3PM tiers"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-26",
@@ -172,10 +172,10 @@
       "proj_min_flag": 0,
       "note": "VOLATILE -5% at exactly 70% floor; proj_min=0 creates availability uncertainty warranting skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 17.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 17.0 \u2265 tier 10"
   },
   {
     "date": "2026-03-26",
@@ -190,9 +190,9 @@
       "proj_min_flag": 0,
       "note": "proj_min=0 in player header indicates potential non-participation; availability genuinely uncertain despite absence from injury report"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 1"
   }
 ]

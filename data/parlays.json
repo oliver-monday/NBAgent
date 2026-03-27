@@ -3118,9 +3118,32 @@
         "rationale": "LaMelo feeds Knueppel and Miller in CHA's mid-defense matchup; all three roles independently reinforced by feeder-target structure.",
         "date": "2026-03-26",
         "id": "parlay_2026-03-26_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "LaMelo Ball",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 6.0
+          },
+          {
+            "player_name": "Kon Knueppel",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 8.0
+          },
+          {
+            "player_name": "Brandon Miller",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 21.0
+          }
+        ]
       }
     ]
   }
