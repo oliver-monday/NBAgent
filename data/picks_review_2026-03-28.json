@@ -1,0 +1,90 @@
+[
+  {
+    "date": "2026-03-28",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "REB",
+    "pick_value": 8,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -17.5 is the largest on the slate; with a min_floor of 22.0 against an avg of 29.0, a genuine blowout produces a 7-minute minutes gap that directly threatens counting stats. The blowout penalty was applied but the 7-minute floor-to-avg gap is structurally wide for a REB prop."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-28",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-28",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-28",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Castle is tagged VOLATILE with a min_floor of 22.9 against a -17.5 spread \u2014 the same three-factor fragility stack (VOLATILE + min_floor < 24 + spread_abs \u2265 13) that audit history recommends formalizing as a hard skip. A secondary scorer on a heavily favored team is the player most exposed to early bench rest in a true blowout, and the VOLATILE tag means his distribution is wide enough that a short-minutes game produces a clean miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-28",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Despite a 90% overall hit rate at T10, the -17.5 blowout spread already forced a step-down from T25/T20/T15 to T10, signaling the system's own concern about minutes compression; if SA builds a large lead early, Fox \u2014 not Wembanyama \u2014 is the more likely candidate for early rest as a recent trade acquisition whose team may manage his workload."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-28",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-28",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-28",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B + blowout risk (spread -14.5) is a dual-suppression stack: even though the B2B hit rate at T15 is strong at 92%, a genuine blowout in a game where ATL is a heavy favorite means a secondary scorer's minutes could be curtailed in Q4, and the 8-minute floor-to-avg gap (26.9 vs 33.2) leaves meaningful counting-stat exposure if rest decisions kick in."
+    ],
+    "source": "auto"
+  }
+]
