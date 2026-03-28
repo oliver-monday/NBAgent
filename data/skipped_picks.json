@@ -13,10 +13,10 @@
       "favored_side": true,
       "tier": 25
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 25"
   },
   {
     "date": "2026-03-27",
@@ -33,10 +33,10 @@
       "trend": "up",
       "rule": "extreme_blowout_3pm_hard_skip_spread_abs_gte_19"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-03-27",
@@ -52,10 +52,10 @@
       "favored_side": true,
       "tier": 25
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 41.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 41.0 \u2265 tier 25"
   },
   {
     "date": "2026-03-27",
@@ -71,10 +71,10 @@
       "competitive_hit_rate": "69%",
       "note": "competitive=69% implies L10 floor at or below 6; 25th-pct gate fails"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   },
   {
     "date": "2026-03-27",
@@ -90,10 +90,10 @@
       "ast_tier": 6,
       "rule": "VOLATILE+AST_T6_hard_skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 6"
   },
   {
     "date": "2026-03-27",
@@ -111,10 +111,10 @@
       "blowout_cap": 74,
       "note": "VOLATILE -5% + spread_abs\u226515 blowout cap \u2192 below 75% 3PM floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-27",
@@ -130,10 +130,10 @@
       "ast_tier": 8,
       "rule": "VOLATILE+AST_T6+_hard_skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 8"
   },
   {
     "date": "2026-03-27",
@@ -152,10 +152,10 @@
       "reb_minimum_floor": 78,
       "note": "90%-5%(trend)-10%(blowout)=75% < 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-27",
@@ -173,10 +173,10 @@
       "required_rating": "soft",
       "note": "SF position with AST avg below 8.0 APG; opp_today=mid fails soft requirement at T4+"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-27",
@@ -195,10 +195,10 @@
       "minimum_floor": 70,
       "note": "VOLATILE -5% + BLOWOUT -10% = 65%, below 70% PTS floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 20"
   },
   {
     "date": "2026-03-27",
@@ -217,10 +217,10 @@
       "reb_minimum_floor": 78,
       "note": "After penalties and spread_abs\u226512 cap, confidence=74% < 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-27",
@@ -235,9 +235,9 @@
       "pick_value": 6,
       "note": "25th-pct gate uncertain; T4 fallback lands at 74% after spread_abs\u226512 cap, below 78% REB floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   }
 ]
