@@ -117,7 +117,16 @@
     "opp_defense_rating": "soft",
     "reasoning": "Cleared 20 in every tracked game; Haliburton OFS weakens Indiana's defensive structure.",
     "result": "HIT",
-    "actual_value": 29.0
+    "actual_value": 29.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Turner OUT removes MIL rim anchor and defensive anchor; Kawhi gets easier paint access and higher FG%, despite blowout risk."
+    }
   },
   {
     "date": "2026-03-04",
@@ -134,7 +143,16 @@
     "opp_defense_rating": "soft",
     "reasoning": "Consistent 4+ rebound floor; Collins out reduces IND frontcourt depth.",
     "result": "HIT",
-    "actual_value": 8.0
+    "actual_value": 8.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-04",
@@ -1565,11 +1583,13 @@
     "result": "HIT",
     "actual_value": 16.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -1589,11 +1609,13 @@
     "result": "MISS",
     "actual_value": 2.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -1946,7 +1968,14 @@
     "opp_defense_rating": "tough",
     "reasoning": "100% T20 overall with consistent tag; even vs tough SA defense, vs_tough=100% confirms absolute floor.",
     "result": "HIT",
-    "actual_value": 30.0
+    "actual_value": 30.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Turner OUT removes MIL rim anchor and defensive anchor; Kawhi gets easier paint access and higher FG%, despite blowout risk."
+    }
   },
   {
     "date": "2026-03-06",
@@ -1963,7 +1992,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "Iron floor at T4 REB; consistent elite forward with 85% hit rate maintains board presence.",
     "result": "HIT",
-    "actual_value": 9.0
+    "actual_value": 9.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-06",
@@ -1980,7 +2016,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "95% T2 AST with consistent tag; primary LAC offensive hub in depleted roster passes floor automatically.",
     "result": "HIT",
-    "actual_value": 3.0
+    "actual_value": 3.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-06",
@@ -2256,7 +2299,16 @@
     "opp_defense_rating": "mid",
     "reasoning": "75% T2 AST overall with bb_lift 1.18; B2B b2b=83% confirms floor holds on rest-challenged nights.",
     "result": "HIT",
-    "actual_value": 4.0
+    "actual_value": 4.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Powell OUT slightly reduces spacing but Wiggins/Larsson fill in; Bam's T2 AST floor unaffected."
+    }
   },
   {
     "date": "2026-03-06",
@@ -2356,7 +2408,14 @@
     "tier_walk": "PTS: 25\u21927/10 20\u219210/10\u2713",
     "reasoning": "Iron-floor 10/10 at T20, soft MEM defense, B2B rate 100% confirmed.",
     "result": "HIT",
-    "actual_value": 28.0
+    "actual_value": 28.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Turner OUT removes MIL rim anchor and defensive anchor; Kawhi gets easier paint access and higher FG%, despite blowout risk."
+    }
   },
   {
     "date": "2026-03-07",
@@ -2374,7 +2433,14 @@
     "tier_walk": "AST: 4\u21927/10 2\u219210/10\u2713",
     "reasoning": "Consistent tag, 10/10 at T2, B2B rate 88%, soft MEM AST defense.",
     "result": "HIT",
-    "actual_value": 2.0
+    "actual_value": 2.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-07",
@@ -2410,7 +2476,14 @@
     "tier_walk": "REB: 6\u21925/10 4\u21929/10\u2713",
     "reasoning": "Iron_floor tag, 9/10 at T4, B2B rate 75% clears 78% minimum with iron_floor support.",
     "result": "HIT",
-    "actual_value": 5.0
+    "actual_value": 5.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-07",
@@ -3229,7 +3302,16 @@
     "iron_floor": false,
     "reasoning": "FG_MARGIN_THIN forces drop from T20 to T15; 9/10 hit rate and up trend secure this floor.",
     "result": "HIT",
-    "actual_value": 24.0
+    "actual_value": 24.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Nesmith OUT is a role player; no meaningful impact on Bam's scoring against IND defense."
+    }
   },
   {
     "date": "2026-03-08",
@@ -3248,7 +3330,16 @@
     "iron_floor": false,
     "reasoning": "8/10 at T20; Cade Cunningham out for DET reduces defensive pressure on Herro significantly.",
     "result": "HIT",
-    "actual_value": 25.0
+    "actual_value": 25.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Powell OUT marginally redistributes usage to Herro, but vs_soft weakness and blowout risk persist."
+    }
   },
   {
     "date": "2026-03-08",
@@ -3868,7 +3959,14 @@
     "actual_value": 29.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Turner OUT removes MIL rim anchor and defensive anchor; Kawhi gets easier paint access and higher FG%, despite blowout risk."
+    }
   },
   {
     "date": "2026-03-09",
@@ -3890,7 +3988,14 @@
     "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-09",
@@ -3912,7 +4017,14 @@
     "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-09",
@@ -4822,7 +4934,16 @@
     "actual_value": 83.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Nesmith OUT is a role player; no meaningful impact on Bam's scoring against IND defense."
+    }
   },
   {
     "date": "2026-03-10",
@@ -5400,11 +5521,13 @@
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -6055,7 +6178,14 @@
     "actual_value": 45.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Turner OUT removes MIL rim anchor and defensive anchor; Kawhi gets easier paint access and higher FG%, despite blowout risk."
+    }
   },
   {
     "date": "2026-03-11",
@@ -6077,7 +6207,14 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-11",
@@ -6099,7 +6236,14 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-11",
@@ -6545,12 +6689,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Trey Murphy (NOP) removed from projected starters"
+        "Jamal Shead (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -8356,7 +8500,14 @@
     "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-13",
@@ -8379,7 +8530,14 @@
     "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-13",
@@ -8487,11 +8645,13 @@
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -9042,7 +9202,16 @@
     "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "DeMar DeRozan (SAC) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-14",
@@ -9065,7 +9234,16 @@
     "actual_value": 0.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "DeMar DeRozan (SAC) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-14",
@@ -9757,11 +9935,13 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -9787,11 +9967,13 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -10936,7 +11118,14 @@
     "human_verdict": "manual_skip",
     "trim_reasons": [
       "player voided OUT \u2014 pick is moot; SAS floor-compression watch item also active"
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-16",
@@ -10963,7 +11152,14 @@
     "void_reason": "player OUT per injury report",
     "lineup_risk": "high",
     "human_verdict": null,
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-16",
@@ -12775,7 +12971,14 @@
     "injury_check_time": "2026-03-18T22:03:43.101704-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-18",
@@ -13010,11 +13213,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -13042,11 +13247,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -13952,11 +14159,13 @@
       "TOR is a +6.5 road underdog against DEN, creating meaningful Q4 blowout-loss risk where Barnes \u2014 as a secondary option on a losing team \u2014 may see reduced late-game usage once the game is decided; the def_recency delta shows DEN's defense has tightened recently (l5 below l15), adding a soft headwind even at the modest T10 floor."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -13984,11 +14193,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -14366,7 +14577,14 @@
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-21",
@@ -14391,7 +14609,14 @@
     "injury_check_time": "2026-03-21T22:01:45.923100-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-21",
@@ -14650,11 +14875,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -14682,11 +14909,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -15089,11 +15318,13 @@
       "B2B second night with a confirmed b2b hit rate of 75% at T10 \u2014 meaningfully below his overall 95% rate \u2014 is the primary structural vulnerability; the 20-percentage-point B2B suppression at this specific tier is a real floor shift, and the blowout spread (-12.5 as road underdog) means TOR losing big could further compress Barnes's counting-stat volume."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -15121,11 +15352,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -15777,11 +16010,13 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     }
   },
   {
@@ -15810,11 +16045,13 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     }
   },
   {
@@ -16599,7 +16836,16 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "VOLATILE tag plus a min_floor of only 25.9 on a PTS T25 pick is structurally fragile \u2014 Kawhi's minutes are notoriously managed, and a single load-management rotation or early foul trouble puts the floor in jeopardy. The FG_MARGIN_THIN flag already forced a step-down to T20 per the reasoning, meaning this is sitting right at the safety threshold with a volatile scorer whose usage can fluctuate sharply."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Turner OUT removes MIL rim anchor and defensive anchor; Kawhi gets easier paint access and higher FG%, despite blowout risk."
+    }
   },
   {
     "date": "2026-03-27",
@@ -16625,7 +16871,16 @@
     "injury_check_time": "2026-03-27T22:03:53.342768-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-27",
@@ -16758,12 +17013,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Trey Murphy (NOP) removed from projected starters"
+        "Jamal Shead (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Murphy's absence weakens NOP offense/spacing but doesn't directly boost Barnes scoring; blowout risk already priced in."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -16795,12 +17050,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Trey Murphy (NOP) removed from projected starters"
+        "Jamal Shead (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-27T17:01:57.943031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 81,
-      "revised_reasoning": "Murphy OUT removes a NOP wing rebounder; Barnes competes against slightly weaker frontcourt, modest board opportunity boost."
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -17202,7 +17457,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT is minor; Barnes' T10 PTS floor and 9/10 hit rate unaffected by guard absence."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17226,7 +17490,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jamal Shead (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Shead OUT has no meaningful impact on Barnes' rebounding; T4 stability holds."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17250,7 +17523,18 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ryan Rollins (MIL) removed from projected starters",
+        "Myles Turner (MIL) removed from projected starters",
+        "Kyle Kuzma (MIL) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Turner OUT removes MIL rim anchor and defensive anchor; Kawhi gets easier paint access and higher FG%, despite blowout risk."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17274,7 +17558,18 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ryan Rollins (MIL) removed from projected starters",
+        "Myles Turner (MIL) removed from projected starters",
+        "Kyle Kuzma (MIL) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Turner OUT weakens MIL frontcourt; Kawhi competes against softer rebounding opposition, iron_floor intact."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17298,7 +17593,18 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ryan Rollins (MIL) removed from projected starters",
+        "Myles Turner (MIL) removed from projected starters",
+        "Kyle Kuzma (MIL) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Turner/Kuzma OUT don't materially affect Kawhi's assist opportunities; trend-down and blowout cap remain."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17562,7 +17868,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Nesmith OUT is a role player; no meaningful impact on Bam's scoring against IND defense."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17586,7 +17902,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Powell OUT slightly reduces spacing but Wiggins/Larsson fill in; Bam's T2 AST floor unaffected."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17610,7 +17936,17 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Powell OUT marginally redistributes usage to Herro, but vs_soft weakness and blowout risk persist."
+    }
   },
   {
     "date": "2026-03-29",
@@ -17634,6 +17970,16 @@
     "actual_value": null,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T11:01:51.082372-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-03-29T11:01:52.759876-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Powell OUT doesn't structurally change Herro's assist opportunities; fragility flags remain."
+    }
   }
 ]
