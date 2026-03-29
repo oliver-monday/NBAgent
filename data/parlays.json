@@ -3292,5 +3292,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-03-29",
+    "parlays": [
+      {
+        "label": "Sunday Volume Sweeper",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "MIL",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Bam Adebayo",
+            "team": "MIA",
+            "opponent": "IND",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4995,
+        "correlation": "independent",
+        "rationale": "Three separate games; Barnes iron-floor scorer, Kawhi soft matchup, Bam low-tier AST anchor stabilizes floor.",
+        "date": "2026-03-29",
+        "id": "parlay_2026-03-29_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]

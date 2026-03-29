@@ -1,0 +1,210 @@
+[
+  {
+    "date": "2026-03-29",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post-miss REB bounce-back rate is only 65% (lift=0.91, below 1.0), indicating REB is slump-persistent for Barnes \u2014 if he missed his REB tier last game, the expected hit rate is materially lower than the headline 90%. The minimum valid tier with a suppressed bounce-back rate is structurally softer than confidence suggests."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus spread_abs=14.5 creates a near-threshold fragility stack (audit lesson flags VOLATILE + spread_abs\u226513 as a structural concern). Even after the VOLATILE -5% penalty was applied, a LAC blowout loss scenario compresses Kawhi's minutes in Q4 precisely when his scoring production is needed to clear T20."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 25,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a T25 PTS pick against a tough NY defense, with blowout risk (spread_abs=8.5) still in play \u2014 if OKC builds a large lead, SGA's Q4 minutes may be managed down, and his wide scoring distribution means a 25-point threshold carries real miss risk that the 74% confidence only partially prices."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread_abs=12.5 creates meaningful blowout risk \u2014 if DEN builds a large lead, Jokic's minutes are frequently managed down in Q4 (he regularly sits late in blowouts), which compresses his scoring window and makes a T20 threshold more dependent on game pace staying competitive than the iron_floor status suggests."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with min_floor=21.6 is precisely the fragility stack flagged in audit history \u2014 a single foul trouble or early deficit blowout scenario where HOU's rotation shortens can drop Sengun below 22 minutes, making a T15 threshold genuinely vulnerable on any given night."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post-miss REB bounce-back rate is only 67% (lift=0.77, meaningfully below 1.0) with a typical miss of 4.0 below threshold \u2014 REB is confirmed slump-persistent for Sengun, and the depressed min_floor=21.6 compounds the risk that a compressed minutes game produces a clean miss at T6."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post-miss PTS bounce-back rate of only 47% (lift=0.64) is the most depressed figure on the slate \u2014 if Adebayo missed PTS last game, his expected hit rate drops catastrophically, and the BLOWOUT_RISK with spread_abs=9.5 further suppresses his counting stats if MIA falls behind early."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor=0.0 is a data artifact flagged explicitly in the reasoning \u2014 this means genuine minutes floor is unknown, and a single injury/DNP or early exit in a blowout (spread_abs=9.5) could produce a miss with no statistical floor protection whatsoever."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Blowout hit rate of 43% and vs_soft hit rate of 46% are both dramatically below the headline 80% confidence \u2014 two independent contextual factors (game script and opponent quality) each independently suggest a sub-50% hit rate today, making this pick structurally inverted for a competitive edge. The BLOWOUT_RISK context is not adequately captured by the confidence adjustment alone."
+    ],
+    "source": "auto"
+  }
+]

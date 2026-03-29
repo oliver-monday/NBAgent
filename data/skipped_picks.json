@@ -1,284 +1,147 @@
 [
   {
-    "date": "2026-03-28",
-    "player_name": "Victor Wembanyama",
-    "team": "SA",
-    "opponent": "MIL",
-    "prop_type": "PTS",
-    "tier_considered": 20,
+    "date": "2026-03-29",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "opponent": "ORL",
+    "prop_type": "AST",
+    "tier_considered": 4,
     "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
+    "skip_reason": "merit_below_floor",
     "rule_context": {
+      "overall_hit_rate": "7/10",
       "volatile_tag": true,
-      "hit_rate_at_tier": "7/10",
-      "tier": 20,
-      "condition": "VOLATILE + 7/10 + tier >= T20 = hard skip"
+      "confidence_before_penalty": 70,
+      "volatile_penalty": -5,
+      "final_confidence": 65,
+      "prop_floor": 70
     },
-    "actual_value": 23.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 23.0 \u2265 tier 20"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-28",
-    "player_name": "Victor Wembanyama",
-    "team": "SA",
+    "date": "2026-03-29",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
     "opponent": "MIL",
-    "prop_type": "PTS",
-    "tier_considered": 25,
+    "prop_type": "3PM",
+    "tier_considered": 2,
     "direction": "OVER",
-    "skip_reason": "blowout_t25_skip",
+    "skip_reason": "merit_below_floor",
     "rule_context": {
-      "spread_abs": 17.5,
-      "favored_team": "SA",
-      "tier": 25
+      "overall_hit_rate": "7/10",
+      "volatile_tag": true,
+      "confidence_before_penalty": 70,
+      "volatile_penalty": -5,
+      "final_confidence": 65,
+      "prop_floor_3pm": 75
     },
-    "actual_value": 23.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 23.0 < tier 25"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-28",
-    "player_name": "Victor Wembanyama",
-    "team": "SA",
-    "opponent": "MIL",
+    "date": "2026-03-29",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "NY",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
     "skip_reason": "3pm_blowout_trend_down",
     "rule_context": {
       "trend": "down",
-      "spread_abs": 17.5,
-      "step_down_result": "below T1 minimum",
-      "note": "trend=down step-down from T1 produces no valid tier"
+      "minimum_valid_tier": 1,
+      "step_down_result": "below_minimum",
+      "spread_abs": 8.5
     },
-    "actual_value": 0.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 0.0 < tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-28",
-    "player_name": "De'Aaron Fox",
-    "team": "SA",
-    "opponent": "MIL",
+    "date": "2026-03-29",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "GS",
+    "prop_type": "REB",
+    "tier_considered": 12,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "blowout_cap": 74,
+      "reb_minimum_floor": 78,
+      "note": "Spread cap (74%) falls below 78% REB minimum at T12, T10, T8, and T6 after VOLATILE -5% and BLOWOUT -10% applied"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "GS",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
     "skip_reason": "3pm_blowout_trend_down",
     "rule_context": {
       "trend": "down",
-      "spread_abs": 17.5,
-      "step_down_result": "below T1 minimum",
-      "note": "trend=down step-down from T1 produces no valid tier in blowout context"
+      "minimum_valid_tier": 1,
+      "step_down_result": "below_minimum",
+      "spread_abs": 12.5
     },
-    "actual_value": 0.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 0.0 < tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-28",
-    "player_name": "De'Aaron Fox",
-    "team": "SA",
-    "opponent": "MIL",
-    "prop_type": "AST",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 6,
-      "rule": "VOLATILE + AST tier >= T6 = hard skip"
-    },
-    "actual_value": 6.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "Julius Randle",
-    "team": "MIN",
-    "opponent": "DET",
-    "prop_type": "REB",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "volatile_tag": true,
-      "hit_rate": "7/10",
-      "confidence_after_volatile": "65%",
-      "reb_minimum_floor": "78%",
-      "note": "70% base - 5% VOLATILE = 65% < 78% REB minimum"
-    },
-    "actual_value": 8.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "Nickeil Alexander-Walker",
-    "team": "ATL",
-    "opponent": "SAC",
-    "prop_type": "AST",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "b2b_rate": "58%",
-      "b2b_rate_below_floor": true,
-      "note": "B2B rate 58% < 70% floor; iron_floor protects tier but b2b rate substitution rule applies"
-    },
-    "actual_value": 8.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 8.0 \u2265 tier 2"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "Nickeil Alexander-Walker",
-    "team": "ATL",
-    "opponent": "SAC",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "trend": "down",
-      "step_down_tier": 1,
-      "confidence_after_penalties": "74%",
-      "three_pm_minimum_floor": "75%",
-      "note": "trend=down step-down T2\u2192T1; after BLOWOUT penalty and spread cap, 74% < 75% 3PM floor"
-    },
-    "actual_value": 4.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "CJ McCollum",
-    "team": "ATL",
-    "opponent": "SAC",
-    "prop_type": "3PM",
-    "tier_considered": 1,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "iron_floor": true,
-      "spread_cap": "74%",
-      "three_pm_minimum_floor": "75%",
-      "note": "iron_floor T1, but spread_abs=14.5 cap forces confidence to 74% < 75% 3PM minimum"
-    },
-    "actual_value": 2.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "CJ McCollum",
-    "team": "ATL",
-    "opponent": "SAC",
-    "prop_type": "PTS",
-    "tier_considered": 15,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "b2b": true,
-      "b2b_sample": "<5g",
-      "required_step_down": "T15\u2192T10",
-      "t10_hit_rate": "unconfirmed",
-      "note": "B2B <5g requires one-tier step-down T15\u2192T10; T10 hit rate not in quant data"
-    },
-    "actual_value": 22.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 22.0 \u2265 tier 15"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "SAC",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
-    "rule_context": {
-      "volatile_tag": true,
-      "hit_rate_at_tier": "7/10",
-      "tier": 20,
-      "condition": "VOLATILE + 7/10 + tier >= T20 = hard skip"
-    },
-    "actual_value": 26.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 26.0 \u2265 tier 20"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "SAC",
+    "date": "2026-03-29",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "opponent": "IND",
     "prop_type": "REB",
     "tier_considered": 8,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "b2b_rate": "70%",
       "volatile_tag": true,
-      "confidence_after_volatile": "65%",
-      "reb_minimum_floor": "78%",
-      "note": "b2b=70% - VOLATILE 5% = 65% < 78% REB floor"
+      "blowout_risk": true,
+      "spread_abs": 9.5,
+      "confidence_after_penalties": 60,
+      "reb_minimum_floor": 78,
+      "note": "VOLATILE -5% + BLOWOUT -10% reduces all tiers below 78% REB minimum"
     },
-    "actual_value": 5.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 5.0 < tier 8"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-03-28",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "SAC",
-    "prop_type": "AST",
-    "tier_considered": 8,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 8,
-      "rule": "VOLATILE + AST tier >= T6 = hard skip"
-    },
-    "actual_value": 10.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 10.0 \u2265 tier 8"
-  },
-  {
-    "date": "2026-03-28",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "SAC",
+    "date": "2026-03-29",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "opponent": "IND",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "volatile_tag": true,
-      "blowout_penalty": "-10%",
-      "b2b_base_rate": "80%",
-      "confidence_after_penalties": "65%",
-      "three_pm_minimum_floor": "75%",
-      "note": "b2b=80% - VOLATILE 5% - blowout 10% = 65% < 75% 3PM floor"
+      "overall_hit_rate": "8/10",
+      "blowout_penalty": -10,
+      "confidence_after_penalty": 70,
+      "prop_floor_3pm": 75
     },
-    "actual_value": 4.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]
