@@ -16909,8 +16909,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "100% L10 hit rate at T8 with consistent tag; blowout_games=88% confirms floor holds.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -16922,7 +16922,11 @@
       "direction": "up",
       "revised_confidence_pct": 83,
       "revised_reasoning": "Kuzma OUT removes MIL frontcourt depth; Wemby competes against weaker rebounding unit, boosting ceiling."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Spread of -17.5 is the largest on the slate; with a min_floor of 22.0 against an avg of 29.0, a genuine blowout produces a 7-minute minutes gap that directly threatens counting stats. The blowout penalty was applied but the 7-minute floor-to-avg gap is structurally wide for a REB prop."
+    ]
   },
   {
     "date": "2026-03-28",
@@ -16942,8 +16946,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall at T2, soft MIL defense; blowout cap limits confidence to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -16955,7 +16959,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Kuzma was not a primary ball-pressure defender; AST volume for Wemby largely unaffected by his absence."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-28",
@@ -16975,8 +16981,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "95% hit rate at T4, consistent tag, soft MIL defense; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -16988,7 +16994,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Kuzma OUT has minimal direct impact on Castle's playmaking role or assist opportunities against MIL."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-28",
@@ -17008,8 +17016,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% hit rate at T10, blowout-resilient portrait (89% blowout); penalties net to 70% floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -17021,7 +17029,11 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Kuzma is not a defensive anchor; Castle's scoring volume vs soft MIL defense remains similarly projected."
-    }
+    },
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "Castle is tagged VOLATILE with a min_floor of 22.9 against a -17.5 spread \u2014 the same three-factor fragility stack (VOLATILE + min_floor < 24 + spread_abs \u2265 13) that audit history recommends formalizing as a hard skip. A secondary scorer on a heavily favored team is the player most exposed to early bench rest in a true blowout, and the VOLATILE tag means his distribution is wide enough that a short-minutes game produces a clean miss."
+    ]
   },
   {
     "date": "2026-03-28",
@@ -17041,8 +17053,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% hit rate at T10, blowout-resilient PTS portrait (90% blowout); spread cap applies at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -17054,7 +17066,11 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Kuzma OUT does not meaningfully alter Fox's scoring environment; MIL guard defense unchanged."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Despite a 90% overall hit rate at T10, the -17.5 blowout spread already forced a step-down from T25/T20/T15 to T10, signaling the system's own concern about minutes compression; if SA builds a large lead early, Fox \u2014 not Wembanyama \u2014 is the more likely candidate for early rest as a recent trade acquisition whose team may manage his workload."
+    ]
   },
   {
     "date": "2026-03-28",
@@ -17074,8 +17090,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall at T10, 95% vs tough; Edwards/McDaniels OUT massively elevates usage.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 11.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -17087,7 +17103,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 82,
       "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-28",
@@ -17107,8 +17125,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall at T2, 95% vs tough; primary playmaker role confirmed with Edwards/McDaniels out.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -17120,7 +17138,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 82,
       "revised_reasoning": "Dosunmu's absence doesn't alter Randle's primary playmaker role; pick basis unchanged."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-28",
@@ -17140,8 +17160,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "16-game hit streak, blowout-resilient PTS 90%, B2B rate 92%; capped at 74% by spread.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 27.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
@@ -17154,6 +17174,10 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "Daniels and Okongwu both out; usage redistributes to NAW, boosting volume against soft SAC defense."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B + blowout risk (spread -14.5) is a dual-suppression stack: even though the B2B hit rate at T15 is strong at 92%, a genuine blowout in a game where ATL is a heavy favorite means a secondary scorer's minutes could be curtailed in Q4, and the 8-minute floor-to-avg gap (26.9 vs 33.2) leaves meaningful counting-stat exposure if rest decisions kick in."
+    ]
   }
 ]

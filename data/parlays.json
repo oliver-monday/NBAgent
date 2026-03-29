@@ -3264,9 +3264,32 @@
         "rationale": "Wemby's 10/10 REB floor and Castle's rising AST anchor a soft-MIL matchup; Randle's PTS adds independent MIN@DET upside.",
         "date": "2026-03-28",
         "id": "parlay_2026-03-28_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Victor Wembanyama",
+            "prop_type": "REB",
+            "pick_value": 8,
+            "result": "HIT",
+            "actual_value": 15.0
+          },
+          {
+            "player_name": "Stephon Castle",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 10.0
+          },
+          {
+            "player_name": "Julius Randle",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 11.0
+          }
+        ]
       }
     ]
   }

@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-03-28",
-  "entries_included": 24,
+  "generated_at": "2026-03-29",
+  "entries_included": 25,
   "overall": {
-    "total_picks": 640,
+    "total_picks": 648,
     "voided": 32,
-    "hits": 538,
+    "hits": 546,
     "misses": 86,
     "injury_exclusions": 2,
-    "hit_rate_pct": 86.5
+    "hit_rate_pct": 86.7
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 213,
-      "hits": 175,
+      "picks": 217,
+      "hits": 179,
       "injury_exclusions": 1,
-      "hit_rate_pct": 82.5
+      "hit_rate_pct": 82.9
     },
     "REB": {
-      "picks": 104,
-      "hits": 89,
+      "picks": 105,
+      "hits": 90,
       "injury_exclusions": 0,
-      "hit_rate_pct": 85.6
+      "hit_rate_pct": 85.7
     },
     "AST": {
-      "picks": 188,
-      "hits": 157,
+      "picks": 191,
+      "hits": 160,
       "injury_exclusions": 1,
-      "hit_rate_pct": 84.0
+      "hit_rate_pct": 84.2
     },
     "3PM": {
       "picks": 111,
@@ -45,19 +45,19 @@
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 246,
-      "hits": 205,
-      "hit_rate_pct": 83.3
+      "picks": 251,
+      "hits": 210,
+      "hit_rate_pct": 83.7
     },
     "76-80": {
-      "picks": 291,
-      "hits": 253,
-      "hit_rate_pct": 86.9
+      "picks": 292,
+      "hits": 254,
+      "hit_rate_pct": 87.0
     },
     "81-85": {
-      "picks": 49,
-      "hits": 42,
-      "hit_rate_pct": 85.7
+      "picks": 51,
+      "hits": 44,
+      "hit_rate_pct": 86.3
     },
     "86+": {
       "picks": 14,
@@ -66,109 +66,95 @@
     }
   },
   "parlay_summary": {
-    "total": 63,
-    "hits": 39,
+    "total": 64,
+    "hits": 40,
     "misses": 19,
     "partial": 5
   },
   "recent_lessons": [
-    "Donovan Mitchell AST T4 missed (actual: 3 AST vs pick_value: 4) against tough ORL defense in a CLOSE game \u2014 the tier_walk correctly applied tough-defense and blowout penalties but still landed at 74%. In a CLOSE game where ORL's defense remained engaged all four quarters, Mitchell's creation sequences were disrupted below threshold. The 90% overall rate at T4 overstates true confidence when combined with tough defense and a co-creator (Harden) handling primary facilitation. When Mitchell and Harden share the floor, Mitchell's AST rate is more volatile \u2014 the without-Harden AST avg of 5.9 is not the operative baseline in games where Harden plays full minutes.",
-    "Kon Knueppel PTS T15 missed (actual: 14 PTS vs pick_value: 15) \u2014 the tier_walk correctly flagged SKIP under blowout_secondary_scorer rules at spread_abs=16.5, and the system's own reasoning classified this as a SKIP. The pick still appeared on the slate at 74% confidence (classified as SKIP in reasoning but included in the active pick count). The miss was by 1 point, consistent with the model's own pre-game concern: blowout minute compression for secondary scorers on the favored team. The SKIP classification in the tier_walk should have been a hard exclusion from active picks, not a soft trim. This is a model_gap_rule issue \u2014 the SKIP tag did not propagate to a voided pick status.",
-    "REB is the weakest prop type this session at 66.7% (2/3 hits) and both the Harden miss and the parlay miss trace to the same leg \u2014 guard REB props at T4 carry more intrinsic variance than the 88% historical rate suggests, particularly when the player is a secondary rebounder by role. The system's REB confidence floor of 78% is appropriately conservative, but the Harden pick was placed exactly at the floor after blowout penalty, leaving zero margin for game-script surprise.",
     "Kevin Durant REB T4 missed at actual_value=3 (miss margin: -1) in HOU @ MIN, a 2-point game (CLOSE). The miss was not explained by game script \u2014 this was a close, full-minutes contest with no blowout compression. The root cause is the MIN rebounding environment: despite the MIN AST suppressor being documented, the system has no parallel MIN rebounding suppressor signal, and KD's 9/10 REB hit rate at T4 did not account for the possibility that MIN's frontcourt rebounding competition (active switching scheme, strong defensive rebounding) could suppress KD's counting stat even in a full-minutes game. The 9/10 rate provided false confidence at T4 for a road game vs. a strong defensive team without a specific REB DvP signal.",
     "Scottie Barnes PTS T10 missed at actual_value=9 (miss margin: -1) in TOR @ LAC, a 25-point LAC blowout win. STEP 0: LAC won by 25, labeled BLOWOUT. Barnes was on the losing side. The pick's tier_walk did not apply a losing-side blowout penalty \u2014 the BLOWOUT_RISK field was not flagged (spread_abs=4.5 at pick time, suggesting the pre-game line did not anticipate a blowout). However, the system's blowout game-script logic for losing-side secondary scorers should have acknowledged that a TOR road underdog at LAC (spread_abs=4.5) carries meaningful blowout risk, and on the losing side even a consistent scorer can see Q4 minutes compressed. The 10/10 hit rate and 'consistent' tag created overconfidence at 84% for a pick that sat at exactly the T10 floor \u2014 a single reduced-minutes fourth quarter produced the miss. The top_pick flag on a road underdog with narrow threshold margin was too aggressive.",
     "No misses this session \u2014 no analytical failures to log. However, three picks were human-flagged as trims: Banchero PTS/REB (blowout + minutes compression risk on a -15.5 spread), Banchero AST (VOLATILE tag compounding blowout script risk), LaMelo Ball PTS (minutes floor 21.8 below the 24-minute PTS safety threshold), and Miller 3PM (VOLATILE + exact minimum 7/10 threshold clearance). All four hit comfortably \u2014 Banchero played 38 minutes in what was ultimately a 4-point game, Ball scored 22 in 36 minutes, and Miller hit 4 threes. The SAC vs ORL final was 121-117 (CLOSE, not a blowout), which invalidated the -15.5 pre-game spread blowout concern retroactively. This is a calibration reminder: spread-based blowout penalties are pre-game risk adjustments, not deterministic outcomes \u2014 a tight final score on a large spread game is within normal variance and the underlying tier quality still drives results.",
     "The proj_min=0 flag on Karl-Anthony Towns triggered a precautionary -5% confidence reduction in the tier walk, landing at 74%. Towns played 22 minutes and scored 13 points (HIT). The proj_min=0 field appears to be a data artifact or placeholder rather than a true projection \u2014 future runs should document this field's behavior more precisely and avoid applying ad-hoc confidence penalties when the player is NOT_LISTED on the injury report and full quant data is present. A formal rule clarifying when proj_min=0 should trigger a skip vs. a penalty vs. no action would prevent inconsistent handling.",
     "All 13 picks hit and 0 misses were recorded \u2014 no analytical failures to log. However, human auditors flagged 8 of 13 picks as 'trim' or 'manual_skip', meaning the pick card had meaningful structural concerns that happened not to manifest as misses today. The most concentrated risk cluster was the HOU@MEM picks (KD AST T2, Sengun PTS T10, Sengun AST T2) \u2014 all three were flagged for blowout + min_floor fragility. All three hit, but HOU won by only 10 (COMPETITIVE, not a full blowout), which likely preserved Sengun's minutes near his floor. Had HOU won by 25+, Sengun's 33 minutes and 14 PTS suggest the blowout risk was real but didn't trigger. The system should track whether min_floor < 24 picks survive competitive vs. actual blowout games at different rates.",
     "The Sengun PTS T10 pick was flagged 'manual_skip' by the human auditor despite hitting 14 actual vs 10 threshold. The pick was structurally sound on the outcome but the manual_skip classification reflects legitimate pre-game concern: VOLATILE tag + min_floor 21.6 + spread_abs 13.5 is a three-factor fragility stack that the system should consider formalizing as a hard skip rule rather than leaving to human override. If the game had become a true blowout (margin \u226520), Sengun's floor would have been genuinely threatened. Consider adding: if VOLATILE=true AND min_floor < 22 AND spread_abs \u2265 13, skip PTS prop regardless of hit rate.",
-    "Five of eight 70-75% confidence picks hit (100% actual vs 72.5% expected) \u2014 a significant positive variance session. Over a small sample, this is expected noise. The system should not recalibrate confidence floors upward based on a single 100% session; the confidence band distribution (all picks clustered in 70-80% range, zero picks in 81%+) reflects appropriate spread_abs cap discipline. Maintaining the cap structure is validated \u2014 the caps are doing their job of preventing overconfidence, not suppressing good picks."
+    "Five of eight 70-75% confidence picks hit (100% actual vs 72.5% expected) \u2014 a significant positive variance session. Over a small sample, this is expected noise. The system should not recalibrate confidence floors upward based on a single 100% session; the confidence band distribution (all picks clustered in 70-80% range, zero picks in 81%+) reflects appropriate spread_abs cap discipline. Maintaining the cap structure is validated \u2014 the caps are doing their job of preventing overconfidence, not suppressing good picks.",
+    "The SA vs. MIL blowout (+32 final margin) validated all three human verdicts flagging blowout risk on SA players: Wembanyama REB hit easily despite the spread, Fox PTS hit at 12 with only 21 minutes (T10 buffer was essential \u2014 T25/T20/T15 would have been vulnerable), and Castle PTS hit at 22 with 29 minutes but was correctly marked manual_skip given VOLATILE tag and fragility stack. The system's blowout-tier step-down logic (forcing T10 rather than T15+) was the key protective mechanism \u2014 reinforce this as confirmed effective.",
+    "Castle PTS manual_skip by human review proved to be the right call philosophically even though the pick hit (22 actual vs. 10 threshold) \u2014 the VOLATILE + spread_abs\u226515 + min_floor<24 fragility stack should continue to be treated as a structural skip regardless of outcome, because a single missed night with Castle benched early in Q4 of a blowout would have produced a clean miss. One hit does not invalidate the skip rule.",
+    "Fox PTS trim (21 min played in a +32 blowout) is strong confirmation that the trim verdict was structurally sound \u2014 Fox as a trade acquisition on a blowout-prone team is the highest workload-management risk on the roster, and the system correctly identified this even though the pick ultimately hit on the conservative T10 threshold. The trim signal on Fox PTS in large-spread SA games should be formalized."
   ],
   "recent_reinforcements": [
-    "Blowout-capped picks still delivered: all three Banchero props (PTS T10, REB T4, AST T4) were capped at 74% due to the -15.5 spread vs. depleted SAC, yet Banchero posted 30 PTS / 9 REB / 7 AST in 38 minutes \u2014 reinforcing that the blowout cap is a calibration tool, not a kill switch, and that elite primary scorers on favored teams against soft defenses will frequently clear even modest thresholds comfortably.",
-    "Iron-floor AST props at T2 were the most reliable structural play of the session: Desmond Bane AST T2 (90% hit rate, HIT 6), Brandon Miller AST T2 (100% hit rate, HIT 3), and LaMelo Ball AST T4 (95% hit rate, HIT 6) all cleared with room to spare. Low-threshold AST picks on primary ball-handlers and active secondary playmakers in competitive games remain a high-floor selection strategy.",
-    "The depleted-opponent stack logic proved correct: three CHA players (Ball PTS, Ball AST, Knueppel AST, Miller PTS, Miller AST, Miller 3PM) were selected against NYK missing key playmakers in a competitive H game (CHA won by 11). All six CHA picks hit, validating the approach of concentrating picks on the favored-by-usage side when opponent personnel is depleted.",
-    "Kon Knueppel AST T2 at 78% (9/10 hit rate, trend up) hit 8 assists \u2014 a 6-unit clearance over the T2 threshold. The upward trend tag on a secondary playmaker in a competitive home game with reduced opponent creation pressure is a reliable signal worth continuing to target.",
-    "Brandon Miller's 3PM iron-floor VOLATILE T2 pick cleared at 75% confidence (HIT 4), demonstrating that iron-floor status on a VOLATILE 3PM prop with a stable trend can still produce in a competitive game context \u2014 the iron floor provided the structural floor even with the VOLATILE penalty applied.",
     "IND amplifier effect validated again: Kawhi Leonard PTS T25 (stepped to T20) hit at 28 actual vs 25 threshold, and Kawhi AST T2 hit at 4 actual vs 2 threshold \u2014 both in a LAC-IND game that finished 114-113 (CLOSE), confirming the IND amplifier operates even in non-blowout scripts where game-script suppression is minimal. Picking conservative tiers against IND and letting the matchup do the work is the correct structural approach.",
     "Low-tier AST floors (T2) proved extremely robust across all five AST picks: SGA hit 5 vs 4, Kawhi hit 4 vs 2, Harden hit 14 vs 4, Durant hit 10 vs 2, Sengun hit 7 vs 2. All five cleared comfortably. In particular, the T2 AST picks on Durant and Sengun hit despite -13.5 blowout spread caps reducing confidence \u2014 the 74% cap was appropriate discipline, but the underlying signal (10/10 and 10/10 hit rates respectively) was genuinely strong. Conservative T2 AST floors on high-usage players in soft matchups are validated as a reliable pick type.",
     "The Harden multi-prop stack (PTS T15 + REB T4 + AST T4 + 3PM T2) swept 4/4 props in a 21-point CLE blowout win. Harden played 30 minutes and hit all four thresholds comfortably (17 PTS, 5 REB, 14 AST, 2 3PM). Stacking multiple props on a primary ball-handler in a favorable blowout script \u2014 where the player stays on the floor long enough to accumulate across all categories \u2014 produced a clean sweep. The vs_soft split anomaly on PTS (78% vs 90% overall) flagged by the Analyst was correctly moderated but did not materialize as a miss.",
     "Scottie Barnes PTS T10 hit 23 actual in a TOR home win over NOP (TOR won by 13, COMPETITIVE), validating that the 100% blowout-game rate translates to non-blowout scripts as well. The human trim flag referenced a prior session miss in a different game context; today's HOME favorite game script produced a comfortable margin. The T10 threshold at 90% hit rate on a COMPETITIVE game is a structurally sound pick type for Barnes.",
-    "Nikola Jokic REB T10 (stepped down from T12 via VOLATILE tag and 25th-pct gate) hit 15 actual vs 10 threshold in a 6-point DEN win over UTAH (CLOSE). The step-down rule from T12 to T10 was conservative and correct \u2014 the VOLATILE tag and 25th-pct gate combination forced a disciplined tier reduction that still cleared comfortably. The VOLATILE step-down mechanism is functioning as intended: it reduces tier without eliminating the pick."
+    "Nikola Jokic REB T10 (stepped down from T12 via VOLATILE tag and 25th-pct gate) hit 15 actual vs 10 threshold in a 6-point DEN win over UTAH (CLOSE). The step-down rule from T12 to T10 was conservative and correct \u2014 the VOLATILE tag and 25th-pct gate combination forced a disciplined tier reduction that still cleared comfortably. The VOLATILE step-down mechanism is functioning as intended: it reduces tier without eliminating the pick.",
+    "Wembanyama REB at T8 (10/10 hit rate) hit comfortably with 15 actual vs. 8 threshold even in a SA blowout win (+32 margin) \u2014 validating the Wembanyama blowout exemption for REB props and confirming that his REB floor holds even when minutes are reduced (31 min logged). The 10/10 consistency at T8 with a soft opposing frontcourt after Kuzma's scratch proved to be sound construction.",
+    "Stephon Castle AST at T4 (9/10 hit rate) crushed at 10 actual vs. 4 threshold in a blowout context, reinforcing that Castle's primary playmaker role and AST volume are robust even when SA builds large leads early \u2014 his assist output is game-script-resilient because the offense runs through him regardless of margin. The 95% hit rate at T4 with a soft MIL defense was the correct anchor for this pick.",
+    "Julius Randle PTS + AST dual-prop structure in the MIN vs. DET matchup (spread 2.5, CLOSE game) was correctly identified as a low-blowout-risk opportunity; both legs hit (11 PTS, 4 AST vs. 10 and 2 thresholds) in a game MIN won by 22. The usage elevation rationale \u2014 Edwards and McDaniels both OUT \u2014 translated directly into production despite facing a tough DET defense (95% vs. tough confirmed valid).",
+    "The Nickeil Alexander-Walker PTS at T15 (8/10 hit rate, B2B rate 92%) delivered 27 actual vs. 15 threshold in a COMPETITIVE ATL win (+10), validating both the blowout-resilient B2B pick structure and the lineup amendment that flagged upside from Daniels and Okongwu being OUT. Usage redistribution to NAW in a soft SAC matchup was the correct read.",
+    "De'Aaron Fox PTS at T10 (9/10 hit rate) hit at 12 actual vs. 10 threshold in the SA blowout win, with only 21 minutes played \u2014 confirming the system's caution about Fox's workload management risk was warranted but the conservative T10 threshold provided sufficient buffer even with compressed minutes. The spread cap to 74% was appropriate given the minutes risk realized."
   ],
   "recent_recommendations": [
-    "Formalize the proj_min=0 handling rule: when a player shows proj_min=0 in their quant header but is NOT_LISTED on the injury report and full hit-rate/tier data is populated, do NOT apply an ad-hoc confidence penalty. Instead, flag the field as a data artifact and proceed on injury report status alone. If proj_min=0 genuinely indicates non-participation, it should surface as an OUT in the injury report \u2014 that is the authoritative pipeline source. This session's KAT pick showed the penalty was unnecessary.",
-    "Maintain the AST iron-floor T2 strategy as a core selection pattern: Bane (9/10, T2), Miller (10/10, T2), and Ball (9/10, T4) all hit with substantial clearance. Low-threshold AST picks on primary and secondary playmakers in competitive games with soft-to-mid opponent AST defense are among the system's most reliable prop types. Continue prioritizing these when qualifying, especially in same-game stacks.",
-    "Revisit the Banchero blowout AST pick classification: the VOLATILE tag on a T4 AST prop in a -15.5 spread game correctly triggered a human skip recommendation, but the actual game finished as a 4-point CLOSE game (ORL 121, SAC 117). The pre-game spread did not materialize into a blowout. Going forward, when the VOLATILE tag and blowout cap combine to compress confidence below 72%, consider whether the pick should be skipped entirely at selection time rather than carried at reduced confidence \u2014 the risk-adjusted value of a 70% VOLATILE AST in a projected blowout is marginal, and the slot is better used on a cleaner prop.",
-    "Monitor the ORL vs. SAC game-script calibration: the pre-game spread was -15.5 favoring ORL, yet the final margin was only 4 points (SAC covered by a wide margin). This is a notable spread miss \u2014 the system applied blowout caps to three Banchero props based on a spread that did not reflect the actual game. Over time, tracking pre-game spread vs. actual margin calibration will help quantify how often large spreads vs. depleted opponents (SAC is 19-55, eliminated) produce genuine blowouts vs. competitive games, which should inform the blowout cap threshold for opponent-quality-adjusted spreads.",
-    "For the next CHA slate, continue targeting Brandon Miller AST T2 as a structural anchor: 10/10 iron-floor consistent tag, 3 assists again tonight (HIT), upward trend. This prop has the highest structural confidence on the CHA roster and should be a default consideration whenever Miller is active in a home game with mid-or-softer AST defense opposition.",
     "Formalize the VOLATILE + min_floor + spread_abs triple-fragility skip rule: if a player carries VOLATILE tag AND min_floor < 22 AND spread_abs \u2265 13 on a PTS prop, treat as a hard skip rather than a human-override 'manual_skip'. The Sengun PTS T10 case today is the prototype \u2014 the pick hit because HOU won by only 10 (COMPETITIVE), but the structural conditions for a miss were all present. Codify this to reduce dependency on human auditor review.",
     "Continue applying the IND amplifier aggressively across all prop types when the game context is CLOSE or COMPETITIVE \u2014 today's LAC@IND result (114-113, CLOSE) confirmed the amplifier fires even in tight games where blowout-side suppression does not apply. In future IND matchups, consider whether the system's blowout penalty (-10%) should be offset more strongly by the IND amplifier (+14.3pp historically) when spread_abs < 10, potentially netting a smaller penalty than the standard rule applies.",
     "The Harden AST T4 pick (actual: 14) and KD AST T2 pick (actual: 10) both far exceeded their thresholds \u2014 these players are generating assists well above the conservative tier floors. For primary ball-handlers with 10/10 AST hit rates at T2 (Durant, Sengun), consider whether T4 would also qualify (\u226570% hit rate) and whether the higher tier offers better value with comparable confidence. Walking the tier further up before capping could improve expected value without increasing miss risk meaningfully.",
     "The Barnes PTS T10 human trim flag referenced a prior-session miss in a blowout game, but today's COMPETITIVE game script (TOR won by 13) produced 23 actual \u2014 nearly 2.3x the threshold. When Barnes is a HOME favorite and the game script is not a blowout (spread_abs < 15), the T10 PTS floor appears highly durable. Separate Barnes PTS threshold analysis by home/away and blowout/competitive \u2014 the prior miss was likely a blowout road game, which is a structurally different pick.",
-    "The Jokic REB VOLATILE step-down from T12 to T10 hit 15 actual \u2014 the step-down was correct process but the outcome suggests T12 would also have cleared. However, this does not mean the step-down rule was wrong; the VOLATILE tag exists precisely because Jokic's REB distribution is wide enough that even an 8/10 rate at T12 carries meaningful miss risk. Do not loosen the VOLATILE 25th-pct gate based on single-session outcomes. Instead, track VOLATILE step-down picks over 20+ games to measure whether the actual hit rate at the stepped-down tier exceeds the projected rate (indicating the gate is slightly too conservative) or matches it (indicating correct calibration)."
+    "The Jokic REB VOLATILE step-down from T12 to T10 hit 15 actual \u2014 the step-down was correct process but the outcome suggests T12 would also have cleared. However, this does not mean the step-down rule was wrong; the VOLATILE tag exists precisely because Jokic's REB distribution is wide enough that even an 8/10 rate at T12 carries meaningful miss risk. Do not loosen the VOLATILE 25th-pct gate based on single-session outcomes. Instead, track VOLATILE step-down picks over 20+ games to measure whether the actual hit rate at the stepped-down tier exceeds the projected rate (indicating the gate is slightly too conservative) or matches it (indicating correct calibration).",
+    "Formalize the Fox PTS blowout-management rule for SA games: when SA spread_abs\u226515, De'Aaron Fox PTS should be capped at T10 or below AND flagged as a trim candidate regardless of hit rate \u2014 21 minutes in this game confirms he is the primary rest candidate when SA builds a large lead. Do not select Fox PTS at T15+ in any SA game with spread_abs\u226513.",
+    "Reinforce the Wembanyama blowout exemption for REB specifically: 15 REB in 31 minutes in a +32 blowout is the clearest possible validation that his REB floor (T8, 10/10) is structurally insulated from game-script compression. The amendment flagging upside after Kuzma's scratch (revised to 83%) was directionally correct \u2014 future SA blowout games against depleted frontcourts should trigger an upward amendment on Wembanyama REB confidence toward the spread cap.",
+    "The Castle AST at T4 hitting 10 assists (2.5x threshold) in a blowout confirms that Castle's playmaking is so deeply embedded in SAS offensive structure that even garbage-time minutes produce assist volume. Consider whether the spread cap (74%) is too conservative for Castle AST in SA blowout games \u2014 the underlying 95% hit rate at T4 with 10/10 blowout_game coverage may justify a higher floor confidence when spread_abs is 15-20 specifically for AST (not PTS, where the VOLATILE tag remains a valid suppressor).",
+    "The Randle dual-prop structure (PTS + AST) in a CLOSE-spread game with key absences (Edwards, McDaniels OUT) hit cleanly at conservative thresholds (T10 PTS, T2 AST). This pattern \u2014 star player on short-handed team, low spread, tough opponent with confirmed vs_tough\u226590% \u2014 is the system's cleanest construction type. Prioritize this structure in future slates when a team's primary scorer faces usage elevation from confirmed absences with spread_abs<5.",
+    "The NAW PTS pick hitting 27 actual vs. 15 threshold after the Daniels + Okongwu double-absence lineup amendment (revised to 79%) confirms that same-team dual-absence triggers are highly valuable upside signals for secondary scorers on soft-defense opponents. When two rotation players from the same team are scratched on the same day and the surviving scorer has a B2B rate\u226590% at T15, treat the lineup amendment upward revision as sufficient justification to keep the pick even under blowout-spread conditions."
   ],
   "skip_validation": {
-    "blowout_t25_skip": {
+    "volatile_weak_combo": {
       "total": 2,
       "false_skips": 2,
       "correct_skips": 0,
       "no_data": 0,
       "false_skip_rate": 100.0
     },
-    "3pm_blowout_trend_down": {
+    "blowout_t25_skip": {
       "total": 1,
       "false_skips": 0,
       "correct_skips": 1,
       "no_data": 0,
       "false_skip_rate": 0.0
     },
-    "reb_floor_skip": {
+    "3pm_blowout_trend_down": {
       "total": 2,
-      "false_skips": 2,
-      "correct_skips": 0,
+      "false_skips": 0,
+      "correct_skips": 2,
       "no_data": 0,
-      "false_skip_rate": 100.0
-    },
-    "volatile_weak_combo": {
-      "total": 2,
-      "false_skips": 1,
-      "correct_skips": 1,
-      "no_data": 0,
-      "false_skip_rate": 50.0
+      "false_skip_rate": 0.0
     },
     "merit_below_floor": {
-      "total": 4,
-      "false_skips": 4,
-      "correct_skips": 0,
+      "total": 9,
+      "false_skips": 8,
+      "correct_skips": 1,
       "no_data": 0,
-      "false_skip_rate": 100.0
-    },
-    "ast_hard_gate": {
-      "total": 1,
-      "false_skips": 1,
-      "correct_skips": 0,
-      "no_data": 0,
-      "false_skip_rate": 100.0
+      "false_skip_rate": 88.9
     }
   },
   "human_flag_precision": {
     "trim": {
-      "hits": 51,
+      "hits": 54,
       "misses": 5,
-      "total": 56,
-      "hit_rate_pct": 91.1
+      "total": 59,
+      "hit_rate_pct": 91.5
     },
     "keep": {
-      "hits": 96,
+      "hits": 100,
       "misses": 11,
-      "total": 107,
-      "hit_rate_pct": 89.7
+      "total": 111,
+      "hit_rate_pct": 90.1
     },
     "manual_skip": {
-      "hits": 5,
+      "hits": 6,
       "misses": 1,
-      "total": 6,
-      "hit_rate_pct": 83.3
+      "total": 7,
+      "hit_rate_pct": 85.7
     }
   }
 }
