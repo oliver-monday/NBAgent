@@ -17545,8 +17545,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "9/10 hit rate at T10, home vs depleted ORL, no blowout risk, CLOSE spread.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 23.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -17558,7 +17558,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 90,
       "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17578,8 +17580,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 REB at T4 in CLOSE home game; depleted ORL frontcourt adds board access.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -17591,7 +17593,11 @@
       "direction": "unchanged",
       "revised_confidence_pct": 90,
       "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Post-miss REB bounce-back rate is only 65% (lift=0.91, below 1.0), indicating REB is slump-persistent for Barnes \u2014 if he missed his REB tier last game, the expected hit rate is materially lower than the headline 90%. The minimum valid tier with a suppressed bounce-back rate is structurally softer than confidence suggests."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -17611,8 +17617,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps T25 to T20; soft MIL defense, VOLATILE penalized, elite scorer exemption active.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -17626,7 +17632,11 @@
       "direction": "up",
       "revised_confidence_pct": 81,
       "revised_reasoning": "Turner (rim_anchor) and Kuzma both OUT for MIL; easier paint access and softer defense amplify Kawhi scoring."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus spread_abs=14.5 creates a near-threshold fragility stack (audit lesson flags VOLATILE + spread_abs\u226513 as a structural concern). Even after the VOLATILE -5% penalty was applied, a LAC blowout loss scenario compresses Kawhi's minutes in Q4 precisely when his scoring production is needed to clear T20."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -17646,8 +17656,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron-floor T4 REB at 9/10; blowout cap applied at 74% for spread_abs=14.5.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -17661,7 +17671,9 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "Turner (rim_anchor) OUT weakens MIL frontcourt rebounding; Kawhi gains board access despite blowout risk."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17681,8 +17693,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 AST T2 vs soft MIL; blowout cap at 74% for spread_abs=14.5.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -17696,7 +17708,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Turner absence doesn't meaningfully alter Kawhi's passing lanes; trend=down offsets any upside."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17716,11 +17730,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps T25\u2192T20; VOLATILE and tough NY defense net to 70% floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 30.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a T25 PTS pick against a tough NY defense, with blowout risk (spread_abs=8.5) still in play \u2014 if OKC builds a large lead, SGA's Q4 minutes may be managed down, and his wide scoring distribution means a 25-point threshold carries real miss risk that the 74% confidence only partially prices."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -17740,11 +17758,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 AST T4 with consistent tag; blowout cap applied at 80% for spread_abs=8.5.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17764,8 +17784,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron-floor T20 PTS at 9/10 vs depleted GS; blowout cap applied at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 25.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -17777,7 +17797,11 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "Gordon out redistributes usage to Jokic; soft GS defense plus iron_floor makes PTS over more secure."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Spread_abs=12.5 creates meaningful blowout risk \u2014 if DEN builds a large lead, Jokic's minutes are frequently managed down in Q4 (he regularly sits late in blowouts), which compresses his scoring window and makes a T20 threshold more dependent on game pace staying competitive than the iron_floor status suggests."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -17797,11 +17821,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 PTS T20 with VOLATILE -5%; competitive spread, no blowout risk, mid defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17821,11 +17847,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 REB T4 in competitive game; high confidence gate limits to 80% with one confirming signal.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17845,11 +17873,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 AST T2 with consistent tag; FVV OUT elevates creation load in competitive game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17869,11 +17899,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 3PM T2, VOLATILE -5% lands at 75%; trend=up, competitive spread.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17893,11 +17925,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T15 VOLATILE drops below floor; T10 at 75% after VOLATILE penalty is the valid pick.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 36.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with min_floor=21.6 is precisely the fragility stack flagged in audit history \u2014 a single foul trouble or early deficit blowout scenario where HOU's rotation shortens can drop Sengun below 22 minutes, making a T15 threshold genuinely vulnerable on any given night."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -17917,11 +17953,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 REB T6 for Sengun at C; vs_soft=91%, competitive spread, trend=up.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Post-miss REB bounce-back rate is only 67% (lift=0.77, meaningfully below 1.0) with a typical miss of 4.0 below threshold \u2014 REB is confirmed slump-persistent for Sengun, and the depressed min_floor=21.6 compounds the risk that a compressed minutes game produces a clean miss at T6."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -17941,11 +17981,13 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "9/10 AST T2 with consistent tag; 95% overall, vs_tough=100%, competitive game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -17965,8 +18007,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "IND amplifier and soft defense support, but blowout_games=58% caps confidence at 70%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -17980,7 +18022,11 @@
       "direction": "up",
       "revised_confidence_pct": 78,
       "revised_reasoning": "Nesmith and Walker out depletes IND defense; easier paint access lifts Adebayo ceiling."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Post-miss PTS bounce-back rate of only 47% (lift=0.64) is the most depressed figure on the slate \u2014 if Adebayo missed PTS last game, his expected hit rate drops catastrophically, and the BLOWOUT_RISK with spread_abs=9.5 further suppresses his counting stats if MIA falls behind early."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -18000,8 +18046,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 AST T2 vs soft IND; blowout_games=79% provides resilience despite BLOWOUT_RISK.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -18015,7 +18061,9 @@
       "direction": "up",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Powell out redistributes MIA offense through Adebayo; IND depleted defense aids passing lanes."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-29",
@@ -18035,8 +18083,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 overall but vs_soft=46% and blowout_games=43% create structural risk; minimum confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 31.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -18050,7 +18098,11 @@
       "direction": "up",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Powell out boosts Herro usage; Walker/Nesmith absence softens IND perimeter defense further."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "min_floor=0.0 is a data artifact flagged explicitly in the reasoning \u2014 this means genuine minutes floor is unknown, and a single injury/DNP or early exit in a blowout (spread_abs=9.5) could produce a miss with no statistical floor protection whatsoever."
+    ]
   },
   {
     "date": "2026-03-29",
@@ -18070,8 +18122,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall but both vs_soft=46% and blowout_games=43% signal structural fragility.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
@@ -18085,6 +18137,10 @@
       "direction": "up",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Powell absence increases Herro's creation role; IND depleted rotation aids MIA ball movement."
-    }
+    },
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "Blowout hit rate of 43% and vs_soft hit rate of 46% are both dramatically below the headline 80% confidence \u2014 two independent contextual factors (game script and opponent quality) each independently suggest a sub-50% hit rate today, making this pick structurally inverted for a competitive edge. The BLOWOUT_RISK context is not adequately captured by the confidence adjustment alone."
+    ]
   }
 ]

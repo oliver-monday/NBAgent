@@ -16,10 +16,10 @@
       "final_confidence": 65,
       "prop_floor": 70
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 4"
   },
   {
     "date": "2026-03-29",
@@ -38,10 +38,10 @@
       "final_confidence": 65,
       "prop_floor_3pm": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
   },
   {
     "date": "2026-03-29",
@@ -58,10 +58,10 @@
       "step_down_result": "below_minimum",
       "spread_abs": 8.5
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-29",
@@ -77,10 +77,10 @@
       "reb_minimum_floor": 78,
       "note": "Spread cap (74%) falls below 78% REB minimum at T12, T10, T8, and T6 after VOLATILE -5% and BLOWOUT -10% applied"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 12"
   },
   {
     "date": "2026-03-29",
@@ -97,10 +97,10 @@
       "step_down_result": "below_minimum",
       "spread_abs": 12.5
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
   },
   {
     "date": "2026-03-29",
@@ -119,10 +119,10 @@
       "reb_minimum_floor": 78,
       "note": "VOLATILE -5% + BLOWOUT -10% reduces all tiers below 78% REB minimum"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 8"
   },
   {
     "date": "2026-03-29",
@@ -139,9 +139,9 @@
       "confidence_after_penalty": 70,
       "prop_floor_3pm": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   }
 ]

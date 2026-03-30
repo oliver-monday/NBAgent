@@ -3200,5 +3200,107 @@
         "Adding a fully independent third leg from a different game (Randle PTS, different opponent, different game script) as the parlay's 'swing leg' successfully diversified away from the SA blowout correlation risk while contributing independent upside \u2014 this cross-game independence structure (two correlated same-game legs + one fully independent leg) is the correct parlay architecture when the anchor game has spread_abs\u226515 and blowout risk is acknowledged."
       ]
     }
+  },
+  {
+    "date": "2026-03-29",
+    "total_picks": 19,
+    "voided_picks": 0,
+    "hits": 18,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 94.7,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 8,
+        "hits": 8,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 0,
+        "hit_rate_pct": 0.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 13,
+        "hits": 12,
+        "hit_rate_pct": 92.3,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Low-threshold PTS and REB anchors (T10 and T4) with 9/10 hit rates delivered clean floors across all games \u2014 Barnes PTS T10 (23 actual), Kawhi REB T4 (8 actual), SGA AST T4 (4 actual exact), and KD REB T4 (4 actual exact) all hit, confirming that conservative tier selection at high hit rates is the session's most reliable pattern.",
+      "The IND amplifier context delivered again: Adebayo PTS T10 hit for 15, Herro PTS T10 hit for 31, and Adebayo AST T2 hit for 3 in a game IND won by 17 \u2014 even in a competitive loss for MIA, the IND soft-defense amplifier continued to boost visiting scorers' counting stats, validating the amplifier rule for offensive props.",
+      "Multi-prop stacking on a single player worked well when backed by consistent tags and low threshts: KD's four-prop stack (PTS/REB/AST/3PM) went 3/4, with the sole miss being the 3PM VOLATILE pick \u2014 the non-VOLATILE legs (REB and AST) both hit exactly at threshold, confirming that consistent-tagged low-tier props on the same player are the reliable legs of any stack.",
+      "The HOU blowout context (HOU won by 32 vs NO) did not create garbage-time compression for HOU's primary contributors: KD (29 min), Sengun (32 min), and their combined counting stats all cleared low thresholds comfortably, suggesting the HOU suppressor scheme note applies to opponents facing HOU, not HOU players themselves \u2014 this distinction should be preserved in future analysis.",
+      "The lineup amendment system correctly identified upside on Kawhi (MIL missing Turner/Kuzma/Rollins) and Jokic (Gordon out), both of which hit their PTS thresholds despite blowout caps \u2014 the amendment's upside flags on these picks were validated by the game outcomes."
+    ],
+    "lessons": [
+      "KD 3PM T2 missed (1 actual vs 2 threshold) in a 32-point HOU blowout win \u2014 the VOLATILE tag on a 3PM prop in a blowout-adjacent context (HOU won by 32, meaning KD's Q4 minutes were likely managed down) represents a compounding fragility stack: VOLATILE + blowout game script + 3PM prop's inherently high variance. The 8/10 hit rate at T2 (80% base minus 5% VOLATILE = 75%) was correctly computed, but the system should consider whether blowout_games hit rate for 3PM specifically provides a more conservative base than the overall split when the game develops into a blowout.",
+      "The Herro AST T2 pick was flagged for manual_skip by the human reviewer due to vs_soft=46% and blowout_games=43% \u2014 both below 50% \u2014 yet it hit (4 actual vs 2 threshold). This is a reminder that the human skip override, while well-reasoned structurally, suppressed a pick that cleared comfortably. The vs_soft split anomaly for Herro may be sample-size noise at T2; the system should track whether the skip rule on dual sub-50% splits is systematically overcautious at minimum valid thresholds.",
+      "Three picks tagged VOLATILE on 3PM (KD) and PTS (Sengun, SGA) all ran \u2014 Sengun PTS T10 hit for 36 and SGA PTS T20 hit for 30, but both human reviewers trimmed them citing VOLATILE fragility. The sole 3PM VOLATILE miss confirms the existing rule is correctly directional for shooting props specifically; the PTS VOLATILE hits at large margins above threshold suggest VOLATILE on PTS at low thresholds may be less dangerous than the rule implies, warranting split analysis of VOLATILE by prop type."
+    ],
+    "recommendations": [
+      "Add a 3PM-specific blowout game-script rule: when a 3PM pick carries VOLATILE tag AND the pre-game spread implies potential blowout (spread_abs \u2265 10 OR the player's team is a heavy favorite), apply an additional -5% confidence penalty beyond the standard VOLATILE -5%, stacking to -10% total. KD's 3PM miss today (blowout win by 32, VOLATILE tag) is the prototype \u2014 the existing VOLATILE penalty alone did not fully price the combined risk of shot-volume compression in a garbage-time fourth quarter.",
+      "Track VOLATILE tag outcomes disaggregated by prop type across the next 30 sessions: the current VOLATILE -5% flat penalty applies identically to PTS, REB, AST, and 3PM. Today's evidence (Sengun PTS T10 hit for 36, SGA PTS T20 hit for 30, KD 3PM T2 miss for 1) suggests VOLATILE is much more damaging to 3PM than to PTS. If the pattern holds, calibrate VOLATILE penalty as -3% for PTS/REB/AST and -7% for 3PM.",
+      "When vs_soft and blowout_games splits are both below 55% on the same pick, do not merely flag the pick as 'highly marginal' at the 70% floor \u2014 treat the pick as a de facto skip unless the pick value is the system's minimum valid tier (T2 for AST, T4 for REB) AND the overall hit rate is \u226580%. This would have correctly skipped Herro AST T2 today (human reviewer reached the same conclusion manually), removing the need for post-hoc human override and aligning system output with the reviewer's judgment.",
+      "For multi-prop stacks on a single player, when one leg carries VOLATILE and others do not, flag the VOLATILE leg as the designated weak leg and reduce the player's total prop count inclusion in parlays to exclude it. KD's four-prop stack today included the 3PM VOLATILE as the only miss \u2014 had this been in a parlay, it would have been the breaking leg. The system should surface a 'VOLATILE leg present \u2014 parlay exclusion recommended' annotation when building multi-prop player stacks.",
+      "The IND amplifier (100% system hit rate, n=23) is producing consistent results \u2014 Adebayo PTS, Herro PTS, and Adebayo AST all hit comfortably vs IND today. When IND is the opponent, consider whether the blowout_games penalty should be reduced or waived for visiting team props at low thresholds (T10 PTS, T2 AST), since the amplifier mechanism (soft defense, no interior anchor) applies regardless of game script. Today's game was COMPETITIVE (IND won by 17), so game script did not suppress, but the principle should be tested: the IND amplifier and blowout risk are currently treated as independent modifiers when they may partially offset."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Kevin Durant",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: HOU @ NO, HOU won by 32 (BLOWOUT). KD was on the winning side of a 32-point blowout; in blowout wins, stars' Q4 minutes and shot volume are typically managed down, compressing three-point attempt opportunities. STEP 1 \u2014 Player was active: 29 minutes logged, KD recorded 20 PTS, 4 REB, 6 AST \u2014 clearly participated. The 3PM miss (1 actual vs 2 threshold) is a stat-specific outcome, not a DNP or injury event. STEP 2 \u2014 Classification: The pick was made at 75% confidence (8/10 hit rate at T2, VOLATILE -5%) \u2014 the analyst correctly priced the VOLATILE risk and the pick cleared all rule gates. The blowout outcome is partially captured by the VOLATILE tag and the competitive spread at pick time (spread_abs=5.5), but the game developed into a larger blowout than anticipated, which likely reduced KD's shot attempts and three-point volume in the fourth quarter. The signal (VOLATILE + potential blowout escalation) existed but the pre-game spread (5.5) was not large enough to trigger a blowout-specific penalty \u2014 this is within the variance band for a 75% pick. STEP 3 \u2014 Original reasoning was sound: '8/10 3PM T2, VOLATILE -5% lands at 75%; trend=up, competitive spread.' The analyst correctly identified VOLATILE and applied the standard penalty; the trend=up assessment was directionally reasonable. The miss is not attributable to a reasoning error. STEP 4 \u2014 Hit rate context: 8/10 (80% base) at T2, penalized to 75% final. A miss at 75% confidence is expected roughly 1 in 4 occurrences \u2014 this outcome is within the normal variance envelope for this confidence tier. STEP 5 \u2014 Tier walk: T2 was the appropriate and only viable tier (T4 would have been lower hit rate); no tier_skip or data_conflict detected. STEP 6 \u2014 No lineup amendment was present for this pick. Classification: variance \u2014 the pick was well-constructed at 75%, VOLATILE penalty was correctly applied, and the blowout game script (which was not foreseeable from a spread of 5.5) is the most likely mechanism compressing KD's three-point volume in the final minutes."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 3/3 sweep \u2014 the 'Sunday Volume Sweeper' hit on all legs, anchored by Barnes' iron-floor T10 PTS (23 actual) and supported by Kawhi's exact-threshold T20 PTS (20 actual) and Bam's low-tier AST anchor (3 actual vs 2 threshold).",
+      "parlay_lessons": [
+        "The Kawhi PTS leg at 75% confidence with a VOLATILE tag and spread_abs=14.5 was the structural weak point of this parlay \u2014 it hit exactly at threshold (20 actual), which means any further defensive resistance or minute compression in a blowout scenario (LAC won by 14, COMPETITIVE) would have broken the card. When a parlay leg carries VOLATILE + near-threshold blowout risk, the Parlay Agent should require the leg's pick_value to be at least one tier below the player's best qualifying tier, rather than selecting the VOLATILE-penalized tier directly, to build in cushion against exact-threshold outcomes."
+      ],
+      "parlay_reinforcements": [
+        "The 'anchor + two soft legs' structure worked cleanly: Barnes PTS T10 at 90% confidence served as the iron-floor anchor (cleared by 13 points), while Kawhi PTS T20 and Bam AST T2 provided diversification across two independent games. Multi-game parlays with one 86%+ anchor leg and two 70-75% independent legs from different games are validated as a structurally sound parlay template \u2014 the independence of game outcomes eliminated correlated bust risk.",
+        "Using a low-threshold AST pick (Bam AST T2 at 74%) as the 'stabilizer' leg in a three-leg parlay proved effective \u2014 the T2 AST prop has a narrow miss zone (player needs 0 or 1 assists to miss) and provides near-certain floor coverage, making it an ideal parlay anchor for confidence product management without requiring a high-confidence ceiling pick."
+      ]
+    }
   }
 ]

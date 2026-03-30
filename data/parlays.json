@@ -3337,9 +3337,32 @@
         "rationale": "Three separate games; Barnes iron-floor scorer, Kawhi soft matchup, Bam low-tier AST anchor stabilizes floor.",
         "date": "2026-03-29",
         "id": "parlay_2026-03-29_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Scottie Barnes",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 23.0
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "result": "HIT",
+            "actual_value": 20.0
+          },
+          {
+            "player_name": "Bam Adebayo",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 3.0
+          }
+        ]
       }
     ]
   }

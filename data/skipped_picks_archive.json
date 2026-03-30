@@ -1097,5 +1097,150 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "opponent": "ORL",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7/10",
+      "volatile_tag": true,
+      "confidence_before_penalty": 70,
+      "volatile_penalty": -5,
+      "final_confidence": 65,
+      "prop_floor": 70
+    },
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "opponent": "MIL",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7/10",
+      "volatile_tag": true,
+      "confidence_before_penalty": 70,
+      "volatile_penalty": -5,
+      "final_confidence": 65,
+      "prop_floor_3pm": 75
+    },
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "NY",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "minimum_valid_tier": 1,
+      "step_down_result": "below_minimum",
+      "spread_abs": 8.5
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "GS",
+    "prop_type": "REB",
+    "tier_considered": 12,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "blowout_cap": 74,
+      "reb_minimum_floor": 78,
+      "note": "Spread cap (74%) falls below 78% REB minimum at T12, T10, T8, and T6 after VOLATILE -5% and BLOWOUT -10% applied"
+    },
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 12"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "GS",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "minimum_valid_tier": 1,
+      "step_down_result": "below_minimum",
+      "spread_abs": 12.5
+    },
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "opponent": "IND",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "volatile_tag": true,
+      "blowout_risk": true,
+      "spread_abs": 9.5,
+      "confidence_after_penalties": 60,
+      "reb_minimum_floor": 78,
+      "note": "VOLATILE -5% + BLOWOUT -10% reduces all tiers below 78% REB minimum"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 8"
+  },
+  {
+    "date": "2026-03-29",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "opponent": "IND",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "8/10",
+      "blowout_penalty": -10,
+      "confidence_after_penalty": 70,
+      "prop_floor_3pm": 75
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   }
 ]
