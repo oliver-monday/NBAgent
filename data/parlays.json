@@ -3365,5 +3365,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-03-30",
+    "parlays": [
+      {
+        "label": "Multi-Game Monday Sweeper",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Nickeil Alexander-Walker",
+            "team": "ATL",
+            "opponent": "BOS",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "team": "OKC",
+            "opponent": "DET",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "James Harden",
+            "team": "CLE",
+            "opponent": "UTAH",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+117",
+        "confidence_product": 0.4622,
+        "correlation": "independent",
+        "rationale": "Three independent games; NAW anchors at 84% with volume_game tag, two 74% floor legs from soft-matchup scorers.",
+        "date": "2026-03-30",
+        "id": "parlay_2026-03-30_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]

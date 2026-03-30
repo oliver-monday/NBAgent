@@ -1,0 +1,114 @@
+[
+  {
+    "date": "2026-03-30",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a PTS prop in a B2B blowout-risk game (spread=-12.5) creates a compounding fragility stack: if OKC pulls away early, SGA's Q4 minutes get managed down, and his VOLATILE distribution means the 20-point floor is not guaranteed even at 100% B2B hit rate. The FG_MARGIN_THIN flag already forced a step-down from T25, signaling the margin is narrow."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Spread of -18.5 is among the largest on the slate, and Wembanyama's min_floor of 25.6 (avg 29.9) combined with VOLATILE tag means a single managed-down fourth quarter in a runaway win produces a real miss risk. The blowout hard skip already fired at T25; the structural risk (early garbage time, SA up 20+, Wembanyama pulled) persists at T15 and is not fully absorbed by the confidence trim alone."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The same -18.5 blowout script that suppresses Wembanyama's minutes also reduces his late-game playmaking opportunities; assists accumulate through normal game flow and disappear when starters are benched in Q4. With min_floor at 25.6 and a moderate volatility tag, the 2-assist floor is achievable but blowout game script is the single biggest structural threat to this prop."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "CLE is favored by -17.5, meaning the T25 blowout hard skip already fired and Pick stepped down to T15. Even at T15, a dominant CLE blowout compresses Harden's late-game minutes and shot volume; as a secondary scorer behind Mitchell, Harden is more vulnerable to garbage-time pullback than the team's primary option."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "In a -17.5 blowout scenario, CLE's offense runs in cruise control through three quarters and Harden's playmaking role contracts when reserves enter in Q4; assists are uniquely sensitive to game-flow compression, and 6 assists requires sustained involvement across all four quarters that a runaway win actively undermines."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Same -17.5 blowout risk applies to Mitchell: assists require live-ball game flow, and if CLE leads by 25+ in Q4, Mitchell's minutes are managed and assist opportunities evaporate. With raw_avg of only 5.8 APG, there is limited cushion above the threshold if garbage time arrives early."
+    ],
+    "source": "auto"
+  }
+]
