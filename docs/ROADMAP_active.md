@@ -13,15 +13,13 @@
 - **H9 — Player × Opponent H2H Splits** — Does a player's historical hit rate against today's specific opponent predict next-game performance better than the population-level opp_defense rating? Requires near-complete season sample (~mid-April 2026). See Active Queue entry M1 for implementation design.
 
 ### Odds Integration
-**Two-phase implementation. Phase 1 is an April target; Phase 2 is offseason.**
+**Two-phase implementation. Phase 1 IMPLEMENTED (2026-03-31); Phase 2 is offseason.**
 
-**Phase 1 — Data collection (April 2026):** Wire a player prop odds aggregator API (OddsAPI recommended starting point — free tier available) into a new daily ingest step. Fetch prop lines for whitelisted players, write to `data/odds_today.json`, append `market_implied_prob` and `edge_pct` to each pick in `picks.json` at analyst write time. No UI changes, no betting behavior changes. Goal: accumulate odds-tagged pick history through the playoffs so offseason analysis can answer "were our highest-edge picks actually our best picks?" Four weeks of tagged data by season end is the minimum useful sample.
+**Phase 1 — Data collection: ✅ IMPLEMENTED (2026-03-31).** `ingest/odds_today.py` + `.github/workflows/odds.yml`. Fetches FanDuel NBA player prop lines from The Odds API after each analyst run (chains off `Analyst Agent` workflow; also manually triggerable). Annotates today's picks in `picks.json` with `market_line`, `market_implied_prob`, `market_book`, `edge_pct`, `odds_fetched_at`. Writes diagnostic cache to `data/odds_today.json` (overwritten each run). FanDuel only, exact line matching (`pick_value − 0.5`), ~4 credits/game/day. Required secret: `ODDS_API_KEY`. Goal: accumulate odds-tagged pick history through the playoffs so offseason analysis can answer "were our highest-edge picks actually our best picks?" Four weeks of tagged data by season end is the minimum useful sample. **Future enhancement:** chain off `injuries.yml` for intraday refresh when significant lineup changes detected (not yet implemented — standalone workflow confirmed working first).
 
 **Phase 2 — Decision support UI (offseason / next season):** Kelly sizing display on pick cards (bet X% of bankroll), edge highlighting (system confidence vs. market implied), "market disagrees" flag when market implied prob is >10pp above system confidence. The three numbers surfaced per pick: market implied probability (prop line → percentage), edge (system confidence − implied), Kelly fraction (edge / odds → recommended bet size as % of bankroll). Output is a single actionable number per pick — no statistics background required to use it.
 
 **Platform note:** Primary execution on Kalshi (CA-legal prediction market, mirrors major books). Kalshi has no official API and displays round payout estimates rather than precise vig-adjusted lines. Odds ingest pulls from aggregator (not Kalshi directly) for analytical precision; execution remains manual. Kelly sizing math is still valid even if Kalshi rounds the displayed payout — size the bet correctly, execute at the closest available line.
-
-**Prerequisite for Phase 1:** Confirm OddsAPI covers NBA player props at sufficient coverage for whitelisted players before committing to it. Check free tier rate limits against daily ingest timing.
 
 **Relationship to existing features:** "Stay Away?" badge (frontend roadmap) is the near-term version of the same risk-surface instinct and should be built first — it uses existing quant fields with no odds dependency. Odds data enhances the badge later (market disagreement becomes one additional signal).
 
@@ -39,6 +37,27 @@
 
 ## Active Queue — In Priority Order
 
+### P1 — Playoffs Mode-Shift Preparation
+Status: ACTIVE — regular season ends April 12, playoffs begin ~April 19
+Priority: HIGH — time-sensitive, ~12 days of regular season remaining
+Playoff basketball has structurally different properties than the regular season sample the system was built and tuned on. The established rules will transfer; the calibrated signal strengths may not. Preparation before the first-round tip-off reduces the risk of a rough opening week.
+Known transfer risks:
+
+H15 suppressors (HOU, PHX, PHI): These were measured against the full-season schedule. In playoffs, matchups are fixed for up to 7 games. If HOU or PHX are eliminated in R1, the suppressor notes are moot; if they advance, the signal may concentrate or invert based on the specific pairing. Revisit suppressor/amplifier notes in nba_season_context.md after R1 matchups are set.
+Pace and blowout profiles: Playoff games are lower-scoring and more physical on average. Pace tags were calibrated on regular season team pace; playoff pace compresses. Blowout frequency drops sharply — the system's blowout rules were calibrated on a regular season blowout rate that won't hold in May.
+Teammate correlations and role stability: Coaches make aggressive lineup adjustments between playoff games and series. Rotation players can disappear entirely (8-man playoff rotations). Whitelist players whose role depends on a specific lineup construction are higher risk.
+Rest and schedule context: Regular season B2B rates are irrelevant in playoffs (2–4 days between games). The B2B penalty and hit rate data are inapplicable — treat B2B context as noise.
+
+Preparation actions (before first-round tip-off):
+
+Update nba_season_context.md once R1 matchups are confirmed (~April 13–15): add a PLAYOFFS section with the bracket, note which H15 suppressors/amplifiers remain relevant based on who survived, and flag any team facing a first-time opponent this season (H2H samples will be thin).
+Audit whitelist for eliminated teams — players on lottery teams (NOP, UTA, CHA, SAS, etc.) won't be in the bracket; set active=0 before the first playoff analyst run to prevent stale quant data polluting context.
+Watch the first week of R1 closely — treat it as a calibration check. If miss rate spikes vs. regular season baseline, the likely culprits are pace compression (PTS over-projecting), scheme adjustments (AST disrupted), and rotation instability (minutes floors unreliable). Tag these misses distinctly for post-R1 analysis.
+Prioritize H9 (H2H splits) — in a 7-game series, a player's historical performance against that specific opponent is the most playoff-relevant signal the system can generate. Run H9 during R1 while R2 matchups are still being set.
+
+What NOT to change pre-emptively: Do not modify quant computations, confidence rules, or skip thresholds before seeing playoff data. The system's rule set is well-calibrated; the risk is signal drift, not structural failure. Observe first, adjust second.
+
+---
 
 ### Matchup Signals Queue
 
@@ -95,11 +114,6 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 
 **Post-Game Reporter injury exit detection: fixed 2026-03-18.** Monitor next 2–3 low-minutes events to confirm `injury_exit` classification fires correctly for both the `_INJURY_EXIT_TERMS` direct path and the `minutes_restriction` → `injury_exit` promotion path. Close this watch item once two confirmed in-game exits are correctly classified in production.
 
-
-#### W7 — Rotowire Parser Post-Fix Monitoring
-**Status: WATCH — monitor first production run post-fix**
-
-Rotowire parser rewrite deployed 2026-03-25 based on live HTML inspection. `parse_rotowire_lineups` (On/Off button anchor), `parse_projected_minutes` (logo img anchor), `parse_onoff_usage` (graceful JS-loaded skip). Monitor first Rotowire run post-fix for lineup parse success — expect `teams>0`, `starters>0` in Actions log. Close this watch item once two consecutive successful runs confirmed. If `teams=0` persists, Rotowire may have changed page structure again.
 
 #### W6 — 3PM VOLATILE × iron_floor merit_below_floor false skip rate
 **Status: WATCH — accumulate merit_below_floor skip data through end of season + playoffs**

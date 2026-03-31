@@ -1,0 +1,64 @@
+name: Odds Agent
+
+on:
+  # Chains off the Analyst workflow completing — ensures picks exist first
+  workflow_run:
+    workflows: ["Analyst Agent"]
+    types: [completed]
+  # Manual trigger — re-fetch odds any time without re-running analyst
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: odds
+  cancel-in-progress: false
+
+jobs:
+  fetch-odds:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Los_Angeles
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch odds
+        run: python ingest/odds_today.py
+
+      - name: Commit odds data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase --autostash origin/main
+
+          CHANGED=0
+          for f in "data/picks.json" "data/odds_today.json"; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
+          if [ "$CHANGED" -eq 0 ]; then
+            echo "No odds changes to commit."
+          else
+            git commit -m "Odds data $(TZ=America/Los_Angeles date +%Y-%m-%d) [skip ci]"
+            git push origin HEAD:main
+          fi
