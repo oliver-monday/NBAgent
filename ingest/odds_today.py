@@ -16,12 +16,12 @@ Failure behaviour: any error (missing key, API failure, parse error) prints a
 warning and exits 0. picks.json is never touched on failure. The workflow
 can re-run safely at any time.
 
-Credit cost: 4 credits per NBA game with picks today (4 markets × 1 bookmaker
-group). Free tier: 500 credits/month. Typical cost: 12–28 credits/day.
+Credit cost: 4 credits per NBA game with picks today (4 alternate markets × 1
+bookmaker group). Free tier: 500 credits/month. Typical cost: 12–28 credits/day.
 
 API endpoint used for player props:
   GET /v4/sports/basketball_nba/events/{eventId}/odds
-  ?markets=player_points,player_rebounds,player_assists,player_threes
+  ?markets=player_points_alternate,player_rebounds_alternate,player_assists_alternate,player_threes_alternate
   &bookmakers=fanduel&regions=us&oddsFormat=american
 
 Line matching convention: T20 → 19.5 OVER (pick_value − 0.5).
@@ -55,13 +55,19 @@ SPORT     = "basketball_nba"
 BOOKMAKER = "fanduel"
 REGIONS   = "us"
 
-# Our prop types → OddsAPI market keys
-PROP_MARKET_MAP = {
-    "PTS": "player_points",
-    "REB": "player_rebounds",
-    "AST": "player_assists",
-    "3PM": "player_threes",
+# OddsAPI alternate market keys → our prop types.
+# Alternate markets contain the full X+ line menu at multiple thresholds,
+# matching the conservative floor targets used by NBAgent's tier system.
+# Main markets post only the consensus/natural line (too high for our picks).
+PROP_MARKET_MAP: dict[str, str] = {
+    "player_points_alternate":   "PTS",
+    "player_rebounds_alternate": "REB",
+    "player_assists_alternate":  "AST",
+    "player_threes_alternate":   "3PM",
 }
+
+# Set of our prop type codes — used for pick filtering
+VALID_PROP_TYPES: set[str] = set(PROP_MARKET_MAP.values())
 
 # OddsAPI full team names → our abbreviations (for game matching)
 TEAM_NAME_MAP = {
@@ -193,7 +199,7 @@ def main() -> None:
         p for p in all_picks
         if p.get("date") == TODAY_STR
         and not p.get("voided", False)
-        and p.get("prop_type") in PROP_MARKET_MAP
+        and p.get("prop_type") in VALID_PROP_TYPES
     ]
     if not today_picks:
         print(f"[odds] No unvoided picks for {TODAY_STR} — skipping")
@@ -238,8 +244,8 @@ def main() -> None:
         print("[odds] No matching events — skipping")
         sys.exit(0)
 
-    # 4. For each event, fetch FanDuel player prop odds (4 markets in one call)
-    markets_str = ",".join(PROP_MARKET_MAP.values())
+    # 4. For each event, fetch FanDuel player prop odds (4 alternate markets)
+    markets_str = ",".join(PROP_MARKET_MAP.keys())
     odds_cache: dict = {}
     # norm_player_name → f"{prop_type}_{line}" → {line, implied_prob, over_price}
     fetched: dict[str, dict[str, dict]] = {}
@@ -270,10 +276,7 @@ def main() -> None:
 
         for market in fanduel.get("markets", []):
             market_key = market.get("key", "")
-            prop_type = next(
-                (pt for pt, mk in PROP_MARKET_MAP.items() if mk == market_key),
-                None,
-            )
+            prop_type = PROP_MARKET_MAP.get(market_key)
             if prop_type is None:
                 continue
             for outcome in market.get("outcomes", []):
@@ -314,7 +317,7 @@ def main() -> None:
         prop_type  = pick.get("prop_type")
         pick_value = pick.get("pick_value")
         confidence = pick.get("confidence_pct")
-        if prop_type not in PROP_MARKET_MAP or pick_value is None:
+        if prop_type not in VALID_PROP_TYPES or pick_value is None:
             continue
 
         norm        = _norm_name(pick.get("player_name", ""))
