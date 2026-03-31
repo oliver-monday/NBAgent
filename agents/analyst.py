@@ -2032,19 +2032,18 @@ KEY RULES — VOLATILITY:
   the PTS pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
     2. The overall hit rate at the selected tier is exactly 7/10 (70%)
-    3. The pick tier is T20 or higher
-  Rationale: VOLATILE players at T20+ with a 7/10 (70%) hit rate represent the system's
+    3. The pick tier is T25 or higher
+  Rationale: VOLATILE players at T25+ with a 7/10 (70%) hit rate represent the system's
   weakest qualifying combinations. After the mandatory -5% VOLATILE deduction, 7/10 lands
   at the 65% floor — below the PTS minimum and never a valid pick. 8/10 at any tier is
-  NOT a weak combination: 80% - 5% = 75%, a legitimate floor pick. Audit evidence:
-  Brandon Ingram missed PTS O15 at 7/10 three times in 8 days. Counter-evidence:
-  KD (T20, 8/10, actual 30) and Sengun (T15, 8/10, actual 30) were false skips — both
-  scored 10–15 points above their tier threshold. The 8/10 trigger was wrong; only 7/10
-  at T20+ warrants a hard skip. T15–T19 VOLATILE picks with 8/10 hit rates are evaluated
-  normally under standard VOLATILE treatment (-5% confidence deduction). This rule applies
-  to PTS props only. Do NOT apply this skip to AST picks below T6 — the VOLATILE AST
-  skip rule governs those cases. VOLATILE + 7/10 at T15–T19 for REB is handled by the
-  existing 78% REB minimum floor rule.
+  NOT a weak combination: 80% - 5% = 75%, a legitimate floor pick. Full-season skip
+  archive evidence (post-narrowing): 0/3 correct skips at T20 — Jalen Johnson (actual 20,
+  HIT), Donovan Mitchell (actual 28, HIT), Wembanyama (actual 41, HIT). T20 VOLATILE 7/10
+  is a false-skip population; only T25+ warrants a hard skip. T15–T24 VOLATILE picks with
+  7/10 or 8/10 hit rates are evaluated normally under standard VOLATILE treatment (-5%
+  confidence deduction). This rule applies to PTS props only. Do NOT apply this skip to
+  AST picks below T6 — the VOLATILE AST skip rule governs those cases. VOLATILE + 7/10
+  at T15–T24 for REB is handled by the existing 78% REB minimum floor rule.
   Exceptions — this skip does NOT apply when any of the following are true:
     (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
         floor reliability above the 7/10 baseline.
@@ -3032,19 +3031,18 @@ KEY RULES — VOLATILITY:
   the PTS pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
     2. The overall hit rate at the selected tier is exactly 7/10 (70%)
-    3. The pick tier is T20 or higher
-  Rationale: VOLATILE players at T20+ with a 7/10 (70%) hit rate represent the system's
+    3. The pick tier is T25 or higher
+  Rationale: VOLATILE players at T25+ with a 7/10 (70%) hit rate represent the system's
   weakest qualifying combinations. After the mandatory -5% VOLATILE deduction, 7/10 lands
   at the 65% floor — below the PTS minimum and never a valid pick. 8/10 at any tier is
-  NOT a weak combination: 80% - 5% = 75%, a legitimate floor pick. Audit evidence:
-  Brandon Ingram missed PTS O15 at 7/10 three times in 8 days. Counter-evidence:
-  KD (T20, 8/10, actual 30) and Sengun (T15, 8/10, actual 30) were false skips — both
-  scored 10–15 points above their tier threshold. The 8/10 trigger was wrong; only 7/10
-  at T20+ warrants a hard skip. T15–T19 VOLATILE picks with 8/10 hit rates are evaluated
-  normally under standard VOLATILE treatment (-5% confidence deduction). This rule applies
-  to PTS props only. Do NOT apply this skip to AST picks below T6 — the VOLATILE AST
-  skip rule governs those cases. VOLATILE + 7/10 at T15–T19 for REB is handled by the
-  existing 78% REB minimum floor rule.
+  NOT a weak combination: 80% - 5% = 75%, a legitimate floor pick. Full-season skip
+  archive evidence (post-narrowing): 0/3 correct skips at T20 — Jalen Johnson (actual 20,
+  HIT), Donovan Mitchell (actual 28, HIT), Wembanyama (actual 41, HIT). T20 VOLATILE 7/10
+  is a false-skip population; only T25+ warrants a hard skip. T15–T24 VOLATILE picks with
+  7/10 or 8/10 hit rates are evaluated normally under standard VOLATILE treatment (-5%
+  confidence deduction). This rule applies to PTS props only. Do NOT apply this skip to
+  AST picks below T6 — the VOLATILE AST skip rule governs those cases. VOLATILE + 7/10
+  at T15–T24 for REB is handled by the existing 78% REB minimum floor rule.
   Exceptions — this skip does NOT apply when any of the following are true:
     (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
         floor reliability above the 7/10 baseline.
