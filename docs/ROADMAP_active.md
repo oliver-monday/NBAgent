@@ -117,10 +117,10 @@ Does a player's historical hit rate against today's specific opponent predict ne
 ---
 
 ### H15 — Opponent Team Pick Suppression / Lift
-**Status: SECOND RUN COMPLETE (Mar 22, 538 picks) — re-run at ≥600 picks (end of season)**
+**Status: THIRD RUN COMPLETE (Mar 31, ≥600 picks) — monitor MIN×AST through playoffs (n=11, need ≥15)**
 **Mode: `--mode opp-team-hit-rate`**
 
-HOU confirmed system-wide suppressor (61.9%, n=21, −23.4pp). MIN×AST at 55.6% (n=9, −29.5pp) — active scrutiny, below formal gate. SAS floor compression (n=6, mean −5.0). All notes updated in `nba_season_context.md`. Full results in `docs/BACKTESTS.md`. One more rerun at season end to check if additional teams clear the ≥15 pick suppressor threshold.
+Three suppressors confirmed: **HOU** (65.2%, n=23, −20.1pp), **PHX** (75.0%, n=24, −10.3pp), **PHI** (64.7%, n=17, −20.6pp; game-script/tanking caveat — see BACKTESTS.md). One amplifier confirmed: **IND** (100.0%, n=23, +14.7pp). MIN×AST at 63.6% (n=11) — active scrutiny, 4 more picks needed to clear ≥15 formal gate; season ends April 12. All notes updated in `nba_season_context.md`. Full results in `docs/BACKTESTS.md`.
 
 ---
 

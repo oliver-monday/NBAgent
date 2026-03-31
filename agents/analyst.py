@@ -15,6 +15,7 @@ import datetime as dt
 import json
 import os
 import sys
+import time
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -64,6 +65,26 @@ VALID_TIERS = {
 RECENT_GAME_WINDOW = 10
 # How many audit log entries to feed back as context (keep lean)
 AUDIT_CONTEXT_ENTRIES = 5
+
+
+# ── Retry helper ─────────────────────────────────────────────────────
+
+def _call_with_overload_retry(fn, max_retries=4, base_delay=10):
+    """
+    Call fn() with exponential backoff retry on overloaded_error.
+    Raises the last exception if all retries are exhausted.
+    fn must be a zero-argument callable that makes one Anthropic API call.
+    """
+    for attempt in range(max_retries + 1):
+        try:
+            return fn()
+        except anthropic.APIStatusError as e:
+            if "overloaded_error" in str(e) and attempt < max_retries:
+                delay = base_delay * (2 ** attempt)
+                print(f"[analyst] API overloaded (attempt {attempt + 1}/{max_retries + 1}), retrying in {delay}s...")
+                time.sleep(delay)
+            else:
+                raise
 
 
 # ── Data loaders ─────────────────────────────────────────────────────
@@ -2382,13 +2403,18 @@ def call_scout(prompt: str, model: str = MODEL) -> list[dict] | None:
     print(f"[analyst] Scout call: calling Claude ({model})...")
     raw_chunks = []
     try:
-        with client.messages.stream(
-            model=model,
-            max_tokens=SCOUT_MAX_TOKENS,
-            messages=[{"role": "user", "content": prompt}],
-        ) as stream:
-            for text in stream.text_stream:
-                raw_chunks.append(text)
+        def _scout_api_call():
+            chunks = []
+            with client.messages.stream(
+                model=model,
+                max_tokens=SCOUT_MAX_TOKENS,
+                messages=[{"role": "user", "content": prompt}],
+            ) as stream:
+                for text in stream.text_stream:
+                    chunks.append(text)
+            return chunks
+
+        raw_chunks = _call_with_overload_retry(_scout_api_call)
     except Exception as e:
         print(f"[analyst] Scout API call failed: {e} — falling back to single-call mode")
         return None
@@ -3829,13 +3855,28 @@ def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict
 
     print(f"[analyst] Calling Claude ({model})...")
     raw_chunks = []
-    with client.messages.stream(
-        model=model,
-        max_tokens=MAX_TOKENS,
-        messages=[{"role": "user", "content": prompt}],
-    ) as stream:
-        for text in stream.text_stream:
-            raw_chunks.append(text)
+    last_exc = None
+    for attempt in range(5):  # 4 retries + 1 initial
+        try:
+            with client.messages.stream(
+                model=model,
+                max_tokens=MAX_TOKENS,
+                messages=[{"role": "user", "content": prompt}],
+            ) as stream:
+                for text in stream.text_stream:
+                    raw_chunks.append(text)
+            break  # success — exit retry loop
+        except anthropic.APIStatusError as e:
+            if "overloaded_error" in str(e) and attempt < 4:
+                delay = 10 * (2 ** attempt)
+                print(f"[analyst] Analyst stream overloaded (attempt {attempt + 1}/5), retrying in {delay}s...")
+                time.sleep(delay)
+                last_exc = e
+                raw_chunks = []  # reset chunks for retry
+            else:
+                raise
+    else:
+        raise last_exc
     raw = "".join(raw_chunks).strip()
 
     # Strip markdown fences if present

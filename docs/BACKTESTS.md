@@ -107,7 +107,7 @@ All findings applied. Full methodology preserved in git history. Key results:
 
 ### H15 — Opponent Team Pick Suppression / Lift
 
-**Status: SECOND RUN COMPLETE — HOU confirmed suppressor (Mar 22, 2026)**
+**Status: THIRD RUN COMPLETE — PHX + PHI confirmed suppressors; IND amplifier (Mar 31, 2026)**
 **Mode:** `--mode opp-team-hit-rate`
 **Output:** `data/backtest_opp_team_hit_rate.json`
 
@@ -175,6 +175,42 @@ Overall miss margin baseline (n=79): mean=−2.7 | median=−2.0 | p25=−3.5 | 
 4. **Amplifiers are small-sample noise.** CHI, BOS, MIA, MEM 100% cells range from n=5–11. Do not add positive confidence rules based on these.
 
 **Next run:** End of season (≥600 picks) — check whether additional teams cross the suppressor gate, and whether MIN × AST clears ≥15 picks for formal confirmation.
+
+---
+
+**Run 3 — March 31, 2026 (≥600 picks, baseline 85.3%):**
+
+H15a results — confirmed suppressors and amplifiers (≥15 picks):
+
+| Opponent | n | Hit Rate | vs Baseline | Verdict |
+|----------|---|----------|-------------|---------|
+| PHI | 17 | 64.7% | −20.6pp | **SUPPRESSOR** (new) |
+| HOU | 23 | 65.2% | −20.1pp | **SUPPRESSOR** (confirmed, updated from 61.9%/n=21) |
+| PHX | 24 | 75.0% | −10.3pp | **SUPPRESSOR** (new) |
+| MIN | 35+ | ~77% | ~−8pp | Neutral (watch) |
+| IND | 23 | 100.0% | +14.7pp | **AMPLIFIER** (new) |
+
+Notable H15b prop-specific updates (≥5 picks):
+
+| Matchup | n | Hit Rate | vs Prop Baseline | Verdict |
+|---------|---|----------|------------------|---------|
+| MIN × AST | 11 | 63.6% | ~−21pp vs AST baseline | Below ≥15 gate — active scrutiny (4 more needed) |
+| MIN × 3PM | 8 | 100.0% | +16pp vs 3PM baseline | Small-sample noise |
+| PHI × PTS | ~5 | ~40% | extreme suppression | Game-script caveat (see below) |
+
+**Key findings:**
+
+1. **PHX confirmed as second system-wide suppressor (75.0%, n=24, −10.3pp).** Clears both the ≥15 pick gate and the ≥10pp threshold. Mechanism: Barkley/Booker offensive-first roster means opponents are playing catch-up, but PHX's transition defense and length suppresses scoring opportunity counts. `nba_season_context.md` updated with PHX suppressor note.
+
+2. **PHI confirmed as suppressor (64.7%, n=17, −20.6pp) — game-script/tanking caveat.** Numbers clear all thresholds, but PHI is a tanking team in 2025-26 — defensive intensity is low, but blowout game-script compression (PHI losing badly, reduced opponent possessions in Q4 garbage time) may be the driving mechanism rather than defensive scheme. Conservative guidance: apply one-tier step-down vs. PHI for PTS props, especially on favored-side opponents. PTS suppression is particularly extreme (~40% hit rate at n≈5). `nba_season_context.md` updated with PHI suppressor note and game-script caveat.
+
+3. **IND confirmed as system's first amplifier (100.0%, n=23, +14.7pp).** Clears the ≥15 pick gate by wide margin. All prop types running at 100%. Mechanism: Indiana's transition pace and relatively weak interior defense creates scoring and creation opportunities across all stat categories. Flag for positive awareness — not a reason to add confidence rules (100% rates are likely due to small-sample clustering), but IND opponents are historically not a reason to step down. `nba_season_context.md` updated.
+
+4. **MIN × AST at n=11 (63.6%, −21pp) — 4 more picks needed to clear formal gate.** Season ends April 12, 2026. If 4 more MIN AST picks are generated, this will clear the gate and warrant a directive rule in the offseason. Monitor closely through playoffs.
+
+5. **HOU suppressor holding and strengthening** (updated 65.2%/n=23 from 61.9%/n=21). Signal stable across the larger sample. HOU season context note remains in place.
+
+**Next run:** End of season / playoffs — close tracking of MIN×AST for ≥15 pick gate clearance. No further structural re-runs planned.
 
 ---
 
