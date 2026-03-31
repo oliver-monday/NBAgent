@@ -18198,8 +18198,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Elite scorer iron_floor T25 stepped to T20 via FG_MARGIN_THIN; B2B rate 78% holds at T20.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 47.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
@@ -18212,7 +18212,11 @@
       "direction": "up",
       "revised_confidence_pct": 82,
       "revised_reasoning": "Williams and Hartenstein out; SGA inherits redistributed usage and shots, amplifying already iron_floor scoring base vs soft DET defense."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a PTS prop in a B2B blowout-risk game (spread=-12.5) creates a compounding fragility stack: if OKC pulls away early, SGA's Q4 minutes get managed down, and his VOLATILE distribution means the 20-point floor is not guaranteed even at 100% B2B hit rate. The FG_MARGIN_THIN flag already forced a step-down from T25, signaling the margin is narrow."
+    ]
   },
   {
     "date": "2026-03-30",
@@ -18232,8 +18236,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% B2B AST hit rate with consistent tag; DET missing Cunningham and Stewart collapses playmaking resistance.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
@@ -18246,7 +18250,9 @@
       "direction": "down",
       "revised_confidence_pct": 68,
       "revised_reasoning": "Williams and Hartenstein absence removes primary scoring targets; fewer viable receivers reduces assist opportunities despite DET defensive weakness."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-30",
@@ -18266,8 +18272,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T20 VOLATILE weak-combo skip and T25 hard-skip; T15 clears with blowout cap at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 41.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
@@ -18279,7 +18285,11 @@
       "direction": "up",
       "revised_confidence_pct": 77,
       "revised_reasoning": "Richards (rim_anchor) out; Wemby gets easier paint access, higher FG%, more volume against weakened CHI frontcourt."
-    }
+    },
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "Spread of -18.5 is among the largest on the slate, and Wembanyama's min_floor of 25.6 (avg 29.9) combined with VOLATILE tag means a single managed-down fourth quarter in a runaway win produces a real miss risk. The blowout hard skip already fired at T25; the structural risk (early garbage time, SA up 20+, Wembanyama pulled) persists at T15 and is not fully absorbed by the confidence trim alone."
+    ]
   },
   {
     "date": "2026-03-30",
@@ -18299,8 +18309,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% AST hit rate at T2 vs soft CHI defense; spread cap sets ceiling at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
@@ -18312,7 +18322,11 @@
       "direction": "up",
       "revised_confidence_pct": 77,
       "revised_reasoning": "Richards out softens CHI paint defense; more drive-and-kick opportunities slightly boost Wemby's assist potential."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "The same -18.5 blowout script that suppresses Wembanyama's minutes also reduces his late-game playmaking opportunities; assists accumulate through normal game flow and disappear when starters are benched in Q4. With min_floor at 25.6 and a moderate volatility tag, the 2-assist floor is achievable but blowout game script is the single biggest structural threat to this prop."
+    ]
   },
   {
     "date": "2026-03-30",
@@ -18332,8 +18346,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "9/10 PTS hit rate holds at 81% vs tough defenses; Tatum absence weakens BOS defensive cohesion.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
@@ -18346,7 +18360,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Hauser/Queta out; Hauser loss slightly hurts spacing but Tatum absence already baked in, net minimal change."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-30",
@@ -18366,8 +18382,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor AST T2 with 92% hit rate vs tough defenses; trend up and home game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
@@ -18380,7 +18396,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Iron_floor AST, BOS lineup changes don't directly affect NAW's playmaking role or assist floor."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-30",
@@ -18400,8 +18418,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% 3PM hit rate at T2 with stable trend; capped at 80% per non-iron-floor 3PM ceiling rule.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
@@ -18414,7 +18432,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "BOS absences (Hauser, Queta) have no direct bearing on NAW's 3PM opportunities or shot volume."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-30",
@@ -18434,11 +18454,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% PTS hit rate vs Utah's 29th-ranked defense; spread cap limits to 74% max.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "CLE is favored by -17.5, meaning the T25 blowout hard skip already fired and Pick stepped down to T15. Even at T15, a dominant CLE blowout compresses Harden's late-game minutes and shot volume; as a secondary scorer behind Mitchell, Harden is more vulnerable to garbage-time pullback than the team's primary option."
+    ]
   },
   {
     "date": "2026-03-30",
@@ -18458,11 +18482,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% AST hit rate as CLE's primary ball-handler vs decimated Utah roster; spread cap at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "In a -17.5 blowout scenario, CLE's offense runs in cruise control through three quarters and Harden's playmaking role contracts when reserves enter in Q4; assists are uniquely sensitive to game-flow compression, and 6 assists requires sustained involvement across all four quarters that a runaway win actively undermines."
+    ]
   },
   {
     "date": "2026-03-30",
@@ -18482,10 +18510,14 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% AST hit rate; opp_today=soft and Utah roster decimated supports creation volume at T4.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Same -17.5 blowout risk applies to Mitchell: assists require live-ball game flow, and if CLE leads by 25+ in Q4, Mitchell's minutes are managed and assist opportunities evaporate. With raw_avg of only 5.8 APG, there is limited cushion above the threshold if garbage time arrives early."
+    ]
   }
 ]

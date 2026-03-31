@@ -1242,5 +1242,343 @@
     "would_have_hit": false,
     "skip_verdict": "correct_skip",
     "skip_verdict_notes": "Actual 0.0 < tier 1"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "DET",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 74,
+      "prop_minimum_floor": 75,
+      "penalties_applied": [
+        "VOLATILE -5%",
+        "spread_abs>=12 cap 74%"
+      ],
+      "note": "74% after spread cap falls below 75% 3PM minimum confidence floor"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "CHI",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": true,
+      "hit_rate": "7/10",
+      "tier": 20,
+      "note": "VOLATILE + 7/10 + T20 triggers volatile_weak_combo hard skip; stepped to T15 for pick"
+    },
+    "actual_value": 41.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 41.0 \u2265 tier 20"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "CHI",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "blowout_t25_skip",
+    "rule_context": {
+      "spread_abs": 18.5,
+      "favored_team": "SA",
+      "tier": 25,
+      "note": "spread_abs=18.5 >= 15 and SA is favored side; T25 BLOWOUT HARD SKIP fires"
+    },
+    "actual_value": 41.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 41.0 \u2265 tier 25"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "CHI",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 74,
+      "reb_minimum_floor": 78,
+      "penalties_applied": [
+        "spread_abs>=15 cap 74%"
+      ],
+      "note": "10/10 hit rate capped to 74% by spread_abs>=15 rule; 74% < 78% REB minimum"
+    },
+    "actual_value": 16.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 16.0 \u2265 tier 8"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "CHI",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "spread_abs": 18.5,
+      "note": "trend=down mandatory step-down from T1 produces no valid tier below T1; skip"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "opponent": "UTAH",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 74,
+      "reb_minimum_floor": 78,
+      "penalties_applied": [
+        "spread_abs>=15 cap 74%"
+      ],
+      "note": "85% capped to 74% by spread_abs>=15; 74% < 78% REB minimum floor"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "opponent": "UTAH",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 74,
+      "prop_minimum_floor": 75,
+      "penalties_applied": [
+        "spread_abs>=15 cap 74%"
+      ],
+      "note": "90% capped to 74% by spread_abs>=15; 74% < 75% 3PM minimum floor"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 2"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "opponent": "UTAH",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 74,
+      "reb_minimum_floor": 78,
+      "penalties_applied": [
+        "spread_abs>=15 cap 74%"
+      ],
+      "note": "80% capped to 74%; 74% < 78% REB minimum floor"
+    },
+    "actual_value": 17.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 17.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "opponent": "UTAH",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "blowout_secondary_scorer",
+    "rule_context": {
+      "spread_abs": 17.5,
+      "player_role": "secondary_scorer",
+      "note": "spread_abs=17.5>=15 and Mobley is not CLE primary scorer; hard skip all PTS"
+    },
+    "actual_value": 34.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 34.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "opponent": "UTAH",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 65,
+      "general_minimum_floor": 70,
+      "penalties_applied": [
+        "VOLATILE -5%"
+      ],
+      "note": "VOLATILE -5% on 70% base drops to 65%; below 70% AST floor"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "UTAH",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": true,
+      "hit_rate": "7/10",
+      "tier": 20,
+      "note": "VOLATILE + 7/10 + T20 triggers volatile_weak_combo hard skip"
+    },
+    "actual_value": 34.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 34.0 \u2265 tier 20"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "UTAH",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 70,
+      "prop_minimum_floor": 75,
+      "penalties_applied": [
+        "VOLATILE -5%",
+        "spread_abs>=15 cap 74%"
+      ],
+      "note": "VOLATILE -5% on iron_floor T2 3PM leaves 70%; below 75% 3PM minimum floor"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "opponent": "BOS",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "volatile_tag": true,
+      "hit_rate": "7/10",
+      "tier": 20,
+      "note": "VOLATILE + 7/10 + T20 triggers volatile_weak_combo hard skip before FG_MARGIN step"
+    },
+    "actual_value": 20.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 20.0 \u2265 tier 20"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "opponent": "BOS",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 65,
+      "reb_minimum_floor": 78,
+      "penalties_applied": [
+        "VOLATILE -5%"
+      ],
+      "note": "VOLATILE -5% on 70% drops to 65%; below 78% REB minimum floor"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 8"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "opponent": "BOS",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "PF/SF",
+      "raw_avgs_ast": 7.8,
+      "opp_today_rating": "tough",
+      "note": "raw_avgs AST=7.8 < 8.0, position non-PG, opp_today=tough; T4+ gate requires soft defense"
+    },
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-03-30",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "opponent": "BOS",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 70,
+      "prop_minimum_floor": 75,
+      "penalties_applied": [
+        "VOLATILE -5%"
+      ],
+      "note": "VOLATILE -5% on 75% drops to 70%; below 75% 3PM minimum confidence floor"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   }
 ]

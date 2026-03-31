@@ -3410,9 +3410,32 @@
         "rationale": "Three independent games; NAW anchors at 84% with volume_game tag, two 74% floor legs from soft-matchup scorers.",
         "date": "2026-03-30",
         "id": "parlay_2026-03-30_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "MISS",
+        "legs_hit": 1,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Nickeil Alexander-Walker",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 17.0
+          },
+          {
+            "player_name": "Shai Gilgeous-Alexander",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "result": "MISS",
+            "actual_value": 3.0
+          },
+          {
+            "player_name": "James Harden",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "MISS",
+            "actual_value": 13.0
+          }
+        ]
       }
     ]
   }
