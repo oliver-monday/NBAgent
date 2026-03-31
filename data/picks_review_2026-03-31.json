@@ -1,0 +1,186 @@
+[
+  {
+    "date": "2026-03-31",
+    "player_name": "Luka Doncic",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 25,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a B2B with only 5 B2B games in sample \u2014 the 100% b2b hit rate at T10 is a thin sample, and LeBron's volatility flag means a single cold shooting night (post_miss_hr of 67% is the weakest bounce-back in this slate) could produce a sub-10 output that the aggregate floor doesn't fully protect against."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a 3PM prop is the single most audit-confirmed fragility stack in this system \u2014 the historical lesson from KD 3PM explicitly flags VOLATILE + 3PM as compounding fragility. B2B hit rate drops to 86% (vs 100% on other Reaves props), and raw_avg_3PM of exactly 2.0 means the threshold is right at his mean with zero cushion for a cold three-point night."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a min_floor of only 30.8 and a tough LAL defense (def_recency shows LAL's L5 average 109.4 DRTG, improving) creates meaningful downside \u2014 the FG_MARGIN_THIN step-down already fired, and with volatility the distribution is wide enough that a cold shooting game with any minutes compression lands below 15."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B sample is insufficient (<5 games), meaning the strong 90% overall hit rate has no B2B validation \u2014 this is the exact structural gap that produced the Harden AST miss in audit history, where a competitive game concentrated his usage on scoring rather than creation. A B2B road game at LAL with no confirmed b2b split is a genuine floor uncertainty."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Audit history explicitly flags Harden PTS as structurally softer than his AST floor with a secondary-scorer caution rule \u2014 min_floor of only 29.9 (vs avg 36.0 is a large gap, meaning he has genuine low-minutes games in his distribution) combined with no B2B validation sample and the historical lesson that Harden PTS at T15 missed against CLE make this the pick most at risk of repeating a documented pattern."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Allen is listed as PROBABLE with a min_floor of only 20.7 against an avg of 27.5 \u2014 that 6.8-minute gap is the largest minutes fragility on this slate, and a PROB designation means there is a non-trivial chance of either restriction or early exit; post_miss_hr of 64% is also the weakest on the slate, making a miss day stickier than average."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD at -18% already triggered a mandatory step-down, and team_momentum=cold compounds the shooting environment \u2014 typical_miss of 5.0 pts below threshold is the widest miss gap on this slate, meaning when Bane misses this tier he misses badly, and post_miss_hr of 69% confirms the cold streak is somewhat persistent."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-03-31",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
