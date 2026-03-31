@@ -1,123 +1,7 @@
 {
   "asof_date": "2026-03-31",
-  "built_at_utc": "2026-03-31T22:52:42Z",
+  "built_at_utc": "2026-03-31T23:03:55Z",
   "source": "rotowire",
-  "CHA": {
-    "starters": [
-      {
-        "position": "PG",
-        "name": "LaMelo Ball",
-        "injury_status": null
-      },
-      {
-        "position": "SG",
-        "name": "Kon Knueppel",
-        "injury_status": null
-      },
-      {
-        "position": "SF",
-        "name": "Brandon Miller",
-        "injury_status": null
-      },
-      {
-        "position": "PF",
-        "name": "Miles Bridges",
-        "injury_status": null
-      },
-      {
-        "position": "C",
-        "name": "Moussa Diabate",
-        "injury_status": null
-      }
-    ],
-    "confirmed": false,
-    "projected_minutes": [
-      {
-        "name": "Brandon Miller",
-        "minutes": 34,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Kon Knueppel",
-        "minutes": 34,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "LaMelo Ball",
-        "minutes": 31,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Miles Bridges",
-        "minutes": 28,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Moussa Diabate",
-        "minutes": 28,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Coby White",
-        "minutes": 22,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Grant Williams",
-        "minutes": 19,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Ryan Kalkbrenner",
-        "minutes": 16,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Josh Green",
-        "minutes": 14,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Sion James",
-        "minutes": 14,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Pat Connaughton",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Xavier Tillman",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Tre Mann",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Antonio Reeves",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      }
-    ]
-  },
   "BKN": {
     "starters": [
       {
@@ -158,7 +42,7 @@
       {
         "position": "SG",
         "name": "Brandon Ingram",
-        "injury_status": "QUES"
+        "injury_status": "PROB"
       },
       {
         "position": "SF",
@@ -188,7 +72,7 @@
         "name": "Brandon Ingram",
         "minutes": 35,
         "section": "STARTERS",
-        "injury_status": "QUES"
+        "injury_status": "PROB"
       },
       {
         "name": "RJ Barrett",
@@ -224,7 +108,7 @@
         "name": "C. Murray-Boyles",
         "minutes": 18,
         "section": "STARTERS",
-        "injury_status": "QUES"
+        "injury_status": "PROB"
       },
       {
         "name": "Gradey Dick",
@@ -295,7 +179,7 @@
       {
         "position": "C",
         "name": "Jalen Duren",
-        "injury_status": "PROB"
+        "injury_status": null
       }
     ],
     "confirmed": false
@@ -1052,6 +936,96 @@
         "confirmed": false
       }
     }
+  },
+  "CHA": {
+    "starters": [],
+    "confirmed": false,
+    "projected_minutes": [
+      {
+        "name": "Brandon Miller",
+        "minutes": 34,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Kon Knueppel",
+        "minutes": 34,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "LaMelo Ball",
+        "minutes": 31,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Miles Bridges",
+        "minutes": 28,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Moussa Diabate",
+        "minutes": 28,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Coby White",
+        "minutes": 22,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Grant Williams",
+        "minutes": 19,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Ryan Kalkbrenner",
+        "minutes": 16,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Josh Green",
+        "minutes": 14,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Sion James",
+        "minutes": 14,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Pat Connaughton",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Xavier Tillman",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Tre Mann",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Antonio Reeves",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      }
+    ]
   },
   "PHX": {
     "starters": [],
