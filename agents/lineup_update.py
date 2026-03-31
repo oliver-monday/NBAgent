@@ -1181,6 +1181,24 @@ def apply_amendments(
             "revised_reasoning":    amendment.get("revised_reasoning", ""),
         }
 
+        # Amendment sub-70% auto-skip: if the amendment revised confidence below the
+        # 70% minimum floor, void the pick immediately. The lineup_update sub-object
+        # (and its reasoning) remains visible on the voided pick.
+        if direction == "down":
+            revised_pct = pick["lineup_update"]["revised_confidence_pct"]
+            if isinstance(revised_pct, (int, float)) and revised_pct < 70:
+                pick["voided"]      = True
+                pick["void_reason"] = (
+                    f"lineup_update: revised confidence {revised_pct}% "
+                    f"below 70% floor — auto-skipped"
+                )
+                print(
+                    f"[lineup_update] AUTO-SKIP (amended below 70%): "
+                    f"{pick.get('player_name', '?')} {pick.get('prop_type', '?')} "
+                    f"T{pick.get('pick_value', '?')} "
+                    f"— revised confidence {revised_pct}%"
+                )
+
         n_amended += 1
         if direction == "up":
             n_up += 1

@@ -1971,6 +1971,16 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   header: if BLOWOUT_RISK=True is not shown, this rule does not fire.
   Primary scorers (team PPG leaders, first options) are exempt from this skip because their
   usage is more protected even in blowout scenarios.
+  PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the model's primary/secondary classification
+  is ambiguous (e.g. a high-AST player who is also a ball-handler), use the quant data as the
+  authoritative tiebreaker. Check today's quant context for whitelisted teammates on the same
+  team: if any teammate has a higher best qualifying PTS tier, that teammate is the primary
+  scorer and this player is the secondary scorer — regardless of ball-handler role, playmaking
+  designation, or assist volume. Example: Mitchell's best PTS tier is T20 and Harden's is T15
+  → Mitchell is primary, Harden is secondary, BLOWOUT_SECONDARY_SCORER fires for Harden's
+  PTS pick. Harden's role as the primary ball-handler does not override this determination.
+  If no teammate quant data is available or no teammate is whitelisted on this team today,
+  fall back to season PPG average as the tiebreaker (higher PPG = primary).
 
 - ROAD UNDERDOG NEAR-THRESHOLD PTS PENALTY: When ALL of the following are true, apply
   a -5% precautionary confidence reduction to the PTS pick before finalizing:
@@ -2046,6 +2056,14 @@ KEY RULES — VOLATILITY:
         volatile_weak_combo at 100% false skip rate. Players averaging 6+ APG with an
         iron_floor have a confirmed assist floor that makes the 7/10 or 8/10 qualification
         structurally sound, not marginal.
+    (c) The player is Victor Wembanyama on a PTS prop — his established blowout exemption
+        philosophy extends to volatile_weak_combo on PTS. As SAS's primary scorer (24.3 PPG
+        team leader), his scoring floor is structurally insulated from the volatility concern
+        that drives this rule. Apply standard VOLATILE treatment (-5% confidence deduction)
+        rather than a hard skip. Audit evidence: Wembanyama PTS T20 (7/10) hard-skipped by
+        volatile_weak_combo on 2026-03-30; actual score: 41 points.
+        Note: this exemption applies to PTS props only. REB and AST volatile_weak_combo
+        checks for Wembanyama follow standard rules.
 - VOLATILE AST skip — high-tier primary ball-handlers: If BOTH of the following are true,
   SKIP the AST pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
@@ -2953,6 +2971,16 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players.
   Primary scorers (team PPG leaders, first options) are exempt from this skip at all spread
   levels because their usage is more protected even in blowout scenarios.
+  PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the model's primary/secondary classification
+  is ambiguous (e.g. a high-AST player who is also a ball-handler), use the quant data as the
+  authoritative tiebreaker. Check today's quant context for whitelisted teammates on the same
+  team: if any teammate has a higher best qualifying PTS tier, that teammate is the primary
+  scorer and this player is the secondary scorer — regardless of ball-handler role, playmaking
+  designation, or assist volume. Example: Mitchell's best PTS tier is T20 and Harden's is T15
+  → Mitchell is primary, Harden is secondary, BLOWOUT_SECONDARY_SCORER fires for Harden's
+  PTS pick. Harden's role as the primary ball-handler does not override this determination.
+  If no teammate quant data is available or no teammate is whitelisted on this team today,
+  fall back to season PPG average as the tiebreaker (higher PPG = primary).
 
 - ROAD UNDERDOG NEAR-THRESHOLD PTS PENALTY: When ALL of the following are true, apply
   a -5% precautionary confidence reduction to the PTS pick before finalizing:
@@ -3028,6 +3056,14 @@ KEY RULES — VOLATILITY:
         volatile_weak_combo at 100% false skip rate. Players averaging 6+ APG with an
         iron_floor have a confirmed assist floor that makes the 7/10 or 8/10 qualification
         structurally sound, not marginal.
+    (c) The player is Victor Wembanyama on a PTS prop — his established blowout exemption
+        philosophy extends to volatile_weak_combo on PTS. As SAS's primary scorer (24.3 PPG
+        team leader), his scoring floor is structurally insulated from the volatility concern
+        that drives this rule. Apply standard VOLATILE treatment (-5% confidence deduction)
+        rather than a hard skip. Audit evidence: Wembanyama PTS T20 (7/10) hard-skipped by
+        volatile_weak_combo on 2026-03-30; actual score: 41 points.
+        Note: this exemption applies to PTS props only. REB and AST volatile_weak_combo
+        checks for Wembanyama follow standard rules.
 - VOLATILE AST skip — high-tier primary ball-handlers: If BOTH of the following are true,
   SKIP the AST pick entirely. Do not pick at a lower tier.
     1. The stat is tagged [VOLATILE]
