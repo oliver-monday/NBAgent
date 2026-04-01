@@ -3511,5 +3511,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-01",
+    "parlays": [
+      {
+        "label": "ATL-BOS Floor Lock",
+        "type": "mixed",
+        "legs": [
+          {
+            "player_name": "Nickeil Alexander-Walker",
+            "team": "ATL",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "CJ McCollum",
+            "team": "ATL",
+            "opponent": "ORL",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Jaylen Brown",
+            "team": "BOS",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "positive",
+        "rationale": "ATL volume game lifts NAW PTS and McCollum AST together; Brown adds independent soft-matchup floor.",
+        "date": "2026-04-01",
+        "id": "parlay_2026-04-01_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
