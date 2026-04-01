@@ -20,6 +20,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import anthropic
+import httpx
 import pandas as pd
 
 # ── Paths ────────────────────────────────────────────────────────────
@@ -71,7 +72,8 @@ AUDIT_CONTEXT_ENTRIES = 5
 
 def _call_with_overload_retry(fn, max_retries=4, base_delay=10):
     """
-    Call fn() with exponential backoff retry on overloaded_error.
+    Call fn() with exponential backoff retry on overloaded_error and transient
+    network errors (connection drops, incomplete chunked reads, timeouts).
     Raises the last exception if all retries are exhausted.
     fn must be a zero-argument callable that makes one Anthropic API call.
     """
@@ -82,6 +84,13 @@ def _call_with_overload_retry(fn, max_retries=4, base_delay=10):
             if "overloaded_error" in str(e) and attempt < max_retries:
                 delay = base_delay * (2 ** attempt)
                 print(f"[analyst] API overloaded (attempt {attempt + 1}/{max_retries + 1}), retrying in {delay}s...")
+                time.sleep(delay)
+            else:
+                raise
+        except (httpx.RemoteProtocolError, httpx.ReadTimeout, httpx.ConnectError) as e:
+            if attempt < max_retries:
+                delay = base_delay * (2 ** attempt)
+                print(f"[analyst] Network error: {type(e).__name__}: {e} (attempt {attempt + 1}/{max_retries + 1}), retrying in {delay}s...")
                 time.sleep(delay)
             else:
                 raise
@@ -3904,6 +3913,15 @@ def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict
             if "overloaded_error" in str(e) and attempt < 4:
                 delay = 10 * (2 ** attempt)
                 print(f"[analyst] Analyst stream overloaded (attempt {attempt + 1}/5), retrying in {delay}s...")
+                time.sleep(delay)
+                last_exc = e
+                raw_chunks = []  # reset chunks for retry
+            else:
+                raise
+        except (httpx.RemoteProtocolError, httpx.ReadTimeout, httpx.ConnectError) as e:
+            if attempt < 4:
+                delay = 10 * (2 ** attempt)
+                print(f"[analyst] Analyst stream network error: {type(e).__name__}: {e} (attempt {attempt + 1}/5), retrying in {delay}s...")
                 time.sleep(delay)
                 last_exc = e
                 raw_chunks = []  # reset chunks for retry
