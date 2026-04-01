@@ -19188,8 +19188,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "B2B 100% hit rate at T25 with consistent tag; CLE mid defense; LAL home competitive game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 42.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19207,7 +19207,9 @@
     "market_implied_prob": 87.5,
     "market_book": "fanduel",
     "edge_pct": -7.5,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19227,8 +19229,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor consistent AST; 95% overall, 100% vs tough; B2B 80% rate; structural creation floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19241,7 +19243,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Iron floor AST prop unaffected; neither Merrill nor Smart absence alters LeBron's structural creation role."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19261,8 +19265,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step to T10; VOLATILE -5%; B2B 80% rate; T10 floor holds vs mid CLE defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19275,7 +19279,11 @@
       "direction": "unchanged",
       "revised_confidence_pct": 70,
       "revised_reasoning": "VOLATILE floor pick; lineup changes don't meaningfully shift LeBron's scoring volume or matchup difficulty."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a B2B with only 5 B2B games in sample \u2014 the 100% b2b hit rate at T10 is a thin sample, and LeBron's volatility flag means a single cold shooting night (post_miss_hr of 67% is the weakest bounce-back in this slate) could produce a sub-10 output that the aggregate floor doesn't fully protect against."
+    ]
   },
   {
     "date": "2026-03-31",
@@ -19295,8 +19303,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step to T10; B2B 86% rate; solid floor against mid CLE defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19309,7 +19317,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Merrill OUT is CLE role player; Smart OUT doesn't affect Reaves' scoring against CLE's mid defense."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19329,8 +19339,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "VOLATILE -5%; B2B 86% rate; competitive split 69% limits upside \u2014 floor pick at T4.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19343,7 +19353,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 70,
       "revised_reasoning": "Neither absence directly impacts Reaves' assist floor; VOLATILE tag maintained at floor confidence."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19363,8 +19375,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "B2B 86% rate at T2; VOLATILE -5%; vs_soft=60% caps confidence; 75% floor met.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19382,7 +19394,11 @@
     "market_implied_prob": 77.78,
     "market_book": "fanduel",
     "edge_pct": -2.78,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a 3PM prop is the single most audit-confirmed fragility stack in this system \u2014 the historical lesson from KD 3PM explicitly flags VOLATILE + 3PM as compounding fragility. B2B hit rate drops to 86% (vs 100% on other Reaves props), and raw_avg_3PM of exactly 2.0 means the threshold is right at his mean with zero cushion for a cold three-point night."
+    ]
   },
   {
     "date": "2026-03-31",
@@ -19402,8 +19418,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step to T15; B2B 82% rate; VOLATILE -5%; mid LAL defense; T15 floor holds.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 10.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19416,7 +19432,11 @@
       "direction": "up",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Smart OUT removes a key LAL perimeter defender; Mitchell benefits slightly from easier guard matchup and fewer ball-pressure possessions."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a min_floor of only 30.8 and a tough LAL defense (def_recency shows LAL's L5 average 109.4 DRTG, improving) creates meaningful downside \u2014 the FG_MARGIN_THIN step-down already fired, and with volatility the distribution is wide enough that a cold shooting game with any minutes compression lands below 15."
+    ]
   },
   {
     "date": "2026-03-31",
@@ -19436,8 +19456,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor 3PM; B2B 91% rate; trend=up; structural floor confirmed at T2 for road B2B.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19455,7 +19475,9 @@
     "market_implied_prob": 80.0,
     "market_book": "fanduel",
     "edge_pct": 0.0,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19475,8 +19497,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "B2B 82% rate at T4; mid LAL defense; trend=down trims confidence to floor level.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19489,7 +19511,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 70,
       "revised_reasoning": "Smart absence doesn't meaningfully alter Mitchell's assist opportunities; trend-down still caps upside."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19509,8 +19533,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "B2B <5g step-down to T4; 90% overall AST; primary ball-handler; mid LAL defense; 74% honest.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19528,7 +19552,11 @@
     "market_implied_prob": 85.29,
     "market_book": "fanduel",
     "edge_pct": -11.29,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B sample is insufficient (<5 games), meaning the strong 90% overall hit rate has no B2B validation \u2014 this is the exact structural gap that produced the Harden AST miss in audit history, where a competitive game concentrated his usage on scoring rather than creation. A B2B road game at LAL with no confirmed b2b split is a genuine floor uncertainty."
+    ]
   },
   {
     "date": "2026-03-31",
@@ -19548,8 +19576,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall REB at T4; B2B <5g sample adds uncertainty; minimum tier exempt from floor gate.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19567,7 +19595,9 @@
     "market_implied_prob": 74.36,
     "market_book": "fanduel",
     "edge_pct": 3.64,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19587,8 +19617,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "B2B <5g step to T1; 85% overall at T2 \u2192 near-certain T1; competitive=100% confirms floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19601,7 +19631,9 @@
       "direction": "up",
       "revised_confidence_pct": 82,
       "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19621,8 +19653,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step to T10; B2B <5g; recent auditor Harden PTS miss caution; 70% floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19640,7 +19672,11 @@
     "market_implied_prob": 80.77,
     "market_book": "fanduel",
     "edge_pct": -10.77,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Audit history explicitly flags Harden PTS as structurally softer than his AST floor with a secondary-scorer caution rule \u2014 min_floor of only 29.9 (vs avg 36.0 is a large gap, meaning he has genuine low-minutes games in his distribution) combined with no B2B validation sample and the historical lesson that Harden PTS at T15 missed against CLE make this the pick most at risk of repeating a documented pattern."
+    ]
   },
   {
     "date": "2026-03-31",
@@ -19660,8 +19696,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall at T10; PROB status; min_floor=20.7 thin; cap at 70% conservative.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19679,7 +19715,11 @@
     "market_implied_prob": 75.61,
     "market_book": "fanduel",
     "edge_pct": -5.61,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Allen is listed as PROBABLE with a min_floor of only 20.7 against an avg of 27.5 \u2014 that 6.8-minute gap is the largest minutes fragility on this slate, and a PROB designation means there is a non-trivial chance of either restriction or early exit; post_miss_hr of 64% is also the weakest on the slate, making a miss day stickier than average."
+    ]
   },
   {
     "date": "2026-03-31",
@@ -19699,8 +19739,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Consistent tag 10/10; rest=2d; vs_tough=80% holds despite PHX suppressor; T15 floor solid.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19712,7 +19752,9 @@
       "direction": "up",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-03-31",
@@ -19732,8 +19774,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_COLD step to T10; tough PHX defense; cold team; trend=down \u2014 minimal floor at T10.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19750,7 +19792,11 @@
     "market_implied_prob": 83.33,
     "market_book": "fanduel",
     "edge_pct": -13.33,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD at -18% already triggered a mandatory step-down, and team_momentum=cold compounds the shooting environment \u2014 typical_miss of 5.0 pts below threshold is the widest miss gap on this slate, meaning when Bane misses this tier he misses badly, and post_miss_hr of 69% confirms the cold streak is somewhat persistent."
+    ]
   },
   {
     "date": "2026-03-31",
@@ -19770,8 +19816,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor AST T2; 90% overall; vs_tough=96%; rest=2d; structural creation floor confirmed.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
@@ -19788,6 +19834,8 @@
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
     "edge_pct": -15.24,
-    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00"
+    "odds_fetched_at": "2026-03-31T14:19:07.248071-07:00",
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
