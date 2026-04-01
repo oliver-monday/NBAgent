@@ -1137,11 +1137,14 @@ def apply_amendments(
     affected_picks: list[dict],
     changes: list[dict],
     now_iso: str,
+    player_stats: dict | None = None,
 ) -> tuple[int, int, int]:
     """
     Write lineup_update sub-objects to all_picks in-place for amended picks.
     Returns (n_amended, n_up, n_down).
     """
+    if player_stats is None:
+        player_stats = {}
     # (player_name_lower, prop_type) → amendment
     amend_map: dict[tuple[str, str], dict] = {
         (a["player_name"].strip().lower(), a.get("prop_type", "")): a
@@ -1170,34 +1173,65 @@ def apply_amendments(
         if amendment is None:
             continue
 
-        direction = amendment.get("direction", "unchanged")
-        pick["lineup_update"] = {
-            "triggered_by":         [c["detail"] for c in relevant_changes_for(pick)],
-            "updated_at":           now_iso,
-            "direction":            direction,
-            "revised_confidence_pct": amendment.get(
-                "revised_confidence_pct", pick.get("confidence_pct")
-            ),
-            "revised_reasoning":    amendment.get("revised_reasoning", ""),
-        }
+        direction    = amendment.get("direction", "unchanged")
+        revised_conf = amendment.get(
+            "revised_confidence_pct", pick.get("confidence_pct")
+        )
 
-        # Amendment sub-70% auto-skip: if the amendment revised confidence below the
-        # 70% minimum floor, void the pick immediately. The lineup_update sub-object
-        # (and its reasoning) remains visible on the voided pick.
-        if direction == "down":
-            revised_pct = pick["lineup_update"]["revised_confidence_pct"]
-            if isinstance(revised_pct, (int, float)) and revised_pct < 70:
-                pick["voided"]      = True
-                pick["void_reason"] = (
-                    f"lineup_update: revised confidence {revised_pct}% "
-                    f"below 70% floor — auto-skipped"
-                )
-                print(
-                    f"[lineup_update] AUTO-SKIP (amended below 70%): "
-                    f"{pick.get('player_name', '?')} {pick.get('prop_type', '?')} "
-                    f"T{pick.get('pick_value', '?')} "
-                    f"— revised confidence {revised_pct}%"
-                )
+        # ── Gate 1: Sub-70% auto-skip ─────────────────────────────────────────
+        # When amendment revised confidence below 70%, void pick immediately.
+        # Original lineup_update sub-object is still written for audit visibility.
+        if direction == "down" and isinstance(revised_conf, (int, float)) and revised_conf < 70:
+            pick["voided"]      = True
+            pick["void_reason"] = (
+                f"Amendment auto-skip: revised_confidence {revised_conf}% < 70 "
+                f"({amendment.get('revised_reasoning', '')[:80]})"
+            )
+            pick["lineup_update"] = {
+                "triggered_by":           [c["detail"] for c in relevant_changes_for(pick)],
+                "updated_at":             now_iso,
+                "direction":              "down",
+                "revised_confidence_pct": revised_conf,
+                "revised_reasoning":      amendment.get("revised_reasoning", ""),
+            }
+            n_amended += 1
+            n_down    += 1
+            print(
+                f"[lineup_update] AUTO-SKIP: {pick.get('player_name')} "
+                f"{pick.get('prop_type')} revised_conf={revised_conf}% < 70 — voided"
+            )
+            continue
+
+        # ── Gate 2: B2B <5g upside block ─────────────────────────────────────
+        # When player has no B2B sample for this prop AND amendment went up,
+        # override to unchanged. Opponent lineup changes do not resolve B2B
+        # sample uncertainty.
+        if direction == "up" and player_stats:
+            pname = (pick.get("player_name") or "").strip()
+            prop  = pick.get("prop_type", "")
+            # player_stats is keyed by player name (title case) with "team" field inside
+            pstats: dict | None = None
+            for ps_name, ps_entry in player_stats.items():
+                if ps_name.strip().lower() == pname.lower():
+                    pstats = ps_entry
+                    break
+            if pstats is not None:
+                b2b_prop = (pstats.get("b2b_hit_rates") or {}).get(prop)
+                if b2b_prop is None and pstats.get("on_back_to_back"):
+                    direction    = "unchanged"
+                    revised_conf = pick.get("confidence_pct")
+                    print(
+                        f"[lineup_update] B2B-GATE: {pname} {prop} — "
+                        f"b2b_hit_rates null for {prop}, upside amendment blocked → unchanged"
+                    )
+
+        pick["lineup_update"] = {
+            "triggered_by":           [c["detail"] for c in relevant_changes_for(pick)],
+            "updated_at":             now_iso,
+            "direction":              direction,
+            "revised_confidence_pct": revised_conf,
+            "revised_reasoning":      amendment.get("revised_reasoning", ""),
+        }
 
         n_amended += 1
         if direction == "up":
@@ -1326,7 +1360,8 @@ def main() -> None:
             if amendments:
                 # ── Apply + write ─────────────────────────────────────────────
                 n_amended, n_up, n_down = apply_amendments(
-                    all_picks, amendments, affected_picks, changes, now_iso
+                    all_picks, amendments, affected_picks, changes, now_iso,
+                    player_stats=player_stats,
                 )
 
                 tmp = PICKS_JSON.with_suffix(".json.tmp")

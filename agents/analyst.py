@@ -1603,6 +1603,9 @@ TIER_WALK FORMAT — document the final state clearly:
   - The final selected tier must be unambiguously marked ✓
   - Do NOT embed skip conclusions ("→ SKIP") in tier_walk for picks you are emitting.
     If you conclude skip at any point in the reasoning, do not emit the pick.
+  - Reminder: after applying any step-down, verify that the pick_value field in your JSON
+    output reflects the stepped-down tier value before emitting. The tier_walk reasoning and
+    pick_value must agree.
 
 SANITY CHECK — before finalizing each pick, verify:
   1. Is the final tier consistent with this player's actual statistical floor?
@@ -1704,6 +1707,19 @@ KEY RULES — REST & FATIGUE:
 - When "DENSE" is shown (even without B2B): cumulative fatigue is likely.
   → Reduce confidence by 5–10% across all stats for that player.
 - rest_days ≥ 3 = well-rested; no downward adjustment needed.
+
+MINIMUM-TIER REB CONFIDENCE CAP:
+When a REB pick is at T4 (the minimum valid REB tier) AND b2b_hit_rates is null for REB
+(b2b <5g), cap final confidence at 72% regardless of the overall hit rate, iron_floor
+status, or trend direction. In the tier_walk, flag explicitly: "minimum-tier REB, no B2B
+validation — confidence capped at 72%."
+
+Rationale: T4 is the floor — the system cannot step lower. When B2B sample is also
+absent, the combined uncertainty (no downward tier escape + no B2B validation) cannot be
+fully absorbed by a -5% adjustment alone. A 0-rebound game for a guard in 28 minutes of
+a competitive road game is within variance at T4, and the stated confidence must reflect
+this structural constraint rather than the season-wide 90% rate that includes home games
+and well-rested nights.
 
 IRON-FLOOR B2B ROAD GATE: The iron_floor tag does NOT override the B2B + tough defense gate
 for AST props on non-primary ball-handlers. Apply this gate when ALL of the following are true:
@@ -1904,6 +1920,16 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   structural protection against the 0-for-game scenario.
   top_pick ineligibility: Do not set top_pick=true on any 3PM pick unless iron_floor=true.
   A 3PM pick without iron_floor is not a structural top pick regardless of hit rate.
+- VOLATILE + iron_floor INCOMPATIBILITY (3PM only):
+  When a 3PM prop has BOTH iron_floor=true AND the VOLATILE tag in its quant context,
+  treat iron_floor as OVERRIDDEN for this prop. Apply standard non-iron-floor 3PM rules.
+  Cap final confidence at 80% regardless of B2B hit rate, historical floor rate, or trend.
+  Do NOT cite iron_floor as a supporting factor in the tier_walk for this pick.
+
+  Rationale: iron_floor is valid for creation-based props (AST, low-threshold REB) where
+  output floor is role-structural. For 3PM, the floor depends on shot attempts — a VOLATILE
+  shooter can produce 0 makes on 0 attempts regardless of historical floor rate. The two
+  tags are structurally incompatible on shooting props.
 
 KEY RULES — INJURY STATUS ON SHOOTING PROPS:
 - When a player carries a QUESTIONABLE status in the injury report, check the injury
@@ -2288,6 +2314,13 @@ TEAMMATE REFERENCES:
 
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
+- CRITICAL — pick_value output contract: pick_value must ALWAYS equal the final
+  stepped-down tier threshold, not the pre-step original tier. If the tier_walk applies
+  a step-down (e.g., B2B <5g → T4, FG_MARGIN_THIN → T15, VOLATILE → T20), the emitted
+  pick_value must be the post-step value. If tier_walk states "step to T4" then
+  pick_value must be 4. If tier_walk states "step to T15" then pick_value must be 15.
+  Emitting the pre-step tier value when a step-down was applied is a pick construction
+  error — the auditor and grading systems read pick_value as the operative threshold.
 - direction is always OVER.
 - hit_rate_display must be exactly "N/N" format — e.g. "9/10" or "7/10". No parentheticals, no commentary, no additional text. The frontend parses this field as a bare fraction.
 - iron_floor must be true if and only if the quant stat line showed [iron_floor]. Otherwise false.
@@ -2755,6 +2788,19 @@ KEY RULES — REST & FATIGUE:
   → Reduce confidence by 5–10% across all stats for that player.
 - rest_days ≥ 3 = well-rested; no downward adjustment needed.
 
+MINIMUM-TIER REB CONFIDENCE CAP:
+When a REB pick is at T4 (the minimum valid REB tier) AND b2b_hit_rates is null for REB
+(b2b <5g), cap final confidence at 72% regardless of the overall hit rate, iron_floor
+status, or trend direction. In the tier_walk, flag explicitly: "minimum-tier REB, no B2B
+validation — confidence capped at 72%."
+
+Rationale: T4 is the floor — the system cannot step lower. When B2B sample is also
+absent, the combined uncertainty (no downward tier escape + no B2B validation) cannot be
+fully absorbed by a -5% adjustment alone. A 0-rebound game for a guard in 28 minutes of
+a competitive road game is within variance at T4, and the stated confidence must reflect
+this structural constraint rather than the season-wide 90% rate that includes home games
+and well-rested nights.
+
 IRON-FLOOR B2B ROAD GATE: The iron_floor tag does NOT override the B2B + tough defense gate
 for AST props on non-primary ball-handlers. Apply this gate when ALL of the following are true:
   - on_back_to_back = True
@@ -2903,6 +2949,16 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   structural protection against the 0-for-game scenario.
   top_pick ineligibility: Do not set top_pick=true on any 3PM pick unless iron_floor=true.
   A 3PM pick without iron_floor is not a structural top pick regardless of hit rate.
+- VOLATILE + iron_floor INCOMPATIBILITY (3PM only):
+  When a 3PM prop has BOTH iron_floor=true AND the VOLATILE tag in its quant context,
+  treat iron_floor as OVERRIDDEN for this prop. Apply standard non-iron-floor 3PM rules.
+  Cap final confidence at 80% regardless of B2B hit rate, historical floor rate, or trend.
+  Do NOT cite iron_floor as a supporting factor in the tier_walk for this pick.
+
+  Rationale: iron_floor is valid for creation-based props (AST, low-threshold REB) where
+  output floor is role-structural. For 3PM, the floor depends on shot attempts — a VOLATILE
+  shooter can produce 0 makes on 0 attempts regardless of historical floor rate. The two
+  tags are structurally incompatible on shooting props.
 
 KEY RULES — INJURY STATUS ON SHOOTING PROPS:
 - When a player carries a QUESTIONABLE status in the injury report, check the injury
@@ -3212,6 +3268,9 @@ TIER_WALK FORMAT — document the final state clearly:
   - The final selected tier must be unambiguously marked ✓
   - Do NOT embed skip conclusions ("→ SKIP") in tier_walk for picks you are emitting.
     If you conclude skip at any point in the reasoning, do not emit the pick.
+  - Reminder: after applying any step-down, verify that the pick_value field in your JSON
+    output reflects the stepped-down tier value before emitting. The tier_walk reasoning and
+    pick_value must agree.
 
 SANITY CHECK — before finalizing each pick, verify:
   1. Is the final tier consistent with this player's actual statistical floor?
@@ -3360,6 +3419,13 @@ TEAMMATE REFERENCES:
 
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
+- CRITICAL — pick_value output contract: pick_value must ALWAYS equal the final
+  stepped-down tier threshold, not the pre-step original tier. If the tier_walk applies
+  a step-down (e.g., B2B <5g → T4, FG_MARGIN_THIN → T15, VOLATILE → T20), the emitted
+  pick_value must be the post-step value. If tier_walk states "step to T4" then
+  pick_value must be 4. If tier_walk states "step to T15" then pick_value must be 15.
+  Emitting the pre-step tier value when a step-down was applied is a pick construction
+  error — the auditor and grading systems read pick_value as the operative threshold.
 - direction is always OVER.
 - hit_rate_display must be exactly "N/N" format — e.g. "9/10" or "7/10". No parentheticals, no commentary, no additional text. The frontend parses this field as a bare fraction.
 - iron_floor must be true if and only if the quant stat line showed [iron_floor]. Otherwise false.
