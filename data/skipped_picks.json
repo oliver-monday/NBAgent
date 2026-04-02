@@ -1,149 +1,130 @@
 [
   {
-    "date": "2026-04-01",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "UTAH",
-    "prop_type": "PTS",
-    "tier_considered": 25,
-    "direction": "OVER",
-    "skip_reason": "blowout_t25_skip",
-    "rule_context": {
-      "spread_abs": 16.5,
-      "favored_side": true,
-      "rule": "spread_abs >= 15 AND favored side \u2192 T25 hard skip"
-    },
-    "actual_value": 15.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 15.0 < tier 25"
-  },
-  {
-    "date": "2026-04-01",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "UTAH",
-    "prop_type": "AST",
-    "tier_considered": 8,
-    "direction": "OVER",
-    "skip_reason": "ast_hard_gate",
-    "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 8,
-      "rule": "VOLATILE + AST T6+ = hard skip (volatile_ast_t6)"
-    },
-    "actual_value": 12.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 12.0 \u2265 tier 8"
-  },
-  {
-    "date": "2026-04-01",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "UTAH",
-    "prop_type": "3PM",
-    "tier_considered": 1,
+    "date": "2026-04-02",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "opponent": "DET",
+    "prop_type": "REB",
+    "tier_considered": 4,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "base_hit_rate": "7/10",
+      "confidence_after_penalties": 75,
+      "reb_minimum_floor": 78,
       "volatile_penalty": -5,
-      "resulting_confidence": 70,
-      "prop_minimum_floor": 75,
-      "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
+      "note": "VOLATILE -5% drops T4 confidence from 80% to 75%, below the 78% REB minimum floor."
     },
-    "actual_value": 0.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 0.0 < tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-01",
+    "date": "2026-04-02",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "opponent": "SA",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_tough_dvp",
+    "rule_context": {
+      "trend": "down",
+      "step_down_result": "below_minimum_tier",
+      "note": "trend=down mandatory step-down from T1 has no valid lower tier; skip required per rules."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "opponent": "SA",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "t25_ceiling_rule": "requires 8/10 at T25; actual 7/10 (75%) fails",
+      "lower_tier_data": "unavailable in quant for T15/T20",
+      "volatile_penalty": -5,
+      "note": "T25 ceiling rule fails at 75%; no validated lower tier available."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-02",
     "player_name": "Victor Wembanyama",
     "team": "SA",
-    "opponent": "GS",
+    "opponent": "LAC",
     "prop_type": "REB",
     "tier_considered": 10,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "overall_hit_rate": "7/10",
-      "resulting_confidence": 70,
+      "confidence_after_penalties": 65,
       "reb_minimum_floor": 78,
-      "rule": "REB minimum 78% confidence floor not met at 70%"
+      "volatile_penalty": -5,
+      "b2b_rate": 58,
+      "note": "VOLATILE -5% drops T10 from 70% to 65%, below 78% REB floor; B2B rate=58% also fails."
     },
-    "actual_value": 18.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 18.0 \u2265 tier 10"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-01",
+    "date": "2026-04-02",
     "player_name": "Victor Wembanyama",
     "team": "SA",
-    "opponent": "GS",
+    "opponent": "LAC",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
-    "skip_reason": "3pm_blowout_trend_down",
+    "skip_reason": "3pm_trend_down_tough_dvp",
     "rule_context": {
       "trend": "down",
-      "spread_abs": 13.5,
-      "blowout_risk": true,
-      "rule": "trend=down step-down at T1 minimum tier with BLOWOUT_RISK \u2014 no lower tier available, skip"
+      "step_down_result": "below_minimum_tier",
+      "note": "trend=down step-down from T1 has no valid lower tier; mandatory skip."
     },
-    "actual_value": 2.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-01",
+    "date": "2026-04-02",
     "player_name": "Stephon Castle",
     "team": "SA",
-    "opponent": "GS",
-    "prop_type": "3PM",
-    "tier_considered": 1,
+    "opponent": "LAC",
+    "prop_type": "PTS",
+    "tier_considered": 15,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "base_hit_rate": "7/10",
+      "b2b_rate": 58,
       "volatile_penalty": -5,
-      "resulting_confidence": 65,
-      "prop_minimum_floor": 75,
-      "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
+      "fg_margin_neg_step": "T15\u2192T10",
+      "min_floor_step": "T15\u2192T10 (min_floor=22.9<24)",
+      "lower_tier_data": "unavailable at T10",
+      "note": "Multiple mandatory step-downs to T10; no T10 data available to validate; b2b+VOLATILE cascade fails."
     },
-    "actual_value": 2.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-01",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "ORL",
-    "prop_type": "REB",
-    "tier_considered": 8,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "overall_hit_rate": "7/10",
-      "resulting_confidence": 70,
-      "reb_minimum_floor": 78,
-      "rule": "REB minimum 78% confidence floor not met at 70%"
-    },
-    "actual_value": 14.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 14.0 \u2265 tier 8"
-  },
-  {
-    "date": "2026-04-01",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "ORL",
+    "date": "2026-04-02",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "opponent": "LAC",
     "prop_type": "AST",
     "tier_considered": 6,
     "direction": "OVER",
@@ -151,98 +132,54 @@
     "rule_context": {
       "volatile_tag": true,
       "ast_tier": 6,
-      "rule": "VOLATILE + AST T6+ = hard skip (volatile_ast_t6)"
+      "rule": "VOLATILE + AST T6+ unconditional hard skip",
+      "note": "VOLATILE tag present on AST; T6 or higher with VOLATILE is an unconditional skip regardless of hit rate."
     },
-    "actual_value": 8.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-01",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "ORL",
-    "prop_type": "3PM",
-    "tier_considered": 1,
+    "date": "2026-04-02",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "opponent": "MIN",
+    "prop_type": "REB",
+    "tier_considered": 10,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "base_hit_rate": "7/10",
+      "confidence_after_penalties": 70,
+      "reb_minimum_floor": 78,
       "volatile_penalty": -5,
-      "resulting_confidence": 70,
-      "prop_minimum_floor": 75,
-      "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
+      "vs_tough": "40%",
+      "competitive": "46%",
+      "note": "VOLATILE -5% drops T10 from 75% to 70%; below 78% REB floor; vs_tough and competitive splits confirm weakness."
     },
-    "actual_value": 0.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 0.0 < tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-01",
-    "player_name": "CJ McCollum",
-    "team": "ATL",
-    "opponent": "ORL",
+    "date": "2026-04-02",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "opponent": "PHX",
     "prop_type": "3PM",
     "tier_considered": 2,
     "direction": "OVER",
-    "skip_reason": "merit_below_floor",
+    "skip_reason": "3pm_trend_down_low_minutes",
     "rule_context": {
-      "iron_floor_overridden": true,
-      "volatile_tag": true,
-      "auditor_rule": "iron_floor + VOLATILE on 3PM \u2192 iron_floor treated as overridden",
-      "base_hit_rate": "7/10",
-      "volatile_penalty": -5,
-      "resulting_confidence": 65,
-      "prop_minimum_floor": 75,
-      "rule": "3PM minimum 75% floor not met after VOLATILE -5% (iron_floor overridden by VOLATILE per Mar-31 auditor rule)"
+      "trend": "down",
+      "avg_minutes_last5": 28.7,
+      "threshold": 30,
+      "note": "trend=down AND avg_minutes_last5 (28.7) \u2264 30 triggers hard skip on all 3PM picks including T1."
     },
-    "actual_value": 1.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 1.0 < tier 2"
-  },
-  {
-    "date": "2026-04-01",
-    "player_name": "Jaylen Brown",
-    "team": "BOS",
-    "opponent": "MIA",
-    "prop_type": "REB",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "base_hit_rate": "7/10",
-      "volatile_penalty": -5,
-      "resulting_confidence": 70,
-      "reb_minimum_floor": 78,
-      "rule": "REB minimum 78% confidence floor not met after VOLATILE -5%"
-    },
-    "actual_value": 3.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 3.0 < tier 6"
-  },
-  {
-    "date": "2026-04-01",
-    "player_name": "Jaylen Brown",
-    "team": "BOS",
-    "opponent": "MIA",
-    "prop_type": "3PM",
-    "tier_considered": 1,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "base_hit_rate": "7/10",
-      "volatile_penalty": -5,
-      "resulting_confidence": 70,
-      "prop_minimum_floor": 75,
-      "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
-    },
-    "actual_value": 4.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]

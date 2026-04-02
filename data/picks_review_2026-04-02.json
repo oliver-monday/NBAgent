@@ -1,0 +1,120 @@
+[
+  {
+    "date": "2026-04-02",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 24.8 on a 30.5 avg means a single light-minutes game \u2014 well within Kawhi's historical variance \u2014 would threaten the floor. Iron_floor on REB is robust, but Kawhi's minutes management on the road with 2d rest creates a non-trivial ceiling on playing time."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B hit rate at T20 is only 58% (n=12), materially below the overall rate, and the VOLATILE tag means the distribution is wide \u2014 a zero-burst night is realistic. The system stepped down from T25 and applied adjustments, but 58% B2B at this tier is a genuinely fragile floor that the 74% confidence may not fully reflect."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a typical_miss of 7.0 pts below threshold means downside variance can produce a miss well below 15 \u2014 the floor is contingent on a hot shooting night, not a structural guarantee. The usage spike from Cunningham/Stewart OUT is real, but volatile scorers with wide distributions are the highest-fragility stack at PTS T15."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 21.8 on an iron_floor AST pick is a meaningful fragility point \u2014 blowout game script risk is real given CHA is favored by 5.5 at home, and early-game separation could compress LaMelo's minutes before he accumulates 5 assists. The iron_floor designation is robust historically, but minutes fragility in a potential blowout is the legitimate bear case here."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-02",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]

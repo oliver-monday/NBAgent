@@ -3584,5 +3584,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-02",
+    "parlays": [
+      {
+        "label": "AST Iron Trio",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "DET",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Kawhi Leonard",
+            "team": "LAC",
+            "opponent": "SA",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "LaMelo Ball",
+            "team": "CHA",
+            "opponent": "PHX",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4981,
+        "correlation": "independent",
+        "rationale": "Three low-threshold AST props with 9/10 hit rates across three independent games; iron-floor structure minimizes blowout risk.",
+        "date": "2026-04-02",
+        "id": "parlay_2026-04-02_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]

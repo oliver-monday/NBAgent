@@ -1,36 +1,79 @@
 {
-  "date": "2026-04-01",
-  "generated_at": "2026-04-01T09:12:14.646412-07:00",
+  "date": "2026-04-02",
+  "generated_at": "2026-04-02T07:22:59.110959-07:00",
   "player_notes": {
-    "stephen curry": "Cleared for 5-on-5 scrimmage but has not been cleared to play in games yet. Still out; monitor for potential return timeline as season winds down."
+    "joel embiid": "Out vs. Wizards (illness) \u2014 confirmed absent. Monitor status for next game; PHI still won handily without him.",
+    "victor wembanyama": "41 pts, 18 reb, 3 blk in latest game \u2014 elite form on 10-game win streak. High confidence on all prop lines.",
+    "jaylen brown": "43 points last game vs. Heat \u2014 in peak scoring form heading into BOS vs. MIL matchup.",
+    "jayson tatum": "First triple-double of season last game \u2014 elevated assist/rebound upside entering BOS vs. MIL.",
+    "reed sheppard": "Career-high 9 3-pointers last game \u2014 hot shooting streak, 3PM prop worth targeting vs. UTA.",
+    "brandon clarke": "Arrested Wednesday; availability for upcoming MEM game uncertain. Monitor roster status.",
+    "paul george": "Season-high 39 points with Embiid out \u2014 role/usage elevated; monitor Embiid status for next game."
   },
-  "game_notes": {},
+  "game_notes": {
+    "PHI vs WAS": "Joel Embiid sat out (illness); Paul George absorbed usage with season-high 39 pts. Monitor Embiid availability for PHI's next game.",
+    "MIL vs HOU": "Bucks described as 'short-handed' \u2014 rotation reduced, boosting Houston player prop ceilings in today's HOU vs. UTA context less relevant, but MIL vs BOS matchup today warrants checking Bucks injury report."
+  },
   "raw_item_count": 50,
-  "filtered_item_count": 49,
+  "filtered_item_count": 46,
   "fetch_errors": [
-    "Brandon Ingram",
-    "Scottie Barnes",
-    "RJ Barrett",
-    "Immanuel Quickley",
-    "Jaylen Brown",
-    "Derrick White",
-    "Jayson Tatum",
-    "Tyrese Maxey",
-    "Paolo Banchero",
-    "Desmond Bane",
-    "Tyler Herro",
-    "Bam Adebayo",
-    "Norman Powell",
-    "Jalen Johnson",
-    "Nickeil Alexander-Walker",
-    "CJ McCollum",
-    "Giannis Antetokounmpo",
-    "Nikola Jokic",
-    "Jamal Murray",
-    "Kevin Durant",
-    "Alperen Sengun",
-    "Amen Thompson"
+    "Cade Cunningham",
+    "Jalen Duren",
+    "Ausar Thompson",
+    "Donovan Mitchell",
+    "Evan Mobley",
+    "Jarrett Allen",
+    "James Harden",
+    "Miles Bridges",
+    "LaMelo Ball",
+    "Kon Knueppel",
+    "Brandon Miller",
+    "Coby White",
+    "Shai Gilgeous-Alexander",
+    "Chet Holmgren",
+    "Jalen Williams",
+    "Isaiah Hartenstein",
+    "Luka Doncic",
+    "Austin Reaves",
+    "LeBron James",
+    "Anthony Edwards",
+    "Julius Randle",
+    "Jaden McDaniels",
+    "Rudy Gobert",
+    "Devin Booker",
+    "Jalen Green",
+    "Kawhi Leonard",
+    "Darius Garland"
   ],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "Paul George / PHI",
+      "current_context_fact": "PHI \u2014 system-wide suppressor (confirmed with caveat, Mar 26): 'PHI is 24-58 with Embiid, Maxey, and George all out for the season.'",
+      "conflict": "Today's news reports Paul George scored a season-high 39 points in the 76ers' 153-131 win over the Wizards on April 1, 2026. George is clearly active and playing \u2014 not out for the season.",
+      "urgency": "critical",
+      "suggested_action": "Remove Paul George from the PHI season-ending absences list. Update the PHI suppressor note to reflect that George is active and playing significant minutes. The blowout/game-script mechanism for the PHI suppressor may still apply (PHI is still a losing team), but the roster characterization is wrong. Verify Embiid and Maxey status separately."
+    },
+    {
+      "player_or_team": "Victor Wembanyama / SAS",
+      "current_context_fact": "Wembanyama stats listed as '24.3 PPG team leader, 11.2 REB' in the player note.",
+      "conflict": "Today's news reports Wembanyama scored 41 points for the second straight game and grabbed 18 rebounds in a 127-113 win over the Warriors, extending SAS's 10-game winning streak. While a single game doesn't invalidate season averages, the '41 points for the second straight game' phrasing and MVP chase context suggest his current production level may be tracking well above his listed 24.3 PPG season average.",
+      "urgency": "monitor",
+      "suggested_action": "Update Wembanyama's season averages in the player note to reflect current figures \u2014 his PPG average is likely meaningfully higher than 24.3 given this recent stretch. Also note the SAS 10-game winning streak as context for team momentum and potential playoff seeding implications."
+    },
+    {
+      "player_or_team": "Atlanta Hawks (Trae Young)",
+      "current_context_fact": "Trae Young listed under 'Offseason 2025' roster moves as traded from ATL to WAS.",
+      "conflict": "No direct contradiction \u2014 the Hawks win over Orlando (130-101, 17th win in 19 games) with Nickeil Alexander-Walker scoring 32 points and Jalen Johnson adding 18/14 is consistent with Young being gone. However, Hawks are listed at 44-33 (fifth in East) in the news, which is a standings update not reflected in the context doc (last updated Mar 14). No conflict on the trade itself.",
+      "urgency": "monitor",
+      "suggested_action": "No change needed to roster facts. Update ATL's current record to approximately 44-33 if standings are being tracked. The team's hot streak (17 of 19) is notable context."
+    },
+    {
+      "player_or_team": "Jimmy Butler / GSW",
+      "current_context_fact": "'Jimmy Butler (GSW) \u2014 ACL torn Jan 19, 2026. OFS.' Also: 'injury-plagued Golden State Warriors' in game description.",
+      "conflict": "The game recap describes the Warriors as 'injury-plagued' which is consistent with Butler being out. No direct conflict \u2014 this is confirmatory. However, Draymond Green article notes 'another season lost to injuries' and Green 'confronts an uncertain future,' which may indicate additional GSW injuries beyond Butler not captured in the context doc.",
+      "urgency": "monitor",
+      "suggested_action": "Investigate whether additional Warriors players beyond Butler are on the injury report. The 'injury-plagued' characterization and Draymond Green's uncertain future article suggest the GSW roster situation may be more depleted than the context doc reflects."
+    }
+  ],
   "staleness_flags": []
 }
