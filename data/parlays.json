@@ -3556,9 +3556,32 @@
         "rationale": "ATL volume game lifts NAW PTS and McCollum AST together; Brown adds independent soft-matchup floor.",
         "date": "2026-04-01",
         "id": "parlay_2026-04-01_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Nickeil Alexander-Walker",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 32.0
+          },
+          {
+            "player_name": "CJ McCollum",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 3.0
+          },
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 43.0
+          }
+        ]
       }
     ]
   }

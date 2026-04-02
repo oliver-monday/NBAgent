@@ -13,10 +13,10 @@
       "favored_side": true,
       "rule": "spread_abs >= 15 AND favored side \u2192 T25 hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 15.0 < tier 25"
   },
   {
     "date": "2026-04-01",
@@ -32,10 +32,10 @@
       "ast_tier": 8,
       "rule": "VOLATILE + AST T6+ = hard skip (volatile_ast_t6)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 8"
   },
   {
     "date": "2026-04-01",
@@ -53,10 +53,10 @@
       "prop_minimum_floor": 75,
       "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-01",
@@ -73,10 +73,10 @@
       "reb_minimum_floor": 78,
       "rule": "REB minimum 78% confidence floor not met at 70%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 10"
   },
   {
     "date": "2026-04-01",
@@ -93,10 +93,10 @@
       "blowout_risk": true,
       "rule": "trend=down step-down at T1 minimum tier with BLOWOUT_RISK \u2014 no lower tier available, skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-01",
@@ -114,10 +114,10 @@
       "prop_minimum_floor": 75,
       "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-01",
@@ -134,10 +134,10 @@
       "reb_minimum_floor": 78,
       "rule": "REB minimum 78% confidence floor not met at 70%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 14.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 14.0 \u2265 tier 8"
   },
   {
     "date": "2026-04-01",
@@ -153,10 +153,10 @@
       "ast_tier": 6,
       "rule": "VOLATILE + AST T6+ = hard skip (volatile_ast_t6)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-01",
@@ -174,10 +174,10 @@
       "prop_minimum_floor": 75,
       "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-01",
@@ -198,10 +198,10 @@
       "prop_minimum_floor": 75,
       "rule": "3PM minimum 75% floor not met after VOLATILE -5% (iron_floor overridden by VOLATILE per Mar-31 auditor rule)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 2"
   },
   {
     "date": "2026-04-01",
@@ -219,10 +219,10 @@
       "reb_minimum_floor": 78,
       "rule": "REB minimum 78% confidence floor not met after VOLATILE -5%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 6"
   },
   {
     "date": "2026-04-01",
@@ -240,9 +240,9 @@
       "prop_minimum_floor": 75,
       "rule": "3PM minimum 75% floor not met after VOLATILE -5%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
   }
 ]

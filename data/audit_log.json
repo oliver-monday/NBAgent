@@ -3545,5 +3545,115 @@
         "The Bane AST iron-floor independent leg (different game from the main stack, 5 actual vs 2 threshold) functioned exactly as intended \u2014 uncorrelated with the LAL-CLE game script, structurally sound, and cleared comfortably. Including one independent iron-floor AST or low-threshold prop from a separate game as a stabilizer leg is a validated parlay construction pattern: it adds a near-certain leg without introducing game-script correlation risk."
       ]
     }
+  },
+  {
+    "date": "2026-04-01",
+    "total_picks": 14,
+    "voided_picks": 0,
+    "hits": 12,
+    "misses": 2,
+    "no_data": 0,
+    "hit_rate_pct": 85.7,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 7,
+        "hits": 6,
+        "hit_rate_pct": 85.7
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 8,
+        "hits": 7,
+        "hit_rate_pct": 87.5,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 6,
+        "hits": 5,
+        "hit_rate_pct": 83.3,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Iron-floor T15 PTS picks delivered at full confidence: Jaylen Brown (43 PTS vs 15 threshold) and Nikola Jokic (15 PTS exact vs 15 threshold) both validated the iron_floor designation as a reliable structural floor signal \u2014 especially after FG_MARGIN_THIN step-downs, confirming that the tier reduction preserves the floor rather than invalidating the pick.",
+      "Stephon Castle's T4 AST at 9/10 (95% hit rate) crushed with 11 assists, validating the inference that a 95% hit rate at T4 implies raw_avg AST \u2265 4.0 and that the gate correctly did not fire \u2014 consistent-tag, high-rate AST picks on primary playmakers are among the system's most reliable selections.",
+      "Victor Wembanyama's T15 PTS pick after FG_MARGIN_THIN step from T20 hit with 41 points, confirming that the blowout exemption rule for Wembanyama is well-founded and that step-down tier logic does not suppress his production floor even in competitive games; the amendment flagging upside (revised to 78%) correctly identified the direction.",
+      "Nickeil Alexander-Walker's 3PM T2 pick (80%, non-iron-floor cap applied) hit with 5 three-pointers vs a 2-threshold, reinforcing that the 80% cap on non-iron-floor 3PM is conservative but appropriate \u2014 the market line of 1.5 vs our pick value of 2 indicates the system is finding genuine edge on this player's shooting volume.",
+      "The CJ McCollum T2 AST pick (80%, consistent tag, 95% hit rate) hit despite the same player missing PTS in the same game, demonstrating that AST and PTS props are genuinely independent signals for this player and should not be treated as correlated within a single player's prop card."
+    ],
+    "lessons": [
+      "Nickeil Alexander-Walker AST T2 missed with 1 assist despite a 9/10 hit rate (82% confidence, iron_floor, trend=up): the ATL @ ORL game ended 130-101 (BLOWOUT, ATL won by 29), creating garbage-time compression risk on the winning side. The pick object shows spread_abs=4.5 at pick time, meaning the blowout outcome was not anticipated by pre-game lines \u2014 this is a variance miss, not a model_gap, but it surfaces a structural gap: the system has no mechanism to apply retroactive game-script discounts to iron_floor AST picks when a low pre-game spread produces a blowout outcome. In a 29-point ATL win, starters are pulled early in the fourth quarter, eliminating the late-game possession sequences that generate secondary assists.",
+      "CJ McCollum PTS T10 missed with 9 points (pick threshold 10, actual 9 \u2014 one point short): the ATL @ ORL game was the same 29-point blowout. The FG_MARGIN_THIN step from T15 to T10 was correctly executed, and VOLATILE -5% was applied, but the blowout game script suppressed McCollum's scoring to exactly 1 below threshold. The tier_walk confirms the pick was at T10 after all safety reductions, meaning this is a variance/model_gap_rule miss at the margin \u2014 the blowout_secondary_scorer hard skip threshold (spread_abs \u2265 15) was not reached at pick time (spread=4.5), so no skip fired, but the actual 29-point margin created the suppression scenario the rule was designed to prevent. The rule's threshold being set at spread_abs \u2265 15 means it cannot protect against games where a close pre-game spread produces a blowout result."
+    ],
+    "recommendations": [
+      "Add a post-blowout secondary scorer vulnerability note to AST iron_floor picks: even iron_floor AST designations should carry a soft warning when the player is a non-primary playmaker on a team that could produce a 20+ margin game. For NAW specifically, the 82% confidence on T2 AST was justified by quant data, but a 1-assist outcome in a blowout is structurally plausible. Consider applying a mild confidence ceiling (e.g., cap at 78% instead of 82%) for non-primary-playmaker AST iron_floor picks when the opponent is sub-.500 and the team is favored by any margin, to implicitly price in garbage-time risk.",
+      "Introduce a 'surprise blowout fragility' flag for secondary scorer PTS picks selected at low pre-game spreads (spread_abs < 8) against weak opponents (record-based soft rating): when ATL is favored by only 4.5 vs ORL but ORL is a soft defensive team, the actual blowout probability is meaningfully higher than the spread implies. McCollum's T10 PTS miss (9 actual vs 10 threshold) is the prototype \u2014 a 1-unit miss in a 29-point game that a tighter rule could have avoided by stepping T10 down to T8 or flagging a confidence reduction for secondary scorers on heavily favored teams vs confirmed-weak opponents.",
+      "The CJ McCollum PTS pick had a market_implied_prob of 95.65% against our 70% confidence, representing a -25.65% edge. This extreme negative edge (market is far more confident than our model) should trigger an automatic scrutiny flag \u2014 when edge_pct < -20% on a PTS pick, require the tier_walk to show an iron_floor or 9+/10 hit rate before proceeding. McCollum's 7/10 hit rate at T10 does not meet this bar.",
+      "For Nickeil Alexander-Walker, the system correctly selected PTS (hit: 32), 3PM (hit: 5), and AST (miss: 1). The AST miss in the context of an explosive 32-point, 5-three-pointer game suggests that high-volume scoring games may actually suppress assist production for secondary scorers (shot-creation mode vs. pass-first mode). Consider adding a correlation suppressor: when a secondary scorer's PTS pick is at a high tier (T20+), discount the same player's AST pick confidence by 5% in the same game to reflect shot-creation mode priority.",
+      "Validate the blowout_secondary_scorer hard skip threshold: the current rule fires at spread_abs \u2265 15, but both ATL misses occurred in a game that opened at spread_abs=4.5 and ended at a 29-point margin. A supplementary rule should be explored: when opp_defense_rating = 'soft' or 'unknown' AND the opposing team is bottom-5 in the playoff standings (e.g., ORL at 40-36 in a bubble position), apply an additional 5% confidence reduction to all secondary scorer PTS and AST picks regardless of spread, to price in the elevated probability of a blowout outcome that the market has not yet priced."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Nickeil Alexander-Walker",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: ATL @ ORL final 130-101, ATL won by 29 \u2014 BLOWOUT. STEP 1: NAW played 33 minutes with confirmed activity (32 PTS, 5 3PM in same game), so actual_value of 1 AST reflects in-game performance, not DNP. STEP 2: No injury_exit in POST-GAME NEWS. injury_status_at_check = NOT_LISTED, voided = false. Classification: variance. STEP 3: Original reasoning cited iron_floor T2 AST, 9/10 hit rate, trend=up, vs_soft 93%, vs_tough 92% \u2014 all structurally sound at pick time. The reasoning did not account for game-script risk because the pre-game spread (4.5) did not signal a blowout. STEP 4: 9/10 hit rate (90% base) is among the system's most reliable tiers \u2014 a miss here is within the expected 1-in-10 failure rate; this is not a selection error. STEP 5: Tier walk correctly landed at T2 after skipping T4 (opp=mid gate). No tier_skip or data_conflict issues. STEP 6: Amendment direction = 'up' (revised to 82%) \u2014 amendment flagged upside (revised to 82%) but pick missed. The actual risk was game-script on the winning side of a 29-point blowout: NAW's shot-creation mode (32 PTS) and reduced garbage-time possession sequences compressed his assist output to 1. With spread_abs=4.5 at pick time, no existing rule could have flagged blowout risk \u2014 this falls within normal variance for a 9/10 pick against a weak opponent where an unanticipated lopsided margin materialized."
+      },
+      {
+        "player_name": "CJ McCollum",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 9.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: ATL @ ORL final 130-101, ATL won by 29 \u2014 BLOWOUT (same game as NAW miss). STEP 1: McCollum played 34 minutes with confirmed activity, actual PTS = 9 (1 below threshold). STEP 2: No injury_exit in POST-GAME NEWS. injury_status_at_check = NOT_LISTED, voided = false. Classification: model_gap_rule \u2014 the blowout game-script signal existed in the data (weak opponent, soft defense rating, ATL favored), but the blowout_secondary_scorer hard skip rule threshold (spread_abs \u2265 15) was set too permissively to catch a game that opened at 4.5 and resolved at a 29-point margin. STEP 3: Original reasoning cited FG_MARGIN_THIN step from T15 to T10, VOLATILE -5% applied, producing a 75% confidence floor \u2014 the analyst correctly applied all available safety reductions. However, the reasoning did not flag that McCollum is a secondary scorer on ATL (behind NAW and Johnson) and that a blowout outcome against a weak ORL team would suppress his counting stats. STEP 4: 7/10 hit rate (70% base) is the system's minimum qualifying threshold \u2014 a miss on a 7/10 pick is more expected than on higher-rate picks. At T10 after all step-downs, this is a marginal pick. STEP 5: Tier walk correctly stepped T15\u2192T10 on FG_MARGIN_THIN. No tier_skip error \u2014 T10 was the correct destination. The marginal 7/10 at T10 after step-down means the pick was already at the system's floor of acceptability. STEP 6: No lineup_update present \u2014 no amendment was triggered for McCollum. The rule gap: the blowout_secondary_scorer hard skip fires only at spread_abs \u2265 15, but a secondary scorer PTS pick on a team favored by any margin vs. a soft/weak opponent carries meaningful blowout tail risk that the current rule does not price. A 1-unit miss (9 vs 10) in a 29-point blowout game is the model_gap_rule prototype: the pre-game signal (soft opponent, ATL favored, McCollum as 3rd scorer) existed to apply a tighter threshold or additional step-down, but no rule captured it. Additionally, the market_implied_prob of 95.65% vs our 70% confidence (edge = -25.65%) was a strong contra-indicator that the system did not use as a disqualifying signal."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 3/3 sweep on the ATL-BOS Floor Lock \u2014 all three legs hit comfortably with NAW posting 32 PTS, McCollum recording 3 AST, and Jaylen Brown exploding for 43 PTS.",
+      "parlay_lessons": [
+        "The ATL-BOS Floor Lock contained a structural vulnerability that did not materialize but was real: two of the three legs (NAW PTS and McCollum AST) were same-game correlated on ATL @ ORL, and the game produced a 29-point blowout. NAW's PTS leg hit easily (32 vs 15 threshold), but the McCollum AST leg in the same blowout context was structurally fragile \u2014 McCollum's PTS single-leg pick missed in that same game, and had the McCollum AST leg been PTS instead, the parlay would have missed. When stacking two legs from the same game in a parlay, ensure both legs are resilient to blowout game-script on the winning side \u2014 preferably using AST legs with iron_floor designation rather than PTS legs with VOLATILE tags for secondary scorers."
+      ],
+      "parlay_reinforcements": [
+        "The scorer + feeder same-game stack (NAW PTS as 'scorer' + McCollum AST as 'feeder') is a sound correlation structure when both players are on the winning team in a high-pace game: ATL's 130-point output provided enough possessions to generate both scoring volume and assist opportunities across multiple players, validating the positive correlation assumption in the parlay rationale.",
+        "Adding an independent leg from a separate game (Jaylen Brown PTS vs MIA) as the third leg provided clean diversification \u2014 the BOS @ MIA game was COMPETITIVE (147-129, BOS won by 18), which is the ideal game-script for a star scorer's PTS floor pick, and Brown's iron_floor designation at T15 made this leg structurally the most reliable anchor in the parlay."
+      ]
+    }
   }
 ]
