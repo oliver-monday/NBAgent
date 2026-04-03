@@ -20292,8 +20292,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "100% AST hit rate vs both soft and tough opponents; elite structural floor at T2.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 1.5,
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
@@ -20310,7 +20310,9 @@
       "direction": "up",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-02",
@@ -20330,8 +20332,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron-floor REB at T4 with 90% vs tough; competitive game script protects minutes.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -20348,7 +20350,11 @@
       "direction": "up",
       "revised_confidence_pct": 89,
       "revised_reasoning": "Wembanyama OUT removes SAS rim anchor; Kawhi faces weakened frontcourt, more available boards against Kornet/Plumlee."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 24.8 on a 30.5 avg means a single light-minutes game \u2014 well within Kawhi's historical variance \u2014 would threaten the floor. Iron_floor on REB is robust, but Kawhi's minutes management on the road with 2d rest creates a non-trivial ceiling on playing time."
+    ]
   },
   {
     "date": "2026-04-02",
@@ -20368,8 +20374,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% AST hit rate including 94% vs tough opponents; T2 is a conservative floor for a wing creator.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 1.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -20386,7 +20392,9 @@
       "direction": "up",
       "revised_confidence_pct": 83,
       "revised_reasoning": "Wembanyama OUT eliminates elite help-side deterrence; Kawhi drives more freely, generating extra kick-out assist opportunities."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-02",
@@ -20417,7 +20425,11 @@
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B hit rate at T20 is only 58% (n=12), materially below the overall rate, and the VOLATILE tag means the distribution is wide \u2014 a zero-burst night is realistic. The system stepped down from T25 and applied adjustments, but 58% B2B at this tier is a genuinely fragile floor that the 74% confidence may not fully reflect."
+    ]
   },
   {
     "date": "2026-04-02",
@@ -20448,7 +20460,9 @@
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-02",
@@ -20468,8 +20482,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Cunningham and Stewart both OUT; Duren is undisputed offensive anchor with elite recent form.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "market_line": 14.5,
     "market_implied_prob": 89.47,
     "market_book": "fanduel",
@@ -20486,7 +20500,11 @@
       "direction": "unchanged",
       "revised_confidence_pct": 72,
       "revised_reasoning": "Edwards OUT weakens MIN offense but Gobert still anchors paint defense against Duren; no direct scoring impact."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a typical_miss of 7.0 pts below threshold means downside variance can produce a miss well below 15 \u2014 the floor is contingent on a hot shooting night, not a structural guarantee. The usage spike from Cunningham/Stewart OUT is real, but volatile scorers with wide distributions are the highest-fragility stack at PTS T15."
+    ]
   },
   {
     "date": "2026-04-02",
@@ -20506,8 +20524,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T10 floor after min_floor step-down; 90% overall with hot CHA vs depleted PHX road team.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "market_line": 9.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -20515,7 +20533,9 @@
     "odds_fetched_at": "2026-04-02T07:29:32.670680-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-02",
@@ -20535,8 +20555,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron-floor AST T4 with 95% competitive hit rate; LaMelo is primary creation engine vs depleted PHX.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 11.0,
     "market_line": 3.5,
     "market_implied_prob": 93.55,
     "market_book": "fanduel",
@@ -20544,7 +20564,11 @@
     "odds_fetched_at": "2026-04-02T07:29:32.670680-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 21.8 on an iron_floor AST pick is a meaningful fragility point \u2014 blowout game script risk is real given CHA is favored by 5.5 at home, and early-game separation could compress LaMelo's minutes before he accumulates 5 assists. The iron_floor designation is robust historically, but minutes fragility in a potential blowout is the legitimate bear case here."
+    ]
   },
   {
     "date": "2026-04-02",
@@ -20564,8 +20588,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron-floor 3PM stepped to T2 given low vs_tough splits; PHX road depleted team aids perimeter volume.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 1.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -20573,7 +20597,9 @@
     "odds_fetched_at": "2026-04-02T07:29:32.670680-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-02",
@@ -20593,8 +20619,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% PTS hit rate including 89% vs tough opponents; T10 is structurally sound for a consistent scorer.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "market_line": 9.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -20602,7 +20628,9 @@
     "odds_fetched_at": "2026-04-02T07:29:32.670680-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-02",
@@ -20622,8 +20650,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% AST floor at T2; PHX suppressor discount applied; no VOLATILE risk on this prop.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 1.5,
     "market_implied_prob": 84.13,
     "market_book": "fanduel",
@@ -20631,6 +20659,8 @@
     "odds_fetched_at": "2026-04-02T07:29:32.670680-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]

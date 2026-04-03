@@ -14,10 +14,10 @@
       "volatile_penalty": -5,
       "note": "VOLATILE -5% drops T4 confidence from 80% to 75%, below the 78% REB minimum floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-02",
@@ -33,10 +33,10 @@
       "step_down_result": "below_minimum_tier",
       "note": "trend=down mandatory step-down from T1 has no valid lower tier; skip required per rules."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-02",
@@ -53,10 +53,10 @@
       "volatile_penalty": -5,
       "note": "T25 ceiling rule fails at 75%; no validated lower tier available."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 24.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 24.0 < tier 25"
   },
   {
     "date": "2026-04-02",
@@ -76,8 +76,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-02",
@@ -95,8 +95,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-02",
@@ -115,10 +115,10 @@
       "lower_tier_data": "unavailable at T10",
       "note": "Multiple mandatory step-downs to T10; no T10 data available to validate; b2b+VOLATILE cascade fails."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 20.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 20.0 \u2265 tier 15"
   },
   {
     "date": "2026-04-02",
@@ -135,10 +135,10 @@
       "rule": "VOLATILE + AST T6+ unconditional hard skip",
       "note": "VOLATILE tag present on AST; T6 or higher with VOLATILE is an unconditional skip regardless of hit rate."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-04-02",
@@ -157,10 +157,10 @@
       "competitive": "46%",
       "note": "VOLATILE -5% drops T10 from 75% to 70%; below 78% REB floor; vs_tough and competitive splits confirm weakness."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 14.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 14.0 \u2265 tier 10"
   },
   {
     "date": "2026-04-02",
@@ -177,9 +177,9 @@
       "threshold": 30,
       "note": "trend=down AND avg_minutes_last5 (28.7) \u2264 30 triggers hard skip on all 3PM picks including T1."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
   }
 ]

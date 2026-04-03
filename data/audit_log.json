@@ -3655,5 +3655,98 @@
         "Adding an independent leg from a separate game (Jaylen Brown PTS vs MIA) as the third leg provided clean diversification \u2014 the BOS @ MIA game was COMPETITIVE (147-129, BOS won by 18), which is the ideal game-script for a star scorer's PTS floor pick, and Brown's iron_floor designation at T15 made this leg structurally the most reliable anchor in the parlay."
       ]
     }
+  },
+  {
+    "date": "2026-04-02",
+    "total_picks": 9,
+    "voided_picks": 2,
+    "hits": 9,
+    "misses": 0,
+    "no_data": 0,
+    "hit_rate_pct": 100.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Absence-driven usage expansion validated across two picks: Wembanyama OUT (SAS) amplified both Kawhi Leonard REB (6 vs T4=4) and Kawhi AST (5 vs T2=2) well beyond threshold, while Edwards OUT (MIN) redistributed MIN creation to Randle who recorded 6 AST vs T2=2. Afternoon lineup amendments correctly flagged upside direction in both cases \u2014 the system's real-time adjustment mechanism is functioning as designed.",
+      "Low-threshold AST props (T2 and T4) produced the cleanest hits of the session: all four AST picks cleared their thresholds comfortably (Randle 6, Kawhi 5, LaMelo 11, Knueppel 2), with the two iron-floor designations (LaMelo AST, Kawhi REB) providing the structural reliability anticipated. Iron-floor tags on AST and REB remain the session's most dependable confidence anchor.",
+      "PHX suppressor treatment was correctly calibrated: all three CHA vs PHX picks (LaMelo PTS, LaMelo AST, LaMelo 3PM, Knueppel PTS, Knueppel AST) hit despite the suppressor flag, with PHX confirmed as a blowout loss (CHA won by 20). The 9+/10 threshold exemption for the PHX suppressor held, and the mandatory T10 step-down on LaMelo PTS (from T15 due to min_floor < 24) proved conservative but correct \u2014 LaMelo scored 15 on a T10 pick.",
+      "Competitive game script (SA@LAC: SA won by 19) protected Kawhi Leonard's minutes (32 min played) despite the game trending toward SAS blowout territory. The pick logic correctly identified that the competitive game script would sustain Kawhi's deployment long enough to accumulate REB and AST above conservative thresholds \u2014 both hits were decisive (6 REB vs T4=4, 5 AST vs T2=2).",
+      "Jalen Duren PTS T15 hit (22 actual vs 15 pick) validated the analyst's reasoning about Cunningham+Stewart absences creating a legitimate usage spike. Despite the VOLATILE tag and human_verdict=trim, the structural logic \u2014 undisputed offensive anchor in an expanded role \u2014 proved sound. The 72% confidence correctly reflected residual fragility while still justifying selection."
+    ],
+    "lessons": [
+      "All nine active picks hit \u2014 no misses to analyze. The primary structural lesson from this session is the persistent negative edge across all picks (edge_pct ranges from \u22126.91% to \u221222.77%), meaning every pick was priced at market-implied odds that significantly exceed the system's confidence assignments. The system is consistently finding high-hit-rate props that are overpriced by the market. This is not a selection problem but a sizing/value signal: when market_implied_prob exceeds confidence_pct by 10+ percentage points, the Analyst should note this as a systematic pricing gap and consider whether prop selection criteria should include a minimum edge threshold.",
+      "The human_verdict=trim picks (Kawhi REB, Jalen Duren PTS, LaMelo AST) all hit comfortably \u2014 Kawhi REB by +2, Duren PTS by +7, LaMelo AST by +7. While the trim reasoning was defensible pre-game (min_floor concerns, VOLATILE tag, blowout minutes risk), this session adds evidence that conservative trim flags on iron-floor and high-hit-rate props may be overcautious. The Analyst should track trim picks vs. non-trim picks over a rolling 20-game window to calibrate whether trim-flagged picks systematically outperform their risk narrative.",
+      "LaMelo Ball's 3PM exact-match hit (actual=2.0 vs pick=2) is the session's only threshold-exact result. Per grading rules this is correctly a HIT, not a near-miss. However, the low vs_tough (50%) and competitive (68%) splits on LaMelo 3PM at T3 that drove the step-down to T2 were validated by the exactness of the result \u2014 the step-down logic was correct. If the pick had remained at T3 (pick_value=3), it would have missed. The PHX suppressor + split-based step-down combination should be reinforced as a reliable conservative mechanism for 3PM props with materially lower split rates than overall hit rate."
+    ],
+    "recommendations": [
+      "Implement a minimum edge threshold flag: when market_implied_prob exceeds confidence_pct by \u226515 percentage points on any pick, add a 'low_edge' annotation to the pick object. This session had six picks with edge_pct below \u221215% (Randle AST \u221214.15%, LaMelo AST \u221215.55%, LaMelo 3PM \u221216.67%, Knueppel PTS \u221217.67%, Duren PTS \u221217.47%, LaMelo PTS \u221222.77%). While these all hit, tracking low-edge picks systematically will reveal whether the system is structurally exploiting mis-priced lines or simply picking safe props that the market has already priced correctly.",
+      "For multi-prop stacks on the same player vs. the same opponent (e.g. LaMelo PTS+AST+3PM all vs PHX), require that the game script risk assessment be shared across all three picks explicitly in the tier_walk. LaMelo's 25 minutes played in a blowout (CHA won by 20) still produced hits on all three props \u2014 but the blowout_secondary_scorer risk that the human flagged on LaMelo AST (trim_reasons) was legitimate. Add a shared blowout_stack_note field when 3+ props are selected on the same player in a potential blowout game.",
+      "The Wembanyama OUT lineup update produced the most decisive overperformance of the session (Kawhi REB +2, Kawhi AST +3 above threshold). Formalize a 'rim_anchor_absent' amplifier tag: when the opponent's primary shot-blocker/rim deterrent is confirmed OUT pre-game, automatically apply a +1 tier consideration for REB picks and a confidence upgrade for driving-lane-dependent AST picks on players who operate in the paint or at the elbow. This signal was correctly identified by the lineup agent but should be a systematic rule rather than a manual amendment.",
+      "Duren PTS at 72% confidence with VOLATILE tag and human_verdict=trim hit by +7 (22 actual vs 15 pick). Review the VOLATILE penalty calibration for players with confirmed role-expansion absences: when 2+ primary teammates are OUT and the player's recent L10 log shows consistent high output (31, 30, 26, 20, 23, 24, 36, 30), the VOLATILE \u22125% penalty may be overstated because the volatility is skewed upward, not symmetric. Consider a 'VOLATILE_UP' vs 'VOLATILE_SYMMETRIC' distinction based on L10 floor analysis.",
+      "Track trim_verdict pick outcomes vs. non-trim outcomes over a rolling 20-game window. This session: 3 trim picks all hit (Kawhi REB, Duren PTS, LaMelo AST), 6 non-trim picks all hit. The trim mechanism is not currently reducing expected value \u2014 it is flagging real structural risks (min_floor, VOLATILE, blowout minutes) that did not materialize. If the trim hit rate remains at or above non-trim hit rate over 20 games, consider relaxing trim criteria or treating trim as informational annotation only rather than a confidence cap trigger."
+    ],
+    "miss_details": [],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 3/3 AST Iron Trio sweep \u2014 all three legs hit with decisive margins (Randle 6, Kawhi 5, LaMelo 11 vs thresholds of 2, 2, and 4 respectively).",
+      "parlay_lessons": [
+        "The structural risk on this parlay was LaMelo AST T4 in a potential blowout: CHA was favored by 5.5 at home vs a depleted PHX team, and the game did end as a blowout (CHA +20). LaMelo played only 25 minutes \u2014 the lowest of any player in this session \u2014 yet still recorded 11 AST, making the iron-floor designation the decisive protection mechanism. In future blowout-risk parlays where an iron-floor leg is anchoring a multi-leg combination, explicitly note that the iron-floor tag is load-bearing for the parlay's survival: if the iron-floor tag is incorrect or stale, the entire parlay collapses. Verify iron-floor designations are current-season data before including them as the structural backbone of a parlay.",
+        "The Kawhi AST leg carried the only meaningful single-leg risk: trend=down on AST at pick time, and the game ended with SAS winning by 19 (competitive script that could have compressed Kawhi's fourth-quarter minutes). The parlay survived because the SAS win was not a blowout and Kawhi was deployed fully (32 min). When a parlay includes a leg with trend=down, require that the corresponding game script be CLOSE or COMPETITIVE as a soft gate \u2014 a trend=down AST leg in a potential blowout context should be treated as a near-skip unless hit rate vs blowout games is confirmed above 80%."
+      ],
+      "parlay_reinforcements": [
+        "The multi-game independent AST parlay structure \u2014 three players across three separate games with no shared opponent or team correlation \u2014 is the system's most reliable parlay architecture. All three legs were T2 or T4 AST (low absolute thresholds), ensuring that even shortened-minutes games produced sufficient assist accumulation. The 'low-threshold AST trio across independent games' template should be the default parlay construction when three qualifying AST props are available with 9/10 hit rates: the independence eliminates game-script correlation risk and the low thresholds create a wide margin for error.",
+        "Absence-driven upside on two of the three legs (Randle: Edwards OUT; Kawhi: Wembanyama OUT) meant the parlay had positive asymmetry baked in before tip-off \u2014 both players absorbed redistributed usage that pushed their AST outputs well above already-conservative thresholds. When building parlays, prioritize legs where a confirmed pre-game absence of a primary teammate or opponent anchor creates legitimate upside, rather than legs that are simply 'high hit rate at the baseline.' Absence-amplified legs provide both higher expected output and lower threshold-miss risk simultaneously."
+      ]
+    }
   }
 ]
