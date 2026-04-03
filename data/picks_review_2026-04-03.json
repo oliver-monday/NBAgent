@@ -1,0 +1,136 @@
+[
+  {
+    "date": "2026-04-03",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 21.8 on a B2B with a spread of -15.5 means CHA leads big and LaMelo's minutes compress in Q4; a single short-minutes blowout game pushes his counting stats below even this conservative T10 threshold. Historical lesson from the McCollum/NAW session shows that a low pre-game spread producing a blowout can suppress secondary scorers to exactly the threshold margin."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Despite the iron_floor tag and 92% B2B hit rate, the spread of -15.5 creates meaningful Q4 garbage-time compression risk \u2014 the exact scenario (NAW AST miss) that prior audit history flagged as a structural gap where iron_floor AST picks are still vulnerable when starters are pulled early in a large win. Min_floor of 21.8 leaves legitimate downside."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a B2B B2B hit rate of only 82% (materially below the 93% seen in cleaner contexts) and a spread of -15.5 is a textbook blowout-secondary-scorer compression scenario; Miller's typical miss is 4 points below threshold, meaning a short-minutes blowout game produces a comfortable miss, not a near-miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a T2 AST pick that was itself a step-down from T4 (which failed the hit-rate gate) means the underlying AST distribution is genuinely wide; in a blowout where TOR trails by 13.5 points and Barnes's minutes compress, the assist floor is thin and a single low-usage game produces a miss on a prop with a raw_avg of 6.6 that still needed to step all the way down to T2."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Min_floor=0.0 is a critical DNP-risk flag \u2014 this is not a minutes-compression story but an outright non-participation risk confirmed by recent game-log DNPs; a player who may not dress cannot hit any scoring threshold, and no hit-rate statistic or soft matchup offsets the binary DNP outcome risk."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The prior audit session flagged NAW AST T2 as a direct miss driven by blowout game-script compression \u2014 today's spread is -16.5 (even larger than the 4.5 that produced the prior blowout), and ATL is the favored road team; iron_floor status did not protect this exact pick profile last time, making the structural recurrence risk credible."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-03",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "At T15 in a game with spread_abs=16.5, Johnson is the prototypical blowout-secondary-scorer risk: ATL leads big, starters rest in Q4, and Johnson's post_miss_hr of only 77% (below the field) with a typical miss of 3 points below threshold means a Q4 DNQ scenario produces a comfortable miss at a tier that still requires meaningful scoring volume."
+    ],
+    "source": "auto"
+  }
+]

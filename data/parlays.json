@@ -3657,5 +3657,100 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-03",
+    "parlays": [
+      {
+        "label": "Multi-Game AST Trio",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "IND",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "MEM",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Nickeil Alexander-Walker",
+            "team": "ATL",
+            "opponent": "BKN",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+147",
+        "confidence_product": 0.4052,
+        "correlation": "independent",
+        "rationale": "Low-threshold AST trio across three independent games mirrors system's most reliable parlay architecture with trending-up feeders.",
+        "date": "2026-04-03",
+        "id": "parlay_2026-04-03_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "label": "Stable Scorers Sweep",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "MEM",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Jalen Johnson",
+            "team": "ATL",
+            "opponent": "BKN",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kon Knueppel",
+            "team": "CHA",
+            "opponent": "IND",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+147",
+        "confidence_product": 0.4052,
+        "correlation": "positive",
+        "rationale": "Two stable scorers in soft/mid matchups anchored by a low-threshold independent AST leg for game-script resilience.",
+        "date": "2026-04-03",
+        "id": "parlay_2026-04-03_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
