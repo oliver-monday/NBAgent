@@ -1,0 +1,126 @@
+[
+  {
+    "date": "2026-04-04",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor=21.9 is below the 24-minute threshold, meaning a single low-usage or foul-trouble game produces a miss even at T10. Fox's moderate volatility combined with a fragile minutes floor means the pick is contingent on playing time, not a guaranteed floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a player whose FG_MARGIN was thin enough to mandate a step-down means a cold shooting night can easily close the gap from 15 to the line \u2014 post_miss bounce-back lift is only 0.81, the weakest on the slate, indicating the floor doesn't reliably snap back after a miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "REB",
+    "pick_value": 8,
+    "verdict": "trim",
+    "trim_reasons": [
+      "vs_tough=59% and competitive=67% both sit materially below Jokic's overall REB rate, and SA's defense has been trending tighter over the L5 (delta_pct=-5.9%). REB is confirmed slump-persistent per audit history \u2014 if Jokic had a sub-par board game recently, the combined tough-matchup and split suppression creates a structurally softer floor than iron_floor status would imply (notably, iron_floor=False here)."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with opp_defense=tough and a typical_miss of 7 pts below threshold means a bad shooting night easily undershoots T15 \u2014 the distribution is wide enough that the structural floor is genuinely fragile, and the FG_MARGIN_NEG penalty already forced a step-down indicating thin scoring margin above the line."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag, min_floor=22.9 (<24), FG_MARGIN_NEG forcing a mandatory step-down, and a typical_miss of 5 pts below threshold together create a genuinely fragile floor \u2014 a single low-minutes or cold-shooting game against a DEN defense collapses the pick, and none of these risks are offset by iron_floor status or a favorable split."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Joel Embiid",
+    "team": "DET",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "B2B with insufficient B2B hit rate data (no reliable floor), VOLATILE tag, QUES status, min_floor=23.4 (<24), post_miss bounce-back lift of only 0.71 (worst on slate), and competitive split=52% all converge on the same player for the same prop \u2014 the structural risks are stacked and the b2b_hit_rate is unknowable, making the confidence floor entirely unverifiable."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Joel Embiid",
+    "team": "DET",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B rest with no reliable B2B hit rate data means the 90% overall hit rate cannot be stress-tested against fatigue conditions; min_floor=23.4 means a short-minutes B2B game \u2014 entirely plausible given QUES status \u2014 reduces attempts and makes even a T1 3PM miss structurally possible."
+    ],
+    "source": "auto"
+  }
+]

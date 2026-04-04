@@ -3798,5 +3798,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-04",
+    "parlays": [
+      {
+        "label": "SA-DEN Volume Lock",
+        "type": "same_game_stack",
+        "legs": [
+          {
+            "player_name": "De'Aaron Fox",
+            "team": "SA",
+            "opponent": "DEN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Victor Wembanyama",
+            "team": "SA",
+            "opponent": "DEN",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "SA",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "positive",
+        "rationale": "High-pace SA-DEN volume game; low AST threshold for Wemby anchors both SA scorers hitting modest floors.",
+        "date": "2026-04-04",
+        "id": "parlay_2026-04-04_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
