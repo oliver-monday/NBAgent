@@ -997,5 +997,135 @@
     "spread_delta": null,
     "morning_context": "skipped this morning (ast_hard_gate, 3pm_blowout_trend_down)",
     "reasoning": "REB T6 70% [stable]; AST T4 70% [stable]; 3PM T1 75% [down]; skipped this morning (ast_hard_gate, 3pm_blowout_trend_down)"
+  },
+  {
+    "date": "2026-04-04",
+    "generated_at": "2026-04-04T11:01:22.869999-07:00",
+    "triggered_by": "Joel Embiid",
+    "triggered_by_team": "DET",
+    "side": "teammate",
+    "player_name": "Ausar Thompson",
+    "team": "DET",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 80% [up]; AST T2 85% [stable]"
+  },
+  {
+    "date": "2026-04-04",
+    "generated_at": "2026-04-04T11:01:22.869999-07:00",
+    "triggered_by": "Joel Embiid",
+    "triggered_by_team": "DET",
+    "side": "teammate",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile"
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 8,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 80% [down]; REB T4 75% [down]; AST T8 80% [stable]; 3PM T1 75% [down]"
+  },
+  {
+    "date": "2026-04-04",
+    "generated_at": "2026-04-04T11:01:22.869999-07:00",
+    "triggered_by": "Joel Embiid",
+    "triggered_by_team": "DET",
+    "side": "teammate",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "REB": {
+        "tier": 10,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T20 75% [stable]; REB T10 75% [stable]"
+  },
+  {
+    "date": "2026-04-04",
+    "generated_at": "2026-04-04T11:01:22.869999-07:00",
+    "triggered_by": "Joel Embiid",
+    "triggered_by_team": "DET",
+    "side": "opponent",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 25,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T25 75% [stable]; AST T6 70% [up]; 3PM T2 80% [down]"
   }
 ]
