@@ -21328,7 +21328,10 @@
     "market_implied_prob": 88.89,
     "market_book": "fanduel",
     "edge_pct": -8.89,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21354,7 +21357,10 @@
     "market_implied_prob": 98.04,
     "market_book": "fanduel",
     "edge_pct": -18.04,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21380,7 +21386,10 @@
     "market_implied_prob": 86.11,
     "market_book": "fanduel",
     "edge_pct": -8.11,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21406,7 +21415,10 @@
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
     "edge_pct": -16.77,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21432,7 +21444,10 @@
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
     "edge_pct": -18.15,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21458,7 +21473,10 @@
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
     "edge_pct": -23.56,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21484,7 +21502,10 @@
     "market_implied_prob": 94.74,
     "market_book": "fanduel",
     "edge_pct": -24.74,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21510,7 +21531,10 @@
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
     "edge_pct": -15.33,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21536,7 +21560,10 @@
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
     "edge_pct": -24.12,
-    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00"
+    "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
+    "injury_status_at_check": "NOT_LISTED",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": false
   },
   {
     "date": "2026-04-04",
@@ -21557,7 +21584,12 @@
     "is_skip": false,
     "reasoning": "Multiple step-downs land at T10; VOLATILE, B2B<5g, and QUES status keep confidence at floor.",
     "result": null,
-    "actual_value": null
+    "actual_value": null,
+    "injury_status_at_check": "OUT",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": true,
+    "void_reason": "player OUT per injury report",
+    "lineup_risk": "high"
   },
   {
     "date": "2026-04-04",
@@ -21578,6 +21610,11 @@
     "is_skip": false,
     "reasoning": "90% overall at T1 with consistent tag and trend=up; B2B<5g and non-iron-floor cap at 80%.",
     "result": null,
-    "actual_value": null
+    "actual_value": null,
+    "injury_status_at_check": "OUT",
+    "injury_check_time": "2026-04-04T11:01:21.168454-07:00",
+    "voided": true,
+    "void_reason": "player OUT per injury report",
+    "lineup_risk": "high"
   }
 ]
