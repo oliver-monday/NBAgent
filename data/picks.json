@@ -20887,8 +20887,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "B2B step-down to T10, IND soft defense, capped at 74% per spread_abs\u226515 rule.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "market_line": 9.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -20905,7 +20905,11 @@
       "direction": "up",
       "revised_confidence_pct": 78,
       "revised_reasoning": "Diabate OUT frees LaMelo minutes/usage; vs_soft=97% with soft IND defense amplifies scoring upside."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 21.8 on a B2B with a spread of -15.5 means CHA leads big and LaMelo's minutes compress in Q4; a single short-minutes blowout game pushes his counting stats below even this conservative T10 threshold. Historical lesson from the McCollum/NAW session shows that a low pre-game spread producing a blowout can suppress secondary scorers to exactly the threshold margin."
+    ]
   },
   {
     "date": "2026-04-03",
@@ -20925,8 +20929,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron floor AST on elite playmaker vs depleted IND backcourt; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "market_line": 3.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -20943,7 +20947,11 @@
       "direction": "up",
       "revised_confidence_pct": 78,
       "revised_reasoning": "Diabate OUT redistributes possessions to LaMelo; iron_floor plus trend=up and soft IND backcourt boost assists."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Despite the iron_floor tag and 92% B2B hit rate, the spread of -15.5 creates meaningful Q4 garbage-time compression risk \u2014 the exact scenario (NAW AST miss) that prior audit history flagged as a structural gap where iron_floor AST picks are still vulnerable when starters are pulled early in a large win. Min_floor of 21.8 leaves legitimate downside."
+    ]
   },
   {
     "date": "2026-04-03",
@@ -20963,8 +20971,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "B2B-resilient scorer steps down to T10 per min_floor rule; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "market_line": 9.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -20981,7 +20989,9 @@
       "direction": "up",
       "revised_confidence_pct": 77,
       "revised_reasoning": "Diabate OUT increases Knueppel's role; vs_soft=94% and soft IND defense support modest confidence bump."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-03",
@@ -21001,8 +21011,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% hit rate at T2 AST vs depleted IND; spread cap applies at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 1.5,
     "market_implied_prob": 83.87,
     "market_book": "fanduel",
@@ -21019,7 +21029,9 @@
       "direction": "up",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Diabate OUT slightly elevates Knueppel's playmaking opportunities; trend=stable limits magnitude of revision."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-03",
@@ -21039,8 +21051,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "VOLATILE B2B penalty forces step to T10 effective; spread cap 74% on favored blowout game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "market_line": 9.5,
     "market_implied_prob": 97.22,
     "market_book": "fanduel",
@@ -21057,7 +21069,11 @@
       "direction": "up",
       "revised_confidence_pct": 77,
       "revised_reasoning": "Diabate OUT boosts Miller's usage; VOLATILE tag limits revision despite vs_soft=92% and soft IND defense."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a B2B B2B hit rate of only 82% (materially below the 93% seen in cleaner contexts) and a spread of -15.5 is a textbook blowout-secondary-scorer compression scenario; Miller's typical miss is 4 points below threshold, meaning a short-minutes blowout game produces a comfortable miss, not a near-miss."
+    ]
   },
   {
     "date": "2026-04-03",
@@ -21077,8 +21093,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron floor AST T2 with 95% overall; spread cap applies to 74% on heavily favored side.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 90.48,
     "market_book": "fanduel",
@@ -21095,7 +21111,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Iron_floor and consistent tags protect floor; Diabate OUT minimally affects Miller's assist opportunities."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-03",
@@ -21115,8 +21133,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% vs soft MEM defense; blowout cap limits to 74% as road favorite.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "market_line": 9.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -21124,7 +21142,9 @@
     "odds_fetched_at": "2026-04-03T07:08:22.672199-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-03",
@@ -21144,11 +21164,15 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Step to T2 AST after T4 fails penalty cascade; VOLATILE and spread cap bring to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a T2 AST pick that was itself a step-down from T4 (which failed the hit-rate gate) means the underlying AST distribution is genuinely wide; in a blowout where TOR trails by 13.5 points and Barnes's minutes compress, the assist floor is thin and a single low-usage game produces a miss on a prop with a raw_avg of 6.6 that still needed to step all the way down to T2."
+    ]
   },
   {
     "date": "2026-04-03",
@@ -21168,8 +21192,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% vs soft opponents with blowout resilience; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 1.5,
     "market_implied_prob": 90.0,
     "market_book": "fanduel",
@@ -21177,7 +21201,9 @@
     "odds_fetched_at": "2026-04-03T07:08:22.672199-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-03",
@@ -21197,8 +21223,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Step to T10 per min_floor<24; proj_min=33 but DNP history keeps confidence at 74% cap.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 9.5,
     "market_implied_prob": 98.04,
     "market_book": "fanduel",
@@ -21206,7 +21232,11 @@
     "odds_fetched_at": "2026-04-03T07:08:22.672199-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "Min_floor=0.0 is a critical DNP-risk flag \u2014 this is not a minutes-compression story but an outright non-participation risk confirmed by recent game-log DNPs; a player who may not dress cannot hit any scoring threshold, and no hit-rate statistic or soft matchup offsets the binary DNP outcome risk."
+    ]
   },
   {
     "date": "2026-04-03",
@@ -21226,8 +21256,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron floor AST despite tough defense; prior blowout miss noted, spread cap at 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -21235,7 +21265,11 @@
     "odds_fetched_at": "2026-04-03T07:08:22.672199-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "The prior audit session flagged NAW AST T2 as a direct miss driven by blowout game-script compression \u2014 today's spread is -16.5 (even larger than the 4.5 that produced the prior blowout), and ATL is the favored road team; iron_floor status did not protect this exact pick profile last time, making the structural recurrence risk credible."
+    ]
   },
   {
     "date": "2026-04-03",
@@ -21255,8 +21289,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Primary ATL scorer at T15 with 87% blowout hit rate; spread cap limits to 74%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "market_line": 14.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -21264,6 +21298,10 @@
     "odds_fetched_at": "2026-04-03T07:08:22.672199-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "At T15 in a game with spread_abs=16.5, Johnson is the prototypical blowout-secondary-scorer risk: ATL leads big, starters rest in Q4, and Johnson's post_miss_hr of only 77% (below the field) with a typical miss of 3 points below threshold means a Q4 DNQ scenario produces a comfortable miss at a tier that still requires meaningful scoring volume."
+    ]
   }
 ]

@@ -3702,9 +3702,32 @@
         "rationale": "Low-threshold AST trio across three independent games mirrors system's most reliable parlay architecture with trending-up feeders.",
         "date": "2026-04-03",
         "id": "parlay_2026-04-03_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Brandon Miller",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 3.0
+          },
+          {
+            "player_name": "RJ Barrett",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 4.0
+          },
+          {
+            "player_name": "Nickeil Alexander-Walker",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 3.0
+          }
+        ]
       },
       {
         "label": "Stable Scorers Sweep",
@@ -3747,9 +3770,32 @@
         "rationale": "Two stable scorers in soft/mid matchups anchored by a low-threshold independent AST leg for game-script resilience.",
         "date": "2026-04-03",
         "id": "parlay_2026-04-03_02",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Scottie Barnes",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 10.0
+          },
+          {
+            "player_name": "Jalen Johnson",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 18.0
+          },
+          {
+            "player_name": "Kon Knueppel",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 4.0
+          }
+        ]
       }
     ]
   }

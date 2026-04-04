@@ -3748,5 +3748,98 @@
         "Absence-driven upside on two of the three legs (Randle: Edwards OUT; Kawhi: Wembanyama OUT) meant the parlay had positive asymmetry baked in before tip-off \u2014 both players absorbed redistributed usage that pushed their AST outputs well above already-conservative thresholds. When building parlays, prioritize legs where a confirmed pre-game absence of a primary teammate or opponent anchor creates legitimate upside, rather than legs that are simply 'high hit rate at the baseline.' Absence-amplified legs provide both higher expected output and lower threshold-miss risk simultaneously."
       ]
     }
+  },
+  {
+    "date": "2026-04-03",
+    "total_picks": 12,
+    "voided_picks": 0,
+    "hits": 12,
+    "misses": 0,
+    "no_data": 0,
+    "hit_rate_pct": 100.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0
+      },
+      "AST": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 12,
+        "hits": 12,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "IND amplifier is confirmed and dominant: all four CHA picks vs. IND (LaMelo PTS/AST, Knueppel PTS/AST, Miller PTS/AST) hit emphatically \u2014 LaMelo scored 18 vs. T10 threshold of 10, Knueppel scored 20 vs. T10 threshold of 10, Miller scored 22 vs. T10 threshold of 10 \u2014 validating that even conservative blowout-stepped tiers against Indiana's depleted defense produce comfortable margins, not near-misses.",
+      "Blowout-side spread cap at 74% was correctly applied across all favored-side picks (CHA \u221215.5, TOR \u221213.5, ATL \u221216.5) and all hit cleanly. The conservative confidence ceiling did not cause underconfidence in the architecture \u2014 it reflected genuine game-script uncertainty that resolved favorably. The cap is working as a risk control, not as a false negative generator.",
+      "Iron-floor AST tags continued to protect floor outcomes even in blowout game scripts: Brandon Miller's T2 AST (iron floor, 95% overall) hit at 3.0 vs. threshold of 2, and NAW's T2 AST (iron floor, 85% overall) hit at 3.0 vs. threshold of 2 in an ATL +34 blowout. Iron floor status held in the exact scenario (large-spread road blowout) that prior audit sessions flagged as a structural risk.",
+      "The T10 PTS step-down rule as a blowout-safety mechanism worked correctly: stepping LaMelo, Knueppel, and Miller from T15 to T10 (or T25 to T10) produced very low thresholds that all cleared comfortably despite blowout game script on the winning side. The min_floor<24 mandatory step rule and VOLATILE B2B penalty both triggered appropriate step-downs that gave genuine cushion.",
+      "Scottie Barnes PTS T10 at pick_value=10 vs. MEM returned exactly 10.0 \u2014 a threshold-exact HIT per grading rules. This confirms that 100% vs_soft and blowout_games=100% data points in the pick object were the correct anchoring signals and that the T10 step (rather than attempting T15) provided the necessary cushion to survive a game where Barnes logged only 23 minutes in the blowout."
+    ],
+    "lessons": [
+      "Human verdicts flagged 5 of 12 picks as trim or manual_skip despite all hitting \u2014 specifically LaMelo PTS, LaMelo AST, Brandon Miller PTS, Scottie Barnes AST, NAW AST, Jalen Johnson PTS, and Brandon Ingram PTS. The Analyst's conservative instincts on blowout-side secondary scorers and VOLATILE-tagged players were structurally correct in principle but cost no outcomes this session. The lesson is not to abandon those instincts, but to note that the IND amplifier environment (100% system hit rate) is strong enough that even conservatively stepped tiers clear by large margins \u2014 the amplifier context should weigh more heavily when deciding whether to trim.",
+      "Brandon Ingram's min_floor=0.0 DNP-risk flag was the most aggressive selection of the session \u2014 the human verdict was manual_skip and the reasoning (binary DNP risk outweighs soft matchup) was correct in principle. Ingram did play (17 PTS, 26 min) and hit, but the workflow correctly identified that a 0.0 min_floor cannot be offset by matchup quality alone. The pick's hit validates the market line but not the selection logic \u2014 retaining the manual_skip rule for min_floor=0.0 picks is appropriate regardless of this outcome.",
+      "Scottie Barnes AST required a step from T4 (which failed the gate) all the way to T2 due to VOLATILE tag \u2014 the pick hit (6.0 vs. threshold of 2) but Barnes logged only 23 minutes in the TOR blowout win. The large actual_value margin (6 assists in 23 blowout minutes) masked genuine structural fragility: in a game where TOR led by 32, a player logging 23 minutes and producing 6 assists represents a favorable variance outcome, not a repeatable floor. The VOLATILE + step-down + blowout combination warrants continued trim classification even when hits occur."
+    ],
+    "recommendations": [
+      "When IND is the opponent (confirmed 100% amplifier, n=23), consider whether the mandatory T15\u2192T10 step-down for min_floor<24 is overly conservative \u2014 in the IND amplifier environment, T15 thresholds may be appropriate even with a compressed min_floor, because IND's depleted defense allows scoring well above threshold even in reduced minutes. Evaluate adding an amplifier_override_min_floor exception to the step-down rule when opp_defense_rating='soft' AND the opponent is a confirmed system amplifier.",
+      "For Brandon Ingram specifically: min_floor=0.0 combined with confirmed recent-game DNPs should trigger an automatic hard_skip flag in Scout rather than a confidence reduction to 74%. The binary DNP risk (player does not dress = guaranteed miss regardless of tier) is categorically different from minutes compression risk \u2014 the rule should be 'min_floor=0.0 with DNP history \u2192 hard_skip, do not grade confidence' rather than 'apply a confidence floor and run the pick.' This session's hit was a favorable DNP-did-not-occur outcome, not validation of the selection.",
+      "Scottie Barnes AST should be treated with additional structural caution in future sessions: the T4 fail \u2192 T2 step-down pattern on a VOLATILE player means the only viable AST tier requires the player to log just 2 assists. In blowout games where Barnes plays 23 minutes, this barely clears. Apply the trim_by_default rule to any AST pick that required a multi-step walk-down (T4 fail \u2192 T2) on a VOLATILE-tagged player facing a spread_abs \u2265 13 \u2014 the pick's quant foundation is structurally thin even when the pick hits.",
+      "The Jalen Johnson PTS T15 pick at pick_value=15 was flagged as trim due to blowout secondary-scorer risk and a post_miss_hr of 77%, but hit at 18 PTS. In future sessions, verify whether Johnson's avg_minutes=36.3 (just at the 36-minute boundary) qualifies for the elite-usage exemption \u2014 if the rule requires >36 (strict) rather than \u226536, Johnson sits in a gray zone. Clarify the boundary condition and consider whether 36.3 rounds to exempt, because the blowout cap and secondary-scorer skip both fired on what may be a primary scorer by usage metrics.",
+      "NAW AST T2 iron_floor in a spread_abs=16.5 ATL road blowout hit at 3.0 vs. threshold of 2 \u2014 but the prior audit session had flagged this exact profile (large blowout spread, iron_floor AST T2) as producing a structural miss. This session's hit does not invalidate that pattern. Maintain the trim classification for iron_floor AST T2 picks on heavily favored sides (spread_abs \u2265 15) until a larger sample (\u2265 5 occurrences) establishes whether iron_floor status reliably survives Q4 garbage-time compression at this spread level."
+    ],
+    "miss_details": [],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 2,
+      "hits": 2,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 2/2 sweep \u2014 both parlays cleared comfortably with all six legs hitting, anchored by low-threshold AST iron-floor legs and the IND amplifier environment driving large margin cushions on all PTS thresholds.",
+      "parlay_lessons": [
+        "Both parlays were structurally sound and hit, but each carried a latent concentration risk that did not materialize: the AST Trio parlay had all three legs exposed to large-spread blowout game scripts (CHA \u221215.5, TOR \u221213.5, ATL \u221216.5), meaning a single Q4 garbage-time shutdown on any of the three players' teams would have killed the parlay. The structural lesson is that multi-leg AST parlays with all legs on heavily favored sides create a correlated blowout-compression tail risk that the 'independent' correlation label does not capture \u2014 at least one leg should ideally be on the underdog side or in a projected close game.",
+        "The Stable Scorers Sweep included Scottie Barnes PTS at pick_value=10 (market line 9.5), which returned exactly 10.0 \u2014 a threshold-exact result in 23 blowout minutes. Had Barnes logged 22 minutes (a plausible outcome in a 32-point blowout), a sub-10 output would have voided the parlay. Parlay legs that are themselves blowout-stepped T10 picks on 23-minute players in 30+ point blowouts represent single-point-of-failure exposure; future parlay construction should require a minimum margin buffer when any leg involves a player with avg_minutes < 30 in a projected large-spread game."
+      ],
+      "parlay_reinforcements": [
+        "The AST Trio architecture (three independent AST T2 legs across three different games, each with iron_floor or 85%+ overall hit rates) is the system's most reliable parlay structure \u2014 3/3 legs hit with actual values of 3, 4, and 3 against thresholds of 2, all in separate game environments. Low-threshold AST legs with iron_floor designations provide the most robust floor for multi-leg parlays because their miss patterns are narrow (typical misses are \u22641 unit below threshold) and they survive blowout game scripts better than PTS legs at equivalent confidence levels.",
+        "Mixing prop types within a parlay (two PTS scorer legs + one AST anchor leg, as in the Stable Scorers Sweep) provides game-script diversification: PTS legs can fail in blowout garbage time while AST legs survive, and AST legs can fail in slow-pace/switching-scheme games while PTS legs succeed. The PTS+PTS+AST architecture with the AST leg as an 'independent' anchor is validated as a stable combination when the AST leg's pick_value is \u22642 and the opponent is a confirmed soft or mid defensive team."
+      ]
+    }
   }
 ]
