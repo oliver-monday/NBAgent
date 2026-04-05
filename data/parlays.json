@@ -3843,9 +3843,32 @@
         "rationale": "High-pace SA-DEN volume game; low AST threshold for Wemby anchors both SA scorers hitting modest floors.",
         "date": "2026-04-04",
         "id": "parlay_2026-04-04_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 14.0
+          },
+          {
+            "player_name": "Victor Wembanyama",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 7.0
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 40.0
+          }
+        ]
       }
     ]
   }

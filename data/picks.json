@@ -21322,8 +21322,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "90% hit rate at T10 with 94% competitive split; mid defense, no blowout risk.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "market_line": 9.5,
     "market_implied_prob": 88.89,
     "market_book": "fanduel",
@@ -21331,7 +21331,11 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "min_floor=21.9 is below the 24-minute threshold, meaning a single low-usage or foul-trouble game produces a miss even at T10. Fox's moderate volatility combined with a fragile minutes floor means the pick is contingent on playing time, not a guaranteed floor."
+    ]
   },
   {
     "date": "2026-04-04",
@@ -21351,8 +21355,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step to T15; VOLATILE -5% leaves 80%; competitive split and trend=up support floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 34.0,
     "market_line": 14.5,
     "market_implied_prob": 98.04,
     "market_book": "fanduel",
@@ -21360,7 +21364,11 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a player whose FG_MARGIN was thin enough to mandate a step-down means a cold shooting night can easily close the gap from 15 to the line \u2014 post_miss bounce-back lift is only 0.81, the weakest on the slate, indicating the floor doesn't reliably snap back after a miss."
+    ]
   },
   {
     "date": "2026-04-04",
@@ -21380,8 +21388,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall at T2, soft defense, trend=up; competitive split 77% warrants slight conservatism.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 1.5,
     "market_implied_prob": 86.11,
     "market_book": "fanduel",
@@ -21389,7 +21397,9 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-04",
@@ -21409,8 +21419,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron floor at T15 after FG_MARGIN_THIN step; 97% competitive hit rate; well-rested 3-day rest.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 40.0,
     "market_line": 14.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -21418,7 +21428,9 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-04",
@@ -21438,8 +21450,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T12 25th-pct gate forces step to T10; 85% overall, 3-day rest, trend=up support solid floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 7.5,
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
@@ -21447,7 +21459,11 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "vs_tough=59% and competitive=67% both sit materially below Jokic's overall REB rate, and SA's defense has been trending tighter over the L5 (delta_pct=-5.9%). REB is confirmed slump-persistent per audit history \u2014 if Jokic had a sub-par board game recently, the combined tough-matchup and split suppression creates a structurally softer floor than iron_floor status would imply (notably, iron_floor=False here)."
+    ]
   },
   {
     "date": "2026-04-04",
@@ -21467,8 +21483,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall at T8; elite playmaker, 3-day rest; competitive split 77% warrants conservative confidence.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "market_line": 5.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -21476,7 +21492,9 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-04",
@@ -21496,8 +21514,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step to T15; VOLATILE -5%; vs_tough=76% holds; 3-day rest, trend=up.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "market_line": 14.5,
     "market_implied_prob": 94.74,
     "market_book": "fanduel",
@@ -21505,7 +21523,11 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with opp_defense=tough and a typical_miss of 7 pts below threshold means a bad shooting night easily undershoots T15 \u2014 the distribution is wide enough that the structural floor is genuinely fragile, and the FG_MARGIN_NEG penalty already forced a step-down indicating thin scoring margin above the line."
+    ]
   },
   {
     "date": "2026-04-04",
@@ -21525,8 +21547,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall at T4, trend=up, 3-day rest; competitive split 78% warrants slight conservatism.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "market_line": 3.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -21534,7 +21556,9 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-04",
@@ -21554,8 +21578,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG and min_floor<24 force step to T10; competitive=66% and VOLATILE justify 70% floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "market_line": 9.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -21563,7 +21587,11 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag, min_floor=22.9 (<24), FG_MARGIN_NEG forcing a mandatory step-down, and a typical_miss of 5 pts below threshold together create a genuinely fragile floor \u2014 a single low-minutes or cold-shooting game against a DEN defense collapses the pick, and none of these risks are offset by iron_floor status or a favorable split."
+    ]
   },
   {
     "date": "2026-04-04",
@@ -21589,7 +21617,11 @@
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "B2B with insufficient B2B hit rate data (no reliable floor), VOLATILE tag, QUES status, min_floor=23.4 (<24), post_miss bounce-back lift of only 0.71 (worst on slate), and competitive split=52% all converge on the same player for the same prop \u2014 the structural risks are stacked and the b2b_hit_rate is unknowable, making the confidence floor entirely unverifiable."
+    ]
   },
   {
     "date": "2026-04-04",
@@ -21615,6 +21647,10 @@
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B rest with no reliable B2B hit rate data means the 90% overall hit rate cannot be stress-tested against fatigue conditions; min_floor=23.4 means a short-minutes B2B game \u2014 entirely plausible given QUES status \u2014 reduces attempts and makes even a T1 3PM miss structurally possible."
+    ]
   }
 ]

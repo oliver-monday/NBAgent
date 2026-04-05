@@ -3841,5 +3841,98 @@
         "Mixing prop types within a parlay (two PTS scorer legs + one AST anchor leg, as in the Stable Scorers Sweep) provides game-script diversification: PTS legs can fail in blowout garbage time while AST legs survive, and AST legs can fail in slow-pace/switching-scheme games while PTS legs succeed. The PTS+PTS+AST architecture with the AST leg as an 'independent' anchor is validated as a stable combination when the AST leg's pick_value is \u22642 and the opponent is a confirmed soft or mid defensive team."
       ]
     }
+  },
+  {
+    "date": "2026-04-04",
+    "total_picks": 9,
+    "voided_picks": 2,
+    "hits": 9,
+    "misses": 0,
+    "no_data": 0,
+    "hit_rate_pct": 100.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Same-game volume stacking on a high-pace, low-spread matchup (SA @ DEN, spread_abs=2.5) proved extremely productive \u2014 Jokic (40 PTS, 13 AST), Murray (15 PTS, 10 AST), Fox (14 PTS), Wembanyama (34 PTS, 7 AST) all cleared their pick values comfortably, confirming that CLOSE game script with elite talent on both sides generates counting-stat floods across the board.",
+      "FG_MARGIN_THIN-driven tier step-downs (Jokic PTS T25\u2192T15, Wembanyama PTS T20\u2192T15, Murray PTS T20\u2192T15) added structural conservatism that proved correct \u2014 all three scored well above even their original un-stepped tiers, validating the step-down discipline as a floor-protection mechanism rather than a cap on upside.",
+      "AST picks on elite playmakers (Jokic T8\u2192T6, Murray T6\u2192T4, Wembanyama T4\u2192T2) hit at massive margins (13, 10, and 7 assists respectively against lines of 5.5, 3.5, and 1.5) \u2014 low-threshold AST picks on verified elite creators in a CLOSE, high-possession game are among the system's most reliable value plays.",
+      "Competitive split conservatism (Jokic AST emitted at 74%, Murray AST at 78%, Castle PTS at 70% citing competitive=66%) was validated \u2014 all three hit easily in the close game, suggesting the competitive split downgrade is appropriately cautious but should not be used to skip picks entirely when underlying hit rates are 85%+.",
+      "Wembanyama's Blowout Exemption note was irrelevant here (CLOSE game), but his 34 PTS and 7 AST against DEN mid/soft defense confirmed that even a FG_MARGIN_THIN flag resolved cleanly when trend=up and game script was favorable \u2014 the VOLATILE -5% penalty captured real risk without suppressing a structurally sound pick."
+    ],
+    "lessons": [
+      "All nine active picks hit, so no analytical failures to log. However, the human_verdict flags reveal a recurring structural tension: five of nine picks were marked 'trim' due to VOLATILE tags, min_floor<24, or FG_MARGIN_THIN/NEG step-downs \u2014 yet all five hit easily. This is a sample-size-of-one caution: these picks clearing today should not be used to argue against trim discipline. The trim flags identified genuinely fragile picks (Fox min_floor=21.9, Castle min_floor=22.9, Murray VOLATILE+tough opp, Wembanyama PTS FG_MARGIN_THIN) \u2014 they hit in a CLOSE, high-volume game that inflated counting stats across the slate. In a different game script (e.g., DEN blowout win), the same structural risks would have materialized as misses.",
+      "Edge_pct was negative on every single pick (ranging from -8.11% to -24.74%), meaning the market was already pricing these outcomes at significantly higher probabilities than the system's confidence levels. While all picks hit, this uniformly negative edge pattern signals the system is systematically selecting props where the market has already compressed the value \u2014 future sessions should track whether negative-edge picks outperform or underperform at their stated confidence levels over time.",
+      "The SA @ DEN game produced a concentration of 8 of 9 active picks from two teams in one game \u2014 a diversification gap. A bad game script (e.g., a blowout, a key foul-trouble scenario for Jokic, or a Castle minutes restriction) would have simultaneously impacted the majority of the slate. Single-game concentration risk should be flagged as a structural note even when all picks hit."
+    ],
+    "recommendations": [
+      "For Fox and Castle going forward: min_floor<24 is a recurring structural flag on both players (Fox=21.9, Castle=22.9). Before selecting any tier above T10 on either player, confirm minutes are tracking at or above 26 in their L5 \u2014 if the floor remains below 24, limit exposure to T10 or lower and do not parlay these picks where a minutes-restriction game would cascade.",
+      "The SA @ DEN game generated 8 picks from two teams \u2014 establish a soft cap of 5 active picks from any single game in future slates. When a game is this analytically rich (high pace, elite talent, low spread), concentrate on the highest-conviction picks (iron-floor PTS, 9/10 AST) and defer marginal ones (VOLATILE+FG_MARGIN picks) to avoid correlated blowout or foul-trouble exposure.",
+      "Murray's VOLATILE PTS tag (T20\u2192T15 step-down, hit exactly at 15.0 \u2014 the pick value) underscores that VOLATILE picks on tough opponents are genuinely fragile at the margin: a single missed shot produces a miss. For VOLATILE players vs. tough defense, require either iron_floor status or vs_tough \u226585% before selecting; otherwise defer to the AST line (Murray AST hit 10.0 vs. a 4.0 pick value) which is more stable and carries better edge.",
+      "Jokic's REB pick (hit exactly at 8.0 \u2014 the pick value) had vs_tough=59% and competitive=67%, both well below his overall 85%. The T12\u2192T10 step-down was validated, but an exact-threshold hit on a suppressed split suggests the floor is genuinely fragile. For future Jokic REB picks vs. tough opponents in competitive games, require either iron_floor=true or vs_tough \u226575% before selecting \u2014 otherwise skip REB and route exposure through his AST or PTS lines where splits are more robust.",
+      "All three AST picks (Jokic, Murray, Wembanyama) cleared their lines by enormous margins (7.5, 6.5, and 5.5 units respectively) in a CLOSE high-pace game. Systematically, low-threshold AST picks (T2\u2013T6) on elite playmakers in projected CLOSE games with spread_abs<5 represent the highest-quality value the system produces \u2014 reinforce this pick type in future slates whenever the quant data shows 9/10 hit rate and trend=up, even at conservative confidence levels."
+    ],
+    "miss_details": [],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 3/3 sweep on the SA-DEN Volume Lock, anchored by a CLOSE game script that drove elite counting-stat production from all three legs.",
+      "parlay_lessons": [
+        "The parlay concentrated two of three legs on SA players (Fox PTS + Wembanyama AST), meaning a single game-script shift \u2014 such as a DEN blowout suppressing Fox's usage or limiting Wembanyama's minutes \u2014 would have killed two legs simultaneously from the losing side. Future same-game stacks should prefer a 2-1 split between teams rather than 2 legs on the projected underdog, or require the underdog legs to carry iron_floor status to absorb blowout-side compression risk.",
+        "The Wembanyama AST leg at a pick_value of 2 (market line 1.5) served as a structural anchor: its 9/10 hit rate and minimal threshold meant it was essentially a near-certain hit that raised overall parlay probability without introducing meaningful volatility. In future same-game stacks, including one ultra-low-threshold leg (9+/10 hit rate, line \u22642) as an anchor leg \u2014 even at lower implied odds \u2014 is a sound structure that reduces the chance of a single weak leg collapsing a correlated stack."
+      ],
+      "parlay_reinforcements": [
+        "The positive-correlation same-game stack (both SA legs and one DEN leg sharing a high-pace, CLOSE game environment) worked precisely because all three legs benefit from the same game condition \u2014 high possessions and competitive scoring pressure across 48 minutes. When spread_abs<4 and both teams feature elite scoring talent, a 3-leg stack that includes one leg from each team plus a low-threshold assist leg on the dominant creator is a structurally sound combination: the game-script correlation amplifies all three legs rather than creating opposing-side drag.",
+        "Pairing a high-confidence iron-floor PTS leg (Jokic, 80%, iron_floor=true) with two supporting legs that have 9/10 hit rates but lower individual confidence levels (Fox 80%, Wembanyama AST 78%) produced a balanced parlay where the anchor leg absorbed structural uncertainty \u2014 this leg-hierarchy design (one iron-floor anchor + two high-hit-rate complementary legs) should be the default template for same-game stacks."
+      ]
+    }
   }
 ]

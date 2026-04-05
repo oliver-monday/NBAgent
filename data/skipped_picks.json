@@ -14,10 +14,10 @@
       "threshold": 30,
       "rule": "trend=down AND avg_minutes_last5 \u2264 30 \u2192 hard skip all 3PM including T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-04",
@@ -33,10 +33,10 @@
       "ast_tier": 6,
       "rule": "VOLATILE + AST tier \u2265 T6 \u2192 unconditional hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 6"
   },
   {
     "date": "2026-04-04",
@@ -54,10 +54,10 @@
       "reb_minimum_floor": "78%",
       "rule": "VOLATILE -5% reduces confidence below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 10"
   },
   {
     "date": "2026-04-04",
@@ -74,10 +74,10 @@
       "threshold": 30,
       "rule": "trend=down AND avg_minutes \u2264 30 \u2192 hard skip all 3PM including T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-04",
@@ -95,10 +95,10 @@
       "three_pm_minimum_floor": "75%",
       "rule": "VOLATILE -5% reduces confidence below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-04",
@@ -116,10 +116,10 @@
       "three_pm_minimum_floor": "75%",
       "rule": "VOLATILE -5% reduces confidence below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-04",
@@ -137,10 +137,10 @@
       "reb_minimum_floor": "78%",
       "rule": "VOLATILE -5% reduces confidence below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-04",
@@ -156,10 +156,10 @@
       "ast_tier": 6,
       "rule": "VOLATILE + AST tier \u2265 T6 \u2192 unconditional hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-04",
@@ -177,10 +177,10 @@
       "three_pm_minimum_floor": "75%",
       "rule": "VOLATILE -5% reduces confidence below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-04",
@@ -200,8 +200,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-04",
@@ -221,7 +221,7 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]

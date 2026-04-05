@@ -2434,5 +2434,230 @@
     "would_have_hit": false,
     "skip_verdict": "correct_skip",
     "skip_verdict_notes": "Actual 5.0 < tier 6"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "opponent": "DEN",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_low_minutes",
+    "rule_context": {
+      "trend": "down",
+      "avg_minutes_last5": 28,
+      "threshold": 30,
+      "rule": "trend=down AND avg_minutes_last5 \u2264 30 \u2192 hard skip all 3PM including T1"
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "opponent": "DEN",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "volatile_tag": true,
+      "ast_tier": 6,
+      "rule": "VOLATILE + AST tier \u2265 T6 \u2192 unconditional hard skip"
+    },
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 6"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "DEN",
+    "prop_type": "REB",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7/10",
+      "volatile_penalty": "-5%",
+      "confidence_after_penalty": "65%",
+      "reb_minimum_floor": "78%",
+      "rule": "VOLATILE -5% reduces confidence below 78% REB minimum floor"
+    },
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "DEN",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_low_minutes",
+    "rule_context": {
+      "trend": "down",
+      "avg_minutes": 29.2,
+      "threshold": 30,
+      "rule": "trend=down AND avg_minutes \u2264 30 \u2192 hard skip all 3PM including T1"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "opponent": "SA",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7/10",
+      "volatile_penalty": "-5%",
+      "confidence_after_penalty": "65%",
+      "three_pm_minimum_floor": "75%",
+      "rule": "VOLATILE -5% reduces confidence below 75% 3PM minimum floor"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "opponent": "SA",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7/10",
+      "volatile_penalty": "-5%",
+      "confidence_after_penalty": "65%",
+      "three_pm_minimum_floor": "75%",
+      "rule": "VOLATILE -5% reduces confidence below 75% 3PM minimum floor"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "opponent": "DEN",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7/10",
+      "volatile_penalty": "-5%",
+      "confidence_after_penalty": "65%",
+      "reb_minimum_floor": "78%",
+      "rule": "VOLATILE -5% reduces confidence below 78% REB minimum floor"
+    },
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "opponent": "DEN",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "volatile_tag": true,
+      "ast_tier": 6,
+      "rule": "VOLATILE + AST tier \u2265 T6 \u2192 unconditional hard skip"
+    },
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "opponent": "DEN",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7.5/10",
+      "volatile_penalty": "-5%",
+      "confidence_after_penalty": "70%",
+      "three_pm_minimum_floor": "75%",
+      "rule": "VOLATILE -5% reduces confidence below 75% 3PM minimum floor"
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Joel Embiid",
+    "team": "DET",
+    "opponent": "PHI",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "7.5/10",
+      "volatile_penalty": "-5%",
+      "confidence_after_penalty": "70%",
+      "reb_minimum_floor": "78%",
+      "rule": "VOLATILE -5% reduces confidence below 78% REB minimum floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-04-04",
+    "player_name": "Joel Embiid",
+    "team": "DET",
+    "opponent": "PHI",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "on_back_to_back": true,
+      "home_away": "A",
+      "opp_defense_rating": "tough",
+      "raw_avgs_ast": "below 6.0",
+      "rule": "Iron-floor B2B road gate: all four conditions met \u2192 AST skip required when opp_defense \u2260 soft"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]
