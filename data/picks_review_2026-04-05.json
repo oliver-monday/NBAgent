@@ -1,0 +1,164 @@
+[
+  {
+    "date": "2026-04-05",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Spread of -22.5 is the largest blowout risk on the slate \u2014 even with the elite playmaker exemption, SGA routinely sits in garbage time of dominant OKC wins, and a min_floor of 28.7 means a legitimate early exit is within range. The blowout penalty was applied but a 22.5-point spread is extreme enough that Q4 rest risk is not fully priced by a single percentage adjustment \u2014 AST is the stat most sensitive to reduced late-game touches."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with a BLOWOUT_RISK spread of -9.5 means Tatum could be pulled in the fourth quarter of a decided game; FG_MARGIN_NEG already forced a step-down, indicating a shaky recent shooting floor, and even at T15 the volatile distribution means a cold-shooting early exit is a realistic miss scenario."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "opp_defense is rated tough for 3PM, and the BLOWOUT_RISK game script means Tatum's volume could compress if BOS goes up big and rotates to bench scorers early; 3PM is the most volume-dependent prop and a lopsided game script directly threatens attempt count even for a 10/10 recent hitter."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 22.7 is below the 24-minute structural floor threshold, meaning a single normal-variance low-minutes game produces a miss; FG_COLD at -13% signals a recent shooting slump that, combined with the minutes fragility, creates a genuine floor risk even at the conservative T10 tier."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "MIN is rated tough for 3PM defense, and LaMelo's min_floor of 22.7 means a minutes-restricted game could suppress attempt volume below the threshold needed to reliably clear 2 threes; the combination of tough 3PM defense and fragile minutes floor is a credible bear case."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 21.0 is materially below the 24-minute safety threshold, and FG_COLD at exactly -15% (the mandatory step-down trigger) signals genuine recent shooting suppression \u2014 a younger role player on a road game against MIN with sub-24 minute floor protection is one early foul or lineup change away from a miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]

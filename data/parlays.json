@@ -3871,5 +3871,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-05",
+    "parlays": [
+      {
+        "label": "Volume Game Sweeper",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Jaylen Brown",
+            "team": "BOS",
+            "opponent": "TOR",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "CHA",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "LeBron James",
+            "team": "LAL",
+            "opponent": "DAL",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.4996,
+        "correlation": "positive",
+        "rationale": "Three independent games with volume_game tags; Brown trending up vs mid TOR, Randle and LeBron both trending up with 9/10 hit rates.",
+        "date": "2026-04-05",
+        "id": "parlay_2026-04-05_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
