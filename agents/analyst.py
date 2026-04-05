@@ -4348,7 +4348,7 @@ def save_picks(picks: list[dict]):
 
     print(f"[analyst] Saved {len(picks)} picks for {TODAY_STR} → {PICKS_JSON}")
     for p in picks:
-        print(f"  {p['player_name']} {p['prop_type']} OVER {p['pick_value']} ({p['confidence_pct']}%) — {p['reasoning'][:80]}...")
+        print(f"  {p.get('player_name', '?')} {p.get('prop_type', '?')} OVER {p.get('pick_value', '?')} ({p.get('confidence_pct', '?')}%) — {p.get('reasoning', '(no reasoning)')[:80]}...")
     return picks
 
 
