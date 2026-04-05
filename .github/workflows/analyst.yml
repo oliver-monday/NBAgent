@@ -66,11 +66,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git fetch origin main
-          git rebase --autostash origin/main
+          FILES="data/picks.json data/parlays.json data/player_stats.json data/lineups_today.json data/skipped_picks.json data/standings_today.json data/opportunity_flags.json data/pre_game_news.json data/team_defense_narratives.json"
+          for f in $FILES; do
+            [ -f "$f" ] && cp "$f" "$f.local"
+          done
+
+          git checkout -- . 2>/dev/null || true
+          git pull --rebase origin main
+
+          for f in $FILES; do
+            [ -f "$f.local" ] && mv "$f.local" "$f"
+          done
 
           CHANGED=0
-          for f in "data/picks.json" "data/parlays.json" "data/player_stats.json" "data/lineups_today.json" "data/skipped_picks.json" "data/standings_today.json" "data/opportunity_flags.json" "data/pre_game_news.json" "data/team_defense_narratives.json"; do
+          for f in $FILES; do
             if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
               git add "$f"
               CHANGED=1
