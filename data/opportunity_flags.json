@@ -1127,5 +1127,141 @@
     "spread_delta": null,
     "morning_context": null,
     "reasoning": "PTS T25 75% [stable]; AST T6 70% [up]; 3PM T2 80% [down]"
+  },
+  {
+    "date": "2026-04-06",
+    "generated_at": "2026-04-06T16:50:18.968046-07:00",
+    "triggered_by": "James Harden",
+    "triggered_by_team": "CLE",
+    "side": "teammate",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T20 75% [down]; AST T4 80% [stable]; 3PM T2 70% [down]"
+  },
+  {
+    "date": "2026-04-06",
+    "generated_at": "2026-04-06T16:50:18.968046-07:00",
+    "triggered_by": "James Harden",
+    "triggered_by_team": "CLE",
+    "side": "teammate",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 75% [stable]; REB T6 75% [stable]; AST T2 70% [up]"
+  },
+  {
+    "date": "2026-04-06",
+    "generated_at": "2026-04-06T16:50:18.968046-07:00",
+    "triggered_by": "James Harden",
+    "triggered_by_team": "CLE",
+    "side": "teammate",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile"
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 70% [down]; REB T8 70% [down]"
+  },
+  {
+    "date": "2026-04-06",
+    "generated_at": "2026-04-06T16:50:18.968046-07:00",
+    "triggered_by": "Donovan Mitchell",
+    "triggered_by_team": "CLE",
+    "side": "teammate",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "moderate"
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor, volatile_weak_combo)",
+    "reasoning": "PTS T15 90% [down]; REB T4 80% [down]; AST T6 80% [up]; 3PM T2 90% [down]; skipped this morning (merit_below_floor, volatile_weak_combo)"
   }
 ]
