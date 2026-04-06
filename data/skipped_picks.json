@@ -14,10 +14,10 @@
       "favored_side": true,
       "note": "spread_abs=22.5 \u2265 15 on favored side; PTS T25 hard skip unconditional regardless of elite scorer status at spread_abs \u2265 15"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 20.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 20.0 < tier 25"
   },
   {
     "date": "2026-04-05",
@@ -35,10 +35,10 @@
       "trend": "up",
       "note": "spread_abs \u2265 19 unconditional 3PM hard skip for favored team; fires regardless of trend direction"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-05",
@@ -56,10 +56,10 @@
       "prop_minimum_floor": 75,
       "note": "80% base after non-iron-floor cap; BLOWOUT -10% \u2192 70%; below 75% 3PM minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-05",
@@ -75,10 +75,10 @@
       "confidence_after_penalty": 68,
       "reb_minimum_floor": 78
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 8"
   },
   {
     "date": "2026-04-05",
@@ -95,10 +95,10 @@
       "required_rating": "soft",
       "note": "Raw AST < 4.0, opp_today=tough \u2192 T4+ gate requires soft defense; T4 AST blocked. T2 AST evaluated separately and emitted."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-05",
@@ -114,10 +114,10 @@
       "tier_blocked": 3,
       "reason": "T3+ ceiling rule: no confirmed high pace tag"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 3"
   },
   {
     "date": "2026-04-05",
@@ -134,10 +134,10 @@
       "required_rating": "soft",
       "note": "Randle is PF; opp_today=tough \u2192 T4+ hard gate requires soft defense for PF/C; SKIP T4 AST"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-05",
@@ -153,9 +153,9 @@
       "confidence_after_penalty": 70,
       "prop_minimum_floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 3"
   }
 ]

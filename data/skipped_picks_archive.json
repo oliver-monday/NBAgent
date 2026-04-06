@@ -2659,5 +2659,164 @@
     "would_have_hit": null,
     "skip_verdict": "no_data",
     "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "UTAH",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "blowout_t25_skip",
+    "rule_context": {
+      "spread_abs": 22.5,
+      "threshold": 15,
+      "favored_side": true,
+      "note": "spread_abs=22.5 \u2265 15 on favored side; PTS T25 hard skip unconditional regardless of elite scorer status at spread_abs \u2265 15"
+    },
+    "actual_value": 20.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 20.0 < tier 25"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "UTAH",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "spread_abs": 22.5,
+      "threshold": 19,
+      "favored_side": true,
+      "trend": "up",
+      "note": "spread_abs \u2265 19 unconditional 3PM hard skip for favored team; fires regardless of trend direction"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "TOR",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_before_penalty": 80,
+      "blowout_penalty": -10,
+      "confidence_after_penalty": 70,
+      "prop_minimum_floor": 75,
+      "note": "80% base after non-iron-floor cap; BLOWOUT -10% \u2192 70%; below 75% 3PM minimum confidence floor"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "opponent": "TOR",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "note": "VOLATILE tag on REB; vs_tough=33% (3g sample) and competitive=60% show poor split rates; 73% overall with VOLATILE -5% \u2192 68% \u2192 below 78% REB minimum floor",
+      "confidence_after_penalty": 68,
+      "reb_minimum_floor": 78
+    },
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 8"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "opponent": "TOR",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_raw_avg_ast": "below 4.0 (T2 best tier implies sub-4.0 avg)",
+      "opp_defense_rating": "tough",
+      "required_rating": "soft",
+      "note": "Raw AST < 4.0, opp_today=tough \u2192 T4+ gate requires soft defense; T4 AST blocked. T2 AST evaluated separately and emitted."
+    },
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "opponent": "MIN",
+    "prop_type": "3PM",
+    "tier_considered": 3,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "note": "T3 ceiling rule requires high pace tag; no explicit high_pace tag confirmed \u2192 step to T2. Pick emitted at T2 instead. This skip records the T3 block.",
+      "tier_blocked": 3,
+      "reason": "T3+ ceiling rule: no confirmed high pace tag"
+    },
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 3"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "opponent": "CHA",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "PF",
+      "opp_defense_rating": "tough",
+      "required_rating": "soft",
+      "note": "Randle is PF; opp_today=tough \u2192 T4+ hard gate requires soft defense for PF/C; SKIP T4 AST"
+    },
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-05",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "opponent": "MIN",
+    "prop_type": "3PM",
+    "tier_considered": 3,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "note": "T3 overall=75%; VOLATILE tag -5% \u2192 70%; VOLATILE+iron_floor incompatibility overrides iron_floor; non-iron-floor 3PM cap 80%; competitive=58% and vs_tough=59% materially below overall; 70% after VOLATILE below 75% 3PM floor",
+      "confidence_after_penalty": 70,
+      "prop_minimum_floor": 75
+    },
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 3"
   }
 ]

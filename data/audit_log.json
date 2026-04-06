@@ -3934,5 +3934,106 @@
         "Pairing a high-confidence iron-floor PTS leg (Jokic, 80%, iron_floor=true) with two supporting legs that have 9/10 hit rates but lower individual confidence levels (Fox 80%, Wembanyama AST 78%) produced a balanced parlay where the anchor leg absorbed structural uncertainty \u2014 this leg-hierarchy design (one iron-floor anchor + two high-hit-rate complementary legs) should be the default template for same-game stacks."
       ]
     }
+  },
+  {
+    "date": "2026-04-05",
+    "total_picks": 15,
+    "voided_picks": 0,
+    "hits": 14,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 93.3,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 6,
+        "hits": 5,
+        "hit_rate_pct": 83.3
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 8,
+        "hits": 7,
+        "hit_rate_pct": 87.5,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Iron-floor AST picks proved bulletproof again: LaMelo Ball (8 AST vs MIN), Brandon Miller (3 AST vs MIN), and LeBron James (15 AST vs DAL) all cleared their T2/T4 thresholds decisively \u2014 iron-floor AST at T2 with 90%+ hit rates continues to be the system's most reliable prop type and should remain a priority for parlay legs.",
+      "Absence-driven usage concentration produced outsized actual values: LeBron James posted 9 REB and 15 AST with Doncic and Reaves OUT, and Julius Randle exploded for 26 PTS with Edwards OUT \u2014 both well above their pick thresholds. When a primary creator or co-star is confirmed OUT and the remaining player has a 9/10 hit rate, the Analyst's conservative confidence settings (78-82%) were appropriate but the actual upside was substantial, validating the tier selection.",
+      "The MIN\u00d7AST suppressor concern was correctly handled via modest conservatism (78% on LaMelo's iron-floor AST, 75% on Knueppel's T2 AST) \u2014 both hit cleanly, suggesting the suppressor's marginal impact at T2 thresholds is well-calibrated; however the suppressor remains a valid caution at T4+ tiers and should not be dismissed.",
+      "Jayson Tatum's multi-prop stack (PTS T15, AST T2, 3PM T2) returned 3/3 hits including 23 PTS, 7 AST, and exactly 2 threes \u2014 the FG_MARGIN_NEG step-down to T15 on PTS proved conservative but not wrong, and the 91% AST T2 and 100% 3PM T2 hit rates validated using the deeper tier walk on a VOLATILE player returning from injury.",
+      "The human_verdict 'trim' picks that ran anyway all hit (Tatum PTS, Tatum 3PM, LaMelo PTS, LaMelo 3PM, Knueppel PTS) \u2014 the system's conservative confidence caps at 70-75% were well-calibrated for the genuine structural risks present, and the trim reasoning on min_floor and VOLATILE tags was sound even though outcomes were positive."
+    ],
+    "lessons": [
+      "Brandon Miller PTS T15 missed badly (actual: 7 vs pick: 15) despite an iron_floor designation and 8/10 hit rate \u2014 VOLATILE tag was present and a 74% final confidence was assigned, but the miss margin of 8 points below threshold suggests either the iron_floor designation was stale or the VOLATILE tag warranted a full tier step-down (T15\u2192T10) rather than just a 5% confidence penalty. The iron_floor + VOLATILE combination needs a rule review: if VOLATILE overrides iron_floor on 3PM (incompatibility rule), a symmetric rule should be evaluated for PTS iron_floor with VOLATILE \u2014 the floor guarantee may not be reliable when the VOLATILE tag is present.",
+      "The CHA @ MIN game finished COMPETITIVE (CHA won by 14), so game-script was not a causal factor in Miller's miss \u2014 this was a genuine floor failure despite the player completing 34 minutes. The SAS floor compression pattern (mean miss margin \u22125.0) does not apply here since the opponent was MIN, not SAS; however MIN's switching scheme and pace suppression may have contributed to Miller's scoring suppression, suggesting MIN may have a broader defensive impact on wing scorers beyond just AST that the current scheme notes do not capture."
+    ],
+    "recommendations": [
+      "Implement a hard rule: when a player has both an iron_floor tag AND a VOLATILE tag on PTS, treat the iron_floor as OVERRIDDEN for confidence purposes (mirroring the existing 3PM VOLATILE+iron_floor incompatibility rule) and apply a mandatory tier step-down of one level in addition to the 5% VOLATILE penalty \u2014 the Miller miss demonstrates that VOLATILE distributions produce floor failures that iron_floor designations cannot reliably prevent.",
+      "Add MIN as a watch item for wing PTS suppression (not just AST): Miller's 7-point miss vs a mid-rated defense in 34 minutes of a game CHA won by 14 suggests MIN's switching scheme may be compressing wing scoring floors in a way the current system doesn't flag. Begin tracking wing PTS (SG/SF) hit rates vs MIN separately to determine if a scheme-based PTS discount is warranted alongside the existing MIN\u00d7AST suppressor rule.",
+      "When the VOLATILE tag is present on a PTS prop and the player's game is projected COMPETITIVE or the spread is \u226410, consider whether the pick should be routed to 'trim' automatically rather than left as a standard 'keep' \u2014 Miller was a human_verdict 'keep' with VOLATILE + iron_floor + competitive game, and the resulting miss was the session's only loss; the trim pathway existed for this risk profile and should be applied more consistently.",
+      "The SGA AST pick was human-skipped on the basis of extreme blowout risk (spread \u221222.5) and the actual game confirmed the concern (SGA played only 24 minutes) \u2014 the 90% hit rate at T4 held and he still produced 7 AST in limited time (HIT), but the skip logic was directionally correct. Reinforce the blowout manual-skip pathway for AST props when spread_abs \u2265 20 even when the elite playmaker exemption applies, as reduced minutes in garbage time create legitimate miss scenarios that the 74% confidence cap alone does not fully price.",
+      "LeBron James at T4 AST with Doncic and Reaves OUT produced 15 assists \u2014 a massive outperformance. When two primary playmakers are simultaneously OUT for a team's primary creator, consider whether the standard T4 tier is too conservative and if T6 should be evaluated despite the absence of an explicit 'Without X' quant line. The system should develop a usage-concentration AST tier uplift rule triggered by 2+ primary creators being simultaneously absent."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Brandon Miller",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 7.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: CHA @ MIN finished 122-108, CHA won by 14 \u2014 labeled COMPETITIVE. This was not a blowout and CHA won, so game-script blowout compression does not explain the miss. Miller played 34 minutes (confirmed via post-game news), ruling out DNP or early exit as a causal factor. STEP 1 \u2014 Player was active with 34 minutes played; actual_value=7 is a genuine floor failure, not a minutes issue. STEP 2 \u2014 No injury exit in post-game news. Pre-game injury_status_at_check = NOT_LISTED. Classification: variance. The pick was made at 8/10 hit rate (iron_floor, T15) with a VOLATILE tag; VOLATILE -5% was applied and confidence was set conservatively at 74%. An 8/10 iron_floor pick implies one miss in ten outcomes is within normal expectation, and this represents that miss. The miss margin is severe (8 points below threshold) which is consistent with the VOLATILE distribution \u2014 VOLATILE picks by definition carry fat-tail downside risk that can produce large misses even when the floor 'should' hold. STEP 3 \u2014 The original reasoning ('Iron_floor PTS T15 at 80%; VOLATILE -5% applied; solid floor with CHA hot team context') correctly applied the VOLATILE penalty but did not escalate the risk further. The reasoning noted the iron_floor and applied the standard VOLATILE discount; however it did not flag that VOLATILE + iron_floor is a potentially unstable combination (as exists in the 3PM incompatibility rule). STEP 4 \u2014 Hit rate was 8/10 (80%), making this the statistically expected 20% miss; the VOLATILE tag signals precisely this kind of floor collapse. STEP 5 \u2014 Tier walk shows T15 at 80% overall with iron_floor; no higher-confidence PTS tier was available that would have avoided this outcome \u2014 the miss is not a tier selection error. STEP 6 \u2014 No lineup_update sub-object present; no amendment was triggered. Bottom line: sound pick within stated parameters; VOLATILE tag correctly flagged floor risk; one-in-five miss on an 8/10 iron_floor pick is within expected variance, though the severity of the miss (-8 pts) reinforces the need to review whether VOLATILE overrides iron_floor on PTS as it does on 3PM."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 3/3 sweep on the Volume Game Sweeper \u2014 all three legs hit decisively with actual values of 26 PTS (Brown), 26 PTS (Randle), and 15 AST (LeBron) against thresholds of 20, 10, and 4.",
+      "parlay_lessons": [
+        "The parlay's most dangerous structural risk was the Jaylen Brown PTS leg (74% confidence, VOLATILE tag, FG_MARGIN_THIN step-down, iron_floor) \u2014 this leg had the weakest individual confidence of the three and was flagged as a 'trim' by human verdict; had Brown shot cold (as Miller did in the same session), the entire parlay would have failed on its softest leg. When constructing multi-leg parlays with a mix of 74% and 82% confidence legs, the Parlay Agent should note that a single VOLATILE-tagged leg anchored at 74% creates meaningful tail risk for the combo product (~50% implied odds) \u2014 consider requiring all parlay legs to be \u226576% or flagging VOLATILE-tagged legs as parlay_risk in the rationale."
+      ],
+      "parlay_reinforcements": [
+        "The multi-game structure with three independent games (BOS vs TOR, MIN vs CHA, LAL vs DAL) eliminated cross-game correlation risk entirely \u2014 no single game outcome could cascade across legs, and each leg was driven by distinct player-level factors (Tatum return context for Brown, Edwards OUT for Randle, Doncic/Reaves OUT for LeBron). Independent multi-game parlays anchored by absence-driven usage concentration are a confirmed winning structure and should be prioritized when 2+ games feature confirmed key-player absences on the same slate.",
+        "Pairing an iron_floor AST leg (LeBron T4 iron_floor, 82%) with two high-volume PTS legs in games with confirmed absences proved highly effective \u2014 the AST leg acted as a near-lock anchor (actual 15 vs threshold 4) while the PTS legs provided upside. The AST-as-parlay-anchor pattern using iron_floor T4+ picks in games with missing primary creators is validated and should be repeated when the structural conditions align."
+      ]
+    }
   }
 ]
