@@ -3944,5 +3944,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-06",
+    "parlays": [
+      {
+        "label": "Iron Floor Trio",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "CJ McCollum",
+            "team": "ATL",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 90,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "POR",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Stephon Castle",
+            "team": "SA",
+            "opponent": "PHI",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+103",
+        "confidence_product": 0.4922,
+        "correlation": "independent",
+        "rationale": "McCollum 10/10 AST anchor pairs with Jokic volume game and Castle's upward PTS trend vs mid PHI defense.",
+        "date": "2026-04-06",
+        "id": "parlay_2026-04-06_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]

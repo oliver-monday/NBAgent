@@ -1,0 +1,164 @@
+[
+  {
+    "date": "2026-04-06",
+    "player_name": "CJ McCollum",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "CJ McCollum",
+    "team": "ATL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "CJ McCollum",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a tough defensive matchup with a FG_MARGIN_THIN that forced a mandatory step-down; a single cold shooting night leaves only 5 pts of buffer at T10, and the min_floor of 24.7 means a garbage-time DNP or foul trouble produces a miss with no cushion."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 8,
+    "verdict": "trim",
+    "trim_reasons": [
+      "An -8.5 blowout spread creates genuine Q4 rest risk for Jokic's counting stats; assists require sustained offensive possessions in a competitive game, and a Portland team that falls apart early shrinks Jokic's 4th-quarter distribution opportunities precisely when he needs them to clear 8."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "REB",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with an -8.5 blowout spread is a compounding risk: if DEN builds a large lead early, Jokic sits in Q4 and REB accumulation halts; the VOLATILE distribution means he can miss badly even in a full-minutes game, and blowout rest is an additional minutes ceiling the iron_floor doesn't protect against."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Stephon Castle",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus a min_floor of only 22.9 on a BLOWOUT_RISK game (-8.5 SA favorite) is the fragile combination: if SA goes up big early, Castle's minutes compress exactly to or below his floor, and the FG_MARGIN_NEG step-down signals his scoring efficiency is already shaky at higher tiers."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B with insufficient B2B hit-rate sample means the rest penalty is unquantified, not absent; combined with a -14.5 spread blowout risk and FG_MARGIN_THIN that already forced a step-down, a Q4 early exit could compress Harden's counting stats before he reaches even the conservative T10 threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE scorer on B2B with a confirmed 75% B2B hit rate at T20 specifically \u2014 materially below his overall rate \u2014 facing a -14.5 blowout spread; the FG_MARGIN_THIN step-down already signals a thin scoring cushion, and the compounding of B2B fatigue, blowout rest risk, and volatile distribution creates a structural floor that is genuinely fragile at the T20 threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-06",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
