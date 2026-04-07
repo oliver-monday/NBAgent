@@ -940,6 +940,18 @@ def generate_html(d: dict) -> str:
                 overflow: hidden; margin-top: 4px; width: 64px; margin-left: auto; }}
     .hit-fill {{ height: 100%; border-radius: 99px; }}
     .conf-line {{ font-size: 10px; color: var(--muted); margin-top: 6px; }}
+    .edge-line {{ font-size: 10px; font-weight: 600; margin-top: 4px; white-space: nowrap; }}
+    .edge-line.strong  {{ color: #22c55e; }}
+    .edge-line.positive {{ color: #2dd4bf; }}
+    .edge-line.neutral {{ color: var(--muted); }}
+    .edge-line.fade    {{ color: #ef4444; }}
+    .odds-sizing-toggle {{ display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;
+      font-size: 10px; color: var(--muted); cursor: pointer; user-select: none;
+      background: none; border: 1px solid var(--border); border-radius: 4px;
+      padding: 2px 7px; line-height: 1.6; }}
+    .odds-sizing-toggle:hover {{ border-color: var(--accent); color: var(--accent); }}
+    .odds-sizing-body {{ display: none; font-size: 11px; color: var(--muted);
+      margin-top: 4px; line-height: 1.7; font-family: monospace; opacity: 0.85; }}
 
     /* Injury report dropdown */
     .injury-dropdown {{ margin-bottom: 20px; }}
@@ -1333,6 +1345,13 @@ function toggleLineupUpdate(btn) {{
   body.style.display = open ? 'none' : 'block';
 }}
 
+function toggleOddsSizing(btn) {{
+  const body = btn.nextElementSibling;
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  btn.innerHTML = open ? '&#9656; Odds + Sizing' : '&#9662; Odds + Sizing';
+}}
+
 function toggleDrawer(id) {{
   const body    = document.getElementById(id);
   const chevron = document.getElementById(id + '-chevron');
@@ -1424,6 +1443,31 @@ function buildMicroStats(p) {{
   if (def === 'mid')   pills.push(`<span class="micro-pill">mid def</span>`);
   if (!pills.length) return '';
   return `<div class="micro-stats">${{pills.join('')}}</div>`;
+}}
+
+function buildEdgeLine(p) {{
+  const br = p.bet_recommendation;
+  if (!br || !br.recommendation_tier || br.recommendation_tier === 'NO_MARKET') return '';
+  const tier = br.recommendation_tier;
+  const cls = tier.toLowerCase();
+  const edge = br.calibrated_edge_pct;
+  const edgeStr = edge != null ? ` (${{edge > 0 ? '+' : ''}}${{edge.toFixed(1)}}pp)` : '';
+  return `<div class="edge-line ${{cls}}">${{tier}}${{edgeStr}}</div>`;
+}}
+
+function buildOddsSizing(p) {{
+  const br = p.bet_recommendation;
+  if (!br || !br.recommendation_tier || br.recommendation_tier === 'NO_MARKET') return '';
+  const lines = [];
+  if (p.market_line != null) lines.push(`Market line: ${{p.market_line}}`);
+  if (br.market_implied_prob != null) lines.push(`Market prob: ${{br.market_implied_prob.toFixed(1)}}%`);
+  if (br.calibration_band) lines.push(`Calibration band: ${{br.calibration_band}}`);
+  if (br.calibrated_prob != null) lines.push(`Calibrated prob: ${{(br.calibrated_prob * 100).toFixed(1)}}%`);
+  if (br.calibrated_edge_pct != null) lines.push(`Edge: ${{br.calibrated_edge_pct > 0 ? '+' : ''}}${{br.calibrated_edge_pct.toFixed(1)}}pp`);
+  if (br.kelly_quarter != null) lines.push(`Quarter-Kelly: ${{(br.kelly_quarter * 100).toFixed(1)}}%`);
+  if (!lines.length) return '';
+  return `<button class="odds-sizing-toggle" onclick="toggleOddsSizing(this)">&#9656; Odds + Sizing</button>` +
+    `<div class="odds-sizing-body">${{lines.join('<br>')}}</div>`;
 }}
 
 // ── TODAY'S PICKS ──
@@ -1540,6 +1584,7 @@ function renderPicks() {{
                 `Revised (${{lu.revised_confidence_pct}}%): ${{lu.revised_reasoning}}<br>` +
                 `Morning (${{p.confidence_pct}}%): ${{p.reasoning}}</div>`;
             }})()}}
+            ${{buildOddsSizing(p)}}
             ${{p.tier_walk ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : ''}}
           </div>
           <div class="pick-right">
@@ -1548,6 +1593,7 @@ function renderPicks() {{
             </div>
             ${{buildHitRate(p)}}
             <div class="conf-line">${{p.confidence_pct}}% conf</div>
+            ${{buildEdgeLine(p)}}
           </div>
         </div>`;
     }});
@@ -1999,6 +2045,7 @@ function renderTopPicks() {{
             ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
           </div>
           <div class="tp-conf">${{p.confidence_pct}}% conf</div>
+          ${{buildEdgeLine(p)}}
         </div>
       </div>`;
   }});
