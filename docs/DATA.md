@@ -352,6 +352,33 @@ Diagnostic cache written by `ingest/odds_today.py`. Overwritten each run (not cu
 }
 ```
 
+### odds_available.json
+Written by `ingest/odds_today.py --prefetch` before the analyst runs. Overwritten each run (not cumulative). Contains ALL FanDuel alternate player prop markets for today's games, filtered to system-valid tiers only. Consumed by `agents/analyst.py` as a market-availability gate: if no FanDuel market exists for a player+prop+tier, the analyst is forbidden from generating that pick.
+```json
+{
+  "date": "YYYY-MM-DD",
+  "fetched_at": "ISO timestamp",
+  "bookmaker": "fanduel",
+  "games_fetched": number,
+  "players": {
+    "normalized_name": {
+      "display_name": "Jaylen Brown",
+      "PTS": [
+        {"tier": 15, "line": 14.5, "implied_prob": 97.56, "odds": -4000},
+        {"tier": 20, "line": 19.5, "implied_prob": 82.35, "odds": -467}
+      ],
+      "REB": [...],
+      "AST": [...],
+      "3PM": [...]
+    }
+  }
+}
+```
+
+Player keys are normalized via `_norm_name()` (lowercase, punctuation stripped). Each prop type array is sorted ascending by tier. Only tiers in `VALID_TIERS` are included (PTS: 10/15/20/25/30, REB: 4/6/8/10/12, AST: 2/4/6/8/10/12, 3PM: 1/2/3/4). Line convention: `line = tier - 0.5` (e.g. T20 → 19.5 OVER). Games are filtered to those with at least one active whitelisted team. Credit cost: 4 per game (4 alternate markets × 1 bookmaker).
+
+Consumed by: `agents/analyst.py` (market availability gate — separate from odds enrichment).
+
 ### parlays.json
 List of daily bundles. Each bundle contains the day's parlays.
 ```json

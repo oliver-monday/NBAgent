@@ -45,7 +45,9 @@ import requests
 ROOT       = Path(__file__).parent.parent
 DATA       = ROOT / "data"
 PICKS_JSON = DATA / "picks.json"
-ODDS_JSON  = DATA / "odds_today.json"
+ODDS_JSON           = DATA / "odds_today.json"
+ODDS_AVAILABLE_JSON = DATA / "odds_available.json"
+WHITELIST_CSV       = ROOT / "playerprops" / "player_whitelist.csv"
 
 # ── Config ─────────────────────────────────────────────────────────────────────
 ET       = ZoneInfo("America/Los_Angeles")
@@ -68,6 +70,16 @@ PROP_MARKET_MAP: dict[str, str] = {
 
 # Set of our prop type codes — used for pick filtering
 VALID_PROP_TYPES: set[str] = set(PROP_MARKET_MAP.values())
+
+# Valid tier thresholds per prop type — mirrors VALID_TIERS in analyst.py.
+# Used to filter prefetched odds lines to only tiers the system can pick.
+# Line convention: FD line = tier_value - 0.5 (e.g. T20 PTS → 19.5 OVER).
+VALID_TIERS: dict[str, list[int]] = {
+    "PTS": [10, 15, 20, 25, 30],
+    "REB": [4, 6, 8, 10, 12],
+    "AST": [2, 4, 6, 8, 10, 12],
+    "3PM": [1, 2, 3, 4],
+}
 
 # OddsAPI full team names → our abbreviations (for game matching)
 TEAM_NAME_MAP = {
@@ -172,6 +184,202 @@ def _write_odds_cache(cache: dict) -> None:
         print(f"[odds] odds_today.json written ({len(cache)} event(s))")
     except Exception as e:
         print(f"[odds] WARNING: could not write odds_today.json: {e}")
+
+
+def _load_whitelist_teams() -> set[str]:
+    """
+    Load active team abbreviations from the player whitelist.
+    Used to filter prefetch to games with whitelisted players only — saves API credits.
+    Returns empty set on any error (which means: fetch all games).
+    """
+    import csv
+    if not WHITELIST_CSV.exists():
+        print("[odds] WARNING: whitelist not found — will fetch all games")
+        return set()
+    try:
+        teams: set[str] = set()
+        with open(WHITELIST_CSV) as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if str(row.get("active", "0")).strip() == "1":
+                    teams.add(row["team_abbr"].strip().upper())
+        print(f"[odds] Whitelist teams loaded: {sorted(teams)} ({len(teams)} teams)")
+        return teams
+    except Exception as e:
+        print(f"[odds] WARNING: could not load whitelist: {e} — will fetch all games")
+        return set()
+
+
+def prefetch_all_markets() -> None:
+    """
+    Prefetch mode: fetch ALL available FanDuel alternate player prop markets
+    for today's games (filtered to games with whitelisted players).
+
+    Writes data/odds_available.json with structure:
+    {
+      "date": "2026-04-07",
+      "fetched_at": "...",
+      "bookmaker": "fanduel",
+      "games_fetched": 8,
+      "players": {
+        "normalized_name": {
+          "display_name": "Jaylen Brown",
+          "PTS": [{"tier": 15, "line": 14.5, "implied_prob": 97.56, "odds": -4000}, ...],
+          "REB": [...],
+          ...
+        }
+      }
+    }
+
+    Only includes tiers in VALID_TIERS. Non-system tiers (e.g. PTS 22.5) are discarded.
+
+    Credit cost: 4 credits per game (4 alternate markets × 1 bookmaker).
+    With whitelist filtering, typically 6-10 games in regular season, 2-8 in playoffs.
+
+    Failure behavior: prints warning and exits 0. Does NOT write odds_available.json
+    on failure — downstream analyst.py checks for file existence and skips the market
+    gate gracefully when the file is missing.
+    """
+    api_key = os.environ.get("ODDS_API_KEY", "").strip()
+    if not api_key:
+        print("[odds] ODDS_API_KEY not set — skipping prefetch (no file changes)")
+        sys.exit(0)
+
+    # Load whitelist teams for credit-saving filter
+    wl_teams = _load_whitelist_teams()
+
+    # Fetch today's NBA events (free endpoint — no credit cost)
+    events = _api_get(
+        f"{API_BASE}/sports/{SPORT}/events",
+        {"dateFormat": "iso"},
+        api_key,
+    )
+    if events is None:
+        print("[odds] Failed to fetch NBA events — skipping prefetch")
+        sys.exit(0)
+
+    # Filter to games with at least one whitelisted team (or all games if whitelist empty)
+    target_events = []
+    for ev in events:
+        home_abbr = TEAM_NAME_MAP.get(ev.get("home_team", ""))
+        away_abbr = TEAM_NAME_MAP.get(ev.get("away_team", ""))
+        if not wl_teams or home_abbr in wl_teams or away_abbr in wl_teams:
+            target_events.append({
+                "event_id":      ev["id"],
+                "home_abbr":     home_abbr,
+                "away_abbr":     away_abbr,
+                "home_team":     ev.get("home_team"),
+                "away_team":     ev.get("away_team"),
+                "commence_time": ev.get("commence_time"),
+            })
+
+    print(f"[odds] Prefetch: {len(target_events)} game(s) to fetch "
+          f"(filtered from {len(events)} total events)")
+    if not target_events:
+        print("[odds] No target games — skipping prefetch")
+        sys.exit(0)
+
+    # Build set of valid lines for quick lookup: line_value → (prop_type, tier)
+    valid_lines: dict[str, tuple[str, int]] = {}
+    for prop_type, tiers in VALID_TIERS.items():
+        for tier in tiers:
+            line = float(tier) - 0.5   # T20 → 19.5
+            valid_lines[f"{prop_type}_{line}"] = (prop_type, tier)
+
+    # Fetch all 4 alternate markets for each game
+    markets_str = ",".join(PROP_MARKET_MAP.keys())
+    # norm_name → {"display_name": str, "PTS": [...], "REB": [...], ...}
+    players: dict[str, dict] = {}
+    games_fetched = 0
+
+    for ev in target_events:
+        event_id = ev["event_id"]
+        result = _api_get(
+            f"{API_BASE}/sports/{SPORT}/events/{event_id}/odds",
+            {
+                "regions":    REGIONS,
+                "markets":    markets_str,
+                "bookmakers": BOOKMAKER,
+                "oddsFormat": "american",
+            },
+            api_key,
+        )
+        if result is None:
+            print(f"[odds] WARNING: no odds for {ev['home_team']} vs {ev['away_team']}")
+            continue
+
+        games_fetched += 1
+        bookmakers = result.get("bookmakers", [])
+        fanduel = next((b for b in bookmakers if b.get("key") == BOOKMAKER), None)
+        if fanduel is None:
+            print(f"[odds] WARNING: FanDuel not in response for {ev['home_team']} vs {ev['away_team']}")
+            continue
+
+        for market in fanduel.get("markets", []):
+            market_key = market.get("key", "")
+            prop_type = PROP_MARKET_MAP.get(market_key)
+            if prop_type is None:
+                continue
+
+            for outcome in market.get("outcomes", []):
+                if outcome.get("name") != "Over":
+                    continue
+                player_name = outcome.get("description", "")
+                line = outcome.get("point")
+                price = outcome.get("price")
+                if not player_name or line is None or price is None:
+                    continue
+
+                # Check if this line maps to a valid system tier
+                lookup = f"{prop_type}_{float(line)}"
+                if lookup not in valid_lines:
+                    continue  # Non-system tier (e.g. PTS 22.5) — skip
+
+                _, tier = valid_lines[lookup]
+                norm = _norm_name(player_name)
+
+                if norm not in players:
+                    players[norm] = {"display_name": player_name}
+
+                if prop_type not in players[norm]:
+                    players[norm][prop_type] = []
+
+                players[norm][prop_type].append({
+                    "tier":         tier,
+                    "line":         float(line),
+                    "implied_prob": round(_american_to_implied(price), 2),
+                    "odds":         int(price),
+                })
+
+        print(f"[odds] Prefetch parsed: {ev['home_team']} vs {ev['away_team']}")
+
+    if not players:
+        print("[odds] Prefetch: no player data parsed — odds_available.json not written")
+        sys.exit(0)
+
+    # Sort each player's tiers ascending for readability
+    for norm, pdata in players.items():
+        for prop_type in ["PTS", "REB", "AST", "3PM"]:
+            if prop_type in pdata:
+                pdata[prop_type].sort(key=lambda x: x["tier"])
+
+    # Write odds_available.json
+    output = {
+        "date":          TODAY_STR,
+        "fetched_at":    dt.datetime.now(ET).isoformat(),
+        "bookmaker":     BOOKMAKER,
+        "games_fetched": games_fetched,
+        "players":       players,
+    }
+    try:
+        with open(ODDS_AVAILABLE_JSON, "w") as f:
+            json.dump(output, f, indent=2)
+        print(f"[odds] odds_available.json written: {len(players)} players, "
+              f"{games_fetched} games, "
+              f"{sum(len(pdata.get(pt, [])) for pdata in players.values() for pt in ['PTS','REB','AST','3PM'])} total lines")
+    except Exception as e:
+        print(f"[odds] ERROR writing odds_available.json: {e}")
+        sys.exit(0)
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -381,4 +589,13 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description="NBAgent odds collection")
+    parser.add_argument("--prefetch", action="store_true",
+                        help="Prefetch all available FanDuel markets (run before analyst)")
+    args = parser.parse_args()
+
+    if args.prefetch:
+        prefetch_all_markets()
+    else:
+        main()
