@@ -1,0 +1,174 @@
+[
+  {
+    "date": "2026-04-07",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -12.5 creates genuine blowout game-script risk: even after Pick's blowout penalty, MIN as a heavy favorite means Randle \u2014 a secondary scorer with moderate volatility and a post-miss hit rate of only 69% \u2014 could see Q4 minutes compressed if the game is decided early. The min_floor of 28.8 vs a 33.4 average leaves meaningful downside if rest/garbage-time pulls him before he reaches the threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -11.5 is a structural blowout risk for a player whose min_floor (24.8) already sits near the fragility threshold, and Kawhi's known load-management history makes early exits in comfortable wins a real possibility. REB is confirmed slump-persistent and the moderate volatility tag means a single low-minutes game \u2014 entirely plausible given the lopsided spread \u2014 produces a miss even at T4."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "A -11.5 spread creates a genuine blowout scenario where Kawhi's known load-management protocols risk an early exit; his min_floor of 24.8 is dangerously close to the fragility threshold for an AST prop, and per the historical audit, AST props mechanically cap when minutes are compressed. The post-miss AST hit rate of 80% combined with moderate volatility and a 24.8 min_floor means a single managed-rest exit \u2014 highly plausible in a double-digit blowout \u2014 directly collapses assist accumulation in a way the confidence adjustment may not fully capture."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a PTS pick is the exact combination flagged in the historical audit (Brandon Miller T15 iron_floor + VOLATILE missed badly); while Durant is stepped down to T15 with confidence at 70%, the VOLATILE distribution means the floor is a statistical pattern rather than a guarantee, and a cold-FG night \u2014 already elevated by the FG_MARGIN_THIN signal \u2014 could produce a miss well below threshold as seen in prior volatile scorers."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 24.8 sits exactly at the fragility threshold for a PTS T15+ pick \u2014 a single low-minutes game is within normal variance and produces a miss. The post-miss hit rate of 69% is below average, meaning bounce-back momentum is not a reliable safety net here."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "A -17.5 spread is the most extreme blowout scenario on the slate: historical audit explicitly identifies that AST props for star players in blowout-trending games are mechanically capped when minutes compress, and SGA's min_floor of 25.8 against a 32.1 average means meaningful rest-minutes exposure. The -10% blowout AST confidence penalty was applied, but at -17.5 the structural risk of a managed early exit \u2014 where SGA logs ~25 minutes and assist accumulation is fully capped \u2014 likely exceeds what the single penalty captures; this is the exact Wembanyama pattern (comfortable win, compressed minutes, missed AST) at an even more extreme spread."
+    ],
+    "source": "auto"
+  }
+]
