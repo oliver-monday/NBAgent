@@ -15,10 +15,10 @@
       "minimum_3pm_floor": "75%",
       "conclusion": "70% after VOLATILE deduction falls below 75% 3PM minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-06",
@@ -36,10 +36,10 @@
       "iron_floor": false,
       "exception_check": "No iron_floor on AST; exception does not apply"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-04-06",
@@ -57,10 +57,10 @@
       "minimum_reb_floor": "78%",
       "conclusion": "70% base and 65% adjusted both fail 78% REB minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 8"
   },
   {
     "date": "2026-04-06",
@@ -79,10 +79,10 @@
       "trend": "stable",
       "exception_check": "No iron_floor on AST; exception does not apply"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-06",
@@ -100,10 +100,10 @@
       "minimum_reb_floor": "78%",
       "conclusion": "Base 70% fails 78% minimum REB floor before any penalties"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-06",
@@ -121,10 +121,10 @@
       "minimum_3pm_floor": "75%",
       "conclusion": "VOLATILE -5% drops to 70%, below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-06",
@@ -142,10 +142,10 @@
       "minimum_reb_floor": "78%",
       "conclusion": "All viable tiers fall below 78% REB minimum floor after VOLATILE + BLOWOUT penalties"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 10"
   },
   {
     "date": "2026-04-06",
@@ -165,10 +165,10 @@
       "step_down_result": "below_minimum_tier",
       "conclusion": "trend=down step-down from T1 goes below minimum valid tier; blowout context uses step-down not hard skip; result is skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-06",
@@ -186,10 +186,10 @@
       "minimum_3pm_floor": "75%",
       "conclusion": "VOLATILE -5% drops 70% to 65%, below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-06",
@@ -210,8 +210,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-06",
@@ -231,7 +231,7 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]

@@ -3989,9 +3989,32 @@
         "rationale": "McCollum 10/10 AST anchor pairs with Jokic volume game and Castle's upward PTS trend vs mid PHI defense.",
         "date": "2026-04-06",
         "id": "parlay_2026-04-06_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "CJ McCollum",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 6.0
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 35.0
+          },
+          {
+            "player_name": "Stephon Castle",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 19.0
+          }
+        ]
       }
     ]
   }

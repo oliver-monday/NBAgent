@@ -4035,5 +4035,108 @@
         "Pairing an iron_floor AST leg (LeBron T4 iron_floor, 82%) with two high-volume PTS legs in games with confirmed absences proved highly effective \u2014 the AST leg acted as a near-lock anchor (actual 15 vs threshold 4) while the PTS legs provided upside. The AST-as-parlay-anchor pattern using iron_floor T4+ picks in games with missing primary creators is validated and should be repeated when the structural conditions align."
       ]
     }
+  },
+  {
+    "date": "2026-04-06",
+    "total_picks": 10,
+    "voided_picks": 5,
+    "hits": 9,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 90.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 8,
+        "hits": 7,
+        "hit_rate_pct": 87.5,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Mandatory FG_MARGIN_THIN tier step-downs proved structurally sound: both Jokic (T20\u2192T15, actual 35 PTS) and Wembanyama (T20\u2192T15, actual 17 PTS) hit comfortably after being stepped down, confirming the rule correctly adds buffer rather than sacrificing edge.",
+      "Conservative AST picks at T2 with 100% hit rates remain elite anchors: CJ McCollum's 10/10 AST pick at T2 (actual 6 AST vs pick of 2) crushed the threshold, validating that iron-floor low-tier AST picks in competitive games are the highest-reliability prop type in the system.",
+      "Blowout-resilient PTS profiles continue to hold in SAS blowout contexts: Stephon Castle's T10 PTS pick (actual 19, blowout_resilient tag applied) hit cleanly despite a 13-point SA win, confirming the blowout-resilient offset rule correctly distinguished his profile from non-resilient players in the same game.",
+      "min_floor + FG_MARGIN_NEG double step-down cascade to T10 added meaningful safety: Castle's PTS pick benefited from both rules firing on the same tier step, producing a generous 9-point cushion (actual 19 vs pick 10) \u2014 the cascade does not over-penalize when the player's true floor is materially higher.",
+      "The tough-matchup confidence reduction for Jalen Johnson (85%\u219275% via vs_tough degradation) did not prevent a clean hit: actual 21 PTS vs pick 15 with 41 minutes played confirms that when 9/10 hit rates at a tier are genuine, even tough defense adjustments leave the pick viable."
+    ],
+    "lessons": [
+      "Wembanyama's AST miss (actual 1 vs pick 2, 9/10 hit rate) in a COMPETITIVE game (SA won by 13) with only 16 minutes played is the key signal: 16 minutes is extremely low for Wembanyama even in a moderately comfortable win, suggesting minutes were compressed mid-game for reasons not captured in pre-game signals. The 9/10 historical hit rate at T2 remains strong, but the combination of a blowout-trending game (13-point margin qualifies as COMPETITIVE, not BLOWOUT) and unusually low minutes (16 vs his ~30.1 avg) produced a zero-assist outcome that the rule framework did not anticipate.",
+      "AST props for rim-anchored big men at T2 carry a specific structural risk: assists require sustained offensive possessions late in games. When a player like Wembanyama logs only 16 minutes \u2014 nearly half his season average \u2014 assist accumulation is mechanically capped regardless of per-minute rate. The system currently penalizes AST blowout risk by -10% confidence but does not apply a minimum-minutes floor check specific to AST props (unlike the PTS min_floor rule). A parallel AST floor check should be considered.",
+      "The SAS floor compression pattern (mean miss margin \u22125.0 on opponent picks vs SAS) may also manifest internally for SAS starters in games where the lead triggers early rest: Wembanyama at 16 minutes is consistent with a managed-exit scenario in a comfortable win, similar to how blowout logic reduces counting stats. The system's blowout threshold (\u226520 margin) did not fire here (margin = 13), but a 13-point win with a 30-minute player logging 16 minutes suggests a managed-rest protocol that sits just below the formal blowout trigger."
+    ],
+    "recommendations": [
+      "Add an AST minimum-minutes floor check parallel to the existing PTS min_floor rule: for any player whose season-average minutes are \u226528, require that their documented L10 minimum minutes exceed a threshold (e.g., 18 min) before selecting an AST prop. Wembanyama's 16-minute game causing a 1-AST output illustrates that AST accumulation is mechanically impossible in severely reduced minutes even at T2.",
+      "For Wembanyama specifically, flag any AST pick in games where SA is favored by 7+ points with a conditional warning: his average minutes drop materially in comfortable wins, and his AST output is highly sensitive to Q4 rest. Consider requiring either (a) a 9+/10 AST hit rate in blowout-context games specifically, or (b) stepping to T1 rather than T2 when spread_abs \u22657 and no iron_floor is present on the AST line.",
+      "Extend the BLOWOUT_RISK confidence penalty trigger to games where spread_abs \u22657 (from \u22658) for AST props: the current \u22658 threshold missed the SAS game (spread was 8.5, which triggered the penalty) \u2014 but the actual mechanism was minutes management in a moderately lopsided game, not a formal blowout. The net -10% applied was insufficient given the realized outcome. Consider a 12-15% penalty for AST props in any game where the player's team is favored by 7+ and the player is not iron_floor on AST.",
+      "When a player's post-game minutes are reported at less than 60% of their season average (Wembanyama: 16 min vs 30.1 avg = 53%), treat this as a data point for the managed-rest risk model. Pre-game, the system has no direct signal for this, but the SAS blowout-adjacent pattern (13-point wins triggering early rest) is now a documented second occurrence \u2014 consider adding a SAS-specific managed-rest flag for Wembanyama AST props when SA spread \u22656.",
+      "The CJ McCollum PTS pick (human verdict: trim, VOLATILE tag, FG_MARGIN_THIN step T15\u2192T10) hit comfortably (actual 17 vs pick 10) in a CLOSE game (NY won by 3). Audit confirms the trim was procedurally correct given uncertainty, but the 7-point cushion at T10 validated the step-down logic \u2014 do not second-guess FG_MARGIN_THIN cascades when the resulting tier pick is this conservative. The trim flag on human review is appropriate; the model rule is working as intended."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 GAME CONTEXT: SA defeated PHI 115\u2013102, a COMPETITIVE margin of 13. Not a formal blowout (\u226520), so blowout game-script reasoning does not fully apply, but a 13-point win is a comfortable enough margin that managed rest is plausible. Post-game news confirms Wembanyama logged only 16 minutes \u2014 approximately 53% of his 30.1 season average \u2014 which is unusually low for a COMPETITIVE game. STEP 1 \u2014 ACTIVITY: actual_value = 1.0 AST; player clearly played (16 min confirmed). Non-zero activity confirms no DNP or injury exit. STEP 2 \u2014 CLASSIFICATION: No injury_exit in POST-GAME NEWS; injury_status_at_check = NOT_LISTED; voided = false. The pick threshold is T2 (\u22652 AST), and actual output was 1 \u2014 a single-assist miss. Given the 9/10 historical hit rate (85% overall), a 1-AST outcome in 16 minutes is within the tail of the distribution \u2014 the rate implies roughly 1-in-10 games miss this threshold. The immediate cause is dramatically reduced minutes (16 vs ~30 avg) in a comfortable win, which capped assist accumulation mechanically. However, the spread_abs = 8.5 was already present at pick time, the blowout -10% penalty was applied, and the final confidence was set at 74% explicitly acknowledging this risk. The pick was made with full awareness of blowout-adjacent risk and was priced accordingly. Classification: variance \u2014 the 1-in-10 miss rate materialized, amplified by minutes compression in a comfortable win that sat just below the formal blowout threshold. STEP 3 \u2014 REASONING CRITIQUE: The original reasoning ('85% AST hit rate; soft PHI defense; T2 provides wide buffer; blowout -10% still leaves comfortable margin') correctly identified the favorable hit rate and soft defense but slightly underweighted the interaction between reduced minutes and AST accumulation \u2014 assists require sustained possessions, and at 16 minutes Wembanyama had limited opportunity regardless of per-minute rate. The tier_walk correctly noted T2 cannot step lower and applied the -10% penalty instead. STEP 4 \u2014 HIT RATE: 9/10 (85%) is a strong baseline; this is a legitimate tail outcome, not a systematic error. STEP 5 \u2014 TIER WALK: T2 is the minimum AST tier; no lower tier was available. The walk confirms the analyst exhausted downside options \u2014 the -10% confidence penalty was the only available mitigation. Tier selection was not in error. STEP 6 \u2014 AMENDMENT STATUS: No lineup_update sub-object present; pick was not amended by the afternoon agent. No amendment commentary required."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 3/3 sweep \u2014 the McCollum AST anchor delivered 6 assists vs a pick of 2, Jokic went supernova with 35 PTS vs 15, and Castle hit 19 PTS vs 10 in a comfortable SA win.",
+      "parlay_lessons": [
+        "The structural risk on this parlay was the Jokic AST trim flag and BLOWOUT concern on the DEN leg: had the parlay included Jokic AST (T8, blowout risk, tough opp) instead of Jokic PTS (T15, stepped-down, large cushion), a 13-assist actual would have saved it \u2014 but the PTS leg was the safer choice. The lesson is that multi-game parlays anchored by step-down PTS legs (FG_MARGIN_THIN T20\u2192T15) are more robust than parlays anchored by high-tier AST legs subject to blowout minutes compression, as confirmed by the standalone Wembanyama AST miss this same session.",
+        "The confidence product of 0.4922 (~49%) at +103 implied odds represents a near-breakeven expected value proposition \u2014 the parlay hit but the structural edge was thin. Future parlay construction should target confidence products above 0.55 when implied odds are at or below +120, or accept +150 or better odds when the product falls below 0.50, to ensure positive EV on the combination rather than relying on all legs outperforming their individual pick values as they did today."
+      ],
+      "parlay_reinforcements": [
+        "The anchor + two-scorer structure (one 90% iron-floor AST anchor paired with two independent 74% stepped-down PTS legs from different games) produced a resilient combination: the McCollum 10/10 AST leg at T2 provided near-certainty on one leg while the two PTS legs each had generous step-down buffers (Jokic T15 actual 35, Castle T10 actual 19), confirming that pairing a highest-confidence iron-floor AST anchor with conservative-tier PTS legs in independent games is a structurally sound multi-game parlay template.",
+        "Cross-game independence was the key structural advantage: all three legs came from different games (ATL vs NY, DEN vs POR, SA vs PHI), eliminating same-game correlation risk. When combining players from games with different pace profiles and opponent defensive ratings, the independence assumption holds cleanly \u2014 this combination type should be prioritized over same-game stacks when building parlays with mixed prop types."
+      ]
+    }
   }
 ]

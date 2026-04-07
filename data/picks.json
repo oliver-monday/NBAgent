@@ -22133,8 +22133,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "100% hit rate across all splits; consistent tag; competitive game preserves full usage.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 1.5,
     "market_implied_prob": 92.31,
     "market_book": "fanduel",
@@ -22142,7 +22142,9 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22162,8 +22164,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor 3PM with trend up; competitive script ensures volume; tight spread locks in minutes.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 0.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -22171,7 +22173,9 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22191,8 +22195,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step T15\u2192T10; VOLATILE -5%; tough NYK defense; T10 is solid floor given recent form.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 9.5,
     "market_implied_prob": 92.31,
     "market_book": "fanduel",
@@ -22200,7 +22204,11 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a tough defensive matchup with a FG_MARGIN_THIN that forced a mandatory step-down; a single cold shooting night leaves only 5 pts of buffer at T10, and the min_floor of 24.7 means a garbage-time DNP or foul trouble produces a miss with no cushion."
+    ]
   },
   {
     "date": "2026-04-06",
@@ -22220,8 +22228,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 hit rate at T15; tough NYK defense reduces to 75% via vs_tough split; competitive game preserves minutes.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "market_line": 14.5,
     "market_implied_prob": 88.51,
     "market_book": "fanduel",
@@ -22229,7 +22237,9 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22249,8 +22259,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor PTS; FG_MARGIN_THIN step T20\u2192T15 adds buffer; BLOWOUT cap at 80%; POR depleted.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 35.0,
     "market_line": 14.5,
     "market_implied_prob": 98.59,
     "market_book": "fanduel",
@@ -22258,7 +22268,9 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22278,8 +22290,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 AST at T8; blowout_games=89% protects in this context; tough opp reduces from 85% base.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "market_line": 7.5,
     "market_implied_prob": 87.5,
     "market_book": "fanduel",
@@ -22287,7 +22299,11 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "An -8.5 blowout spread creates genuine Q4 rest risk for Jokic's counting stats; assists require sustained offensive possessions in a competitive game, and a Portland team that falls apart early shrinks Jokic's 4th-quarter distribution opportunities precisely when he needs them to clear 8."
+    ]
   },
   {
     "date": "2026-04-06",
@@ -22307,8 +22323,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "VOLATILE -5% and BLOWOUT -10% require stepping to T6; spread>8 caps at 80%; rebounding floor secure at T6.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "market_line": 9.5,
     "market_implied_prob": 89.47,
     "market_book": "fanduel",
@@ -22316,7 +22332,11 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with an -8.5 blowout spread is a compounding risk: if DEN builds a large lead early, Jokic sits in Q4 and REB accumulation halts; the VOLATILE distribution means he can miss badly even in a full-minutes game, and blowout rest is an additional minutes ceiling the iron_floor doesn't protect against."
+    ]
   },
   {
     "date": "2026-04-06",
@@ -22336,8 +22356,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG and min_floor<24 both step T15\u2192T10; blowout-resilient offsets penalty; 75% at T10.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "market_line": 9.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -22345,7 +22365,11 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus a min_floor of only 22.9 on a BLOWOUT_RISK game (-8.5 SA favorite) is the fragile combination: if SA goes up big early, Castle's minutes compress exactly to or below his floor, and the FG_MARGIN_NEG step-down signals his scoring efficiency is already shaky at higher tiers."
+    ]
   },
   {
     "date": "2026-04-06",
@@ -22365,11 +22389,13 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step T20\u2192T15; VOLATILE -5%, BLOWOUT -10%; PHI soft defense; T15 is secure floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22389,8 +22415,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% AST hit rate; soft PHI defense; T2 provides wide buffer; blowout -10% still leaves comfortable margin.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 1.5,
     "market_implied_prob": 88.24,
     "market_book": "fanduel",
@@ -22398,7 +22424,9 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22429,7 +22457,11 @@
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "B2B with insufficient B2B hit-rate sample means the rest penalty is unquantified, not absent; combined with a -14.5 spread blowout risk and FG_MARGIN_THIN that already forced a step-down, a Q4 early exit could compress Harden's counting stats before he reaches even the conservative T10 threshold."
+    ]
   },
   {
     "date": "2026-04-06",
@@ -22455,7 +22487,9 @@
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22486,7 +22520,9 @@
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-06",
@@ -22517,7 +22553,11 @@
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE scorer on B2B with a confirmed 75% B2B hit rate at T20 specifically \u2014 materially below his overall rate \u2014 facing a -14.5 blowout spread; the FG_MARGIN_THIN step-down already signals a thin scoring cushion, and the compounding of B2B fatigue, blowout rest risk, and volatile distribution creates a structural floor that is genuinely fragile at the T20 threshold."
+    ]
   },
   {
     "date": "2026-04-06",
@@ -22548,6 +22588,8 @@
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
