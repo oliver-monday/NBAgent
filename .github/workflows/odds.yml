@@ -1,11 +1,8 @@
 name: Odds Agent
 
 on:
-  # Chains off the Analyst workflow completing — ensures picks exist first
-  workflow_run:
-    workflows: ["Analyst Agent"]
-    types: [completed]
-  # Manual trigger — re-fetch odds any time without re-running analyst
+  # Manual trigger only — primary odds flow is now in analyst.yml
+  # Use this for mid-day re-fetches when lineups change
   workflow_dispatch:
 
 permissions:
@@ -17,7 +14,7 @@ concurrency:
 
 jobs:
   fetch-odds:
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     env:
       TZ: America/Los_Angeles

@@ -161,6 +161,7 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 - `data/standings_today.json` — live standings snapshot; formatted by `format_playoff_picture()` and injected as `## PLAYOFF PICTURE` section
 - `data/team_defense_narratives.json` — auto-generated team defense profiles; formatted by `format_team_defense_section()` and injected as `## TEAM DEFENSIVE PROFILES` section
 - `data/lineups_today.json` — projected starting lineups from rotowire_injuries_only.py; formatted by `format_lineups_section()` and injected as `## PROJECTED LINEUPS` section; staleness-checked against today's date
+- `data/odds_available.json` — pre-fetched FanDuel market availability; consumed via `load_available_markets()` + `format_available_markets()`; unconditional market gate: no FanDuel market → no pick (`no_market` skip); gate disabled when file missing/stale
 - `playerprops/player_whitelist.csv` — (name, team) tuple filter
 
 **Scout prompt sections (Stage 1 — `build_scout_prompt()`):**
@@ -175,7 +176,8 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 9. `## TEAM DEFENSIVE PROFILES`
 10. `## PLAYER PROFILES`
 11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` (data only, no rules)
-12. `## OUTPUT FORMAT` — `{"slate_read": str, "shortlist": [...], "omitted": [...]}`
+12. `## FANDUEL MARKET AVAILABILITY` (conditional — from `odds_available.json`; omitted when gate disabled)
+13. `## OUTPUT FORMAT` — `{"slate_read": str, "shortlist": [...], "omitted": [...]}`
 
 **Pick prompt sections (Stage 2 — `build_pick_prompt()`):**
 1. Task framing + tier system intro
@@ -185,10 +187,11 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 5. `## CURRENT INJURY REPORT`
 6. All KEY RULES blocks (KEY FRAMEWORK, MATCHUP QUALITY, DvP, SELECTION, REST & FATIGUE, SEQUENTIAL GAME CONTEXT, SPREAD/BLOWOUT, VOLATILITY, HIGH CONFIDENCE GATE, INJURY EXCLUSION, TEAMMATE ABSENCE USAGE ABSORPTION)
 7. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` (filtered to shortlisted players only)
-8. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS`
-9. `## ROLLING PERFORMANCE SUMMARY`
-10. `## ANALYSIS APPROACH` (modified to reference Scout shortlist)
-11. `## OUTPUT FORMAT`
+8. `## FANDUEL MARKET AVAILABILITY` (conditional — from `odds_available.json`; omitted when gate disabled)
+9. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS`
+10. `## ROLLING PERFORMANCE SUMMARY`
+11. `## ANALYSIS APPROACH` (modified to reference Scout shortlist)
+12. `## OUTPUT FORMAT`
 
 **Review prompt sections (Stage 3 — `build_review_prompt()`):**
 1. Role framing — adversarial stress-tester

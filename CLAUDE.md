@@ -64,6 +64,8 @@ NBAgent/
 │   ├── audit_log.json                  # Daily auditor entries — full graded pick details
 │   ├── audit_summary.json              # Rolled-up season stats — consumed by Analyst as Rolling Performance Summary; includes skip_validation + human_flag_precision blocks
 │   ├── picks_review_YYYY-MM-DD.json    # Human-produced daily review file — verdicts: keep/trim/manual_skip; committed before auditor.yml runs; NOT written by any agent
+│   ├── odds_available.json             # Pre-fetched FanDuel alternate market lines — written by odds_today.py --prefetch; consumed by analyst.py as market availability gate
+│   ├── odds_today.json                 # Diagnostic odds cache — written by odds_today.py after picks; enriches picks.json with market_line/edge_pct
 │   └── context_flags.md                # Staleness flags written by pre_game_reporter.py; picked up by analyst via ⚠ CONTEXT FLAG mechanism
 ├── playerprops/
 │   └── player_whitelist.csv    # Active player tracking list — (player_name, team_abbr) tuple filter; includes position column for DvP
@@ -81,7 +83,8 @@ NBAgent/
 │   ├── ingest.yml              # ~7 AM PT daily — ingests ESPN data, runs quant
 │   ├── injuries.yml            # Every :15 and :45, 11:45 AM–8:45 PM PT — scrapes Rotowire, runs lineup_watch + lineup_update, rebuilds site
 │   ├── auditor.yml             # Chains off ingest — grades yesterday's picks + skips, writes audit_log + audit_summary
-│   └── analyst.yml             # Chains off auditor — runs rotowire → quant → pre_game_reporter → analyst → parlay → deploy
+│   ├── analyst.yml             # Chains off auditor — runs rotowire → quant → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy
+│   └── odds.yml               # Manual-only — standalone odds fetch for mid-day re-runs
 └── CLAUDE.md                   # This file
 ```
 
@@ -90,14 +93,14 @@ NBAgent/
 ## Workflow Chain
 
 ```
-ingest.yml → auditor.yml → analyst.yml (rotowire refresh → quant → pre_game_reporter → analyst → parlay → deploy)
+ingest.yml → auditor.yml → analyst.yml (rotowire refresh → quant → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy)
 injuries.yml runs independently on :15/:45 schedule (rotowire → lineup_watch → lineup_update → site rebuild)
 post_game_reporter.py runs as first step of auditor.yml (fetches ESPN + Brave Search narratives for yesterday's missed picks)
 ```
 
 - All workflows: `TZ: America/Los_Angeles`
 - Commits: `github-actions[bot]` with `[skip ci]` to prevent loops
-- **Required secrets:** `ANTHROPIC_API_KEY`, `BRAVE_API_KEY`, `ROTOWIRE_EMAIL`, `ROTOWIRE_PASSWORD`
+- **Required secrets:** `ANTHROPIC_API_KEY`, `BRAVE_API_KEY`, `ODDS_API_KEY`, `ROTOWIRE_EMAIL`, `ROTOWIRE_PASSWORD`
 - **Model used by all LLM agents:** `claude-sonnet-4-6` (analyst upgrades to `claude-opus-4-6` on slates >30 active players)
 
 ---
@@ -108,8 +111,8 @@ post_game_reporter.py runs as first step of auditor.yml (fetches ESPN + Brave Se
 |-------|-------|-----------|------------|------------|
 | quant.py | — (pure Python) | — | player_game_log, team_game_log, nba_master, player_whitelist | player_stats.json, team_defense_narratives.json |
 | pre_game_reporter.py | claude-sonnet-4-6 | 2048 | ESPN player news, nba_season_context.md | pre_game_news.json, context_flags.md |
-| analyst.py (Scout) | claude-sonnet-4-6 / opus-4-6 | 4096 | player_stats.json, injuries, lineups, game logs, nba_season_context, standings, team_defense_narratives, pre_game_news, player_profiles, leaderboard | Scout shortlist (20–25 players) |
-| analyst.py (Pick) | claude-sonnet-4-6 | 32000 | Scout shortlist, filtered player_stats.json, injuries, audit_log (last 5), audit_summary | picks.json (append), skipped_picks.json |
+| analyst.py (Scout) | claude-sonnet-4-6 / opus-4-6 | 4096 | player_stats.json, injuries, lineups, game logs, nba_season_context, standings, team_defense_narratives, pre_game_news, player_profiles, leaderboard, odds_available.json | Scout shortlist (20–25 players) |
+| analyst.py (Pick) | claude-sonnet-4-6 | 32000 | Scout shortlist, filtered player_stats.json, injuries, audit_log (last 5), audit_summary, odds_available.json | picks.json (append), skipped_picks.json |
 | parlay.py | claude-sonnet-4-6 | 4096 | picks.json, player_stats.json, audit_log (last 3 parlay feedback) | parlays.json (append) |
 | post_game_reporter.py | claude-sonnet-4-6 | 2048 | picks.json (yesterday), ESPN athlete news, Brave Search | post_game_news.json |
 | auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings, picks_review_YYYY-MM-DD.json (optional) | audit_log.json, audit_summary.json, updates picks + parlays in-place, grades skipped_picks.json |
@@ -130,6 +133,7 @@ Full agent details → **@docs/AGENTS.md**
 - **`pre_game_news.json`** staleness flags are picked up by `analyst.py` via the `⚠ CONTEXT FLAG` mechanism — Python-detected stale facts in `nba_season_context.md` are surfaced to the analyst as warnings without modifying the context file automatically.
 - **`post_game_news.json`** includes `web_narrative` fields (Brave Search summaries) for missed-pick players. Auditor renders these as `📰 WEB RECAP:` in the audit prompt — addresses ejections, foul trouble, and blowout context that ESPN athlete news misses.
 - **Parlay audit feedback loop** — `parlay.py` reads the last 3 `audit_log.json` entries for `parlay_reinforcements` and `parlay_lessons` and injects them into the Claude prompt.
+- **`odds_available.json`** is written by `ingest/odds_today.py --prefetch` early in `analyst.yml` (before the analyst runs). Consumed by `analyst.py` via `load_available_markets()` + `format_available_markets()` as an unconditional market availability gate: if no FanDuel alternate market exists for a player+prop+tier, the pick is forbidden (`no_market` skip). Gate disabled when file is missing or stale (graceful degradation — all picks proceed normally). `odds_today.json` is written later by `ingest/odds_today.py` (no flag) to enrich picks with market lines post-generation.
 - **Cross-workflow file persistence** — each GitHub Actions workflow does a fresh checkout. Files written but not committed by an upstream workflow are absent downstream. `lineups_today.json` and `skipped_picks.json` are both committed by `analyst.yml` so downstream hourly runs can read them. When adding any cross-workflow feature, explicitly verify: (1) what files the feature writes, (2) which downstream workflow reads them, (3) whether they are committed before that workflow runs.
 
 ---

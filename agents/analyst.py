@@ -42,6 +42,7 @@ STANDINGS_JSON                = DATA / "standings_today.json"
 TEAM_DEFENSE_NARRATIVES_JSON = DATA / "team_defense_narratives.json"
 LINEUPS_JSON                 = DATA / "lineups_today.json"
 SKIPPED_PICKS_JSON           = DATA / "skipped_picks.json"
+ODDS_AVAILABLE_JSON          = DATA / "odds_available.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -1364,9 +1365,94 @@ def load_audit_summary() -> str:
     return "\n".join(lines)
 
 
+# ── Market availability ──────────────────────────────────────────────
+
+def load_available_markets() -> dict | None:
+    """Load pre-fetched FanDuel market availability data.
+
+    Returns the parsed dict from odds_available.json, or None if:
+    - File does not exist (ODDS_API_KEY not set, or prefetch didn't run)
+    - File is stale (date != today)
+    - Any parse error
+
+    When None is returned, the market availability gate is skipped entirely
+    and the analyst proceeds without market constraints.
+    """
+    if not ODDS_AVAILABLE_JSON.exists():
+        print("[analyst] odds_available.json not found — market gate disabled")
+        return None
+    try:
+        with open(ODDS_AVAILABLE_JSON) as f:
+            data = json.load(f)
+        if data.get("date") != TODAY_STR:
+            print(f"[analyst] odds_available.json is stale ({data.get('date')} != {TODAY_STR}) — market gate disabled")
+            return None
+        print(f"[analyst] Loaded market availability: {len(data.get('players', {}))} players, fetched {data.get('fetched_at', '?')}")
+        return data
+    except Exception as e:
+        print(f"[analyst] Failed to load odds_available.json: {e} — market gate disabled")
+        return None
+
+
+def format_available_markets(markets_data: dict | None, player_stats: dict) -> str:
+    """Format available FanDuel markets as a prompt section.
+
+    Only includes players present in player_stats (today's active whitelisted
+    players). Returns "" when markets_data is None (gate disabled).
+    """
+    if markets_data is None:
+        return ""
+
+    players_markets = markets_data.get("players", {})
+    if not players_markets:
+        return ""
+
+    # Build normalised name lookup from player_stats keys
+    # player_stats keys are title-case display names; markets keys are normalised
+    stat_name_to_norm = {}
+    for display_name in player_stats:
+        norm = display_name.strip().lower().replace(".", "").replace("'", "").replace("-", " ")
+        stat_name_to_norm[norm] = display_name
+
+    lines = [
+        "## FANDUEL MARKET AVAILABILITY",
+        "",
+        "The following FanDuel alternate player prop markets are available for today's games.",
+        "**HARD RULE: You may ONLY generate a pick if a FanDuel market exists for that player + prop + tier below.**",
+        "If a player/prop/tier combination does not appear here, do NOT pick it — record as skip with skip_reason=no_market.",
+        "",
+    ]
+
+    matched = 0
+    for norm_name, market_entry in sorted(players_markets.items()):
+        if norm_name not in stat_name_to_norm:
+            continue
+        display_name = market_entry.get("display_name", stat_name_to_norm[norm_name])
+
+        prop_lines = []
+        for prop_type in ("PTS", "REB", "AST", "3PM"):
+            tiers = market_entry.get(prop_type, [])
+            if tiers:
+                tier_strs = [str(t["tier"]) for t in tiers]
+                prop_lines.append(f"  {prop_type}: T{' T'.join(tier_strs)}")
+
+        if prop_lines:
+            lines.append(f"{display_name}:")
+            lines.extend(prop_lines)
+            matched += 1
+
+    if matched == 0:
+        return ""
+
+    lines.append("")
+    lines.append(f"({matched} players with available markets)")
+    print(f"[analyst] Market availability section: {matched} players matched to today's quant context")
+    return "\n".join(lines)
+
+
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "", leaderboard: str = "", lineups_section: str = "") -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "", leaderboard: str = "", lineups_section: str = "", available_markets: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -1566,9 +1652,17 @@ KEY FRAMEWORK — HOW TO REASON WHEN RULES CONFLICT:
 
 The rules below can conflict. When they do, use this priority order:
 
-  1. HARD SKIPS — absolute, no override. volatile_weak_combo, blowout_secondary_scorer,
-     ast_hard_gate, 3pm_blowout_trend_down, volatile_ast_t6, and all other named skip
-     rules execute unconditionally. If a hard skip fires, the pick does not exist. Period.
+  0. MARKET AVAILABILITY GATE — unconditional, checked BEFORE all other rules.
+     If a ## FANDUEL MARKET AVAILABILITY section is present, a pick may only be
+     generated for a player+prop+tier combination that appears in that section.
+     If the combination is absent, record as skip with skip_reason=no_market.
+     No override — iron_floor, elite scorer status, trend, or any other signal
+     cannot waive this gate. If the section is absent, this gate does not apply.
+
+  1. HARD SKIPS — absolute, no override. no_market, volatile_weak_combo,
+     blowout_secondary_scorer, ast_hard_gate, 3pm_blowout_trend_down, volatile_ast_t6,
+     and all other named skip rules execute unconditionally. If a hard skip fires,
+     the pick does not exist. Period.
 
   2. MANDATORY TIER STEPS — execute first, then re-evaluate from the new tier.
      min_floor < 24 → step down. FG_COLD ≥ 15% on T15+ → step down. After stepping,
@@ -2195,7 +2289,7 @@ Condition C — Confirming signals: At least two independent signals must suppor
 
 {quant_context if quant_context else "No quant stats available."}
 
-{player_profiles_section}## AUDITOR FEEDBACK FROM PREVIOUS DAYS
+{f"{available_markets}{chr(10)}{chr(10)}" if available_markets else ""}{player_profiles_section}## AUDITOR FEEDBACK FROM PREVIOUS DAYS
 {audit_context}
 
 ## ROLLING PERFORMANCE SUMMARY
@@ -2298,7 +2392,8 @@ JSON schema:
       "prop_type": "PTS | REB | AST | 3PM",
       "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
       "direction": "OVER",
-      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
+      "skip_reason": "no_market | min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
+      // no_market: the player+prop+tier combination has no FanDuel alternate market in ## FANDUEL MARKET AVAILABILITY. rule_context: {{"player_name": str, "prop_type": str, "tier_considered": number, "reason": "no FanDuel market available"}}.
       // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 78% REB, 70% general); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
       "rule_context": {{
         ... fields specific to this skip_reason as defined in the rules above ...
@@ -2351,6 +2446,7 @@ def build_scout_prompt(
     team_defense: str,
     leaderboard: str,
     lineups_section: str,
+    available_markets: str = "",
 ) -> str:
     """
     Build the Scout prompt — receives all contextual data, no rules.
@@ -2399,6 +2495,8 @@ Target 20–25 players on the shortlist. Err toward inclusion on borderline case
 
 A player with any qualifying `best_tier` (≥70% hit rate in quant stats) should generally be included unless there is a clear structural reason they should not be evaluated today: confirmed limited role, injury news suggesting absence or heavy restriction, game script that structurally eliminates the prop (e.g. extreme blowout risk with no counting-stat floor).
 
+If a ## FANDUEL MARKET AVAILABILITY section is present below, include players who have at least one tradeable market — but do NOT exclude players solely for missing markets. The Pick agent enforces market availability as a hard gate; the Scout's job is to pass through all statistically interesting candidates.
+
 For each shortlisted player, identify which prop types (PTS/REB/AST/3PM) are worth evaluating and provide a tier range (e.g. "PTS T20–T25") derived from the quant best_tier data. Do NOT name a specific single tier as your recommendation — provide a range or "T{{best_tier}}+".
 
 Use `priority: "high"` for players with multiple qualifying props, strong recent form, and minimal situational risk. Use `priority: "medium"` for players with one qualifying prop, meaningful risk flags, or borderline signal.
@@ -2418,7 +2516,7 @@ Use `priority: "high"` for players with multiple qualifying props, strong recent
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
 {quant_context if quant_context else "No quant stats available."}
 
-{player_profiles_section}## OUTPUT FORMAT
+{f"{available_markets}{chr(10)}{chr(10)}" if available_markets else ""}{player_profiles_section}## OUTPUT FORMAT
 Your response MUST begin with a JSON object at character 0. No preamble. No "Here is my analysis." No markdown headers before the JSON.
 
 {{{{
@@ -2537,6 +2635,7 @@ def build_pick_prompt(
     quant_context: str,
     audit_context: str,
     audit_summary: str,
+    available_markets: str = "",
 ) -> str:
     """
     Build the Pick prompt — receives Scout shortlist and filtered quant only.
@@ -3231,9 +3330,17 @@ KEY FRAMEWORK — HOW TO REASON WHEN RULES CONFLICT:
 
 The rules below can conflict. When they do, use this priority order:
 
-  1. HARD SKIPS — absolute, no override. volatile_weak_combo, blowout_secondary_scorer,
-     ast_hard_gate, 3pm_blowout_trend_down, volatile_ast_t6, and all other named skip
-     rules execute unconditionally. If a hard skip fires, the pick does not exist. Period.
+  0. MARKET AVAILABILITY GATE — unconditional, checked BEFORE all other rules.
+     If a ## FANDUEL MARKET AVAILABILITY section is present, a pick may only be
+     generated for a player+prop+tier combination that appears in that section.
+     If the combination is absent, record as skip with skip_reason=no_market.
+     No override — iron_floor, elite scorer status, trend, or any other signal
+     cannot waive this gate. If the section is absent, this gate does not apply.
+
+  1. HARD SKIPS — absolute, no override. no_market, volatile_weak_combo,
+     blowout_secondary_scorer, ast_hard_gate, 3pm_blowout_trend_down, volatile_ast_t6,
+     and all other named skip rules execute unconditionally. If a hard skip fires,
+     the pick does not exist. Period.
 
   2. MANDATORY TIER STEPS — execute first, then re-evaluate from the new tier.
      min_floor < 24 → step down. FG_COLD ≥ 15% on T15+ → step down. After stepping,
@@ -3314,7 +3421,7 @@ masquerading as a pick, and the auditor will find it.
 
 {quant_context if quant_context else "No quant stats available."}
 
-## ANALYSIS APPROACH
+{f"{available_markets}{chr(10)}{chr(10)}" if available_markets else ""}## ANALYSIS APPROACH
 For every player in the SCOUT SHORTLIST, evaluate the prop types flagged by Scout (plus any others you identify signal for in the quant data) against the full rulebook above. Work through each player in this fixed order:
   1. PTS — walk tiers top-down; apply all PTS rules (FG_MARGIN, BLOWOUT, min_floor, etc.)
   2. REB — walk tiers top-down; apply REB-specific rules (78% floor, 25th-pct gate, etc.)
@@ -3403,7 +3510,8 @@ JSON schema:
       "prop_type": "PTS | REB | AST | 3PM",
       "tier_considered": number — the tier that had ≥70% hit rate before the rule fired,
       "direction": "OVER",
-      "skip_reason": "min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
+      "skip_reason": "no_market | min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
+      // no_market: the player+prop+tier combination has no FanDuel alternate market in ## FANDUEL MARKET AVAILABILITY. rule_context: {{"player_name": str, "prop_type": str, "tier_considered": number, "reason": "no FanDuel market available"}}.
       // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 78% REB, 70% general); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
       "rule_context": {{{{
         ... fields specific to this skip_reason as defined in the rules above ...
@@ -4441,6 +4549,10 @@ def main():
 
     pre_game_news = load_pre_game_news()
 
+    # Market availability gate — load pre-fetched FanDuel markets
+    markets_data = load_available_markets()
+    available_markets = format_available_markets(markets_data, player_stats)
+
     # Model selection — needed for fallback path and Scout
     active_count = len(player_stats)
     model_to_use = MODEL_LARGE if active_count > LARGE_SLATE_THRESHOLD else MODEL
@@ -4458,6 +4570,7 @@ def main():
         pre_game_news=pre_game_news, player_profiles=player_profiles,
         playoff_picture=playoff_picture, team_defense=team_defense,
         leaderboard=leaderboard, lineups_section=lineups_section,
+        available_markets=available_markets,
     )
 
     shortlist = call_scout(scout_prompt, model=scout_model)
@@ -4471,6 +4584,7 @@ def main():
             pre_game_news=pre_game_news, player_profiles=player_profiles,
             playoff_picture=playoff_picture, team_defense=team_defense,
             leaderboard=leaderboard, lineups_section=lineups_section,
+            available_markets=available_markets,
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
@@ -4498,6 +4612,7 @@ def main():
             pre_game_news=pre_game_news, player_profiles=player_profiles,
             playoff_picture=playoff_picture, team_defense=team_defense,
             leaderboard=leaderboard, lineups_section=lineups_section,
+            available_markets=available_markets,
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
@@ -4513,6 +4628,7 @@ def main():
         scout_shortlist=shortlist, games=games, injuries=injuries,
         quant_context=filtered_quant_context, audit_context=audit_context,
         audit_summary=audit_summary,
+        available_markets=available_markets,
     )
 
     picks, skips = call_analyst(pick_prompt, model=MODEL)
