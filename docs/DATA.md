@@ -273,7 +273,15 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
   "market_implied_prob": number|null,               // implied probability from market odds; null when no match
   "market_book": "string|null",                     // bookmaker name (e.g. "fanduel"); null when no match
   "edge_pct": number|null,                          // system confidence − market implied prob (positive = system sees edge); null when no match
-  "odds_fetched_at": "ISO timestamp|null"           // when odds were fetched; null when no match
+  "odds_fetched_at": "ISO timestamp|null",           // when odds were fetched; null when no match
+  "bet_recommendation": {                            // set by odds_today.py compute_edge(); null/absent pre-enrichment
+    "calibrated_prob": number|null,                  // actual hit rate for this confidence band from audit_summary.json; null when no market
+    "calibration_band": "70-75%|76-80%|81-85%|86%+|null", // which audit calibration band was used
+    "calibrated_edge_pct": number|null,              // calibrated_prob − market_implied_prob in pp; positive = system edge
+    "market_implied_prob": number|null,              // market implied probability (copied from pick-level field)
+    "kelly_quarter": number|null,                    // quarter-Kelly fraction (0.0–1.0); 0 when edge ≤ 0; null when no market
+    "recommendation_tier": "STRONG|POSITIVE|NEUTRAL|FADE|NO_MARKET"  // STRONG >+8pp, POSITIVE +3–8pp, NEUTRAL ±3pp, FADE <−3pp, NO_MARKET when no odds
+  }
 }]
 ```
 

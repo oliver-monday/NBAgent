@@ -47,6 +47,7 @@ DATA       = ROOT / "data"
 PICKS_JSON = DATA / "picks.json"
 ODDS_JSON           = DATA / "odds_today.json"
 ODDS_AVAILABLE_JSON = DATA / "odds_available.json"
+AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
 WHITELIST_CSV       = ROOT / "playerprops" / "player_whitelist.csv"
 
 # ── Config ─────────────────────────────────────────────────────────────────────
@@ -208,6 +209,174 @@ def _load_whitelist_teams() -> set[str]:
     except Exception as e:
         print(f"[odds] WARNING: could not load whitelist: {e} — will fetch all games")
         return set()
+
+
+def _load_calibration_bands() -> dict[str, float] | None:
+    """
+    Load confidence calibration bands from audit_summary.json.
+    Returns a dict mapping band labels to actual hit rates, e.g.:
+      {"70-75%": 0.85, "76-80%": 0.873, "81-85%": 0.879, "86%+": 0.941}
+    Returns None if audit_summary.json is missing or has no calibration data.
+    """
+    if not AUDIT_SUMMARY_JSON.exists():
+        print("[odds] audit_summary.json not found — calibration unavailable")
+        return None
+    try:
+        with open(AUDIT_SUMMARY_JSON) as f:
+            summary = json.load(f)
+        cal = summary.get("confidence_calibration", {})
+        if not cal:
+            print("[odds] No confidence_calibration in audit_summary.json")
+            return None
+        bands = {}
+        for band_label, band_data in cal.items():
+            rate = band_data.get("rate")
+            if rate is not None:
+                bands[band_label] = float(rate)
+        if not bands:
+            return None
+        print(f"[odds] Calibration bands loaded: {bands}")
+        return bands
+    except Exception as e:
+        print(f"[odds] WARNING: could not load calibration: {e}")
+        return None
+
+
+def _get_calibrated_prob(stated_confidence: float, bands: dict[str, float]) -> float:
+    """
+    Map a stated confidence percentage to a calibrated probability using
+    the calibration bands from audit_summary.json.
+
+    Band mapping:
+      70-75%  → stated 70.0–75.99
+      76-80%  → stated 76.0–80.99
+      81-85%  → stated 81.0–85.99
+      86%+    → stated 86.0+
+
+    If bands are missing or the stated confidence doesn't fall in any band,
+    returns the stated confidence unchanged (conservative fallback).
+    """
+    if not bands:
+        return stated_confidence / 100.0
+
+    sc = float(stated_confidence)
+    if sc >= 86.0:
+        rate = bands.get("86%+")
+    elif sc >= 81.0:
+        rate = bands.get("81-85%")
+    elif sc >= 76.0:
+        rate = bands.get("76-80%")
+    elif sc >= 70.0:
+        rate = bands.get("70-75%")
+    else:
+        rate = None
+
+    if rate is not None:
+        return float(rate)
+    # Fallback: return stated confidence as decimal
+    return sc / 100.0
+
+
+def compute_edge(all_picks: list[dict]) -> int:
+    """
+    Compute calibration-corrected edge and bet recommendations for today's picks.
+    Reads calibration bands from audit_summary.json. For each today's pick that has
+    odds data (market_implied_prob), computes:
+      - calibrated_prob: actual expected hit rate from calibration data
+      - calibrated_edge_pct: calibrated_prob - market_implied_prob (in pp)
+      - kelly_quarter: quarter-Kelly fraction (% of bankroll)
+      - recommendation_tier: STRONG / POSITIVE / NEUTRAL / FADE / NO_MARKET
+
+    Writes a 'bet_recommendation' sub-object to each today's pick in the picks list.
+    Returns count of picks enriched.
+
+    Picks without market data get recommendation_tier = "NO_MARKET".
+    """
+    bands = _load_calibration_bands()
+
+    n_enriched = 0
+    for pick in all_picks:
+        if pick.get("date") != TODAY_STR:
+            continue
+        if pick.get("voided", False):
+            continue
+
+        confidence = pick.get("confidence_pct")
+        if confidence is None:
+            continue
+
+        market_implied = pick.get("market_implied_prob")
+
+        # No market data — mark as NO_MARKET
+        if market_implied is None:
+            pick["bet_recommendation"] = {
+                "calibrated_prob":     None,
+                "calibration_band":    None,
+                "calibrated_edge_pct": None,
+                "market_implied_prob": None,
+                "kelly_quarter":       None,
+                "recommendation_tier": "NO_MARKET",
+            }
+            n_enriched += 1
+            continue
+
+        # Compute calibrated probability
+        cal_prob = _get_calibrated_prob(confidence, bands)
+        cal_prob_pct = round(cal_prob * 100, 1)
+        market_pct = float(market_implied)
+
+        # Calibrated edge in percentage points
+        edge_pct = round(cal_prob_pct - market_pct, 2)
+
+        # Determine calibration band label for reference
+        sc = float(confidence)
+        if sc >= 86.0:
+            band_label = "86%+"
+        elif sc >= 81.0:
+            band_label = "81-85%"
+        elif sc >= 76.0:
+            band_label = "76-80%"
+        else:
+            band_label = "70-75%"
+
+        # Quarter-Kelly calculation
+        kelly_quarter = 0.0
+        if edge_pct > 0 and market_pct > 0 and market_pct < 100:
+            # Decimal odds from implied probability
+            odds_decimal = 100.0 / market_pct
+            # Full Kelly: edge / (odds - 1)
+            edge_decimal = edge_pct / 100.0
+            kelly_full = edge_decimal / (odds_decimal - 1.0) if odds_decimal > 1.0 else 0.0
+            kelly_quarter = round(max(0.0, kelly_full / 4.0), 4)
+
+        # Recommendation tier
+        if edge_pct > 8.0:
+            tier = "STRONG"
+        elif edge_pct > 3.0:
+            tier = "POSITIVE"
+        elif edge_pct >= -3.0:
+            tier = "NEUTRAL"
+        else:
+            tier = "FADE"
+
+        pick["bet_recommendation"] = {
+            "calibrated_prob":     cal_prob_pct,
+            "calibration_band":    band_label,
+            "calibrated_edge_pct": edge_pct,
+            "market_implied_prob": market_pct,
+            "kelly_quarter":       kelly_quarter,
+            "recommendation_tier": tier,
+        }
+        n_enriched += 1
+
+        print(
+            f"[odds] EDGE: {pick.get('player_name')} {pick.get('prop_type')} T{pick.get('pick_value')} — "
+            f"stated {confidence}% → cal {cal_prob_pct}% vs market {market_pct}% → "
+            f"edge {edge_pct:+.1f}pp → {tier}"
+            f"{f' (¼K={kelly_quarter:.1%})' if kelly_quarter > 0 else ''}"
+        )
+
+    return n_enriched
 
 
 def prefetch_all_markets() -> None:
@@ -571,20 +740,25 @@ def main() -> None:
         _write_odds_cache(odds_cache)
         sys.exit(0)
 
-    # 6. Write picks.json atomically
+    # 6. Compute calibration-corrected edge and bet recommendations
+    n_edge = compute_edge(all_picks)
+    if n_edge:
+        print(f"[odds] Edge computed for {n_edge} picks")
+
+    # 7. Write picks.json atomically (includes both odds annotations and edge data)
     tmp = PICKS_JSON.with_suffix(".json.tmp")
     try:
         with open(tmp, "w") as f:
             json.dump(all_picks, f, indent=2)
         os.replace(tmp, PICKS_JSON)
-        print(f"[odds] picks.json updated ({n_matched} picks annotated)")
+        print(f"[odds] picks.json updated ({n_matched} picks annotated, {n_edge} edge-enriched)")
     except Exception as e:
         print(f"[odds] ERROR writing picks.json: {e} — original preserved")
         if tmp.exists():
             tmp.unlink()
         sys.exit(0)
 
-    # 7. Write odds cache
+    # 8. Write odds cache
     _write_odds_cache(odds_cache)
 
 
