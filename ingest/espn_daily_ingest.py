@@ -555,14 +555,24 @@ def fetch_standings() -> None:
 
         teams: List[Dict[str, Any]] = []
         entries = conf_entry.get("standings", {}).get("entries", [])
-        for rank, entry in enumerate(entries, start=1):
+        for entry in entries:
             abbrev = entry.get("team", {}).get("abbreviation", "UNK")
             abbrev = to_roto_code(abbrev)
             stats_map = {s["name"]: s.get("value", 0) for s in entry.get("stats", []) if "name" in s}
             wins   = int(stats_map.get("wins", 0))
             losses = int(stats_map.get("losses", 0))
             gb     = float(stats_map.get("gamesBehind", 0.0))
-            teams.append({"rank": rank, "team": abbrev, "wins": wins, "losses": losses, "gb_leader": gb})
+            teams.append({"team": abbrev, "wins": wins, "losses": losses, "gb_leader": gb})
+
+        # Sort by win percentage descending, then wins descending as tiebreaker
+        teams.sort(key=lambda t: (
+            t["wins"] / max(t["wins"] + t["losses"], 1),  # win pct (avoid div-by-zero)
+            t["wins"],                                      # total wins tiebreaker
+        ), reverse=True)
+
+        # Assign rank from sorted position
+        for i, t in enumerate(teams, start=1):
+            t["rank"] = i
 
         result[conf_key] = teams
 
