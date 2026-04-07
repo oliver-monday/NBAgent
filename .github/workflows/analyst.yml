@@ -66,7 +66,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          FILES="data/picks.json data/parlays.json data/player_stats.json data/lineups_today.json data/skipped_picks.json data/standings_today.json data/opportunity_flags.json data/pre_game_news.json data/team_defense_narratives.json"
+          FILES="data/picks.json data/parlays.json data/player_stats.json data/lineups_today.json data/skipped_picks.json data/standings_today.json data/opportunity_flags.json data/pre_game_news.json data/team_defense_narratives.json data/injuries_today.json"
           for f in $FILES; do
             [ -f "$f" ] && cp "$f" "$f.local"
           done
