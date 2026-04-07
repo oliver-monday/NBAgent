@@ -10,9 +10,6 @@ ingest.yml (8 AM ET)
   └─ espn_player_ingest.py   → player_game_log.csv, player_dim.csv, team_game_log.csv
   └─ quant.py                → player_stats.json, team_defense_narratives.json
 
-pre_game_reporter.yml (chains off ingest, before analyst)
-  └─ pre_game_reporter.py    → pre_game_news.json, context/context_flags.md
-
 auditor.yml (chains off ingest)
   └─ auditor.py              → audit_log.json, updates picks.json + parlays.json
 
@@ -111,7 +108,7 @@ TPM_TIERS = [1, 2, 3, 4]
 
 ## espn_daily_ingest.py — Game + Standings Ingest
 
-Fetches today's game slate (`nba_master.csv`) and, via `fetch_standings()`, live NBA standings. Standings are written to `data/standings_today.json` with per-team bucket assignments (`safe / contending / playin / bubble / eliminated`). See DATA.md for full schema.
+Fetches today's game slate (`nba_master.csv`) and, via `fetch_standings()`, live NBA standings. Standings are written to `data/standings_today.json` with per-team bucket assignments (`safe / contending / playin / bubble / eliminated`). Teams are sorted by win percentage descending (with total wins tiebreaker) before rank assignment — ESPN API returns entries in division-grouped order, not by record. See DATA.md for full schema.
 
 ---
 
@@ -407,6 +404,10 @@ pick fields intact.
 - No starter-level changes detected vs. morning snapshot
 - All affected picks are past the tip-off cutoff (CUTOFF_MINUTES = 20)
 - No open, non-voided today picks match the changed teams
+
+**Amendment gates (deterministic, in `apply_amendments()`):**
+- **Gate 1 — Sub-70% auto-void:** `direction=="down"` + `revised_confidence_pct < 70` → pick immediately voided; `lineup_update` sub-object preserved for audit trail
+- **Gate 2 — B2B <5g upside block:** `direction=="up"` + `player_stats[player].b2b_hit_rates[prop]` is null + `on_back_to_back` → override to `direction="unchanged"`, original confidence preserved
 
 **Change types detected:**
 - `new_absence` — player was in morning starters, now OUT/DOUBTFUL in injury report

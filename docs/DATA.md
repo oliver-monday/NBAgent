@@ -181,7 +181,7 @@ Quant output. One entry per whitelisted player playing today.
 ```
 
 ### standings_today.json
-Written daily by `espn_daily_ingest.py`. Source: ESPN standings endpoint.
+Written daily by `espn_daily_ingest.py`. Source: ESPN standings endpoint. Teams are sorted by win percentage descending (total wins tiebreaker) before rank assignment — ESPN API returns entries in division-grouped order, not by record.
 ```json
 {
   "as_of": "YYYY-MM-DD",
@@ -268,7 +268,12 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
   "game_time": "7:30 PM PT",
   "human_verdict": "keep|trim|manual_skip|null",  // tagged by auditor from picks_review file; null when not reviewed
   "trim_reasons":  ["string"] | [],               // reasons from review file; [] when not reviewed
-  "is_skip": false                                 // true when Analyst concluded skip; filtered by filter_self_skip_picks() before publication; defaults to false in save_picks() when field absent
+  "is_skip": false,                                // true when Analyst concluded skip; filtered by filter_self_skip_picks() before publication; defaults to false in save_picks() when field absent
+  "market_line": number|null,                       // FanDuel alternate market line (e.g. 24.5 for T25); null when no match; set by odds_today.py
+  "market_implied_prob": number|null,               // implied probability from market odds; null when no match
+  "market_book": "string|null",                     // bookmaker name (e.g. "fanduel"); null when no match
+  "edge_pct": number|null,                          // system confidence − market implied prob (positive = system sees edge); null when no match
+  "odds_fetched_at": "ISO timestamp|null"           // when odds were fetched; null when no match
 }]
 ```
 
@@ -324,6 +329,28 @@ Written/appended by `lineup_update.py` hourly when qualifying player absences ar
 ```
 
 `qualifying_tiers`: props ≥70% hit rate where player has no morning pick. `upgrade_tiers`: props where quant best tier > morning pick tier. Both optional; player card not emitted when both empty. `without_player_*` fields optional (teammate side only, ≥3 historical without-player games required). Has no grading integration — opportunity card accuracy not tracked by auditor.
+
+### odds_today.json
+Diagnostic cache written by `ingest/odds_today.py`. Overwritten each run (not cumulative). Contains raw FanDuel alternate market lines fetched from The Odds API. Used for debugging odds matching; not consumed by any agent.
+```json
+{
+  "fetched_at": "ISO timestamp",
+  "games": [
+    {
+      "home_team": "string",
+      "away_team": "string",
+      "markets": {
+        "player_points_alternate": [...],
+        "player_rebounds_alternate": [...],
+        "player_assists_alternate": [...],
+        "player_threes_alternate": [...]
+      }
+    }
+  ],
+  "matched_picks": number,
+  "total_picks": number
+}
+```
 
 ### parlays.json
 List of daily bundles. Each bundle contains the day's parlays.

@@ -39,7 +39,7 @@
 
 ### P1 — Playoffs Mode-Shift Preparation
 Status: ACTIVE — regular season ends April 12, playoffs begin ~April 19
-Priority: HIGH — time-sensitive, ~12 days of regular season remaining
+Priority: HIGH — time-sensitive, ~5 days of regular season remaining
 Playoff basketball has structurally different properties than the regular season sample the system was built and tuned on. The established rules will transfer; the calibrated signal strengths may not. Preparation before the first-round tip-off reduces the risk of a rough opening week.
 Known transfer risks:
 
@@ -118,7 +118,7 @@ Cooper Flagg's March 10 miss (14 actual vs 15 pick, FG_COLD:-18%, missed by 1) r
 #### W6 — 3PM VOLATILE × iron_floor merit_below_floor false skip rate
 **Status: WATCH — accumulate merit_below_floor skip data through end of season + playoffs**
 
-The 75% 3PM confidence floor combined with VOLATILE -5% penalty routinely pushes VOLATILE-tagged 3PM picks with iron_floor below the selection threshold. Prior to the merit_below_floor rename (2026-03-25), these were mislabeled as 3pm_blowout_trend_down. Hypothesis: iron_floor protection on VOLATILE 3PM picks makes the -5% penalty overly conservative — the floor itself prevents catastrophic misses, so the confidence discount may be double-counting the risk. Population is thin in-season (~10–15 picks expected by season end); full analysis deferred to offseason pending Odds API integration (T1 3PM R/R at market odds is the key missing input before any floor adjustment is warranted). Do not act until offseason. Accumulate correctly-labeled skip records through playoffs.
+The 75% 3PM confidence floor combined with VOLATILE -5% penalty routinely pushes VOLATILE-tagged 3PM picks with iron_floor below the selection threshold. Prior to the merit_below_floor rename (2026-03-25), these were mislabeled as 3pm_blowout_trend_down. Hypothesis: iron_floor protection on VOLATILE 3PM picks makes the -5% penalty overly conservative — the floor itself prevents catastrophic misses, so the confidence discount may be double-counting the risk. Population is thin in-season (~10–15 picks expected by season end); full analysis deferred to offseason. Odds API Phase 1 is live since March 31 (`ingest/odds_today.py`) — market odds data is now accumulating on picks, which will feed the offseason T1 3PM R/R analysis. Do not act until offseason. Accumulate correctly-labeled skip records through playoffs.
 
 ### Pending Backtests
 
@@ -139,8 +139,8 @@ Three suppressors confirmed: **HOU** (65.2%, n=23, −20.1pp), **PHX** (75.0%, n
 ---
 
 ### H16 — 3PA Volume Gate
-**Status: IMPLEMENTED — verdict pending. Re-run at ~150+ 3PM picks (~April 1–3).**
-**Mode: `--mode 3pa-volume-gate`** | Currently 99/150 graded 3PM picks (as of Mar 22). Full results in `docs/BACKTESTS.md`.
+**Status: IMPLEMENTED — verdict pending. Re-run window (~April 1–3) has passed; check current 3PM pick count and run if ≥150.**
+**Mode: `--mode 3pa-volume-gate`** | Was 99/150 graded 3PM picks as of Mar 22. Full results in `docs/BACKTESTS.md`.
 
 ---
 
