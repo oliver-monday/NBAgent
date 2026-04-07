@@ -305,6 +305,7 @@ CORR_BONUS = {
 3. Positive correlation tags
 4. Game spread — multi-game more robust than same-game stacks
 5. Variety across 3–5 selections (mix of leg counts)
+6. Edge quality — prefer STRONG/POSITIVE `edge_tier` legs (calibrated system confidence exceeds FanDuel market); avoid FADE legs; max 1 FADE per parlay, requires all other legs POSITIVE/STRONG
 
 **Output schema (appended as bundle to `parlays.json`):**
 ```json

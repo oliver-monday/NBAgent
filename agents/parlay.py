@@ -450,6 +450,8 @@ def build_parlay_prompt(candidates: list[dict], audit_feedback: str = "") -> str
                 "hit_rate": l.get("hit_rate_display", ""),
                 "trend": l.get("trend", ""),
                 "opp_def": l.get("opp_defense_rating", ""),
+                "edge_tier": (l.get("bet_recommendation") or {}).get("recommendation_tier"),
+                "cal_edge": (l.get("bet_recommendation") or {}).get("calibrated_edge_pct"),
             }
             for l in c["legs"]
         ]
@@ -486,6 +488,7 @@ Each candidate has already passed:
 3. **Positive correlation**: "feeder_target" and "volume_game" tags mean legs tend to win together — prefer these.
 4. **Game spread**: multi-game parlays are more robust than same-game stacks (same-game stacks are fine if correlation is genuinely positive).
 5. **Variety**: across your 3–5 selections, aim for a mix of leg counts (some tight 2-leggers, some 3–4 leg plays, maybe one 5+ if all legs are elite).
+6. **Edge quality**: Each leg now includes `edge_tier` (STRONG / POSITIVE / NEUTRAL / FADE / NO_MARKET) and `cal_edge` (calibrated edge in percentage points vs FanDuel market). Prefer legs with STRONG or POSITIVE edge — these are props where our calibrated system confidence exceeds FanDuel's implied probability. Avoid FADE legs (market is more confident than our calibrated read) — a FADE leg in a parlay means you're paying above fair value for that outcome. If a combo includes a FADE leg, it must be the only weak link and every other leg must be POSITIVE or STRONG to compensate. Never include 2+ FADE legs in the same parlay.
 
 ## AVOID
 - Any single player appearing in more than 1 of today's parlays, regardless of prop type.
@@ -499,6 +502,7 @@ Each candidate has already passed:
 - Two parlays that share 3+ identical legs (provide variety)
 - Combos where the rationale would be "all soft matchups" with no deeper logic
 - Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
+- Parlays where more than one leg has edge_tier="FADE" — the compounding negative edge makes the parlay structurally unprofitable even if the individual legs have high stated confidence
 
 ## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS
 {audit_feedback if audit_feedback else "No prior parlay audit data available."}
