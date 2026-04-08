@@ -5,23 +5,17 @@ NBAgent — Post-Game Reporter
 WORKFLOW NOTE: This script must run BEFORE auditor.py in the auditor workflow.
 Add a step in auditor.yml to run this script immediately before the auditor.py step.
 
-Scrapes ESPN player news for any player from yesterday's picks who logged
-suspiciously low minutes or zero-stat lines. Detects post-game facts the
-Auditor cannot infer from box scores alone:
-  - In-game injury exits
-  - DNP confirmations
-  - Severe minutes restrictions (load management / coach decision)
+Fetches ESPN recap pages, ESPN athlete news, and Rotowire news for players
+from yesterday's picks. Uses a single Claude API call to classify post-game
+events and generate narratives for missed picks.
 
-Only fetches news for players meeting one or more criteria:
-  1. Zero minutes logged (dnp flag or 0 minutes)
-  2. Minutes < 15 (potential injury exit or restriction)
-  3. Any stat category = 0 AND minutes < 20
-
-Players with normal minutes (>= 20) and non-zero stats across categories
-are skipped entirely — no fetch, no entry in output.
+Event types:
+  - injury_exit:        Mid-game injury departure
+  - dnp:                Did not play (pre-game decision)
+  - minutes_restriction: Played but on limited minutes
+  - no_data:            Insufficient information to classify
 
 Writes data/post_game_news.json. Consumed by auditor.py before reasoning.
-Pure Python — no Claude API call.
 """
 
 from __future__ import annotations
@@ -37,6 +31,7 @@ import os
 
 import anthropic
 import requests
+from bs4 import BeautifulSoup
 
 # ── Paths ─────────────────────────────────────────────────────────────
 ROOT            = Path(__file__).resolve().parent.parent
@@ -46,6 +41,7 @@ PICKS_JSON      = DATA / "picks.json"
 GAME_LOG_CSV    = DATA / "player_game_log.csv"
 PLAYER_DIM_CSV  = DATA / "player_dim.csv"
 POST_GAME_JSON  = DATA / "post_game_news.json"
+MASTER_CSV      = DATA / "nba_master.csv"
 
 # ── Time ──────────────────────────────────────────────────────────────
 ET            = ZoneInfo("America/Los_Angeles")
@@ -58,30 +54,26 @@ ESPN_NEWS_URL    = (
     "https://site.api.espn.com/apis/common/v3/sports/basketball/nba"
     "/athletes/{athlete_id}/news"
 )
+ESPN_RECAP_URL   = "https://www.espn.com/nba/recap/_/gameId/{game_id}"
+ROTOWIRE_NEWS_URL  = "https://www.rotowire.com/basketball/news.php"
+ROTOWIRE_LOGIN_URL = "https://www.rotowire.com/users/login.php"
+
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+)
+
 REQUEST_TIMEOUT       = 10   # seconds per HTTP call
+
+# Claude config
+CLAUDE_MODEL      = "claude-sonnet-4-6"
+CLAUDE_MAX_TOKENS = 2048
+RECAP_MAX_CHARS   = 3000
 
 # Flagging thresholds
 MINUTES_DNP_THRESHOLD    = 0    # zero minutes → DNP candidate
 MINUTES_LOW_THRESHOLD    = 15   # < 15 min → potential injury exit or restriction
 MINUTES_STAT_THRESHOLD   = 20   # < 20 min AND any zero stat → investigate
-
-# Web narrative config
-WEB_SEARCH_MODEL  = "claude-sonnet-4-6"
-WEB_SEARCH_TOKENS = 2048
-BRAVE_SEARCH_URL  = "https://api.search.brave.com/res/v1/web/search"
-
-# Injury language scan terms — broader than _INJURY_EXIT_TERMS, for detection only
-INJURY_SCAN_TERMS = [
-    "injur", "injured", "injury",          # covers 'injury', 'injured', 'injuries'
-    "left the game", "left early",
-    "did not return", "did not finish",
-    "exited", "forced out", "helped off",
-    "knee", "ankle", "hamstring", "calf", "shoulder", "wrist", "hand",
-    "groin", "back", "hip", "foot", "achilles",
-    "sprain", "strain", "soreness", "tightness",
-    "bruised", "bruise", "contusion",
-    "concussion", "head",
-]
 
 
 # ── Data loaders ──────────────────────────────────────────────────────
@@ -310,25 +302,6 @@ def should_fetch(game_row: dict | None, is_missed_pick: bool = False) -> tuple[b
     return False, "normal"
 
 
-# ── Injury language scanner ───────────────────────────────────────────
-
-def news_contains_injury_language(news_items: list[dict]) -> tuple[bool, str]:
-    """
-    Scan all news items for injury-related language.
-    Returns (found: bool, matched_term: str).
-    Checks headline + description of each item.
-    First match wins.
-    """
-    for item in news_items:
-        headline    = (item.get("headline") or "").lower()
-        description = (item.get("description") or "").lower()
-        text        = headline + " " + description
-        for term in INJURY_SCAN_TERMS:
-            if term in text:
-                return True, term
-    return False, ""
-
-
 # ── ESPN news fetch ───────────────────────────────────────────────────
 
 def fetch_espn_news(athlete_id: str) -> tuple[list[dict], bool]:
@@ -347,159 +320,269 @@ def fetch_espn_news(athlete_id: str) -> tuple[list[dict], bool]:
         return [], False
 
 
-# ── Web narrative fetch + summarisation ───────────────────────────────
+# ── ESPN recap fetch ─────────────────────────────────────────────────
 
-def fetch_web_narratives(missed_players: list[dict]) -> dict[str, str]:
+def load_yesterdays_game_ids(player_teams: set[str]) -> dict[str, str]:
     """
-    For each missed-pick player, run two Brave web searches and combine results:
-      1. "{name} {team} NBA recap {date}" — game recap (existing query)
-      2. "{name} injury" — injury-specific query to catch mid-game exits
-
-    Returns {player_name_lower: raw_snippet_text} with combined snippets from
-    both queries. Deduplicates snippets by title to avoid repeat content.
-
-    missed_players is a list of dicts: [{"name": str, "team": str, "prop": str,
-    "pick_value": str, "actual": str, "minutes": float|None}]
-
-    Returns empty dict if BRAVE_API_KEY is not set or all searches fail.
-    Never crashes — logs warnings and returns partial results on error.
+    Read nba_master.csv and return {game_id: "HOME vs AWAY"} for yesterday's
+    games that involve at least one team from player_teams.
     """
-    api_key = os.environ.get("BRAVE_API_KEY")
-    if not api_key:
-        print("[post_game_reporter] BRAVE_API_KEY not set — skipping web narrative fetch.")
-        return {}
+    _ABBR_NORM = {
+        "GS": "GSW", "SA": "SAS", "NY": "NYK", "NO": "NOP",
+        "UTAH": "UTA", "WSH": "WAS",
+    }
+    games: dict[str, str] = {}
+    if not MASTER_CSV.exists():
+        print("[post_game_reporter] nba_master.csv not found — no recap game IDs.")
+        return games
+    try:
+        with open(MASTER_CSV, newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row.get("game_date", "") != YESTERDAY_STR:
+                    continue
+                gid = (row.get("game_id") or "").strip()
+                home = _ABBR_NORM.get(
+                    (row.get("home_team_abbrev") or "").strip().upper(),
+                    (row.get("home_team_abbrev") or "").strip().upper(),
+                )
+                away = _ABBR_NORM.get(
+                    (row.get("away_team_abbrev") or "").strip().upper(),
+                    (row.get("away_team_abbrev") or "").strip().upper(),
+                )
+                if not gid:
+                    continue
+                if home in player_teams or away in player_teams:
+                    games[gid] = f"{away} @ {home}"
+        print(f"[post_game_reporter] Found {len(games)} yesterday games for recap fetch")
+    except Exception as e:
+        print(f"[post_game_reporter] WARNING: could not load nba_master.csv for game IDs: {e}")
+    return games
 
-    results: dict[str, str] = {}
-    date_str = YESTERDAY.strftime("%B %-d, %Y")   # e.g. "March 10, 2026"
 
-    def _brave_query(query: str) -> list[str]:
-        """Run a single Brave query and return a list of 'title: description' snippet strings."""
+def fetch_espn_recaps(game_ids: dict[str, str]) -> dict[str, str]:
+    """
+    Fetch ESPN recap pages for each game_id.
+    Returns {game_id: recap_text} — truncated to RECAP_MAX_CHARS.
+    Gracefully skips games where the recap is unavailable.
+    """
+    recaps: dict[str, str] = {}
+    for gid, matchup in game_ids.items():
+        url = ESPN_RECAP_URL.format(game_id=gid)
         try:
             resp = requests.get(
-                BRAVE_SEARCH_URL,
-                headers={
-                    "Accept":               "application/json",
-                    "Accept-Encoding":      "gzip",
-                    "X-Subscription-Token": api_key,
-                },
-                params={"q": query, "count": 3, "search_lang": "en"},
+                url,
+                headers={"User-Agent": USER_AGENT},
                 timeout=REQUEST_TIMEOUT,
             )
-            resp.raise_for_status()
-            data = resp.json()
-            snippets = []
-            for result in data.get("web", {}).get("results", []):
-                title       = result.get("title", "")
-                description = result.get("description", "")
-                if title or description:
-                    snippets.append(f"{title}: {description}")
-            return snippets
+            if resp.status_code != 200:
+                print(f"[post_game_reporter] recap {gid} ({matchup}): HTTP {resp.status_code}")
+                continue
+            soup = BeautifulSoup(resp.text, "html.parser")
+            # ESPN recaps use <div class="Story__Body"> or article body paragraphs
+            story = soup.find("div", class_="Story__Body")
+            if story:
+                text = story.get_text(separator=" ", strip=True)
+            else:
+                # Fallback: collect all <p> inside the main article area
+                article = soup.find("article") or soup
+                paragraphs = article.find_all("p")
+                text = " ".join(p.get_text(strip=True) for p in paragraphs)
+            if text:
+                recaps[gid] = text[:RECAP_MAX_CHARS]
+                print(f"[post_game_reporter] recap OK: {matchup} ({len(text)} chars)")
+            else:
+                print(f"[post_game_reporter] recap {gid} ({matchup}): no text found")
         except Exception as e:
-            print(f"[post_game_reporter] WARNING: Brave query failed ({query!r}): {e}")
-            return []
-
-    for player in missed_players:
-        name = player["name"]
-        team = player.get("team", "")
-
-        # Query 1: game recap
-        recap_query    = f"{name} {team} NBA recap {date_str}"
-        recap_snippets = _brave_query(recap_query)
-
-        # Query 2: injury-specific (catches mid-game exits not in recap results)
-        injury_query    = f"{name} injury"
-        injury_snippets = _brave_query(injury_query)
-
-        # Combine, deduplicating by title prefix (first ~40 chars)
-        seen_titles: set[str] = set()
-        combined: list[str]   = []
-        for snippet in recap_snippets + injury_snippets:
-            title_key = snippet[:40].lower()
-            if title_key not in seen_titles:
-                seen_titles.add(title_key)
-                combined.append(snippet)
-
-        if combined:
-            results[name.lower()] = "\n".join(combined)
-            print(
-                f"[post_game_reporter] web search OK: {name} "
-                f"({len(recap_snippets)} recap + {len(injury_snippets)} injury snippets, "
-                f"{len(combined)} unique)"
-            )
-        else:
-            print(f"[post_game_reporter] web search: no snippets for {name}")
-
-    return results
+            print(f"[post_game_reporter] recap {gid} ({matchup}) failed: {e}")
+    return recaps
 
 
-def call_claude_summarise_narratives(
-    missed_players: list[dict],
-    raw_snippets:   dict[str, str],
-) -> dict[str, str]:
+# ── Rotowire news fetch ─────────────────────────────────────────────
+
+def login_rotowire() -> requests.Session | None:
     """
-    Single Claude call: given web search snippets for all missed-pick players,
-    extract a concise factual narrative per player explaining why they missed
-    their prop (ejection, foul trouble, early exit, game script, etc.).
+    Authenticate with Rotowire. Returns an authenticated Session or None.
+    Same pattern as ingest/rotowire_injuries_only.py.
+    """
+    email = os.environ.get("ROTOWIRE_EMAIL", "")
+    password = os.environ.get("ROTOWIRE_PASSWORD", "")
+    if not email or not password:
+        print("[post_game_reporter] ROTOWIRE_EMAIL / ROTOWIRE_PASSWORD not set — skipping Rotowire news")
+        return None
+    session = requests.Session()
+    try:
+        resp = session.post(
+            ROTOWIRE_LOGIN_URL,
+            data={"email": email, "password": password},
+            headers={"User-Agent": USER_AGENT},
+            timeout=REQUEST_TIMEOUT,
+        )
+        if resp.status_code == 200:
+            print("[post_game_reporter] Rotowire login OK")
+            return session
+        else:
+            print(f"[post_game_reporter] Rotowire login failed: HTTP {resp.status_code}")
+            return None
+    except Exception as e:
+        print(f"[post_game_reporter] Rotowire login error: {e}")
+        return None
 
-    missed_players: same list of dicts as passed to fetch_web_narratives().
-    raw_snippets: {player_name_lower: snippet_text} from fetch_web_narratives().
 
-    Returns {player_name_lower: narrative_string} for players where a
-    meaningful narrative was found. Returns {} on any API failure.
-    Never crashes.
+def fetch_rotowire_news(
+    session: requests.Session,
+    player_names: set[str],
+) -> dict[str, list[str]]:
+    """
+    Fetch Rotowire news.php and extract news blurbs for relevant players.
+    Returns {player_name_lower: [blurb1, blurb2, ...]}.
+    """
+    result: dict[str, list[str]] = {}
+    try:
+        resp = session.get(
+            ROTOWIRE_NEWS_URL,
+            headers={"User-Agent": USER_AGENT},
+            timeout=REQUEST_TIMEOUT,
+        )
+        if resp.status_code != 200:
+            print(f"[post_game_reporter] Rotowire news.php: HTTP {resp.status_code}")
+            return result
+        soup = BeautifulSoup(resp.text, "html.parser")
+        # Rotowire news items are typically in divs with news-update class or similar
+        # Look for player name links and their associated text
+        news_items = soup.find_all("div", class_=re.compile(r"news-update|news_item|news-item"))
+        if not news_items:
+            # Broader fallback: look for any structured news blocks
+            news_items = soup.find_all("div", class_=re.compile(r"news"))
+        for item in news_items:
+            # Try to find player name in the item
+            text = item.get_text(separator=" ", strip=True)
+            if not text:
+                continue
+            text_lower = text.lower()
+            for pname in player_names:
+                # Match on last name (more robust against abbreviated first names)
+                last_name = pname.split()[-1] if pname.split() else pname
+                if last_name in text_lower:
+                    if pname not in result:
+                        result[pname] = []
+                    # Truncate individual blurbs
+                    result[pname].append(text[:500])
+        total_blurbs = sum(len(v) for v in result.values())
+        print(f"[post_game_reporter] Rotowire news: {len(result)} players, {total_blurbs} blurbs")
+    except Exception as e:
+        print(f"[post_game_reporter] Rotowire news fetch error: {e}")
+    return result
+
+
+# ── Claude classification ────────────────────────────────────────────
+
+def call_claude_classify_events(players_context: list[dict]) -> dict[str, dict]:
+    """
+    Single Claude API call to classify post-game events AND generate narratives.
+
+    players_context: list of dicts, each with:
+        name, team, minutes, is_missed_pick, injury_status,
+        espn_news_headlines, recap_text, rotowire_blurbs,
+        pick_meta (optional: prop_type, pick_value, actual_value)
+
+    Returns {player_name_lower: {event_type, detail, confidence, web_narrative}}.
+    Returns {} on failure (graceful degradation).
     """
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
-        print("[post_game_reporter] ANTHROPIC_API_KEY not set — skipping narrative summarisation.")
+        print("[post_game_reporter] ANTHROPIC_API_KEY not set — skipping Claude classification.")
         return {}
 
-    # Only include players where we have snippets
-    players_with_snippets = [
-        p for p in missed_players if p["name"].lower() in raw_snippets
-    ]
-    if not players_with_snippets:
-        print("[post_game_reporter] No web snippets to summarise.")
+    if not players_context:
         return {}
 
-    # Build the user prompt
+    # Build per-player context blocks
     player_blocks = []
-    for p in players_with_snippets:
-        name    = p["name"]
-        prop    = p.get("prop", "")
-        pick_v  = p.get("pick_value", "")
-        actual  = p.get("actual", "")
-        mins    = p.get("minutes")
-        mins_str = f"{mins:.0f}" if mins is not None else "unknown"
-        snippets = raw_snippets[name.lower()]
-        player_blocks.append(
-            f"PLAYER: {name}\n"
-            f"MISSED PICK: {prop} OVER {pick_v} (actual: {actual}, minutes: {mins_str})\n"
-            f"WEB SEARCH SNIPPETS:\n{snippets}"
-        )
+    for ctx in players_context:
+        name = ctx["name"]
+        team = ctx.get("team", "")
+        minutes = ctx.get("minutes")
+        mins_str = f"{minutes:.0f}" if minutes is not None else "unknown"
+        injury_status = ctx.get("injury_status", "NOT_LISTED")
+        is_missed = ctx.get("is_missed_pick", False)
+
+        block = f"PLAYER: {name} ({team})\n"
+        block += f"Minutes played: {mins_str}\n"
+        block += f"Pre-game injury status: {injury_status}\n"
+
+        if is_missed:
+            meta = ctx.get("pick_meta", {})
+            if meta:
+                block += (
+                    f"MISSED PICK: {meta.get('prop_type', '')} OVER "
+                    f"{meta.get('pick_value', '')} "
+                    f"(actual: {meta.get('actual_value', '')})\n"
+                )
+
+        # ESPN athlete news
+        headlines = ctx.get("espn_news_headlines", [])
+        if headlines:
+            block += "ESPN ATHLETE NEWS:\n"
+            for h in headlines[:5]:
+                block += f"  - {h}\n"
+
+        # ESPN recap
+        recap = ctx.get("recap_text", "")
+        if recap:
+            block += f"ESPN GAME RECAP EXCERPT:\n  {recap}\n"
+
+        # Rotowire
+        blurbs = ctx.get("rotowire_blurbs", [])
+        if blurbs:
+            block += "ROTOWIRE NEWS:\n"
+            for b in blurbs[:3]:
+                block += f"  - {b}\n"
+
+        # Flag if no sources available
+        if not headlines and not recap and not blurbs:
+            block += "NO EXTERNAL SOURCES AVAILABLE — classify from box score only.\n"
+
+        player_blocks.append(block)
 
     user_prompt = (
-        f"Today is {YESTERDAY_STR}. The following NBA players missed their prop picks last night.\n"
-        f"For each player, use the web search snippets to extract a factual one-to-two sentence\n"
-        f"explanation of WHY they missed — e.g. ejection, foul trouble, early injury exit,\n"
-        f"coaching decision, blowout garbage time, cold shooting, etc.\n\n"
-        f"Be factual and specific. If the snippets do not explain the miss clearly, write null.\n"
-        f"Do not speculate beyond what the snippets confirm.\n\n"
-        f"Respond ONLY with a JSON object — no preamble, no markdown fences:\n"
-        f'{{"players": [{{"name": "player name", "narrative": "one-to-two sentence explanation or null"}}]}}\n\n'
-        + "\n\n---\n\n".join(player_blocks)
+        f"Date: {YESTERDAY_STR}\n\n"
+        f"For each player below, classify the post-game event and provide a brief narrative.\n\n"
+        f"EVENT TYPES (choose exactly one per player):\n"
+        f"  injury_exit — Player left the game due to injury before normal completion\n"
+        f"  dnp — Player did not play at all (injury scratch, coach decision, rest)\n"
+        f"  minutes_restriction — Player played but on clearly limited minutes\n"
+        f"  no_data — Insufficient information to classify; normal game or no flag\n\n"
+        f"CONFIDENCE (choose one):\n"
+        f"  confirmed — Source explicitly states the event (injury report, quote, recap text)\n"
+        f"  inferred — Classification inferred from box score + context, no explicit source\n\n"
+        f"For MISSED PICK players: also provide a factual 1-2 sentence 'narrative' explaining\n"
+        f"why they missed their prop (injury exit, foul trouble, blowout, cold shooting, etc.).\n"
+        f"If sources don't explain the miss, set narrative to null.\n\n"
+        f"For non-missed players with normal minutes and no flags: classify as no_data\n"
+        f"with null narrative. Do not speculate.\n\n"
+        f"Respond ONLY with valid JSON — no preamble, no markdown fences:\n"
+        f'{{"players": [\n'
+        f'  {{"name": "Player Name", "event_type": "...", "detail": "short description", '
+        f'"confidence": "confirmed|inferred", "narrative": "string or null"}}\n'
+        f"]}}\n\n"
+        + "\n---\n\n".join(player_blocks)
     )
 
     system_prompt = (
-        "You are a factual sports reporter extracting game narrative from web search snippets. "
-        "Return only valid JSON. If snippets are insufficient to explain a miss factually, "
-        "return null for that player's narrative. Never invent facts not in the snippets."
+        "You are a factual sports reporter classifying NBA post-game events. "
+        "Use the provided sources (ESPN recaps, ESPN athlete news, Rotowire news) "
+        "to determine what happened to each player. Prioritize explicit source evidence "
+        "over inference. If a source says a player 'left with' or 'exited' or 'won't return' "
+        "or 'did not return' or any variation indicating a mid-game departure, classify as "
+        "injury_exit with confidence=confirmed. Return only valid JSON."
     )
 
     try:
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
-            model=WEB_SEARCH_MODEL,
-            max_tokens=WEB_SEARCH_TOKENS,
+            model=CLAUDE_MODEL,
+            max_tokens=CLAUDE_MAX_TOKENS,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],
         )
@@ -509,112 +592,23 @@ def call_claude_summarise_narratives(
             raw = re.sub(r"^```[a-z]*\n?", "", raw)
             raw = re.sub(r"\n?```$", "", raw)
         data = json.loads(raw)
-        narratives: dict[str, str] = {}
+
+        results: dict[str, dict] = {}
         for entry in data.get("players", []):
-            name_key  = (entry.get("name") or "").strip().lower()
-            narrative = entry.get("narrative")
-            if name_key and narrative:
-                narratives[name_key] = narrative
-        print(f"[post_game_reporter] Claude narratives: {len(narratives)} player(s) summarised")
-        return narratives
+            name_key = (entry.get("name") or "").strip().lower()
+            if not name_key:
+                continue
+            results[name_key] = {
+                "event_type":  entry.get("event_type", "no_data"),
+                "detail":      entry.get("detail", ""),
+                "confidence":  entry.get("confidence", "inferred"),
+                "web_narrative": entry.get("narrative"),
+            }
+        print(f"[post_game_reporter] Claude classified {len(results)} player(s)")
+        return results
     except Exception as e:
-        print(f"[post_game_reporter] WARNING: Claude narrative summarisation failed: {e}")
+        print(f"[post_game_reporter] WARNING: Claude classification failed: {e}")
         return {}
-
-
-# ── Classification ────────────────────────────────────────────────────
-
-_INJURY_EXIT_TERMS = [
-    "left the game", "left early", "did not return", "exited", "left in",
-    "injured during", "forced from", "helped off", "came off injured",
-    "left with", "suffered", "sustained",
-    # Additional terms for mid-game exit patterns not covered by above
-    "ruled out for the remainder", "ruled out for remainder",
-    "did not finish", "did not complete",
-    "spasms", "spasm",
-    "hard fall", "took a fall", "fell hard",
-    "carted off", "stretchered",
-    "could not return", "unable to return",
-]
-_DNP_TERMS = [
-    "did not play", "dnp", "inactive", "sat out", "scratched",
-    "ruled out", "held out", "out due",
-]
-_RESTRICTION_TERMS = [
-    "load management", "minutes restriction", "limited to", "held to",
-    "limited minutes", " resting", "rest day", "precautionary",
-]
-
-
-def _extract_url(item: dict) -> str | None:
-    links = item.get("links", {})
-    if isinstance(links, dict):
-        return links.get("web", {}).get("href")
-    return None
-
-
-def classify_from_news(
-    news_items: list[dict],
-    minutes: float | None,
-    game_row: dict | None,
-    injury_status: str = "NOT_LISTED",
-) -> tuple[str, str, str | None, bool]:
-    """
-    Returns (event_type, detail, source_url, from_news).
-    from_news=True means the classification came from explicit ESPN text.
-    from_news=False means it was inferred from box score data.
-
-    Scans news items in order — first match wins.
-    Falls back to box score inference if no news match found.
-    """
-    for item in news_items:
-        headline    = (item.get("headline") or "").lower()
-        description = (item.get("description") or "").lower()
-        text        = headline + " " + description
-        url         = _extract_url(item)
-        raw_detail  = item.get("headline") or item.get("description") or ""
-
-        if any(t in text for t in _INJURY_EXIT_TERMS):
-            return "injury_exit", raw_detail, url, True
-
-        if any(t in text for t in _DNP_TERMS):
-            return "dnp", raw_detail, url, True
-
-        if any(t in text for t in _RESTRICTION_TERMS):
-            return "minutes_restriction", raw_detail, url, True
-
-    # ── Box score inference (no news match) ───────────────────────────
-    if game_row is not None and is_dnp_row(game_row):
-        return "dnp", "inferred from dnp flag in game log, no ESPN confirmation", None, False
-
-    if minutes is not None and minutes <= MINUTES_DNP_THRESHOLD:
-        return "dnp", "inferred from 0 minutes logged, no ESPN confirmation available", None, False
-
-    if minutes is not None and minutes < MINUTES_LOW_THRESHOLD:
-        return (
-            "minutes_restriction",
-            f"Logged {minutes:.0f} minutes — apparent restriction, no ESPN news confirmation",
-            None, False,
-        )
-
-    # ── Pre-game status inference ──────────────────────────────────────
-    # If player was QUESTIONABLE or DOUBTFUL pre-game and has no/zero box score,
-    # the DNP is likely injury-related even without an explicit ESPN news match.
-    if injury_status in ("QUESTIONABLE", "DOUBTFUL", "OUT"):
-        if game_row is None or (minutes is not None and minutes <= MINUTES_DNP_THRESHOLD):
-            status_detail = (
-                f"Player was {injury_status} pre-game and logged 0 minutes. "
-                f"Likely DNP due to pre-game injury designation — no ESPN confirmation found."
-            )
-            return "dnp", status_detail, None, False
-        elif minutes is not None and minutes < MINUTES_LOW_THRESHOLD:
-            status_detail = (
-                f"Player was {injury_status} pre-game and logged only {minutes:.0f} minutes. "
-                f"Possible early exit or minutes restriction — no ESPN confirmation found."
-            )
-            return "minutes_restriction", status_detail, None, False
-
-    return "no_data", "No relevant news found and box score data insufficient to classify", None, False
 
 
 # ── Main ──────────────────────────────────────────────────────────────
@@ -635,172 +629,176 @@ def main() -> None:
     missed_pick_names = load_yesterdays_missed_pick_names()
     injury_statuses   = load_yesterdays_picks_with_status()
 
-    # Classify each player's fetch reason for logging, but fetch ALL players
-    missed_count    = 0
-    box_score_count = 0
-    rest_count      = 0
+    # Classify each player's fetch reason for logging
+    players_to_fetch: set[str] = set()
     fetch_reasons: dict[str, str] = {}
+    missed_count = 0
+    box_score_count = 0
+    rest_count = 0
     for name in sorted(player_names):
         row = game_rows.get(name)
         _flag, reason = should_fetch(row, is_missed_pick=(name in missed_pick_names))
         fetch_reasons[name] = reason
         if reason == "missed_pick":
             missed_count += 1
+            players_to_fetch.add(name)
         elif reason == "normal":
             rest_count += 1
+            players_to_fetch.add(name)  # still fetch for universal coverage
         else:
             box_score_count += 1
+            players_to_fetch.add(name)
 
     print(
-        f"[post_game_reporter] Fetching news for {len(player_names)} players"
+        f"[post_game_reporter] Processing {len(players_to_fetch)} players"
         f" ({missed_count} missed picks, {box_score_count} box score flags,"
-        f" {rest_count} routine checks)"
+        f" {rest_count} routine)"
     )
 
-    players_out: dict[str, dict] = {}
+    # ── Step 1: Fetch ESPN athlete news per player ────────────────────
+    espn_news_by_player: dict[str, list[dict]] = {}
     fetch_errors: list[str] = []
+    espn_fetch_status: dict[str, bool | None] = {}
 
-    for name in sorted(player_names):
-        flag_reason = fetch_reasons[name]
-        game_row    = game_rows.get(name)
-        minutes     = parse_minutes(game_row) if game_row else None
-        aid         = athlete_ids.get(name)
-
-        news_items: list[dict] = []
-        fetch_ok = None  # None = no athlete ID (ESPN not attempted)
+    for name in sorted(players_to_fetch):
+        aid = athlete_ids.get(name)
         if aid:
             news_items, fetch_ok = fetch_espn_news(aid)
+            espn_news_by_player[name] = news_items
+            espn_fetch_status[name] = fetch_ok
             if not fetch_ok:
                 fetch_errors.append(name)
-        # No athlete_id → proceed with box score inference (not a fetch error)
+        else:
+            espn_news_by_player[name] = []
+            espn_fetch_status[name] = None  # no athlete ID
 
+    # ── Step 2: Fetch ESPN recaps per game ────────────────────────────
+    # Collect team abbreviations from picks for filtering game_ids
+    player_teams: set[str] = set()
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+        for p in all_picks:
+            if p.get("date") == YESTERDAY_STR and p.get("team"):
+                player_teams.add(p["team"].strip().upper())
+    except Exception:
+        pass
+
+    game_ids = load_yesterdays_game_ids(player_teams)
+    recaps = fetch_espn_recaps(game_ids)
+
+    # Map each player to their game's recap text
+    # Build player→game_id map from game_rows (team_abbrev + opp_abbrev)
+    player_recap: dict[str, str] = {}
+    if recaps:
+        # Build game_id lookup from game_log rows
+        for name in players_to_fetch:
+            row = game_rows.get(name)
+            if not row:
+                continue
+            gid = (row.get("game_id") or "").strip()
+            if gid and gid in recaps:
+                player_recap[name] = recaps[gid]
+
+    # ── Step 3: Fetch Rotowire news ──────────────────────────────────
+    rotowire_news: dict[str, list[str]] = {}
+    rw_session = login_rotowire()
+    if rw_session:
+        rotowire_news = fetch_rotowire_news(rw_session, players_to_fetch)
+
+    # ── Step 4: Build context and call Claude ─────────────────────────
+    players_context: list[dict] = []
+    for name in sorted(players_to_fetch):
+        row = game_rows.get(name)
+        minutes = parse_minutes(row) if row else None
         injury_status = injury_statuses.get(name, "NOT_LISTED")
-        event_type, detail, source_url, from_news = classify_from_news(
-            news_items, minutes, game_row, injury_status=injury_status
-        )
+        is_missed = name in missed_pick_names
 
-        inj_detected, inj_term = news_contains_injury_language(news_items)
+        # ESPN news headlines
+        headlines = []
+        for item in espn_news_by_player.get(name, []):
+            h = item.get("headline", "")
+            d = item.get("description", "")
+            if h or d:
+                headlines.append(f"{h}: {d}" if h and d else (h or d))
 
-        # Promote no_data → dnp/injury_exit when injury language exists in news
-        # but the classifier couldn't find an exact term match.
-        if event_type == "no_data" and inj_detected:
-            if minutes is None or minutes <= MINUTES_DNP_THRESHOLD:
+        # Pick meta for missed picks
+        pick_meta = _get_miss_pick_meta(name) if is_missed else {}
+
+        ctx = {
+            "name": name,
+            "team": pick_meta.get("team", "") or (row.get("team_abbrev", "") if row else ""),
+            "minutes": minutes,
+            "is_missed_pick": is_missed,
+            "injury_status": injury_status,
+            "espn_news_headlines": headlines[:5],
+            "recap_text": player_recap.get(name, ""),
+            "rotowire_blurbs": rotowire_news.get(name, [])[:3],
+            "pick_meta": pick_meta,
+        }
+        players_context.append(ctx)
+
+    # Call Claude for classification
+    claude_results = call_claude_classify_events(players_context)
+
+    # ── Step 5: Build players_out with fallback ───────────────────────
+    players_out: dict[str, dict] = {}
+
+    for name in sorted(players_to_fetch):
+        row = game_rows.get(name)
+        minutes = parse_minutes(row) if row else None
+        injury_status = injury_statuses.get(name, "NOT_LISTED")
+        aid = athlete_ids.get(name)
+
+        # Use Claude result if available, else fall back to deterministic DNP detection
+        cr = claude_results.get(name)
+        if cr:
+            event_type = cr["event_type"]
+            detail = cr["detail"]
+            confidence = cr["confidence"]
+            web_narrative = cr.get("web_narrative")
+        else:
+            # Fallback: basic deterministic classification
+            web_narrative = None
+            if row is not None and is_dnp_row(row):
                 event_type = "dnp"
-                detail = (
-                    f"Promoted from no_data: injury language detected in ESPN news "
-                    f"(matched: '{inj_term}') and player logged 0 or no minutes. "
-                    f"Likely DNP due to injury — exact classification unconfirmed."
-                )
-                from_news = True
+                detail = "inferred from dnp flag in game log (Claude unavailable)"
+                confidence = "inferred"
+            elif minutes is not None and minutes <= MINUTES_DNP_THRESHOLD:
+                event_type = "dnp"
+                detail = "inferred from 0 minutes logged (Claude unavailable)"
+                confidence = "inferred"
             elif minutes is not None and minutes < MINUTES_LOW_THRESHOLD:
-                event_type = "injury_exit"
-                detail = (
-                    f"Promoted from no_data: injury language detected in ESPN news "
-                    f"(matched: '{inj_term}') and player logged only {minutes:.0f} minutes. "
-                    f"Possible mid-game injury exit — exact classification unconfirmed."
-                )
-                from_news = True
+                event_type = "minutes_restriction"
+                detail = f"Logged {minutes:.0f} minutes — apparent restriction (Claude unavailable)"
+                confidence = "inferred"
+            else:
+                event_type = "no_data"
+                detail = "No classification available"
+                confidence = "inferred"
 
-            if event_type != "no_data":
-                print(
-                    f"[post_game_reporter] ↑ {name}: promoted no_data → {event_type}"
-                    f" (injury term: '{inj_term}')"
-                )
-
-        if inj_detected and event_type == "no_data":
-            print(
-                f"[post_game_reporter] ⚠ {name}: injury language detected"
-                f" ('{inj_term}') but minutes normal ({minutes} min) — no promotion, check manually"
-            )
-
-        # Promote minutes_restriction → injury_exit when injury language detected
-        # in ESPN news AND classification came from box score inference (not news match).
-        # This catches mid-game injury exits where ESPN news mentions the injury
-        # but the exact phrasing didn't match _INJURY_EXIT_TERMS.
-        # Only promote when classification is box-score-inferred (from_news=False)
-        # to avoid overriding confirmed news-based minutes_restriction classifications.
-        if (
-            event_type == "minutes_restriction"
-            and not from_news       # box score inference path, not a news term match
-            and inj_detected        # injury language is present in ESPN news
-            and minutes is not None
-            and minutes < MINUTES_LOW_THRESHOLD
-        ):
-            event_type = "injury_exit"
-            detail = (
-                f"Promoted from minutes_restriction: injury language detected in ESPN news "
-                f"(matched: '{inj_term}') and player logged only {minutes:.0f} minutes. "
-                f"Likely mid-game injury exit — exact classification inferred, not confirmed."
-            )
-            from_news = True
-            print(
-                f"[post_game_reporter] ↑ {name}: promoted minutes_restriction → injury_exit"
-                f" (injury term: '{inj_term}', {minutes:.0f} min)"
-            )
-
-        confidence   = "confirmed" if from_news else "inferred"
         mins_display = round(minutes, 1) if minutes is not None else 0
 
         players_out[name] = {
             "event_type":               event_type,
             "detail":                   detail,
             "minutes_played":           mins_display,
-            "source_url":               source_url,
+            "source_url":               None,
             "confidence":               confidence,
             "injury_status_at_check":   injury_status,
-            "injury_language_detected": inj_detected,
-            "injury_scan_term":         inj_term if inj_detected else None,
-            "espn_fetch_ok":            fetch_ok if aid else None,  # None = no athlete ID
-            "web_narrative":            None,  # populated later for missed picks
+            "injury_language_detected": False,  # legacy field — always False in new pipeline
+            "injury_scan_term":         None,   # legacy field — always None in new pipeline
+            "espn_fetch_ok":            espn_fetch_status.get(name),
+            "web_narrative":            web_narrative,
         }
 
         mins_str = f"{minutes:.0f}" if minutes is not None else "?"
         print(
             f"[post_game_reporter] {name} → {event_type} ({confidence}, {mins_str} min)"
-            f" [reason: {flag_reason}]"
+            f" [reason: {fetch_reasons.get(name, 'unknown')}]"
         )
 
-    # ── Web narrative enrichment (missed picks only) ───────────────────
-    missed_player_records: list[dict] = []
-    for name in sorted(missed_pick_names):
-        row     = game_rows.get(name)
-        minutes = parse_minutes(row) if row else None
-        # Pull pick details from picks.json for context
-        # We use the first MISS pick for this player (prop + pick_value + actual)
-        pick_meta = _get_miss_pick_meta(name)
-        missed_player_records.append({
-            "name":       name,
-            "team":       pick_meta.get("team", ""),
-            "prop":       pick_meta.get("prop_type", ""),
-            "pick_value": pick_meta.get("pick_value", ""),
-            "actual":     pick_meta.get("actual_value", ""),
-            "minutes":    minutes,
-        })
-
-    web_narratives: dict[str, str] = {}
-    if missed_player_records:
-        raw_snippets   = fetch_web_narratives(missed_player_records)
-        web_narratives = call_claude_summarise_narratives(missed_player_records, raw_snippets)
-
-    # Merge web_narrative into players_out entries
-    for name, narrative in web_narratives.items():
-        if name in players_out:
-            players_out[name]["web_narrative"] = narrative
-        else:
-            # Player had no ESPN event but has a web narrative — create minimal entry
-            players_out[name] = {
-                "event_type":               "no_data",
-                "detail":                   "No ESPN news or box score flag. Web narrative only.",
-                "minutes_played":           None,
-                "source_url":               None,
-                "confidence":               "web_search",
-                "injury_status_at_check":   "NOT_LISTED",
-                "injury_language_detected": False,
-                "injury_scan_term":         None,
-                "espn_fetch_ok":            None,  # no athlete ID lookup for narrative-only entries
-                "web_narrative":            narrative,
-            }
-
+    # ── Step 6: Write output ──────────────────────────────────────────
     output = {
         "date":         YESTERDAY_STR,
         "generated_at": dt.datetime.now(ET).isoformat(),
