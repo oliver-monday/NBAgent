@@ -3053,5 +3053,106 @@
     "would_have_hit": null,
     "skip_verdict": "no_data",
     "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "LAL",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "blowout_t25_skip",
+    "rule_context": {
+      "spread_abs": 17.5,
+      "favored_team": "OKC",
+      "rule": "spread_abs >= 15 AND favored side \u2192 T25/T30 PTS hard skip unconditional"
+    },
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 25"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "LAL",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "spread_abs": 17.5,
+      "blowout_risk": true,
+      "rule": "trend=down in blowout 8-18 range \u2192 step T1\u2192below minimum \u2192 skip"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "opponent": "IND",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "75%",
+      "volatile_penalty": "-5%",
+      "blowout_penalty": "-10%",
+      "blowout_cap": "74%",
+      "reb_minimum_confidence": "78%",
+      "result": "74% cap cannot clear 78% REB minimum floor at any tier"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 6"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "opponent": "IND",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "PF",
+      "raw_avgs_ast_estimate": "below 4.0",
+      "opp_today": "mid",
+      "rule": "PF with AST < 4.0 requires opp_today=soft for T4+; opp=mid fails gate"
+    },
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-07",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "opponent": "DAL",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "75%",
+      "volatile_penalty": "-5%",
+      "blowout_penalty": "-10%",
+      "result": "60% final confidence below 75% 3PM minimum floor"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 2"
   }
 ]

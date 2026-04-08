@@ -13,10 +13,10 @@
       "favored_team": "OKC",
       "rule": "spread_abs >= 15 AND favored side \u2192 T25/T30 PTS hard skip unconditional"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 25"
   },
   {
     "date": "2026-04-07",
@@ -33,10 +33,10 @@
       "blowout_risk": true,
       "rule": "trend=down in blowout 8-18 range \u2192 step T1\u2192below minimum \u2192 skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-07",
@@ -55,10 +55,10 @@
       "reb_minimum_confidence": "78%",
       "result": "74% cap cannot clear 78% REB minimum floor at any tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 6"
   },
   {
     "date": "2026-04-07",
@@ -75,10 +75,10 @@
       "opp_today": "mid",
       "rule": "PF with AST < 4.0 requires opp_today=soft for T4+; opp=mid fails gate"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-07",
@@ -95,9 +95,9 @@
       "blowout_penalty": "-10%",
       "result": "60% final confidence below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 2"
   }
 ]

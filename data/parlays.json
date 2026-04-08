@@ -4062,9 +4062,32 @@
         "rationale": "Three independent games, volume_game tag, all 9/10 hit rates; Barrett soft MIA matchup anchors scoring floor.",
         "date": "2026-04-07",
         "id": "parlay_2026-04-07_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 35.0
+          },
+          {
+            "player_name": "Kevin Durant",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 4.0
+          },
+          {
+            "player_name": "RJ Barrett",
+            "prop_type": "PTS",
+            "pick_value": 15,
+            "result": "HIT",
+            "actual_value": 16.0
+          }
+        ]
       }
     ]
   }

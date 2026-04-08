@@ -1,42 +1,42 @@
 {
-  "generated_at": "2026-04-07",
-  "entries_included": 34,
+  "generated_at": "2026-04-08",
+  "entries_included": 35,
   "overall": {
-    "total_picks": 763,
+    "total_picks": 779,
     "voided": 41,
-    "hits": 650,
-    "misses": 97,
+    "hits": 665,
+    "misses": 98,
     "injury_exclusions": 2,
-    "hit_rate_pct": 87.2
+    "hit_rate_pct": 87.4
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 269,
-      "hits": 227,
+      "picks": 274,
+      "hits": 232,
       "injury_exclusions": 1,
-      "hit_rate_pct": 84.7
+      "hit_rate_pct": 85.0
     },
     "REB": {
-      "picks": 115,
-      "hits": 99,
+      "picks": 118,
+      "hits": 102,
       "injury_exclusions": 0,
-      "hit_rate_pct": 86.1
+      "hit_rate_pct": 86.4
     },
     "AST": {
-      "picks": 234,
-      "hits": 199,
+      "picks": 239,
+      "hits": 204,
       "injury_exclusions": 1,
-      "hit_rate_pct": 85.4
+      "hit_rate_pct": 85.7
     },
     "3PM": {
-      "picks": 121,
-      "hits": 100,
+      "picks": 124,
+      "hits": 102,
       "injury_exclusions": 0,
-      "hit_rate_pct": 82.6
+      "hit_rate_pct": 82.3
     }
   },
   "miss_classification_totals": {
-    "variance": 39,
+    "variance": 40,
     "selection_error": 5,
     "model_gap_signal": 6,
     "model_gap_rule": 28,
@@ -45,14 +45,14 @@
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 326,
-      "hits": 277,
-      "hit_rate_pct": 85.0
+      "picks": 330,
+      "hits": 281,
+      "hit_rate_pct": 85.2
     },
     "76-80": {
-      "picks": 322,
-      "hits": 281,
-      "hit_rate_pct": 87.3
+      "picks": 334,
+      "hits": 292,
+      "hit_rate_pct": 87.4
     },
     "81-85": {
       "picks": 58,
@@ -66,63 +66,70 @@
     }
   },
   "parlay_summary": {
-    "total": 74,
-    "hits": 48,
+    "total": 75,
+    "hits": 49,
     "misses": 21,
     "partial": 5
   },
   "recent_lessons": [
-    "Brandon Ingram's min_floor=0.0 DNP-risk flag was the most aggressive selection of the session \u2014 the human verdict was manual_skip and the reasoning (binary DNP risk outweighs soft matchup) was correct in principle. Ingram did play (17 PTS, 26 min) and hit, but the workflow correctly identified that a 0.0 min_floor cannot be offset by matchup quality alone. The pick's hit validates the market line but not the selection logic \u2014 retaining the manual_skip rule for min_floor=0.0 picks is appropriate regardless of this outcome.",
-    "Scottie Barnes AST required a step from T4 (which failed the gate) all the way to T2 due to VOLATILE tag \u2014 the pick hit (6.0 vs. threshold of 2) but Barnes logged only 23 minutes in the TOR blowout win. The large actual_value margin (6 assists in 23 blowout minutes) masked genuine structural fragility: in a game where TOR led by 32, a player logging 23 minutes and producing 6 assists represents a favorable variance outcome, not a repeatable floor. The VOLATILE + step-down + blowout combination warrants continued trim classification even when hits occur.",
-    "All nine active picks hit, so no analytical failures to log. However, the human_verdict flags reveal a recurring structural tension: five of nine picks were marked 'trim' due to VOLATILE tags, min_floor<24, or FG_MARGIN_THIN/NEG step-downs \u2014 yet all five hit easily. This is a sample-size-of-one caution: these picks clearing today should not be used to argue against trim discipline. The trim flags identified genuinely fragile picks (Fox min_floor=21.9, Castle min_floor=22.9, Murray VOLATILE+tough opp, Wembanyama PTS FG_MARGIN_THIN) \u2014 they hit in a CLOSE, high-volume game that inflated counting stats across the slate. In a different game script (e.g., DEN blowout win), the same structural risks would have materialized as misses.",
     "Edge_pct was negative on every single pick (ranging from -8.11% to -24.74%), meaning the market was already pricing these outcomes at significantly higher probabilities than the system's confidence levels. While all picks hit, this uniformly negative edge pattern signals the system is systematically selecting props where the market has already compressed the value \u2014 future sessions should track whether negative-edge picks outperform or underperform at their stated confidence levels over time.",
     "The SA @ DEN game produced a concentration of 8 of 9 active picks from two teams in one game \u2014 a diversification gap. A bad game script (e.g., a blowout, a key foul-trouble scenario for Jokic, or a Castle minutes restriction) would have simultaneously impacted the majority of the slate. Single-game concentration risk should be flagged as a structural note even when all picks hit.",
     "Brandon Miller PTS T15 missed badly (actual: 7 vs pick: 15) despite an iron_floor designation and 8/10 hit rate \u2014 VOLATILE tag was present and a 74% final confidence was assigned, but the miss margin of 8 points below threshold suggests either the iron_floor designation was stale or the VOLATILE tag warranted a full tier step-down (T15\u2192T10) rather than just a 5% confidence penalty. The iron_floor + VOLATILE combination needs a rule review: if VOLATILE overrides iron_floor on 3PM (incompatibility rule), a symmetric rule should be evaluated for PTS iron_floor with VOLATILE \u2014 the floor guarantee may not be reliable when the VOLATILE tag is present.",
     "The CHA @ MIN game finished COMPETITIVE (CHA won by 14), so game-script was not a causal factor in Miller's miss \u2014 this was a genuine floor failure despite the player completing 34 minutes. The SAS floor compression pattern (mean miss margin \u22125.0) does not apply here since the opponent was MIN, not SAS; however MIN's switching scheme and pace suppression may have contributed to Miller's scoring suppression, suggesting MIN may have a broader defensive impact on wing scorers beyond just AST that the current scheme notes do not capture.",
     "Wembanyama's AST miss (actual 1 vs pick 2, 9/10 hit rate) in a COMPETITIVE game (SA won by 13) with only 16 minutes played is the key signal: 16 minutes is extremely low for Wembanyama even in a moderately comfortable win, suggesting minutes were compressed mid-game for reasons not captured in pre-game signals. The 9/10 historical hit rate at T2 remains strong, but the combination of a blowout-trending game (13-point margin qualifies as COMPETITIVE, not BLOWOUT) and unusually low minutes (16 vs his ~30.1 avg) produced a zero-assist outcome that the rule framework did not anticipate.",
     "AST props for rim-anchored big men at T2 carry a specific structural risk: assists require sustained offensive possessions late in games. When a player like Wembanyama logs only 16 minutes \u2014 nearly half his season average \u2014 assist accumulation is mechanically capped regardless of per-minute rate. The system currently penalizes AST blowout risk by -10% confidence but does not apply a minimum-minutes floor check specific to AST props (unlike the PTS min_floor rule). A parallel AST floor check should be considered.",
-    "The SAS floor compression pattern (mean miss margin \u22125.0 on opponent picks vs SAS) may also manifest internally for SAS starters in games where the lead triggers early rest: Wembanyama at 16 minutes is consistent with a managed-exit scenario in a comfortable win, similar to how blowout logic reduces counting stats. The system's blowout threshold (\u226520 margin) did not fire here (margin = 13), but a 13-point win with a 30-minute player logging 16 minutes suggests a managed-rest protocol that sits just below the formal blowout trigger."
+    "The SAS floor compression pattern (mean miss margin \u22125.0 on opponent picks vs SAS) may also manifest internally for SAS starters in games where the lead triggers early rest: Wembanyama at 16 minutes is consistent with a managed-exit scenario in a comfortable win, similar to how blowout logic reduces counting stats. The system's blowout threshold (\u226520 margin) did not fire here (margin = 13), but a 13-point win with a 30-minute player logging 16 minutes suggests a managed-rest protocol that sits just below the formal blowout trigger.",
+    "3PM props remain the system's weakest prop type (66.7% this session, sole miss) and the only miss of the entire session was a non-iron-floor 3PM: RJ Barrett went 0-for on 3PM despite a 9/10 hit rate and a soft MIA defense. The 80% cap on non-iron-floor 3PM picks reflects real variance that a single game can produce, and the blowout game script (TOR won by 26) likely compressed Barrett's late-game shot attempts \u2014 a blowout win can reduce a secondary scorer's volume in the fourth quarter even if minutes are modest (31 min logged). The system correctly applied the non-iron-floor 3PM cap but should note that blowout game scripts are an independent 3PM suppressor even on T1 picks, since catch-and-shoot opportunities decline when the offense goes into ball-control mode.",
+    "The human_verdict='manual_skip' on SGA AST (spread_abs=17.5) was validated by game script: SGA played only 28 minutes in a 36-point blowout and still hit 8 AST \u2014 the pick hit, but the skip reasoning was sound. This is a feature calibration note: at spread_abs\u226517.5 with a primary playmaker, the blowout AST cap at 74% may still be too permissive as a selection gate, but the actual outcome (8 AST in 28 min) suggests primary playmakers' assist rates are robust even in heavily managed minutes. The skip was defensible given structural uncertainty, but the AST outcome confirms SGA's assist floor is genuinely durable \u2014 future audit should track whether manual_skip picks at 74% would have hit at a rate consistent with their confidence level.",
+    "Two human_verdict='trim' picks (Kawhi REB at iron_floor T4 and RJ Barrett PTS at T15) both hit, including Kawhi's exact-threshold REB hit (actual 4.0 = pick_value 4) \u2014 confirming that the trim reasoning around load-management and min_floor fragility, while structurally valid, may be over-penalizing iron-floor picks. The iron_floor tag is specifically designed to indicate blowout and rest resilience; future trim decisions on iron_floor picks with spread_abs<13 should require stronger evidence of actual minutes restriction risk rather than theoretical load management."
   ],
   "recent_reinforcements": [
-    "Iron-floor AST picks proved bulletproof again: LaMelo Ball (8 AST vs MIN), Brandon Miller (3 AST vs MIN), and LeBron James (15 AST vs DAL) all cleared their T2/T4 thresholds decisively \u2014 iron-floor AST at T2 with 90%+ hit rates continues to be the system's most reliable prop type and should remain a priority for parlay legs.",
-    "Absence-driven usage concentration produced outsized actual values: LeBron James posted 9 REB and 15 AST with Doncic and Reaves OUT, and Julius Randle exploded for 26 PTS with Edwards OUT \u2014 both well above their pick thresholds. When a primary creator or co-star is confirmed OUT and the remaining player has a 9/10 hit rate, the Analyst's conservative confidence settings (78-82%) were appropriate but the actual upside was substantial, validating the tier selection.",
-    "The MIN\u00d7AST suppressor concern was correctly handled via modest conservatism (78% on LaMelo's iron-floor AST, 75% on Knueppel's T2 AST) \u2014 both hit cleanly, suggesting the suppressor's marginal impact at T2 thresholds is well-calibrated; however the suppressor remains a valid caution at T4+ tiers and should not be dismissed.",
-    "Jayson Tatum's multi-prop stack (PTS T15, AST T2, 3PM T2) returned 3/3 hits including 23 PTS, 7 AST, and exactly 2 threes \u2014 the FG_MARGIN_NEG step-down to T15 on PTS proved conservative but not wrong, and the 91% AST T2 and 100% 3PM T2 hit rates validated using the deeper tier walk on a VOLATILE player returning from injury.",
-    "The human_verdict 'trim' picks that ran anyway all hit (Tatum PTS, Tatum 3PM, LaMelo PTS, LaMelo 3PM, Knueppel PTS) \u2014 the system's conservative confidence caps at 70-75% were well-calibrated for the genuine structural risks present, and the trim reasoning on min_floor and VOLATILE tags was sound even though outcomes were positive.",
     "Mandatory FG_MARGIN_THIN tier step-downs proved structurally sound: both Jokic (T20\u2192T15, actual 35 PTS) and Wembanyama (T20\u2192T15, actual 17 PTS) hit comfortably after being stepped down, confirming the rule correctly adds buffer rather than sacrificing edge.",
     "Conservative AST picks at T2 with 100% hit rates remain elite anchors: CJ McCollum's 10/10 AST pick at T2 (actual 6 AST vs pick of 2) crushed the threshold, validating that iron-floor low-tier AST picks in competitive games are the highest-reliability prop type in the system.",
     "Blowout-resilient PTS profiles continue to hold in SAS blowout contexts: Stephon Castle's T10 PTS pick (actual 19, blowout_resilient tag applied) hit cleanly despite a 13-point SA win, confirming the blowout-resilient offset rule correctly distinguished his profile from non-resilient players in the same game.",
     "min_floor + FG_MARGIN_NEG double step-down cascade to T10 added meaningful safety: Castle's PTS pick benefited from both rules firing on the same tier step, producing a generous 9-point cushion (actual 19 vs pick 10) \u2014 the cascade does not over-penalize when the player's true floor is materially higher.",
-    "The tough-matchup confidence reduction for Jalen Johnson (85%\u219275% via vs_tough degradation) did not prevent a clean hit: actual 21 PTS vs pick 15 with 41 minutes played confirms that when 9/10 hit rates at a tier are genuine, even tough defense adjustments leave the pick viable."
+    "The tough-matchup confidence reduction for Jalen Johnson (85%\u219275% via vs_tough degradation) did not prevent a clean hit: actual 21 PTS vs pick 15 with 41 minutes played confirms that when 9/10 hit rates at a tier are genuine, even tough defense adjustments leave the pick viable.",
+    "Iron-floor PTS picks proved structurally sound again: Jaylen Brown (35 PTS vs T15 pick) and Scottie Barnes (25 PTS vs T10 pick) both hit by wide margins, validating that iron-floor classification is a reliable protective tag even when facing tough defense or FG_COLD signals \u2014 the tier itself is the floor, not the average.",
+    "Multi-stat player stacks on the same team hit cleanly: all three RJ Barrett TOR picks (PTS, AST, 3PM) were graded at pick time, and PTS + AST both hit \u2014 confirming that stacking a player's lower-tier props across prop types on a soft-defense opponent remains a high-value pattern. The sole 3PM miss was variance, not a structural stacking error.",
+    "The IND amplifier context performed exactly as documented: Julius Randle hit 19 PTS vs T10 (pick_value 10) and SGA hit 8 AST vs T4 (pick_value 4) against Indiana, with both clearing threshold comfortably despite blowout game scripts \u2014 reinforcing that the confirmed IND amplifier boosts prop floors even when game script compresses minutes.",
+    "AST props for primary playmakers hit 100% across five picks (Tatum 4, Kawhi 3, Barrett 2, Barnes 5, SGA 8), validating that T2/T4 AST picks for established creation hubs on soft or mid defenses are the system's most reliable prop type this session \u2014 all five were at or below each player's raw average, confirming conservative tier selection is the right approach for AST.",
+    "Afternoon lineup amendments correctly identified upside on two picks that hit: Kawhi REB (Washington OUT \u2192 revised to 82%, actual 4 REB exact hit) and SGA AST (LeBron OUT \u2192 revised to 77%, actual 8 AST) \u2014 the amendment pipeline's ability to capture same-day scratches is adding legitimate directional signal, particularly for REB props where frontcourt matchup changes are most impactful."
   ],
   "recent_recommendations": [
-    "Implement a hard rule: when a player has both an iron_floor tag AND a VOLATILE tag on PTS, treat the iron_floor as OVERRIDDEN for confidence purposes (mirroring the existing 3PM VOLATILE+iron_floor incompatibility rule) and apply a mandatory tier step-down of one level in addition to the 5% VOLATILE penalty \u2014 the Miller miss demonstrates that VOLATILE distributions produce floor failures that iron_floor designations cannot reliably prevent.",
-    "Add MIN as a watch item for wing PTS suppression (not just AST): Miller's 7-point miss vs a mid-rated defense in 34 minutes of a game CHA won by 14 suggests MIN's switching scheme may be compressing wing scoring floors in a way the current system doesn't flag. Begin tracking wing PTS (SG/SF) hit rates vs MIN separately to determine if a scheme-based PTS discount is warranted alongside the existing MIN\u00d7AST suppressor rule.",
-    "When the VOLATILE tag is present on a PTS prop and the player's game is projected COMPETITIVE or the spread is \u226410, consider whether the pick should be routed to 'trim' automatically rather than left as a standard 'keep' \u2014 Miller was a human_verdict 'keep' with VOLATILE + iron_floor + competitive game, and the resulting miss was the session's only loss; the trim pathway existed for this risk profile and should be applied more consistently.",
-    "The SGA AST pick was human-skipped on the basis of extreme blowout risk (spread \u221222.5) and the actual game confirmed the concern (SGA played only 24 minutes) \u2014 the 90% hit rate at T4 held and he still produced 7 AST in limited time (HIT), but the skip logic was directionally correct. Reinforce the blowout manual-skip pathway for AST props when spread_abs \u2265 20 even when the elite playmaker exemption applies, as reduced minutes in garbage time create legitimate miss scenarios that the 74% confidence cap alone does not fully price.",
-    "LeBron James at T4 AST with Doncic and Reaves OUT produced 15 assists \u2014 a massive outperformance. When two primary playmakers are simultaneously OUT for a team's primary creator, consider whether the standard T4 tier is too conservative and if T6 should be evaluated despite the absence of an explicit 'Without X' quant line. The system should develop a usage-concentration AST tier uplift rule triggered by 2+ primary creators being simultaneously absent.",
     "Add an AST minimum-minutes floor check parallel to the existing PTS min_floor rule: for any player whose season-average minutes are \u226528, require that their documented L10 minimum minutes exceed a threshold (e.g., 18 min) before selecting an AST prop. Wembanyama's 16-minute game causing a 1-AST output illustrates that AST accumulation is mechanically impossible in severely reduced minutes even at T2.",
     "For Wembanyama specifically, flag any AST pick in games where SA is favored by 7+ points with a conditional warning: his average minutes drop materially in comfortable wins, and his AST output is highly sensitive to Q4 rest. Consider requiring either (a) a 9+/10 AST hit rate in blowout-context games specifically, or (b) stepping to T1 rather than T2 when spread_abs \u22657 and no iron_floor is present on the AST line.",
     "Extend the BLOWOUT_RISK confidence penalty trigger to games where spread_abs \u22657 (from \u22658) for AST props: the current \u22658 threshold missed the SAS game (spread was 8.5, which triggered the penalty) \u2014 but the actual mechanism was minutes management in a moderately lopsided game, not a formal blowout. The net -10% applied was insufficient given the realized outcome. Consider a 12-15% penalty for AST props in any game where the player's team is favored by 7+ and the player is not iron_floor on AST.",
     "When a player's post-game minutes are reported at less than 60% of their season average (Wembanyama: 16 min vs 30.1 avg = 53%), treat this as a data point for the managed-rest risk model. Pre-game, the system has no direct signal for this, but the SAS blowout-adjacent pattern (13-point wins triggering early rest) is now a documented second occurrence \u2014 consider adding a SAS-specific managed-rest flag for Wembanyama AST props when SA spread \u22656.",
-    "The CJ McCollum PTS pick (human verdict: trim, VOLATILE tag, FG_MARGIN_THIN step T15\u2192T10) hit comfortably (actual 17 vs pick 10) in a CLOSE game (NY won by 3). Audit confirms the trim was procedurally correct given uncertainty, but the 7-point cushion at T10 validated the step-down logic \u2014 do not second-guess FG_MARGIN_THIN cascades when the resulting tier pick is this conservative. The trim flag on human review is appropriate; the model rule is working as intended."
+    "The CJ McCollum PTS pick (human verdict: trim, VOLATILE tag, FG_MARGIN_THIN step T15\u2192T10) hit comfortably (actual 17 vs pick 10) in a CLOSE game (NY won by 3). Audit confirms the trim was procedurally correct given uncertainty, but the 7-point cushion at T10 validated the step-down logic \u2014 do not second-guess FG_MARGIN_THIN cascades when the resulting tier pick is this conservative. The trim flag on human review is appropriate; the model rule is working as intended.",
+    "Apply a dedicated blowout-script 3PM penalty: when a player's team is favored by \u226515 points AND the player is not a primary ball-handler (i.e., not the team's leading scorer or AST leader), apply an additional -5% confidence reduction to any 3PM pick beyond the existing non-iron-floor cap. The RJ Barrett 3PM miss illustrates this gap \u2014 a 26-point TOR blowout win naturally reduces catch-and-shoot opportunities for secondary scorers in the fourth quarter, a game-script effect the current T1 capping rule does not fully price in.",
+    "Recalibrate trim thresholds for iron_floor REB picks specifically: Kawhi Leonard's REB hit exactly at threshold (4.0) despite a trim recommendation citing min_floor fragility. Iron_floor picks on REB props have demonstrated consistent blowout resilience across multiple sessions \u2014 the trim gate for iron_floor REB should require min_floor < 22 (not < 25) before flagging fragility, and spread_abs should exceed 14 (not 11) before a trim is warranted on an iron_floor prop.",
+    "Continue tracking the SGA manual_skip outcome pattern: SGA AST hit 8 (pick_value 4) in only 28 minutes during a 36-point blowout \u2014 a primary playmaker's AST floor is structurally more durable than the blowout penalty rule implies. Flag for future rule refinement: for players whose raw_avgs AST \u2265 5.0 AND who are the team's primary ball-handler, the blowout AST cap at 74% for spread_abs\u226515 may be set 4\u20135pp too conservatively. Consider a primary-playmaker AST blowout floor of 78% rather than 74% for top-tier playmakers (\u22655 APG average).",
+    "The multi-stat TOR stack (Barrett PTS + AST + 3PM, Barnes PTS + REB + AST) produced 5/6 hits across six picks against soft MIA defense. For future same-team multi-prop stacks vs. confirmed soft defenses, prioritize PTS and AST over 3PM as the anchor legs \u2014 the 3PM pick was the sole miss and carries the highest per-game variance. When constructing 3+ prop stacks on a single player, cap at one 3PM leg and ensure the other legs are PTS or AST with iron_floor or \u22659/10 hit rates.",
+    "Validate the amendment pipeline's REB accuracy specifically: the Kawhi REB amendment (Washington OUT \u2192 revised up to 82%) correctly identified frontcourt competition removal as an upside signal, and the pick hit at threshold. This is a repeatable structural pattern \u2014 when a starting big man is scratched from the opposing team pre-game, REB props for the opposing team's primary frontcourt scorer should receive a systematic upward amendment trigger. Confirm this rule is already encoded in the afternoon lineup agent; if not, add an explicit rule: 'opposing PF/C scratch \u2192 REB picks for matching frontcourt player revised +3\u20135pp confidence.'"
   ],
   "skip_validation": {
-    "merit_below_floor": {
-      "total": 7,
-      "false_skips": 5,
-      "correct_skips": 1,
-      "no_data": 1,
-      "false_skip_rate": 83.3
-    },
-    "volatile_weak_combo": {
-      "total": 3,
+    "blowout_t25_skip": {
+      "total": 1,
       "false_skips": 1,
-      "correct_skips": 1,
-      "no_data": 1,
-      "false_skip_rate": 50.0
+      "correct_skips": 0,
+      "no_data": 0,
+      "false_skip_rate": 100.0
     },
     "3pm_blowout_trend_down": {
+      "total": 1,
+      "false_skips": 1,
+      "correct_skips": 0,
+      "no_data": 0,
+      "false_skip_rate": 100.0
+    },
+    "merit_below_floor": {
+      "total": 2,
+      "false_skips": 1,
+      "correct_skips": 1,
+      "no_data": 0,
+      "false_skip_rate": 50.0
+    },
+    "ast_hard_gate": {
       "total": 1,
       "false_skips": 1,
       "correct_skips": 0,
@@ -132,22 +139,22 @@
   },
   "human_flag_precision": {
     "trim": {
-      "hits": 94,
+      "hits": 98,
       "misses": 8,
-      "total": 102,
-      "hit_rate_pct": 92.2
+      "total": 106,
+      "hit_rate_pct": 92.5
     },
     "keep": {
-      "hits": 148,
-      "misses": 17,
-      "total": 165,
+      "hits": 157,
+      "misses": 18,
+      "total": 175,
       "hit_rate_pct": 89.7
     },
     "manual_skip": {
-      "hits": 10,
+      "hits": 12,
       "misses": 1,
-      "total": 11,
-      "hit_rate_pct": 90.9
+      "total": 13,
+      "hit_rate_pct": 92.3
     }
   }
 }
