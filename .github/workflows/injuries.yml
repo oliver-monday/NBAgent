@@ -20,8 +20,7 @@ on:
     - cron: "15 1 * * *"    #  6:15 PM PT
     - cron: "45 1 * * *"    #  6:45 PM PT
     - cron: "15 2 * * *"    #  7:15 PM PT
-    - cron: "45 2 * * *"    #  7:45 PM PT
-    - cron: "15 3 * * *"    #  8:15 PM PT
+    - cron: "45 2 * * *"    #  7:45 PM PT (last run — with GitHub lag, actual ~8:00-8:30 PM)
   workflow_dispatch:
 
 permissions:
