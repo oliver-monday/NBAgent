@@ -1,0 +1,166 @@
+[
+  {
+    "date": "2026-04-08",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post-miss hit rate for AST is 59% with a lift of only +0.78 \u2014 meaningfully below the 80% selected confidence \u2014 indicating AST is slump-persistent for Johnson and a recent miss materially compresses the floor. The typical miss of 1.5 pts below threshold leaves almost no buffer if he's in an off-assist stretch."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "ATL's defense is rated tough and their l5 defensive rating (106.2) is notably stronger than their l15 (109.5), meaning they are tightening up recently \u2014 a real headwind for a volume-dependent 3PM prop. Historical lesson confirms 3PM is the system's weakest prop type with meaningful per-game variance, and a tough, improving defense compounds that risk."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "ORL is favored by 6.5 with a tough MIN defense (l5 avg 109.6 vs l15 112.4, tightening recently) \u2014 blowout game script risk remains structurally present even after the FG_MARGIN_THIN step-down, as a Bane who is cold from the field in a comfortable win risks being managed down in fourth-quarter volume."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "SGA is flagged volatile on a B2B road game against a mid defense with a 6.5-point spread \u2014 blowout game script risk is live and his min_floor of 25.8 is only marginally above the 24-minute PTS fragility threshold, meaning a single managed-exit scenario (as documented in audit history for comfortable wins) could mechanically cap his counting stats below T20 even with a 100% B2B hit rate at this tier historically."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B with a B2B-specific hit rate of 80% at T4 \u2014 materially below the overall 90% rate used to select the tier \u2014 combined with a min_floor of 24.8 that sits right at the fragility boundary. For a player with documented load-management history, a single short-minutes game on the second night is well within normal variance and would compress REB accumulation below threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "B2B with B2B hit rate of only 80% at T2 against a tough OKC defense, and raw_avg AST of 3.4 provides a thin margin above the 2-assist threshold \u2014 a managed-minutes B2B game (min_floor 24.8) with compressed offensive possessions against a quality defense could easily land Kawhi at 1 assist."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 21.9 is below the 24-minute PTS fragility threshold \u2014 the system applied a mandatory step-down, but the structural risk remains: Fox's floor is contingent on minutes that are not guaranteed, and a single short-minutes game against a tough POR defense produces a miss that is well within normal variance for a player averaging only 27.5 minutes."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-08",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
