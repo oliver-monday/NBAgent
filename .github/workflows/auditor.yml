@@ -36,9 +36,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas anthropic requests
+          pip install pandas anthropic requests beautifulsoup4 lxml
 
       - name: Run Post-Game Reporter
+        env:
+          ROTOWIRE_EMAIL: ${{ secrets.ROTOWIRE_EMAIL }}
+          ROTOWIRE_PASSWORD: ${{ secrets.ROTOWIRE_PASSWORD }}
         run: python agents/post_game_reporter.py
 
       - name: Run Auditor agent
