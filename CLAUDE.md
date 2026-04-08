@@ -212,7 +212,7 @@ Five-tab dark theme SPA deployed to GitHub Pages via `build_site.py`.
 
 | Tab | Content |
 |-----|---------|
-| Today's Picks | Injury report dropdown, pick cards grouped by game (collapsible). Voided picks show strikethrough + VOIDED badge. DOUBTFUL/QUESTIONABLE picks show risk pills. Lineup Update shows ↑/↓ badge with expandable amendment detail. Review badges: ⚠ Caution (amber, trim verdict) and ⚠ Flagged (red, manual_skip verdict) shown below status badge when picks_review file present. |
+| Today's Picks | Injury report dropdown, pick cards grouped by game (collapsible). Voided picks show strikethrough + VOIDED badge. DOUBTFUL/QUESTIONABLE picks show risk pills. Lineup Update shows ↑/↓ badge with expandable amendment detail. Review badges: ⚠ Caution (amber, trim verdict) and ⚠ Flagged (red, manual_skip verdict) shown below status badge when picks_review file present. Best Bets section below Top Picks: POSITIVE/STRONG edge picks ranked by calibrated edge; teal (POSITIVE) or green (STRONG) border; includes Odds + Sizing drawer. |
 | Parlays | Historical stats banner (hidden until graded history exists). Parlay cards with leg rows, implied odds, correlation badge, result once graded. "⚠ Leg at risk" banner when any leg player is voided. |
 | Results | Overall hit rate banner, 4 per-prop streak cards, 30-day hit rate trend chart (vanilla canvas), full pick history table. |
 | Audit Log | Latest auditor entry — hit rate stats, what worked, what to avoid, analyst instructions. Skip validation table. |

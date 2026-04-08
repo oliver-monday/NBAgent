@@ -2361,6 +2361,13 @@ Criteria for a top pick (must meet most of these):
 
 Do not force exactly 4 if fewer genuinely qualify. 2 strong top picks beats 4 weak ones.
 
+EDGE TIEBREAKER: When choosing between candidates of similar prediction quality, prefer picks
+with POSITIVE or STRONG edge (from the bet_recommendation context) over NEUTRAL or FADE picks.
+This is a tiebreaker only — a high-confidence FADE pick still beats a marginal POSITIVE pick
+on prediction merit. But when two picks are equally strong on hit rate, confidence, and context,
+the one with positive market edge is the better top pick because it represents both a reliable
+prediction AND a profitable bet.
+
 3PM TOP-PICK RESTRICTION: Do not designate a 3PM pick as top_pick=true unless iron_floor=true
 is confirmed for that prop. A 9/10 or 10/10 hit rate on 3PM at T1 or T2 does NOT qualify for
 top_pick without iron_floor confirmation — even with a consistent volatility tag and high
@@ -3481,6 +3488,13 @@ Criteria for a top pick (must meet most of these):
 - iron_floor is true, OR trend is up with a strong recent game log
 
 Do not force exactly 4 if fewer genuinely qualify. 2 strong top picks beats 4 weak ones.
+
+EDGE TIEBREAKER: When choosing between candidates of similar prediction quality, prefer picks
+with POSITIVE or STRONG edge (from the bet_recommendation context) over NEUTRAL or FADE picks.
+This is a tiebreaker only — a high-confidence FADE pick still beats a marginal POSITIVE pick
+on prediction merit. But when two picks are equally strong on hit rate, confidence, and context,
+the one with positive market edge is the better top pick because it represents both a reliable
+prediction AND a profitable bet.
 
 3PM TOP-PICK RESTRICTION: Do not designate a 3PM pick as top_pick=true unless iron_floor=true
 is confirmed for that prop. A 9/10 or 10/10 hit rate on 3PM at T1 or T2 does NOT qualify for

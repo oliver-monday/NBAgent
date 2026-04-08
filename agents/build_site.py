@@ -728,6 +728,18 @@ def build_site():
 
     top_picks = get_top_picks(today_picks)
 
+    # Best Bets: picks with POSITIVE or STRONG calibrated edge, ranked by edge
+    best_bets = [
+        p for p in today_picks
+        if not p.get("voided", False)
+        and p.get("result") is None
+        and p.get("bet_recommendation", {}).get("recommendation_tier") in ("POSITIVE", "STRONG")
+    ]
+    best_bets.sort(
+        key=lambda p: p.get("bet_recommendation", {}).get("calibrated_edge_pct", 0),
+        reverse=True,
+    )
+
     total_hits   = sum(1 for p in past_picks if p["result"] == "HIT")
     total_graded = len(past_picks)
     overall_pct  = round(100 * total_hits / total_graded, 1) if total_graded else 0
@@ -766,6 +778,7 @@ def build_site():
         "opportunity_flags":  opportunity_flags,
         "explorer":           explorer_data,
         "top_picks": top_picks,
+        "best_bets": best_bets,
         "top_picks_history": {
             "hits": tp_hits,
             "total": tp_total,
@@ -796,6 +809,7 @@ def generate_html(d: dict) -> str:
     parlays_json    = json.dumps(d.get("parlays", {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}))
     ml_odds_json    = json.dumps(d.get("ml_odds", {}))
     top_picks_json          = json.dumps(d.get("top_picks", []))
+    best_bets_json          = json.dumps(d.get("best_bets", []))
     top_picks_history_json  = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
     yesterday_summary_json  = json.dumps(d.get("yesterday_summary", {}))
     opportunity_flags_json  = json.dumps(d.get("opportunity_flags", []))
@@ -1182,6 +1196,19 @@ def generate_html(d: dict) -> str:
     .tp-conf {{ font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 6px; }}
     .top-picks-divider {{ height: 1px; background: var(--border); margin: 20px 0 16px; }}
 
+    /* Best Bets section */
+    .best-bets-header {{ font-size: 11px; font-weight: 700; text-transform: uppercase;
+                         letter-spacing: 1.5px; color: #2dd4bf; margin-bottom: 10px; }}
+    .best-bets-grid {{ display: flex; flex-direction: column; gap: 8px; }}
+    .best-bet-card {{ background: var(--surface); border: 1px solid var(--border);
+                      border-left: 4px solid #2dd4bf;
+                      border-radius: 10px; padding: 16px 18px;
+                      display: grid; grid-template-columns: 1fr auto;
+                      gap: 12px; align-items: start; }}
+    .bb-edge {{ font-size: 13px; font-weight: 700; color: #2dd4bf; margin-top: 4px; }}
+    .bb-edge.strong {{ color: #22c55e; }}
+    .best-bets-divider {{ height: 1px; background: var(--border); margin: 20px 0 16px; }}
+
     /* History drawers */
     .history-drawer {{ margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; overflow: visible; }}
     .drawer-header {{ background: var(--surface); padding: 12px 16px; cursor: pointer;
@@ -1213,6 +1240,7 @@ def generate_html(d: dict) -> str:
 <div id="tab-picks" class="page active">
   <div id="injury-container"></div>
   <div id="top-picks-container"></div>
+  <div id="best-bets-container"></div>
   <div id="picks-container"></div>
 </div>
 <div id="tab-parlays" class="page"><div id="parlays-container"></div></div>
@@ -1287,6 +1315,7 @@ const DATA = {{
   parlays:          {parlays_json},
   ml_odds:          {ml_odds_json},
   top_picks:         {top_picks_json},
+  best_bets:         {best_bets_json},
   top_picks_history: {top_picks_history_json},
   yesterday_summary: {yesterday_summary_json},
   opportunity_flags: {opportunity_flags_json},
@@ -2004,7 +2033,7 @@ function renderTopPicks() {{
     AST: 'var(--ast)', '3PM': 'var(--3pm)'
   }};
 
-  let html = `<div class="top-picks-header">⚡ TOP PICKS TODAY</div>
+  let html = `<div class="top-picks-header">⚡ TOP PICKS</div>
               <div class="top-picks-grid">`;
 
   tops.forEach(p => {{
@@ -2055,8 +2084,59 @@ function renderTopPicks() {{
   c.innerHTML = html;
 }}
 
+function renderBestBets() {{
+  const c = document.getElementById('best-bets-container');
+  const bets = DATA.best_bets || [];
+  if (!bets.length) {{ c.innerHTML = ''; return; }}
+
+  const STAT_COLOR = {{
+    PTS: 'var(--pts)', REB: 'var(--reb)',
+    AST: 'var(--ast)', '3PM': 'var(--3pm)'
+  }};
+
+  let html = `<div class="best-bets-header">💰 BEST BETS</div>
+              <div class="best-bets-grid">`;
+
+  bets.forEach(p => {{
+    const pt       = p.prop_type || '';
+    const br       = p.bet_recommendation || {{}};
+    const edgePct  = br.calibrated_edge_pct;
+    const tier     = br.recommendation_tier || '';
+    const edgeStr  = edgePct != null ? `+${{edgePct.toFixed(1)}}pp edge` : '';
+    const edgeCls  = tier === 'STRONG' ? 'strong' : '';
+    const borderColor = tier === 'STRONG' ? '#22c55e' : '#2dd4bf';
+    const gameTime = p.game_time ? ` · ${{p.game_time}}` : '';
+    const reasoning = p.reasoning
+      ? `<div class="tp-reasoning">${{p.reasoning}}</div>` : '';
+    const tierWalk = p.tier_walk
+      ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : '';
+
+    html += `
+      <div class="best-bet-card" style="border-left-color:${{borderColor}}">
+        <div class="tp-left">
+          <div class="tp-player">${{p.player_name}}</div>
+          <div class="tp-meta">${{p.team}}${{gameTime}}</div>
+          ${{reasoning}}
+          ${{buildOddsSizing(p)}}
+          ${{tierWalk}}
+        </div>
+        <div class="tp-right">
+          <div class="pick-line">
+            ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
+          </div>
+          <div class="tp-conf">${{p.confidence_pct}}% conf</div>
+          <div class="bb-edge ${{edgeCls}}">${{edgeStr}}</div>
+        </div>
+      </div>`;
+  }});
+
+  html += `</div><div class="best-bets-divider"></div>`;
+  c.innerHTML = html;
+}}
+
 renderInjuries();
 renderTopPicks();
+renderBestBets();
 renderPicks();
 renderResults();
 renderAudit();
