@@ -43,6 +43,7 @@ TEAM_DEFENSE_NARRATIVES_JSON = DATA / "team_defense_narratives.json"
 LINEUPS_JSON                 = DATA / "lineups_today.json"
 SKIPPED_PICKS_JSON           = DATA / "skipped_picks.json"
 ODDS_AVAILABLE_JSON          = DATA / "odds_available.json"
+PLAYOFF_MATCHUP_JSON         = DATA / "playoff_matchup.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -795,6 +796,32 @@ def load_pre_game_news() -> str:
     return "\n\n".join(sections)
 
 
+def load_series_context() -> str:
+    """
+    Load playoff_matchup.json written by agents/playoff_matchup.py.
+    Returns the pre-formatted context_block string for prompt injection.
+    Returns "" if file not found, mode != "playoffs", or no active series today.
+    Never raises — always returns a string.
+    """
+    if not PLAYOFF_MATCHUP_JSON.exists():
+        return ""
+    try:
+        with open(PLAYOFF_MATCHUP_JSON) as f:
+            data = json.load(f)
+        if data.get("mode") != "playoffs":
+            return ""
+        if data.get("date") != TODAY_STR:
+            print("[analyst] playoff_matchup.json is stale (wrong date) — skipping series context.")
+            return ""
+        block = data.get("context_block", "")
+        if block:
+            print(f"[analyst] Loaded series context ({len(block)} chars)")
+        return block
+    except Exception as e:
+        print(f"[analyst] WARNING: could not load playoff_matchup.json: {e}")
+        return ""
+
+
 def load_player_stats() -> dict:
     """Load pre-computed quant stats from player_stats.json."""
     if not PLAYER_STATS_JSON.exists():
@@ -1452,7 +1479,7 @@ def format_available_markets(markets_data: dict | None, player_stats: dict) -> s
 
 # ── Prompt builder ───────────────────────────────────────────────────
 
-def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "", leaderboard: str = "", lineups_section: str = "", available_markets: str = "") -> str:
+def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_context: str, season_context: str, quant_context: str = "", audit_summary: str = "", pre_game_news: str = "", player_profiles: str = "", playoff_picture: str = "", team_defense: str = "", leaderboard: str = "", lineups_section: str = "", available_markets: str = "", series_context: str = "") -> str:
     games_block = json.dumps(games, indent=2)
     injuries_block = json.dumps(injuries, indent=2)
 
@@ -1468,6 +1495,7 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
+    series_context_section  = f"{series_context}\n\n"  if series_context  else ""
     lineups_block           = f"{lineups_section}\n\n" if lineups_section else ""
 
     player_profiles_section = (
@@ -1640,7 +1668,7 @@ selection signals.
 {lineups_block}{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{leaderboard_section}{team_defense_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2447,6 +2475,7 @@ def build_scout_prompt(
     leaderboard: str,
     lineups_section: str,
     available_markets: str = "",
+    series_context: str = "",
 ) -> str:
     """
     Build the Scout prompt — receives all contextual data, no rules.
@@ -2466,6 +2495,7 @@ def build_scout_prompt(
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
+    series_context_section  = f"{series_context}\n\n"  if series_context  else ""
     lineups_block           = f"{lineups_section}\n\n" if lineups_section else ""
 
     player_profiles_section = (
@@ -2510,7 +2540,7 @@ Use `priority: "high"` for players with multiple qualifying props, strong recent
 {lineups_block}{pre_game_section}## SEASON CONTEXT
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{leaderboard_section}{team_defense_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2636,6 +2666,7 @@ def build_pick_prompt(
     audit_context: str,
     audit_summary: str,
     available_markets: str = "",
+    series_context: str = "",
 ) -> str:
     """
     Build the Pick prompt — receives Scout shortlist and filtered quant only.
@@ -2696,7 +2727,7 @@ The Scout's assessment is advisory — use it as a starting point, not a constra
 
 ## SCOUT SHORTLIST
 {scout_shortlist_json}
-
+{f"{chr(10)}{series_context}{chr(10)}" if series_context else ""}
 ## TODAY'S GAMES
 {games_block}
 
@@ -4511,6 +4542,7 @@ def main():
     team_defense    = format_team_defense_section()
     leaderboard     = build_player_leaderboard(game_log, whitelist)
     lineups_section = format_lineups_section(today_teams=set(teams_today))
+    series_context  = load_series_context()
 
     picks_run_at = dt.datetime.now(ET).isoformat()
     write_analyst_snapshot(LINEUPS_JSON, picks_run_at)
@@ -4571,6 +4603,7 @@ def main():
         playoff_picture=playoff_picture, team_defense=team_defense,
         leaderboard=leaderboard, lineups_section=lineups_section,
         available_markets=available_markets,
+        series_context=series_context,
     )
 
     shortlist = call_scout(scout_prompt, model=scout_model)
@@ -4585,6 +4618,7 @@ def main():
             playoff_picture=playoff_picture, team_defense=team_defense,
             leaderboard=leaderboard, lineups_section=lineups_section,
             available_markets=available_markets,
+            series_context=series_context,
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
@@ -4613,6 +4647,7 @@ def main():
             playoff_picture=playoff_picture, team_defense=team_defense,
             leaderboard=leaderboard, lineups_section=lineups_section,
             available_markets=available_markets,
+            series_context=series_context,
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
@@ -4629,6 +4664,7 @@ def main():
         quant_context=filtered_quant_context, audit_context=audit_context,
         audit_summary=audit_summary,
         available_markets=available_markets,
+        series_context=series_context,
     )
 
     picks, skips = call_analyst(pick_prompt, model=MODEL)
