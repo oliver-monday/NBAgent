@@ -567,9 +567,19 @@ def call_parlay_agent(prompt: str) -> list[dict]:
         if not isinstance(parlays, list):
             raise ValueError("Response is not a JSON array")
         return parlays
-    except Exception as e:
-        print(f"[parlay] ERROR parsing Claude response: {e}")
-        print(f"[parlay] Raw response:\n{raw}")
+    except Exception:
+        # Fallback: Claude may have prefixed reasoning before the JSON array
+        bracket_idx = raw.find("[")
+        if bracket_idx >= 0:
+            try:
+                parlays = json.loads(raw[bracket_idx:])
+                if isinstance(parlays, list):
+                    print(f"[parlay] WARNING: extracted JSON array from offset {bracket_idx} (Claude prefixed reasoning)")
+                    return parlays
+            except Exception:
+                pass
+        print(f"[parlay] ERROR parsing Claude response — no valid JSON array found")
+        print(f"[parlay] Raw response (first 500 chars):\n{raw[:500]}")
         sys.exit(1)
 
 
