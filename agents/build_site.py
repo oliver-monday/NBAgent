@@ -1462,7 +1462,7 @@ function buildOddsSizing(p) {{
   if (p.market_line != null) lines.push(`Market line: ${{p.market_line}}`);
   if (br.market_implied_prob != null) lines.push(`Market prob: ${{br.market_implied_prob.toFixed(1)}}%`);
   if (br.calibration_band) lines.push(`Calibration band: ${{br.calibration_band}}`);
-  if (br.calibrated_prob != null) lines.push(`Calibrated prob: ${{(br.calibrated_prob * 100).toFixed(1)}}%`);
+  if (br.calibrated_prob != null) lines.push(`Calibrated prob: ${{br.calibrated_prob.toFixed(1)}}%`);
   if (br.calibrated_edge_pct != null) lines.push(`Edge: ${{br.calibrated_edge_pct > 0 ? '+' : ''}}${{br.calibrated_edge_pct.toFixed(1)}}pp`);
   if (br.kelly_quarter != null) lines.push(`Quarter-Kelly: ${{(br.kelly_quarter * 100).toFixed(1)}}%`);
   if (!lines.length) return '';
@@ -2038,6 +2038,7 @@ function renderTopPicks() {{
           ${{ironBadge}}
           ${{reasoning}}
           ${{lineupUpdateBadge}}
+          ${{buildOddsSizing(p)}}
           ${{tierWalk}}
         </div>
         <div class="tp-right">

@@ -4252,7 +4252,7 @@ def reconcile_pick_values(picks: list[dict]) -> list[dict]:
 
         # Collect all (position, tier) pairs that appear after a step keyword
         step_hits = []
-        for m in re.finditer(r"(?:step|apply|drop|corrected|→|->)[^\d]*(\d+)", tier_walk, re.IGNORECASE):
+        for m in re.finditer(r"(?:step|apply|drop|corrected|→|->)[^\d]{0,20}(\d+)", tier_walk, re.IGNORECASE):
             val = int(m.group(1))
             if val in valid:
                 step_hits.append((m.start(), val))
