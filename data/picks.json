@@ -23361,13 +23361,13 @@
     "opponent": "LAC",
     "home_away": "A",
     "prop_type": "AST",
-    "pick_value": 2,
+    "pick_value": 4,
     "direction": "OVER",
     "confidence_pct": 82,
     "hit_rate_display": "9/10",
     "trend": "down",
     "opp_defense_rating": "mid",
-    "tier_walk": "AST: T6\u2192check; quant shows tier=4 overall=90%. T6 not shown \u226570%. T4=9/10(90%)\u2713. B2B: b2b=90%(10g) \u2192 use b2b rate. Raw_avgs AST: from scout ~5.4 APG L10 \u2192 \u22654.0, not PF/C \u2192 AST T4+ hard gate clear (mid defense, gate only fires for PF/C or raw_avgs<4.0). VOLATILE not tagged on AST. Iron floor B2B road gate: on_back_to_back=True, home_away=A, opp_defense=mid (not tough) \u2192 gate does NOT fire (requires tough). B2B rate 90%. trend=down: no sequential AST adjustment per rules. spread_abs=6.5 not blowout. No BLOWOUT_RISK. High Confidence Gate: B2B present, avg=31.3 \u226530 \u2192 Condition A passes. Condition B: mid confirmed. Condition C: 9/10 b2b + mid defense + B2B resilient = 2 signals \u2192 81%+ gate passes. 90% b2b base \u2192 no penalties \u2192 82% (conservative for trend=down, road B2B). Final: 82%. [reconciled: pick_value corrected 4\u21922 by Python post-processor]",
+    "tier_walk": "AST: T6\u2192check; quant shows tier=4 overall=90%. T6 not shown \u226570%. T4=9/10(90%)\u2713. B2B: b2b=90%(10g) \u2192 use b2b rate. Raw_avgs AST: from scout ~5.4 APG L10 \u2192 \u22654.0, not PF/C \u2192 AST T4+ hard gate clear (mid defense, gate only fires for PF/C or raw_avgs<4.0). VOLATILE not tagged on AST. Iron floor B2B road gate: on_back_to_back=True, home_away=A, opp_defense=mid (not tough) \u2192 gate does NOT fire (requires tough). B2B rate 90%. trend=down: no sequential AST adjustment per rules. spread_abs=6.5 not blowout. No BLOWOUT_RISK. High Confidence Gate: B2B present, avg=31.3 \u226530 \u2192 Condition A passes. Condition B: mid confirmed. Condition C: 9/10 b2b + mid defense + B2B resilient = 2 signals \u2192 81%+ gate passes. 90% b2b base \u2192 no penalties \u2192 82% (conservative for trend=down, road B2B). Final: 82%. [reconciled: pick_value corrected 4\u21922 by Python post-processor] [manual correction: restored to T4 per analyst intent; post-processor regex bug created spurious 4\u21922 step-down]",
     "iron_floor": false,
     "top_pick": false,
     "is_skip": false,
@@ -23375,13 +23375,17 @@
     "result": null,
     "actual_value": null,
     "bet_recommendation": {
-      "calibrated_prob": null,
-      "calibration_band": null,
-      "calibrated_edge_pct": null,
-      "market_implied_prob": null,
-      "kelly_quarter": null,
-      "recommendation_tier": "NO_MARKET"
-    }
+      "calibrated_prob": 87.4,
+      "calibration_band": "76-80%",
+      "calibrated_edge_pct": -2.6,
+      "market_implied_prob": 90.0,
+      "kelly_quarter": 0.0,
+      "recommendation_tier": "NEUTRAL"
+    },
+    "market_line": 3.5,
+    "market_implied_prob": 90.0,
+    "market_book": "fanduel",
+    "edge_pct": -10.0
   },
   {
     "date": "2026-04-08",
@@ -23560,13 +23564,13 @@
     "opponent": "POR",
     "home_away": "H",
     "prop_type": "AST",
-    "pick_value": 2,
+    "pick_value": 4,
     "direction": "OVER",
     "confidence_pct": 80,
     "hit_rate_display": "9/10",
     "trend": "down",
     "opp_defense_rating": "tough",
-    "tier_walk": "AST: T6\u2192check; quant shows tier=4 overall=90%. T6: AST T6+ ceiling: requires 7+/10 AND role context supporting elevated load. Fox's raw_avgs AST: ~5-6 range (primary ball-handler). T6 not shown at \u226570% in quant. T4=9/10(90%)\u2713. AST T4+ hard gate: position guard (not PF/C), raw_avgs AST \u22654.0 \u2192 gate clears for mid/tough. opp_today=tough. Iron floor B2B road gate: not B2B (rest=2d). VOLATILE not on AST. trend=down: no AST sequential penalty. spread_abs=3.5 competitive. vs_tough=85%(20g) \u2014 strong vs tough. High Confidence Gate: rest=2d \u2192 Condition A passes. Condition B: opp_today=tough confirmed with vs_tough=85%. Condition C: 9/10 + home + 2d rest = 2 signals \u2192 81%+ borderline. 80% final with trend=down context. Final: 80%. [reconciled: pick_value corrected 4\u21922 by Python post-processor]",
+    "tier_walk": "AST: T6\u2192check; quant shows tier=4 overall=90%. T6: AST T6+ ceiling: requires 7+/10 AND role context supporting elevated load. Fox's raw_avgs AST: ~5-6 range (primary ball-handler). T6 not shown at \u226570% in quant. T4=9/10(90%)\u2713. AST T4+ hard gate: position guard (not PF/C), raw_avgs AST \u22654.0 \u2192 gate clears for mid/tough. opp_today=tough. Iron floor B2B road gate: not B2B (rest=2d). VOLATILE not on AST. trend=down: no AST sequential penalty. spread_abs=3.5 competitive. vs_tough=85%(20g) \u2014 strong vs tough. High Confidence Gate: rest=2d \u2192 Condition A passes. Condition B: opp_today=tough confirmed with vs_tough=85%. Condition C: 9/10 + home + 2d rest = 2 signals \u2192 81%+ borderline. 80% final with trend=down context. Final: 80%. [reconciled: pick_value corrected 4\u21922 by Python post-processor] [manual correction: restored to T4 per analyst intent; post-processor regex bug created spurious 4\u21922 step-down]",
     "iron_floor": false,
     "top_pick": false,
     "is_skip": false,
@@ -23574,12 +23578,16 @@
     "result": null,
     "actual_value": null,
     "bet_recommendation": {
-      "calibrated_prob": null,
-      "calibration_band": null,
-      "calibrated_edge_pct": null,
-      "market_implied_prob": null,
-      "kelly_quarter": null,
-      "recommendation_tier": "NO_MARKET"
-    }
+      "calibrated_prob": 87.4,
+      "calibration_band": "76-80%",
+      "calibrated_edge_pct": -2.6,
+      "market_implied_prob": 90.0,
+      "kelly_quarter": 0.0,
+      "recommendation_tier": "NEUTRAL"
+    },
+    "market_line": 3.5,
+    "market_implied_prob": 90.0,
+    "market_book": "fanduel",
+    "edge_pct": -10.0
   }
 ]
