@@ -224,15 +224,15 @@ def _load_calibration_bands() -> dict[str, float] | None:
     try:
         with open(AUDIT_SUMMARY_JSON) as f:
             summary = json.load(f)
-        cal = summary.get("confidence_calibration", {})
+        cal = summary.get("confidence_calibration_totals", {})
         if not cal:
-            print("[odds] No confidence_calibration in audit_summary.json")
+            print("[odds] No confidence_calibration_totals in audit_summary.json")
             return None
         bands = {}
         for band_label, band_data in cal.items():
-            rate = band_data.get("rate")
+            rate = band_data.get("hit_rate_pct")
             if rate is not None:
-                bands[band_label] = float(rate)
+                bands[band_label] = float(rate) / 100.0
         if not bands:
             return None
         print(f"[odds] Calibration bands loaded: {bands}")
@@ -261,13 +261,13 @@ def _get_calibrated_prob(stated_confidence: float, bands: dict[str, float]) -> f
 
     sc = float(stated_confidence)
     if sc >= 86.0:
-        rate = bands.get("86%+")
+        rate = bands.get("86+")
     elif sc >= 81.0:
-        rate = bands.get("81-85%")
+        rate = bands.get("81-85")
     elif sc >= 76.0:
-        rate = bands.get("76-80%")
+        rate = bands.get("76-80")
     elif sc >= 70.0:
-        rate = bands.get("70-75%")
+        rate = bands.get("70-75")
     else:
         rate = None
 

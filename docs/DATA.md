@@ -437,7 +437,7 @@ actual_value, would_have_hit, skip_verdict, skip_verdict_notes
 `skip_verdict` values: `correct_skip` / `false_skip` / `no_data`. Enables longitudinal false-skip-rate analysis and retrospective skip-rule debugging across the full season (previously impossible because `skipped_picks.json` is overwritten each morning by the analyst).
 
 ### audit_summary.json
-Rolled-up season stats written fresh after every auditor run by `save_audit_summary()`. Consumed by `analyst.py` as `## ROLLING PERFORMANCE SUMMARY`. Key blocks: `overall` (season hit rates, injury_exclusions, voided count), `prop_type_breakdown` (per-stat rates), `confidence_calibration` (per-band actual vs stated), `skip_validation` (per-rule false skip rates), `human_flag_precision` (season hit/miss rates grouped by `human_verdict` — "keep"/"trim"/"manual_skip" — computed from `picks.json` directly; accumulates automatically without explicit audit_log entries).
+Rolled-up season stats written fresh after every auditor run by `save_audit_summary()`. Consumed by `analyst.py` as `## ROLLING PERFORMANCE SUMMARY`. Key blocks: `overall` (season hit rates, injury_exclusions, voided count), `prop_type_breakdown` (per-stat rates), `confidence_calibration_totals` (per-band actual vs stated — keys: `"70-75"`, `"76-80"`, `"81-85"`, `"86+"`, each with `picks`, `hits`, `misses`, `hit_rate_pct`), `skip_validation` (per-rule false skip rates), `human_flag_precision` (season hit/miss rates grouped by `human_verdict` — "keep"/"trim"/"manual_skip" — computed from `picks.json` directly; accumulates automatically without explicit audit_log entries).
 
 ---
 
