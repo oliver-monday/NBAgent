@@ -39,7 +39,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas numpy anthropic requests json-repair
+          pip install pandas numpy anthropic requests json-repair httpx
 
       - name: Refresh injuries before picks
         env:
