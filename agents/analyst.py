@@ -2406,7 +2406,8 @@ JSON schema:
       "hit_rate_display": "string — fraction from last 10 games at this tier, e.g. '8/10'",
       "trend": "up | stable | down",
       "opp_defense_rating": "soft | mid | tough | unknown",
-      "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
+      "tier_walk": "string — your reasoning trace for this pick. Document each tier evaluated, step-downs applied, penalties, and final confidence calculation.",
+      "walked_tier": number — MANDATORY. The final integer tier threshold AFTER all step-downs. If you stepped PTS from T25 to T20, walked_tier is 20. If no steps were applied, walked_tier equals the starting tier. Must equal pick_value.,
       "iron_floor": true or false,
       "top_pick": true or false,
       "is_skip": true or false — MANDATORY. Set true if your tier_walk concludes this pick should be skipped for ANY reason (hard rule, step-down below minimum tier, confidence below floor, etc.). Set false for all picks you are genuinely emitting. A pick with is_skip=true in the picks array will be removed before publication — this is the authoritative skip signal.,
@@ -2444,11 +2445,11 @@ TEAMMATE REFERENCES:
 
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
-- CRITICAL — pick_value output contract: pick_value must ALWAYS equal the final
-  stepped-down tier threshold, not the pre-step original tier. If the tier_walk applies
-  a step-down (e.g., B2B <5g → T4, FG_MARGIN_THIN → T15, VOLATILE → T20), the emitted
-  pick_value must be the post-step value. If tier_walk states "step to T4" then
-  pick_value must be 4. If tier_walk states "step to T15" then pick_value must be 15.
+- CRITICAL — pick_value + walked_tier output contract: After completing your tier_walk
+  reasoning, set walked_tier to the final integer tier threshold. Then set pick_value
+  to the same integer. Both fields must agree. If your tier_walk applies a step-down
+  (e.g., FG_MARGIN_THIN steps T15 → T10), both walked_tier and pick_value must be 10.
+  A Python post-processor verifies walked_tier == pick_value and corrects mismatches.
   Emitting the pre-step tier value when a step-down was applied is a pick construction
   error — the auditor and grading systems read pick_value as the operative threshold.
 - direction is always OVER.
@@ -3534,7 +3535,8 @@ JSON schema:
       "hit_rate_display": "string — fraction from last 10 games at this tier, e.g. '8/10'",
       "trend": "up | stable | down",
       "opp_defense_rating": "soft | mid | tough | unknown",
-      "tier_walk": "string — compact walk-down showing tiers checked, e.g. 'PTS: 25→4/10 20→9/10✓'",
+      "tier_walk": "string — your reasoning trace for this pick. Document each tier evaluated, step-downs applied, penalties, and final confidence calculation.",
+      "walked_tier": number — MANDATORY. The final integer tier threshold AFTER all step-downs. If you stepped PTS from T25 to T20, walked_tier is 20. If no steps were applied, walked_tier equals the starting tier. Must equal pick_value.,
       "iron_floor": true or false,
       "top_pick": true or false,
       "is_skip": true or false — MANDATORY. Set true if your tier_walk concludes this pick should be skipped for ANY reason (hard rule, step-down below minimum tier, confidence below floor, etc.). Set false for all picks you are genuinely emitting. A pick with is_skip=true in the picks array will be removed before publication — this is the authoritative skip signal.,
@@ -3572,11 +3574,11 @@ TEAMMATE REFERENCES:
 
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
-- CRITICAL — pick_value output contract: pick_value must ALWAYS equal the final
-  stepped-down tier threshold, not the pre-step original tier. If the tier_walk applies
-  a step-down (e.g., B2B <5g → T4, FG_MARGIN_THIN → T15, VOLATILE → T20), the emitted
-  pick_value must be the post-step value. If tier_walk states "step to T4" then
-  pick_value must be 4. If tier_walk states "step to T15" then pick_value must be 15.
+- CRITICAL — pick_value + walked_tier output contract: After completing your tier_walk
+  reasoning, set walked_tier to the final integer tier threshold. Then set pick_value
+  to the same integer. Both fields must agree. If your tier_walk applies a step-down
+  (e.g., FG_MARGIN_THIN steps T15 → T10), both walked_tier and pick_value must be 10.
+  A Python post-processor verifies walked_tier == pick_value and corrects mismatches.
   Emitting the pre-step tier value when a step-down was applied is a pick construction
   error — the auditor and grading systems read pick_value as the operative threshold.
 - direction is always OVER.
@@ -4228,96 +4230,119 @@ def call_analyst(prompt: str, model: str = MODEL) -> tuple[list[dict], list[dict
 
 def reconcile_pick_values(picks: list[dict]) -> list[dict]:
     """
-    Post-process picks to ensure pick_value matches the final stepped-down tier
-    documented in tier_walk. Claude correctly reasons about mandatory step-downs
-    (min_floor, FG_COLD, volatility, etc.) and records them in tier_walk, but
-    does not always update pick_value. This function detects the mismatch and
-    corrects it before writing to disk.
+    Post-process picks to ensure pick_value matches the analyst's declared
+    walked_tier — the final tier after all step-downs.
 
-    Only lowers pick_value — never raises it. Skips ambiguous cases.
+    Primary path: read walked_tier field (integer). If it disagrees with
+    pick_value, correct pick_value downward.
+
+    Fallback path: if walked_tier is missing (transition period), attempt
+    regex parsing of tier_walk text using legacy logic.
+
+    Only lowers pick_value — never raises it.
     """
     import re
 
-    # Step-down indicator keywords — when these appear in tier_walk, the integer
-    # that follows (or precedes via →) is the destination tier after stepping down.
+    # Legacy step-down keywords for fallback regex path
     STEP_KEYWORDS = re.compile(
         r"\b(step|apply|drop|corrected|→|->)\b", re.IGNORECASE
     )
 
     for pick in picks:
-        tier_walk = pick.get("tier_walk") or ""
         prop_type  = pick.get("prop_type", "")
         pick_value = pick.get("pick_value")
+        name       = pick.get("player_name", "?")
 
-        if not tier_walk or prop_type not in VALID_TIERS or pick_value is None:
+        if prop_type not in VALID_TIERS or pick_value is None:
             continue
 
         valid = VALID_TIERS[prop_type]
-        name  = pick.get("player_name", "?")
+        walked = pick.get("walked_tier")
 
-        # ── Strategy 1: find the last ✓-marked tier, then check if a step keyword
-        # appears after it pointing to a lower tier. ─────────────────────────────
-        # Collect all (position, tier) pairs where a valid tier value is followed by ✓
-        check_hits = []
-        for m in re.finditer(r"\b(\d+)\b[^✓\n]*✓", tier_walk):
-            val = int(m.group(1))
-            if val in valid:
-                check_hits.append((m.start(), val))
+        # ── Primary path: walked_tier field ─────────────────────────────
+        if walked is not None:
+            try:
+                walked = int(walked)
+            except (ValueError, TypeError):
+                print(
+                    f"[analyst] RECONCILE_WARN: {name} {prop_type} — "
+                    f"walked_tier={pick.get('walked_tier')!r} is not a valid integer, "
+                    f"falling through to regex"
+                )
+                walked = None
 
-        # Collect all (position, tier) pairs that appear after a step keyword
+        if walked is not None:
+            if walked == pick_value:
+                continue  # Agreement — no action needed
+
+            if walked not in valid:
+                print(
+                    f"[analyst] RECONCILE_WARN: {name} {prop_type} — "
+                    f"walked_tier={walked} is not a valid {prop_type} tier "
+                    f"{valid}, leaving pick_value={pick_value}"
+                )
+                continue
+
+            if walked > pick_value:
+                print(
+                    f"[analyst] RECONCILE_WARN: {name} {prop_type} — "
+                    f"walked_tier={walked} > pick_value={pick_value} "
+                    f"(never raise), leaving pick_value={pick_value}"
+                )
+                continue
+
+            # walked_tier < pick_value and is a valid tier — correct it
+            old_val = pick_value
+            pick["pick_value"] = walked
+            pick["tier_walk"] = (
+                (pick.get("tier_walk") or "")
+                + f" [reconciled: pick_value corrected {old_val}→{walked}"
+                  f" via walked_tier]"
+            )
+            print(
+                f"[analyst] RECONCILED: {name} {prop_type} "
+                f"pick_value {old_val}→{walked} (walked_tier)"
+            )
+            continue
+
+        # ── Fallback path: regex parsing of tier_walk (legacy) ──────────
+        # Used only when walked_tier is missing (transition period).
+        tier_walk = pick.get("tier_walk") or ""
+        if not tier_walk:
+            continue
+
+        # Collect (position, tier) pairs after step keywords
         step_hits = []
-        for m in re.finditer(r"(?:step|apply|drop|corrected|→|->)[^\d]{0,20}(\d+)", tier_walk, re.IGNORECASE):
+        for m in re.finditer(
+            r"(?:step|apply|drop|corrected|→|->)[^\d]{0,20}(\d+)",
+            tier_walk, re.IGNORECASE,
+        ):
             val = int(m.group(1))
             if val in valid:
                 step_hits.append((m.start(), val))
 
         final_tier = None
-
         if step_hits:
-            # The rightmost step-destination is the final tier
             candidate = max(step_hits, key=lambda x: x[0])[1]
-            # Only accept if it is lower than current pick_value (step-downs only)
             if candidate < pick_value:
                 final_tier = candidate
 
-        # ── Strategy 2 (fallback): if Strategy 1 found a ✓-qualified tier but no
-        # step destination, scan for →T{N} arrow patterns as a fallback.
-        # Gated on check_hits being non-empty — if there were no ✓ marks at all,
-        # Strategy 2 could falsely match unrelated tier mentions in the text. ────
-        if final_tier is None and check_hits:
-            arrow_hits = []
-            for m in re.finditer(r"(?:→|->)\s*T?(\d+)", tier_walk, re.IGNORECASE):
-                val = int(m.group(1))
-                if val in valid and val < pick_value:
-                    arrow_hits.append((m.start(), val))
-            if arrow_hits:
-                final_tier = max(arrow_hits, key=lambda x: x[0])[1]
-
         if final_tier is None:
-            # Could not determine a stepped-down tier unambiguously — leave as-is
             if STEP_KEYWORDS.search(tier_walk):
-                # Only log when step keywords were present (genuine parse failure)
                 print(
                     f"[analyst] RECONCILE_SKIP: {name} {prop_type} — "
-                    f"could not parse final tier from tier_walk"
+                    f"walked_tier missing, could not parse final tier "
+                    f"from tier_walk (regex fallback)"
                 )
             continue
 
         if final_tier == pick_value:
-            continue  # Already correct — no action needed
-
-        # Safety: never raise pick_value via this function
-        if final_tier > pick_value:
-            print(
-                f"[analyst] RECONCILE_SKIP: {name} {prop_type} — "
-                f"parsed tier {final_tier} > pick_value {pick_value}, skipping"
-            )
             continue
 
-        # One-tier-step guard: only accept steps of exactly one tier at a time.
-        # Multi-tier jumps (e.g., T20→T10) are suspicious — the tier_walk text likely
-        # mentioned both tiers in context, not as a genuine two-step cascade. Require
-        # that the parsed destination equals the next valid tier below pick_value.
+        if final_tier > pick_value:
+            continue
+
+        # One-tier-step guard (legacy safety — only for regex path)
         if pick_value in valid:
             current_idx = valid.index(pick_value)
             if current_idx > 0:
@@ -4325,20 +4350,22 @@ def reconcile_pick_values(picks: list[dict]) -> list[dict]:
                 if final_tier != next_lower_tier:
                     print(
                         f"[analyst] RECONCILE_SKIP: {name} {prop_type} — "
-                        f"parsed step {pick_value}→{final_tier} spans more than one tier "
+                        f"regex parsed step {pick_value}→{final_tier} "
+                        f"spans more than one tier "
                         f"(expected {next_lower_tier}), skipping"
                     )
                     continue
 
         old_val = pick_value
         pick["pick_value"] = final_tier
-        pick["tier_walk"]  = (
+        pick["tier_walk"] = (
             tier_walk
-            + f" [reconciled: pick_value corrected {old_val}→{final_tier} by Python post-processor]"
+            + f" [reconciled: pick_value corrected {old_val}→{final_tier}"
+              f" by regex fallback]"
         )
         print(
-            f"[analyst] RECONCILED: {name} {prop_type} pick_value {old_val}→{final_tier} "
-            f"(tier_walk indicated step-down)"
+            f"[analyst] RECONCILED: {name} {prop_type} "
+            f"pick_value {old_val}→{final_tier} (regex fallback)"
         )
 
     return picks
