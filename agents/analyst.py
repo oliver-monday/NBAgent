@@ -4491,12 +4491,88 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
 
 
 
+def enforce_market_gate(picks: list[dict]) -> list[dict]:
+    """
+    Post-processor: remove picks that have no FanDuel market in odds_available.json.
+
+    This is the Python enforcement layer for the analyst prompt's no-market hard rule.
+    Claude occasionally emits picks for player+prop+tier combinations that have no
+    FanDuel market — this function catches those before they reach picks.json.
+
+    When odds_available.json is missing or stale, the gate is disabled and all picks
+    pass through (never block picks due to missing odds data).
+
+    Returns the filtered pick list.
+    """
+    import re
+
+    markets_data = load_available_markets()
+    if markets_data is None:
+        print("[analyst] Market gate: odds_available.json unavailable — gate disabled")
+        return picks
+
+    players_markets = markets_data.get("players", {})
+    if not players_markets:
+        print("[analyst] Market gate: no player markets in odds_available.json — gate disabled")
+        return picks
+
+    def _norm(name: str) -> str:
+        return re.sub(r"[^a-z0-9 ]", "", name.lower()).strip()
+
+    kept = []
+    rejected = 0
+    for pick in picks:
+        player_name = pick.get("player_name", "")
+        prop_type = pick.get("prop_type", "")
+        pick_value = pick.get("pick_value")
+
+        if not player_name or not prop_type or pick_value is None:
+            kept.append(pick)
+            continue
+
+        norm_name = _norm(player_name)
+        market_entry = players_markets.get(norm_name)
+
+        if market_entry is None:
+            # Player not in FanDuel data at all
+            print(
+                f"[analyst] MARKET_GATE_REJECT: {player_name} {prop_type} T{pick_value} — "
+                f"player not in FanDuel market data"
+            )
+            rejected += 1
+            continue
+
+        prop_tiers = market_entry.get(prop_type, [])
+        available_tier_values = {t.get("tier") for t in prop_tiers if t.get("tier") is not None}
+
+        if pick_value not in available_tier_values:
+            available_str = sorted(available_tier_values) if available_tier_values else "none"
+            print(
+                f"[analyst] MARKET_GATE_REJECT: {player_name} {prop_type} T{pick_value} — "
+                f"tier not in FanDuel markets (available: {available_str})"
+            )
+            rejected += 1
+            continue
+
+        kept.append(pick)
+
+    if rejected:
+        print(f"[analyst] Market gate: removed {rejected} pick(s) with no FanDuel market")
+    else:
+        print(f"[analyst] Market gate: all {len(kept)} picks have valid markets")
+
+    return kept
+
+
 def save_picks(picks: list[dict]):
     # Filter out picks where analyst's own tier_walk reasoning concluded skip
     picks = filter_self_skip_picks(picks)
 
     # Reconcile pick_value against tier_walk step-down documentation
     picks = reconcile_pick_values(picks)
+
+    # Enforce FanDuel market existence — reject picks with no market
+    picks = enforce_market_gate(picks)
 
     # Load existing picks (from prior days), append today's
     existing = []
