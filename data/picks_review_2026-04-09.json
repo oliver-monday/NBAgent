@@ -1,0 +1,132 @@
+[
+  {
+    "date": "2026-04-09",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Non-iron-floor 3PM picks carry confirmed session-wide variance risk; the sole session miss was a non-iron-floor 3PM (RJ Barrett) despite a 9/10 hit rate, and post_miss_hr of 83% with a typical_miss of only 1.0 below threshold means a single cold night lands exactly at the floor. BOS is a slight road underdog (+4.5), and tight competitive game scripts can compress catch-and-shoot volume for secondary options when possessions are at a premium."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on AST with a post_miss hit rate of only 43% \u2014 the lowest on the entire slate \u2014 means a recent miss creates a meaningful sequential slump risk. The typical miss is 2.0 below threshold, so variance swings are wide, and 70% confidence on a volatile prop with a deeply depressed post-miss rate is a thin margin."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Non-iron-floor 3PM at T3 (over 2) requires sustained volume; historical session data shows 3PM is the system's most volatile prop type and the 80% cap on non-iron-floor picks reflects real single-game variance. A competitive NY defense in a close spread game (-4.5) that slows pace or forces more isolation scoring can easily suppress a second three-pointer."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 26.0 with an avg of 30.7 means a single low-minutes game \u2014 entirely plausible for a bench scorer in a tight playoff-race game \u2014 puts the floor at risk; Pritchard's role is minutes-contingent, and a tough NY defense with a 53% vs_tough rate at this tier (implied by the step-down reasoning) adds scoring compression risk on top of minutes fragility."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Mikal Bridges",
+    "team": "NY",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "OG Anunoby",
+    "team": "NY",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a vs_tough rate of only 53% (17 games) against a BOS defense that qualifies as tough produces a structurally fragile floor; the min_floor of 29.0 against an avg of 35.1 shows meaningful minutes variance, and 70% confidence on a volatile scorer facing a tough matchup sits at the system's minimum qualifying threshold with limited cushion."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "OG Anunoby",
+    "team": "NY",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]

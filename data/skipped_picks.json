@@ -1,242 +1,167 @@
 [
   {
-    "date": "2026-04-08",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "CLE",
+    "date": "2026-04-09",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "NY",
     "prop_type": "REB",
-    "tier_considered": 8,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Jalen Johnson",
-      "prop_type": "REB",
-      "tier_considered": 8,
-      "reason": "VOLATILE tag at T8; step to T6 results in estimated 80% - 5% VOLATILE = 75%, below 78% REB minimum floor"
-    },
-    "actual_value": 11.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 11.0 \u2265 tier 8"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "CLE",
-    "prop_type": "3PM",
-    "tier_considered": 1,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Jalen Johnson",
-      "prop_type": "3PM",
-      "tier_considered": 1,
-      "reason": "VOLATILE -5% applied to 75% overall = 70%, below 75% 3PM minimum confidence floor"
-    },
-    "actual_value": 0.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 0.0 < tier 1"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "James Harden",
-    "team": "CLE",
-    "opponent": "ATL",
-    "prop_type": "AST",
     "tier_considered": 6,
     "direction": "OVER",
-    "skip_reason": "volatile_ast_t6",
-    "rule_context": {
-      "player_name": "James Harden",
-      "prop_type": "AST",
-      "tier_considered": 6,
-      "reason": "VOLATILE tag + AST tier T6 triggers unconditional VOLATILE AST T6+ hard skip"
-    },
-    "actual_value": 4.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 4.0 < tier 6"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "James Harden",
-    "team": "CLE",
-    "opponent": "ATL",
-    "prop_type": "REB",
-    "tier_considered": 4,
-    "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_name": "James Harden",
-      "prop_type": "REB",
-      "tier_considered": 4,
-      "reason": "VOLATILE -5% applied to 80% base = 75%, below 78% REB minimum floor"
-    },
-    "actual_value": 5.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "Kawhi Leonard",
-    "team": "LAC",
-    "opponent": "OKC",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Kawhi Leonard",
-      "prop_type": "PTS",
-      "tier_considered": 20,
-      "reason": "FG_MARGIN_NEG steps T25\u2192T20; VOLATILE -5% + B2B rate (70%) + tough defense (-5%) = 60%, below 70% floor"
-    },
-    "actual_value": 20.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 20.0 \u2265 tier 20"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "MEM",
-    "prop_type": "PTS",
-    "tier_considered": 25,
-    "direction": "OVER",
-    "skip_reason": "blowout_t25_skip",
-    "rule_context": {
-      "player_name": "Nikola Jokic",
-      "prop_type": "PTS",
-      "tier_considered": 25,
-      "reason": "spread_abs=22.5 >= 15 AND DEN is favored \u2014 T25 hard skip unconditional"
-    },
-    "actual_value": 14.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 14.0 < tier 25"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "MEM",
-    "prop_type": "REB",
-    "tier_considered": 10,
-    "direction": "OVER",
-    "skip_reason": "reb_floor_skip",
-    "rule_context": {
-      "player_name": "Nikola Jokic",
-      "prop_type": "REB",
-      "tier_considered": 10,
-      "reason": "Offensive-first player (PTS>>20, AST>6); lowest L10 REB estimated within 2 of T10 pick_value; step from T12 due to 25th-pct gate; offensive-first gate fires at T10"
-    },
-    "actual_value": 16.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 16.0 \u2265 tier 10"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "MEM",
-    "prop_type": "AST",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "volatile_ast_t6",
-    "rule_context": {
-      "player_name": "Nikola Jokic",
-      "prop_type": "AST",
-      "tier_considered": 6,
-      "reason": "VOLATILE + AST tier T6+ unconditional hard skip; no T4 market available on FanDuel for Jokic AST"
-    },
-    "actual_value": 10.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 10.0 \u2265 tier 6"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "MEM",
-    "prop_type": "3PM",
-    "tier_considered": 1,
-    "direction": "OVER",
-    "skip_reason": "3pm_blowout_trend_down",
-    "rule_context": {
-      "player_name": "Nikola Jokic",
-      "prop_type": "3PM",
-      "tier_considered": 1,
-      "reason": "spread_abs=22.5 >= 19 AND DEN favored \u2014 extreme blowout unconditional 3PM hard skip for all favored team players"
-    },
-    "actual_value": 0.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 0.0 < tier 1"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "De'Aaron Fox",
-    "team": "SA",
-    "opponent": "POR",
-    "prop_type": "3PM",
-    "tier_considered": 1,
-    "direction": "OVER",
-    "skip_reason": "min_floor_tier_step",
-    "rule_context": {
-      "player_name": "De'Aaron Fox",
-      "prop_type": "3PM",
-      "tier_considered": 1,
-      "reason": "trend=down mandatory step-down from T1 goes below minimum valid 3PM tier; skip per step-down rule"
-    },
-    "actual_value": 3.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
-  },
-  {
-    "date": "2026-04-08",
-    "player_name": "Victor Wembanyama",
-    "team": "SA",
-    "opponent": "POR",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Victor Wembanyama",
-      "prop_type": "PTS",
-      "tier_considered": 20,
-      "reason": "Player listed as DOUBTFUL in injury report \u2014 hard exclusion, no picks generated per injury backstop rule"
+      "overall_hit_rate": "75%",
+      "volatile_penalty": "-5%",
+      "adjusted_confidence": "70%",
+      "reb_minimum_floor": "78%",
+      "reason": "After VOLATILE -5% penalty, 70% confidence falls below REB 78% minimum floor requirement"
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-08",
-    "player_name": "Victor Wembanyama",
-    "team": "SA",
-    "opponent": "POR",
-    "prop_type": "REB",
-    "tier_considered": 8,
+    "date": "2026-04-09",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "PTS",
+    "tier_considered": 15,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_name": "Victor Wembanyama",
-      "prop_type": "REB",
-      "tier_considered": 8,
-      "reason": "Player listed as DOUBTFUL in injury report \u2014 hard exclusion per injury backstop rule"
+      "original_tier": 20,
+      "step_reason": "FG_MARGIN_NEG:-5% mandatory step-down",
+      "stepped_tier": 15,
+      "base_estimate": "77%",
+      "volatile_penalty": "-5%",
+      "short_sample_penalty": "-5%",
+      "adjusted_confidence": "67%",
+      "reason": "After FG_MARGIN_NEG step to T15, VOLATILE -5% and SHORT_SAMPLE -5% penalties reduce confidence below 70% floor"
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Jayson Tatum",
+      "prop_type": "AST",
+      "tier_considered": 2,
+      "reason": "No FanDuel market available for Jayson Tatum AST T2; available AST tiers are T4/T6/T8/T10/T12"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Payton Pritchard",
+      "prop_type": "AST",
+      "tier_considered": 2,
+      "reason": "Payton Pritchard does not appear in FanDuel market availability list"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Payton Pritchard",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "Payton Pritchard does not appear in FanDuel market availability list"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jalen Brunson",
+    "team": "NY",
+    "opponent": "BOS",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_tough_dvp",
+    "rule_context": {
+      "trend": "down",
+      "analytically_selected_tier": 1,
+      "step_result": "below_minimum_valid_tier",
+      "reason": "trend=down mandatory step-down from T1 produces no valid lower tier; skip required when stepped tier falls below minimum valid 3PM tier of T1"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NY",
+    "opponent": "BOS",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "Karl-Anthony Towns does not appear in FanDuel market availability list"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Mikal Bridges",
+    "team": "NY",
+    "opponent": "BOS",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_tough_dvp",
+    "rule_context": {
+      "trend": "down",
+      "analytically_selected_tier": 1,
+      "step_result": "below_minimum_valid_tier",
+      "reason": "trend=down mandatory step-down from T1 produces no valid lower tier; skip required when stepped tier falls below minimum valid 3PM tier of T1"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]

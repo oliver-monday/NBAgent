@@ -4163,5 +4163,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-09",
+    "parlays": [
+      {
+        "label": "Celtic Duo + Barnes",
+        "type": "mixed",
+        "legs": [
+          {
+            "player_name": "Jaylen Brown",
+            "team": "BOS",
+            "opponent": "NY",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Jayson Tatum",
+            "team": "BOS",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "MIA",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+100",
+        "confidence_product": 0.4992,
+        "correlation": "mixed",
+        "rationale": "Brown PTS and Tatum AST are both POSITIVE edge BOS legs; Barnes PTS is the only FADE leg, limiting FADE exposure to one.",
+        "date": "2026-04-09",
+        "id": "parlay_2026-04-09_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
