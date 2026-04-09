@@ -548,7 +548,7 @@ def call_claude_staleness_check(
         client  = anthropic.Anthropic(api_key=api_key)
         message = client.messages.create(
             model=MODEL,
-            max_tokens=1024,
+            max_tokens=MAX_TOKENS,
             system=system_prompt,
             messages=[{"role": "user", "content": user_message}],
         )
@@ -558,11 +558,18 @@ def call_claude_staleness_check(
             if raw.startswith("json"):
                 raw = raw[4:]
         raw = raw.strip()
-        result = json.loads(raw)
-        return result.get("flags") or []
-    except json.JSONDecodeError as e:
-        print(f"[pre_game_reporter] WARNING: staleness check JSON parse failed: {e}")
-        return []
+        try:
+            result = json.loads(raw)
+        except json.JSONDecodeError:
+            try:
+                from json_repair import repair_json
+                result = repair_json(raw, return_objects=True)
+                print("[pre_game_reporter] WARNING: staleness check JSON repaired via json_repair")
+            except Exception as e2:
+                print(f"[pre_game_reporter] WARNING: staleness check JSON parse failed "
+                      f"(repair also failed: {e2})")
+                return []
+        return (result.get("flags") if isinstance(result, dict) else []) or []
     except Exception as e:
         print(f"[pre_game_reporter] WARNING: staleness check Claude call failed: {e}")
         return []
@@ -791,20 +798,25 @@ def main() -> None:
     all_raw_items: list[dict] = []
     fetch_errors:  list[str]  = []
 
+    no_id_count = 0
+    http_fail_count = 0
     for player in target_players:
         name = player["player_name"]
         aid  = athlete_id_map.get(name.lower())
         if not aid:
             fetch_errors.append(name)
+            no_id_count += 1
             continue
         items, ok = fetch_player_news(aid, name.lower())
         if not ok:
             fetch_errors.append(name)
+            http_fail_count += 1
         all_raw_items.extend(items)
 
     print(
         f"[pre_game_reporter] ESPN news fetched: {len(target_players)} players, "
-        f"{len(fetch_errors)} fetch errors"
+        f"{len(fetch_errors)} fetch errors "
+        f"({no_id_count} no athlete_id, {http_fail_count} HTTP failures)"
     )
 
     # Fetch league-wide news once — matched to tracked players or tagged "_game"
