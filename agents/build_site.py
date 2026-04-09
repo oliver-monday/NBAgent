@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import datetime as dt
 from collections import defaultdict
+import re
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -34,6 +35,8 @@ MASTER_CSV              = DATA / "nba_master.csv"
 INJURIES_JSON           = DATA / "injuries_today.json"
 OPPORTUNITY_FLAGS_JSON  = DATA / "opportunity_flags.json"
 PICKS_REVIEW_JSON       = DATA / f"picks_review_{TODAY_STR}.json"
+ODDS_AVAILABLE_JSON     = DATA / "odds_available.json"
+PLAYER_STATS_JSON       = DATA / "player_stats.json"
 WHITELIST_CSV           = ROOT / "playerprops" / "player_whitelist.csv"
 
 # Team abbreviation normalization — nba_master.csv sometimes uses legacy short forms
@@ -670,6 +673,90 @@ def get_top_picks(picks: list, max_picks: int = 5) -> list:
     return sorted(candidates, key=score, reverse=True)[:max_picks]
 
 
+def enrich_alt_tiers(today_picks: list[dict]) -> None:
+    """Attach alt_tiers data to each today pick for the Odds + Sizing drawer.
+
+    Joins odds_available.json (FanDuel lines at all tiers) with
+    player_stats.json (quant tier hit rates) to produce a list of
+    alternate tiers per pick — tiers the system did NOT pick but which
+    have FanDuel markets.
+
+    Mutates picks in-place: adds pick["alt_tiers"] = [...].
+    Graceful no-op when either data file is missing or stale.
+    """
+    odds_data = load_json(ODDS_AVAILABLE_JSON, None)
+    if not odds_data or not isinstance(odds_data, dict):
+        return
+    if odds_data.get("date") != TODAY_STR:
+        return  # stale odds data — skip
+    odds_players = odds_data.get("players", {})
+    if not odds_players:
+        return
+
+    stats_data = load_json(PLAYER_STATS_JSON, None)
+    if not stats_data or not isinstance(stats_data, dict):
+        return
+
+    def _norm(name: str) -> str:
+        return re.sub(r"[^a-z0-9 ]", "", name.lower()).strip()
+
+    # Build normalised-name → stats lookup
+    stats_by_norm: dict[str, dict] = {}
+    for display_name, sdata in stats_data.items():
+        stats_by_norm[_norm(display_name)] = sdata
+
+    for pick in today_picks:
+        pick_name = pick.get("player_name", "")
+        prop_type = pick.get("prop_type", "")
+        pick_value = pick.get("pick_value")
+        if not pick_name or not prop_type or pick_value is None:
+            continue
+
+        norm_name = _norm(pick_name)
+        market_entry = odds_players.get(norm_name)
+        if not market_entry:
+            continue
+
+        market_tiers = market_entry.get(prop_type, [])
+        if not market_tiers:
+            continue
+
+        # Get tier_hit_rates from player_stats
+        player_stats = stats_by_norm.get(norm_name, {})
+        hit_rates = (player_stats.get("tier_hit_rates") or {}).get(prop_type, {})
+        games = min(player_stats.get("games_available", 20), 20)
+
+        alt_tiers = []
+        for mt in market_tiers:
+            tier = mt.get("tier")
+            if tier is None or tier == pick_value:
+                continue  # skip the picked tier
+            implied = mt.get("implied_prob")
+            line = mt.get("line")
+            if implied is None or line is None:
+                continue  # insufficient data
+
+            rate = hit_rates.get(str(tier))
+            if rate is None:
+                continue  # no quant data at this tier
+
+            hits = round(rate * games)
+            hit_pct = round(rate * 100, 1)
+
+            alt_tiers.append({
+                "tier": tier,
+                "line": line,
+                "mkt_prob": round(implied, 1),
+                "hits": hits,
+                "games": games,
+                "hit_pct": hit_pct,
+            })
+
+        # Sort by tier ascending
+        alt_tiers.sort(key=lambda a: a["tier"])
+        pick["alt_tiers"] = alt_tiers
+
+
 def build_site():
     picks     = load_json(PICKS_JSON, [])
     audit_log = load_json(AUDIT_LOG_JSON, [])
@@ -725,6 +812,8 @@ def build_site():
             p["human_verdict"]  = ""
             p["trim_reasons"]   = []
             p["auto_reviewed"]  = False
+
+    enrich_alt_tiers(today_picks)
 
     top_picks = get_top_picks(today_picks)
 
@@ -966,6 +1055,11 @@ def generate_html(d: dict) -> str:
     .odds-sizing-toggle:hover {{ border-color: var(--accent); color: var(--accent); }}
     .odds-sizing-body {{ display: none; font-size: 11px; color: var(--muted);
       margin-top: 4px; line-height: 1.7; font-family: monospace; opacity: 0.85; }}
+    .alt-tiers-header {{ font-size: 10px; color: var(--muted); margin-top: 8px;
+      border-top: 1px solid var(--border); padding-top: 6px; opacity: 0.6; }}
+    .alt-tier-row {{ font-size: 11px; color: var(--muted); font-family: monospace;
+      line-height: 1.7; opacity: 0.85; }}
+    .alt-tier-row.has-edge {{ color: #2dd4bf; opacity: 1; }}
 
     /* Injury report dropdown */
     .injury-dropdown {{ margin-bottom: 20px; }}
@@ -1488,15 +1582,26 @@ function buildOddsSizing(p) {{
   const br = p.bet_recommendation;
   if (!br || !br.recommendation_tier || br.recommendation_tier === 'NO_MARKET') return '';
   const lines = [];
-  if (p.market_line != null) lines.push(`Market line: ${{p.market_line}}`);
-  if (br.market_implied_prob != null) lines.push(`Market prob: ${{br.market_implied_prob.toFixed(1)}}%`);
-  if (br.calibration_band) lines.push(`Calibration band: ${{br.calibration_band}}`);
-  if (br.calibrated_prob != null) lines.push(`Calibrated prob: ${{br.calibrated_prob.toFixed(1)}}%`);
-  if (br.calibrated_edge_pct != null) lines.push(`Edge: ${{br.calibrated_edge_pct > 0 ? '+' : ''}}${{br.calibrated_edge_pct.toFixed(1)}}pp`);
-  if (br.kelly_quarter != null) lines.push(`Quarter-Kelly: ${{(br.kelly_quarter * 100).toFixed(1)}}%`);
+  if (p.market_line != null) lines.push(`<div>Market line: ${{p.market_line}}</div>`);
+  if (br.market_implied_prob != null) lines.push(`<div>Market prob: ${{br.market_implied_prob.toFixed(1)}}%</div>`);
+  if (br.calibration_band) lines.push(`<div>Calibration band: ${{br.calibration_band}}</div>`);
+  if (br.calibrated_prob != null) lines.push(`<div>Calibrated prob: ${{br.calibrated_prob.toFixed(1)}}%</div>`);
+  if (br.calibrated_edge_pct != null) lines.push(`<div>Edge: ${{br.calibrated_edge_pct > 0 ? '+' : ''}}${{br.calibrated_edge_pct.toFixed(1)}}pp</div>`);
+  if (br.kelly_quarter != null) lines.push(`<div>Quarter-Kelly: ${{(br.kelly_quarter * 100).toFixed(1)}}%</div>`);
+
+  const alts = p.alt_tiers || [];
+  if (alts.length) {{
+    lines.push(`<div class="alt-tiers-header">── Alt Tiers (FanDuel) ──</div>`);
+    alts.forEach(a => {{
+      const gap = a.hit_pct - a.mkt_prob;
+      const cls = gap >= 5 ? 'alt-tier-row has-edge' : 'alt-tier-row';
+      lines.push(`<div class="${{cls}}">T${{a.tier}}&nbsp;&nbsp;${{a.line}} OVER&nbsp;&nbsp;mkt ${{a.mkt_prob}}%&nbsp;&nbsp;hit ${{a.hits}}/${{a.games}} (${{a.hit_pct}}%)</div>`);
+    }});
+  }}
+
   if (!lines.length) return '';
   return `<button class="odds-sizing-toggle" onclick="toggleOddsSizing(this)">&#9656; Odds + Sizing</button>` +
-    `<div class="odds-sizing-body">${{lines.join('<br>')}}</div>`;
+    `<div class="odds-sizing-body">${{lines.join('')}}</div>`;
 }}
 
 // ── TODAY'S PICKS ──
