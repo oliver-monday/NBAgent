@@ -1680,12 +1680,10 @@ function renderPicks() {{
       const voidedCls  = p.voided ? ' voided' : '';
       const reviewVerdict = p.human_verdict || '';
       const isAutoReview  = p.auto_reviewed === true;
-      const reviewBadge = reviewVerdict === 'trim'
-        ? `<span class="review-badge-trim">${{isAutoReview ? '🤖 Auto-Review' : '⚠ Caution'}}</span>`
-        : reviewVerdict === 'manual_skip'
-          ? `<span class="review-badge-skip">${{isAutoReview ? '🤖 Stay Away' : '⚠ Flagged'}}</span>`
-          : '';
-      const reviewReasons = (p.trim_reasons && p.trim_reasons.length && reviewVerdict !== '')
+      const reviewBadge = reviewVerdict === 'manual_skip'
+        ? `<span class="review-badge-skip">${{isAutoReview ? '🤖 Stay Away' : '⚠ Flagged'}}</span>`
+        : '';
+      const reviewReasons = (p.trim_reasons && p.trim_reasons.length && reviewVerdict === 'manual_skip')
         ? `<span style="font-size:10px;color:var(--muted);margin-left:4px">${{p.trim_reasons.join(' · ')}}</span>`
         : '';
       const reviewHtml = reviewBadge
