@@ -4240,5 +4240,117 @@
         "Anchoring the parlay with a PTS leg from an iron-floor scorer (Jaylen Brown, iron_floor=true, 9/10 hit rate, trend=up) provided the most structurally reliable anchor leg type in the system \u2014 Brown hit for 35 points against a tough CHA defense, more than doubling the pick threshold. Future parlays should always include at least one iron-floor PTS leg as the primary anchor when the pick qualifies."
       ]
     }
+  },
+  {
+    "date": "2026-04-08",
+    "total_picks": 15,
+    "voided_picks": 0,
+    "hits": 13,
+    "misses": 2,
+    "no_data": 0,
+    "hit_rate_pct": 86.7,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 6,
+        "hits": 4,
+        "hit_rate_pct": 66.7
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 2,
+        "hits": 1,
+        "hit_rate_pct": 50.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 11,
+        "hits": 10,
+        "hit_rate_pct": 90.9,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "AST props were 5/5 on the day \u2014 iron-floor and near-iron T2/T4 AST picks (Bane T2, Fox T4, SGA T4, Kawhi T2, Johnson T4) all converted cleanly, confirming that low-threshold assist floors remain the system's most reliable output; the MIN AST suppressor concern at T2 iron-floor level was correctly neutralized.",
+      "3PM picks were 3/3 (Harden T1, Bane T1, SGA T1) \u2014 the trend=down step-down rule for Harden and the non-iron-floor 80% cap both fired correctly, and the conservative T1 floors held across all three shooters including a B2B road game for SGA; the MIN\u00d73PM amplifier also contributed to Bane's clean hit at exactly threshold (1 actual = 1 pick).",
+      "The FG_MARGIN_THIN mandatory step-down rule proved structurally sound on Bane PTS (T15\u2192T10, actual 18) and Harden PTS (T15\u2192T10, actual 21) \u2014 both picks scored well above the stepped threshold, validating that the conservative tier is the correct place to anchor rather than fighting the thin-margin signal.",
+      "The lineup update agent correctly flagged upside on Fox PTS (revised to 86%), Bane PTS (revised to 87%), and SGA 3PM (revised to 83%) when key opponents were scratched \u2014 all three hit comfortably, confirming that opponent-side absences (Harper, Edwards, Gobert, Garland) are meaningful input to confidence revision and the agent is calibrated well on direction.",
+      "The blowout cap rule at spread_abs\u226522.5 for Jokic PTS (capped at 74%) correctly identified the highest-risk pick on the slate; even though it ultimately missed by 1 point, the system's 70-75% band underperforming (50% actual) confirms the cap is appropriately conservative and the 74% confidence accurately reflected structural uncertainty."
+    ],
+    "lessons": [
+      "Jalen Johnson PTS T15 missed (actual 12, needed 15) in a CLOSE game (CLE won by 6) \u2014 the miss was not explained by blowout game script. Johnson played 34 minutes with no injury flags, logged a normal game, and still fell 3 points short of the T15 threshold despite a 9/10 hit rate and stable trend. This is a variance miss on a sound pick, but the pattern of PTS being the session's weakest prop type (66.7%) reinforces that T15 PTS for secondary scorers in road close games carries meaningful within-game volatility even at high hit rates.",
+      "Nikola Jokic PTS T15 missed (actual 14, needed 15) \u2014 confirmed minutes restriction (31 min, sat Q4) driven by Denver's blowout win margin (DEN won by 17, classified COMPETITIVE but the pre-game spread was 22.5 points). Post-game news confirms Jokic was pulled from the fourth quarter with the game decided, producing exactly the compression the blowout cap rule anticipated. The FG_MARGIN_THIN step-down (T20\u2192T15) and 74% blowout cap both fired correctly, but the pick still ran and narrowly missed by 1 point; the iron_floor tag at T20 did not protect T15 from garbage-time minute reduction on a historically large spread."
+    ],
+    "recommendations": [
+      "For Jokic (and any elite center) on spreads \u226520 points, consider whether a further step-down to T10 is warranted rather than stopping at T15 after FG_MARGIN_THIN fires \u2014 the T15 blowout-capped pick missed by 1 point after a confirmed Q4 sit; T10 would have been a clean hit. The iron_floor tag provides false comfort on blowout games when minutes are structurally at risk: iron_floor reflects historical floor under normal minute distributions, not blowout-truncated games.",
+      "PTS is the session's weakest prop type at 66.7% (2 misses both PTS) \u2014 when PTS picks involve either (a) a secondary scorer on a team with a spread \u226520 or (b) a road scorer in a CLOSE game with trend=stable and no iron_floor, require the hit rate at the selected tier to be 10/10 or carry an explicit iron_floor tag before inclusion in parlays; single-leg standalone PTS picks at 9/10 in these contexts are acceptable but should not be parlay anchors.",
+      "The 70-75% confidence band is performing at 50% actual vs. 72.5% expected \u2014 both picks in this band were Jokic PTS (74%) and SGA PTS (74%), both subject to blowout cap rules. Consider treating blowout-capped PTS picks (confidence capped at 74% due to spread_abs\u226512) as FADE or NEUTRAL bet recommendations and avoiding their inclusion in any parlay leg regardless of individual pick soundness; the structural ceiling on these picks reflects genuine uncertainty that compounds in multi-leg combinations.",
+      "The SGA PTS pick (T20, 74%, actual exactly 20) was a threshold-exact HIT graded correctly per the HIT rule (actual_value \u2265 pick_value). However, post-game news confirms SGA also sat Q4 with OKC leading by 25+ \u2014 he hit 20 points in approximately 30 minutes before being rested. This near-miss pattern on blowout games for elite scorers who are pulled early reinforces that the VOLATILE tag plus spread_abs>15 on a B2B road game should trigger an automatic skip of PTS props for that player regardless of iron_floor status; the iron_floor protected the hit here by 0 points.",
+      "The lineup update agent's upside revisions (Fox to 86%, Bane to 87%, SGA 3PM to 83%) all hit comfortably \u2014 when the afternoon agent triggers an upside revision of \u22655pp due to opponent-side multi-player absences (Gobert+Edwards+Randle all out, Garland out), the Analyst should consider whether the confidence revision warrants upgrading the pick to a top_pick designation or including it in a parlay anchor role, as these opponent-depleted games produced the session's largest margin hits."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jalen Johnson",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 12.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: ATL @ CLE, CLE won 122-116, margin 6 points \u2014 CLOSE game. No blowout game-script factor applies. STEP 1 \u2014 Johnson played 34 minutes with no injury flags (post-game news: inferred, normal game context). Actual 12 PTS is a non-trivial miss of 3 points below threshold. STEP 2 \u2014 No injury exit, no workflow gap, no blowout. Classification: variance. STEP 3 \u2014 Original reasoning ('9/10 at T15 in competitive game with full minutes and 2d rest') was structurally sound \u2014 full minutes were indeed logged (34), game was competitive (CLOSE), rest was confirmed. The reasoning correctly identified no suppressors. The miss reflects Johnson's natural scoring variance in road close-game environments where shot distribution can tighten. STEP 4 \u2014 Hit rate was 9/10 (90% implied), meaning this is a 1-in-10 miss event; no systematic failure. Trend was stable. STEP 5 \u2014 Tier walk shows T20 had no data \u226570%, T15 was the only viable tier at 9/10 (85% base). No tier_skip_error \u2014 this was the appropriate and only qualifying tier. The walk was complete. STEP 6 \u2014 No lineup_update sub-object present; no afternoon amendment was triggered for this pick."
+      },
+      {
+        "player_name": "Nikola Jokic",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 14.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: MEM @ DEN, DEN won 136-119, margin 17 points \u2014 classified COMPETITIVE, but the pre-game spread was 22.5 points (one of the session's largest). The actual margin of 17 is below the \u226520 BLOWOUT label, yet the post-game news confirms Jokic was held out of the fourth quarter as a rest/maintenance decision after Denver built a comfortable lead \u2014 a blowout-adjacent game script that produced minutes restriction even at a 17-point final margin. STEP 1 \u2014 Jokic played 31 minutes (confirmed via post-game news). Actual 14 PTS is 1 point below the T15 threshold. He recorded non-trivial output (scored 14), so this is a genuine production miss, not an injury or DNP. STEP 2 \u2014 Post-game news: MINUTES_RESTRICTION confirmed \u2014 'held out of the fourth quarter as the Nuggets cruised to a comfortable win, a common rest/maintenance decision.' No injury exit. Classification: model_gap_rule. The pre-game spread of 22.5 correctly triggered the T25 hard skip and the large-spread PTS cap at 74%, and FG_MARGIN_THIN fired the T20\u2192T15 step-down \u2014 all rules fired correctly. However, the miss reveals a rule gap: the blowout_secondary_scorer skip and large-spread PTS cap rules fire on percentage confidence adjustments but do not hard-stop the pick when spread_abs\u226520 AND FG_MARGIN_THIN is also present, even for non-secondary scorers. The compound signal (extreme spread + thin FG margin + confirmed Q4 rest pattern for DEN stars late in season) was present in the data but no rule mandates a skip or a further step to T10 in this combination. A tighter rule requiring T10 rather than T15 when spread_abs\u226520 AND FG_MARGIN_THIN fires would have produced a clean hit (14 actual \u2265 10 threshold). STEP 3 \u2014 Original reasoning ('FG_MARGIN_THIN steps T20\u2192T15; iron_floor holds; blowout cap at 74% for spread_abs=22.5') correctly identified all risk factors but did not conclude that the pick should be skipped or stepped further. The iron_floor at T20 was used as a confidence anchor for T15, but iron_floor reflects historical floors under normal minute distributions \u2014 not Q4 blowout management where Jokic routinely sits. STEP 4 \u2014 Hit rate 9/10 at T20 level (iron_floor); the miss at T15 by 1 point reflects the Q4-sit compression more than statistical variance. STEP 5 \u2014 Tier walk correctly shows T25 as hard skip (spread\u226515), T20 as qualifying tier (iron_floor), step to T15 via FG_MARGIN_THIN. The walk was appropriately executed but the final selected tier (T15) was still too aggressive given the combined risk signals. No tier_skip_error \u2014 the issue is the rule not mandating a second step under these conditions. STEP 6 \u2014 No lineup_update sub-object present for Jokic; no afternoon amendment was triggered."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 0,
+      "misses": 1,
+      "partial": 0,
+      "parlay_summary": "0/1 \u2014 the Jalen Johnson PTS leg was the single failure point; both SGA 3PM and Kawhi AST hit cleanly, making the parlay a near-miss driven entirely by Johnson's variance miss in a CLOSE road game.",
+      "parlay_lessons": [
+        "Do not use a non-iron-floor PTS leg as a parlay anchor when the player is a road secondary scorer in a projected CLOSE game \u2014 Johnson's PTS T15 was the highest-risk leg of the three and the one that sank the parlay; the 9/10 hit rate at T15 sounds robust but road close-game scoring variance for non-primary scorers is the system's most common PTS miss pattern, and a parlay requires all legs to hit simultaneously.",
+        "When constructing a multi-game parlay with an OKC leg and a LAC leg in the same OKC vs. LAC game, be aware that both legs (SGA 3PM and Kawhi AST) are from the same game even though labeled 'independent' \u2014 if OKC wins in a blowout (which they did, winning by 18), SGA benefits from looser coverage while Kawhi faces reduced fourth-quarter minutes; these game-script effects are partially correlated even across teams, and the parlay correctly identified both as hits, but this structural dependency should be documented explicitly rather than labeled 'independent.'",
+        "For parlays where one leg carries a confirmed 'trim' human verdict (Johnson AST was trimmed, Kawhi AST was trimmed, Bane PTS was trimmed), avoid combining any trimmed-verdict leg with legs from different games unless all remaining legs are iron-floor \u2014 the trim designation signals known downside risk that is amplified in a parlay context where a single miss voids the entire bet."
+      ],
+      "parlay_reinforcements": [
+        "The SGA 3PM + Kawhi AST same-game pairing from the OKC-LAC matchup both hit cleanly (SGA 2 actual vs 1 needed; Kawhi 3 actual vs 2 needed) \u2014 stacking a trend=up 3PM leg for the winning team's star with a low-threshold iron-adjacent AST leg for the home team's primary wing is a viable same-game combination structure when the spread is in the 5-8 point range and both players have documented B2B resilience; this pairing should be considered a reusable template for competitive spread games featuring an elite road scorer versus a home wing with a deep assist floor.",
+        "The T1 3PM floor as a parlay leg continues to perform well \u2014 Harden T1, Bane T1, and SGA T1 all hit on the session (3/3 combined across all picks), confirming that non-iron-floor 3PM at T1 with \u22659/10 hit rates and trend=up or trend=stable is a reliable low-variance parlay building block when capped at 80% confidence and used as a complementary leg rather than an anchor."
+      ]
+    }
   }
 ]

@@ -1,37 +1,49 @@
 {
-  "date": "2026-04-07",
-  "generated_at": "2026-04-08T07:41:32.294563-07:00",
+  "date": "2026-04-08",
+  "generated_at": "2026-04-09T07:52:18.520297-07:00",
   "players": {
-    "jaylen brown": {
+    "de'aaron fox": {
       "event_type": "no_data",
-      "detail": "Played 43 minutes, scored 35 points, played entire fourth quarter in normal game completion.",
-      "minutes_played": 43.0,
-      "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": false,
-      "web_narrative": null
-    },
-    "jayson tatum": {
-      "event_type": "no_data",
-      "detail": "Played 39 minutes, scored 23 points, played entire fourth quarter in normal game completion.",
-      "minutes_played": 39.0,
-      "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": false,
-      "web_narrative": null
-    },
-    "julius randle": {
-      "event_type": "no_data",
-      "detail": "Played 28 minutes in a blowout win (124-104); limited minutes likely due to game flow in a comfortable victory rather than any flagged injury.",
-      "minutes_played": 28.0,
+      "detail": "Played 35 minutes with no flags; no external sources available",
+      "minutes_played": 35.0,
       "source_url": null,
       "confidence": "inferred",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": null,
+      "web_narrative": null
+    },
+    "desmond bane": {
+      "event_type": "no_data",
+      "detail": "Played 30 minutes, scored 18 points with 6 assists in a normal game context",
+      "minutes_played": 30.0,
+      "source_url": null,
+      "confidence": "confirmed",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": false,
+      "web_narrative": null
+    },
+    "jalen johnson": {
+      "event_type": "no_data",
+      "detail": "Played 34 minutes in a competitive game against Cleveland with no injury flags noted",
+      "minutes_played": 34.0,
+      "source_url": null,
+      "confidence": "inferred",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": false,
+      "web_narrative": null
+    },
+    "james harden": {
+      "event_type": "no_data",
+      "detail": "Played 34 minutes and scored 21 points in a normal game context",
+      "minutes_played": 34.0,
+      "source_url": null,
+      "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
@@ -39,73 +51,47 @@
       "web_narrative": null
     },
     "kawhi leonard": {
-      "event_type": "no_data",
-      "detail": "Played 30 minutes, scored 34 points in a normal game; minutes consistent with managed load in a win.",
+      "event_type": "minutes_restriction",
+      "detail": "Played 30 minutes and sat out the fourth quarter in a blowout loss",
       "minutes_played": 30.0,
       "source_url": null,
-      "confidence": "confirmed",
+      "confidence": "inferred",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
       "espn_fetch_ok": false,
-      "web_narrative": null
+      "web_narrative": "Leonard played only 30 minutes and did not play in the fourth quarter as the Thunder built an early 25-point lead; this appears to be a blowout-driven reduction rather than an injury, though the recap notes no explicit rest decision."
     },
-    "kevin durant": {
-      "event_type": "no_data",
-      "detail": "Played 36 minutes, scored 24 points in a normal game completion.",
-      "minutes_played": 36.0,
-      "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": false,
-      "web_narrative": null
-    },
-    "rj barrett": {
-      "event_type": "no_data",
-      "detail": "Played 31 minutes, scored 16 points in a blowout win (121-95); minutes reduction likely due to game flow.",
+    "nikola jokic": {
+      "event_type": "minutes_restriction",
+      "detail": "Played 31 minutes and did not play in the fourth quarter with Denver holding a large lead",
       "minutes_played": 31.0,
       "source_url": null,
-      "confidence": "inferred",
+      "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
       "espn_fetch_ok": false,
-      "web_narrative": null
-    },
-    "scottie barnes": {
-      "event_type": "no_data",
-      "detail": "Played 30 minutes, scored 25 points in a blowout win (121-95); minutes reduction likely due to game flow.",
-      "minutes_played": 30.0,
-      "source_url": null,
-      "confidence": "inferred",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": false,
-      "web_narrative": null
+      "web_narrative": "Jokic was held out of the fourth quarter as the Nuggets cruised to a comfortable win, a common rest/maintenance decision late in the regular season with Denver having secured its playoff positioning."
     },
     "shai gilgeous-alexander": {
       "event_type": "minutes_restriction",
-      "detail": "Played only 28 minutes in a 123-87 blowout victory; minutes were clearly limited as the Thunder built a massive lead against an injury-depleted Lakers squad.",
-      "minutes_played": 28.0,
+      "detail": "Played 30 minutes and sat out the fourth quarter with OKC holding a large lead",
+      "minutes_played": 30.0,
       "source_url": null,
-      "confidence": "inferred",
+      "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
       "espn_fetch_ok": null,
-      "web_narrative": "SGA played just 28 minutes as OKC rolled to a 36-point blowout win over a heavily shorthanded Lakers team missing Doncic, LeBron, Reaves, Smart, and Hayes. The lopsided margin naturally curtailed his playing time."
+      "web_narrative": "Gilgeous-Alexander was rested in the fourth quarter after Oklahoma City built an early 25-point lead, a routine decision to manage the star player's workload in a clinching blowout win."
     }
   },
   "fetch_errors": [
-    "jaylen brown",
-    "jayson tatum",
-    "julius randle",
+    "desmond bane",
+    "jalen johnson",
+    "james harden",
     "kawhi leonard",
-    "kevin durant",
-    "rj barrett",
-    "scottie barnes"
+    "nikola jokic"
   ]
 }

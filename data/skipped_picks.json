@@ -14,10 +14,10 @@
       "tier_considered": 8,
       "reason": "VOLATILE tag at T8; step to T6 results in estimated 80% - 5% VOLATILE = 75%, below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 8"
   },
   {
     "date": "2026-04-08",
@@ -34,10 +34,10 @@
       "tier_considered": 1,
       "reason": "VOLATILE -5% applied to 75% overall = 70%, below 75% 3PM minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-08",
@@ -54,10 +54,10 @@
       "tier_considered": 6,
       "reason": "VOLATILE tag + AST tier T6 triggers unconditional VOLATILE AST T6+ hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 6"
   },
   {
     "date": "2026-04-08",
@@ -74,10 +74,10 @@
       "tier_considered": 4,
       "reason": "VOLATILE -5% applied to 80% base = 75%, below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-08",
@@ -94,10 +94,10 @@
       "tier_considered": 20,
       "reason": "FG_MARGIN_NEG steps T25\u2192T20; VOLATILE -5% + B2B rate (70%) + tough defense (-5%) = 60%, below 70% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 20.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 20.0 \u2265 tier 20"
   },
   {
     "date": "2026-04-08",
@@ -114,10 +114,10 @@
       "tier_considered": 25,
       "reason": "spread_abs=22.5 >= 15 AND DEN is favored \u2014 T25 hard skip unconditional"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 14.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 14.0 < tier 25"
   },
   {
     "date": "2026-04-08",
@@ -134,10 +134,10 @@
       "tier_considered": 10,
       "reason": "Offensive-first player (PTS>>20, AST>6); lowest L10 REB estimated within 2 of T10 pick_value; step from T12 due to 25th-pct gate; offensive-first gate fires at T10"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 16.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 16.0 \u2265 tier 10"
   },
   {
     "date": "2026-04-08",
@@ -154,10 +154,10 @@
       "tier_considered": 6,
       "reason": "VOLATILE + AST tier T6+ unconditional hard skip; no T4 market available on FanDuel for Jokic AST"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-08",
@@ -174,10 +174,10 @@
       "tier_considered": 1,
       "reason": "spread_abs=22.5 >= 19 AND DEN favored \u2014 extreme blowout unconditional 3PM hard skip for all favored team players"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-08",
@@ -194,10 +194,10 @@
       "tier_considered": 1,
       "reason": "trend=down mandatory step-down from T1 goes below minimum valid 3PM tier; skip per step-down rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-08",
@@ -216,8 +216,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-08",
@@ -236,7 +236,7 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]
