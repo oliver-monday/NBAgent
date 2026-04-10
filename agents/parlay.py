@@ -425,12 +425,55 @@ def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
             if trim_legs and len(clean_legs) < 2:
                 continue  # trim picks require ≥2 clean anchors
 
+            # Skip combos with 2+ FADE legs — enforces the edge quality
+            # constraint in Python so Claude only sees pre-qualified candidates.
+            # Gracefully skipped when bet_recommendation is absent (pre-odds-enrichment).
+            fade_count = sum(
+                1 for l in legs
+                if (l.get("bet_recommendation") or {}).get("recommendation_tier") == "FADE"
+            )
+            if fade_count >= 2:
+                continue
+
             scored = score_combination(legs, player_stats)
             candidates.append(scored)
 
     # Sort by composite score descending
     candidates.sort(key=lambda c: c["composite_score"], reverse=True)
-    return candidates[:TOP_N_TO_CLAUDE]
+
+    if len(candidates) <= TOP_N_TO_CLAUDE:
+        return candidates
+
+    top = candidates[:TOP_N_TO_CLAUDE]
+
+    # Diversity check: if any single player appears in >80% of top candidates,
+    # replace the bottom third with the best candidates that exclude that player.
+    # This prevents a high-confidence player from monopolizing the candidate pool
+    # and leaving Claude with no alternatives.
+    from collections import Counter
+    player_counts: Counter = Counter()
+    for c in top:
+        for leg in c["legs"]:
+            player_counts[leg["player_name"]] += 1
+
+    dominant_player = player_counts.most_common(1)[0] if player_counts else None
+    if dominant_player and dominant_player[1] > TOP_N_TO_CLAUDE * 0.8:
+        dom_name = dominant_player[0]
+        dom_count = dominant_player[1]
+        n_replace = TOP_N_TO_CLAUDE // 3  # replace bottom third
+
+        # Find best candidates that exclude the dominant player
+        alternatives = [
+            c for c in candidates[TOP_N_TO_CLAUDE:]
+            if not any(leg["player_name"] == dom_name for leg in c["legs"])
+        ][:n_replace]
+
+        if alternatives:
+            top = top[:TOP_N_TO_CLAUDE - len(alternatives)] + alternatives
+            print(f"[parlay] Diversity fix: {dom_name} appeared in {dom_count}/{TOP_N_TO_CLAUDE} "
+                  f"top candidates — replaced bottom {len(alternatives)} with alternatives")
+
+    return top
 
 
 # ── Prompt builder ────────────────────────────────────────────────────
@@ -488,7 +531,7 @@ Each candidate has already passed:
 3. **Positive correlation**: "feeder_target" and "volume_game" tags mean legs tend to win together — prefer these.
 4. **Game spread**: multi-game parlays are more robust than same-game stacks (same-game stacks are fine if correlation is genuinely positive).
 5. **Variety**: across your 3–5 selections, aim for a mix of leg counts (some tight 2-leggers, some 3–4 leg plays, maybe one 5+ if all legs are elite).
-6. **Edge quality**: Each leg now includes `edge_tier` (STRONG / POSITIVE / NEUTRAL / FADE / NO_MARKET) and `cal_edge` (calibrated edge in percentage points vs FanDuel market). Prefer legs with STRONG or POSITIVE edge — these are props where our calibrated system confidence exceeds FanDuel's implied probability. Avoid FADE legs (market is more confident than our calibrated read) — a FADE leg in a parlay means you're paying above fair value for that outcome. If a combo includes a FADE leg, it must be the only weak link and every other leg must be POSITIVE or STRONG to compensate. Never include 2+ FADE legs in the same parlay.
+6. **Edge quality**: Each leg now includes `edge_tier` (STRONG / POSITIVE / NEUTRAL / FADE / NO_MARKET) and `cal_edge` (calibrated edge in percentage points vs FanDuel market). Prefer legs with STRONG or POSITIVE edge — these are props where our calibrated system confidence exceeds FanDuel's implied probability. FADE legs mean the market is more confident than our calibrated read. Candidates with 2+ FADE legs have already been filtered out — every candidate below has at most 1 FADE leg. When a candidate has exactly 1 FADE leg, prefer combos where the other legs are POSITIVE or STRONG to compensate.
 
 ## AVOID
 - Any single player appearing in more than 1 of today's parlays, regardless of prop type.
@@ -502,7 +545,7 @@ Each candidate has already passed:
 - Two parlays that share 3+ identical legs (provide variety)
 - Combos where the rationale would be "all soft matchups" with no deeper logic
 - Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
-- Parlays where more than one leg has edge_tier="FADE" — the compounding negative edge makes the parlay structurally unprofitable even if the individual legs have high stated confidence
+- Parlays where the single allowed FADE leg is the weakest leg by confidence AND the other legs are all NEUTRAL — prefer combos where at least one non-FADE leg is POSITIVE or STRONG
 
 ## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS
 {audit_feedback if audit_feedback else "No prior parlay audit data available."}
