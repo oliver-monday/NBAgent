@@ -47,6 +47,7 @@ DATA       = ROOT / "data"
 PICKS_JSON = DATA / "picks.json"
 ODDS_JSON           = DATA / "odds_today.json"
 ODDS_AVAILABLE_JSON = DATA / "odds_available.json"
+ODDS_PRETIP_JSON    = DATA / "odds_pretip.json"
 AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
 WHITELIST_CSV       = ROOT / "playerprops" / "player_whitelist.csv"
 
@@ -172,6 +173,73 @@ def _api_get(url: str, params: dict, api_key: str) -> dict | list | None:
     return None
 
 
+def _parse_fanduel_outcomes(fanduel_bookmaker: dict) -> dict[str, dict[str, dict]]:
+    """
+    Parse a FanDuel bookmaker response into a dict of player odds.
+    Returns: norm_name -> f"{prop_type}_{line}" -> {prop_type, line, over_price, implied_prob, book}
+    Shared by main() and pretip_sweep() to avoid duplicating the parsing logic.
+    """
+    parsed: dict[str, dict[str, dict]] = {}
+    for market in fanduel_bookmaker.get("markets", []):
+        market_key = market.get("key", "")
+        prop_type = PROP_MARKET_MAP.get(market_key)
+        if prop_type is None:
+            continue
+        for outcome in market.get("outcomes", []):
+            if outcome.get("name") != "Over":
+                continue
+            player_name = outcome.get("description", "")
+            line = outcome.get("point")
+            price = outcome.get("price")
+            if not player_name or line is None or price is None:
+                continue
+            norm = _norm_name(player_name)
+            parsed.setdefault(norm, {})
+            parsed[norm][f"{prop_type}_{float(line)}"] = {
+                "prop_type":    prop_type,
+                "line":         float(line),
+                "over_price":   int(price),
+                "implied_prob": round(_american_to_implied(price), 2),
+                "book":         BOOKMAKER,
+            }
+    return parsed
+
+
+def _save_morning_baseline(morning_events: dict[str, dict]) -> None:
+    """
+    Save the morning odds fetch as the baseline snapshot in odds_pretip.json.
+    Creates a fresh file for today (overwrites any prior day's data).
+    Pre-tip sweeps will append their snapshots alongside this baseline.
+    """
+    if not morning_events:
+        return
+    pretip_data = {
+        "date":             TODAY_STR,
+        "morning_snapshot":  morning_events,
+        "snapshots":         {},
+    }
+    try:
+        with open(ODDS_PRETIP_JSON, "w") as f:
+            json.dump(pretip_data, f, indent=2)
+        print(f"[odds] Morning baseline saved to odds_pretip.json "
+              f"({len(morning_events)} event(s))")
+    except Exception as e:
+        print(f"[odds] WARNING: could not write morning baseline: {e}")
+
+
+def _write_pretip_file(pretip_data: dict) -> None:
+    """Write odds_pretip.json. Accumulates morning + pretip snapshots for the day."""
+    try:
+        with open(ODDS_PRETIP_JSON, "w") as f:
+            json.dump(pretip_data, f, indent=2)
+        n_morning = len(pretip_data.get("morning_snapshot", {}))
+        n_pretip = len(pretip_data.get("snapshots", {}))
+        print(f"[odds-pretip] odds_pretip.json written "
+              f"(morning: {n_morning} events, pretip: {n_pretip} events)")
+    except Exception as e:
+        print(f"[odds-pretip] WARNING: could not write odds_pretip.json: {e}")
+
+
 def _write_odds_cache(cache: dict) -> None:
     """Write raw API responses to odds_today.json. Overwrites on every run."""
     try:
@@ -275,6 +343,289 @@ def _get_calibrated_prob(stated_confidence: float, bands: dict[str, float]) -> f
         return float(rate)
     # Fallback: return stated confidence as decimal
     return sc / 100.0
+
+
+def pretip_sweep(window_minutes: int = 75) -> None:
+    """
+    Pre-tip odds sweep: fetch FanDuel odds for games tipping within the next
+    `window_minutes` minutes. Updates picks.json with latest odds and logs
+    line movement vs. the morning baseline.
+
+    Designed to run every 30 minutes via cron. Most runs are no-ops (0 credits)
+    when no games are in the pre-tip window. Credit cost: 4 per in-window game.
+
+    Args:
+        window_minutes: How many minutes before tip-off to start fetching.
+                        Default 75 (captures T-60 with 15 min scheduling slack).
+    """
+    api_key = os.environ.get("ODDS_API_KEY", "").strip()
+    if not api_key:
+        print("[odds-pretip] ODDS_API_KEY not set — skipping")
+        sys.exit(0)
+
+    now = dt.datetime.now(ET)
+    print(f"[odds-pretip] Running at {now.strftime('%I:%M %p PT')} "
+          f"(window: {window_minutes} min before tip)")
+
+    # 1. Load picks.json — need today's picks to annotate
+    if not PICKS_JSON.exists():
+        print("[odds-pretip] picks.json not found — skipping")
+        sys.exit(0)
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+    except Exception as e:
+        print(f"[odds-pretip] ERROR reading picks.json: {e} — skipping")
+        sys.exit(0)
+
+    today_picks = [
+        p for p in all_picks
+        if p.get("date") == TODAY_STR
+        and not p.get("voided", False)
+        and p.get("prop_type") in VALID_PROP_TYPES
+    ]
+    if not today_picks:
+        print(f"[odds-pretip] No unvoided picks for {TODAY_STR} — skipping")
+        sys.exit(0)
+
+    # 2. Fetch today's NBA events (free endpoint — no credit cost)
+    events = _api_get(
+        f"{API_BASE}/sports/{SPORT}/events",
+        {"dateFormat": "iso"},
+        api_key,
+    )
+    if events is None:
+        print("[odds-pretip] Failed to fetch NBA events — skipping")
+        sys.exit(0)
+
+    # Build set of teams we have picks for
+    teams_needed: set[str] = set()
+    for p in today_picks:
+        teams_needed.add(p.get("team", ""))
+        teams_needed.add(p.get("opponent", ""))
+    teams_needed.discard("")
+
+    # 3. Filter to games in the pre-tip window
+    #    In-window: now >= commence_time - window_minutes AND now < commence_time
+    in_window_events = []
+    skipped_early = 0
+    skipped_started = 0
+    skipped_no_team = 0
+
+    for ev in events:
+        home_abbr = TEAM_NAME_MAP.get(ev.get("home_team", ""))
+        away_abbr = TEAM_NAME_MAP.get(ev.get("away_team", ""))
+
+        # Only fetch games we have picks for
+        if home_abbr not in teams_needed and away_abbr not in teams_needed:
+            skipped_no_team += 1
+            continue
+
+        commence_str = ev.get("commence_time", "")
+        if not commence_str:
+            continue
+        try:
+            commence = dt.datetime.fromisoformat(
+                commence_str.replace("Z", "+00:00")
+            ).astimezone(ET)
+        except Exception:
+            continue
+
+        minutes_to_tip = (commence - now).total_seconds() / 60.0
+
+        if minutes_to_tip > window_minutes:
+            skipped_early += 1
+            continue
+        if minutes_to_tip < 0:
+            skipped_started += 1
+            continue
+
+        in_window_events.append({
+            "event_id":       ev["id"],
+            "home_abbr":      home_abbr,
+            "away_abbr":      away_abbr,
+            "home_team":      ev.get("home_team"),
+            "away_team":      ev.get("away_team"),
+            "commence_time":  commence_str,
+            "minutes_to_tip": round(minutes_to_tip),
+        })
+
+    print(f"[odds-pretip] {len(in_window_events)} game(s) in window "
+          f"(skipped: {skipped_early} too early, {skipped_started} already started, "
+          f"{skipped_no_team} no picks)")
+
+    if not in_window_events:
+        print("[odds-pretip] No games in pre-tip window — nothing to fetch")
+        sys.exit(0)
+
+    # 4. Load existing pretip file to check for already-fetched events
+    pretip_data: dict = {"date": TODAY_STR, "morning_snapshot": {}, "snapshots": {}}
+    if ODDS_PRETIP_JSON.exists():
+        try:
+            with open(ODDS_PRETIP_JSON) as f:
+                loaded = json.load(f)
+            if loaded.get("date") == TODAY_STR:
+                pretip_data = loaded
+            else:
+                print(f"[odds-pretip] odds_pretip.json is stale ({loaded.get('date')}) "
+                      f"— starting fresh")
+        except Exception as e:
+            print(f"[odds-pretip] WARNING: could not read odds_pretip.json: {e}")
+
+    already_fetched = set(pretip_data.get("snapshots", {}).keys())
+    to_fetch = [ev for ev in in_window_events if ev["event_id"] not in already_fetched]
+
+    if not to_fetch:
+        print(f"[odds-pretip] All {len(in_window_events)} in-window game(s) already "
+              f"fetched — skipping")
+        sys.exit(0)
+
+    print(f"[odds-pretip] Fetching odds for {len(to_fetch)} game(s) "
+          f"(~{len(to_fetch) * 4} credits)")
+
+    # 5. Fetch FanDuel odds for in-window games
+    markets_str = ",".join(PROP_MARKET_MAP.keys())
+    # Flat dict for pick matching (same structure as main())
+    fetched: dict[str, dict[str, dict]] = {}
+
+    for ev in to_fetch:
+        event_id = ev["event_id"]
+        result = _api_get(
+            f"{API_BASE}/sports/{SPORT}/events/{event_id}/odds",
+            {
+                "regions":    REGIONS,
+                "markets":    markets_str,
+                "bookmakers": BOOKMAKER,
+                "oddsFormat": "american",
+            },
+            api_key,
+        )
+        if result is None:
+            print(f"[odds-pretip] WARNING: no odds for "
+                  f"{ev['home_team']} vs {ev['away_team']}")
+            continue
+
+        bookmakers = result.get("bookmakers", [])
+        fanduel = next((b for b in bookmakers if b.get("key") == BOOKMAKER), None)
+        if fanduel is None:
+            print(f"[odds-pretip] WARNING: FanDuel not in response for "
+                  f"{ev['home_team']} vs {ev['away_team']}")
+            continue
+
+        event_parsed = _parse_fanduel_outcomes(fanduel)
+        for norm, props in event_parsed.items():
+            fetched.setdefault(norm, {}).update(props)
+
+        # Save per-event snapshot
+        pretip_data.setdefault("snapshots", {})[event_id] = {
+            "home":           ev["home_abbr"],
+            "away":           ev["away_abbr"],
+            "commence_time":  ev["commence_time"],
+            "fetched_at":     dt.datetime.now(ET).isoformat(),
+            "minutes_to_tip": ev["minutes_to_tip"],
+            "players":        event_parsed,
+        }
+
+        print(f"[odds-pretip] Fetched: {ev['away_abbr']} @ {ev['home_abbr']} "
+              f"(tips in {ev['minutes_to_tip']} min)")
+
+    if not fetched:
+        # Still save the pretip file even if no FanDuel data parsed —
+        # records the attempt so we don't re-fetch
+        _write_pretip_file(pretip_data)
+        print("[odds-pretip] No FanDuel data parsed — skipping picks.json update")
+        sys.exit(0)
+
+    # 6. Match picks → odds and update in-place (same logic as main())
+    #    Also log line movement vs morning prices.
+    morning_snapshot = pretip_data.get("morning_snapshot", {})
+    fetched_at = dt.datetime.now(ET).isoformat()
+    n_matched = 0
+    n_movement = 0
+
+    for pick in all_picks:
+        if pick.get("date") != TODAY_STR:
+            continue
+        if pick.get("voided", False):
+            continue
+        prop_type  = pick.get("prop_type")
+        pick_value = pick.get("pick_value")
+        confidence = pick.get("confidence_pct")
+        if prop_type not in VALID_PROP_TYPES or pick_value is None:
+            continue
+
+        norm        = _norm_name(pick.get("player_name", ""))
+        target_line = float(pick_value) - 0.5
+        lookup_key  = f"{prop_type}_{target_line}"
+
+        match = fetched.get(norm, {}).get(lookup_key)
+        if not match:
+            continue
+
+        # Capture morning implied prob before overwriting
+        morning_implied = pick.get("market_implied_prob")
+
+        # Overwrite with latest odds
+        pick["market_line"]         = match["line"]
+        pick["market_implied_prob"] = match["implied_prob"]
+        pick["market_book"]         = match["book"]
+        pick["edge_pct"]            = (
+            round(float(confidence) - match["implied_prob"], 2)
+            if confidence is not None else None
+        )
+        pick["odds_fetched_at"]     = fetched_at
+        n_matched += 1
+
+        # Log line movement
+        if morning_implied is not None:
+            delta = round(match["implied_prob"] - float(morning_implied), 2)
+            if abs(delta) >= 0.5:  # Only log meaningful movement (>=0.5pp)
+                morning_edge = (
+                    round(float(confidence) - float(morning_implied), 2)
+                    if confidence is not None else None
+                )
+                new_edge = pick["edge_pct"]
+                if delta > 0:
+                    direction = "market up (edge shrinks — market agrees more)"
+                else:
+                    direction = "market down (edge grows — market disagrees more)"
+
+                print(
+                    f"[odds-pretip] MOVEMENT: {pick.get('player_name')} "
+                    f"{prop_type} T{pick_value} — "
+                    f"morning {morning_implied}% -> pretip {match['implied_prob']}% "
+                    f"({delta:+.1f}pp) {direction}"
+                )
+                if morning_edge is not None and new_edge is not None:
+                    print(
+                        f"[odds-pretip]   edge: {morning_edge:+.1f}pp -> "
+                        f"{new_edge:+.1f}pp"
+                    )
+                n_movement += 1
+
+    print(f"[odds-pretip] Updated {n_matched} picks, "
+          f"{n_movement} with line movement")
+
+    if n_matched > 0:
+        # Recompute calibration edge with updated odds
+        n_edge = compute_edge(all_picks)
+        if n_edge:
+            print(f"[odds-pretip] Edge recomputed for {n_edge} picks")
+
+        # Write picks.json atomically
+        tmp = PICKS_JSON.with_suffix(".json.tmp")
+        try:
+            with open(tmp, "w") as f:
+                json.dump(all_picks, f, indent=2)
+            os.replace(tmp, PICKS_JSON)
+            print(f"[odds-pretip] picks.json updated ({n_matched} picks)")
+        except Exception as e:
+            print(f"[odds-pretip] ERROR writing picks.json: {e}")
+            if tmp.exists():
+                tmp.unlink()
+
+    # 7. Write pretip snapshot file
+    _write_pretip_file(pretip_data)
 
 
 def compute_edge(all_picks: list[dict]) -> int:
@@ -626,6 +977,8 @@ def main() -> None:
     odds_cache: dict = {}
     # norm_player_name → f"{prop_type}_{line}" → {line, implied_prob, over_price}
     fetched: dict[str, dict[str, dict]] = {}
+    # Per-event snapshot for morning baseline in odds_pretip.json
+    morning_events: dict[str, dict] = {}
 
     for ev in today_events:
         event_id = ev["event_id"]
@@ -651,28 +1004,18 @@ def main() -> None:
             print(f"[odds] WARNING: FanDuel not in response for event {event_id}")
             continue
 
-        for market in fanduel.get("markets", []):
-            market_key = market.get("key", "")
-            prop_type = PROP_MARKET_MAP.get(market_key)
-            if prop_type is None:
-                continue
-            for outcome in market.get("outcomes", []):
-                if outcome.get("name") != "Over":
-                    continue
-                player_name = outcome.get("description", "")
-                line  = outcome.get("point")
-                price = outcome.get("price")
-                if not player_name or line is None or price is None:
-                    continue
-                norm = _norm_name(player_name)
-                fetched.setdefault(norm, {})
-                fetched[norm][f"{prop_type}_{float(line)}"] = {
-                    "prop_type":    prop_type,
-                    "line":         float(line),
-                    "over_price":   int(price),
-                    "implied_prob": round(_american_to_implied(price), 2),
-                    "book":         BOOKMAKER,
-                }
+        event_parsed = _parse_fanduel_outcomes(fanduel)
+        for norm, props in event_parsed.items():
+            fetched.setdefault(norm, {}).update(props)
+
+        # Save per-event snapshot for morning baseline
+        morning_events[event_id] = {
+            "home":           ev.get("home_abbr"),
+            "away":           ev.get("away_abbr"),
+            "commence_time":  ev.get("commence_time"),
+            "fetched_at":     dt.datetime.now(ET).isoformat(),
+            "players":        event_parsed,
+        }
 
         print(f"[odds] Parsed: {ev['home_team']} vs {ev['away_team']}")
 
@@ -680,6 +1023,9 @@ def main() -> None:
         print("[odds] No FanDuel prop data parsed — skipping picks.json update")
         _write_odds_cache(odds_cache)
         sys.exit(0)
+
+    # 4b. Save morning baseline to odds_pretip.json
+    _save_morning_baseline(morning_events)
 
     # 5. Match picks → odds and annotate in-place
     # Re-runs overwrite existing odds fields with latest data — correct behaviour.
@@ -767,9 +1113,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="NBAgent odds collection")
     parser.add_argument("--prefetch", action="store_true",
                         help="Prefetch all available FanDuel markets (run before analyst)")
+    parser.add_argument("--pretip", action="store_true",
+                        help="Pre-tip sweep: fetch odds for games tipping within window")
+    parser.add_argument("--window-minutes", type=int, default=75,
+                        help="Pre-tip window in minutes before tip-off (default: 75)")
     args = parser.parse_args()
 
     if args.prefetch:
         prefetch_all_markets()
+    elif args.pretip:
+        pretip_sweep(window_minutes=args.window_minutes)
     else:
         main()

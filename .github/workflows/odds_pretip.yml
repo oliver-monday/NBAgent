@@ -1,0 +1,82 @@
+name: Pre-Tip Odds Sweep
+
+on:
+  schedule:
+    # Every 30 min from 3:00 PM to 7:30 PM PT (PDT = UTC-7)
+    # Covers standard NBA tip-off windows (4 PM – 7:30 PM PT)
+    # plus 75-min pre-tip buffer for earliest games.
+    # Most runs are no-ops (0 credits) when no game tips within window.
+    - cron: "0 22 * * *"     # 3:00 PM PT
+    - cron: "30 22 * * *"    # 3:30 PM PT
+    - cron: "0 23 * * *"     # 4:00 PM PT
+    - cron: "30 23 * * *"    # 4:30 PM PT
+    - cron: "0 0 * * *"      # 5:00 PM PT
+    - cron: "30 0 * * *"     # 5:30 PM PT
+    - cron: "0 1 * * *"      # 6:00 PM PT
+    - cron: "30 1 * * *"     # 6:30 PM PT
+    - cron: "0 2 * * *"      # 7:00 PM PT
+    - cron: "30 2 * * *"     # 7:30 PM PT
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: odds-pretip
+  cancel-in-progress: true
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Los_Angeles
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run pre-tip odds sweep
+        run: python ingest/odds_today.py --pretip
+
+      - name: Commit odds updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          FILES="data/odds_pretip.json data/picks.json"
+          for f in $FILES; do
+            [ -f "$f" ] && cp "$f" "$f.local"
+          done
+
+          git checkout -- . 2>/dev/null || true
+          git pull --rebase origin main
+
+          for f in $FILES; do
+            [ -f "$f.local" ] && mv "$f.local" "$f"
+          done
+
+          CHANGED=0
+          for f in $FILES; do
+            if [ -f "$f" ] && [ -n "$(git status --porcelain -- "$f")" ]; then
+              git add "$f"
+              CHANGED=1
+            fi
+          done
+
+          if [ "$CHANGED" -eq 0 ]; then
+            echo "No odds changes to commit."
+          else
+            git commit -m "Pre-tip odds sweep [skip ci]"
+            git push origin HEAD:main
+          fi
