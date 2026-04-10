@@ -114,6 +114,10 @@ def load_target_players(teams_today: set[str]) -> list[dict]:
     Load active whitelisted players whose team is playing today.
     Returns list of {"player_name": str (title-case), "team_abbr": str (uppercase)}.
     Only players on teams in teams_today are included — never the full whitelist.
+
+    Matches on BOTH team_abbr (Rotowire-style: NYK, SAS, GSW) and team_abbr_alt
+    (ESPN-style: NY, SA, GS) to handle abbreviation mismatches between the
+    whitelist and nba_master.csv.
     """
     if not WHITELIST_CSV.exists():
         print("[pre_game_reporter] WARNING: player_whitelist.csv not found.")
@@ -125,9 +129,10 @@ def load_target_players(teams_today: set[str]) -> list[dict]:
             for row in reader:
                 if str(row.get("active", "0")).strip() != "1":
                     continue
-                team = (row.get("team_abbr") or "").strip().upper()
-                name = (row.get("player_name") or "").strip()
-                if team in teams_today and name:
+                team     = (row.get("team_abbr")     or "").strip().upper()
+                team_alt = (row.get("team_abbr_alt") or "").strip().upper()
+                name     = (row.get("player_name")   or "").strip()
+                if name and (team in teams_today or team_alt in teams_today):
                     players.append({"player_name": name, "team_abbr": team})
         return players
     except Exception as e:
@@ -751,6 +756,9 @@ def write_output(
     fetch_errors:    list[str],
     context_flags:   list | None = None,
     staleness_flags: list[str] | None = None,
+    no_id_errors:    list[str] | None = None,
+    espn_errors:     list[str] | None = None,
+    no_news_players: list[str] | None = None,
 ) -> None:
     output = {
         "date":                      TODAY_STR,
@@ -760,6 +768,9 @@ def write_output(
         "raw_item_count":            raw_count,
         "filtered_item_count":       filtered_count,
         "fetch_errors":              fetch_errors,
+        "no_id_errors":              no_id_errors    if no_id_errors    is not None else [],
+        "espn_errors":               espn_errors     if espn_errors     is not None else [],
+        "no_news_players":           no_news_players if no_news_players is not None else [],
         "suggested_context_updates": context_flags   if context_flags   is not None else [],
         "staleness_flags":           staleness_flags if staleness_flags is not None else [],
     }
@@ -805,28 +816,34 @@ def main() -> None:
     target_names_lower = {p["player_name"].lower() for p in target_players}
 
     # Step 2 — fetch ESPN news per player (only today's tracked players)
-    all_raw_items: list[dict] = []
-    fetch_errors:  list[str]  = []
+    all_raw_items:   list[dict] = []
+    no_id_errors:    list[str]  = []    # no athlete_id in player_dim.csv
+    espn_errors:     list[str]  = []    # ESPN HTTP/network failure
+    no_news_players: list[str]  = []    # ESPN succeeded but no relevant items
 
-    no_id_count = 0
-    http_fail_count = 0
     for player in target_players:
         name = player["player_name"]
         aid  = athlete_id_map.get(_norm_name(name))
         if not aid:
-            fetch_errors.append(name)
-            no_id_count += 1
+            no_id_errors.append(name)
             continue
         items, ok = fetch_player_news(aid, name.lower())
         if not ok:
-            fetch_errors.append(name)
-            http_fail_count += 1
+            espn_errors.append(name)
+            continue
+        if not items:
+            no_news_players.append(name)
         all_raw_items.extend(items)
 
+    # Combined list for backward compatibility (analyst doesn't read it,
+    # but keeps the field present for any tooling that checks it)
+    fetch_errors = no_id_errors + espn_errors
+
     print(
-        f"[pre_game_reporter] ESPN news fetched: {len(target_players)} players, "
-        f"{len(fetch_errors)} fetch errors "
-        f"({no_id_count} no athlete_id, {http_fail_count} HTTP failures)"
+        f"[pre_game_reporter] ESPN news fetched: {len(target_players)} players — "
+        f"{len(no_id_errors)} no athlete_id, {len(espn_errors)} HTTP errors, "
+        f"{len(no_news_players)} no news, "
+        f"{len(target_players) - len(no_id_errors) - len(espn_errors) - len(no_news_players)} with items"
     )
 
     # Fetch league-wide news once — matched to tracked players or tagged "_game"
@@ -853,7 +870,13 @@ def main() -> None:
     context_flags, staleness_flags = run_context_staleness_check(filtered_items, all_raw_items)
 
     # Step 6 — write output
-    write_output(player_notes, game_notes, raw_count, filtered_count, fetch_errors, context_flags, staleness_flags)
+    write_output(
+        player_notes, game_notes, raw_count, filtered_count, fetch_errors,
+        context_flags, staleness_flags,
+        no_id_errors=no_id_errors,
+        espn_errors=espn_errors,
+        no_news_players=no_news_players,
+    )
 
 
 if __name__ == "__main__":
