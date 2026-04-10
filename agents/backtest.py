@@ -41,6 +41,7 @@ PLAYER_BOUNCE_BACK_JSON    = DATA / "bounce_back_players.json"
 POST_BLOWOUT_JSON          = DATA / "backtest_post_blowout.json"
 OPP_FATIGUE_JSON           = DATA / "backtest_opp_fatigue.json"
 SHOOTING_REGRESSION_JSON   = DATA / "backtest_shooting_regression.json"
+STAR_ABSENCE_JSON          = DATA / "backtest_star_absence.json"
 
 # ── Tier definitions (mirrors quant.py) ───────────────────────────────
 PTS_TIERS = [10, 15, 20, 25, 30]
@@ -85,6 +86,11 @@ SV_MIN_GAMES   = 10    # min valid FGA games in L20 window to qualify
 SV_LOW_THRESH  = 0.10  # delta <= -10% → volume_low
 SV_HIGH_THRESH = 0.10  # delta >= +10% → volume_high
 SV_MIN_N       = 20    # min instances per bucket for a verdict
+
+# Star absence mode constants (H26)
+SA_MIN_STAR_GAMES    = 20   # min non-DNP games to qualify as team's "leading scorer"
+SA_MIN_ABSENT_GAMES  = 5    # min star-absent games per team for analysis
+SA_MIN_CONDITION_N   = 3    # min games per condition (with/without star) per teammate per tier
 
 # FG% safety margin mode constants
 FSM_JSON        = DATA / "backtest_ft_safety_margin.json"
@@ -6408,6 +6414,358 @@ def run_miss_anatomy_analysis(player_log: pd.DataFrame, args) -> None:
     print(f"[backtest] H21 results -> {out_path}")
 
 
+def run_star_absence_analysis(
+    player_log: pd.DataFrame,
+    args,
+) -> None:
+    """
+    H26 — Star absence teammate impact.
+
+    For each team, identifies the leading scorer (highest PTS avg among
+    whitelisted players with >= SA_MIN_STAR_GAMES non-DNP games). Finds games
+    where the star was absent (DNP or entirely missing from the game log).
+    Measures tier hit rate deltas for each teammate: with_star vs without_star.
+
+    Reports per-team and population-level results.
+    Writes data/backtest_star_absence.json.
+    """
+
+    STATS = ["PTS", "REB", "AST", "3PM"]
+    STAT_COL_MAP = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+    TIERS_MAP = {
+        "PTS": [10, 15, 20, 25, 30],
+        "REB": [4, 6, 8, 10, 12],
+        "AST": [2, 4, 6, 8, 10, 12],
+        "3PM": [1, 2, 3, 4],
+    }
+
+    print(f"[backtest] H26 star-absence | "
+          f"min_star_games={SA_MIN_STAR_GAMES} | "
+          f"min_absent_games={SA_MIN_ABSENT_GAMES} | "
+          f"min_condition_n={SA_MIN_CONDITION_N}")
+
+    # ── Step 1: Load FULL game log (including DNPs) for absence detection ──
+    # player_log already has DNPs excluded — we need DNP rows to know
+    # which games the star missed (as opposed to games the team didn't play).
+    if not GAME_LOG_CSV.exists():
+        print("[backtest] ERROR: player_game_log.csv not found.")
+        return
+    df_full = pd.read_csv(GAME_LOG_CSV, dtype={"game_id": str, "player_id": str})
+    df_full["game_date"] = pd.to_datetime(df_full["game_date"], errors="coerce")
+    df_full["_team_upper"] = df_full["team_abbrev"].astype(str).str.strip().str.upper()
+    df_full["_name_lower"] = df_full["player_name"].astype(str).str.strip().str.lower()
+    df_full["_dnp"] = df_full["dnp"].astype(str).str.strip() == "1"
+    df_full["_date_str"] = df_full["game_date"].dt.strftime("%Y-%m-%d")
+
+    # Apply same date filters as main player_log
+    if getattr(args, "start", None):
+        df_full = df_full[df_full["game_date"] >= pd.Timestamp(args.start)]
+    if getattr(args, "end", None):
+        df_full = df_full[df_full["game_date"] <= pd.Timestamp(args.end)]
+
+    # ── Step 2: Identify each team's leading scorer ────────────────────────
+    # Use the filtered player_log (no DNPs) to compute PTS averages.
+    # Only whitelisted players are in player_log.
+    team_col = player_log["team_abbrev"].astype(str).str.strip().str.upper()
+    player_log = player_log.copy()
+    player_log["_team_upper"] = team_col
+    player_log["_name_lower"] = player_log["player_name"].astype(str).str.strip().str.lower()
+    player_log["_date_str"] = player_log["game_date"].dt.strftime("%Y-%m-%d")
+
+    # Per-player season stats
+    player_season = (
+        player_log.groupby(["_name_lower", "_team_upper"])
+        .agg(
+            pts_avg=("pts", "mean"),
+            games_played=("pts", "count"),
+            player_name_display=("player_name", "first"),
+        )
+        .reset_index()
+    )
+    # Filter to players with enough games
+    player_season = player_season[
+        player_season["games_played"] >= SA_MIN_STAR_GAMES
+    ].copy()
+
+    # Identify leading scorer per team: highest pts_avg
+    stars = (
+        player_season
+        .sort_values("pts_avg", ascending=False)
+        .drop_duplicates(subset=["_team_upper"], keep="first")
+    )
+    star_map: dict[str, dict] = {}  # team_upper → {name_lower, display, pts_avg, games}
+    for _, row in stars.iterrows():
+        star_map[row["_team_upper"]] = {
+            "name_lower":   row["_name_lower"],
+            "display_name": row["player_name_display"],
+            "pts_avg":      round(float(row["pts_avg"]), 1),
+            "games_played": int(row["games_played"]),
+        }
+
+    print(f"[backtest] Identified {len(star_map)} team leading scorers:")
+    for team in sorted(star_map):
+        s = star_map[team]
+        print(f"  {team}: {s['display_name']} ({s['pts_avg']} PPG, {s['games_played']}g)")
+
+    # ── Step 3: Build star-absent game sets per team ───────────────────────
+    # A star is "absent" for a game if they have NO non-DNP row in the full log
+    # for that (team, game_date) combination.
+    #
+    # First: get all (team, game_date) combos from the full log
+    # (any row for this team on this date = team played that day)
+    team_games = (
+        df_full
+        .groupby(["_team_upper", "_date_str"])
+        .size()
+        .reset_index(name="_count")
+    )
+
+    team_results: dict[str, dict] = {}
+    for team, star_info in star_map.items():
+        star_name = star_info["name_lower"]
+
+        # All dates this team played
+        team_dates = set(
+            team_games.loc[team_games["_team_upper"] == team, "_date_str"]
+        )
+
+        # Dates where the star played (non-DNP row exists in full log)
+        star_played_mask = (
+            (df_full["_team_upper"] == team)
+            & (df_full["_name_lower"] == star_name)
+            & (~df_full["_dnp"])
+        )
+        star_played_dates = set(df_full.loc[star_played_mask, "_date_str"])
+
+        # Star absent = team played but star didn't (DNP or missing entirely)
+        star_absent_dates = team_dates - star_played_dates
+
+        if len(star_absent_dates) < SA_MIN_ABSENT_GAMES:
+            print(f"  {team}: {len(star_absent_dates)} star-absent games "
+                  f"(< {SA_MIN_ABSENT_GAMES} minimum) — skipping")
+            continue
+
+        print(f"  {team}: {len(star_absent_dates)} star-absent games, "
+              f"{len(star_played_dates)} star-present games")
+
+        # ── Step 4: Compute teammate tier hit rates by condition ───────────
+        # Get all teammate rows from player_log (DNPs already excluded)
+        teammates = player_log[
+            (player_log["_team_upper"] == team)
+            & (player_log["_name_lower"] != star_name)
+        ].copy()
+
+        if teammates.empty:
+            print(f"  {team}: no whitelisted teammates — skipping")
+            continue
+
+        teammates["_star_absent"] = teammates["_date_str"].isin(star_absent_dates)
+
+        # Per-teammate, per-stat, per-tier: hit rate WITH vs WITHOUT star
+        teammate_results: list[dict] = []
+
+        for tm_name in teammates["_name_lower"].unique():
+            tm_rows = teammates[teammates["_name_lower"] == tm_name]
+            tm_display = tm_rows["player_name"].iloc[0]
+
+            n_with    = int((~tm_rows["_star_absent"]).sum())
+            n_without = int(tm_rows["_star_absent"].sum())
+
+            if n_with < SA_MIN_CONDITION_N or n_without < SA_MIN_CONDITION_N:
+                continue
+
+            tm_with    = tm_rows[~tm_rows["_star_absent"]]
+            tm_without = tm_rows[tm_rows["_star_absent"]]
+
+            stat_deltas: dict[str, dict] = {}
+
+            for stat in STATS:
+                col = STAT_COL_MAP[stat]
+                tiers = TIERS_MAP[stat]
+
+                for tier in tiers:
+                    hits_with = int((tm_with[col] >= tier).sum())
+                    n_w       = len(tm_with)
+                    hr_with   = hits_with / n_w if n_w > 0 else None
+
+                    hits_without = int((tm_without[col] >= tier).sum())
+                    n_wo         = len(tm_without)
+                    hr_without   = hits_without / n_wo if n_wo > 0 else None
+
+                    if hr_with is not None and hr_without is not None:
+                        delta = round(hr_without - hr_with, 4)
+                    else:
+                        delta = None
+
+                    tier_key = f"{stat}_T{tier}"
+                    stat_deltas[tier_key] = {
+                        "hr_with_star":    round(hr_with, 4) if hr_with is not None else None,
+                        "n_with":          n_w,
+                        "hr_without_star": round(hr_without, 4) if hr_without is not None else None,
+                        "n_without":       n_wo,
+                        "delta":           delta,
+                    }
+
+            teammate_results.append({
+                "player":     tm_display,
+                "n_with":     n_with,
+                "n_without":  n_without,
+                "tier_deltas": stat_deltas,
+            })
+
+        team_results[team] = {
+            "star":              star_info,
+            "star_absent_games": len(star_absent_dates),
+            "star_present_games": len(star_played_dates),
+            "teammates_analyzed": len(teammate_results),
+            "teammates":          teammate_results,
+        }
+
+    # ── Step 5: Population-level aggregation ───────────────────────────────
+    # Across all teams and teammates, compute the average tier hit rate delta
+    # by stat and tier, weighted by min(n_with, n_without) for each observation.
+    pop_agg: dict[str, list] = {}  # tier_key → list of (delta, weight)
+
+    for team, tdata in team_results.items():
+        for tm in tdata["teammates"]:
+            for tier_key, td in tm["tier_deltas"].items():
+                if td["delta"] is not None:
+                    weight = min(td["n_with"], td["n_without"])
+                    pop_agg.setdefault(tier_key, []).append((td["delta"], weight))
+
+    population_summary: dict[str, dict] = {}
+    for tier_key in sorted(pop_agg.keys()):
+        observations = pop_agg[tier_key]
+        n_obs = len(observations)
+        if n_obs == 0:
+            continue
+        total_weight = sum(w for _, w in observations)
+        if total_weight == 0:
+            continue
+        weighted_delta = sum(d * w for d, w in observations) / total_weight
+        unweighted_delta = sum(d for d, _ in observations) / n_obs
+        # Count how many show positive delta (teammate benefits)
+        n_positive = sum(1 for d, _ in observations if d > 0)
+        population_summary[tier_key] = {
+            "weighted_avg_delta":   round(weighted_delta, 4),
+            "unweighted_avg_delta": round(unweighted_delta, 4),
+            "n_observations":       n_obs,
+            "n_positive":           n_positive,
+            "pct_positive":         round(n_positive / n_obs * 100, 1),
+        }
+
+    # ── Step 6: Print report ───────────────────────────────────────────────
+    sep = "=" * 70
+    print(f"\n{sep}")
+    print(f"  H26 — Star Absence Teammate Impact")
+    print(f"  Teams analyzed: {len(team_results)}")
+    print(f"{sep}")
+
+    for team in sorted(team_results):
+        tdata = team_results[team]
+        star = tdata["star"]
+        print(f"\n  {team} — Star: {star['display_name']} "
+              f"({star['pts_avg']} PPG, {star['games_played']}g)")
+        print(f"  Star absent: {tdata['star_absent_games']}g | "
+              f"Star present: {tdata['star_present_games']}g | "
+              f"Teammates analyzed: {tdata['teammates_analyzed']}")
+
+        # Show top deltas per teammate (only meaningful ones)
+        for tm in tdata["teammates"]:
+            notable = [
+                (k, v) for k, v in tm["tier_deltas"].items()
+                if v["delta"] is not None and abs(v["delta"]) >= 0.05
+            ]
+            if not notable:
+                continue
+            notable.sort(key=lambda x: abs(x[1]["delta"]), reverse=True)
+            print(f"\n    {tm['player']} (with={tm['n_with']}g, without={tm['n_without']}g):")
+            for k, v in notable[:6]:
+                direction = "+" if v["delta"] > 0 else ""
+                print(f"      {k:>10}: with={v['hr_with_star']*100:.1f}% "
+                      f"without={v['hr_without_star']*100:.1f}% "
+                      f"Δ={direction}{v['delta']*100:.1f}pp")
+
+    # Population summary
+    print(f"\n{sep}")
+    print(f"  POPULATION SUMMARY (weighted avg delta across all teams)")
+    print(f"  {'Tier':<12} {'Wtd Δ':>8} {'Unwt Δ':>8} {'n_obs':>6} {'%pos':>6}")
+    print(f"  {'-'*44}")
+
+    for stat in STATS:
+        relevant = {k: v for k, v in population_summary.items() if k.startswith(stat)}
+        if not relevant:
+            continue
+        for tier_key in sorted(relevant, key=lambda x: int(x.split("_T")[1])):
+            v = relevant[tier_key]
+            d = "+" if v["weighted_avg_delta"] > 0 else ""
+            print(f"  {tier_key:<12} {d}{v['weighted_avg_delta']*100:>6.1f}pp "
+                  f"{v['unweighted_avg_delta']*100:>7.1f}pp "
+                  f"{v['n_observations']:>5} "
+                  f"{v['pct_positive']:>5.0f}%")
+
+    # Verdict
+    print(f"\n{sep}")
+    print(f"  VERDICT")
+    print(f"  {'-'*44}")
+
+    # Check PTS and AST deltas at key tiers
+    pts_key_tiers = ["PTS_T15", "PTS_T20", "PTS_T25"]
+    ast_key_tiers = ["AST_T4", "AST_T6"]
+    verdict_parts = []
+
+    for tier_key in pts_key_tiers + ast_key_tiers:
+        entry = population_summary.get(tier_key)
+        if entry and entry["n_observations"] >= 10:
+            d = entry["weighted_avg_delta"]
+            if d > 0.03:
+                verdict_parts.append(
+                    f"{tier_key}: +{d*100:.1f}pp lift ({entry['n_observations']} obs, "
+                    f"{entry['pct_positive']:.0f}% positive) — SIGNAL"
+                )
+            elif d < -0.03:
+                verdict_parts.append(
+                    f"{tier_key}: {d*100:.1f}pp drag ({entry['n_observations']} obs) — "
+                    f"negative (star presence helps)"
+                )
+            else:
+                verdict_parts.append(
+                    f"{tier_key}: {d*100:+.1f}pp ({entry['n_observations']} obs) — NOISE"
+                )
+
+    if verdict_parts:
+        for v in verdict_parts:
+            print(f"  {v}")
+    else:
+        print("  Insufficient data at key tiers for a verdict.")
+
+    print(f"\n{sep}\n")
+
+    # ── Step 7: Write JSON output ──────────────────────────────────────────
+    output = {
+        "mode":             "star-absence",
+        "generated_at":     dt.date.today().isoformat(),
+        "date_range": {
+            "start": str(player_log["game_date"].min().date()),
+            "end":   str(player_log["game_date"].max().date()),
+        },
+        "constants": {
+            "SA_MIN_STAR_GAMES":   SA_MIN_STAR_GAMES,
+            "SA_MIN_ABSENT_GAMES": SA_MIN_ABSENT_GAMES,
+            "SA_MIN_CONDITION_N":  SA_MIN_CONDITION_N,
+        },
+        "teams_analyzed":       len(team_results),
+        "star_identification":  {t: d["star"] for t, d in team_results.items()},
+        "team_results":         team_results,
+        "population_summary":   population_summary,
+    }
+
+    STAR_ABSENCE_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(STAR_ABSENCE_JSON, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"[backtest] H26 results written → {STAR_ABSENCE_JSON}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -6422,7 +6780,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -6535,6 +6893,11 @@ def main():
     # ── Elite opposing rebounder (H14) ───────────────────────────────────
     if getattr(args, "mode", None) == "elite-opp-rebounder":
         run_elite_opp_rebounder_analysis(player_log, team_log, args)
+        sys.exit(0)
+
+    # ── Star absence teammate impact (H26) ────────────────────────────────
+    if getattr(args, "mode", None) == "star-absence":
+        run_star_absence_analysis(player_log, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

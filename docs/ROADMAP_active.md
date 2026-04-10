@@ -66,6 +66,61 @@ Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: Apri
 - Deactivate non-playoff teams on whitelist
 - Verify 4/10 run: walked_tier emission, market gate, pre-game reporter fixes, pretip sweep, CLV computation
 - Layer 3 frontend implementation (if Layers 1+2 verified clean)
+- **Skip Re-evaluation on Star Absence** (depends on H26 confirmed) — see item below
+- **Analyst Star-Absence Uplift Annotation** (depends on H26 confirmed) — see item below
+
+---
+
+#### Skip Re-evaluation on Star Absence
+**Priority:** April 12–13 gap
+**Depends on:** H26 (CONFIRMED SIGNAL, 4/10)
+**Scope:** `agents/lineup_update.py`, `data/opportunity_flags.json`, reads `data/skipped_picks.json` + `data/player_stats.json`
+
+**Design:** When `lineup_update.py` detects a confirmed-OUT player who is the team's leading scorer (per quant data), scan `skipped_picks.json` for teammates whose `skip_reason` is `merit_below_floor`. Re-estimate confidence by softening penalties invalidated by the absence:
+- FG% safety margin (H11): recomputed without the star's shot-diet competition → threshold shifts downward, fewer "fg_margin_thin" triggers
+- SHORT_SAMPLE flag: if the player's low `games_available` is caused by the star's own absence pattern (both missed the same stretches), the flag is spurious in the current state and can be relaxed
+- vs_tough rate: supplemented by without-star hit rate where available (per-teammate from H26 data)
+
+If the re-estimated confidence crosses 70%, write a `skip_reconsideration` entry to `opportunity_flags.json` with `{triggered_by_star, original_skip_reason, softened_penalties, revised_confidence, tier, stat}`. The frontend already renders `opportunity_flags.json` cards — no new UI work required.
+
+**Gates:**
+- PTS and AST props only (REB and 3PM showed no H26 signal)
+- Confirmed-OUT star only (no QUESTIONABLE / DOUBTFUL / GTD — matches the Without-Star Baseline rule's gate philosophy)
+- Leading scorer identification uses the same logic as the H26 backtest (highest PTS avg, ≥20 games)
+- Per-teammate without-star check: if the player has ≥3 prior without-star games in `player_stats.json["key_teammate_absent"]` AND the per-player direction is *negative* (e.g. Jalen Green without Booker), skip the reconsideration for that teammate — the population lift must not override per-player evidence
+
+**Motivation:** Direct fix for the 4/9 Tatum scenario that motivated H26 — if the Review agent had escalated Tatum's pick to `manual_skip` but Brown was OUT, this feature would have caught the reconsideration window and surfaced Tatum as a recoverable opportunity.
+
+---
+
+#### Analyst Star-Absence Uplift Annotation
+**Priority:** April 12–13 gap
+**Depends on:** H26 (CONFIRMED SIGNAL, 4/10)
+**Scope:** `agents/quant.py` (compute population + per-player deltas at context-build time), `agents/analyst.py` (annotation injection + prompt rule)
+
+**Design:** When the team's leading scorer is confirmed OUT for today's game, inject a `STAR_ABSENT_LIFT` annotation into quant context for each teammate on that team:
+
+```
+  STAR_ABSENT: [Jaylen Brown OUT] population PTS T15-T25 +11 to +13pp, AST T4 +10pp
+  Player-specific (6g): PTS T20 without Brown = 100%, delta +71pp  [STRONG_PERSONAL_SIGNAL]
+```
+
+**Interaction with existing rules:**
+- The annotation is **informational only** — no directive rule, no mechanical confidence override. The analyst sees the line and factors it into reasoning alongside the existing Without-Star Baseline two-gate check (added 2026-03-22).
+- Per-player without-star data in `key_teammate_absent` **always takes precedence** over the population average. If the player has ≥3 prior without-star games, the annotation leads with the player-specific number; population lift is shown as supplementary context.
+- The existing Without-Star Baseline rule (confirmed-OUT gate + n ≥ 10 sample gate for primary qualifier) is unchanged. This annotation is additive, not a replacement.
+
+**Directional qualifier from H26 per-teammate data:**
+- `[STRONG_PERSONAL_SIGNAL]` — player has ≥3 without-star games AND per-player delta is positive AND aligned with population direction
+- `[NEUTRAL_PERSONAL_DATA]` — player has ≥3 without-star games but delta is within ±3pp of zero
+- `[PERSONAL_DRAG_WARNING]` — player has ≥3 without-star games AND per-player delta is negative (e.g. Jalen Green without Booker); in this case the annotation SUPPRESSES the population lift entirely and prints only the drag warning
+- `[POPULATION_ONLY]` — fewer than 3 without-star games; population average is shown but labeled as low-confidence
+
+**Caveat:** If per-player data shows a drag, the population lift must NOT fire. The annotation logic is: per-player data wins whenever it exists at ≥3 games; population data is only shown standalone when no per-player history is available. This prevents the Jalen Green–type miss where the population signal would have misled the analyst.
+
+**Gates:** PTS T15/T20/T25 and AST T4/T6 only — the five tiers where H26 crossed the +3pp SIGNAL threshold. Do not annotate REB (weak signal) or 3PM (noise).
+
+---
 
 **What NOT to change pre-emptively:** Do not modify quant computations, confidence rules, or skip thresholds before seeing playoff data. Observe first, adjust second.
 
@@ -163,6 +218,55 @@ Three suppressors: HOU (65.2%, n=23), PHX (75.0%, n=24), PHI (64.7%, n=17). One 
 **Mode: `--mode 3pa-volume-gate`**
 
 Was 99/150 graded 3PM picks as of Mar 22. Check current count — may have reached threshold for rerun. If not, defer to offseason.
+
+---
+
+### H24 — Market Disagreement Gate
+**Status: DESIGNED — queued for backtest when ~50+ odds-enriched picks are graded**
+**Mode: `--mode market-disagreement` (not yet implemented)**
+
+**Question:** Do picks where FanDuel implied probability exceeds system confidence by ≥15pp (`edge_pct ≤ -15`) hit at a meaningfully lower rate than other picks?
+
+**Proposed rule:** When `market_implied_prob − confidence_pct ≥ 15` AND the pick does not carry `iron_floor`, exclude with `skip_reason = market_disagreement`. Lives in the analyst prompt as a KEY RULE using the prefetched odds data from `odds_available.json` (already loaded by the market availability gate).
+
+**Trigger:** Auditor Rec #1 from the 4/9 audit — Barnes AST T4 at 74% confidence vs 91.67% market-implied probability, missed badly. The thesis is that when the market prices a leg 15+ percentage points tighter than the system, the market has information (rotation, load, matchup) the system lacks.
+
+**Activation gate:** ≥50 graded picks with `bet_recommendation` data in `picks.json`. Currently accumulating since the 4/7 odds integration shipped. Re-check count weekly — when it crosses 50, implement the mode and run the backtest before shipping the prompt rule.
+
+---
+
+### H25 — Trim Escalation Signal
+**Status: DESIGNED — queued for backtest when ~30+ trim-verdict picks have outcomes**
+**Mode: `--mode trim-escalation` (not yet implemented)**
+
+**Question:** Do picks with `verdict: "trim"` AND `confidence_pct ≤ 75` AND at least one structural weakness flag (VOLATILE tag, vs_tough < 60%, road underdog) hit at a meaningfully lower rate than other trimmed picks?
+
+**Proposed rule:** Review agent escalates `trim` → `manual_skip` when all three conditions are met simultaneously. Lives in the Review agent prompt as a stay-away gate. Does not touch the Pick stage — the escalation happens downstream in Stage 3.
+
+**Trigger:** Auditor Rec #4 from the 4/9 audit — both session misses that day had trim recommendations AND ≤75% confidence AND a structural weakness flag. Thesis: trim-verdict picks as a class hit at 92.9% season-to-date (very safe), but the sub-population that combines all three weakness signals may be where the trim verdict is under-calling the risk.
+
+**Activation gate:** ≥30 `trim`-verdict picks with graded HIT/MISS outcomes across historical `picks_review_*.json` files. Currently 116 trim picks season-to-date (per `human_flag_precision` block), but the sub-population of `trim + ≤75% + weakness flag` is much smaller — need to measure it first before running the backtest.
+
+---
+
+### H26 — Star Absence Teammate Impact
+**Status: CONFIRMED SIGNAL — results reviewed 4/10**
+**Mode: `--mode star-absence`**
+
+Measures teammate tier hit rate deltas (with vs without the team's leading scorer) across the 2026 season. Leading scorer = highest PTS avg with ≥20 non-DNP games; star-absent games = dates the team played but the star did not. Per-teammate hit rates computed at every PTS/REB/AST/3PM tier with min 3 games per condition.
+
+**Confirmed signal on 2026-season data** (14 teams qualified, 31 teammate observations):
+- **PTS_T15**: +11.3pp weighted avg lift (77% positive)
+- **PTS_T20**: +12.7pp weighted avg lift (71% positive)
+- **PTS_T25**: +10.5pp weighted avg lift (71% positive)
+- **AST_T4**: +9.6pp weighted avg lift (71% positive)
+- **AST_T6**: +6.7pp weighted avg lift (55% positive)
+
+All five key tiers cross the +3pp SIGNAL threshold with ≥10 observations. The motivating 4/9 scenario (Tatum +27.3pp PTS T20 when Brown OUT, Pritchard +71.2pp PTS T20) is present in the BOS-specific section.
+
+**Important caveat:** per-player direction varies. Population lift is strong but individual teammates can show drags (e.g. Jalen Green PTS cratered without Booker). Any production rule MUST check per-player without-star history before applying the population average — the two downstream items below both respect this.
+
+**Downstream consumers:** two items added to the April 12–13 gap queue (see below) — skip re-evaluation in `lineup_update.py` and analyst star-absence uplift annotation in `quant.py` + `analyst.py`. Both are designed to respect per-player history when available and fall back to population data only when per-player samples are thin.
 
 ---
 

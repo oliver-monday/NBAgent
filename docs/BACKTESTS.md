@@ -38,6 +38,67 @@ All findings applied. Full methodology preserved in git history. Key results:
 
 ## Open Hypotheses (Pending Backtest)
 
+### H26 — Star Absence Teammate Impact
+
+**Status: CONFIRMED SIGNAL — April 10, 2026**
+**Mode:** `--mode star-absence`
+**Output:** `data/backtest_star_absence.json`
+**Sample:** 14 teams, 31 teammate observations, 2025-10-21 → 2026-04-09 (full season through 4/9)
+
+**Verdict:** SIGNAL at PTS T15–T25 (+11–13pp weighted delta, 71–77% directionally positive, n=31) and AST T4 (+9.6pp, 71% positive). REB and 3PM are noise. Per-player direction varies — population lift is strong but individual teammates can show drags (e.g. Jalen Green PTS cratered without Booker). Any production rule must check per-player history, not just population average.
+
+**Question:** When a team's leading scorer is absent, do teammate tier hit rates lift in measurable amounts — specifically at the tiers where NBAgent picks (PTS T15/T20/T25, AST T4/T6)?
+
+**Motivation:** On 2026-04-09, Jayson Tatum's PTS pick was penalty-skipped by the analyst but he scored 24 (clearing T20) when Jaylen Brown was confirmed OUT. The system currently has no way to quantify the expected teammate lift on a star absence, which directly affects two downstream features: (1) re-evaluation of skipped picks in `lineup_update.py` when a star teammate flips to confirmed OUT post-morning, (2) a potential absence-driven confidence adjustment rule in the analyst prompt.
+
+**Method:**
+- **Star identification:** Per team, highest PTS avg with ≥`SA_MIN_STAR_GAMES` (20) non-DNP games in the window. Sort by PTS avg descending, `drop_duplicates(subset=team, keep=first)`.
+- **Absence detection:** Reads the *raw* `player_game_log.csv` (not the DNP-filtered `player_log` used by other backtest modes) so DNP rows are available. A team date is "star-absent" when the team played (any row for that team/date exists in the full log) but the star has no non-DNP row for that date — covers both DNP flags and entirely missing rows.
+- **Per-teammate tier hit rates:** For each whitelisted teammate on a qualifying team, split their non-DNP games by the `_star_absent` flag. Compute hit rates at every tier (PTS 10/15/20/25/30, REB 4/6/8/10/12, AST 2/4/6/8/10/12, 3PM 1/2/3/4) with minimum `SA_MIN_CONDITION_N` (3) games per condition. Delta = hit_rate_without − hit_rate_with.
+- **Population aggregation:** Weighted average delta across all (team × teammate × tier) observations, weight = `min(n_with, n_without)`. Also: unweighted mean, observation count, and percentage of positive-delta observations.
+- **Verdict thresholds:** SIGNAL at |delta| ≥ +3pp with n_obs ≥ 10, NOISE otherwise, negative (star presence helps) if delta ≤ −3pp.
+
+**Constants:** `SA_MIN_STAR_GAMES=20` | `SA_MIN_ABSENT_GAMES=5` | `SA_MIN_CONDITION_N=3`
+
+**Population summary (weighted avg delta across all teams):**
+
+| Tier | Weighted Δ | Unweighted Δ | n_obs | % positive |
+|---|---|---|---|---|
+| PTS_T15 | **+11.3pp** | +12.9pp | 31 | 77% |
+| PTS_T20 | **+12.7pp** | +15.9pp | 31 | 71% |
+| PTS_T25 | **+10.5pp** | +14.4pp | 31 | 71% |
+| PTS_T30 | +7.1pp | +9.3pp | 31 | 64% |
+| REB_T6 | +5.2pp | +5.5pp | 31 | 55% |
+| REB_T12 | +3.7pp | +3.6pp | 31 | 36% |
+| AST_T4 | **+9.6pp** | +10.0pp | 31 | 71% |
+| AST_T6 | **+6.7pp** | +8.0pp | 31 | 55% |
+| AST_T8 | +6.6pp | +9.3pp | 31 | 42% |
+| 3PM_T2 | +2.6pp | +4.3pp | 31 | 48% |
+
+**Verdict: SIGNAL at PTS_T15/T20/T25 and AST_T4/T6.** All five key tiers cross the +3pp SIGNAL threshold with ≥10 observations. PTS_T20 is the strongest at +12.7pp (71% positive). REB shows directional lift but weaker (+1.6 to +5.2pp) — likely because the absent star is usually a wing/guard scorer, not a rebound competitor. 3PM is essentially noise across all tiers (+0.4 to +2.6pp).
+
+**Motivating BOS case validated in data:** The backtest identifies Jaylen Brown (26.9 PPG, 75g) as BOS's leading scorer because Tatum had only 15 qualifying non-DNP games in the window (missed the gate). In Brown's 5 absent games:
+- **Jayson Tatum PTS T20**: with Brown = 72.7%, without Brown = **100% (4/4)**, Δ = **+27.3pp**
+- **Jayson Tatum PTS T25**: with Brown = 9.1%, without Brown = **50% (2/4)**, Δ = **+40.9pp**
+- **Payton Pritchard PTS T20**: with Brown = 28.8%, without Brown = **100% (6/6)**, Δ = **+71.2pp**
+- **Payton Pritchard PTS T15**: with Brown = 57.5%, without Brown = **100%**, Δ = **+42.5pp**
+
+Small per-teammate samples (4–6 absent games), but direction is strong and consistent. The population-level aggregation across all 14 teams × 31 teammates smooths out individual small-sample noise.
+
+**Caveats before shipping as a production rule:**
+1. **Small per-team samples** — only 5 teams have ≥15 star-absent games (MIN 20, DET 18, CHA 17, DEN 16, PHX 16). The other 9 qualifying teams are in the 5–12 range. The signal holds up because the population weights by observation count, but individual team estimates shouldn't be trusted.
+2. **Confirmed-OUT vs QUES/GTD distinction not applied** — backtest counts any non-playing date as "absent" regardless of pre-game injury designation. The existing Without-Star Baseline rule in `build_pick_prompt()` gates on confirmed OUT only; any derived rule from H26 should match that gate.
+3. **Single-season data** — the 2021–2025 playoff career log doesn't have DNP rows and covers a different set of players (no reliable star-identification across years without carefully handling roster/role changes). Multi-season verification would require reconstructing DNPs from schedule gaps.
+4. **Not all "leading scorers" are the system's primary target** — for BOS, Brown is identified (more games played than Tatum this season), but the user's mental model usually has Tatum as the #1. Any derived rule needs to handle "second-highest scorer" lifts or use a different criterion (career PPG, contract value, etc.) depending on use case.
+
+**Downstream consumers (queued for April 12–13 gap — see `docs/ROADMAP_active.md`):**
+1. **Skip re-evaluation in `lineup_update.py`** — when a star teammate flips from AVAILABLE to confirmed OUT post-morning, scan `skipped_picks.json` for teammates whose skip reason was `merit_below_floor`, re-estimate confidence with penalties softened by the absence, and emit a `skip_reconsideration` entry to `opportunity_flags.json` if the revised confidence crosses 70%. PTS/AST props only, confirmed-OUT only.
+2. **Analyst star-absence uplift annotation** — injected into quant context as an informational `STAR_ABSENT_LIFT` line when the team's leading scorer is confirmed OUT. Supplements (not replaces) the existing two-gate Without-Star Baseline rule. Per-player without-star history takes precedence over the population average whenever available — Jalen Green without Booker (negative per-player drag) must NOT receive the population uplift.
+
+**Multi-season verification (deferred to offseason):** DNP reconstruction from schedule gaps in the 2021–2025 playoff_career_log data would roughly triple the sample size and enable a confirmed-OUT vs QUES/GTD breakdown. Not a blocker for shipping the two annotation-only downstream items above — both respect per-player history and fall back cleanly when data is thin.
+
+---
+
 ### H8 — Positional DvP vs. Team-Level DvP Predictive Validity
 
 **Status: COMPLETE — March 12, 2026**

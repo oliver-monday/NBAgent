@@ -1,0 +1,4982 @@
+{
+  "mode": "star-absence",
+  "generated_at": "2026-04-10",
+  "date_range": {
+    "start": "2025-10-21",
+    "end": "2026-04-09"
+  },
+  "constants": {
+    "SA_MIN_STAR_GAMES": 20,
+    "SA_MIN_ABSENT_GAMES": 5,
+    "SA_MIN_CONDITION_N": 3
+  },
+  "teams_analyzed": 14,
+  "star_identification": {
+    "LAL": {
+      "name_lower": "luka doncic",
+      "display_name": "Luka Doncic",
+      "pts_avg": 33.0,
+      "games_played": 65
+    },
+    "OKC": {
+      "name_lower": "shai gilgeous-alexander",
+      "display_name": "Shai Gilgeous-Alexander",
+      "pts_avg": 31.1,
+      "games_played": 68
+    },
+    "MIN": {
+      "name_lower": "anthony edwards",
+      "display_name": "Anthony Edwards",
+      "pts_avg": 28.9,
+      "games_played": 60
+    },
+    "PHI": {
+      "name_lower": "tyrese maxey",
+      "display_name": "Tyrese Maxey",
+      "pts_avg": 28.2,
+      "games_played": 69
+    },
+    "LAC": {
+      "name_lower": "kawhi leonard",
+      "display_name": "Kawhi Leonard",
+      "pts_avg": 28.0,
+      "games_played": 64
+    },
+    "DEN": {
+      "name_lower": "nikola jokic",
+      "display_name": "Nikola Jokic",
+      "pts_avg": 27.8,
+      "games_played": 64
+    },
+    "CLE": {
+      "name_lower": "donovan mitchell",
+      "display_name": "Donovan Mitchell",
+      "pts_avg": 27.5,
+      "games_played": 71
+    },
+    "BOS": {
+      "name_lower": "jaylen brown",
+      "display_name": "Jaylen Brown",
+      "pts_avg": 26.9,
+      "games_played": 75
+    },
+    "PHX": {
+      "name_lower": "devin booker",
+      "display_name": "Devin Booker",
+      "pts_avg": 26.1,
+      "games_played": 64
+    },
+    "DET": {
+      "name_lower": "cade cunningham",
+      "display_name": "Cade Cunningham",
+      "pts_avg": 23.9,
+      "games_played": 62
+    },
+    "ORL": {
+      "name_lower": "paolo banchero",
+      "display_name": "Paolo Banchero",
+      "pts_avg": 22.3,
+      "games_played": 70
+    },
+    "ATL": {
+      "name_lower": "jalen johnson",
+      "display_name": "Jalen Johnson",
+      "pts_avg": 21.7,
+      "games_played": 74
+    },
+    "CHA": {
+      "name_lower": "brandon miller",
+      "display_name": "Brandon Miller",
+      "pts_avg": 20.2,
+      "games_played": 63
+    },
+    "MIA": {
+      "name_lower": "bam adebayo",
+      "display_name": "Bam Adebayo",
+      "pts_avg": 19.1,
+      "games_played": 75
+    }
+  },
+  "team_results": {
+    "LAL": {
+      "star": {
+        "name_lower": "luka doncic",
+        "display_name": "Luka Doncic",
+        "pts_avg": 33.0,
+        "games_played": 65
+      },
+      "star_absent_games": 14,
+      "star_present_games": 65,
+      "teammates_analyzed": 2,
+      "teammates": [
+        {
+          "player": "Austin Reaves",
+          "n_with": 43,
+          "n_without": 9,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9767,
+              "n_with": 43,
+              "hr_without_star": 1.0,
+              "n_without": 9,
+              "delta": 0.0233
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.8372,
+              "n_with": 43,
+              "hr_without_star": 1.0,
+              "n_without": 9,
+              "delta": 0.1628
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.5116,
+              "n_with": 43,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": 0.0439
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.4186,
+              "n_with": 43,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": 0.137
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.186,
+              "n_with": 43,
+              "hr_without_star": 0.4444,
+              "n_without": 9,
+              "delta": 0.2584
+            },
+            "REB_T4": {
+              "hr_with_star": 0.7209,
+              "n_with": 43,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": -0.1654
+            },
+            "REB_T6": {
+              "hr_with_star": 0.3488,
+              "n_with": 43,
+              "hr_without_star": 0.1111,
+              "n_without": 9,
+              "delta": -0.2377
+            },
+            "REB_T8": {
+              "hr_with_star": 0.1395,
+              "n_with": 43,
+              "hr_without_star": 0.1111,
+              "n_without": 9,
+              "delta": -0.0284
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0233,
+              "n_with": 43,
+              "hr_without_star": 0.1111,
+              "n_without": 9,
+              "delta": 0.0879
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 43,
+              "hr_without_star": 0.0,
+              "n_without": 9,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.8837,
+              "n_with": 43,
+              "hr_without_star": 1.0,
+              "n_without": 9,
+              "delta": 0.1163
+            },
+            "AST_T4": {
+              "hr_with_star": 0.6279,
+              "n_with": 43,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": 0.261
+            },
+            "AST_T6": {
+              "hr_with_star": 0.3488,
+              "n_with": 43,
+              "hr_without_star": 0.7778,
+              "n_without": 9,
+              "delta": 0.4289
+            },
+            "AST_T8": {
+              "hr_with_star": 0.2093,
+              "n_with": 43,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": 0.3463
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0465,
+              "n_with": 43,
+              "hr_without_star": 0.2222,
+              "n_without": 9,
+              "delta": 0.1757
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 43,
+              "hr_without_star": 0.1111,
+              "n_without": 9,
+              "delta": 0.1111
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.907,
+              "n_with": 43,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": -0.0181
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.7209,
+              "n_with": 43,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": -0.1654
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.2791,
+              "n_with": 43,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": 0.2765
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.2093,
+              "n_with": 43,
+              "hr_without_star": 0.2222,
+              "n_without": 9,
+              "delta": 0.0129
+            }
+          }
+        },
+        {
+          "player": "LeBron James",
+          "n_with": 50,
+          "n_without": 9,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 1.0,
+              "n_with": 50,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": -0.1111
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.8,
+              "n_with": 50,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": 0.0889
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.54,
+              "n_with": 50,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": 0.3489
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.26,
+              "n_with": 50,
+              "hr_without_star": 0.4444,
+              "n_without": 9,
+              "delta": 0.1844
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.1,
+              "n_with": 50,
+              "hr_without_star": 0.1111,
+              "n_without": 9,
+              "delta": 0.0111
+            },
+            "REB_T4": {
+              "hr_with_star": 0.8,
+              "n_with": 50,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": 0.0889
+            },
+            "REB_T6": {
+              "hr_with_star": 0.52,
+              "n_with": 50,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": 0.3689
+            },
+            "REB_T8": {
+              "hr_with_star": 0.24,
+              "n_with": 50,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": 0.3156
+            },
+            "REB_T10": {
+              "hr_with_star": 0.06,
+              "n_with": 50,
+              "hr_without_star": 0.1111,
+              "n_without": 9,
+              "delta": 0.0511
+            },
+            "REB_T12": {
+              "hr_with_star": 0.04,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 9,
+              "delta": -0.04
+            },
+            "AST_T2": {
+              "hr_with_star": 1.0,
+              "n_with": 50,
+              "hr_without_star": 1.0,
+              "n_without": 9,
+              "delta": 0.0
+            },
+            "AST_T4": {
+              "hr_with_star": 0.88,
+              "n_with": 50,
+              "hr_without_star": 1.0,
+              "n_without": 9,
+              "delta": 0.12
+            },
+            "AST_T6": {
+              "hr_with_star": 0.62,
+              "n_with": 50,
+              "hr_without_star": 1.0,
+              "n_without": 9,
+              "delta": 0.38
+            },
+            "AST_T8": {
+              "hr_with_star": 0.36,
+              "n_with": 50,
+              "hr_without_star": 0.8889,
+              "n_without": 9,
+              "delta": 0.5289
+            },
+            "AST_T10": {
+              "hr_with_star": 0.2,
+              "n_with": 50,
+              "hr_without_star": 0.7778,
+              "n_without": 9,
+              "delta": 0.5778
+            },
+            "AST_T12": {
+              "hr_with_star": 0.04,
+              "n_with": 50,
+              "hr_without_star": 0.2222,
+              "n_without": 9,
+              "delta": 0.1822
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.72,
+              "n_with": 50,
+              "hr_without_star": 0.7778,
+              "n_without": 9,
+              "delta": 0.0578
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.36,
+              "n_with": 50,
+              "hr_without_star": 0.5556,
+              "n_without": 9,
+              "delta": 0.1956
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.14,
+              "n_with": 50,
+              "hr_without_star": 0.3333,
+              "n_without": 9,
+              "delta": 0.1933
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.04,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 9,
+              "delta": -0.04
+            }
+          }
+        }
+      ]
+    },
+    "OKC": {
+      "star": {
+        "name_lower": "shai gilgeous-alexander",
+        "display_name": "Shai Gilgeous-Alexander",
+        "pts_avg": 31.1,
+        "games_played": 68
+      },
+      "star_absent_games": 11,
+      "star_present_games": 68,
+      "teammates_analyzed": 3,
+      "teammates": [
+        {
+          "player": "Chet Holmgren",
+          "n_with": 60,
+          "n_without": 10,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9333,
+              "n_with": 60,
+              "hr_without_star": 0.8,
+              "n_without": 10,
+              "delta": -0.1333
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6667,
+              "n_with": 60,
+              "hr_without_star": 0.5,
+              "n_without": 10,
+              "delta": -0.1667
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.3667,
+              "n_with": 60,
+              "hr_without_star": 0.1,
+              "n_without": 10,
+              "delta": -0.2667
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.15,
+              "n_with": 60,
+              "hr_without_star": 0.1,
+              "n_without": 10,
+              "delta": -0.05
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0333,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": -0.0333
+            },
+            "REB_T4": {
+              "hr_with_star": 0.9333,
+              "n_with": 60,
+              "hr_without_star": 0.9,
+              "n_without": 10,
+              "delta": -0.0333
+            },
+            "REB_T6": {
+              "hr_with_star": 0.8333,
+              "n_with": 60,
+              "hr_without_star": 0.8,
+              "n_without": 10,
+              "delta": -0.0333
+            },
+            "REB_T8": {
+              "hr_with_star": 0.6833,
+              "n_with": 60,
+              "hr_without_star": 0.7,
+              "n_without": 10,
+              "delta": 0.0167
+            },
+            "REB_T10": {
+              "hr_with_star": 0.3333,
+              "n_with": 60,
+              "hr_without_star": 0.5,
+              "n_without": 10,
+              "delta": 0.1667
+            },
+            "REB_T12": {
+              "hr_with_star": 0.15,
+              "n_with": 60,
+              "hr_without_star": 0.3,
+              "n_without": 10,
+              "delta": 0.15
+            },
+            "AST_T2": {
+              "hr_with_star": 0.5,
+              "n_with": 60,
+              "hr_without_star": 0.7,
+              "n_without": 10,
+              "delta": 0.2
+            },
+            "AST_T4": {
+              "hr_with_star": 0.0667,
+              "n_with": 60,
+              "hr_without_star": 0.3,
+              "n_without": 10,
+              "delta": 0.2333
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.7167,
+              "n_with": 60,
+              "hr_without_star": 0.5,
+              "n_without": 10,
+              "delta": -0.2167
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.35,
+              "n_with": 60,
+              "hr_without_star": 0.1,
+              "n_without": 10,
+              "delta": -0.25
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.15,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": -0.15
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0833,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": -0.0833
+            }
+          }
+        },
+        {
+          "player": "Isaiah Hartenstein",
+          "n_with": 41,
+          "n_without": 8,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.4878,
+              "n_with": 41,
+              "hr_without_star": 0.5,
+              "n_without": 8,
+              "delta": 0.0122
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.1463,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.1463
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.0244,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.0244
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0244,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.0244
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0244,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.0244
+            },
+            "REB_T4": {
+              "hr_with_star": 0.9756,
+              "n_with": 41,
+              "hr_without_star": 0.75,
+              "n_without": 8,
+              "delta": -0.2256
+            },
+            "REB_T6": {
+              "hr_with_star": 0.8293,
+              "n_with": 41,
+              "hr_without_star": 0.625,
+              "n_without": 8,
+              "delta": -0.2043
+            },
+            "REB_T8": {
+              "hr_with_star": 0.6341,
+              "n_with": 41,
+              "hr_without_star": 0.5,
+              "n_without": 8,
+              "delta": -0.1341
+            },
+            "REB_T10": {
+              "hr_with_star": 0.4878,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.4878
+            },
+            "REB_T12": {
+              "hr_with_star": 0.3902,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.3902
+            },
+            "AST_T2": {
+              "hr_with_star": 0.8049,
+              "n_with": 41,
+              "hr_without_star": 0.625,
+              "n_without": 8,
+              "delta": -0.1799
+            },
+            "AST_T4": {
+              "hr_with_star": 0.2927,
+              "n_with": 41,
+              "hr_without_star": 0.625,
+              "n_without": 8,
+              "delta": 0.3323
+            },
+            "AST_T6": {
+              "hr_with_star": 0.1463,
+              "n_with": 41,
+              "hr_without_star": 0.375,
+              "n_without": 8,
+              "delta": 0.2287
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0976,
+              "n_with": 41,
+              "hr_without_star": 0.125,
+              "n_without": 8,
+              "delta": 0.0274
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0488,
+              "n_with": 41,
+              "hr_without_star": 0.125,
+              "n_without": 8,
+              "delta": 0.0762
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.0,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": 0.0
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.0,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": 0.0
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.0,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": 0.0
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0,
+              "n_with": 41,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": 0.0
+            }
+          }
+        },
+        {
+          "player": "Jalen Williams",
+          "n_with": 29,
+          "n_without": 4,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.8966,
+              "n_with": 29,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.1034
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6897,
+              "n_with": 29,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.3103
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.2414,
+              "n_with": 29,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.7586
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0,
+              "n_with": 29,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.75
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6897,
+              "n_with": 29,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": -0.1897
+            },
+            "REB_T6": {
+              "hr_with_star": 0.4483,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": -0.4483
+            },
+            "REB_T8": {
+              "hr_with_star": 0.1379,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": -0.1379
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 1.0,
+              "n_with": 29,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": -0.25
+            },
+            "AST_T4": {
+              "hr_with_star": 0.7586,
+              "n_with": 29,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": -0.0086
+            },
+            "AST_T6": {
+              "hr_with_star": 0.5172,
+              "n_with": 29,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": -0.0172
+            },
+            "AST_T8": {
+              "hr_with_star": 0.2069,
+              "n_with": 29,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": 0.2931
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0345,
+              "n_with": 29,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.2155
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.5517,
+              "n_with": 29,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": -0.0517
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.1379,
+              "n_with": 29,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.1121
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.0,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0,
+              "n_with": 29,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            }
+          }
+        }
+      ]
+    },
+    "MIN": {
+      "star": {
+        "name_lower": "anthony edwards",
+        "display_name": "Anthony Edwards",
+        "pts_avg": 28.9,
+        "games_played": 60
+      },
+      "star_absent_games": 20,
+      "star_present_games": 60,
+      "teammates_analyzed": 3,
+      "teammates": [
+        {
+          "player": "Jaden McDaniels",
+          "n_with": 56,
+          "n_without": 16,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.7143,
+              "n_with": 56,
+              "hr_without_star": 1.0,
+              "n_without": 16,
+              "delta": 0.2857
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.4643,
+              "n_with": 56,
+              "hr_without_star": 0.8125,
+              "n_without": 16,
+              "delta": 0.3482
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.2143,
+              "n_with": 56,
+              "hr_without_star": 0.3125,
+              "n_without": 16,
+              "delta": 0.0982
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0714,
+              "n_with": 56,
+              "hr_without_star": 0.1875,
+              "n_without": 16,
+              "delta": 0.1161
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0,
+              "n_with": 56,
+              "hr_without_star": 0.0625,
+              "n_without": 16,
+              "delta": 0.0625
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6786,
+              "n_with": 56,
+              "hr_without_star": 0.625,
+              "n_without": 16,
+              "delta": -0.0536
+            },
+            "REB_T6": {
+              "hr_with_star": 0.2321,
+              "n_with": 56,
+              "hr_without_star": 0.4375,
+              "n_without": 16,
+              "delta": 0.2054
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0357,
+              "n_with": 56,
+              "hr_without_star": 0.0,
+              "n_without": 16,
+              "delta": -0.0357
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 56,
+              "hr_without_star": 0.0,
+              "n_without": 16,
+              "delta": 0.0
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 56,
+              "hr_without_star": 0.0,
+              "n_without": 16,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.7857,
+              "n_with": 56,
+              "hr_without_star": 0.8125,
+              "n_without": 16,
+              "delta": 0.0268
+            },
+            "AST_T4": {
+              "hr_with_star": 0.2143,
+              "n_with": 56,
+              "hr_without_star": 0.375,
+              "n_without": 16,
+              "delta": 0.1607
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0357,
+              "n_with": 56,
+              "hr_without_star": 0.125,
+              "n_without": 16,
+              "delta": 0.0893
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 56,
+              "hr_without_star": 0.0,
+              "n_without": 16,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 56,
+              "hr_without_star": 0.0,
+              "n_without": 16,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 56,
+              "hr_without_star": 0.0,
+              "n_without": 16,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.6607,
+              "n_with": 56,
+              "hr_without_star": 0.9375,
+              "n_without": 16,
+              "delta": 0.2768
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.3571,
+              "n_with": 56,
+              "hr_without_star": 0.5,
+              "n_without": 16,
+              "delta": 0.1429
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.1964,
+              "n_with": 56,
+              "hr_without_star": 0.3125,
+              "n_without": 16,
+              "delta": 0.1161
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0536,
+              "n_with": 56,
+              "hr_without_star": 0.0625,
+              "n_without": 16,
+              "delta": 0.0089
+            }
+          }
+        },
+        {
+          "player": "Julius Randle",
+          "n_with": 60,
+          "n_without": 19,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9833,
+              "n_with": 60,
+              "hr_without_star": 0.9474,
+              "n_without": 19,
+              "delta": -0.036
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.7667,
+              "n_with": 60,
+              "hr_without_star": 0.8947,
+              "n_without": 19,
+              "delta": 0.1281
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.45,
+              "n_with": 60,
+              "hr_without_star": 0.6842,
+              "n_without": 19,
+              "delta": 0.2342
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.2667,
+              "n_with": 60,
+              "hr_without_star": 0.4211,
+              "n_without": 19,
+              "delta": 0.1544
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.1333,
+              "n_with": 60,
+              "hr_without_star": 0.2105,
+              "n_without": 19,
+              "delta": 0.0772
+            },
+            "REB_T4": {
+              "hr_with_star": 0.8667,
+              "n_with": 60,
+              "hr_without_star": 0.8947,
+              "n_without": 19,
+              "delta": 0.0281
+            },
+            "REB_T6": {
+              "hr_with_star": 0.6667,
+              "n_with": 60,
+              "hr_without_star": 0.6842,
+              "n_without": 19,
+              "delta": 0.0175
+            },
+            "REB_T8": {
+              "hr_with_star": 0.3833,
+              "n_with": 60,
+              "hr_without_star": 0.3684,
+              "n_without": 19,
+              "delta": -0.0149
+            },
+            "REB_T10": {
+              "hr_with_star": 0.1667,
+              "n_with": 60,
+              "hr_without_star": 0.1053,
+              "n_without": 19,
+              "delta": -0.0614
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0167,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": -0.0167
+            },
+            "AST_T2": {
+              "hr_with_star": 0.95,
+              "n_with": 60,
+              "hr_without_star": 1.0,
+              "n_without": 19,
+              "delta": 0.05
+            },
+            "AST_T4": {
+              "hr_with_star": 0.75,
+              "n_with": 60,
+              "hr_without_star": 0.6842,
+              "n_without": 19,
+              "delta": -0.0658
+            },
+            "AST_T6": {
+              "hr_with_star": 0.4333,
+              "n_with": 60,
+              "hr_without_star": 0.3684,
+              "n_without": 19,
+              "delta": -0.0649
+            },
+            "AST_T8": {
+              "hr_with_star": 0.15,
+              "n_with": 60,
+              "hr_without_star": 0.1053,
+              "n_without": 19,
+              "delta": -0.0447
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0833,
+              "n_with": 60,
+              "hr_without_star": 0.0526,
+              "n_without": 19,
+              "delta": -0.0307
+            },
+            "AST_T12": {
+              "hr_with_star": 0.05,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": -0.05
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.75,
+              "n_with": 60,
+              "hr_without_star": 0.7895,
+              "n_without": 19,
+              "delta": 0.0395
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.35,
+              "n_with": 60,
+              "hr_without_star": 0.4737,
+              "n_without": 19,
+              "delta": 0.1237
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.1833,
+              "n_with": 60,
+              "hr_without_star": 0.2105,
+              "n_without": 19,
+              "delta": 0.0272
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0333,
+              "n_with": 60,
+              "hr_without_star": 0.1053,
+              "n_without": 19,
+              "delta": 0.0719
+            }
+          }
+        },
+        {
+          "player": "Rudy Gobert",
+          "n_with": 60,
+          "n_without": 19,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.5333,
+              "n_with": 60,
+              "hr_without_star": 0.5789,
+              "n_without": 19,
+              "delta": 0.0456
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.1833,
+              "n_with": 60,
+              "hr_without_star": 0.3158,
+              "n_without": 19,
+              "delta": 0.1325
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.0333,
+              "n_with": 60,
+              "hr_without_star": 0.1053,
+              "n_without": 19,
+              "delta": 0.0719
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0167,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": -0.0167
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "REB_T4": {
+              "hr_with_star": 0.9667,
+              "n_with": 60,
+              "hr_without_star": 0.9474,
+              "n_without": 19,
+              "delta": -0.0193
+            },
+            "REB_T6": {
+              "hr_with_star": 0.9333,
+              "n_with": 60,
+              "hr_without_star": 0.8947,
+              "n_without": 19,
+              "delta": -0.0386
+            },
+            "REB_T8": {
+              "hr_with_star": 0.8,
+              "n_with": 60,
+              "hr_without_star": 0.7895,
+              "n_without": 19,
+              "delta": -0.0105
+            },
+            "REB_T10": {
+              "hr_with_star": 0.6167,
+              "n_with": 60,
+              "hr_without_star": 0.7895,
+              "n_without": 19,
+              "delta": 0.1728
+            },
+            "REB_T12": {
+              "hr_with_star": 0.5,
+              "n_with": 60,
+              "hr_without_star": 0.7368,
+              "n_without": 19,
+              "delta": 0.2368
+            },
+            "AST_T2": {
+              "hr_with_star": 0.4833,
+              "n_with": 60,
+              "hr_without_star": 0.3684,
+              "n_without": 19,
+              "delta": -0.1149
+            },
+            "AST_T4": {
+              "hr_with_star": 0.1,
+              "n_with": 60,
+              "hr_without_star": 0.1053,
+              "n_without": 19,
+              "delta": 0.0053
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.0,
+              "n_without": 19,
+              "delta": 0.0
+            }
+          }
+        }
+      ]
+    },
+    "PHI": {
+      "star": {
+        "name_lower": "tyrese maxey",
+        "display_name": "Tyrese Maxey",
+        "pts_avg": 28.2,
+        "games_played": 69
+      },
+      "star_absent_games": 11,
+      "star_present_games": 68,
+      "teammates_analyzed": 3,
+      "teammates": [
+        {
+          "player": "Joel Embiid",
+          "n_with": 36,
+          "n_without": 3,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9444,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.0556
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.9167,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.0833
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.8333,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.1667
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.6389,
+              "n_with": 36,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.0278
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.3333,
+              "n_with": 36,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.3333
+            },
+            "REB_T4": {
+              "hr_with_star": 0.9444,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.0556
+            },
+            "REB_T6": {
+              "hr_with_star": 0.75,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.25
+            },
+            "REB_T8": {
+              "hr_with_star": 0.3889,
+              "n_with": 36,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.2778
+            },
+            "REB_T10": {
+              "hr_with_star": 0.25,
+              "n_with": 36,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.0833
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0833,
+              "n_with": 36,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.25
+            },
+            "AST_T2": {
+              "hr_with_star": 0.9167,
+              "n_with": 36,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": -0.25
+            },
+            "AST_T4": {
+              "hr_with_star": 0.5,
+              "n_with": 36,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": -0.1667
+            },
+            "AST_T6": {
+              "hr_with_star": 0.1667,
+              "n_with": 36,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.1667
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0833,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.0833
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0278,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.0278
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.7778,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.2222
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.3333,
+              "n_with": 36,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.3333
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.1667,
+              "n_with": 36,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.1667
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0278,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.0278
+            }
+          }
+        },
+        {
+          "player": "Paul George",
+          "n_with": 40,
+          "n_without": 3,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.675,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.325
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.475,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.525
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.2,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.8
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.075,
+              "n_with": 40,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.5917
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.05,
+              "n_with": 40,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.2833
+            },
+            "REB_T4": {
+              "hr_with_star": 0.7,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.3
+            },
+            "REB_T6": {
+              "hr_with_star": 0.3,
+              "n_with": 40,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.3667
+            },
+            "REB_T8": {
+              "hr_with_star": 0.1,
+              "n_with": 40,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.1
+            },
+            "REB_T10": {
+              "hr_with_star": 0.05,
+              "n_with": 40,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.05
+            },
+            "REB_T12": {
+              "hr_with_star": 0.05,
+              "n_with": 40,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.05
+            },
+            "AST_T2": {
+              "hr_with_star": 0.75,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.25
+            },
+            "AST_T4": {
+              "hr_with_star": 0.425,
+              "n_with": 40,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.2417
+            },
+            "AST_T6": {
+              "hr_with_star": 0.1,
+              "n_with": 40,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.1
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 40,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 40,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 40,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.675,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.325
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.55,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.45
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.35,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.65
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.225,
+              "n_with": 40,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.775
+            }
+          }
+        },
+        {
+          "player": "VJ Edgecombe",
+          "n_with": 63,
+          "n_without": 11,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.7937,
+              "n_with": 63,
+              "hr_without_star": 0.9091,
+              "n_without": 11,
+              "delta": 0.1154
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.4603,
+              "n_with": 63,
+              "hr_without_star": 0.8182,
+              "n_without": 11,
+              "delta": 0.3579
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.2698,
+              "n_with": 63,
+              "hr_without_star": 0.6364,
+              "n_without": 11,
+              "delta": 0.3665
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1111,
+              "n_with": 63,
+              "hr_without_star": 0.2727,
+              "n_without": 11,
+              "delta": 0.1616
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0159,
+              "n_with": 63,
+              "hr_without_star": 0.1818,
+              "n_without": 11,
+              "delta": 0.1659
+            },
+            "REB_T4": {
+              "hr_with_star": 0.7937,
+              "n_with": 63,
+              "hr_without_star": 0.9091,
+              "n_without": 11,
+              "delta": 0.1154
+            },
+            "REB_T6": {
+              "hr_with_star": 0.5397,
+              "n_with": 63,
+              "hr_without_star": 0.5455,
+              "n_without": 11,
+              "delta": 0.0058
+            },
+            "REB_T8": {
+              "hr_with_star": 0.1429,
+              "n_with": 63,
+              "hr_without_star": 0.1818,
+              "n_without": 11,
+              "delta": 0.039
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0476,
+              "n_with": 63,
+              "hr_without_star": 0.1818,
+              "n_without": 11,
+              "delta": 0.1342
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 63,
+              "hr_without_star": 0.1818,
+              "n_without": 11,
+              "delta": 0.1818
+            },
+            "AST_T2": {
+              "hr_with_star": 0.8889,
+              "n_with": 63,
+              "hr_without_star": 0.9091,
+              "n_without": 11,
+              "delta": 0.0202
+            },
+            "AST_T4": {
+              "hr_with_star": 0.5556,
+              "n_with": 63,
+              "hr_without_star": 0.7273,
+              "n_without": 11,
+              "delta": 0.1717
+            },
+            "AST_T6": {
+              "hr_with_star": 0.2222,
+              "n_with": 63,
+              "hr_without_star": 0.2727,
+              "n_without": 11,
+              "delta": 0.0505
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0952,
+              "n_with": 63,
+              "hr_without_star": 0.0909,
+              "n_without": 11,
+              "delta": -0.0043
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0159,
+              "n_with": 63,
+              "hr_without_star": 0.0909,
+              "n_without": 11,
+              "delta": 0.075
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 63,
+              "hr_without_star": 0.0,
+              "n_without": 11,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.873,
+              "n_with": 63,
+              "hr_without_star": 0.7273,
+              "n_without": 11,
+              "delta": -0.1457
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.6032,
+              "n_with": 63,
+              "hr_without_star": 0.4545,
+              "n_without": 11,
+              "delta": -0.1486
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.2857,
+              "n_with": 63,
+              "hr_without_star": 0.4545,
+              "n_without": 11,
+              "delta": 0.1688
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.1429,
+              "n_with": 63,
+              "hr_without_star": 0.2727,
+              "n_without": 11,
+              "delta": 0.1299
+            }
+          }
+        }
+      ]
+    },
+    "LAC": {
+      "star": {
+        "name_lower": "kawhi leonard",
+        "display_name": "Kawhi Leonard",
+        "pts_avg": 28.0,
+        "games_played": 64
+      },
+      "star_absent_games": 15,
+      "star_present_games": 64,
+      "teammates_analyzed": 0,
+      "teammates": []
+    },
+    "DEN": {
+      "star": {
+        "name_lower": "nikola jokic",
+        "display_name": "Nikola Jokic",
+        "pts_avg": 27.8,
+        "games_played": 64
+      },
+      "star_absent_games": 16,
+      "star_present_games": 64,
+      "teammates_analyzed": 2,
+      "teammates": [
+        {
+          "player": "Aaron Gordon",
+          "n_with": 26,
+          "n_without": 14,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.7308,
+              "n_with": 26,
+              "hr_without_star": 0.6429,
+              "n_without": 14,
+              "delta": -0.0879
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6154,
+              "n_with": 26,
+              "hr_without_star": 0.4286,
+              "n_without": 14,
+              "delta": -0.1868
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.3077,
+              "n_with": 26,
+              "hr_without_star": 0.2143,
+              "n_without": 14,
+              "delta": -0.0934
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0769,
+              "n_with": 26,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.0769
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0385,
+              "n_with": 26,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.0385
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6923,
+              "n_with": 26,
+              "hr_without_star": 0.7143,
+              "n_without": 14,
+              "delta": 0.022
+            },
+            "REB_T6": {
+              "hr_with_star": 0.4615,
+              "n_with": 26,
+              "hr_without_star": 0.5714,
+              "n_without": 14,
+              "delta": 0.1099
+            },
+            "REB_T8": {
+              "hr_with_star": 0.2308,
+              "n_with": 26,
+              "hr_without_star": 0.1429,
+              "n_without": 14,
+              "delta": -0.0879
+            },
+            "REB_T10": {
+              "hr_with_star": 0.1154,
+              "n_with": 26,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": -0.044
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 26,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.5769,
+              "n_with": 26,
+              "hr_without_star": 0.6429,
+              "n_without": 14,
+              "delta": 0.0659
+            },
+            "AST_T4": {
+              "hr_with_star": 0.1154,
+              "n_with": 26,
+              "hr_without_star": 0.3571,
+              "n_without": 14,
+              "delta": 0.2418
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0385,
+              "n_with": 26,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": 0.033
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 26,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": 0.0714
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 26,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": 0.0714
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 26,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.7308,
+              "n_with": 26,
+              "hr_without_star": 0.6429,
+              "n_without": 14,
+              "delta": -0.0879
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.4231,
+              "n_with": 26,
+              "hr_without_star": 0.2857,
+              "n_without": 14,
+              "delta": -0.1374
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.2308,
+              "n_with": 26,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": -0.1593
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.1538,
+              "n_with": 26,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.1538
+            }
+          }
+        },
+        {
+          "player": "Jamal Murray",
+          "n_with": 63,
+          "n_without": 14,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9683,
+              "n_with": 63,
+              "hr_without_star": 0.8571,
+              "n_without": 14,
+              "delta": -0.1111
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.873,
+              "n_with": 63,
+              "hr_without_star": 0.8571,
+              "n_without": 14,
+              "delta": -0.0159
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.746,
+              "n_with": 63,
+              "hr_without_star": 0.7857,
+              "n_without": 14,
+              "delta": 0.0397
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.4444,
+              "n_with": 63,
+              "hr_without_star": 0.5,
+              "n_without": 14,
+              "delta": 0.0556
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.3016,
+              "n_with": 63,
+              "hr_without_star": 0.2857,
+              "n_without": 14,
+              "delta": -0.0159
+            },
+            "REB_T4": {
+              "hr_with_star": 0.619,
+              "n_with": 63,
+              "hr_without_star": 0.5,
+              "n_without": 14,
+              "delta": -0.119
+            },
+            "REB_T6": {
+              "hr_with_star": 0.381,
+              "n_with": 63,
+              "hr_without_star": 0.2857,
+              "n_without": 14,
+              "delta": -0.0952
+            },
+            "REB_T8": {
+              "hr_with_star": 0.1111,
+              "n_with": 63,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": -0.0397
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0159,
+              "n_with": 63,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.0159
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 63,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.9841,
+              "n_with": 63,
+              "hr_without_star": 0.8571,
+              "n_without": 14,
+              "delta": -0.127
+            },
+            "AST_T4": {
+              "hr_with_star": 0.873,
+              "n_with": 63,
+              "hr_without_star": 0.7857,
+              "n_without": 14,
+              "delta": -0.0873
+            },
+            "AST_T6": {
+              "hr_with_star": 0.6508,
+              "n_with": 63,
+              "hr_without_star": 0.6429,
+              "n_without": 14,
+              "delta": -0.0079
+            },
+            "AST_T8": {
+              "hr_with_star": 0.381,
+              "n_with": 63,
+              "hr_without_star": 0.3571,
+              "n_without": 14,
+              "delta": -0.0238
+            },
+            "AST_T10": {
+              "hr_with_star": 0.2063,
+              "n_with": 63,
+              "hr_without_star": 0.2857,
+              "n_without": 14,
+              "delta": 0.0794
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0952,
+              "n_with": 63,
+              "hr_without_star": 0.1429,
+              "n_without": 14,
+              "delta": 0.0476
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.9524,
+              "n_with": 63,
+              "hr_without_star": 0.7143,
+              "n_without": 14,
+              "delta": -0.2381
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.746,
+              "n_with": 63,
+              "hr_without_star": 0.6429,
+              "n_without": 14,
+              "delta": -0.1032
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.5714,
+              "n_with": 63,
+              "hr_without_star": 0.3571,
+              "n_without": 14,
+              "delta": -0.2143
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.381,
+              "n_with": 63,
+              "hr_without_star": 0.2857,
+              "n_without": 14,
+              "delta": -0.0952
+            }
+          }
+        }
+      ]
+    },
+    "CLE": {
+      "star": {
+        "name_lower": "donovan mitchell",
+        "display_name": "Donovan Mitchell",
+        "pts_avg": 27.5,
+        "games_played": 71
+      },
+      "star_absent_games": 9,
+      "star_present_games": 71,
+      "teammates_analyzed": 3,
+      "teammates": [
+        {
+          "player": "Evan Mobley",
+          "n_with": 57,
+          "n_without": 8,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9123,
+              "n_with": 57,
+              "hr_without_star": 0.875,
+              "n_without": 8,
+              "delta": -0.0373
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.7193,
+              "n_with": 57,
+              "hr_without_star": 0.875,
+              "n_without": 8,
+              "delta": 0.1557
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.3509,
+              "n_with": 57,
+              "hr_without_star": 0.625,
+              "n_without": 8,
+              "delta": 0.2741
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0877,
+              "n_with": 57,
+              "hr_without_star": 0.25,
+              "n_without": 8,
+              "delta": 0.1623
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0175,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.0175
+            },
+            "REB_T4": {
+              "hr_with_star": 0.9825,
+              "n_with": 57,
+              "hr_without_star": 0.875,
+              "n_without": 8,
+              "delta": -0.1075
+            },
+            "REB_T6": {
+              "hr_with_star": 0.807,
+              "n_with": 57,
+              "hr_without_star": 0.75,
+              "n_without": 8,
+              "delta": -0.057
+            },
+            "REB_T8": {
+              "hr_with_star": 0.6842,
+              "n_with": 57,
+              "hr_without_star": 0.5,
+              "n_without": 8,
+              "delta": -0.1842
+            },
+            "REB_T10": {
+              "hr_with_star": 0.4386,
+              "n_with": 57,
+              "hr_without_star": 0.375,
+              "n_without": 8,
+              "delta": -0.0636
+            },
+            "REB_T12": {
+              "hr_with_star": 0.2105,
+              "n_with": 57,
+              "hr_without_star": 0.375,
+              "n_without": 8,
+              "delta": 0.1645
+            },
+            "AST_T2": {
+              "hr_with_star": 0.8772,
+              "n_with": 57,
+              "hr_without_star": 0.75,
+              "n_without": 8,
+              "delta": -0.1272
+            },
+            "AST_T4": {
+              "hr_with_star": 0.5439,
+              "n_with": 57,
+              "hr_without_star": 0.375,
+              "n_without": 8,
+              "delta": -0.1689
+            },
+            "AST_T6": {
+              "hr_with_star": 0.1404,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.1404
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0175,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": -0.0175
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 8,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.5263,
+              "n_with": 57,
+              "hr_without_star": 0.5,
+              "n_without": 8,
+              "delta": -0.0263
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.2456,
+              "n_with": 57,
+              "hr_without_star": 0.375,
+              "n_without": 8,
+              "delta": 0.1294
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.1404,
+              "n_with": 57,
+              "hr_without_star": 0.125,
+              "n_without": 8,
+              "delta": -0.0154
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0175,
+              "n_with": 57,
+              "hr_without_star": 0.125,
+              "n_without": 8,
+              "delta": 0.1075
+            }
+          }
+        },
+        {
+          "player": "James Harden",
+          "n_with": 22,
+          "n_without": 3,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 1.0,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.8636,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.1364
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.5,
+              "n_with": 22,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.1667
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1818,
+              "n_with": 22,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.1515
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0455,
+              "n_with": 22,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.2879
+            },
+            "REB_T4": {
+              "hr_with_star": 0.7727,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.2273
+            },
+            "REB_T6": {
+              "hr_with_star": 0.2273,
+              "n_with": 22,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.4394
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0909,
+              "n_with": 22,
+              "hr_without_star": 0.3333,
+              "n_without": 3,
+              "delta": 0.2424
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0455,
+              "n_with": 22,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.0455
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 22,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 1.0,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "AST_T4": {
+              "hr_with_star": 0.9545,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.0455
+            },
+            "AST_T6": {
+              "hr_with_star": 0.7727,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.2273
+            },
+            "AST_T8": {
+              "hr_with_star": 0.4545,
+              "n_with": 22,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.2121
+            },
+            "AST_T10": {
+              "hr_with_star": 0.2273,
+              "n_with": 22,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.2273
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0909,
+              "n_with": 22,
+              "hr_without_star": 0.0,
+              "n_without": 3,
+              "delta": -0.0909
+            },
+            "3PM_T1": {
+              "hr_with_star": 1.0,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.0
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.8636,
+              "n_with": 22,
+              "hr_without_star": 1.0,
+              "n_without": 3,
+              "delta": 0.1364
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.6364,
+              "n_with": 22,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.0303
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.3182,
+              "n_with": 22,
+              "hr_without_star": 0.6667,
+              "n_without": 3,
+              "delta": 0.3485
+            }
+          }
+        },
+        {
+          "player": "Jarrett Allen",
+          "n_with": 50,
+          "n_without": 7,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.74,
+              "n_with": 50,
+              "hr_without_star": 0.8571,
+              "n_without": 7,
+              "delta": 0.1171
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.46,
+              "n_with": 50,
+              "hr_without_star": 0.7143,
+              "n_without": 7,
+              "delta": 0.2543
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.18,
+              "n_with": 50,
+              "hr_without_star": 0.5714,
+              "n_without": 7,
+              "delta": 0.3914
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.08,
+              "n_with": 50,
+              "hr_without_star": 0.4286,
+              "n_without": 7,
+              "delta": 0.3486
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.02,
+              "n_with": 50,
+              "hr_without_star": 0.1429,
+              "n_without": 7,
+              "delta": 0.1229
+            },
+            "REB_T4": {
+              "hr_with_star": 0.94,
+              "n_with": 50,
+              "hr_without_star": 0.8571,
+              "n_without": 7,
+              "delta": -0.0829
+            },
+            "REB_T6": {
+              "hr_with_star": 0.8,
+              "n_with": 50,
+              "hr_without_star": 0.8571,
+              "n_without": 7,
+              "delta": 0.0571
+            },
+            "REB_T8": {
+              "hr_with_star": 0.58,
+              "n_with": 50,
+              "hr_without_star": 0.7143,
+              "n_without": 7,
+              "delta": 0.1343
+            },
+            "REB_T10": {
+              "hr_with_star": 0.38,
+              "n_with": 50,
+              "hr_without_star": 0.4286,
+              "n_without": 7,
+              "delta": 0.0486
+            },
+            "REB_T12": {
+              "hr_with_star": 0.16,
+              "n_with": 50,
+              "hr_without_star": 0.1429,
+              "n_without": 7,
+              "delta": -0.0171
+            },
+            "AST_T2": {
+              "hr_with_star": 0.52,
+              "n_with": 50,
+              "hr_without_star": 0.4286,
+              "n_without": 7,
+              "delta": -0.0914
+            },
+            "AST_T4": {
+              "hr_with_star": 0.08,
+              "n_with": 50,
+              "hr_without_star": 0.2857,
+              "n_without": 7,
+              "delta": 0.2057
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": 0.0
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.02,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": -0.02
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.0,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": 0.0
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.0,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": 0.0
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0,
+              "n_with": 50,
+              "hr_without_star": 0.0,
+              "n_without": 7,
+              "delta": 0.0
+            }
+          }
+        }
+      ]
+    },
+    "BOS": {
+      "star": {
+        "name_lower": "jaylen brown",
+        "display_name": "Jaylen Brown",
+        "pts_avg": 26.9,
+        "games_played": 75
+      },
+      "star_absent_games": 5,
+      "star_present_games": 75,
+      "teammates_analyzed": 4,
+      "teammates": [
+        {
+          "player": "Derrick White",
+          "n_with": 74,
+          "n_without": 5,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.8378,
+              "n_with": 74,
+              "hr_without_star": 0.6,
+              "n_without": 5,
+              "delta": -0.2378
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6081,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": -0.2081
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.2973,
+              "n_with": 74,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": -0.0973
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1486,
+              "n_with": 74,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.0514
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0405,
+              "n_with": 74,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.1595
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6892,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": -0.2892
+            },
+            "REB_T6": {
+              "hr_with_star": 0.2568,
+              "n_with": 74,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": -0.0568
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0405,
+              "n_with": 74,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.0405
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 74,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 74,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.9324,
+              "n_with": 74,
+              "hr_without_star": 0.6,
+              "n_without": 5,
+              "delta": -0.3324
+            },
+            "AST_T4": {
+              "hr_with_star": 0.7973,
+              "n_with": 74,
+              "hr_without_star": 0.6,
+              "n_without": 5,
+              "delta": -0.1973
+            },
+            "AST_T6": {
+              "hr_with_star": 0.3919,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": 0.0081
+            },
+            "AST_T8": {
+              "hr_with_star": 0.1757,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": 0.2243
+            },
+            "AST_T10": {
+              "hr_with_star": 0.027,
+              "n_with": 74,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.027
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0135,
+              "n_with": 74,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.0135
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.9054,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": -0.5054
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.7297,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": -0.3297
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.5,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": -0.1
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.2838,
+              "n_with": 74,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": 0.1162
+            }
+          }
+        },
+        {
+          "player": "Jayson Tatum",
+          "n_with": 11,
+          "n_without": 4,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 1.0,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.9091,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.0909
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.7273,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.2727
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0909,
+              "n_with": 11,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": 0.4091
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0,
+              "n_with": 11,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.25
+            },
+            "REB_T4": {
+              "hr_with_star": 1.0,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "REB_T6": {
+              "hr_with_star": 0.8182,
+              "n_with": 11,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": -0.0682
+            },
+            "REB_T8": {
+              "hr_with_star": 0.7273,
+              "n_with": 11,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.0227
+            },
+            "REB_T10": {
+              "hr_with_star": 0.6364,
+              "n_with": 11,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.1136
+            },
+            "REB_T12": {
+              "hr_with_star": 0.3636,
+              "n_with": 11,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.3864
+            },
+            "AST_T2": {
+              "hr_with_star": 0.9091,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.0909
+            },
+            "AST_T4": {
+              "hr_with_star": 0.6364,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.3636
+            },
+            "AST_T6": {
+              "hr_with_star": 0.4545,
+              "n_with": 11,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.2955
+            },
+            "AST_T8": {
+              "hr_with_star": 0.1818,
+              "n_with": 11,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.5682
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0909,
+              "n_with": 11,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": -0.0909
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 11,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 1.0,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "3PM_T2": {
+              "hr_with_star": 1.0,
+              "n_with": 11,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.5455,
+              "n_with": 11,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": -0.2955
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.3636,
+              "n_with": 11,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": -0.1136
+            }
+          }
+        },
+        {
+          "player": "Neemias Queta",
+          "n_with": 72,
+          "n_without": 6,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.4861,
+              "n_with": 72,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.1806
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.1667,
+              "n_with": 72,
+              "hr_without_star": 0.3333,
+              "n_without": 6,
+              "delta": 0.1667
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.0278,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0278
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0139,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0139
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "REB_T4": {
+              "hr_with_star": 0.8889,
+              "n_with": 72,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": -0.0556
+            },
+            "REB_T6": {
+              "hr_with_star": 0.7361,
+              "n_with": 72,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": -0.0694
+            },
+            "REB_T8": {
+              "hr_with_star": 0.5417,
+              "n_with": 72,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.125
+            },
+            "REB_T10": {
+              "hr_with_star": 0.3472,
+              "n_with": 72,
+              "hr_without_star": 0.5,
+              "n_without": 6,
+              "delta": 0.1528
+            },
+            "REB_T12": {
+              "hr_with_star": 0.1806,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.1806
+            },
+            "AST_T2": {
+              "hr_with_star": 0.4444,
+              "n_with": 72,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.2222
+            },
+            "AST_T4": {
+              "hr_with_star": 0.0833,
+              "n_with": 72,
+              "hr_without_star": 0.1667,
+              "n_without": 6,
+              "delta": 0.0833
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0278,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0278
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0,
+              "n_with": 72,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            }
+          }
+        },
+        {
+          "player": "Payton Pritchard",
+          "n_with": 73,
+          "n_without": 6,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.7945,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.2055
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.5753,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.4247
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.2877,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.7123
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1781,
+              "n_with": 73,
+              "hr_without_star": 0.5,
+              "n_without": 6,
+              "delta": 0.3219
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0685,
+              "n_with": 73,
+              "hr_without_star": 0.1667,
+              "n_without": 6,
+              "delta": 0.0982
+            },
+            "REB_T4": {
+              "hr_with_star": 0.5479,
+              "n_with": 73,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.1187
+            },
+            "REB_T6": {
+              "hr_with_star": 0.137,
+              "n_with": 73,
+              "hr_without_star": 0.5,
+              "n_without": 6,
+              "delta": 0.363
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0411,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0411
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0274,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0274
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.9315,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.0685
+            },
+            "AST_T4": {
+              "hr_with_star": 0.7397,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.2603
+            },
+            "AST_T6": {
+              "hr_with_star": 0.3973,
+              "n_with": 73,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.4361
+            },
+            "AST_T8": {
+              "hr_with_star": 0.1781,
+              "n_with": 73,
+              "hr_without_star": 0.3333,
+              "n_without": 6,
+              "delta": 0.1553
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0274,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0274
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.9041,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.0959
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.6438,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.3562
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.4658,
+              "n_with": 73,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.3676
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.3014,
+              "n_with": 73,
+              "hr_without_star": 0.3333,
+              "n_without": 6,
+              "delta": 0.032
+            }
+          }
+        }
+      ]
+    },
+    "PHX": {
+      "star": {
+        "name_lower": "devin booker",
+        "display_name": "Devin Booker",
+        "pts_avg": 26.1,
+        "games_played": 64
+      },
+      "star_absent_games": 16,
+      "star_present_games": 64,
+      "teammates_analyzed": 1,
+      "teammates": [
+        {
+          "player": "Jalen Green",
+          "n_with": 27,
+          "n_without": 5,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.7778,
+              "n_with": 27,
+              "hr_without_star": 0.8,
+              "n_without": 5,
+              "delta": 0.0222
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6667,
+              "n_with": 27,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": -0.4667
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.5926,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.5926
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.3333,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.3333
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.1111,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.1111
+            },
+            "REB_T4": {
+              "hr_with_star": 0.4444,
+              "n_with": 27,
+              "hr_without_star": 0.6,
+              "n_without": 5,
+              "delta": 0.1556
+            },
+            "REB_T6": {
+              "hr_with_star": 0.1852,
+              "n_with": 27,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.0148
+            },
+            "REB_T8": {
+              "hr_with_star": 0.037,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.037
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.7407,
+              "n_with": 27,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": -0.5407
+            },
+            "AST_T4": {
+              "hr_with_star": 0.3704,
+              "n_with": 27,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": -0.1704
+            },
+            "AST_T6": {
+              "hr_with_star": 0.1111,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.1111
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.7778,
+              "n_with": 27,
+              "hr_without_star": 1.0,
+              "n_without": 5,
+              "delta": 0.2222
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.6667,
+              "n_with": 27,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": -0.2667
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.4444,
+              "n_with": 27,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": -0.2444
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.1852,
+              "n_with": 27,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.1852
+            }
+          }
+        }
+      ]
+    },
+    "DET": {
+      "star": {
+        "name_lower": "cade cunningham",
+        "display_name": "Cade Cunningham",
+        "pts_avg": 23.9,
+        "games_played": 62
+      },
+      "star_absent_games": 18,
+      "star_present_games": 62,
+      "teammates_analyzed": 2,
+      "teammates": [
+        {
+          "player": "Ausar Thompson",
+          "n_with": 57,
+          "n_without": 14,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.5088,
+              "n_with": 57,
+              "hr_without_star": 0.3571,
+              "n_without": 14,
+              "delta": -0.1516
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.1579,
+              "n_with": 57,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": -0.0865
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.0175,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.0175
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "REB_T4": {
+              "hr_with_star": 0.7895,
+              "n_with": 57,
+              "hr_without_star": 0.7857,
+              "n_without": 14,
+              "delta": -0.0038
+            },
+            "REB_T6": {
+              "hr_with_star": 0.5789,
+              "n_with": 57,
+              "hr_without_star": 0.5,
+              "n_without": 14,
+              "delta": -0.0789
+            },
+            "REB_T8": {
+              "hr_with_star": 0.2632,
+              "n_with": 57,
+              "hr_without_star": 0.2143,
+              "n_without": 14,
+              "delta": -0.0489
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0702,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.0702
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0351,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.0351
+            },
+            "AST_T2": {
+              "hr_with_star": 0.7544,
+              "n_with": 57,
+              "hr_without_star": 0.7857,
+              "n_without": 14,
+              "delta": 0.0313
+            },
+            "AST_T4": {
+              "hr_with_star": 0.3158,
+              "n_with": 57,
+              "hr_without_star": 0.5,
+              "n_without": 14,
+              "delta": 0.1842
+            },
+            "AST_T6": {
+              "hr_with_star": 0.1404,
+              "n_with": 57,
+              "hr_without_star": 0.2143,
+              "n_without": 14,
+              "delta": 0.0739
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0351,
+              "n_with": 57,
+              "hr_without_star": 0.0714,
+              "n_without": 14,
+              "delta": 0.0363
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.1053,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": -0.1053
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0,
+              "n_with": 57,
+              "hr_without_star": 0.0,
+              "n_without": 14,
+              "delta": 0.0
+            }
+          }
+        },
+        {
+          "player": "Jalen Duren",
+          "n_with": 58,
+          "n_without": 15,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.8448,
+              "n_with": 58,
+              "hr_without_star": 0.9333,
+              "n_without": 15,
+              "delta": 0.0885
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.7069,
+              "n_with": 58,
+              "hr_without_star": 0.8667,
+              "n_without": 15,
+              "delta": 0.1598
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.4138,
+              "n_with": 58,
+              "hr_without_star": 0.6,
+              "n_without": 15,
+              "delta": 0.1862
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1724,
+              "n_with": 58,
+              "hr_without_star": 0.2667,
+              "n_without": 15,
+              "delta": 0.0943
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0862,
+              "n_with": 58,
+              "hr_without_star": 0.2,
+              "n_without": 15,
+              "delta": 0.1138
+            },
+            "REB_T4": {
+              "hr_with_star": 0.9138,
+              "n_with": 58,
+              "hr_without_star": 0.9333,
+              "n_without": 15,
+              "delta": 0.0195
+            },
+            "REB_T6": {
+              "hr_with_star": 0.8276,
+              "n_with": 58,
+              "hr_without_star": 0.9333,
+              "n_without": 15,
+              "delta": 0.1057
+            },
+            "REB_T8": {
+              "hr_with_star": 0.6724,
+              "n_with": 58,
+              "hr_without_star": 0.8,
+              "n_without": 15,
+              "delta": 0.1276
+            },
+            "REB_T10": {
+              "hr_with_star": 0.5345,
+              "n_with": 58,
+              "hr_without_star": 0.6667,
+              "n_without": 15,
+              "delta": 0.1322
+            },
+            "REB_T12": {
+              "hr_with_star": 0.3793,
+              "n_with": 58,
+              "hr_without_star": 0.4667,
+              "n_without": 15,
+              "delta": 0.0874
+            },
+            "AST_T2": {
+              "hr_with_star": 0.5172,
+              "n_with": 58,
+              "hr_without_star": 0.8,
+              "n_without": 15,
+              "delta": 0.2828
+            },
+            "AST_T4": {
+              "hr_with_star": 0.069,
+              "n_with": 58,
+              "hr_without_star": 0.2667,
+              "n_without": 15,
+              "delta": 0.1977
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0667,
+              "n_without": 15,
+              "delta": 0.0667
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0,
+              "n_without": 15,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0,
+              "n_without": 15,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0,
+              "n_without": 15,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0,
+              "n_without": 15,
+              "delta": 0.0
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0,
+              "n_without": 15,
+              "delta": 0.0
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0,
+              "n_without": 15,
+              "delta": 0.0
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.0,
+              "n_with": 58,
+              "hr_without_star": 0.0,
+              "n_without": 15,
+              "delta": 0.0
+            }
+          }
+        }
+      ]
+    },
+    "ORL": {
+      "star": {
+        "name_lower": "paolo banchero",
+        "display_name": "Paolo Banchero",
+        "pts_avg": 22.3,
+        "games_played": 70
+      },
+      "star_absent_games": 10,
+      "star_present_games": 70,
+      "teammates_analyzed": 1,
+      "teammates": [
+        {
+          "player": "Desmond Bane",
+          "n_with": 70,
+          "n_without": 10,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.8857,
+              "n_with": 70,
+              "hr_without_star": 1.0,
+              "n_without": 10,
+              "delta": 0.1143
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.7714,
+              "n_with": 70,
+              "hr_without_star": 0.9,
+              "n_without": 10,
+              "delta": 0.1286
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.5286,
+              "n_with": 70,
+              "hr_without_star": 0.5,
+              "n_without": 10,
+              "delta": -0.0286
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.2429,
+              "n_with": 70,
+              "hr_without_star": 0.4,
+              "n_without": 10,
+              "delta": 0.1571
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.1429,
+              "n_with": 70,
+              "hr_without_star": 0.2,
+              "n_without": 10,
+              "delta": 0.0571
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6286,
+              "n_with": 70,
+              "hr_without_star": 0.7,
+              "n_without": 10,
+              "delta": 0.0714
+            },
+            "REB_T6": {
+              "hr_with_star": 0.2857,
+              "n_with": 70,
+              "hr_without_star": 0.4,
+              "n_without": 10,
+              "delta": 0.1143
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0286,
+              "n_with": 70,
+              "hr_without_star": 0.1,
+              "n_without": 10,
+              "delta": 0.0714
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0143,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": -0.0143
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.9,
+              "n_with": 70,
+              "hr_without_star": 1.0,
+              "n_without": 10,
+              "delta": 0.1
+            },
+            "AST_T4": {
+              "hr_with_star": 0.6,
+              "n_with": 70,
+              "hr_without_star": 0.8,
+              "n_without": 10,
+              "delta": 0.2
+            },
+            "AST_T6": {
+              "hr_with_star": 0.2571,
+              "n_with": 70,
+              "hr_without_star": 0.2,
+              "n_without": 10,
+              "delta": -0.0571
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0429,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": -0.0429
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.8857,
+              "n_with": 70,
+              "hr_without_star": 0.9,
+              "n_without": 10,
+              "delta": 0.0143
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.5571,
+              "n_with": 70,
+              "hr_without_star": 0.7,
+              "n_without": 10,
+              "delta": 0.1429
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.3429,
+              "n_with": 70,
+              "hr_without_star": 0.4,
+              "n_without": 10,
+              "delta": 0.0571
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.1286,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 10,
+              "delta": -0.1286
+            }
+          }
+        }
+      ]
+    },
+    "ATL": {
+      "star": {
+        "name_lower": "jalen johnson",
+        "display_name": "Jalen Johnson",
+        "pts_avg": 21.7,
+        "games_played": 74
+      },
+      "star_absent_games": 6,
+      "star_present_games": 73,
+      "teammates_analyzed": 2,
+      "teammates": [
+        {
+          "player": "CJ McCollum",
+          "n_with": 36,
+          "n_without": 4,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.8889,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.1111
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6667,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.3333
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.3889,
+              "n_with": 36,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.3611
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1389,
+              "n_with": 36,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": 0.3611
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0278,
+              "n_with": 36,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.2222
+            },
+            "REB_T4": {
+              "hr_with_star": 0.3611,
+              "n_with": 36,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": 0.1389
+            },
+            "REB_T6": {
+              "hr_with_star": 0.1389,
+              "n_with": 36,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.1111
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0833,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": -0.0833
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.9444,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.0556
+            },
+            "AST_T4": {
+              "hr_with_star": 0.5278,
+              "n_with": 36,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": -0.0278
+            },
+            "AST_T6": {
+              "hr_with_star": 0.25,
+              "n_with": 36,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0556,
+              "n_with": 36,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.1944
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 36,
+              "hr_without_star": 0.0,
+              "n_without": 4,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.8056,
+              "n_with": 36,
+              "hr_without_star": 1.0,
+              "n_without": 4,
+              "delta": 0.1944
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.6111,
+              "n_with": 36,
+              "hr_without_star": 0.75,
+              "n_without": 4,
+              "delta": 0.1389
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.3333,
+              "n_with": 36,
+              "hr_without_star": 0.5,
+              "n_without": 4,
+              "delta": 0.1667
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.1944,
+              "n_with": 36,
+              "hr_without_star": 0.25,
+              "n_without": 4,
+              "delta": 0.0556
+            }
+          }
+        },
+        {
+          "player": "Nickeil Alexander-Walker",
+          "n_with": 73,
+          "n_without": 5,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9589,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 5,
+              "delta": 0.0411
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.7945,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 5,
+              "delta": 0.2055
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.589,
+              "n_with": 73,
+              "hr_without_star": 0.6,
+              "n_without": 5,
+              "delta": 0.011
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.2329,
+              "n_with": 73,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": 0.1671
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.1233,
+              "n_with": 73,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.0767
+            },
+            "REB_T4": {
+              "hr_with_star": 0.4247,
+              "n_with": 73,
+              "hr_without_star": 0.4,
+              "n_without": 5,
+              "delta": -0.0247
+            },
+            "REB_T6": {
+              "hr_with_star": 0.1233,
+              "n_with": 73,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.0767
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0411,
+              "n_with": 73,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.1589
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 73,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.2
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 73,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.2
+            },
+            "AST_T2": {
+              "hr_with_star": 0.8767,
+              "n_with": 73,
+              "hr_without_star": 0.8,
+              "n_without": 5,
+              "delta": -0.0767
+            },
+            "AST_T4": {
+              "hr_with_star": 0.4658,
+              "n_with": 73,
+              "hr_without_star": 0.6,
+              "n_without": 5,
+              "delta": 0.1342
+            },
+            "AST_T6": {
+              "hr_with_star": 0.1644,
+              "n_with": 73,
+              "hr_without_star": 0.2,
+              "n_without": 5,
+              "delta": 0.0356
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0274,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.0274
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0137,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": -0.0137
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 73,
+              "hr_without_star": 0.0,
+              "n_without": 5,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.9589,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 5,
+              "delta": 0.0411
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.8219,
+              "n_with": 73,
+              "hr_without_star": 1.0,
+              "n_without": 5,
+              "delta": 0.1781
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.589,
+              "n_with": 73,
+              "hr_without_star": 0.8,
+              "n_without": 5,
+              "delta": 0.211
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.3562,
+              "n_with": 73,
+              "hr_without_star": 0.6,
+              "n_without": 5,
+              "delta": 0.2438
+            }
+          }
+        }
+      ]
+    },
+    "CHA": {
+      "star": {
+        "name_lower": "brandon miller",
+        "display_name": "Brandon Miller",
+        "pts_avg": 20.2,
+        "games_played": 63
+      },
+      "star_absent_games": 17,
+      "star_present_games": 62,
+      "teammates_analyzed": 3,
+      "teammates": [
+        {
+          "player": "Kon Knueppel",
+          "n_with": 62,
+          "n_without": 17,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9516,
+              "n_with": 62,
+              "hr_without_star": 0.8235,
+              "n_without": 17,
+              "delta": -0.1281
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6774,
+              "n_with": 62,
+              "hr_without_star": 0.7059,
+              "n_without": 17,
+              "delta": 0.0285
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.4516,
+              "n_with": 62,
+              "hr_without_star": 0.4706,
+              "n_without": 17,
+              "delta": 0.019
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1774,
+              "n_with": 62,
+              "hr_without_star": 0.2353,
+              "n_without": 17,
+              "delta": 0.0579
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0484,
+              "n_with": 62,
+              "hr_without_star": 0.1176,
+              "n_without": 17,
+              "delta": 0.0693
+            },
+            "REB_T4": {
+              "hr_with_star": 0.7742,
+              "n_with": 62,
+              "hr_without_star": 0.8235,
+              "n_without": 17,
+              "delta": 0.0493
+            },
+            "REB_T6": {
+              "hr_with_star": 0.3548,
+              "n_with": 62,
+              "hr_without_star": 0.7059,
+              "n_without": 17,
+              "delta": 0.351
+            },
+            "REB_T8": {
+              "hr_with_star": 0.1613,
+              "n_with": 62,
+              "hr_without_star": 0.3529,
+              "n_without": 17,
+              "delta": 0.1917
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0806,
+              "n_with": 62,
+              "hr_without_star": 0.1176,
+              "n_without": 17,
+              "delta": 0.037
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 62,
+              "hr_without_star": 0.0588,
+              "n_without": 17,
+              "delta": 0.0588
+            },
+            "AST_T2": {
+              "hr_with_star": 0.871,
+              "n_with": 62,
+              "hr_without_star": 0.8235,
+              "n_without": 17,
+              "delta": -0.0474
+            },
+            "AST_T4": {
+              "hr_with_star": 0.4516,
+              "n_with": 62,
+              "hr_without_star": 0.3529,
+              "n_without": 17,
+              "delta": -0.0987
+            },
+            "AST_T6": {
+              "hr_with_star": 0.129,
+              "n_with": 62,
+              "hr_without_star": 0.1176,
+              "n_without": 17,
+              "delta": -0.0114
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0484,
+              "n_with": 62,
+              "hr_without_star": 0.0588,
+              "n_without": 17,
+              "delta": 0.0104
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 62,
+              "hr_without_star": 0.0,
+              "n_without": 17,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 62,
+              "hr_without_star": 0.0,
+              "n_without": 17,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.9516,
+              "n_with": 62,
+              "hr_without_star": 1.0,
+              "n_without": 17,
+              "delta": 0.0484
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.8548,
+              "n_with": 62,
+              "hr_without_star": 0.8235,
+              "n_without": 17,
+              "delta": -0.0313
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.6452,
+              "n_with": 62,
+              "hr_without_star": 0.7059,
+              "n_without": 17,
+              "delta": 0.0607
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.4516,
+              "n_with": 62,
+              "hr_without_star": 0.5294,
+              "n_without": 17,
+              "delta": 0.0778
+            }
+          }
+        },
+        {
+          "player": "LaMelo Ball",
+          "n_with": 60,
+          "n_without": 10,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.9667,
+              "n_with": 60,
+              "hr_without_star": 1.0,
+              "n_without": 10,
+              "delta": 0.0333
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.8167,
+              "n_with": 60,
+              "hr_without_star": 0.9,
+              "n_without": 10,
+              "delta": 0.0833
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.5,
+              "n_with": 60,
+              "hr_without_star": 0.4,
+              "n_without": 10,
+              "delta": -0.1
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.2167,
+              "n_with": 60,
+              "hr_without_star": 0.2,
+              "n_without": 10,
+              "delta": -0.0167
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.1167,
+              "n_with": 60,
+              "hr_without_star": 0.2,
+              "n_without": 10,
+              "delta": 0.0833
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6333,
+              "n_with": 60,
+              "hr_without_star": 0.9,
+              "n_without": 10,
+              "delta": 0.2667
+            },
+            "REB_T6": {
+              "hr_with_star": 0.35,
+              "n_with": 60,
+              "hr_without_star": 0.7,
+              "n_without": 10,
+              "delta": 0.35
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0833,
+              "n_with": 60,
+              "hr_without_star": 0.3,
+              "n_without": 10,
+              "delta": 0.2167
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0167,
+              "n_with": 60,
+              "hr_without_star": 0.1,
+              "n_without": 10,
+              "delta": 0.0833
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 60,
+              "hr_without_star": 0.1,
+              "n_without": 10,
+              "delta": 0.1
+            },
+            "AST_T2": {
+              "hr_with_star": 1.0,
+              "n_with": 60,
+              "hr_without_star": 1.0,
+              "n_without": 10,
+              "delta": 0.0
+            },
+            "AST_T4": {
+              "hr_with_star": 0.9167,
+              "n_with": 60,
+              "hr_without_star": 1.0,
+              "n_without": 10,
+              "delta": 0.0833
+            },
+            "AST_T6": {
+              "hr_with_star": 0.65,
+              "n_with": 60,
+              "hr_without_star": 1.0,
+              "n_without": 10,
+              "delta": 0.35
+            },
+            "AST_T8": {
+              "hr_with_star": 0.3833,
+              "n_with": 60,
+              "hr_without_star": 0.9,
+              "n_without": 10,
+              "delta": 0.5167
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0833,
+              "n_with": 60,
+              "hr_without_star": 0.4,
+              "n_without": 10,
+              "delta": 0.3167
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0333,
+              "n_with": 60,
+              "hr_without_star": 0.3,
+              "n_without": 10,
+              "delta": 0.2667
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.9667,
+              "n_with": 60,
+              "hr_without_star": 1.0,
+              "n_without": 10,
+              "delta": 0.0333
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.9,
+              "n_with": 60,
+              "hr_without_star": 0.7,
+              "n_without": 10,
+              "delta": -0.2
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.7167,
+              "n_with": 60,
+              "hr_without_star": 0.3,
+              "n_without": 10,
+              "delta": -0.4167
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.5667,
+              "n_with": 60,
+              "hr_without_star": 0.3,
+              "n_without": 10,
+              "delta": -0.2667
+            }
+          }
+        },
+        {
+          "player": "Miles Bridges",
+          "n_with": 62,
+          "n_without": 17,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.8065,
+              "n_with": 62,
+              "hr_without_star": 0.8824,
+              "n_without": 17,
+              "delta": 0.0759
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.5484,
+              "n_with": 62,
+              "hr_without_star": 0.7647,
+              "n_without": 17,
+              "delta": 0.2163
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.2419,
+              "n_with": 62,
+              "hr_without_star": 0.5882,
+              "n_without": 17,
+              "delta": 0.3463
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.1452,
+              "n_with": 62,
+              "hr_without_star": 0.2941,
+              "n_without": 17,
+              "delta": 0.149
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0323,
+              "n_with": 62,
+              "hr_without_star": 0.1765,
+              "n_without": 17,
+              "delta": 0.1442
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6774,
+              "n_with": 62,
+              "hr_without_star": 0.8824,
+              "n_without": 17,
+              "delta": 0.2049
+            },
+            "REB_T6": {
+              "hr_with_star": 0.5161,
+              "n_with": 62,
+              "hr_without_star": 0.4706,
+              "n_without": 17,
+              "delta": -0.0455
+            },
+            "REB_T8": {
+              "hr_with_star": 0.2903,
+              "n_with": 62,
+              "hr_without_star": 0.2941,
+              "n_without": 17,
+              "delta": 0.0038
+            },
+            "REB_T10": {
+              "hr_with_star": 0.1129,
+              "n_with": 62,
+              "hr_without_star": 0.0588,
+              "n_without": 17,
+              "delta": -0.0541
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0323,
+              "n_with": 62,
+              "hr_without_star": 0.0588,
+              "n_without": 17,
+              "delta": 0.0266
+            },
+            "AST_T2": {
+              "hr_with_star": 0.6935,
+              "n_with": 62,
+              "hr_without_star": 0.7647,
+              "n_without": 17,
+              "delta": 0.0712
+            },
+            "AST_T4": {
+              "hr_with_star": 0.3871,
+              "n_with": 62,
+              "hr_without_star": 0.4706,
+              "n_without": 17,
+              "delta": 0.0835
+            },
+            "AST_T6": {
+              "hr_with_star": 0.129,
+              "n_with": 62,
+              "hr_without_star": 0.1765,
+              "n_without": 17,
+              "delta": 0.0474
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0484,
+              "n_with": 62,
+              "hr_without_star": 0.0,
+              "n_without": 17,
+              "delta": -0.0484
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 62,
+              "hr_without_star": 0.0,
+              "n_without": 17,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 62,
+              "hr_without_star": 0.0,
+              "n_without": 17,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.7258,
+              "n_with": 62,
+              "hr_without_star": 0.8235,
+              "n_without": 17,
+              "delta": 0.0977
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.4194,
+              "n_with": 62,
+              "hr_without_star": 0.7059,
+              "n_without": 17,
+              "delta": 0.2865
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.3226,
+              "n_with": 62,
+              "hr_without_star": 0.5294,
+              "n_without": 17,
+              "delta": 0.2068
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.129,
+              "n_with": 62,
+              "hr_without_star": 0.2353,
+              "n_without": 17,
+              "delta": 0.1063
+            }
+          }
+        }
+      ]
+    },
+    "MIA": {
+      "star": {
+        "name_lower": "bam adebayo",
+        "display_name": "Bam Adebayo",
+        "pts_avg": 19.1,
+        "games_played": 75
+      },
+      "star_absent_games": 7,
+      "star_present_games": 74,
+      "teammates_analyzed": 2,
+      "teammates": [
+        {
+          "player": "Andrew Wiggins",
+          "n_with": 69,
+          "n_without": 6,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.7826,
+              "n_with": 69,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.0507
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.4348,
+              "n_with": 69,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.3986
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.1739,
+              "n_with": 69,
+              "hr_without_star": 0.3333,
+              "n_without": 6,
+              "delta": 0.1594
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.0725,
+              "n_with": 69,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0725
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0145,
+              "n_with": 69,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0145
+            },
+            "REB_T4": {
+              "hr_with_star": 0.6087,
+              "n_with": 69,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.058
+            },
+            "REB_T6": {
+              "hr_with_star": 0.3623,
+              "n_with": 69,
+              "hr_without_star": 0.3333,
+              "n_without": 6,
+              "delta": -0.029
+            },
+            "REB_T8": {
+              "hr_with_star": 0.1304,
+              "n_with": 69,
+              "hr_without_star": 0.1667,
+              "n_without": 6,
+              "delta": 0.0362
+            },
+            "REB_T10": {
+              "hr_with_star": 0.029,
+              "n_with": 69,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.029
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 69,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.6667,
+              "n_with": 69,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.1667
+            },
+            "AST_T4": {
+              "hr_with_star": 0.2029,
+              "n_with": 69,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.4638
+            },
+            "AST_T6": {
+              "hr_with_star": 0.029,
+              "n_with": 69,
+              "hr_without_star": 0.1667,
+              "n_without": 6,
+              "delta": 0.1377
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 69,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 69,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 69,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.7826,
+              "n_with": 69,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.0507
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.5507,
+              "n_with": 69,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.1159
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.3043,
+              "n_with": 69,
+              "hr_without_star": 0.1667,
+              "n_without": 6,
+              "delta": -0.1377
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.1304,
+              "n_with": 69,
+              "hr_without_star": 0.1667,
+              "n_without": 6,
+              "delta": 0.0362
+            }
+          }
+        },
+        {
+          "player": "Norman Powell",
+          "n_with": 70,
+          "n_without": 6,
+          "tier_deltas": {
+            "PTS_T10": {
+              "hr_with_star": 0.6857,
+              "n_with": 70,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.3143
+            },
+            "PTS_T15": {
+              "hr_with_star": 0.6429,
+              "n_with": 70,
+              "hr_without_star": 1.0,
+              "n_without": 6,
+              "delta": 0.3571
+            },
+            "PTS_T20": {
+              "hr_with_star": 0.4714,
+              "n_with": 70,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.3619
+            },
+            "PTS_T25": {
+              "hr_with_star": 0.2143,
+              "n_with": 70,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.4524
+            },
+            "PTS_T30": {
+              "hr_with_star": 0.0571,
+              "n_with": 70,
+              "hr_without_star": 0.3333,
+              "n_without": 6,
+              "delta": 0.2762
+            },
+            "REB_T4": {
+              "hr_with_star": 0.3143,
+              "n_with": 70,
+              "hr_without_star": 0.3333,
+              "n_without": 6,
+              "delta": 0.019
+            },
+            "REB_T6": {
+              "hr_with_star": 0.1429,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.1429
+            },
+            "REB_T8": {
+              "hr_with_star": 0.0286,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0286
+            },
+            "REB_T10": {
+              "hr_with_star": 0.0143,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0143
+            },
+            "REB_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T2": {
+              "hr_with_star": 0.5429,
+              "n_with": 70,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.2905
+            },
+            "AST_T4": {
+              "hr_with_star": 0.1571,
+              "n_with": 70,
+              "hr_without_star": 0.1667,
+              "n_without": 6,
+              "delta": 0.0095
+            },
+            "AST_T6": {
+              "hr_with_star": 0.0429,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": -0.0429
+            },
+            "AST_T8": {
+              "hr_with_star": 0.0,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T10": {
+              "hr_with_star": 0.0,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "AST_T12": {
+              "hr_with_star": 0.0,
+              "n_with": 70,
+              "hr_without_star": 0.0,
+              "n_without": 6,
+              "delta": 0.0
+            },
+            "3PM_T1": {
+              "hr_with_star": 0.6714,
+              "n_with": 70,
+              "hr_without_star": 0.8333,
+              "n_without": 6,
+              "delta": 0.1619
+            },
+            "3PM_T2": {
+              "hr_with_star": 0.5286,
+              "n_with": 70,
+              "hr_without_star": 0.6667,
+              "n_without": 6,
+              "delta": 0.1381
+            },
+            "3PM_T3": {
+              "hr_with_star": 0.3286,
+              "n_with": 70,
+              "hr_without_star": 0.5,
+              "n_without": 6,
+              "delta": 0.1714
+            },
+            "3PM_T4": {
+              "hr_with_star": 0.2,
+              "n_with": 70,
+              "hr_without_star": 0.5,
+              "n_without": 6,
+              "delta": 0.3
+            }
+          }
+        }
+      ]
+    }
+  },
+  "population_summary": {
+    "3PM_T1": {
+      "weighted_avg_delta": 0.0041,
+      "unweighted_avg_delta": 0.015,
+      "n_observations": 31,
+      "n_positive": 15,
+      "pct_positive": 48.4
+    },
+    "3PM_T2": {
+      "weighted_avg_delta": 0.0263,
+      "unweighted_avg_delta": 0.0435,
+      "n_observations": 31,
+      "n_positive": 15,
+      "pct_positive": 48.4
+    },
+    "3PM_T3": {
+      "weighted_avg_delta": 0.022,
+      "unweighted_avg_delta": 0.0367,
+      "n_observations": 31,
+      "n_positive": 15,
+      "pct_positive": 48.4
+    },
+    "3PM_T4": {
+      "weighted_avg_delta": 0.0159,
+      "unweighted_avg_delta": 0.0428,
+      "n_observations": 31,
+      "n_positive": 15,
+      "pct_positive": 48.4
+    },
+    "AST_T10": {
+      "weighted_avg_delta": 0.0428,
+      "unweighted_avg_delta": 0.0369,
+      "n_observations": 31,
+      "n_positive": 8,
+      "pct_positive": 25.8
+    },
+    "AST_T12": {
+      "weighted_avg_delta": 0.0163,
+      "unweighted_avg_delta": 0.0146,
+      "n_observations": 31,
+      "n_positive": 4,
+      "pct_positive": 12.9
+    },
+    "AST_T2": {
+      "weighted_avg_delta": 0.0137,
+      "unweighted_avg_delta": -0.0009,
+      "n_observations": 31,
+      "n_positive": 17,
+      "pct_positive": 54.8
+    },
+    "AST_T4": {
+      "weighted_avg_delta": 0.0958,
+      "unweighted_avg_delta": 0.0997,
+      "n_observations": 31,
+      "n_positive": 22,
+      "pct_positive": 71.0
+    },
+    "AST_T6": {
+      "weighted_avg_delta": 0.0674,
+      "unweighted_avg_delta": 0.0798,
+      "n_observations": 31,
+      "n_positive": 17,
+      "pct_positive": 54.8
+    },
+    "AST_T8": {
+      "weighted_avg_delta": 0.0657,
+      "unweighted_avg_delta": 0.0933,
+      "n_observations": 31,
+      "n_positive": 13,
+      "pct_positive": 41.9
+    },
+    "PTS_T10": {
+      "weighted_avg_delta": 0.0249,
+      "unweighted_avg_delta": 0.0415,
+      "n_observations": 31,
+      "n_positive": 20,
+      "pct_positive": 64.5
+    },
+    "PTS_T15": {
+      "weighted_avg_delta": 0.1131,
+      "unweighted_avg_delta": 0.129,
+      "n_observations": 31,
+      "n_positive": 24,
+      "pct_positive": 77.4
+    },
+    "PTS_T20": {
+      "weighted_avg_delta": 0.1274,
+      "unweighted_avg_delta": 0.1594,
+      "n_observations": 31,
+      "n_positive": 22,
+      "pct_positive": 71.0
+    },
+    "PTS_T25": {
+      "weighted_avg_delta": 0.1051,
+      "unweighted_avg_delta": 0.1438,
+      "n_observations": 31,
+      "n_positive": 22,
+      "pct_positive": 71.0
+    },
+    "PTS_T30": {
+      "weighted_avg_delta": 0.0706,
+      "unweighted_avg_delta": 0.0935,
+      "n_observations": 31,
+      "n_positive": 20,
+      "pct_positive": 64.5
+    },
+    "REB_T10": {
+      "weighted_avg_delta": 0.0171,
+      "unweighted_avg_delta": 0.0157,
+      "n_observations": 31,
+      "n_positive": 13,
+      "pct_positive": 41.9
+    },
+    "REB_T12": {
+      "weighted_avg_delta": 0.0374,
+      "unweighted_avg_delta": 0.0359,
+      "n_observations": 31,
+      "n_positive": 11,
+      "pct_positive": 35.5
+    },
+    "REB_T4": {
+      "weighted_avg_delta": 0.0156,
+      "unweighted_avg_delta": 0.0184,
+      "n_observations": 31,
+      "n_positive": 17,
+      "pct_positive": 54.8
+    },
+    "REB_T6": {
+      "weighted_avg_delta": 0.0525,
+      "unweighted_avg_delta": 0.0549,
+      "n_observations": 31,
+      "n_positive": 17,
+      "pct_positive": 54.8
+    },
+    "REB_T8": {
+      "weighted_avg_delta": 0.0264,
+      "unweighted_avg_delta": 0.0299,
+      "n_observations": 31,
+      "n_positive": 15,
+      "pct_positive": 48.4
+    }
+  }
+}
