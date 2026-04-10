@@ -3394,5 +3394,170 @@
     "would_have_hit": null,
     "skip_verdict": "no_data",
     "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "overall_hit_rate": "75%",
+      "volatile_penalty": "-5%",
+      "adjusted_confidence": "70%",
+      "reb_minimum_floor": "78%",
+      "reason": "After VOLATILE -5% penalty, 70% confidence falls below REB 78% minimum floor requirement"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "original_tier": 20,
+      "step_reason": "FG_MARGIN_NEG:-5% mandatory step-down",
+      "stepped_tier": 15,
+      "base_estimate": "77%",
+      "volatile_penalty": "-5%",
+      "short_sample_penalty": "-5%",
+      "adjusted_confidence": "67%",
+      "reason": "After FG_MARGIN_NEG step to T15, VOLATILE -5% and SHORT_SAMPLE -5% penalties reduce confidence below 70% floor"
+    },
+    "actual_value": 24.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 24.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Jayson Tatum",
+      "prop_type": "AST",
+      "tier_considered": 2,
+      "reason": "No FanDuel market available for Jayson Tatum AST T2; available AST tiers are T4/T6/T8/T10/T12"
+    },
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Payton Pritchard",
+      "prop_type": "AST",
+      "tier_considered": 2,
+      "reason": "Payton Pritchard does not appear in FanDuel market availability list"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "opponent": "NY",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Payton Pritchard",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "Payton Pritchard does not appear in FanDuel market availability list"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Jalen Brunson",
+    "team": "NY",
+    "opponent": "BOS",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_tough_dvp",
+    "rule_context": {
+      "trend": "down",
+      "analytically_selected_tier": 1,
+      "step_result": "below_minimum_valid_tier",
+      "reason": "trend=down mandatory step-down from T1 produces no valid lower tier; skip required when stepped tier falls below minimum valid 3PM tier of T1"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NY",
+    "opponent": "BOS",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "Karl-Anthony Towns does not appear in FanDuel market availability list"
+    },
+    "actual_value": 16.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 16.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-04-09",
+    "player_name": "Mikal Bridges",
+    "team": "NY",
+    "opponent": "BOS",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_tough_dvp",
+    "rule_context": {
+      "trend": "down",
+      "analytically_selected_tier": 1,
+      "step_result": "below_minimum_valid_tier",
+      "reason": "trend=down mandatory step-down from T1 produces no valid lower tier; skip required when stepped tier falls below minimum valid 3PM tier of T1"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   }
 ]

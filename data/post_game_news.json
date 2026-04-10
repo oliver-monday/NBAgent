@@ -1,23 +1,23 @@
 {
-  "date": "2026-04-08",
-  "generated_at": "2026-04-09T07:52:18.520297-07:00",
+  "date": "2026-04-09",
+  "generated_at": "2026-04-10T07:15:56.533111-07:00",
   "players": {
-    "de'aaron fox": {
-      "event_type": "no_data",
-      "detail": "Played 35 minutes with no flags; no external sources available",
-      "minutes_played": 35.0,
+    "jaylen brown": {
+      "event_type": "dnp",
+      "detail": "Did not play due to left Achilles tendinitis",
+      "minutes_played": 0,
       "source_url": null,
-      "confidence": "inferred",
+      "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
-      "espn_fetch_ok": null,
-      "web_narrative": null
+      "espn_fetch_ok": false,
+      "web_narrative": "Jaylen Brown sat out Thursday's game against the Knicks with left Achilles tendinitis, per the ESPN game recap, which noted his absence as the reason Boston played without its leading scorer (28.8 PPG)."
     },
-    "desmond bane": {
+    "jayson tatum": {
       "event_type": "no_data",
-      "detail": "Played 30 minutes, scored 18 points with 6 assists in a normal game context",
-      "minutes_played": 30.0,
+      "detail": "Played 40 minutes, posted 24 points, 13 rebounds, 8 assists in a loss",
+      "minutes_played": 40.0,
       "source_url": null,
       "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
@@ -26,72 +26,61 @@
       "espn_fetch_ok": false,
       "web_narrative": null
     },
-    "jalen johnson": {
+    "mikal bridges": {
       "event_type": "no_data",
-      "detail": "Played 34 minutes in a competitive game against Cleveland with no injury flags noted",
-      "minutes_played": 34.0,
-      "source_url": null,
-      "confidence": "inferred",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": false,
-      "web_narrative": null
-    },
-    "james harden": {
-      "event_type": "no_data",
-      "detail": "Played 34 minutes and scored 21 points in a normal game context",
-      "minutes_played": 34.0,
-      "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": false,
-      "web_narrative": null
-    },
-    "kawhi leonard": {
-      "event_type": "minutes_restriction",
-      "detail": "Played 30 minutes and sat out the fourth quarter in a blowout loss",
-      "minutes_played": 30.0,
-      "source_url": null,
-      "confidence": "inferred",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": false,
-      "web_narrative": "Leonard played only 30 minutes and did not play in the fourth quarter as the Thunder built an early 25-point lead; this appears to be a blowout-driven reduction rather than an injury, though the recap notes no explicit rest decision."
-    },
-    "nikola jokic": {
-      "event_type": "minutes_restriction",
-      "detail": "Played 31 minutes and did not play in the fourth quarter with Denver holding a large lead",
+      "detail": "Played 31 minutes with no flagged events",
       "minutes_played": 31.0,
       "source_url": null,
-      "confidence": "confirmed",
+      "confidence": "inferred",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
       "espn_fetch_ok": false,
-      "web_narrative": "Jokic was held out of the fourth quarter as the Nuggets cruised to a comfortable win, a common rest/maintenance decision late in the regular season with Denver having secured its playoff positioning."
+      "web_narrative": null
     },
-    "shai gilgeous-alexander": {
-      "event_type": "minutes_restriction",
-      "detail": "Played 30 minutes and sat out the fourth quarter with OKC holding a large lead",
-      "minutes_played": 30.0,
+    "og anunoby": {
+      "event_type": "no_data",
+      "detail": "Played 36 minutes with no flagged events",
+      "minutes_played": 36.0,
+      "source_url": null,
+      "confidence": "inferred",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": false,
+      "web_narrative": null
+    },
+    "payton pritchard": {
+      "event_type": "no_data",
+      "detail": "Played 36 minutes, scored 23 points on 10-20 shooting in a loss",
+      "minutes_played": 36.0,
       "source_url": null,
       "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
-      "espn_fetch_ok": null,
-      "web_narrative": "Gilgeous-Alexander was rested in the fourth quarter after Oklahoma City built an early 25-point lead, a routine decision to manage the star player's workload in a clinching blowout win."
+      "espn_fetch_ok": false,
+      "web_narrative": null
+    },
+    "scottie barnes": {
+      "event_type": "no_data",
+      "detail": "Played 25 minutes, scored 13 points in a win over Miami",
+      "minutes_played": 25.0,
+      "source_url": null,
+      "confidence": "inferred",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": false,
+      "web_narrative": null
     }
   },
   "fetch_errors": [
-    "desmond bane",
-    "jalen johnson",
-    "james harden",
-    "kawhi leonard",
-    "nikola jokic"
+    "jaylen brown",
+    "jayson tatum",
+    "mikal bridges",
+    "og anunoby",
+    "payton pritchard",
+    "scottie barnes"
   ]
 }

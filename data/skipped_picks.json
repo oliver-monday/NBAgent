@@ -17,8 +17,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-09",
@@ -39,10 +39,10 @@
       "adjusted_confidence": "67%",
       "reason": "After FG_MARGIN_NEG step to T15, VOLATILE -5% and SHORT_SAMPLE -5% penalties reduce confidence below 70% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 24.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 24.0 \u2265 tier 15"
   },
   {
     "date": "2026-04-09",
@@ -59,10 +59,10 @@
       "tier_considered": 2,
       "reason": "No FanDuel market available for Jayson Tatum AST T2; available AST tiers are T4/T6/T8/T10/T12"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-09",
@@ -79,10 +79,10 @@
       "tier_considered": 2,
       "reason": "Payton Pritchard does not appear in FanDuel market availability list"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-09",
@@ -99,10 +99,10 @@
       "tier_considered": 2,
       "reason": "Payton Pritchard does not appear in FanDuel market availability list"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-09",
@@ -119,10 +119,10 @@
       "step_result": "below_minimum_valid_tier",
       "reason": "trend=down mandatory step-down from T1 produces no valid lower tier; skip required when stepped tier falls below minimum valid 3PM tier of T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-09",
@@ -139,10 +139,10 @@
       "tier_considered": 15,
       "reason": "Karl-Anthony Towns does not appear in FanDuel market availability list"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 16.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 16.0 \u2265 tier 15"
   },
   {
     "date": "2026-04-09",
@@ -159,9 +159,9 @@
       "step_result": "below_minimum_valid_tier",
       "reason": "trend=down mandatory step-down from T1 produces no valid lower tier; skip required when stepped tier falls below minimum valid 3PM tier of T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   }
 ]

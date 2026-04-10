@@ -4208,9 +4208,32 @@
         "rationale": "Brown PTS and Tatum AST are both POSITIVE edge BOS legs; Barnes PTS is the only FADE leg, limiting FADE exposure to one.",
         "date": "2026-04-09",
         "id": "parlay_2026-04-09_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 2,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "result": null,
+            "actual_value": null
+          },
+          {
+            "player_name": "Jayson Tatum",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 8.0
+          },
+          {
+            "player_name": "Scottie Barnes",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 13.0
+          }
+        ]
       }
     ]
   }

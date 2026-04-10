@@ -23959,7 +23959,9 @@
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-09",
@@ -23998,7 +24000,11 @@
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Non-iron-floor 3PM picks carry confirmed session-wide variance risk; the sole session miss was a non-iron-floor 3PM (RJ Barrett) despite a 9/10 hit rate, and post_miss_hr of 83% with a typical_miss of only 1.0 below threshold means a single cold night lands exactly at the floor. BOS is a slight road underdog (+4.5), and tight competitive game scripts can compress catch-and-shoot volume for secondary options when possessions are at a premium."
+    ]
   },
   {
     "date": "2026-04-09",
@@ -24037,7 +24043,11 @@
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on AST with a post_miss hit rate of only 43% \u2014 the lowest on the entire slate \u2014 means a recent miss creates a meaningful sequential slump risk. The typical miss is 2.0 below threshold, so variance swings are wide, and 70% confidence on a volatile prop with a deeply depressed post-miss rate is a thin margin."
+    ]
   },
   {
     "date": "2026-04-09",
@@ -24057,8 +24067,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Consistent AST tag, trend up, back-to-back triple-doubles; T4 floor supported at mid defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 3.5,
     "market_implied_prob": 81.48,
     "market_book": "fanduel",
@@ -24083,7 +24093,9 @@
       "direction": "up",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Jaylen Brown out means Tatum becomes sole primary creator; more ball-handling reps should boost assist volume meaningfully."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-09",
@@ -24103,8 +24115,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% hit rate at T2 with consistent tag and upward trend; capped at 80% non-iron-floor rule.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 1.5,
     "market_implied_prob": 84.85,
     "market_book": "fanduel",
@@ -24129,7 +24141,11 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Already at 100% hit rate; Jaylen Brown absence doesn't directly impact Tatum's 3PM volume or opportunity."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Non-iron-floor 3PM at T3 (over 2) requires sustained volume; historical session data shows 3PM is the system's most volatile prop type and the 80% cap on non-iron-floor picks reflects real single-game variance. A competitive NY defense in a close spread game (-4.5) that slows pace or forces more isolation scoring can easily suppress a second three-pointer."
+    ]
   },
   {
     "date": "2026-04-09",
@@ -24149,8 +24165,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% base at T10 with 12-game streak; tough defense and road underdog penalties reduce to 73%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 23.0,
     "bet_recommendation": {
       "calibrated_prob": null,
       "calibration_band": null,
@@ -24170,7 +24186,11 @@
       "direction": "up",
       "revised_confidence_pct": 83,
       "revised_reasoning": "Jaylen Brown out frees usage; Pritchard projects 32min, trend stable, redistribution directly boosts his scoring role."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 26.0 with an avg of 30.7 means a single low-minutes game \u2014 entirely plausible for a bench scorer in a tight playoff-race game \u2014 puts the floor at risk; Pritchard's role is minutes-contingent, and a tough NY defense with a 53% vs_tough rate at this tier (implied by the step-down reasoning) adds scoring compression risk on top of minutes fragility."
+    ]
   },
   {
     "date": "2026-04-09",
@@ -24190,8 +24210,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T2 AST at 75%; VOLATILE -5% lands exactly at 70% floor; vs_tough=81% no suppression.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 1.5,
     "market_implied_prob": 87.01,
     "market_book": "fanduel",
@@ -24216,7 +24236,9 @@
       "direction": "unchanged",
       "revised_confidence_pct": 70,
       "revised_reasoning": "Jaylen Brown absence affects BOS offense, not Bridges' assist opportunities; opponent lineup change has minimal AST impact."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-09",
@@ -24236,8 +24258,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step to T10; VOLATILE and tough defense penalties land at 75% comfortable floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 13.0,
     "market_line": 14.5,
     "market_implied_prob": 63.24,
     "market_book": "fanduel",
@@ -24262,7 +24284,11 @@
       "direction": "up",
       "revised_confidence_pct": 75,
       "revised_reasoning": "Jaylen Brown out softens BOS perimeter defense; Anunoby gets easier looks, but VOLATILE tag limits confidence revision."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a vs_tough rate of only 53% (17 games) against a BOS defense that qualifies as tough produces a structurally fragile floor; the min_floor of 29.0 against an avg of 35.1 shows meaningful minutes variance, and 70% confidence on a volatile scorer facing a tough matchup sits at the system's minimum qualifying threshold with limited cushion."
+    ]
   },
   {
     "date": "2026-04-09",
@@ -24282,8 +24308,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T2 3PM at 85% overall with upward trend; capped at 80% then adjusted to 75% for split disparity.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 79.59,
     "market_book": "fanduel",
@@ -24308,7 +24334,9 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "Jaylen Brown was a key BOS perimeter defender; his absence opens more 3PM opportunities for Anunoby on the wing."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-09",
@@ -24328,8 +24356,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Soft MIA defense with vs_soft=100%; 85% overall at T10 in home favorable environment.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "market_line": 9.5,
     "market_implied_prob": 94.74,
     "market_book": "fanduel",
@@ -24345,7 +24373,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-09",
@@ -24365,8 +24395,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron-floor T4 REB vs soft MIA; 85% overall with vs_soft=93%, T4 exception waives gate.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 3.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -24382,7 +24412,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-09",
@@ -24402,8 +24434,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Soft MIA defense, trend=up AST; VOLATILE -5% from 80% base gives 75% with favorable matchup.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 2.0,
     "market_line": 3.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -24419,6 +24451,8 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": []
   }
 ]
