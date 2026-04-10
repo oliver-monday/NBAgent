@@ -513,6 +513,10 @@ Each candidate has already passed:
 ## OUTPUT FORMAT
 Respond ONLY with a valid JSON array. No preamble, no explanation outside the JSON.
 
+If no valid parlays can be constructed from the candidates (e.g. too many FADE legs, insufficient POSITIVE/STRONG legs to anchor a parlay, all combos violate the edge quality rules), return an empty JSON array: `[]`
+
+Returning `[]` is explicitly acceptable and preferred over reasoning about why parlays can't be built. NEVER output prose analysis — always output a JSON array, even if it's empty.
+
 [
   {{
     "label": "short evocative name, 2-4 words, e.g. 'NYK Feeder Stack' or 'Wednesday Sweeper'",
@@ -549,11 +553,15 @@ def call_parlay_agent(prompt: str) -> list[dict]:
     client = anthropic.Anthropic(api_key=api_key, timeout=90.0)
     print(f"[parlay] Calling Claude ({MODEL})...")
 
-    message = client.messages.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    try:
+        message = client.messages.create(
+            model=MODEL,
+            max_tokens=MAX_TOKENS,
+            messages=[{"role": "user", "content": prompt}],
+        )
+    except Exception as e:
+        print(f"[parlay] WARNING: Claude API call failed: {e} — returning 0 parlays")
+        return []
 
     raw = message.content[0].text.strip()
     if raw.startswith("```"):
@@ -562,25 +570,51 @@ def call_parlay_agent(prompt: str) -> list[dict]:
             raw = raw[4:]
     raw = raw.strip()
 
+    # Check for explicit empty array (Claude correctly determined no valid parlays)
+    if raw.strip() in ("[]", "[ ]"):
+        print("[parlay] Claude returned empty array — no valid parlays for today's slate")
+        return []
+
     try:
         parlays = json.loads(raw)
         if not isinstance(parlays, list):
             raise ValueError("Response is not a JSON array")
         return parlays
     except Exception:
-        # Fallback: Claude may have prefixed reasoning before the JSON array
-        bracket_idx = raw.find("[")
-        if bracket_idx >= 0:
+        pass
+
+    # Fallback 1: Claude may have prefixed reasoning before the JSON array
+    bracket_idx = raw.find("[")
+    if bracket_idx >= 0:
+        # Find the matching closing bracket (last ']' in the string)
+        last_bracket = raw.rfind("]")
+        if last_bracket > bracket_idx:
+            candidate = raw[bracket_idx:last_bracket + 1]
             try:
-                parlays = json.loads(raw[bracket_idx:])
+                parlays = json.loads(candidate)
                 if isinstance(parlays, list):
-                    print(f"[parlay] WARNING: extracted JSON array from offset {bracket_idx} (Claude prefixed reasoning)")
+                    print(f"[parlay] WARNING: extracted JSON array from offset {bracket_idx} "
+                          f"(Claude prefixed reasoning)")
                     return parlays
             except Exception:
                 pass
-        print(f"[parlay] ERROR parsing Claude response — no valid JSON array found")
-        print(f"[parlay] Raw response (first 500 chars):\n{raw[:500]}")
-        sys.exit(1)
+
+    # Fallback 2: try json_repair if available
+    try:
+        from json_repair import repair_json
+        repaired = repair_json(raw, return_objects=True)
+        if isinstance(repaired, list):
+            print(f"[parlay] WARNING: JSON repair succeeded — extracted {len(repaired)} parlays")
+            return repaired
+    except ImportError:
+        pass
+    except Exception:
+        pass
+
+    # All parsing attempts failed — return empty list instead of crashing
+    print(f"[parlay] WARNING: Could not parse Claude response — returning 0 parlays")
+    print(f"[parlay] Raw response (first 500 chars):\n{raw[:500]}")
+    return []
 
 
 # ── Concentration cap enforcement ─────────────────────────────────────
@@ -717,6 +751,10 @@ def main():
     prompt  = build_parlay_prompt(candidates, audit_feedback)
     parlays = call_parlay_agent(prompt)
     print(f"[parlay] Claude returned {len(parlays)} parlays")
+
+    if not parlays:
+        print("[parlay] No parlays to save — skipping save step")
+        sys.exit(0)
 
     parlays = enforce_concentration_cap(parlays)
     save_parlays(parlays)
