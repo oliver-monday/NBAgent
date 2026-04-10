@@ -69,6 +69,9 @@ RECENT_GAME_WINDOW = 10
 # How many audit log entries to feed back as context (keep lean)
 AUDIT_CONTEXT_ENTRIES = 5
 
+# Playoff mode — postseason context block fires on or after this date
+PLAYOFF_START_DATE = "2026-04-14"
+
 
 # ── Retry helper ─────────────────────────────────────────────────────
 
@@ -822,6 +825,32 @@ def load_series_context() -> str:
         return ""
 
 
+def build_playoff_context(today_str: str) -> str:
+    """
+    Returns a PLAYOFF CONTEXT prompt block when today is on or after
+    the postseason start date. Returns empty string during regular season.
+    Annotation-only — no directive rules.
+    """
+    if today_str < PLAYOFF_START_DATE:
+        return ""
+
+    return """## PLAYOFF CONTEXT — POSTSEASON MODE
+
+Today is a postseason game. Playoff and play-in basketball differs structurally from the regular season. Calibrate your reasoning accordingly:
+
+**Rotation tightening:** Playoff rotations are typically 8–9 man, not 10–12. Starters play 36–42 minutes routinely. Minutes floors for key players are HIGHER than regular season, not lower. Managed rest is essentially eliminated — do not apply regular-season blowout rest assumptions. Even in games where a team leads by 15–20 points, stars typically play into the fourth quarter.
+
+**Pace compression:** Playoff games average 3–5 fewer possessions than regular season due to slower pace, longer possessions, and more deliberate half-court execution. This creates a mild headwind on counting stat ceilings (PTS, AST, 3PM). It is NOT a hard penalty — treat it as context when a player's tier is near their floor, not as a reason to skip or step down.
+
+**Play-in intensity:** Play-in games are single-elimination. Players play maximum minutes with maximum effort. The blowout rest patterns that apply during the regular season (stars sitting Q4 in comfortable wins) are essentially absent — teams play to win every possession regardless of margin.
+
+**Series dynamics:** In a playoff series (best of 7), teams play the same opponent repeatedly. Game-to-game tactical adjustments are real — a player who was open for 3s in Game 1 may face a targeted defensive scheme in Game 2. When evaluating picks in Games 2–7 of a series, weight the most recent game in the series more heavily than the L20 regular-season window. If a player missed badly in the prior game of the same series, investigate whether the miss was variance or scheme-driven before selecting the same prop.
+
+**Data window caution:** The L20 game window will include regular-season games through early playoff rounds. Regular-season hit rates against a variety of opponents provide a useful baseline but should be weighted with appropriate caution when evaluating a specific playoff matchup where the opponent has had days to game-plan. Matchup-specific tier hit rates (vs_soft/vs_tough) remain valid contextual signals.
+
+**What does NOT change:** Tier system rules, confidence floors, step-down mechanics, VOLATILE penalties, iron_floor designations, and all quantitative gates remain in full effect. This block provides behavioral context — it does not override any existing rule."""
+
+
 def load_player_stats() -> dict:
     """Load pre-computed quant stats from player_stats.json."""
     if not PLAYER_STATS_JSON.exists():
@@ -1493,6 +1522,8 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
     ) if pre_game_news else ""
 
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
+    _playoff_ctx            = build_playoff_context(TODAY_STR)
+    playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
     series_context_section  = f"{series_context}\n\n"  if series_context  else ""
@@ -1668,7 +1699,7 @@ selection signals.
 {lineups_block}{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2501,6 +2532,8 @@ def build_scout_prompt(
     ) if pre_game_news else ""
 
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
+    _playoff_ctx            = build_playoff_context(TODAY_STR)
+    playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
     series_context_section  = f"{series_context}\n\n"  if series_context  else ""
@@ -2548,7 +2581,7 @@ Use `priority: "high"` for players with multiple qualifying props, strong recent
 {lineups_block}{pre_game_section}## SEASON CONTEXT
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2735,6 +2768,7 @@ The Scout's assessment is advisory — use it as a starting point, not a constra
 
 ## SCOUT SHORTLIST
 {scout_shortlist_json}
+{build_playoff_context(TODAY_STR)}
 {f"{chr(10)}{series_context}{chr(10)}" if series_context else ""}
 ## TODAY'S GAMES
 {games_block}
