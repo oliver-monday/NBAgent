@@ -181,6 +181,16 @@ def _get_miss_pick_meta(player_name_lower: str) -> dict:
     return {}
 
 
+def _norm_name(name: str) -> str:
+    """Normalize player name to match player_dim.csv's player_name_norm convention.
+    Hyphens → space, apostrophes/periods removed, collapse whitespace, lowercase."""
+    s = name.lower().strip()
+    s = s.replace("-", " ")
+    for ch in ("'", "\u2019", "."):
+        s = s.replace(ch, "")
+    return " ".join(s.split())
+
+
 def load_athlete_id_map() -> dict[str, str]:
     """
     Load player_dim.csv and return {player_name_norm (lowercase): player_id}.
@@ -661,7 +671,7 @@ def main() -> None:
     espn_fetch_status: dict[str, bool | None] = {}
 
     for name in sorted(players_to_fetch):
-        aid = athlete_ids.get(name)
+        aid = athlete_ids.get(_norm_name(name))
         if aid:
             news_items, fetch_ok = fetch_espn_news(aid)
             espn_news_by_player[name] = news_items
@@ -748,7 +758,7 @@ def main() -> None:
         row = game_rows.get(name)
         minutes = parse_minutes(row) if row else None
         injury_status = injury_statuses.get(name, "NOT_LISTED")
-        aid = athlete_ids.get(name)
+        aid = athlete_ids.get(_norm_name(name))
 
         # Use Claude result if available, else fall back to deterministic DNP detection
         cr = claude_results.get(name)

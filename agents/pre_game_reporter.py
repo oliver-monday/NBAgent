@@ -135,6 +135,16 @@ def load_target_players(teams_today: set[str]) -> list[dict]:
         return []
 
 
+def _norm_name(name: str) -> str:
+    """Normalize player name to match player_dim.csv's player_name_norm convention.
+    Hyphens → space, apostrophes/periods removed, collapse whitespace, lowercase."""
+    s = name.lower().strip()
+    s = s.replace("-", " ")
+    for ch in ("'", "\u2019", "."):
+        s = s.replace(ch, "")
+    return " ".join(s.split())
+
+
 def load_athlete_id_map() -> dict[str, str]:
     """
     Load player_dim.csv → {player_name_norm (lowercase): player_id}.
@@ -802,7 +812,7 @@ def main() -> None:
     http_fail_count = 0
     for player in target_players:
         name = player["player_name"]
-        aid  = athlete_id_map.get(name.lower())
+        aid  = athlete_id_map.get(_norm_name(name))
         if not aid:
             fetch_errors.append(name)
             no_id_count += 1

@@ -31,6 +31,46 @@ Source: `espn_player_ingest.py`. One row per player per game.
 `dnp = "1"` rows are kept but excluded from analytics.  
 `home_away`: `"H"` or `"A"`.
 
+### playoff_career_log.csv (21 columns)
+```
+season, season_type, game_id, game_date, team_abbrev, opp_abbrev,
+home_away, player_id, player_name, started, minutes,
+pts, reb, ast, tpm, fgm, fga, fg3m, fg3a, ftm, fta
+```
+Source: `ingest/espn_playoff_backfill.py` (one-time local-run backfill) + future daily ingest integration (separate prompt). One row per player per game. Contains both regular season and playoff rows (distinguished by `season_type` column: `regular` | `playoff`) for computing career playoff vs regular-season deltas.
+
+| Column | Description |
+|--------|-------------|
+| `season` | NBA season end year (e.g. `2024` = the 2023-24 season) |
+| `season_type` | `regular` or `playoff`. Play-In Regular Season is classified as `regular`; Preseason is never collected |
+| `game_id` | ESPN event ID (string) |
+| `game_date` | `YYYY-MM-DD` normalized from ESPN's ISO datetime |
+| `team_abbrev` | Player's team (Rotowire-standard abbrev — GSW not GS, NOP not NO, etc.) |
+| `opp_abbrev` | Opponent team (Rotowire-standard abbrev) |
+| `home_away` | `H` or `A` (derived from ESPN's `atVs` field: `@` → A) |
+| `player_id` | ESPN athlete ID (string, same keyspace as `player_dim.csv`) |
+| `player_name` | Source-of-truth name from the whitelist |
+| `started` | Blank — ESPN v3 gamelog does not expose starter info at this layer; placeholder for future enrichment |
+| `minutes` | Total minutes played, rounded to 1 decimal |
+| `pts` | Points |
+| `reb` | Total rebounds |
+| `ast` | Assists |
+| `tpm` | Three-pointers made (duplicated from `fg3m` for parity with `player_game_log.csv`) |
+| `fgm` / `fga` | Field goals made / attempted (parsed from ESPN compound `FG="11-21"`) |
+| `fg3m` / `fg3a` | Three-pointers made / attempted (parsed from ESPN compound `3PT="3-7"`) |
+| `ftm` / `fta` | Free throws made / attempted (parsed from ESPN compound `FT="5-7"`) |
+
+Full backfill (2021–2025, active whitelisted players, 2026-04-09): **18,522 rows (16,768 regular / 1,754 playoff) for 60 players**. Zero null PTS/minutes. Zero shooting invariant violations (`fgm ≤ fga`, `fg3m ≤ fg3a`, `ftm ≤ fta`).
+
+**Upsert key:** `(player_id, game_id, season_type)`. Re-running the script is idempotent — existing rows are replaced, new rows inserted.
+
+**Known gaps (pre-quant-wiring):**
+- 5 active whitelisted players missing from `player_dim.csv` due to name normalization (hyphens, apostrophes, `Jr.`): Karl-Anthony Towns, Shai Gilgeous-Alexander, De'Aaron Fox, Nickeil Alexander-Walker, Jabari Smith Jr. Fix via manual `player_dim.csv` mapping before the quant consumer lands.
+- `EAST` / `WEST` team abbrevs appear for All-Star game appearances (ESPN classifies these under Regular Season). Harmless — downstream whitelist tuple filter will drop them.
+- `started` column is always blank — ESPN v3 gamelog endpoint does not expose this data.
+
+**Downstream consumer:** future `compute_playoff_splits()` in `agents/quant.py` (not yet implemented — separate prompt). Will produce career playoff vs regular-season tier hit-rate deltas per player, surfaced as annotation-only context for the analyst during postseason picks.
+
 ### team_game_log.csv
 ```
 game_id, game_date, team_abbrev, opp_abbrev, home_away,
