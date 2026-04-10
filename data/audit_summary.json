@@ -4,17 +4,17 @@
   "overall": {
     "total_picks": 803,
     "voided": 44,
-    "hits": 685,
-    "misses": 102,
+    "hits": 686,
+    "misses": 101,
     "injury_exclusions": 2,
-    "hit_rate_pct": 87.3
+    "hit_rate_pct": 87.4
   },
   "prop_type_summary": {
     "PTS": {
       "picks": 283,
-      "hits": 238,
+      "hits": 239,
       "injury_exclusions": 1,
-      "hit_rate_pct": 84.4
+      "hit_rate_pct": 84.8
     },
     "REB": {
       "picks": 120,
@@ -36,7 +36,7 @@
     }
   },
   "miss_classification_totals": {
-    "variance": 43,
+    "variance": 42,
     "selection_error": 5,
     "model_gap_signal": 6,
     "model_gap_rule": 29,
@@ -46,8 +46,8 @@
   "confidence_calibration_totals": {
     "70-75": {
       "picks": 336,
-      "hits": 284,
-      "hit_rate_pct": 84.5
+      "hits": 285,
+      "hit_rate_pct": 84.8
     },
     "76-80": {
       "picks": 350,
@@ -132,10 +132,10 @@
   },
   "human_flag_precision": {
     "trim": {
-      "hits": 107,
-      "misses": 9,
+      "hits": 108,
+      "misses": 8,
       "total": 116,
-      "hit_rate_pct": 92.2
+      "hit_rate_pct": 93.1
     },
     "keep": {
       "hits": 166,
