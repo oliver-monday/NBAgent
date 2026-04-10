@@ -51,6 +51,7 @@ CONFIDENCE_FLOOR   = 0.70 # minimum hit rate for a "best tier" pick
 CORR_MIN_GAMES     = 8    # minimum shared games for teammate correlation
 PACE_WINDOW        = 10   # games for game pace context
 MIN_MATCHUP_GAMES  = 3    # minimum games per opp-rating bucket for matchup splits
+H2H_MIN_GAMES      = 2    # minimum H2H games vs today's opponent to emit h2h_splits (else null)
 SPREAD_COMPETITIVE = 6.5  # spread_abs ≤ this = competitive game
 SPREAD_BLOWOUT_RISK = 8.0 # spread_abs > this for favored team → blowout risk flag
 SPREAD_BIG_FAVORITE = 13.0 # spread_abs > this → cap analyst confidence at 80%
@@ -71,6 +72,7 @@ TPM_TIERS = [1, 2, 3, 4]
 **Per-player outputs in `player_stats.json`:**
 - `tier_hit_rates` — hit rate at each tier across last 20 games, per stat
 - `matchup_tier_hit_rates` — hit rate at each tier split by opponent defensive rating (soft/mid/tough) across full season history; only buckets with ≥3 games included
+- `h2h_splits` — per-opponent tier hit rates from the full season game log specifically against today's opponent; `{opponent, games, PTS:{tier_str:{hits,n,rate}}, REB, AST, 3PM}` or `null` when `< H2H_MIN_GAMES` (2). DNP filter applied once to the whole H2H subset — `games` count is shared across all tiers and all stats (sample invariant). Annotation-only — surfaced by analyst `build_quant_context()` as a `H2H vs {OPP} ({N}g): ...` line after player stat lines, showing the highest qualifying tier (≥70% rate) per stat. No directive rules attached.
 - `spread_split_hit_rates` — hit rate at each tier split by game competitiveness (competitive = spread_abs ≤ 6.5 vs blowout = spread_abs > 6.5); only buckets with ≥5 games included; limited by spread data coverage
 - `best_tiers` — highest tier with ≥70% hit rate, per stat (null if none qualify)
 - `trend` — up / stable / down (last 5 vs last 20 avg), per stat

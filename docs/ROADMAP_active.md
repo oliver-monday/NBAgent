@@ -137,10 +137,10 @@ Pre-game reporter showed 24/24 ESPN fetch errors on 4/9. Error logging split int
 ### Pending Backtests
 
 ### H9 — Player × Opponent H2H Splits
-**Status: QUEUED — run during R1 playoffs (mid-April)**
-**Mode: `--mode h2h-splits`**
+**Status: CLOSED — deployed as annotation-only quant feature (`h2h_splits`) on 2026-04-09.**
+**Mode: `--mode h2h-splits` (not implemented — formal backtest bypassed)**
 
-Does a player's historical hit rate against today's specific opponent predict next-game performance better than population-level opp_defense? Most opponents appear 2–4× per season. Full season sample available after 4/11. In a 7-game series, H2H signal is the most playoff-relevant signal the system can generate. Priority for R1.
+Deployed as annotation-only feature in `agents/quant.py` (`compute_h2h_splits()`) and `agents/analyst.py` (`build_quant_context()`) — see ROADMAP_resolved.md. Formal backtest bypassed: annotation-only deployment at small samples (n=2–4) does not warrant backtest-first validation. A divisional opponent played 2–4× per season in the regular season reflects deliberate defensive attention, not noise — qualitatively different from signals that need gating. In a 7-game series, H2H is the most playoff-relevant signal the system can surface. The analyst receives it as context and applies its own judgment; no directive rules attached. Signal will accumulate through playoffs.
 
 ---
 
@@ -161,7 +161,7 @@ Was 99/150 graded 3PM picks as of Mar 22. Check current count — may have reach
 ---
 
 ## Untested Hypotheses
-- **H9 — Player × Opponent H2H Splits** — see Pending Backtests above.
+(none active — H9 closed 2026-04-09 as annotation-only deployment)
 
 ---
 

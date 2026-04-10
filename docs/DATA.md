@@ -97,6 +97,21 @@ Quant output. One entry per whitelisted player playing today.
       },
       "REB": {...}, "AST": {...}, "3PM": {...}
     },
+    "h2h_splits": {                  // null when <2 H2H games vs today's opponent
+      "opponent": "BOS",             // today's opponent abbreviation (ESPN format)
+      "games": 4,                    // total H2H games in current season (DNP-excluded)
+      "PTS": {
+        "10": {"hits": 4, "n": 4, "rate": 1.0},
+        "15": {"hits": 4, "n": 4, "rate": 1.0},
+        "20": {"hits": 3, "n": 4, "rate": 0.75},
+        "25": {"hits": 1, "n": 4, "rate": 0.25},
+        "30": {"hits": 0, "n": 4, "rate": 0.0}
+      },
+      "REB": {...}, "AST": {...}, "3PM": {...}
+    },
+    // Sample invariant: "games" always equals the "n" value inside every tier entry
+    // across every stat. DNP filter is applied once to the whole H2H subset; no
+    // per-stat sample reduction. Annotation-only — no directive rules attached.
     "spread_split_hit_rates": {
       "PTS": {
         "competitive": {"hit_rates": {"10": 1.0, "15": 0.85, "20": 0.71, "25": 0.43, "30": 0.14}, "n": 14},

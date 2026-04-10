@@ -1291,6 +1291,39 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
                 f"trend={trend}{b2b_field}{bb_field}{vol_tag}{shoot_flag}"
             )
 
+        # ── H2H splits annotation ────────────────────────────────────
+        # Per-opponent tier hit rates from full season game log. Annotation-only —
+        # rendered after the stat lines, before the next player's header. Shows
+        # the best qualifying tier (highest ≥70%) per stat vs today's specific
+        # opponent. Min 2 H2H games to render; no rendering when null.
+        h2h = s.get("h2h_splits")
+        if h2h and isinstance(h2h, dict) and h2h.get("games", 0) >= 2:
+            h2h_opp   = h2h.get("opponent", "?")
+            h2h_games = h2h["games"]
+            h2h_parts = []
+            for stat in ("PTS", "REB", "AST", "3PM"):
+                stat_data = h2h.get(stat, {})
+                if not stat_data:
+                    continue
+                # Highest tier with ≥70% rate
+                best_tier_str = None
+                best_hits     = 0
+                best_n        = 0
+                for tier_str in sorted(stat_data.keys(), key=lambda x: int(x), reverse=True):
+                    td = stat_data[tier_str]
+                    if td.get("n", 0) > 0 and td.get("rate", 0) >= 0.70:
+                        best_tier_str = tier_str
+                        best_hits     = td["hits"]
+                        best_n        = td["n"]
+                        break
+                if best_tier_str is not None:
+                    pct = int(round(best_hits / best_n * 100)) if best_n > 0 else 0
+                    h2h_parts.append(f"{stat} T{best_tier_str} {best_hits}/{best_n}({pct}%)")
+            if h2h_parts:
+                stat_parts.append(
+                    f"  H2H vs {h2h_opp} ({h2h_games}g): {' | '.join(h2h_parts)}"
+                )
+
         floor_val = minutes_floor_data.get("floor_minutes")
         avg_val   = minutes_floor_data.get("avg_minutes")
         if floor_val is not None and avg_val is not None:

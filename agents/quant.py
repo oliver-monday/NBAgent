@@ -58,6 +58,7 @@ CORR_STRONG          = 0.35 # |r| >= this = strong correlation
 CORR_MODERATE        = 0.15 # |r| >= this = moderate correlation
 PACE_WINDOW          = 10   # games for game pace / combined scoring context
 MIN_MATCHUP_GAMES    = 3    # minimum games per opp-rating bucket for matchup splits
+H2H_MIN_GAMES        = 2    # minimum H2H games vs today's opponent to emit h2h_splits (else null)
 SPREAD_COMPETITIVE   = 6.5  # spread_abs ≤ this = competitive game
 SPREAD_BLOWOUT_RISK  = 8.0  # spread_abs > this for favored team → blowout risk flag
 SPREAD_BIG_FAVORITE  = 13.0 # spread_abs > this → cap analyst confidence at 80%
@@ -1301,6 +1302,68 @@ def compute_matchup_tier_hit_rates(
     return result
 
 
+def compute_h2h_splits(grp: pd.DataFrame, opponent: str) -> dict | None:
+    """
+    Compute tier hit rates for this player specifically against today's opponent.
+    Uses ALL games in the player's log vs this opponent (full season, not windowed).
+
+    Args:
+        grp:      Player's game log, sorted newest→oldest. Has opp_abbrev, dnp,
+                  pts, reb, ast, tpm columns.
+        opponent: Today's opponent abbreviation (e.g. "BOS"). Game log abbrev
+                  format (ESPN), same format as team_to_opp values in
+                  build_player_stats().
+
+    Returns:
+        Dict with per-stat tier hit rates if ≥ H2H_MIN_GAMES exist, else None.
+        {
+            "opponent": "BOS",
+            "games": 4,
+            "PTS": {"10": {"hits": 4, "n": 4, "rate": 1.0}, ...},
+            "REB": {...}, "AST": {...}, "3PM": {...}
+        }
+    Annotation-only — no directive rules attached. Total game count is shared
+    across all tiers and all stats (single DNP filter on the whole subset).
+    """
+    if not opponent or grp.empty:
+        return None
+
+    opp_upper = opponent.strip().upper()
+    h2h_games = grp[
+        (grp["opp_abbrev"].astype(str).str.upper().str.strip() == opp_upper)
+        & (grp["dnp"].astype(str) != "1")
+    ]
+
+    n_games = len(h2h_games)
+    if n_games < H2H_MIN_GAMES:
+        return None
+
+    result: dict = {"opponent": opp_upper, "games": n_games}
+
+    for stat, col in STAT_COL.items():
+        if col not in h2h_games.columns:
+            result[stat] = {}
+            continue
+
+        values = pd.to_numeric(h2h_games[col], errors="coerce").dropna()
+        if values.empty:
+            result[stat] = {}
+            continue
+
+        n_vals = len(values)
+        stat_tiers: dict = {}
+        for tier in TIERS[stat]:
+            hits = int((values >= tier).sum())
+            stat_tiers[str(tier)] = {
+                "hits": hits,
+                "n":    n_vals,
+                "rate": round(hits / n_vals, 3),
+            }
+        result[stat] = stat_tiers
+
+    return result
+
+
 def compute_spread_split_hit_rates(
     player_games: pd.DataFrame,
     master_df: pd.DataFrame,
@@ -1881,6 +1944,8 @@ def build_player_stats(
             stat: compute_matchup_tier_hit_rates(grp, opp_defense, stat)
             for stat in TIERS
         }
+        # H2H splits: tier hit rates vs this specific opponent (all season, min 2 games)
+        h2h_splits = compute_h2h_splits(grp, opponent)
 
         home_games = grp[grp["home_away"] == "H"].head(PLAYER_WINDOW)
         away_games = grp[grp["home_away"] == "A"].head(PLAYER_WINDOW)
@@ -2011,6 +2076,7 @@ def build_player_stats(
             "blowout_risk": blowout_risk,
             "tier_hit_rates": tier_hit_rates,
             "matchup_tier_hit_rates": matchup_tier_hit_rates,
+            "h2h_splits":             h2h_splits,
             "spread_split_hit_rates": spread_split_hit_rates,
             "best_tiers": best_tiers,
             "trend": trend,
