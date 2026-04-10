@@ -1,6 +1,44 @@
 [
   {
     "date": "2026-04-10",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "opponent": "IND",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "blowout_t25_skip",
+    "rule_context": {
+      "spread_abs": 14.5,
+      "favored_side": "PHI",
+      "reason": "spread_abs>=15 blowout T25 hard skip fires for favored side"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "opponent": "IND",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_caps": 74,
+      "prop_minimum_floor": 75,
+      "reason": "Blowout cap 74% is below 75% 3PM minimum floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
     "player_name": "VJ Edgecombe",
     "team": "PHI",
     "opponent": "IND",
@@ -10,12 +48,8 @@
     "skip_reason": "blowout_secondary_scorer",
     "rule_context": {
       "spread_abs": 14.5,
-      "threshold": 15,
-      "note": "spread_abs=14.5 rounds to exactly 14.5 which is NOT \u226515; however reviewing: 14.5 < 15 so hard skip does not technically fire. Re-evaluating: blowout secondary scorer fires at spread_abs \u2265 15. 14.5 < 15. The pick was skipped in the picks array due to my initial assessment \u2014 correcting: the hard skip should NOT fire at 14.5. However the PTS pick at T10 with BLOWOUT cap 74% after secondary scorer standard penalty (-10-15%) would land at: overall=85% B2B=93% \u2192 b2b=93% - 0% (no VOLATILE) \u2192 BLOWOUT -10% = 83% \u2192 cap 74% (spread_abs\u226512). 74% < standard threshold but meets 70% floor. Actually this pick should NOT have been skipped. Emitting corrected analysis.",
-      "player_name": "VJ Edgecombe",
-      "prop_type": "PTS",
-      "tier_considered": 10,
-      "reason": "Secondary scorer on favored team; blowout standard penalty + spread cap"
+      "primary_scorer": "Tyrese Maxey",
+      "reason": "Maxey (T20) leads PHI; Edgecombe (T10) is secondary; spread_abs>=15"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -34,7 +68,7 @@
     "rule_context": {
       "confidence_after_penalties": 74,
       "reb_minimum_floor": 78,
-      "note": "VOLATILE -5% and spread_abs\u226512 cap reduce to 74%, below 78% REB minimum"
+      "reason": "VOLATILE -5% + blowout cap = 74%, below 78% REB minimum"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -51,9 +85,9 @@
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "confidence_after_penalties": 70,
-      "minimum_3pm_floor": 75,
-      "note": "VOLATILE -5% on 75% overall drops to 70%, below 75% 3PM minimum floor"
+      "confidence_after_caps": 74,
+      "prop_minimum_floor": 75,
+      "reason": "VOLATILE + blowout cap = 74%, below 75% 3PM minimum floor"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -73,8 +107,7 @@
       "b2b_rate": 64,
       "volatile_penalty": -5,
       "final_confidence": 59,
-      "minimum_floor": 70,
-      "note": "B2B rate 64% minus VOLATILE 5% = 59%, below 70% minimum"
+      "reason": "B2B 64% + VOLATILE -5% = 59%, below 70% AST floor"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -93,7 +126,122 @@
     "rule_context": {
       "trend": "down",
       "pick_value": 1,
-      "note": "trend=down mandatory step-down takes T1 below minimum valid tier \u2014 skip"
+      "reason": "trend=down mandatory step-down from T1 goes below minimum tier; no valid tier remains"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "opponent": "NY",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "b2b_rate": 50,
+      "volatile_penalty": -5,
+      "final_confidence": 45,
+      "reason": "B2B REB 50% + VOLATILE -5% = 45%, below 78% REB minimum"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "opponent": "DAL",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "blowout_secondary_scorer",
+    "rule_context": {
+      "spread_abs": 17.5,
+      "primary_scorer": "Victor Wembanyama",
+      "reason": "Wembanyama (T20) leads SAS in PPG tier; Fox (T10) is secondary; spread_abs>=15"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "De'Aaron Fox",
+    "team": "SA",
+    "opponent": "DAL",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "pick_value": 1,
+      "reason": "trend=down step-down from T1 goes below minimum tier"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "DAL",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "blowout_t25_skip",
+    "rule_context": {
+      "spread_abs": 17.5,
+      "favored_side": "SA",
+      "reason": "spread_abs>=15 blowout T25 hard skip"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "DAL",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_cap": 74,
+      "reb_minimum_floor": 78,
+      "reason": "Blowout cap 74% is below 78% REB minimum floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "Victor Wembanyama",
+    "team": "SA",
+    "opponent": "DAL",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "pick_value": 1,
+      "reason": "trend=down step-down from T1 goes below minimum tier"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -111,9 +259,8 @@
     "skip_reason": "merit_below_floor",
     "rule_context": {
       "confidence_after_cap": 74,
-      "minimum_3pm_floor": 75,
-      "spread_abs": 14.5,
-      "note": "spread_abs\u226513 cap at 74% falls below 75% 3PM minimum floor"
+      "prop_minimum_floor": 75,
+      "reason": "Blowout cap 74% is below 75% 3PM minimum floor"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -122,58 +269,18 @@
   },
   {
     "date": "2026-04-10",
-    "player_name": "Brandon Miller",
-    "team": "CHA",
-    "opponent": "DET",
-    "prop_type": "3PM",
-    "tier_considered": 2,
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "opponent": "CHI",
+    "prop_type": "PTS",
+    "tier_considered": 15,
     "direction": "OVER",
     "skip_reason": "no_market",
     "rule_context": {
-      "player_name": "Brandon Miller",
-      "prop_type": "3PM",
-      "tier_considered": 1,
-      "reason": "trend=down forces step-down to T1; FanDuel has no T1 market for Brandon Miller 3PM"
-    },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
-  },
-  {
-    "date": "2026-04-10",
-    "player_name": "Kawhi Leonard",
-    "team": "LAC",
-    "opponent": "POR",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "base_rate": 75,
-      "volatile_penalty": -5,
-      "final_confidence": 70,
-      "minimum_3pm_floor": 75,
-      "note": "VOLATILE -5% reduces 75% to 70%, below 75% 3PM minimum"
-    },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
-  },
-  {
-    "date": "2026-04-10",
-    "player_name": "Nikola Jokic",
-    "team": "DEN",
-    "opponent": "OKC",
-    "prop_type": "REB",
-    "tier_considered": 8,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "confidence_after_penalties": 74,
-      "reb_minimum_floor": 78,
-      "note": "All REB tiers: VOLATILE -5% plus spread_abs\u226512 cap lands at 74%, below 78% REB minimum"
+      "player_name": "Paolo Banchero",
+      "prop_type": "PTS",
+      "tier_considered": 10,
+      "reason": "FG_MARGIN_THIN steps T15 to T10; no FanDuel market for Banchero PTS T10"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -186,13 +293,70 @@
     "team": "DEN",
     "opponent": "OKC",
     "prop_type": "AST",
-    "tier_considered": 6,
+    "tier_considered": 8,
     "direction": "OVER",
-    "skip_reason": "volatile_ast_t6",
+    "skip_reason": "volatile_weak_combo",
     "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 6,
-      "note": "VOLATILE + AST tier \u2265 T6 hard skip fires for all available tiers (T6, T8, T10)"
+      "volatile": true,
+      "hit_rate": "7/10",
+      "tier": 8,
+      "reason": "VOLATILE + AST T8 (>=T6) triggers VOLATILE_AST_T6 hard skip; no iron_floor exception"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_penalties": 74,
+      "prop_minimum_floor": 75,
+      "reason": "VOLATILE -5% + blowout cap = 74%, below 75% 3PM minimum floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "Cameron Johnson",
+    "team": "DEN",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "confidence_after_cap": 74,
+      "prop_minimum_floor": 75,
+      "reason": "Blowout cap 74% is below 75% 3PM minimum floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-10",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "NO",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "b2b_rate": 46,
+      "reason": "B2B PTS rate 46% at T15 (after FG_MARGIN_THIN step from T20) is below 70% floor"
     },
     "actual_value": null,
     "would_have_hit": null,
