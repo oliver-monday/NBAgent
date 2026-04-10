@@ -1,20 +1,23 @@
 {
-  "date": "2026-04-09",
-  "generated_at": "2026-04-09T07:54:33.940162-07:00",
+  "date": "2026-04-10",
+  "generated_at": "2026-04-10T07:18:10.523793-07:00",
   "player_notes": {
-    "victor wembanyama": "OUT Wednesday vs. Trail Blazers with bruised left rib. Monitor status for today's game vs. Dallas.",
-    "stephon castle": "OUT Wednesday vs. Trail Blazers with sore right knee. Monitor status for today's game vs. Dallas.",
-    "cade cunningham": "Returned from 11-game absence (collapsed lung) Wednesday, posting 13 pts/10 ast. Minutes likely managed; treat as day-to-day with potential restriction.",
-    "luka doncic": "Injured and sidelined; Lakers' title odds lengthening due to his and Austin Reaves' injuries. Avoid Doncic props until cleared.",
-    "jayson tatum": "Returned this season from Achilles injury. No new availability concern flagged, but monitor workload management as playoffs approach."
+    "joel embiid": "Out \u2014 underwent emergency appendicitis surgery Thursday. Will miss PHI's game vs. IND today; expect expanded roles for Philly's remaining big men.",
+    "jayson tatum": "Played 40 minutes last night (24 pts, 13 reb, 8 ast) and exited healthy. No restriction concerns for BOS vs. NOP today.",
+    "lebron james": "Played full game last night (26 pts, 11 ast, 8 reb). Monitor rest/availability for LAL vs. PHX today given back-to-back.",
+    "alex sarr": "Out for WAS's final three games with a toe injury. Reduces WIZ rotation depth vs. MIA today."
   },
   "game_notes": {
-    "DAL vs SAS": "Wembanyama (bruised rib) and Castle (knee) were out Wednesday; if still out today vs. Dallas, significant usage boost for De'Aaron Fox and other Spurs. Dallas is 25-55 and short-handed \u2014 elevated pace/scoring likely for healthy Spurs.",
-    "DET vs CHA": "Cunningham returned Wednesday but may face minutes restriction in final regular-season games. Pistons are 58-22 and clinched; rest/load management possible."
+    "PHI vs IND": "Joel Embiid out (appendicitis surgery) \u2014 significant usage and minutes redistribution for 76ers' frontcourt/secondary scorers.",
+    "LAL vs PHX": "LeBron James played last night; back-to-back situation \u2014 monitor pregame availability/minutes restriction reports.",
+    "MIA vs WAS": "Alex Sarr ruled out for WAS, thinning Wizards' frontcourt rotation. Also note Terry Rozier being waived \u2014 already on leave all season, no game-day impact."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 48,
+  "filtered_item_count": 47,
   "fetch_errors": [
+    "Cade Cunningham",
+    "Jalen Duren",
+    "Ausar Thompson",
     "Brandon Ingram",
     "Scottie Barnes",
     "RJ Barrett",
@@ -28,18 +31,117 @@
     "Joel Embiid",
     "Paul George",
     "VJ Edgecombe",
+    "Paolo Banchero",
+    "Desmond Bane",
     "Tyler Herro",
     "Bam Adebayo",
     "Norman Powell",
     "Andrew Wiggins",
+    "Donovan Mitchell",
+    "Evan Mobley",
+    "Jarrett Allen",
+    "James Harden",
+    "Jalen Johnson",
+    "Nickeil Alexander-Walker",
+    "CJ McCollum",
+    "Miles Bridges",
+    "LaMelo Ball",
+    "Kon Knueppel",
+    "Brandon Miller",
+    "Coby White",
+    "Shai Gilgeous-Alexander",
+    "Chet Holmgren",
+    "Jalen Williams",
+    "Isaiah Hartenstein",
+    "Nikola Jokic",
+    "Jamal Murray",
+    "Aaron Gordon",
+    "Cameron Johnson",
     "Luka Doncic",
     "Austin Reaves",
     "LeBron James",
     "Kevin Durant",
     "Alperen Sengun",
     "Amen Thompson",
-    "Jabari Smith Jr."
+    "Jabari Smith Jr.",
+    "Anthony Edwards",
+    "Julius Randle",
+    "Jaden McDaniels",
+    "Rudy Gobert",
+    "Devin Booker",
+    "Jalen Green",
+    "Kawhi Leonard",
+    "Darius Garland",
+    "Bennedict Mathurin"
   ],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "Joel Embiid / Philadelphia 76ers",
+      "current_context_fact": "PHI \u2014 system-wide suppressor (confirmed with caveat, Mar 26): PHI is 24-58 with Embiid, Maxey, and George all out for the season.",
+      "conflict": "Today's news confirms Embiid underwent emergency surgery for appendicitis on April 10, 2026, after being diagnosed hours before the PHI-HOU game. He missed Thursday's game and is expected to miss the final games of the regular season. This is a new, additional absence on top of whatever prior injury kept him out \u2014 the context doc listed him as already out, but this appendicitis surgery is a confirmed new development that cements his absence through season's end and potentially into the playoffs.",
+      "urgency": "critical",
+      "suggested_action": "Add Joel Embiid appendicitis surgery (April 10, 2026) to the season-ending absences or player notes section. Clarify that his absence is now confirmed through the end of the regular season and his playoff availability is in serious doubt. Update PHI suppressor note to reflect Embiid is definitively out for the foreseeable future."
+    },
+    {
+      "player_or_team": "Philadelphia 76ers",
+      "current_context_fact": "PHI is 24-58 with Embiid, Maxey, and George all out for the season.",
+      "conflict": "Today's news shows PHI at 43-37, eighth in the Eastern Conference \u2014 a record dramatically different from the 24-58 implied in the suppressor note. PHI appears to have been competitive this season, suggesting Maxey and/or George may have returned or the record in the context note is significantly stale.",
+      "urgency": "critical",
+      "suggested_action": "Update PHI's current record to 43-37 in the context doc. Investigate and clarify the current roster/availability status of Maxey and George, as their apparent absence 'all season' conflicts with PHI being 43-37. The PHI suppressor mechanism note (blowout risk from heavy favorites) may need revision if PHI is actually a playoff-caliber team."
+    },
+    {
+      "player_or_team": "Indiana Pacers",
+      "current_context_fact": "IND \u2014 system-wide amplifier (confirmed, Mar 26): IND is 16-56 with Haliburton out all season and no reliable interior presence.",
+      "conflict": "Today's news shows Indiana at 19-61 (14th in the Eastern Conference), which is directionally consistent with a poor record but slightly different from 16-56. More importantly, today's game recap shows Indiana beat Brooklyn 123-94 with Obi Toppin scoring 26 points and 7 players in double figures \u2014 consistent with the amplifier profile. The record discrepancy (16-56 vs 19-61) is minor but should be noted.",
+      "urgency": "monitor",
+      "suggested_action": "Update IND's current record to approximately 19-61 in the context doc. The amplifier characterization remains valid."
+    },
+    {
+      "player_or_team": "Jayson Tatum / Boston Celtics",
+      "current_context_fact": "Jayson Tatum (BOS) \u2014 Achilles surgery May 2025. Returned ~March 6, 2026; BOS role distribution reflects nearly a full season without him.",
+      "conflict": "Today's news confirms Tatum is active and playing significant minutes \u2014 he had 24 points, 13 rebounds, and 8 assists in 40 minutes in Thursday's loss to the Knicks at MSG. This is consistent with his return being confirmed, but the 40-minute workload suggests he is fully integrated into the rotation with no apparent minute restriction.",
+      "urgency": "monitor",
+      "suggested_action": "Update Tatum's player note to reflect he is fully active with no apparent minute restriction as of April 10, 2026 (40 min logged vs NYK). Role distribution on BOS has likely shifted back toward Tatum as primary option. Flag that BOS context around role distribution should be re-evaluated."
+    },
+    {
+      "player_or_team": "Brandon Ingram / Toronto Raptors",
+      "current_context_fact": "Brandon Ingram: NOP -> TOR (offseason 2025 move listed)",
+      "conflict": "No direct conflict \u2014 today's news confirms Ingram scored a season-high 38 points for the Toronto Raptors, validating the roster move listed in the context doc. This is confirmatory, not contradictory.",
+      "urgency": "monitor",
+      "suggested_action": "No change needed to roster facts. Optionally note Ingram's season-high 38-point performance on April 10, 2026 as a data point for his current role and scoring ceiling with TOR."
+    },
+    {
+      "player_or_team": "Phoenix Suns",
+      "current_context_fact": "Jalen Green: HOU -> PHX (same trade \u2014 Green is no longer a Rocket). PHX suppressor note references Kevin Durant's rim deterrence.",
+      "conflict": "Today's news shows PHX at 44-36 (seventh in the Western Conference) and clinching the No. 7 seed with Devin Booker scoring 37 and Dillon Brooks adding 28. No mention of Jalen Green in the PHX scoring leaders for this game. Kevin Durant is now on HOU, not PHX per the context doc \u2014 the PHX suppressor mechanism cites Durant's rim presence, but Durant is on HOU. The PHX suppressor note should reference its own defensive scheme, not Durant specifically.",
+      "urgency": "monitor",
+      "suggested_action": "The PHX suppressor note correctly states Durant is on HOU and that PHX is a separate confirmed suppressor sharing the mechanism. However, re-examine whether PHX's suppressor mechanism still holds without Durant \u2014 the note attributes it to 'Kevin Durant's rim deterrence' which now applies only to HOU. Update PHX suppressor to clarify its independent mechanism separate from Durant."
+    },
+    {
+      "player_or_team": "Golden State Warriors",
+      "current_context_fact": "GSW listed at 37-43 (10th in Western Conference per today's game preview headline)",
+      "conflict": "No direct context doc conflict on record, but today's news confirms Jimmy Butler (GSW) tore his ACL \u2014 already noted in context as OFS. Stephen Curry was ruled out for Thursday's game vs LAL as a rest decision (not injury), which is consistent with end-of-season load management. Context doc does not flag Curry as injured.",
+      "urgency": "monitor",
+      "suggested_action": "Confirm Curry's rest vs. LAL on April 9 was load management only (not injury-related). No update needed to context doc on Curry's status, but note that GSW is resting him in final regular season games."
+    },
+    {
+      "player_or_team": "Milwaukee Bucks",
+      "current_context_fact": "MIL | Doc Rivers (coach listed in context doc)",
+      "conflict": "Today's news shows MIL at 31-49 (11th in Eastern Conference). No direct coaching conflict, but the record is notably poor for a team with Doc Rivers. No conflict with context doc facts specifically.",
+      "urgency": "monitor",
+      "suggested_action": "No immediate change needed. Monitor MIL's end-of-season standing for accuracy."
+    },
+    {
+      "player_or_team": "Detroit Pistons",
+      "current_context_fact": "DET | J.B. Bickerstaff (New hire Jul 2024). Historical record 2024-25: 44-38.",
+      "conflict": "Today's news shows Detroit at 58-22, first in the Eastern Conference \u2014 an extraordinary record suggesting DET has become the top team in the East this season. This is not directly contradicted by the context doc (which only lists historical records through 2024-25), but the current standing represents a major development the context doc does not capture.",
+      "urgency": "monitor",
+      "suggested_action": "Add a note that DET is currently 58-22 and the No. 1 seed in the Eastern Conference in 2025-26 \u2014 a dramatic rise. This affects opponent scheme notes and any prop context involving games vs. DET."
+    },
+    {
+      "player_or_team": "San Antonio Spurs",
+      "current_context_fact": ""
+    }
+  ],
   "staleness_flags": []
 }

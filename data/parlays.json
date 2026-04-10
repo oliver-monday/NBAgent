@@ -4236,5 +4236,55 @@
         ]
       }
     ]
+  },
+  {
+    "date": "2026-04-10",
+    "parlays": [
+      {
+        "label": "Friday Multi-Game Sweeper",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Tyrese Maxey",
+            "team": "PHI",
+            "opponent": "IND",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "RJ Barrett",
+            "team": "TOR",
+            "opponent": "NY",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Brandon Miller",
+            "team": "CHA",
+            "opponent": "DET",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+106",
+        "confidence_product": 0.4867,
+        "correlation": "independent",
+        "rationale": "Three fully independent games; Maxey 3PM stable, Barrett AST NEUTRAL, Miller AST POSITIVE edge anchors the parlay.",
+        "date": "2026-04-10",
+        "id": "parlay_2026-04-10_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
