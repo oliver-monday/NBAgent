@@ -1790,7 +1790,7 @@ function renderPicks() {{
   const c = document.getElementById('picks-container');
   const picks = DATA.today_picks;
   if (!picks.length) {{
-    c.innerHTML = `<div class="empty"><div class="empty-icon">🏀</div>No picks yet for ${{DATA.today_str}}.<br>Check back after 11 AM PT.</div>`;
+    c.innerHTML = `<div class="empty"><div class="empty-icon">🏀</div>No picks yet for ${{DATA.today_str}}.<br>Check back after 8 AM PT.</div>`;
     return;
   }}
 
