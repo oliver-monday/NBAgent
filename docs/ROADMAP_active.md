@@ -56,6 +56,8 @@ Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: Apri
 - ✅ H2H splits (`h2h_splits`) — per-opponent tier hit rates annotation in quant + analyst. Annotation-only, no directive rules. Closes H9. (4/9)
 - ✅ ESPN Playoff Career Backfill (`ingest/espn_playoff_backfill.py`) — standalone local-run script, probe-first format discovery, upsert idempotency. Full 2021–2025 backfill run: **20,139 rows (18,256 regular / 1,883 playoff) for 65 players** written to `data/playoff_career_log.csv`. Remaining 3 whitelisted players with no rows are 2025-draft rookies with no pre-2026 NBA history (Dylan Harper, Kon Knueppel, VJ Edgecombe) — expected, not a gap. Quant integration (`compute_playoff_splits()`) + daily ingest wiring are separate follow-up prompts. (4/9)
 - ✅ Fixed player name normalization mismatch in athlete ID lookups affecting KAT, SGA, De'Aaron Fox, Nickeil Alexander-Walker, Jabari Smith Jr. across `ingest/espn_playoff_backfill.py`, `agents/pre_game_reporter.py`, `agents/post_game_reporter.py`. Added `_norm_name()` helper (hyphens → space, apostrophes/periods stripped) that mirrors `player_dim.csv`'s `player_name_norm` convention. All 68 active whitelisted players now resolve correctly. Backfill row delta: +1,617 rows across the 5 players. (4/9)
+- ✅ Playoff career splits quant integration — `compute_playoff_splits()` in `quant.py` reads `playoff_career_log.csv`, computes career playoff vs regular-season deltas (PTS/REB/AST/3PM/FG%) using same-season comparison. Writes `playoff_profile` to `player_stats.json`. Annotation in `build_quant_context()` gated behind `PLAYOFFS_R1_DATE = "2026-04-18"` (inclusive). Annotation-only — no directive rules. 58/65 players eligible (≥5 career playoff games); 11 flagged as small-sample (5–9 games). Zero invariant violations on offline test against the 20,137-row CSV. (4/9)
+- ✅ Daily ingest `season_type` integration + playoff dual-write — added `season_type` column to `nba_master.csv` (from ESPN scoreboard `season.type`) and `player_game_log.csv` (joined via `game_id`). Postseason rows (type=3) automatically dual-written to `data/playoff_career_log.csv` by `append_playoff_rows()` in `espn_player_ingest.py` — upsert idempotent on `(player_id, game_id)`. Inert during regular season (returns immediately when no playoff rows present). `ingest.yml` commits `playoff_career_log.csv` alongside other ingest outputs. Keeps the file fresh for `compute_playoff_splits()` without manual backfill re-runs once playoffs start. (4/10)
 
 **Remaining gap items (April 12–13):**
 - Create `data/playoff_bracket.json` — populate once seeds are final after 4/11 games
@@ -63,7 +65,6 @@ Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: Apri
 - Deactivate non-playoff teams on whitelist
 - Verify 4/10 run: walked_tier emission, market gate, pre-game reporter fixes, pretip sweep, CLV computation
 - Layer 3 frontend implementation (if Layers 1+2 verified clean)
-- Quant wiring for `playoff_career_log.csv` — `compute_playoff_splits()` function + `h2h_splits`-style annotation in `build_quant_context()` (separate prompt)
 
 **What NOT to change pre-emptively:** Do not modify quant computations, confidence rules, or skip thresholds before seeing playoff data. Observe first, adjust second.
 

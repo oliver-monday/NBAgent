@@ -40,6 +40,7 @@ MASTER_CSV        = DATA / "nba_master.csv"
 WHITELIST_CSV     = ROOT / "playerprops" / "player_whitelist.csv"
 PLAYER_STATS_JSON             = DATA / "player_stats.json"
 TEAM_DEFENSE_NARRATIVES_JSON  = DATA / "team_defense_narratives.json"
+PLAYOFF_CAREER_LOG            = DATA / "playoff_career_log.csv"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -59,6 +60,7 @@ CORR_MODERATE        = 0.15 # |r| >= this = moderate correlation
 PACE_WINDOW          = 10   # games for game pace / combined scoring context
 MIN_MATCHUP_GAMES    = 3    # minimum games per opp-rating bucket for matchup splits
 H2H_MIN_GAMES        = 2    # minimum H2H games vs today's opponent to emit h2h_splits (else null)
+PLAYOFF_MIN_GAMES    = 5    # minimum career playoff games to emit playoff_profile (else null)
 SPREAD_COMPETITIVE   = 6.5  # spread_abs ≤ this = competitive game
 SPREAD_BLOWOUT_RISK  = 8.0  # spread_abs > this for favored team → blowout risk flag
 SPREAD_BIG_FAVORITE  = 13.0 # spread_abs > this → cap analyst confidence at 80%
@@ -102,6 +104,28 @@ def load_team_log() -> pd.DataFrame:
     for col in ["team_pts", "team_reb", "team_ast", "team_tpm"]:
         df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
     return df.sort_values("game_date", ascending=False)
+
+
+def load_playoff_career_data() -> pd.DataFrame | None:
+    """
+    Load playoff_career_log.csv once for use by compute_playoff_splits().
+    Returns None if file is missing or empty — never crashes.
+    Excludes zero-minute rows (DNP-equivalent in playoff data).
+    """
+    if not PLAYOFF_CAREER_LOG.exists():
+        print("[quant] playoff_career_log.csv not found — playoff profiles unavailable")
+        return None
+    try:
+        df = pd.read_csv(PLAYOFF_CAREER_LOG, dtype={"game_id": str, "player_id": str})
+        if df.empty:
+            return None
+        df["minutes"] = pd.to_numeric(df["minutes"], errors="coerce")
+        df = df[df["minutes"].fillna(0) > 0]
+        print(f"[quant] Loaded playoff career data: {len(df)} rows")
+        return df
+    except Exception as e:
+        print(f"[quant] WARNING: could not load playoff_career_log.csv: {e}")
+        return None
 
 
 def load_todays_games() -> list[dict]:
@@ -1364,6 +1388,93 @@ def compute_h2h_splits(grp: pd.DataFrame, opponent: str) -> dict | None:
     return result
 
 
+def compute_playoff_splits(
+    player_name: str,
+    playoff_df: pd.DataFrame | None,
+) -> dict | None:
+    """
+    Compute career playoff vs regular season deltas for a player.
+
+    Uses data from playoff_career_log.csv (seasons 2021–2025, populated by
+    ingest/espn_playoff_backfill.py). Returns a dict with playoff averages,
+    regular season averages, and per-stat deltas (playoff − regular).
+
+    Regular season comparison is restricted to the same seasons where the
+    player has playoff data — apples-to-apples within each season set.
+
+    Returns None when:
+      - playoff_df is None (file not loaded)
+      - Player not found in the data
+      - Player has fewer than PLAYOFF_MIN_GAMES career playoff games
+      - No regular-season rows in the matching seasons
+
+    Annotation-only — no directive rules attached.
+    """
+    if playoff_df is None:
+        return None
+
+    name_lower = player_name.strip().lower()
+    player_rows = playoff_df[
+        playoff_df["player_name"].astype(str).str.strip().str.lower() == name_lower
+    ].copy()
+
+    if player_rows.empty:
+        return None
+
+    po_rows = player_rows[player_rows["season_type"] == "playoff"]
+    if len(po_rows) < PLAYOFF_MIN_GAMES:
+        return None
+
+    # Regular-season comparison: only seasons where the player also has playoff data
+    po_seasons = set(po_rows["season"].unique())
+    reg_rows = player_rows[
+        (player_rows["season_type"] == "regular")
+        & (player_rows["season"].isin(po_seasons))
+    ]
+    if reg_rows.empty:
+        return None
+
+    po_rows = po_rows.copy()
+    reg_rows = reg_rows.copy()
+
+    stat_cols = ["pts", "reb", "ast", "tpm"]
+    for col in stat_cols + ["fgm", "fga", "minutes"]:
+        po_rows[col] = pd.to_numeric(po_rows[col], errors="coerce")
+        reg_rows[col] = pd.to_numeric(reg_rows[col], errors="coerce")
+
+    po_avgs = {col: round(float(po_rows[col].mean()), 1) for col in stat_cols}
+    reg_avgs = {col: round(float(reg_rows[col].mean()), 1) for col in stat_cols}
+    po_avgs["minutes"] = round(float(po_rows["minutes"].mean()), 1)
+    reg_avgs["minutes"] = round(float(reg_rows["minutes"].mean()), 1)
+
+    # FG% — aggregate totals, not per-game mean of percentages
+    po_fga = float(po_rows["fga"].sum())
+    po_fgm = float(po_rows["fgm"].sum())
+    reg_fga = float(reg_rows["fga"].sum())
+    reg_fgm = float(reg_rows["fgm"].sum())
+
+    po_fg_pct = round(100 * po_fgm / po_fga, 1) if po_fga > 0 else None
+    reg_fg_pct = round(100 * reg_fgm / reg_fga, 1) if reg_fga > 0 else None
+    po_avgs["fg_pct"] = po_fg_pct
+    reg_avgs["fg_pct"] = reg_fg_pct
+
+    deltas: dict = {}
+    for col in stat_cols:
+        deltas[col] = round(po_avgs[col] - reg_avgs[col], 1)
+    if po_fg_pct is not None and reg_fg_pct is not None:
+        deltas["fg_pct"] = round(po_fg_pct - reg_fg_pct, 1)
+    else:
+        deltas["fg_pct"] = None
+
+    return {
+        "playoff_games": int(len(po_rows)),
+        "seasons_with_data": sorted(int(s) for s in po_seasons),
+        "deltas": deltas,
+        "playoff_avgs": po_avgs,
+        "regular_avgs": reg_avgs,
+    }
+
+
 def compute_spread_split_hit_rates(
     player_games: pd.DataFrame,
     master_df: pd.DataFrame,
@@ -1876,6 +1987,9 @@ def build_player_stats(
     # Bounce-back profiles use full player_log (all season history, not today-filtered)
     bounce_back_profiles = build_bounce_back_profiles(player_log, whitelist)
 
+    # Career playoff data — loaded once, passed to compute_playoff_splits() per player
+    playoff_career_df = load_playoff_career_data()
+
     team_to_opp = {}
     team_to_game_key = {}
     for g in todays_games:
@@ -2092,6 +2206,7 @@ def build_player_stats(
             "key_teammate_absent": key_teammate_absent,
             "volatility": volatility,
             "shooting_regression": shooting_regression,
+            "playoff_profile":    compute_playoff_splits(player_name, playoff_career_df),
             "ft_safety_margin": ft_safety_margin,
             "team_momentum":    team_momentum_ctx,
             "def_recency":      def_recency,

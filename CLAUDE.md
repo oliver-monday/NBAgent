@@ -48,8 +48,9 @@ NBAgent/
 ├── context/
 │   └── nba_season_context.md   # Manually maintained NBA context — injected into Analyst AND Auditor prompts
 ├── data/
-│   ├── nba_master.csv                  # Season game data (game slate, scores, spreads, moneylines)
-│   ├── player_game_log.csv             # Player box scores — one row per player per game
+│   ├── nba_master.csv                  # Season game data (game slate, scores, spreads, moneylines); includes season_type (2=regular, 3=postseason) from ESPN scoreboard
+│   ├── player_game_log.csv             # Player box scores — one row per player per game; season_type joined from nba_master.csv via game_id
+│   ├── playoff_career_log.csv          # Career playoff + regular season box scores (2021–2025 backfill + daily playoff dual-write from espn_player_ingest.py)
 │   ├── player_dim.csv                  # ESPN athlete_id → player name map
 │   ├── team_game_log.csv               # Team-level aggregated box scores — used by Quant for opp defense + pace
 │   ├── player_stats.json               # Quant output — consumed by Analyst, Parlay, and Auditor
@@ -140,7 +141,7 @@ Full agent details → **@docs/AGENTS.md**
 - **`post_game_news.json`** includes `web_narrative` fields (Brave Search summaries) for missed-pick players. Auditor renders these as `📰 WEB RECAP:` in the audit prompt — addresses ejections, foul trouble, and blowout context that ESPN athlete news misses.
 - **Parlay audit feedback loop** — `parlay.py` reads the last 3 `audit_log.json` entries for `parlay_reinforcements` and `parlay_lessons` and injects them into the Claude prompt.
 - **`odds_available.json`** is written by `ingest/odds_today.py --prefetch` early in `analyst.yml` (before the analyst runs). Consumed by `analyst.py` via `load_available_markets()` + `format_available_markets()` as an unconditional market availability gate: if no FanDuel alternate market exists for a player+prop+tier, the pick is forbidden (`no_market` skip). Gate disabled when file is missing or stale (graceful degradation — all picks proceed normally). `odds_today.json` is written later by `ingest/odds_today.py` (no flag) to enrich picks with market lines post-generation.
-- **Cross-workflow file persistence** — each GitHub Actions workflow does a fresh checkout. Files written but not committed by an upstream workflow are absent downstream. `lineups_today.json` and `skipped_picks.json` are both committed by `analyst.yml` so downstream hourly runs can read them. When adding any cross-workflow feature, explicitly verify: (1) what files the feature writes, (2) which downstream workflow reads them, (3) whether they are committed before that workflow runs.
+- **Cross-workflow file persistence** — each GitHub Actions workflow does a fresh checkout. Files written but not committed by an upstream workflow are absent downstream. `lineups_today.json` and `skipped_picks.json` are both committed by `analyst.yml` so downstream hourly runs can read them. `playoff_career_log.csv` is committed by `ingest.yml` so that any playoff rows dual-written by `espn_player_ingest.py`'s `append_playoff_rows()` persist for consumption by `compute_playoff_splits()` in `quant.py` on the next run (inert during regular season — file will be clean in `git status` until postseason games flow through). When adding any cross-workflow feature, explicitly verify: (1) what files the feature writes, (2) which downstream workflow reads them, (3) whether they are committed before that workflow runs.
 
 ---
 
@@ -171,6 +172,7 @@ Quant output. One entry per whitelisted player playing today. Key fields:
 | `positional_dvp` | Position-specific opponent defense ratings (pts/reb/ast/tpm); falls back to team-level when <10 positional games |
 | `ft_safety_margin` | FG% safety margin (H11): label, margin, breakeven_fg_pct, season_fg_pct |
 | `shooting_regression` | fg_flag (hot/cold/null), fg_delta_pct — L5 vs L20 FG% divergence |
+| `playoff_profile` | Career playoff vs regular season deltas (PTS/REB/AST/3PM/FG%) from `data/playoff_career_log.csv` (2021–2025); null if <5 career playoff games. Annotation-only, gated to `PLAYOFFS_R1_DATE = 2026-04-18` in analyst output |
 | `team_momentum` | L10 W-L record + avg point margin + tag (hot/cold/neutral) for player's team and opponent |
 | `profile_narrative` | Live scoring portrait text block (Players Profiles); null if <10 games or no qualifying PTS tier |
 | `whitelisted_teammates` | Sorted list of other active whitelisted players on same team playing today; `[]` when none; used to ground Analyst teammate references and prevent stale training knowledge hallucinations |

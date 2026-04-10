@@ -10,6 +10,8 @@ Writes / upserts into nba_master.csv with the fixed schema:
 
   game_id
   game_date
+  game_time_utc
+  season_type        # 2=regular, 3=postseason, 1=preseason; null for pre-2026-04-09 rows
   home_team_name
   home_team_abbrev
   home_score
@@ -115,6 +117,7 @@ MASTER_COLUMNS = [
     "game_id",
     "game_date",
     "game_time_utc",
+    "season_type",       # ESPN scoreboard season.type: 2=regular, 3=postseason, 1=preseason
     "home_team_name",
     "home_team_abbrev",
     "home_score",
@@ -403,6 +406,7 @@ def parse_scoreboard(date_obj: dt.date, data: Dict[str, Any]) -> List[Dict[str, 
             "game_id": str(game_id),
             "game_date": date_obj.strftime("%Y-%m-%d"),
             "game_time_utc": comp.get("date") or ev.get("date"),
+            "season_type": safe_int((ev.get("season") or {}).get("type")),
 
             "home_team_name": home_info["name"],
             "home_team_abbrev": home_info["abbrev"],

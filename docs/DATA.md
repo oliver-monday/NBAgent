@@ -4,14 +4,15 @@
 
 ## CSV Schemas
 
-### nba_master.csv (17 columns)
+### nba_master.csv (18 columns)
 ```
-game_id, game_date, game_time_utc,
+game_id, game_date, game_time_utc, season_type,
 home_team_name, home_team_abbrev, home_score, home_ml, home_spread,
 away_team_name, away_team_abbrev, away_score, away_ml, away_spread,
 venue_city, venue_state, home_injuries, away_injuries
 ```
 Source: `espn_daily_ingest.py`. One row per game. `game_time_utc` is ISO format.
+`season_type`: integer from ESPN scoreboard `season.type` — `1=preseason, 2=regular season, 3=postseason`. Rows ingested before 2026-04-10 have `null` for this column (added post-hoc) — expected.
 
 **Spread convention:** `home_spread` is signed from the home team's perspective. Negative = home team is favored (e.g., `-6.5` means home gives 6.5 points). `away_spread` is the mirror.
 
@@ -21,15 +22,16 @@ Source: `espn_daily_ingest.py`. One row per game. `game_time_utc` is ISO format.
 
 Remaining 106 null rows: ~4 All-Star game entries, ~20 games with no Pinnacle coverage, and ~82 games from mid-Jan through Feb where the Pinnacle scraper stopped collecting before game day and the gap exceeded the 3-day tolerance. Coverage accumulates going forward via ESPN.
 
-### player_game_log.csv (24 columns)
+### player_game_log.csv (25 columns)
 ```
-season_end_year, game_id, game_date, team_abbrev, opp_abbrev,
+season_end_year, season_type, game_id, game_date, team_abbrev, opp_abbrev,
 home_away, player_id, player_name, started, minutes, minutes_raw,
 pts, reb, ast, tpm, fgm, fga, fg3m, fg3a, ftm, fta, dnp, team_hint_ok, ingested_at
 ```
 Source: `espn_player_ingest.py`. One row per player per game.  
 `dnp = "1"` rows are kept but excluded from analytics.  
 `home_away`: `"H"` or `"A"`.
+`season_type`: integer joined from `nba_master.csv` via `game_id` — `1=preseason, 2=regular season, 3=postseason`. Rows ingested before 2026-04-10 have `null` (historical rows are never back-patched, expected). Postseason rows (type=3) are automatically dual-written to `playoff_career_log.csv` by `append_playoff_rows()` — the dual-write is a no-op during regular season.
 
 ### playoff_career_log.csv (21 columns)
 ```
@@ -229,6 +231,20 @@ Quant output. One entry per whitelisted player playing today.
       "n_l5": 5,
       "n_l20": 20
     },
+    "playoff_profile": {          // null if <5 career playoff games in 2021–2025 data, player not in backfill, or file missing
+      "playoff_games": 61,
+      "seasons_with_data": [2021, 2022, 2023, 2024, 2025],
+      "deltas": {"pts": 3.2, "reb": 1.1, "ast": -0.3, "tpm": 0.1, "fg_pct": 1.3},
+      "playoff_avgs": {"pts": 28.4, "reb": 12.1, "ast": 8.3, "tpm": 1.1, "minutes": 37.8, "fg_pct": 55.2},
+      "regular_avgs": {"pts": 25.2, "reb": 11.0, "ast": 8.6, "tpm": 1.0, "minutes": 35.1, "fg_pct": 53.9}
+    },
+    // Deltas = playoff_avgs − regular_avgs rounded to 1 decimal.
+    // Regular-season averages are restricted to the same seasons where the player
+    // also has playoff data (apples-to-apples comparison). FG% is computed from
+    // aggregate FGM/FGA totals, not per-game mean of percentages. Surfaced by
+    // analyst build_quant_context() as a "PLAYOFF PROFILE" annotation line —
+    // gated behind PLAYOFFS_R1_DATE (2026-04-18, inclusive). Annotation-only —
+    // no directive rules attached.
     "profile_narrative": "string | null"  // null if player doesn't meet eligibility threshold
                                           // (≥10 non-DNP games + qualifying PTS best tier)
   }

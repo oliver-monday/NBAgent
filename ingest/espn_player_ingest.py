@@ -628,6 +628,36 @@ def read_master_game_ids(master_path: str, season_end_year: int) -> List[str]:
     game_ids = df["game_id"].dropna().astype(str).unique().tolist()
     return sorted(game_ids)
 
+def load_master_season_type_lookup(master_path: str) -> Dict[str, Optional[int]]:
+    """
+    Read nba_master.csv and return {game_id: season_type}.
+    season_type is an int (1/2/3) or None when the column is missing / unparseable.
+    Graceful: returns {} if the file is missing or has no season_type column.
+    """
+    lookup: Dict[str, Optional[int]] = {}
+    if not pd.io.common.file_exists(master_path):
+        return lookup
+    try:
+        df = pd.read_csv(master_path, dtype={"game_id": str})
+    except Exception as e:
+        print(f"[player_ingest] WARNING: could not read {master_path} for season_type lookup: {e}")
+        return lookup
+    if "season_type" not in df.columns:
+        return lookup
+    for _, row in df.iterrows():
+        gid = str(row.get("game_id", "") or "").strip()
+        if not gid:
+            continue
+        st_raw = row.get("season_type")
+        try:
+            if pd.isna(st_raw):
+                lookup[gid] = None
+            else:
+                lookup[gid] = int(st_raw)
+        except (ValueError, TypeError):
+            lookup[gid] = None
+    return lookup
+
 def infer_home_away(team_abbrev: str, team_map: Dict[str, Dict[str, Any]]) -> str:
     # team_map keyed by team_id; we might only have abbrev here
     for _, meta in team_map.items():
@@ -669,11 +699,18 @@ def ingest_events(
     dim_df: pd.DataFrame,
     sleep_s: float = 0.25,
     team_only: bool = False,
+    season_type_lookup: Optional[Dict[str, Optional[int]]] = None,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Returns: (df_new_game_log_rows, df_new_dim, df_match_audit, df_team_game_log_rows)
+
+    season_type_lookup: optional {game_id: int | None} from nba_master.csv —
+    attached to each player row as `season_type`. None when the lookup is empty
+    or the game_id is not present (graceful degradation).
     """
     wl_lookup = {} if team_only else build_whitelist_lookup(whitelist_df)
+    if season_type_lookup is None:
+        season_type_lookup = {}
 
     # Fast allowlist by resolved IDs if any exist
     resolved_ids = set() if team_only else (set(dim_df["player_id"].dropna().astype(str).tolist()) if not dim_df.empty else set())
@@ -783,6 +820,7 @@ def ingest_events(
             # Game log row
             new_rows.append({
                 "season_end_year": season_end,
+                "season_type": season_type_lookup.get(str(event_id).strip()),
                 "game_id": str(event_id),
                 "game_date": str(game_date),
                 "team_abbrev": team_abbrev,
@@ -839,6 +877,113 @@ def write_unresolved(whitelist_df: pd.DataFrame, dim_df: pd.DataFrame, out_path:
     unresolved = df[df["resolved"] == 0][["team_abbr","team_abbr_alt","player_name"]].copy()
     unresolved.to_csv(out_path, index=False)
     return unresolved
+
+# --------------------------------------------------------------------
+# Playoff dual-write
+# --------------------------------------------------------------------
+
+PLAYOFF_CAREER_LOG = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data", "playoff_career_log.csv",
+)
+
+PLAYOFF_LOG_COLUMNS = [
+    "season", "season_type", "game_id", "game_date", "team_abbrev", "opp_abbrev",
+    "home_away", "player_id", "player_name", "started", "minutes",
+    "pts", "reb", "ast", "tpm", "fgm", "fga", "fg3m", "fg3a", "ftm", "fta",
+]
+
+
+def append_playoff_rows(player_rows: List[Dict[str, Any]]) -> None:
+    """
+    Dual-write: append postseason player rows to playoff_career_log.csv.
+    Only writes rows where season_type == 3 (postseason). Upserts by
+    (player_id, game_id) — safe to re-run. Does nothing if no playoff
+    rows exist (entire regular season is a no-op).
+    """
+    def _is_playoff(r: Dict[str, Any]) -> bool:
+        st = r.get("season_type")
+        try:
+            return int(st) == 3 if st is not None and not (isinstance(st, float) and pd.isna(st)) else False
+        except (ValueError, TypeError):
+            return False
+
+    playoff_rows = [r for r in player_rows if _is_playoff(r)]
+    if not playoff_rows:
+        return
+
+    import csv as _csv
+
+    # Transform from player_game_log format to playoff_career_log format
+    transformed: List[Dict[str, Any]] = []
+    for r in playoff_rows:
+        transformed.append({
+            "season":       r.get("season_end_year", ""),
+            "season_type":  "playoff",
+            "game_id":      r.get("game_id", ""),
+            "game_date":    r.get("game_date", ""),
+            "team_abbrev":  r.get("team_abbrev", ""),
+            "opp_abbrev":   r.get("opp_abbrev", ""),
+            "home_away":    r.get("home_away", ""),
+            "player_id":    r.get("player_id", ""),
+            "player_name":  r.get("player_name", ""),
+            "started":      r.get("started", ""),
+            "minutes":      r.get("minutes", ""),
+            "pts":          r.get("pts", ""),
+            "reb":          r.get("reb", ""),
+            "ast":          r.get("ast", ""),
+            "tpm":          r.get("tpm", ""),
+            "fgm":          r.get("fgm", ""),
+            "fga":          r.get("fga", ""),
+            "fg3m":         r.get("fg3m", ""),
+            "fg3a":         r.get("fg3a", ""),
+            "ftm":          r.get("ftm", ""),
+            "fta":          r.get("fta", ""),
+        })
+
+    # Load existing playoff_career_log for upsert (if it exists)
+    existing_rows: List[Dict[str, Any]] = []
+    existing_keys: set = set()
+    if os.path.exists(PLAYOFF_CAREER_LOG):
+        with open(PLAYOFF_CAREER_LOG, newline="", encoding="utf-8") as f:
+            reader = _csv.DictReader(f)
+            for row in reader:
+                key = f"{row.get('player_id', '')}_{row.get('game_id', '')}"
+                existing_keys.add(key)
+                existing_rows.append(row)
+
+    new_count = 0
+    updated_count = 0
+    for row in transformed:
+        key = f"{row['player_id']}_{row['game_id']}"
+        if key in existing_keys:
+            existing_rows = [
+                r for r in existing_rows
+                if f"{r.get('player_id', '')}_{r.get('game_id', '')}" != key
+            ]
+            updated_count += 1
+        else:
+            new_count += 1
+        existing_rows.append(row)
+
+    # Sort by player_name, season, game_date (match backfill convention)
+    existing_rows.sort(key=lambda r: (
+        str(r.get("player_name", "")).lower(),
+        str(r.get("season", "")),
+        str(r.get("game_date", "")),
+    ))
+
+    os.makedirs(os.path.dirname(PLAYOFF_CAREER_LOG), exist_ok=True)
+    with open(PLAYOFF_CAREER_LOG, "w", newline="", encoding="utf-8") as f:
+        writer = _csv.DictWriter(f, fieldnames=PLAYOFF_LOG_COLUMNS)
+        writer.writeheader()
+        writer.writerows(existing_rows)
+
+    print(
+        f"[player_ingest] Playoff dual-write: {new_count} new, {updated_count} updated "
+        f"→ {PLAYOFF_CAREER_LOG} (total {len(existing_rows)} rows)"
+    )
+
 
 # --------------------------------------------------------------------
 # Main
@@ -903,6 +1048,12 @@ def main():
         print("No events to ingest. Exiting.")
         return
 
+    # Build game_id → season_type lookup from nba_master.csv. For backfill mode
+    # this is the same file already being read for event_ids; for yesterday/date
+    # modes the master has typically been updated by espn_daily_ingest.py earlier
+    # in the same workflow run. Empty lookup is graceful (rows get None).
+    season_type_lookup = load_master_season_type_lookup(args.master)
+
     df_new, dim_new, df_audit, df_team_new = ingest_events(
         session,
         event_ids,
@@ -910,6 +1061,7 @@ def main():
         dim,
         sleep_s=args.sleep,
         team_only=(args.mode == "backfill_team"),
+        season_type_lookup=season_type_lookup,
     )
     dim_new = apply_whitelist_active_to_dim(dim_new, wl)
 
@@ -926,7 +1078,7 @@ def main():
             # Write outputs
             # Stable column order
             col_order = [
-                "season_end_year","game_id","game_date","team_abbrev","opp_abbrev","home_away",
+                "season_end_year","season_type","game_id","game_date","team_abbrev","opp_abbrev","home_away",
                 "player_id","player_name","started","minutes","minutes_raw","pts","reb","ast","tpm",
                 "fgm","fga","fg3m","fg3a","ftm","fta","dnp","team_hint_ok","ingested_at"
             ]
@@ -960,6 +1112,14 @@ def main():
             print(f"Updated dim → {args.dim} (total now {len(dim_new)})")
             print(f"Match audit → {args.audit} (rows {len(df_audit)})")
             print(f"Unresolved whitelist → {args.unresolved} (rows {len(unresolved)})")
+
+            # Dual-write: append any postseason rows from this run to
+            # playoff_career_log.csv. Filters on season_type == 3 internally —
+            # entire regular season is a no-op (returns immediately).
+            try:
+                append_playoff_rows(df_new.to_dict("records"))
+            except Exception as e:
+                print(f"[player_ingest] WARNING: playoff dual-write failed (non-fatal): {e}")
 
     # Upsert team game log (always when team rows exist)
     if not df_team_new.empty:

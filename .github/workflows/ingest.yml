@@ -58,7 +58,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          FILES="data/nba_master.csv data/player_game_log.csv data/player_dim.csv data/team_game_log.csv data/player_stats.json data/standings_today.json"
+          FILES="data/nba_master.csv data/player_game_log.csv data/player_dim.csv data/team_game_log.csv data/player_stats.json data/standings_today.json data/playoff_career_log.csv"
           for f in $FILES; do
             [ -f "$f" ] && cp "$f" "$f.local"
           done

@@ -71,6 +71,11 @@ AUDIT_CONTEXT_ENTRIES = 5
 
 # Playoff mode — postseason context block fires on or after this date
 PLAYOFF_START_DATE = "2026-04-14"
+# Round 1 start — playoff_profile quant annotation activates on this date (inclusive).
+# Play-in (4/14–17) teams have thin/no playoff history, so the annotation would be
+# noise during those days. R1 is the first slate where career playoff splits become
+# decision-relevant.
+PLAYOFFS_R1_DATE = "2026-04-18"
 
 
 # ── Retry helper ─────────────────────────────────────────────────────
@@ -1323,6 +1328,40 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
                 stat_parts.append(
                     f"  H2H vs {h2h_opp} ({h2h_games}g): {' | '.join(h2h_parts)}"
                 )
+
+        # ── Playoff profile annotation (R1+ only) ───────────────────
+        # Career playoff vs regular-season deltas from playoff_career_log.csv
+        # (2021–2025). Date-gated to PLAYOFFS_R1_DATE (inclusive) — play-in
+        # slate (4/14–17) is excluded because play-in teams have thin/no
+        # playoff history. Annotation-only, no directive rules attached.
+        if TODAY_STR >= PLAYOFFS_R1_DATE:
+            pp = s.get("playoff_profile")
+            if pp is not None:
+                n_games  = pp.get("playoff_games", 0)
+                seasons  = pp.get("seasons_with_data") or []
+                deltas   = pp.get("deltas") or {}
+                delta_parts: list[str] = []
+                for stat_key, label in (
+                    ("pts", "PTS"),
+                    ("reb", "REB"),
+                    ("ast", "AST"),
+                    ("tpm", "3PM"),
+                ):
+                    d = deltas.get(stat_key)
+                    if d is not None:
+                        sign = "+" if d >= 0 else ""
+                        delta_parts.append(f"{label} {sign}{d}")
+                fg_d = deltas.get("fg_pct")
+                if fg_d is not None:
+                    sign = "+" if fg_d >= 0 else ""
+                    delta_parts.append(f"FG% {sign}{fg_d}%")
+                if delta_parts:
+                    sample_tag = " (small sample)" if n_games < 10 else ""
+                    stat_parts.append(
+                        f"  PLAYOFF PROFILE ({n_games}g, {len(seasons)} seasons): "
+                        + " | ".join(delta_parts)
+                        + sample_tag
+                    )
 
         floor_val = minutes_floor_data.get("floor_minutes")
         avg_val   = minutes_floor_data.get("avg_minutes")
