@@ -73,6 +73,11 @@ PROP_MARKET_MAP: dict[str, str] = {
 # Set of our prop type codes — used for pick filtering
 VALID_PROP_TYPES: set[str] = set(PROP_MARKET_MAP.values())
 
+# Pre-tip sweep: allow games that started up to this many minutes ago.
+# FanDuel pre-game lines linger briefly after tip-off; this grace period
+# ensures delayed GitHub Actions runs can still capture recently-tipped games.
+PRETIP_GRACE_MINUTES = 30
+
 # Valid tier thresholds per prop type — mirrors VALID_TIERS in analyst.py.
 # Used to filter prefetched odds lines to only tiers the system can pick.
 # Line convention: FD line = tier_value - 0.5 (e.g. T20 PTS → 19.5 OVER).
@@ -345,18 +350,26 @@ def _get_calibrated_prob(stated_confidence: float, bands: dict[str, float]) -> f
     return sc / 100.0
 
 
-def pretip_sweep(window_minutes: int = 75) -> None:
+def pretip_sweep(window_minutes: int = 360) -> None:
     """
-    Pre-tip odds sweep: fetch FanDuel odds for games tipping within the next
-    `window_minutes` minutes. Updates picks.json with latest odds and logs
-    line movement vs. the morning baseline.
+    Pre-tip odds sweep: fetch FanDuel odds for games within the capture window.
+    Updates picks.json with latest pre-tip odds (overwriting the morning
+    market_implied_prob) and logs line movement vs. the morning baseline
+    (morning_implied_prob, set by main()).
 
-    Designed to run every 30 minutes via cron. Most runs are no-ops (0 credits)
-    when no games are in the pre-tip window. Credit cost: 4 per in-window game.
+    Window logic: a game is fetchable when it tips off within `window_minutes`
+    from now OR started within the last PRETIP_GRACE_MINUTES (30 min default).
+    This grace period compensates for GitHub Actions cron delays (typically 1–6
+    hours). Combined with deduplication (each game fetched at most once), the
+    wide window has zero extra credit cost.
+
+    Credit cost: 4 credits per newly-captured game. Already-captured games are
+    skipped via dedup on event_id.
 
     Args:
-        window_minutes: How many minutes before tip-off to start fetching.
-                        Default 75 (captures T-60 with 15 min scheduling slack).
+        window_minutes: How many minutes before tip-off a game becomes fetchable.
+                        Default 360 (6 hours — captures games as soon as FanDuel
+                        posts props, regardless of GitHub scheduling delays).
     """
     api_key = os.environ.get("ODDS_API_KEY", "").strip()
     if not api_key:
@@ -365,7 +378,8 @@ def pretip_sweep(window_minutes: int = 75) -> None:
 
     now = dt.datetime.now(ET)
     print(f"[odds-pretip] Running at {now.strftime('%I:%M %p PT')} "
-          f"(window: {window_minutes} min before tip)")
+          f"(window: {window_minutes} min before tip, "
+          f"{PRETIP_GRACE_MINUTES} min grace after tip)")
 
     # 1. Load picks.json — need today's picks to annotate
     if not PICKS_JSON.exists():
@@ -436,7 +450,7 @@ def pretip_sweep(window_minutes: int = 75) -> None:
         if minutes_to_tip > window_minutes:
             skipped_early += 1
             continue
-        if minutes_to_tip < 0:
+        if minutes_to_tip < -PRETIP_GRACE_MINUTES:
             skipped_started += 1
             continue
 
@@ -451,7 +465,8 @@ def pretip_sweep(window_minutes: int = 75) -> None:
         })
 
     print(f"[odds-pretip] {len(in_window_events)} game(s) in window "
-          f"(skipped: {skipped_early} too early, {skipped_started} already started, "
+          f"(skipped: {skipped_early} too early, "
+          f"{skipped_started} started >{PRETIP_GRACE_MINUTES}min ago, "
           f"{skipped_no_team} no picks)")
 
     if not in_window_events:
@@ -1062,6 +1077,14 @@ def main() -> None:
                 if confidence is not None else None
             )
             pick["odds_fetched_at"]     = fetched_at
+
+            # Capture morning baseline for CLV tracking (set once per pick per day).
+            # Later pretip runs overwrite market_implied_prob with pre-tip odds;
+            # morning_implied_prob preserves the original morning line so
+            # auditor.save_audit() can compute clv_pp = market (pretip) − morning.
+            if "morning_implied_prob" not in pick:
+                pick["morning_implied_prob"] = match["implied_prob"]
+
             n_matched += 1
             print(
                 f"[odds] MATCH: {pick.get('player_name')} {prop_type} T{pick_value} "
@@ -1119,8 +1142,8 @@ if __name__ == "__main__":
                         help="Prefetch all available FanDuel markets (run before analyst)")
     parser.add_argument("--pretip", action="store_true",
                         help="Pre-tip sweep: fetch odds for games tipping within window")
-    parser.add_argument("--window-minutes", type=int, default=75,
-                        help="Pre-tip window in minutes before tip-off (default: 75)")
+    parser.add_argument("--window-minutes", type=int, default=360,
+                        help="Pre-tip window in minutes before tip-off (default: 360)")
     args = parser.parse_args()
 
     if args.prefetch:

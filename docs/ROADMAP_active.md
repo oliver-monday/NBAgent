@@ -16,9 +16,9 @@ Updated: 2026-04-09
 
 **Current architecture (as of 2026-04-09):**
 - `analyst.yml` runs: `--prefetch` (before analyst) writes `odds_available.json`, `main()` (after analyst) matches picks to FanDuel odds and writes `market_implied_prob`, `edge_pct`, `bet_recommendation` to `picks.json`
-- `odds_pretip.yml` runs: every 30 min 3–7:30 PM PT, game-time-aware sweep fetches odds ~60 min before tip, overwrites picks with latest prices, saves morning baseline to `odds_pretip.json`, logs line movement
+- `odds_pretip.yml` runs: hourly from noon–7 PM PT (8 entries) — widened from the original every-30-min 3–7:30 PM schedule so GitHub Actions cron delays (typically 1–6h) don't push every run past tip-off. `pretip_sweep()` window default is now 360 min (6h) with a 30-min post-tip grace period; deduplication on event_id keeps credit cost unchanged (4 per newly-captured game, 0 on re-fires)
 - `odds.yml`: manual-trigger only, for ad-hoc re-fetches
-- `auditor.py`: computes per-pick CLV (`clv_pp`) from `morning_implied_prob` vs `market_implied_prob`, aggregates `clv_summary` in `audit_summary.json`
+- `auditor.py`: computes per-pick CLV (`clv_pp`) from `morning_implied_prob` vs `market_implied_prob`, aggregates `clv_summary` in `audit_summary.json`. **`morning_implied_prob` is now written by `odds_today.py main()` at morning odds annotation time (fix 4/10)** — CLV no longer depends on `pretip_sweep()` actually executing before tip. Verify on the next game day that `morning_implied_prob` populates on every matched pick after the morning `analyst.yml` run.
 - Paid tier ($30/month, 20k credits) planned for playoffs — eliminates credit budget constraints
 
 **Completed phases:** Phase 1 data collection (3/31), Phase 1.5 prefetch + market gate (4/7), Phase 1.75 calibration-corrected edge (4/7), Phase 1.8 parlay edge awareness (4/7), Phase 1.9 frontend odds display (4/7), alt-tier edge display (4/9), pre-tip odds sweep Layer 1 (4/9), CLV tracking Layer 2 (4/9).
