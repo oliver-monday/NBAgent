@@ -62,7 +62,17 @@
     "opp_defense_rating": "soft",
     "reasoning": "Embiid/George out elevates Maxey's usage to maximum; Utah missing multiple key defenders.",
     "result": "HIT",
-    "actual_value": 25.0
+    "actual_value": 25.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters",
+        "Elijah Harkless (UTA) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Siakam/Nesmith/Nembhard all out for IND; weakened defense boosts Maxey's iron-floor PTS upside meaningfully."
+    }
   },
   {
     "date": "2026-03-04",
@@ -79,7 +89,17 @@
     "opp_defense_rating": "soft",
     "reasoning": "With no Embiid or George, Maxey assumes full playmaking duties for PHI offense.",
     "result": "HIT",
-    "actual_value": 6.0
+    "actual_value": 6.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters",
+        "Elijah Harkless (UTA) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "IND missing multiple defenders; Maxey gets easier court penetration creating more assist opportunities despite VOLATILE tag."
+    }
   },
   {
     "date": "2026-03-04",
@@ -96,7 +116,17 @@
     "opp_defense_rating": "soft",
     "reasoning": "Shoots high volume of threes as primary offensive option; Utah defense is depleted.",
     "result": "HIT",
-    "actual_value": 2.0
+    "actual_value": 2.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters",
+        "Elijah Harkless (UTA) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "IND's perimeter/help defense depleted with Siakam/Nesmith out; more open 3s for Maxey against softened defense."
+    }
   },
   {
     "date": "2026-03-04",
@@ -984,15 +1014,11 @@
     "result": "HIT",
     "actual_value": 3.0,
     "lineup_update": {
-      "triggered_by": [
-        "Daniel Gafford (DAL) removed from projected starters",
-        "Naji Marshall (DAL) removed from projected starters",
-        "P.J. Washington (DAL) removed from projected starters"
-      ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "triggered_by": [],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -1550,11 +1576,14 @@
     "result": "HIT",
     "actual_value": 25.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Julius Randle (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Cunningham OUT removes DET primary creator; defensive focus shifts, Barrett faces weaker perimeter coverage and gets easier looks."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
     }
   },
   {
@@ -1572,7 +1601,17 @@
     "opp_defense_rating": "mid",
     "reasoning": "Consistent secondary playmaker in TOR's offense; hits 2 assists in most games.",
     "result": "MISS",
-    "actual_value": 0.0
+    "actual_value": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Julius Randle (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Quickley (primary_creator) out; Barrett steps into lead playmaker role, directly amplifying assist opportunities."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1633,12 +1672,13 @@
     "actual_value": 16.0,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Julius Randle (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -1659,12 +1699,13 @@
     "actual_value": 2.0,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Julius Randle (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -2652,7 +2693,16 @@
     "tier_walk": "PTS: 30\u21921/10 25\u21927/10\u2713",
     "reasoning": "First-option PHI with Embiid/George/Broome out; 7/10 at T25, VOLATILE -5% applied.",
     "result": "HIT",
-    "actual_value": 31.0
+    "actual_value": 31.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Siakam/Nesmith/Nembhard all out for IND; weakened defense boosts Maxey's iron-floor PTS upside meaningfully."
+    }
   },
   {
     "date": "2026-03-07",
@@ -2670,7 +2720,16 @@
     "tier_walk": "3PM: 3\u21923/10 2\u21929/10\u2713",
     "reasoning": "9/10 at T2, ATL high-pace inflates perimeter volume, well-rested first option.",
     "result": "HIT",
-    "actual_value": 3.0
+    "actual_value": 3.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "IND's perimeter/help defense depleted with Siakam/Nesmith out; more open 3s for Maxey against softened defense."
+    }
   },
   {
     "date": "2026-03-07",
@@ -2923,15 +2982,12 @@
     "actual_value": 4.0,
     "lineup_update": {
       "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters",
-        "Rudy Gobert (MIN) removed from projected starters",
-        "Anthony Edwards (MIN) removed from projected starters",
         "Julius Randle (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -3659,14 +3715,11 @@
     "result": "HIT",
     "actual_value": 18.0,
     "lineup_update": {
-      "triggered_by": [
-        "Myles Turner (MIL) removed from projected starters",
-        "Kyle Kuzma (MIL) removed from projected starters"
-      ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 87,
-      "revised_reasoning": "Gobert and Edwards both out; MIN defense severely depleted, Bane faces no rim anchor or elite perimeter stopper."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Giddey/Okoro/Yabusele all out for CHI; severely depleted defense gives Bane easier scoring access and higher volume."
     }
   },
   {
@@ -3688,14 +3741,11 @@
     "result": "HIT",
     "actual_value": 9.0,
     "lineup_update": {
-      "triggered_by": [
-        "Myles Turner (MIL) removed from projected starters",
-        "Kyle Kuzma (MIL) removed from projected starters"
-      ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "triggered_by": [],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -3762,11 +3812,13 @@
     "result": "HIT",
     "actual_value": 31.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Cunningham OUT removes DET primary creator; defensive focus shifts, Barrett faces weaker perimeter coverage and gets easier looks."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
     }
   },
   {
@@ -5126,11 +5178,13 @@
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Cunningham OUT removes DET primary creator; defensive focus shifts, Barrett faces weaker perimeter coverage and gets easier looks."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
     }
   },
   {
@@ -5153,7 +5207,16 @@
     "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Quickley (primary_creator) out; Barrett steps into lead playmaker role, directly amplifying assist opportunities."
+    }
   },
   {
     "date": "2026-03-10",
@@ -5699,12 +5762,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -6012,10 +6075,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -6870,11 +6933,15 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
+      "triggered_by": [
+        "Saddiq Bey (NOP) removed from projected starters",
+        "Herbert Jones (NOP) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Cunningham OUT removes DET primary creator; defensive focus shifts, Barrett faces weaker perimeter coverage and gets easier looks."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
     }
   },
   {
@@ -6929,12 +6996,14 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Saddiq Bey (NOP) removed from projected starters",
+        "Herbert Jones (NOP) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -7349,11 +7418,14 @@
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "triggered_by": [
+        "Tristan Vukcevic (WAS) removed from projected starters",
+        "Tre Johnson (WAS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -8890,11 +8962,13 @@
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Cunningham OUT removes DET primary creator; defensive focus shifts, Barrett faces weaker perimeter coverage and gets easier looks."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
     }
   },
   {
@@ -8951,12 +9025,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -9287,11 +9361,14 @@
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Tyler Herro (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -10230,12 +10307,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Cunningham OUT removes DET primary creator; defensive focus shifts, Barrett faces weaker perimeter coverage and gets easier looks."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
     }
   },
   {
@@ -10294,12 +10371,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -10326,12 +10403,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -11300,10 +11377,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -12095,10 +12172,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -13626,7 +13703,19 @@
     "injury_check_time": "2026-03-18T22:03:43.101704-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Isaac Okoro (CHI) removed from projected starters",
+        "Guerschon Yabusele (CHI) removed from projected starters",
+        "Josh Giddey (CHI) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
+    }
   },
   {
     "date": "2026-03-18",
@@ -13679,12 +13768,15 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Isaac Okoro (CHI) removed from projected starters",
+        "Guerschon Yabusele (CHI) removed from projected starters",
+        "Josh Giddey (CHI) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -13713,12 +13805,15 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Isaac Okoro (CHI) removed from projected starters",
+        "Guerschon Yabusele (CHI) removed from projected starters",
+        "Josh Giddey (CHI) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -13916,10 +14011,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 87,
-      "revised_reasoning": "Gobert and Edwards both out; MIN defense severely depleted, Bane faces no rim anchor or elite perimeter stopper."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Giddey/Okoro/Yabusele all out for CHI; severely depleted defense gives Bane easier scoring access and higher volume."
     }
   },
   {
@@ -13948,10 +14043,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -14755,12 +14850,12 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -14789,12 +14884,12 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -15538,12 +15633,12 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -15572,12 +15667,12 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -15603,7 +15698,16 @@
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
+    }
   },
   {
     "date": "2026-03-22",
@@ -15628,7 +15732,16 @@
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Quickley (primary_creator) out; Barrett steps into lead playmaker role, directly amplifying assist opportunities."
+    }
   },
   {
     "date": "2026-03-22",
@@ -15945,11 +16058,15 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "triggered_by": [
+        "Pascal Siakam (IND) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters",
+        "Andrew Nembhard (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -16009,12 +16126,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Elijah Harkless (UTA) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -16043,12 +16161,13 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Elijah Harkless (UTA) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -16365,10 +16484,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -16859,12 +16978,12 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     }
   },
   {
@@ -16894,12 +17013,12 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     }
   },
   {
@@ -17443,10 +17562,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     }
   },
   {
@@ -17991,12 +18110,14 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Saddiq Bey (NOP) removed from projected starters",
+        "Herbert Jones (NOP) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -18028,12 +18149,14 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Saddiq Bey (NOP) removed from projected starters",
+        "Herbert Jones (NOP) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -18429,12 +18552,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead absence is minor; low 10pt bar and Barnes' stable usage unaffected by backup guard out."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -18464,12 +18587,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jamal Shead (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-03-29T14:02:51.597726-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 90,
-      "revised_reasoning": "Shead out irrelevant to rebounding; ORL frontcourt unchanged, Barnes' board access unaffected."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -19997,13 +20120,11 @@
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Mark Williams (PHX) removed from projected starters"
-      ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 87,
-      "revised_reasoning": "Gobert and Edwards both out; MIN defense severely depleted, Bane faces no rim anchor or elite perimeter stopper."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Giddey/Okoro/Yabusele all out for CHI; severely depleted defense gives Bane easier scoring access and higher volume."
     },
     "market_line": 14.5,
     "market_implied_prob": 83.33,
@@ -20039,13 +20160,11 @@
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Mark Williams (PHX) removed from projected starters"
-      ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "triggered_by": [],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     },
     "market_line": 1.5,
     "market_implied_prob": 95.24,
@@ -21197,7 +21316,17 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Dariq Whitehead (MEM) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
+    }
   },
   {
     "date": "2026-04-03",
@@ -21256,7 +21385,17 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Dariq Whitehead (MEM) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Quickley (primary_creator) out; Barrett steps into lead playmaker role, directly amplifying assist opportunities."
+    }
   },
   {
     "date": "2026-04-03",
@@ -23029,7 +23168,18 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "min_floor of 24.8 sits exactly at the fragility threshold for a PTS T15+ pick \u2014 a single low-minutes game is within normal variance and produces a miss. The post-miss hit rate of 69% is below average, meaning bounce-back momentum is not a reliable safety net here."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Tyler Herro (MIA) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
+    }
   },
   {
     "date": "2026-04-07",
@@ -23060,7 +23210,18 @@
     "injury_check_time": "2026-04-07T22:21:54.542474-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Tyler Herro (MIA) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Quickley (primary_creator) out; Barrett steps into lead playmaker role, directly amplifying assist opportunities."
+    }
   },
   {
     "date": "2026-04-07",
@@ -23122,7 +23283,18 @@
     "injury_check_time": "2026-04-07T22:21:54.542474-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Tyler Herro (MIA) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
+    }
   },
   {
     "date": "2026-04-07",
@@ -23153,7 +23325,18 @@
     "injury_check_time": "2026-04-07T22:21:54.542474-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Tyler Herro (MIA) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
+    }
   },
   {
     "date": "2026-04-07",
@@ -23424,15 +23607,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters",
-        "Rudy Gobert (MIN) removed from projected starters",
-        "Anthony Edwards (MIN) removed from projected starters",
         "Julius Randle (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
       "direction": "up",
-      "revised_confidence_pct": 87,
-      "revised_reasoning": "Gobert and Edwards both out; MIN defense severely depleted, Bane faces no rim anchor or elite perimeter stopper."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Giddey/Okoro/Yabusele all out for CHI; severely depleted defense gives Bane easier scoring access and higher volume."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -23477,15 +23657,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters",
-        "Rudy Gobert (MIN) removed from projected starters",
-        "Anthony Edwards (MIN) removed from projected starters",
         "Julius Randle (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron_floor at T2 with 90% overall; MIN absences don't meaningfully affect Bane's assist floor."
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -24375,7 +24552,18 @@
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Tyler Herro (MIA) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
+    }
   },
   {
     "date": "2026-04-09",
@@ -24414,7 +24602,18 @@
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Norman Powell (MIA) removed from projected starters",
+        "Tyler Herro (MIA) removed from projected starters",
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
+    }
   },
   {
     "date": "2026-04-09",
@@ -24491,7 +24690,19 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters",
+        "Pascal Siakam (IND) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters",
+        "Andrew Nembhard (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Siakam/Nesmith/Nembhard all out for IND; weakened defense boosts Maxey's iron-floor PTS upside meaningfully."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24529,7 +24740,19 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters",
+        "Pascal Siakam (IND) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters",
+        "Andrew Nembhard (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "IND missing multiple defenders; Maxey gets easier court penetration creating more assist opportunities despite VOLATILE tag."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24567,7 +24790,19 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters",
+        "Pascal Siakam (IND) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters",
+        "Andrew Nembhard (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "IND's perimeter/help defense depleted with Siakam/Nesmith out; more open 3s for Maxey against softened defense."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24605,7 +24840,19 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Andre Drummond (PHI) removed from projected starters",
+        "Pascal Siakam (IND) removed from projected starters",
+        "Aaron Nesmith (IND) removed from projected starters",
+        "Andrew Nembhard (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "IND missing Nembhard/Siakam/Nesmith; weaker perimeter pressure gives Edgecombe easier penetration and kick-out assist opportunities."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24643,7 +24890,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out for TOR, but Barnes iron-floor PTS vs NYK unaffected; no direct lineup change impacts this pick."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24681,7 +24937,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; NYK frontcourt unchanged, H2H floor remains intact."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24719,7 +24984,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out; Barrett likely inherits playmaking/scoring volume, boosting PTS floor vs tough NYK defense."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24757,7 +25031,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Quickley (primary_creator) out; Barrett steps into lead playmaker role, directly amplifying assist opportunities."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24795,7 +25078,18 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Isaac Okoro (CHI) removed from projected starters",
+        "Guerschon Yabusele (CHI) removed from projected starters",
+        "Josh Giddey (CHI) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Giddey/Okoro/Yabusele all out for CHI; severely depleted defense gives Bane easier scoring access and higher volume."
+    }
   },
   {
     "date": "2026-04-10",
@@ -24833,7 +25127,18 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T11:33:12.781092-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Isaac Okoro (CHI) removed from projected starters",
+        "Guerschon Yabusele (CHI) removed from projected starters",
+        "Josh Giddey (CHI) removed from projected starters"
+      ],
+      "updated_at": "2026-04-10T11:33:14.368490-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "CHI missing multiple defenders; Bane's iron-floor AST gets further lift with easier court penetration and kick-outs."
+    }
   },
   {
     "date": "2026-04-10",
