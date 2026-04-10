@@ -54,7 +54,7 @@ TODAY_STR = TODAY.strftime("%Y-%m-%d")
 MODEL         = "claude-sonnet-4-6"   # default model
 MODEL_LARGE   = "claude-opus-4-6"     # upgraded model for large slates
 MAX_TOKENS    = 32000                 # was 16384
-SCOUT_MAX_TOKENS = 4096              # Scout shortlist JSON is compact; no rules, no tier_walk
+SCOUT_MAX_TOKENS = 12288             # Must accommodate 20-25 structured shortlist entries (~450 tokens each)
 # Player count threshold (after injury pre-filter) above which Opus is used
 LARGE_SLATE_THRESHOLD = 30
 # Valid tier values per prop type — mirrors tier definitions in quant.py and the analyst prompt
@@ -2634,9 +2634,13 @@ You are NOT making picks. Do not select specific tier values, assign confidence 
 Be analytical, not mechanical. Synthesize across signals — quant tier hit rates, matchup quality, injury news, usage context, minutes stability, schedule situation, game script risk. Surface genuine signal; flag genuine risk. Do not just enumerate quant data back — interpret it.
 
 ## INCLUSION GUIDANCE
-Target 20–25 players on the shortlist. Err toward inclusion on borderline cases — the Pick agent handles rule-based filtering and will correctly skip players who fail its gates.
+Target 20–25 players on the shortlist. On slates with 40+ eligible players, aim for 25+. This is a MINIMUM target, not a maximum — the Pick agent handles all rule-based filtering downstream and will correctly skip players who fail its gates.
 
-A player with any qualifying `best_tier` (≥70% hit rate in quant stats) should generally be included unless there is a clear structural reason they should not be evaluated today: confirmed limited role, injury news suggesting absence or heavy restriction, game script that structurally eliminates the prop (e.g. extreme blowout risk with no counting-stat floor).
+**CRITICAL: You are the only gate between 57 eligible players and the Pick agent. Any player you exclude here CANNOT receive a pick today — there is no second chance.** Err aggressively toward inclusion. A player with 85% PTS hit rate on a B2B is a strong candidate that the Pick agent should evaluate, not one for you to exclude.
+
+A player with any qualifying `best_tier` (≥70% hit rate in quant stats) should be included UNLESS there is an overwhelming structural reason they should not be evaluated today: confirmed OUT in the injury report, heavy minutes restriction in pre-game news, or game context that eliminates ALL their props (not just one). Back-to-back, tough defense, and blowout risk are NOT reasons to exclude — they are risk flags the Pick agent already handles with explicit penalty rules.
+
+Do NOT pre-filter by applying confidence penalties or tier-walk reasoning — that is the Pick agent's job, not yours. Your job is to pass through every statistically interesting candidate so the Pick agent can evaluate them against the full rulebook.
 
 If a ## FANDUEL MARKET AVAILABILITY section is present below, include players who have at least one tradeable market — but do NOT exclude players solely for missing markets. The Pick agent enforces market availability as a hard gate; the Scout's job is to pass through all statistically interesting candidates.
 
@@ -4852,6 +4856,28 @@ def main():
     # ── Stage 2: Pick ─────────────────────────────────────────────────
     shortlist_names = {entry["player_name"] for entry in shortlist if isinstance(entry, dict)}
     print(f"[analyst] Scout shortlisted {len(shortlist_names)} players: {sorted(shortlist_names)}")
+
+    # Shortlist undersize check: if Scout returned far fewer than target on a large slate,
+    # fall back to single-call mode which sees all players instead of operating with a
+    # severely filtered view. Threshold: <12 shortlisted on 40+ player slates.
+    if active_count >= 40 and len(shortlist_names) < 12:
+        print(f"[analyst] WARNING: Scout shortlisted only {len(shortlist_names)} players on a "
+              f"{active_count}-player slate (expected 20-25). Falling back to single-call mode "
+              f"to avoid missing strong candidates.")
+        fallback_prompt = build_prompt(
+            games, player_context, injuries, audit_context,
+            season_context, quant_context, audit_summary,
+            pre_game_news=pre_game_news, player_profiles=player_profiles,
+            playoff_picture=playoff_picture, team_defense=team_defense,
+            leaderboard=leaderboard, lineups_section=lineups_section,
+            available_markets=available_markets,
+            series_context=series_context,
+        )
+        picks, skips = call_analyst(fallback_prompt, model=model_to_use)
+        print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
+        picks = save_picks(picks)
+        save_skips(skips)
+        return
 
     missing = shortlist_names - set(player_stats.keys())
     if missing:
