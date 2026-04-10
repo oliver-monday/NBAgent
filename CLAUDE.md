@@ -39,6 +39,7 @@ NBAgent/
 │   ├── lineup_watch.py       # Deterministic post-process — voids OUT picks, flags DOUBTFUL/QUESTIONABLE; runs after each injury refresh
 │   ├── lineup_update.py      # Afternoon amendment agent — diffs morning lineup snapshot vs current, calls Claude, writes lineup_update sub-objects to picks
 │   ├── backtest.py           # Standalone retrospective signal analysis — multiple modes (see docs/BACKTESTS.md)
+│   ├── playoff_matchup.py    # Pure Python — reads playoff_bracket.json + game logs, writes playoff_matchup.json; no-op if bracket absent
 │   └── build_site.py         # Static site generator (5-tab dark theme SPA); renders voided/risk/update/review badges
 ├── ingest/
 │   ├── espn_daily_ingest.py        # Game slate + spreads + standings from ESPN API → nba_master.csv, standings_today.json
@@ -66,6 +67,8 @@ NBAgent/
 │   ├── picks_review_YYYY-MM-DD.json    # Human-produced daily review file — verdicts: keep/trim/manual_skip; committed before auditor.yml runs; NOT written by any agent
 │   ├── odds_available.json             # Pre-fetched FanDuel alternate market lines — written by odds_today.py --prefetch; consumed by analyst.py as market availability gate
 │   ├── odds_today.json                 # Diagnostic odds cache — written by odds_today.py after picks; enriches picks.json with market_line/edge_pct
+│   ├── odds_pretip.json                # Morning baseline + pre-tip odds snapshots — written by odds_today.py main() and --pretip; consumed for CLV tracking
+│   ├── playoff_matchup.json            # Per-series playoff context — written by playoff_matchup.py; consumed by analyst.py; absent during regular season
 │   └── context_flags.md                # Staleness flags written by pre_game_reporter.py; picked up by analyst via ⚠ CONTEXT FLAG mechanism
 ├── playerprops/
 │   └── player_whitelist.csv    # Active player tracking list — (player_name, team_abbr) tuple filter; includes position column for DvP
@@ -84,7 +87,8 @@ NBAgent/
 │   ├── injuries.yml            # Every :15 and :45, 11:45 AM–8:45 PM PT — scrapes Rotowire, runs lineup_watch + lineup_update, rebuilds site
 │   ├── auditor.yml             # Chains off ingest — grades yesterday's picks + skips, writes audit_log + audit_summary
 │   ├── analyst.yml             # Chains off auditor — runs rotowire → quant → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy
-│   └── odds.yml               # Manual-only — standalone odds fetch for mid-day re-runs
+│   ├── odds.yml               # Manual-only — standalone odds fetch for mid-day re-runs
+│   └── odds_pretip.yml        # Every 30 min 3–7:30 PM PT — pre-tip odds sweep, updates picks.json + odds_pretip.json
 └── CLAUDE.md                   # This file
 ```
 
@@ -93,9 +97,10 @@ NBAgent/
 ## Workflow Chain
 
 ```
-ingest.yml → auditor.yml → analyst.yml (rotowire refresh → quant → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy)
+ingest.yml → auditor.yml → analyst.yml (rotowire refresh → quant → playoff_matchup → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy)
 injuries.yml runs independently on :15/:45 schedule (rotowire → lineup_watch → lineup_update → site rebuild)
-post_game_reporter.py runs as first step of auditor.yml (fetches ESPN + Brave Search narratives for yesterday's missed picks)
+odds_pretip.yml runs independently every 30 min 3–7:30 PM PT (pre-tip odds sweep → picks.json update → CLV baseline)
+post_game_reporter.py runs as first step of auditor.yml (fetches ESPN recaps + Rotowire news for yesterday's missed picks)
 ```
 
 - All workflows: `TZ: America/Los_Angeles`
@@ -116,6 +121,7 @@ post_game_reporter.py runs as first step of auditor.yml (fetches ESPN + Brave Se
 | parlay.py | claude-sonnet-4-6 | 4096 | picks.json, player_stats.json, audit_log (last 3 parlay feedback) | parlays.json (append) |
 | post_game_reporter.py | claude-sonnet-4-6 | 2048 | picks.json (yesterday), ESPN athlete news, Brave Search | post_game_news.json |
 | auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings, picks_review_YYYY-MM-DD.json (optional) | audit_log.json, audit_summary.json, updates picks + parlays in-place, grades skipped_picks.json |
+| playoff_matchup.py | — (pure Python) | — | playoff_bracket.json, nba_master.csv, player_game_log.csv, player_whitelist.csv | playoff_matchup.json (no-op if bracket absent) |
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |
 | lineup_update.py | claude-sonnet-4-6 | 2048 | lineups_today.json (snapshot), injuries_today.json, picks.json, nba_master.csv | picks.json (lineup_update sub-object on affected picks) |
 
@@ -192,6 +198,8 @@ The base schema is in `@docs/DATA.md`. These fields were added post-launch:
 | `lineup_update` | lineup_update.py | Sub-object: `{triggered_by, updated_at, direction, revised_confidence_pct, revised_reasoning}`; written hourly when starter changes detected; overwritten on each run |
 | `human_verdict` | auditor.py | `"keep"/"trim"/"manual_skip"/null` — tagged from daily `picks_review_YYYY-MM-DD.json`; null when pick not reviewed |
 | `trim_reasons` | auditor.py | List of strings from review file; `[]` when not reviewed or verdict is `"keep"` |
+| `morning_implied_prob` | odds_today.py (pretip) | FanDuel morning implied prob; set once by `pretip_sweep()` before overwriting with pre-tip odds; used for CLV; null when no pretip sweep ran |
+| `clv_pp` | auditor.py | Closing Line Value in pp (`pretip_implied − morning_implied`); positive = beat the close; null when no morning+pretip data |
 
 ---
 

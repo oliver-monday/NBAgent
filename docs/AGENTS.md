@@ -16,10 +16,16 @@ auditor.yml (chains off ingest)
 analyst.yml (chains off auditor)
   └─ rotowire_injuries_only.py → injuries_today.json + lineups_today.json (fresh refresh before picks)
   └─ quant.py                (re-run to ensure freshness)
+  └─ playoff_matchup.py      → playoff_matchup.json (no-op if playoff_bracket.json absent)
+  └─ odds_today.py --prefetch → odds_available.json (FanDuel market availability gate)
   └─ pre_game_reporter.py    → pre_game_news.json, context/context_flags.md
   └─ analyst.py              → picks.json (today's picks appended; OUT/DOUBTFUL pre-filtered)
+  └─ odds_today.py           → picks.json (odds annotation + calibrated edge), odds_today.json
   └─ parlay.py               → parlays.json (today's parlays appended; OUT/DOUBTFUL excluded)
   └─ build_site.py           → site/index.html (deployed to GitHub Pages)
+
+odds_pretip.yml (independent, every 30 min 3–7:30 PM PT)
+  └─ odds_today.py --pretip  → picks.json (pre-tip odds update + CLV baseline), odds_pretip.json
 
 injuries.yml (hourly, independent)
   └─ rotowire_injuries_only.py → injuries_today.json + lineups_today.json
@@ -217,8 +223,10 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 6. `## PRE-GAME NEWS` (conditional)
 7. `## SEASON CONTEXT` — SEASON FACTS only (from `nba_season_context.md`)
 8. `## PLAYOFF PICTURE` — auto-generated from `standings_today.json`
-8a. `## WHITELISTED PLAYER RANKINGS — SEASON vs L20` — top 15 per stat, season avg + L20 avg with ↑/↓/→ arrows; built from already-loaded game log; anchors elite scorer recognition
+8b. `## PLAYOFF CONTEXT — POSTSEASON MODE` (conditional — on/after 2026-04-14; annotation-only behavioral framing)
+8c. `## WHITELISTED PLAYER RANKINGS — SEASON vs L20` — top 15 per stat, season avg + L20 avg with ↑/↓/→ arrows; built from already-loaded game log; anchors elite scorer recognition
 9. `## TEAM DEFENSIVE PROFILES` — auto-generated from `team_defense_narratives.json` (last 15g, updates daily)
+9a. `## SERIES CONTEXT — PLAYOFFS` (conditional — from `playoff_matchup.json`; per-series performance + season H2H)
 10. `## PLAYER RECENT GAME LOGS`
 11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` — includes: KEY FRAMEWORK (5-level rule conflict priority order, PENALTY STACK LIMIT, TIER_WALK FORMAT, SANITY CHECK, CONFIDENCE THRESHOLD IS A FLOOR), KEY RULES — MATCHUP QUALITY, OPPONENT DEFENSE — POSITIONAL DvP, SELECTION RULES, KEY RULES — REST & FATIGUE (including RETURN FROM INJURY — SHORT SAMPLE INSTABILITY for `[SHORT_SAMPLE:Ng]` players), KEY RULES — SEQUENTIAL GAME CONTEXT, KEY RULES — SPREAD / BLOWOUT RISK, KEY RULES — VOLATILITY, KEY RULES — HIGH CONFIDENCE GATE, INJURY EXCLUSION
 12. `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS`
@@ -249,7 +257,8 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
   "opponent": "abbrev",
   "home_away": "H|A",
   "prop_type": "PTS|REB|AST|3PM",
-  "pick_value": number,          // must be a valid tier value
+  "pick_value": number,          // must be a valid tier value; must equal walked_tier
+  "walked_tier": number,         // MANDATORY — final integer tier after all step-downs; verified by reconcile_pick_values()
   "direction": "OVER",
   "confidence_pct": 70–99,
   "hit_rate_display": "8/10",    // fraction at this tier from last 20 games

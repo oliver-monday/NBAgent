@@ -269,11 +269,15 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
   "human_verdict": "keep|trim|manual_skip|null",  // tagged by auditor from picks_review file; null when not reviewed
   "trim_reasons":  ["string"] | [],               // reasons from review file; [] when not reviewed
   "is_skip": false,                                // true when Analyst concluded skip; filtered by filter_self_skip_picks() before publication; defaults to false in save_picks() when field absent
+  "walked_tier": number|null,                       // integer — final tier after all step-downs; set by analyst, verified by reconcile_pick_values(); must equal pick_value; added 2026-04-09
   "market_line": number|null,                       // FanDuel alternate market line (e.g. 24.5 for T25); null when no match; set by odds_today.py
   "market_implied_prob": number|null,               // implied probability from market odds; null when no match
   "market_book": "string|null",                     // bookmaker name (e.g. "fanduel"); null when no match
   "edge_pct": number|null,                          // system confidence − market implied prob (positive = system sees edge); null when no match
   "odds_fetched_at": "ISO timestamp|null",           // when odds were fetched; null when no match
+  "morning_implied_prob": number|null,               // FanDuel morning implied prob; set once by pretip_sweep() before overwriting with pretip odds; used for CLV; null when no pretip sweep ran
+  "clv_pp": number|null,                             // Closing Line Value in pp; pretip_implied − morning_implied; positive = beat the close; set by auditor; null when no morning+pretip data
+  "alt_tiers": [{"tier": N, "line": N, "mkt_prob": N, "hits": N, "games": N, "hit_pct": N}] | null,  // alternate FanDuel tiers with quant hit rates; set by build_site.py enrich_alt_tiers(); transient (not persisted)
   "bet_recommendation": {                            // set by odds_today.py compute_edge(); null/absent pre-enrichment
     "calibrated_prob": number|null,                  // actual hit rate for this confidence band from audit_summary.json; null when no market
     "calibration_band": "70-75%|76-80%|81-85%|86%+|null", // which audit calibration band was used
@@ -387,6 +391,30 @@ Player keys are normalized via `_norm_name()` (lowercase, punctuation stripped).
 
 Consumed by: `agents/analyst.py` (market availability gate — separate from odds enrichment).
 
+### odds_pretip.json
+Written by `main()` (morning baseline) and `pretip_sweep()` (pre-tip snapshots) in `ingest/odds_today.py`. Accumulates within a single day — overwritten fresh each morning.
+```json
+{
+  "date": "YYYY-MM-DD",
+  "morning_snapshot": {
+    "event_id": {
+      "home": "abbrev", "away": "abbrev", "commence_time": "ISO",
+      "fetched_at": "ISO", "players": {"norm_name": {"PTS_19.5": {...}, ...}}
+    }
+  },
+  "snapshots": {
+    "event_id": {
+      "home": "abbrev", "away": "abbrev", "commence_time": "ISO",
+      "fetched_at": "ISO", "minutes_to_tip": number,
+      "players": {"norm_name": {"PTS_19.5": {...}, ...}}
+    }
+  }
+}
+```
+`morning_snapshot`: per-event odds from the morning `main()` run — baseline for CLV calculation. `snapshots`: per-event odds from `pretip_sweep()` runs — deduped by event_id (each game fetched once). Player sub-dicts use `{prop_type}_{line}` keys with `{prop_type, line, over_price, implied_prob, book}` values.
+
+Consumed by: `pretip_sweep()` (dedup check); `auditor.py` indirectly (CLV computed from `morning_implied_prob` + `market_implied_prob` on picks, not from this file directly).
+
 ### parlays.json
 List of daily bundles. Each bundle contains the day's parlays.
 ```json
@@ -437,7 +465,7 @@ actual_value, would_have_hit, skip_verdict, skip_verdict_notes
 `skip_verdict` values: `correct_skip` / `false_skip` / `no_data`. Enables longitudinal false-skip-rate analysis and retrospective skip-rule debugging across the full season (previously impossible because `skipped_picks.json` is overwritten each morning by the analyst).
 
 ### audit_summary.json
-Rolled-up season stats written fresh after every auditor run by `save_audit_summary()`. Consumed by `analyst.py` as `## ROLLING PERFORMANCE SUMMARY`. Key blocks: `overall` (season hit rates, injury_exclusions, voided count), `prop_type_breakdown` (per-stat rates), `confidence_calibration_totals` (per-band actual vs stated — keys: `"70-75"`, `"76-80"`, `"81-85"`, `"86+"`, each with `picks`, `hits`, `misses`, `hit_rate_pct`), `skip_validation` (per-rule false skip rates), `human_flag_precision` (season hit/miss rates grouped by `human_verdict` — "keep"/"trim"/"manual_skip" — computed from `picks.json` directly; accumulates automatically without explicit audit_log entries).
+Rolled-up season stats written fresh after every auditor run by `save_audit_summary()`. Consumed by `analyst.py` as `## ROLLING PERFORMANCE SUMMARY`. Key blocks: `overall` (season hit rates, injury_exclusions, voided count), `prop_type_breakdown` (per-stat rates), `confidence_calibration_totals` (per-band actual vs stated — keys: `"70-75"`, `"76-80"`, `"81-85"`, `"86+"`, each with `picks`, `hits`, `misses`, `hit_rate_pct`), `skip_validation` (per-rule false skip rates), `clv_summary` (CLV rollup — `total_with_clv`, `beat_close`, `lost_close`, `no_movement`, `avg_clv_pp`, `beat_close_pct`, `beat_close_hit_rate_pct`, `lost_close_hit_rate_pct`, `no_move_hit_rate_pct`; ±0.5pp threshold for movement classification), `human_flag_precision` (season hit/miss rates grouped by `human_verdict` — "keep"/"trim"/"manual_skip" — computed from `picks.json` directly; accumulates automatically without explicit audit_log entries).
 
 ---
 

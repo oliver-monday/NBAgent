@@ -203,13 +203,29 @@ with ≥5 misses at their best PTS tier and confirm:
 - If the feature produces output visible in the analyst prompt, include an example of
   what the formatted output line should look like
 
+**Always include a docs-update verification step.** This is a mandatory check, not optional:
+```
+# Confirm docs were updated (mandatory — task is incomplete without these)
+grep -q "YYYY-MM-DD" docs/ROADMAP_resolved.md && echo "ROADMAP_resolved: OK" || echo "ROADMAP_resolved: MISSING — add entry before committing"
+```
+
 ---
 
-### 6. Docs Update
+### 6. Docs Update — MANDATORY COMPLETION GATE
 
-Every prompt must include a final step instructing Code to update relevant `/docs` files
-to reflect what was just implemented. This is the last step after all verification checks
-pass — not optional.
+**A task is NOT complete until docs are updated. Code changes without doc updates are
+considered failed implementations** — they create silent drift that breaks future sessions.
+
+Every prompt must include a Docs Update section. This is not cleanup — it is a hard gate.
+The three mandatory targets (update ALL THREE on every task):
+
+1. `docs/ROADMAP_resolved.md` — what was done + date (one-line entry)
+2. `docs/ROADMAP_active.md` — remove/update completed items; add new open items
+3. `docs/SESSION_CONTEXT.md` — update schema tables, function signatures, what's live vs. pending
+
+These three files are loaded first in every new session. If they are stale, the next
+session starts with wrong assumptions and produces wrong decisions. Updating them is
+not a courtesy — it is the mechanism by which the system maintains continuity across sessions.
 
 ```markdown
 ## Docs Update
@@ -418,7 +434,8 @@ Before handing a prompt to Code, verify:
 - [ ] Verification section has at least one mathematical invariant
 - [ ] File summary table is present and accurate
 - [ ] If directive signal: backtest-first decision is documented
-- [ ] Docs Update section is present with ROADMAP_active.md / ROADMAP_resolved.md and SESSION_CONTEXT.md as mandatory targets
+- [ ] Docs Update section is present with ALL THREE mandatory targets: ROADMAP_active.md, ROADMAP_resolved.md, SESSION_CONTEXT.md
+- [ ] Docs Update section explicitly states what to add/remove/update in ROADMAP_active.md (not just "update if relevant")
 
 ---
 
