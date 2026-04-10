@@ -637,6 +637,183 @@ def build_explorer_data() -> dict:
         return {}
 
 
+def build_playoff_data() -> dict:
+    """
+    Build playoff career profiles + game-level data for the Research tab.
+    Reads data/playoff_career_log.csv (populated by espn_playoff_backfill.py +
+    daily ingest dual-write) and returns {"profiles": [...], "games": {...}}.
+    Returns {} on any error — never blocks site build.
+    """
+    try:
+        import pandas as pd
+
+        playoff_csv = DATA / "playoff_career_log.csv"
+        if not playoff_csv.exists():
+            print("[build_playoff_data] playoff_career_log.csv not found — skipping")
+            return {}
+
+        df = pd.read_csv(playoff_csv, dtype={"game_id": str, "player_id": str})
+        if df.empty:
+            return {}
+
+        # Coerce numeric columns
+        num_cols = ["minutes", "pts", "reb", "ast", "tpm", "fgm", "fga",
+                    "fg3m", "fg3a", "ftm", "fta"]
+        for col in num_cols:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+
+        # Filter out zero-minute rows (DNP-equivalent in playoff data)
+        df = df[df["minutes"].fillna(0) > 0]
+
+        # Filter out All-Star game rows (EAST / WEST team abbreviations)
+        valid_teams = {
+            "ATL","BKN","BOS","CHA","CHI","CLE","DAL","DEN","DET","GSW",
+            "HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK",
+            "OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS",
+        }
+        df = df[df["team_abbrev"].isin(valid_teams)]
+
+        # Whitelist → current team lookup (for card headers)
+        wl_teams: dict = {}
+        if WHITELIST_CSV.exists():
+            try:
+                wl = pd.read_csv(WHITELIST_CSV, dtype=str)
+                wl = wl[wl["active"].astype(str).str.strip() == "1"]
+                for _, row in wl.iterrows():
+                    wl_teams[row["player_name"].strip().lower()] = row["team_abbr"].strip().upper()
+            except Exception:
+                pass
+
+        stat_cols = ["pts", "reb", "ast", "tpm"]
+        profiles: list = []
+        games_by_player: dict = {}
+
+        for player_name, pgroup in df.groupby("player_name"):
+            name_lower = str(player_name).strip().lower()
+            po_rows = pgroup[pgroup["season_type"] == "playoff"]
+            if len(po_rows) < 5:
+                continue  # Skip players with fewer than 5 career playoff games
+
+            reg_rows = pgroup[pgroup["season_type"] == "regular"]
+            po_seasons = set(po_rows["season"].unique())
+            # Same-season comparison: only regular rows from seasons with playoff data
+            reg_rows = reg_rows[reg_rows["season"].isin(po_seasons)]
+
+            # Career playoff averages
+            po_avgs = {col: round(float(po_rows[col].mean()), 1) for col in stat_cols}
+            po_avgs["min"] = round(float(po_rows["minutes"].mean()), 1)
+            # FG% from aggregate totals — not per-game mean of percentages
+            po_fga = float(po_rows["fga"].sum())
+            po_fgm = float(po_rows["fgm"].sum())
+            po_avgs["fg_pct"] = round(100 * po_fgm / po_fga, 1) if po_fga > 0 else None
+
+            # Regular-season comparison averages
+            if not reg_rows.empty:
+                reg_avgs = {col: round(float(reg_rows[col].mean()), 1) for col in stat_cols}
+                reg_avgs["min"] = round(float(reg_rows["minutes"].mean()), 1)
+                reg_fga = float(reg_rows["fga"].sum())
+                reg_fgm = float(reg_rows["fgm"].sum())
+                reg_avgs["fg_pct"] = round(100 * reg_fgm / reg_fga, 1) if reg_fga > 0 else None
+            else:
+                reg_avgs = {col: None for col in stat_cols}
+                reg_avgs["min"] = None
+                reg_avgs["fg_pct"] = None
+
+            # Deltas (playoff − regular)
+            deltas: dict = {}
+            for col in stat_cols:
+                if reg_avgs.get(col) is not None:
+                    deltas[col] = round(po_avgs[col] - reg_avgs[col], 1)
+                else:
+                    deltas[col] = None
+            if po_avgs.get("fg_pct") is not None and reg_avgs.get("fg_pct") is not None:
+                deltas["fg_pct"] = round(po_avgs["fg_pct"] - reg_avgs["fg_pct"], 1)
+            else:
+                deltas["fg_pct"] = None
+
+            # Per-season breakdown
+            seasons_detail: list = []
+            for season in sorted(po_seasons):
+                s_po = po_rows[po_rows["season"] == season]
+                s_reg = reg_rows[reg_rows["season"] == season]
+                s_po_avgs = {col: round(float(s_po[col].mean()), 1) for col in stat_cols}
+                s_reg_avgs: dict = {}
+                if not s_reg.empty:
+                    s_reg_avgs = {col: round(float(s_reg[col].mean()), 1) for col in stat_cols}
+                seasons_detail.append({
+                    "year": int(season),
+                    "games": int(len(s_po)),
+                    "po": s_po_avgs,
+                    "reg": s_reg_avgs,
+                })
+
+            profiles.append({
+                "name": str(player_name).strip(),
+                "team": wl_teams.get(name_lower, str(po_rows.iloc[0].get("team_abbrev", "?"))),
+                "total_games": int(len(po_rows)),
+                "seasons": seasons_detail,
+                "deltas": deltas,
+                "po_avgs": po_avgs,
+                "reg_avgs": reg_avgs,
+            })
+
+            # Game-level playoff log — infer series number from sequential opponent changes
+            po_sorted = po_rows.sort_values("game_date")
+            game_list: list = []
+            for season in sorted(po_seasons):
+                s_games = po_sorted[po_sorted["season"] == season]
+                series_num = 0
+                last_opp = None
+                for _, g in s_games.iterrows():
+                    opp = str(g.get("opp_abbrev", "") or "")
+                    if opp != last_opp:
+                        series_num += 1
+                        last_opp = opp
+                    fg_pct = None
+                    fga_v = g.get("fga")
+                    fgm_v = g.get("fgm")
+                    if pd.notna(fga_v) and fga_v > 0 and pd.notna(fgm_v):
+                        fg_pct = round(100 * float(fgm_v) / float(fga_v), 1)
+                    def _ival(x):
+                        try:
+                            return int(x) if pd.notna(x) else None
+                        except (ValueError, TypeError):
+                            return None
+                    game_list.append({
+                        "d":     str(g.get("game_date", ""))[:10],
+                        "s":     int(season),
+                        "r":     series_num,
+                        "opp":   opp,
+                        "ha":    str(g.get("home_away", "") or "")[:1],
+                        "min":   _ival(g.get("minutes")),
+                        "pts":   _ival(g.get("pts")),
+                        "reb":   _ival(g.get("reb")),
+                        "ast":   _ival(g.get("ast")),
+                        "tpm":   _ival(g.get("tpm")),
+                        "fgm":   _ival(g.get("fgm")),
+                        "fga":   _ival(g.get("fga")),
+                        "ftm":   _ival(g.get("ftm")),
+                        "fta":   _ival(g.get("fta")),
+                        "fg_pct": fg_pct,
+                    })
+            games_by_player[name_lower] = game_list
+
+        # Sort profiles by total playoff games descending
+        profiles.sort(key=lambda p: p["total_games"], reverse=True)
+
+        total_games = sum(len(g) for g in games_by_player.values())
+        print(f"[build_playoff_data] {len(profiles)} playoff profiles, "
+              f"{total_games} total game rows")
+        return {"profiles": profiles, "games": games_by_player}
+
+    except Exception as e:
+        print(f"[build_playoff_data] error: {e}")
+        import traceback
+        traceback.print_exc()
+        return {}
+
+
 def get_top_picks(picks: list, max_picks: int = 5) -> list:
     """
     Returns today's top picks.
@@ -767,6 +944,7 @@ def build_site():
     yesterday_summary = load_yesterday_summary()
     opportunity_flags = load_opportunity_flags()
     explorer_data     = build_explorer_data()
+    playoff_data      = build_playoff_data()
 
     # Build lookup dict from review file: key → {verdict, trim_reasons, auto_reviewed}
     # Covers both auto (source="auto") and manual (no source field) review entries.
@@ -866,6 +1044,7 @@ def build_site():
         "yesterday_summary":  yesterday_summary,
         "opportunity_flags":  opportunity_flags,
         "explorer":           explorer_data,
+        "playoff":            playoff_data,
         "top_picks": top_picks,
         "best_bets": best_bets,
         "top_picks_history": {
@@ -903,6 +1082,7 @@ def generate_html(d: dict) -> str:
     yesterday_summary_json  = json.dumps(d.get("yesterday_summary", {}))
     opportunity_flags_json  = json.dumps(d.get("opportunity_flags", []))
     explorer_json           = json.dumps(d.get("explorer", {}))
+    playoff_json            = json.dumps(d.get("playoff", {}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1414,6 +1594,7 @@ const DATA = {{
   yesterday_summary: {yesterday_summary_json},
   opportunity_flags: {opportunity_flags_json},
   explorer:          {explorer_json},
+  playoff:           {playoff_json},
 }};
 
 function showTab(name) {{
@@ -2360,15 +2541,420 @@ function renderParlays() {{
 renderParlays();
 
 // ── PLAYER EXPLORER ──
+// ── Round label helper (inferred from series order within each season) ──
+const ROUND_LABELS = {{1:'R1', 2:'R2', 3:'CF', 4:'Finals', 5:'Finals'}};
+function roundLabel(n) {{ return ROUND_LABELS[n] || 'R'+n; }}
+function round1(v) {{ return Math.round(v * 10) / 10; }}
+
+// ── Playoff Career Profiles (collapsible overview) ──
+function renderPlayoffProfiles(container) {{
+  if (!container) return;
+  const pd = DATA.playoff || {{}};
+  const profiles = pd.profiles || [];
+  if (!profiles.length) return;
+
+  let sortKey = 'total_games';
+  let sortDir = -1;
+
+  function renderCards() {{
+    const sorted = [...profiles].sort((a,b) => {{
+      if (sortKey === 'name') {{
+        return sortDir * a.name.localeCompare(b.name);
+      }}
+      let va, vb;
+      if (sortKey === 'total_games') {{
+        va = a.total_games; vb = b.total_games;
+      }} else {{
+        va = (a.deltas||{{}})[sortKey]; vb = (b.deltas||{{}})[sortKey];
+        va = (va !== null && va !== undefined) ? va : -999;
+        vb = (vb !== null && vb !== undefined) ? vb : -999;
+      }}
+      return sortDir * (va - vb);
+    }});
+
+    const deltaCell = (val, suffix) => {{
+      if (val === null || val === undefined) return '<span style="color:var(--muted)">—</span>';
+      const color = val > 0 ? 'var(--hit)' : val < 0 ? 'var(--miss)' : 'var(--muted)';
+      const sign  = val > 0 ? '+' : '';
+      return `<span style="color:${{color}};font-weight:600">${{sign}}${{val}}${{suffix || ''}}</span>`;
+    }};
+
+    return sorted.map(p => {{
+      const seasonChips = p.seasons.map(s =>
+        `<span style="background:var(--border);border-radius:4px;padding:2px 6px;font-size:10px;color:var(--muted)">'${{String(s.year).slice(2)}}: ${{s.games}}g</span>`
+      ).join(' ');
+
+      const sampleBadge = p.total_games < 10
+        ? '<span style="background:var(--miss);color:#000;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;margin-left:6px">small sample</span>'
+        : '';
+
+      const statCols = ['pts','reb','ast','tpm'];
+      const seasonRows = p.seasons.map(s => {{
+        const cells = statCols.map(st => {{
+          const po  = (s.po||{{}})[st];
+          const reg = (s.reg||{{}})[st];
+          if (po === undefined || po === null) return '<td style="padding:3px 6px;text-align:center;color:var(--muted)">—</td>';
+          const regStr   = (reg !== undefined && reg !== null) ? reg : '—';
+          const delta    = (reg !== undefined && reg !== null) ? round1(po - reg) : null;
+          const deltaStr = delta !== null ? ` (${{delta > 0 ? '+' : ''}}${{delta}})` : '';
+          return `<td style="padding:3px 6px;text-align:center;font-size:11px;color:var(--fg)">${{po}}<span style="color:var(--muted);font-size:10px"> vs ${{regStr}}${{deltaStr}}</span></td>`;
+        }}).join('');
+        return `<tr><td style="padding:3px 6px;font-size:11px;color:var(--muted)">${{s.year}} (${{s.games}}g)</td>${{cells}}</tr>`;
+      }}).join('');
+
+      return `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <span style="font-size:14px;font-weight:700;color:var(--fg)">${{p.name}}</span>
+              <span style="font-size:12px;color:var(--muted);margin-left:6px">${{p.team}} · ${{p.total_games}}g</span>
+              ${{sampleBadge}}
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+            <span style="font-size:12px">PTS ${{deltaCell(p.deltas.pts)}}</span>
+            <span style="font-size:12px">REB ${{deltaCell(p.deltas.reb)}}</span>
+            <span style="font-size:12px">AST ${{deltaCell(p.deltas.ast)}}</span>
+            <span style="font-size:12px">3PM ${{deltaCell(p.deltas.tpm)}}</span>
+            <span style="font-size:12px">FG% ${{deltaCell(p.deltas.fg_pct, '%')}}</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">${{seasonChips}}</div>
+          <div style="font-size:11px;color:var(--muted)">
+            Playoff: ${{p.po_avgs.pts}} PPG · ${{p.po_avgs.reb}} RPG · ${{p.po_avgs.ast}} APG · ${{p.po_avgs.min}} MPG
+          </div>
+          <details style="margin-top:8px">
+            <summary style="font-size:11px;color:var(--accent);cursor:pointer">Per-season breakdown</summary>
+            <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:11px">
+              <thead><tr style="color:var(--muted)">
+                <th style="text-align:left;padding:3px 6px">Season</th>
+                <th style="text-align:center;padding:3px 6px">PTS</th>
+                <th style="text-align:center;padding:3px 6px">REB</th>
+                <th style="text-align:center;padding:3px 6px">AST</th>
+                <th style="text-align:center;padding:3px 6px">3PM</th>
+              </tr></thead>
+              <tbody>${{seasonRows}}</tbody>
+            </table>
+          </details>
+        </div>`;
+    }}).join('');
+  }}
+
+  const sortOptions = [
+    {{key:'total_games', label:'Games'}},
+    {{key:'pts',         label:'PTS Δ'}},
+    {{key:'reb',         label:'REB Δ'}},
+    {{key:'ast',         label:'AST Δ'}},
+    {{key:'tpm',         label:'3PM Δ'}},
+    {{key:'fg_pct',      label:'FG% Δ'}},
+    {{key:'name',        label:'A–Z'}},
+  ];
+
+  const sortBtns = sortOptions.map(o =>
+    `<button onclick="sortPlayoffProfiles('${{o.key}}')" id="po-sort-${{o.key}}" style="background:var(--border);color:var(--muted);border:none;border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600">${{o.label}}</button>`
+  ).join(' ');
+
+  container.innerHTML = `
+    <details open style="margin-bottom:24px">
+      <summary style="font-size:16px;font-weight:700;color:var(--fg);cursor:pointer;margin-bottom:12px">
+        Playoff Career Profiles
+        <span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px">${{profiles.length}} players · 2021–2025</span>
+      </summary>
+      <div style="margin:12px 0 10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:11px;color:var(--muted);margin-right:4px">Sort:</span>
+        ${{sortBtns}}
+      </div>
+      <div id="po-cards">${{renderCards()}}</div>
+    </details>`;
+
+  const activeBtn = document.getElementById('po-sort-' + sortKey);
+  if (activeBtn) {{
+    activeBtn.style.background = 'var(--accent)';
+    activeBtn.style.color      = '#000';
+  }}
+
+  window.sortPlayoffProfiles = function(key) {{
+    if (sortKey === key) {{
+      sortDir *= -1;
+    }} else {{
+      sortKey = key;
+      sortDir = (key === 'name') ? 1 : -1;
+    }}
+    const cardsDiv = document.getElementById('po-cards');
+    if (cardsDiv) cardsDiv.innerHTML = renderCards();
+    sortOptions.forEach(o => {{
+      const btn = document.getElementById('po-sort-' + o.key);
+      if (btn) {{
+        btn.style.background = (o.key === sortKey) ? 'var(--accent)' : 'var(--border)';
+        btn.style.color      = (o.key === sortKey) ? '#000' : 'var(--muted)';
+      }}
+    }});
+  }};
+}}
+
+// ── Playoff Game Explorer (collapsible filterable explorer) ──
+function renderPlayoffExplorer(container) {{
+  if (!container) return;
+  const pd = DATA.playoff || {{}};
+  const gamesData = pd.games || {{}};
+  const profiles  = pd.profiles || [];
+  const players   = profiles.map(p => p.name).sort();
+  if (!players.length) return;
+
+  const allOpponents = new Set();
+  const allSeasons   = new Set();
+  Object.values(gamesData).forEach(games => {{
+    games.forEach(g => {{
+      if (g.opp) allOpponents.add(g.opp);
+      if (g.s)   allSeasons.add(g.s);
+    }});
+  }});
+  const sortedOpps    = Array.from(allOpponents).sort();
+  const sortedSeasons = Array.from(allSeasons).sort();
+
+  container.innerHTML = `
+    <details style="margin-bottom:24px">
+      <summary style="font-size:16px;font-weight:700;color:var(--fg);cursor:pointer;margin-bottom:12px">
+        Playoff Game Explorer
+        <span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px">2021–2025 postseason game logs</span>
+      </summary>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:12px 0 16px">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Player *</div>
+          <select id="pex-player" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">— select player —</option>
+            ${{players.map(p => `<option value="${{p}}">${{p}}</option>`).join('')}}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Stat</div>
+          <select id="pex-stat" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="pts">PTS</option>
+            <option value="reb">REB</option>
+            <option value="ast">AST</option>
+            <option value="tpm">3PM</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Season</div>
+          <select id="pex-season" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">All</option>
+            ${{sortedSeasons.map(s => `<option value="${{s}}">${{s-1}}–${{String(s).slice(2)}}</option>`).join('')}}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Round</div>
+          <select id="pex-round" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">All</option>
+            <option value="1">R1</option>
+            <option value="2">R2</option>
+            <option value="3">Conf Finals</option>
+            <option value="4">Finals</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Opponent</div>
+          <select id="pex-opp" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            ${{sortedOpps.map(o => `<option value="${{o}}">${{o}}</option>`).join('')}}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Home / Away</div>
+          <select id="pex-ha" style="width:100%;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px">
+            <option value="">Any</option>
+            <option value="H">Home</option>
+            <option value="A">Away</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="runPlayoffExplorer()" style="background:var(--accent);color:#000;border:none;border-radius:6px;padding:9px 24px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:24px">
+        Search
+      </button>
+      <div id="pex-results"></div>
+    </details>`;
+}}
+
+function runPlayoffExplorer() {{
+  const pd        = DATA.playoff || {{}};
+  const gamesData = pd.games || {{}};
+  const playerName = document.getElementById('pex-player').value;
+  const stat       = document.getElementById('pex-stat').value;
+  const seasonF    = document.getElementById('pex-season').value;
+  const roundF     = document.getElementById('pex-round').value;
+  const oppF       = document.getElementById('pex-opp').value;
+  const haF        = document.getElementById('pex-ha').value;
+  const out        = document.getElementById('pex-results');
+
+  if (!playerName) {{
+    out.innerHTML = '<div style="color:var(--muted);font-size:13px">Select a player to get started.</div>';
+    return;
+  }}
+
+  const games = gamesData[playerName.toLowerCase()] || [];
+  const filtered = games.filter(g => {{
+    if (seasonF && String(g.s) !== seasonF) return false;
+    if (roundF  && String(g.r) !== roundF)  return false;
+    if (oppF    && g.opp !== oppF)          return false;
+    if (haF     && g.ha  !== haF)           return false;
+    return true;
+  }});
+
+  if (!filtered.length) {{
+    out.innerHTML = '<div style="color:var(--muted);font-size:13px">No playoff games match the selected filters.</div>';
+    return;
+  }}
+
+  const TIERS       = {{ pts:[10,15,20,25,30], reb:[2,4,6,8,10,12], ast:[2,4,6,8,10,12], tpm:[1,2,3,4] }};
+  const STAT_COLORS = {{ pts:'var(--pts)', reb:'var(--reb)', ast:'var(--ast)', tpm:'var(--3pm)' }};
+  const STAT_LABELS = {{ pts:'PTS', reb:'REB', ast:'AST', tpm:'3PM' }};
+  const tiers = TIERS[stat];
+  const color = STAT_COLORS[stat];
+  const label = STAT_LABELS[stat];
+  const n     = filtered.length;
+
+  const tierRows = tiers.map(t => {{
+    const valid = filtered.filter(g => g[stat] !== null && g[stat] !== undefined);
+    const hits  = valid.filter(g => g[stat] >= t).length;
+    const pct   = valid.length ? (hits / valid.length * 100) : null;
+    return {{ tier: t, hits, n: valid.length, pct }};
+  }});
+
+  const vals   = filtered.map(g => g[stat]).filter(v => v !== null && v !== undefined);
+  const avg    = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : '—';
+  const mn     = vals.length ? Math.min(...vals) : '—';
+  const mx     = vals.length ? Math.max(...vals) : '—';
+  const sorted = [...vals].sort((a,b)=>a-b);
+  const med    = sorted.length ? sorted[Math.floor(sorted.length/2)] : '—';
+
+  const filterParts = [];
+  if (seasonF) filterParts.push(`${{seasonF-1}}–${{String(seasonF).slice(2)}}`);
+  if (roundF)  filterParts.push(roundLabel(parseInt(roundF)));
+  if (oppF)    filterParts.push(`vs ${{oppF}}`);
+  if (haF)     filterParts.push(haF === 'H' ? 'Home' : 'Away');
+  const filterStr = filterParts.length ? ` · ${{filterParts.join(' · ')}}` : '';
+
+  let html = `
+    <div style="margin-bottom:12px">
+      <span style="font-size:15px;font-weight:700;color:var(--fg)">${{playerName}}</span>
+      <span style="font-size:13px;color:var(--muted);margin-left:8px">${{label}} · ${{n}} playoff game${{n!==1?'s':''}}${{filterStr}}</span>
+      ${{n < 10 ? '<span style="font-size:11px;color:var(--miss);margin-left:8px">⚠ small sample</span>' : ''}}
+    </div>
+
+    <div style="display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap">
+      <div style="font-size:12px;color:var(--muted)">Avg <span style="color:var(--fg);font-weight:600">${{avg}}</span></div>
+      <div style="font-size:12px;color:var(--muted)">Med <span style="color:var(--fg);font-weight:600">${{med}}</span></div>
+      <div style="font-size:12px;color:var(--muted)">Min <span style="color:var(--fg);font-weight:600">${{mn}}</span></div>
+      <div style="font-size:12px;color:var(--muted)">Max <span style="color:var(--fg);font-weight:600">${{mx}}</span></div>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;margin-bottom:20px;font-size:13px">
+      <thead>
+        <tr style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em">
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Tier</th>
+          <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border)">Hit Rate</th>
+          <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border)">Hits / Games</th>
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)"></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${{tierRows.map(r => {{
+          const pctStr   = r.pct !== null ? r.pct.toFixed(1) + '%' : '—';
+          const barW     = r.pct !== null ? Math.round(r.pct) : 0;
+          const barColor = r.pct === null ? 'var(--muted)' : r.pct >= 70 ? color : 'var(--muted)';
+          return `<tr>
+            <td style="padding:6px 8px;color:var(--fg);font-weight:600">${{label}} ${{r.tier}}+</td>
+            <td style="padding:6px 8px;text-align:right;color:${{barColor}};font-weight:${{r.pct !== null && r.pct >= 70 ? '700' : '400'}}">${{pctStr}}</td>
+            <td style="padding:6px 8px;text-align:right;color:var(--muted)">${{r.hits}}/${{r.n}}</td>
+            <td style="padding:6px 8px;width:120px">
+              <div style="height:6px;border-radius:3px;background:var(--border);overflow:hidden">
+                <div style="height:100%;width:${{barW}}%;background:${{barColor}};border-radius:3px"></div>
+              </div>
+            </td>
+          </tr>`;
+        }}).join('')}}
+      </tbody>
+    </table>`;
+
+  // Group-by-series game log (chronological within each series)
+  const displayGames = [...filtered].sort((a,b) => a.d.localeCompare(b.d));
+  let lastSeriesKey = '';
+
+  html += `
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Playoff Game Log</div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead>
+        <tr style="color:var(--muted);font-size:11px">
+          <th style="text-align:left;padding:5px 6px;border-bottom:1px solid var(--border)">Date</th>
+          <th style="text-align:left;padding:5px 6px;border-bottom:1px solid var(--border)">Season</th>
+          <th style="text-align:center;padding:5px 6px;border-bottom:1px solid var(--border)">Round</th>
+          <th style="text-align:left;padding:5px 6px;border-bottom:1px solid var(--border)">Opp</th>
+          <th style="text-align:center;padding:5px 6px;border-bottom:1px solid var(--border)">H/A</th>
+          <th style="text-align:center;padding:5px 6px;border-bottom:1px solid var(--border)">Mins</th>
+          <th style="text-align:center;padding:5px 6px;border-bottom:1px solid var(--border)">FG</th>
+          <th style="text-align:center;padding:5px 6px;border-bottom:1px solid var(--border)">FG%</th>
+          <th style="text-align:center;padding:5px 6px;border-bottom:1px solid var(--border)">FT</th>
+          <th style="text-align:center;padding:5px 6px;border-bottom:1px solid var(--border);color:${{color}}">${{label}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${{displayGames.map(g => {{
+          const val = g[stat];
+          const valColor = (val !== null && val !== undefined && tiers.length && val >= tiers[0]) ? color : 'var(--fg)';
+          const seriesKey = `${{g.s}}-${{g.opp}}`;
+          const showSeriesHeader = seriesKey !== lastSeriesKey;
+          lastSeriesKey = seriesKey;
+          const headerRow = showSeriesHeader
+            ? `<tr><td colspan="10" style="padding:8px 6px 4px;font-size:11px;font-weight:700;color:var(--accent);border-bottom:1px solid var(--border)">${{g.s-1}}–${{String(g.s).slice(2)}} ${{roundLabel(g.r)}} vs ${{g.opp}}</td></tr>`
+            : '';
+          return `${{headerRow}}<tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:5px 6px;color:var(--muted)">${{g.d}}</td>
+            <td style="padding:5px 6px;color:var(--muted)">${{g.s-1}}–${{String(g.s).slice(2)}}</td>
+            <td style="padding:5px 6px;text-align:center;color:var(--muted)">${{roundLabel(g.r)}}</td>
+            <td style="padding:5px 6px;color:var(--fg)">${{g.opp || '—'}}</td>
+            <td style="padding:5px 6px;text-align:center;color:var(--muted)">${{g.ha || '—'}}</td>
+            <td style="padding:5px 6px;text-align:center;color:var(--muted)">${{g.min !== null && g.min !== undefined ? g.min : '—'}}</td>
+            <td style="padding:5px 6px;text-align:center;color:var(--muted)">${{g.fgm !== null && g.fgm !== undefined ? g.fgm+'-'+g.fga : '—'}}</td>
+            <td style="padding:5px 6px;text-align:center;color:var(--muted)">${{g.fg_pct !== null && g.fg_pct !== undefined ? g.fg_pct+'%' : '—'}}</td>
+            <td style="padding:5px 6px;text-align:center;color:var(--muted)">${{g.ftm !== null && g.ftm !== undefined ? g.ftm+'-'+g.fta : '—'}}</td>
+            <td style="padding:5px 6px;text-align:center;font-weight:700;color:${{valColor}}">${{val !== null && val !== undefined ? val : '—'}}</td>
+          </tr>`;
+        }}).join('')}}
+      </tbody>
+    </table>
+    </div>`;
+
+  out.innerHTML = html;
+}}
+
+// ── Research tab: renders three stacked sections ──
 function renderResearch() {{
   const c = document.getElementById('research-container');
   if (!c) return;
+
+  c.innerHTML = `
+    <div style="max-width:780px;margin:0 auto;padding:16px 0">
+      <div id="playoff-profiles-section"></div>
+      <div id="playoff-explorer-section"></div>
+      <div id="current-explorer-section"></div>
+    </div>`;
+
+  renderPlayoffProfiles(document.getElementById('playoff-profiles-section'));
+  renderPlayoffExplorer(document.getElementById('playoff-explorer-section'));
+  renderCurrentSeasonExplorer(document.getElementById('current-explorer-section'));
+}}
+
+// ── Current-season Player Explorer (extracted from old renderResearch body) ──
+function renderCurrentSeasonExplorer(container) {{
+  if (!container) return;
 
   const explorerData = DATA.explorer || {{}};
   const players = Object.keys(explorerData).sort();
 
   if (!players.length) {{
-    c.innerHTML = '<div style="padding:32px;color:var(--muted);font-size:13px">No player game log data available.</div>';
+    container.innerHTML = '<div style="padding:32px;color:var(--muted);font-size:13px">No player game log data available.</div>';
     return;
   }}
 
@@ -2380,13 +2966,13 @@ function renderResearch() {{
   const sortedOpps = Array.from(allOpponents).sort();
 
   let html = `
-    <div style="max-width:780px;margin:0 auto;padding:16px 0">
-      <div style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--fg)">Player Explorer</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:20px">
-        Customizable search of the 2025-26 season game log.
-      </div>
+    <details open style="margin-bottom:24px">
+      <summary style="font-size:16px;font-weight:700;color:var(--fg);cursor:pointer;margin-bottom:12px">
+        Player Explorer
+        <span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px">2025-26 season game logs</span>
+      </summary>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:12px 0 16px">
 
         <div>
           <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Player *</div>
@@ -2471,9 +3057,9 @@ function renderResearch() {{
       </button>
 
       <div id="ex-results"></div>
-    </div>`;
+    </details>`;
 
-  c.innerHTML = html;
+  container.innerHTML = html;
 }}
 
 function runExplorer() {{
