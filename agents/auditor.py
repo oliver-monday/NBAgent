@@ -1193,6 +1193,19 @@ def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list
             all_picks = json.load(f)
     non_yesterday = [p for p in all_picks if p.get("date") != YESTERDAY_STR]
     updated_picks = non_yesterday + graded_picks
+
+    # Compute per-pick CLV for yesterday's graded picks
+    n_clv = 0
+    for p in graded_picks:
+        morning = p.get("morning_implied_prob")
+        pretip  = p.get("market_implied_prob")
+        if morning is not None and pretip is not None and p.get("result") in ("HIT", "MISS"):
+            clv = round(float(pretip) - float(morning), 2)
+            p["clv_pp"] = clv
+            n_clv += 1
+    if n_clv:
+        print(f"[auditor] CLV computed for {n_clv} picks")
+
     with open(PICKS_JSON, "w") as f:
         json.dump(updated_picks, f, indent=2)
     print(f"[auditor] Updated picks.json with graded results")
@@ -1381,6 +1394,51 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         print(f"[auditor] WARNING: could not compute human_flag_precision: {e}")
         human_flag_precision = {}
 
+    # ── CLV (Closing Line Value) rollup ──────────────────────────────────
+    # Scan all graded picks for morning vs pretip odds data.
+    # CLV = pretip_implied - morning_implied. Positive = beat the close.
+    clv_summary: dict = {}
+    try:
+        if PICKS_JSON.exists():
+            with open(PICKS_JSON) as fh:
+                all_picks_for_clv = json.load(fh)
+            clv_picks = []
+            for px in all_picks_for_clv:
+                clv = px.get("clv_pp")
+                result = px.get("result")
+                if clv is not None and result in ("HIT", "MISS"):
+                    clv_picks.append({"clv": float(clv), "hit": result == "HIT"})
+
+            if clv_picks:
+                total       = len(clv_picks)
+                beat_close  = [c for c in clv_picks if c["clv"] > 0.5]
+                lost_close  = [c for c in clv_picks if c["clv"] < -0.5]
+                no_movement = [c for c in clv_picks if abs(c["clv"]) <= 0.5]
+                avg_clv     = round(sum(c["clv"] for c in clv_picks) / total, 2)
+
+                beat_hits  = sum(1 for c in beat_close if c["hit"])
+                lost_hits  = sum(1 for c in lost_close if c["hit"])
+
+                clv_summary = {
+                    "total_with_clv":          total,
+                    "beat_close":              len(beat_close),
+                    "lost_close":              len(lost_close),
+                    "no_movement":             len(no_movement),
+                    "avg_clv_pp":              avg_clv,
+                    "beat_close_pct":          round(len(beat_close) / total * 100, 1) if total > 0 else 0.0,
+                    "beat_close_hit_rate_pct": round(beat_hits / len(beat_close) * 100, 1) if beat_close else None,
+                    "lost_close_hit_rate_pct": round(lost_hits / len(lost_close) * 100, 1) if lost_close else None,
+                    "no_move_hit_rate_pct":    round(
+                        sum(1 for c in no_movement if c["hit"]) / len(no_movement) * 100, 1
+                    ) if no_movement else None,
+                }
+                print(f"[auditor] CLV summary: {total} picks with data, "
+                      f"avg CLV {avg_clv:+.1f}pp, "
+                      f"{len(beat_close)} beat close, {len(lost_close)} lost close")
+    except Exception as e:
+        print(f"[auditor] WARNING: could not compute clv_summary: {e}")
+        clv_summary = {}
+
     summary = {
         "generated_at":    TODAY.strftime("%Y-%m-%d"),
         "entries_included": len(audit_log),
@@ -1406,6 +1464,7 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         "recent_recommendations":  recent_recommendations[-10:],
         "skip_validation":         skip_validation,
         "human_flag_precision":    human_flag_precision,
+        "clv_summary":             clv_summary,
     }
 
     with open(AUDIT_SUMMARY_JSON, "w") as f:

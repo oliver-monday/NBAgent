@@ -565,6 +565,10 @@ def pretip_sweep(window_minutes: int = 75) -> None:
         # Capture morning implied prob before overwriting
         morning_implied = pick.get("market_implied_prob")
 
+        # Persist morning odds for CLV tracking (set once, never overwritten by later pretip runs)
+        if "morning_implied_prob" not in pick and morning_implied is not None:
+            pick["morning_implied_prob"] = morning_implied
+
         # Overwrite with latest odds
         pick["market_line"]         = match["line"]
         pick["market_implied_prob"] = match["implied_prob"]
