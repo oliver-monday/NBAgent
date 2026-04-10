@@ -1759,10 +1759,25 @@ function buildEdgeLine(p) {{
   return `<div class="edge-line ${{cls}}">${{tier}}${{edgeStr}}</div>`;
 }}
 
+// Headline confidence shown on pick cards. Prefers the calibrated probability
+// from bet_recommendation (system's actual expected hit rate after historical
+// calibration) — falls back to raw confidence_pct when no market data exists.
+function displayConf(p) {{
+  const br = p.bet_recommendation;
+  if (br && br.calibrated_prob != null) {{
+    return Math.round(br.calibrated_prob);
+  }}
+  return p.confidence_pct;
+}}
+
 function buildOddsSizing(p) {{
   const br = p.bet_recommendation;
   if (!br || !br.recommendation_tier || br.recommendation_tier === 'NO_MARKET') return '';
   const lines = [];
+  // System conf (raw stated confidence) shown alongside calibrated data so the
+  // user can see both numbers when they care about the distinction. Only rendered
+  // when bet_recommendation exists — otherwise the headline already shows raw conf.
+  if (p.confidence_pct != null) lines.push(`<div>System conf: ${{p.confidence_pct}}%</div>`);
   if (p.market_line != null) lines.push(`<div>Market line: ${{p.market_line}}</div>`);
   if (br.market_implied_prob != null) lines.push(`<div>Market prob: ${{br.market_implied_prob.toFixed(1)}}%</div>`);
   if (br.calibration_band) lines.push(`<div>Calibration band: ${{br.calibration_band}}</div>`);
@@ -1905,7 +1920,7 @@ function renderPicks() {{
               ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
             </div>
             ${{buildHitRate(p)}}
-            <div class="conf-line">${{p.confidence_pct}}% conf</div>
+            <div class="conf-line">${{displayConf(p)}}% conf</div>
             ${{buildEdgeLine(p)}}
           </div>
         </div>`;
@@ -2358,7 +2373,7 @@ function renderTopPicks() {{
           <div class="pick-line">
             ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
           </div>
-          <div class="tp-conf">${{p.confidence_pct}}% conf</div>
+          <div class="tp-conf">${{displayConf(p)}}% conf</div>
           ${{buildEdgeLine(p)}}
         </div>
       </div>`;
@@ -2408,7 +2423,7 @@ function renderBestBets() {{
           <div class="pick-line">
             ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
           </div>
-          <div class="tp-conf">${{p.confidence_pct}}% conf</div>
+          <div class="tp-conf">${{displayConf(p)}}% conf</div>
           <div class="bb-edge ${{edgeCls}}">${{edgeStr}}</div>
         </div>
       </div>`;
