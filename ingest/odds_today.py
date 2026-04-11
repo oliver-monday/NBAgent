@@ -469,6 +469,21 @@ def pretip_sweep(window_minutes: int = 360) -> None:
           f"{skipped_started} started >{PRETIP_GRACE_MINUTES}min ago, "
           f"{skipped_no_team} no picks)")
 
+    # Build set of team abbreviations whose games have already commenced.
+    # Used in step 6 to prevent overwriting market_implied_prob with live lines
+    # — the grace window still allows fetch/dedup/snapshot for these games, but
+    # picks with an existing pre-game price must preserve it so CLV stays clean.
+    commenced_teams: set[str] = set()
+    for ev in in_window_events:
+        if ev["minutes_to_tip"] < 0:
+            if ev["home_abbr"]:
+                commenced_teams.add(ev["home_abbr"])
+            if ev["away_abbr"]:
+                commenced_teams.add(ev["away_abbr"])
+    if commenced_teams:
+        print(f"[odds-pretip] Commenced teams (live line guard active): "
+              f"{', '.join(sorted(commenced_teams))}")
+
     if not in_window_events:
         print("[odds-pretip] No games in pre-tip window — nothing to fetch")
         sys.exit(0)
@@ -576,6 +591,23 @@ def pretip_sweep(window_minutes: int = 360) -> None:
         match = fetched.get(norm, {}).get(lookup_key)
         if not match:
             continue
+
+        # Tip-off guard: do not overwrite market_implied_prob with post-tip lines.
+        # If the pick's game has commenced and it already has a pre-game price,
+        # the existing value is more trustworthy than a potentially live line.
+        pick_team = pick.get("team", "")
+        pick_opp  = pick.get("opponent", "")
+        if (pick_team in commenced_teams or pick_opp in commenced_teams):
+            if pick.get("market_implied_prob") is not None:
+                # Already has pre-game price — skip to preserve CLV integrity
+                continue
+            # No prior price — this is the first capture. Allow it through
+            # but log a warning since it's post-tip.
+            print(
+                f"[odds-pretip] WARNING: first odds capture for "
+                f"{pick.get('player_name')} {pick.get('prop_type')} "
+                f"T{pick.get('pick_value')} is post-tip — CLV may be unreliable"
+            )
 
         # Capture morning implied prob before overwriting
         morning_implied = pick.get("market_implied_prob")
