@@ -2567,6 +2567,8 @@ skips rules:
 - Do NOT emit skip records for props where the player was entirely excluded (OUT/DOUBTFUL).
 - rule_context must contain exactly the fields defined for that skip_reason — no extra fields.
 - tier_considered is the tier value that was blocked (e.g. 15 for a T15 PTS skip).
+
+CRITICAL: Verify your JSON is well-formed before stopping. Every opening {{ must have a matching }}. Every opening [ must have a matching ]. Every string must be closed with a matching quote. Do not emit a trailing comma after the last element in any array or object.
 """
 
 
@@ -2688,6 +2690,8 @@ Your response MUST begin with a JSON object at character 0. No preamble. No "Her
     }}}}
   ]
 }}}}
+
+CRITICAL: Verify your JSON is well-formed before stopping. Every opening {{ must have a matching }}. Every opening [ must have a matching ]. Every string must be closed with a matching quote. Do not emit a trailing comma after the last element in any array or object.
 """
 
 
@@ -3704,6 +3708,8 @@ skips rules:
 - rule_context must contain exactly the fields defined for that skip_reason — no extra fields.
 - tier_considered is the tier value that was blocked (e.g. 15 for a T15 PTS skip).
 
+CRITICAL: Verify your JSON is well-formed before stopping. Every opening {{ must have a matching }}. Every opening [ must have a matching ]. Every string must be closed with a matching quote. Do not emit a trailing comma after the last element in any array or object.
+
 ## AUDITOR FEEDBACK FROM PREVIOUS DAYS
 {audit_context}
 
@@ -3996,6 +4002,8 @@ Your response MUST begin with a JSON array at character 0. No preamble.
 Every pick in the vulnerability cards above must appear exactly once in the output array.
 Do not omit any pick. Do not add picks that were not in the input.
 After the closing ] you may add a brief note (2 lines maximum). Nothing more.
+
+CRITICAL: Verify your JSON is well-formed before stopping. Every opening {{ must have a matching }}. Every opening [ must have a matching ]. Every string must be closed with a matching quote. Do not emit a trailing comma after the last element in any array or object.
 """
 
 
