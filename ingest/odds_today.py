@@ -78,6 +78,11 @@ VALID_PROP_TYPES: set[str] = set(PROP_MARKET_MAP.values())
 # ensures delayed GitHub Actions runs can still capture recently-tipped games.
 PRETIP_GRACE_MINUTES = 30
 
+# Minimum improvement in minutes-to-tip to justify a re-fetch of the same game.
+# Prevents marginal re-fetches from wasting credits (e.g., two cron runs 5 min apart
+# due to GitHub Actions jitter). With hourly cron, typical improvement is ~60 min.
+CLOSING_LINE_MIN_IMPROVEMENT = 30
+
 # Valid tier thresholds per prop type — mirrors VALID_TIERS in analyst.py.
 # Used to filter prefetched odds lines to only tiers the system can pick.
 # Line convention: FD line = tier_value - 0.5 (e.g. T20 PTS → 19.5 OVER).
@@ -502,12 +507,59 @@ def pretip_sweep(window_minutes: int = 360) -> None:
         except Exception as e:
             print(f"[odds-pretip] WARNING: could not read odds_pretip.json: {e}")
 
-    already_fetched = set(pretip_data.get("snapshots", {}).keys())
-    to_fetch = [ev for ev in in_window_events if ev["event_id"] not in already_fetched]
+    # Closing-line model: re-fetch games when we're meaningfully closer to
+    # tip-off than the prior snapshot, converging on the true closing line.
+    # The tip-off guard in step 6 prevents post-tip contamination — the last
+    # successful pre-tip fetch becomes the definitive closing line.
+    prior_snapshots = pretip_data.get("snapshots", {})
+    to_fetch = []
+    n_refetch = 0
+    n_skip_commenced = 0
+    n_skip_marginal = 0
+
+    for ev in in_window_events:
+        eid = ev["event_id"]
+        current_mtt = ev["minutes_to_tip"]  # minutes to tip right now
+
+        # Never re-fetch games that have already started — snapshot is locked
+        if current_mtt < 0:
+            n_skip_commenced += 1
+            continue
+
+        prior = prior_snapshots.get(eid)
+        if prior is None:
+            # First fetch for this game — always include
+            to_fetch.append(ev)
+            continue
+
+        prior_mtt = prior.get("minutes_to_tip")
+        if prior_mtt is None:
+            # Prior snapshot missing minutes_to_tip — re-fetch to be safe
+            to_fetch.append(ev)
+            n_refetch += 1
+            continue
+
+        improvement = prior_mtt - current_mtt
+        if improvement >= CLOSING_LINE_MIN_IMPROVEMENT:
+            to_fetch.append(ev)
+            n_refetch += 1
+        else:
+            n_skip_marginal += 1
+
+    status_parts = []
+    if n_refetch:
+        status_parts.append(f"{n_refetch} re-fetch (closer to tip)")
+    if n_skip_commenced:
+        status_parts.append(f"{n_skip_commenced} commenced (locked)")
+    if n_skip_marginal:
+        status_parts.append(f"{n_skip_marginal} marginal (<{CLOSING_LINE_MIN_IMPROVEMENT}min improvement)")
+    first_fetch = len(to_fetch) - n_refetch
+    if first_fetch > 0:
+        status_parts.append(f"{first_fetch} first capture")
+    print(f"[odds-pretip] Closing-line filter: {', '.join(status_parts) or 'no events'}")
 
     if not to_fetch:
-        print(f"[odds-pretip] All {len(in_window_events)} in-window game(s) already "
-              f"fetched — skipping")
+        print(f"[odds-pretip] No games qualify for fetch — skipping")
         sys.exit(0)
 
     print(f"[odds-pretip] Fetching odds for {len(to_fetch)} game(s) "
@@ -556,8 +608,13 @@ def pretip_sweep(window_minutes: int = 360) -> None:
             "players":        event_parsed,
         }
 
-        print(f"[odds-pretip] Fetched: {ev['away_abbr']} @ {ev['home_abbr']} "
-              f"(tips in {ev['minutes_to_tip']} min)")
+        prior = prior_snapshots.get(event_id)
+        if prior and prior.get("minutes_to_tip") is not None:
+            print(f"[odds-pretip] Re-fetched: {ev['away_abbr']} @ {ev['home_abbr']} "
+                  f"(was +{prior['minutes_to_tip']}min, now +{ev['minutes_to_tip']}min to tip)")
+        else:
+            print(f"[odds-pretip] Fetched: {ev['away_abbr']} @ {ev['home_abbr']} "
+                  f"(tips in {ev['minutes_to_tip']} min)")
 
     if not fetched:
         # Still save the pretip file even if no FanDuel data parsed —
