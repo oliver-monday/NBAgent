@@ -109,7 +109,23 @@ jobs:
           git checkout -- . 2>/dev/null || true
           git pull --rebase origin main
 
-          [ -f "data/picks.json.local" ] && mv "data/picks.json.local" "data/picks.json"
+          # Save origin's picks.json (post-pull) for merge comparison
+          [ -f "data/picks.json" ] && cp "data/picks.json" "data/picks.json.origin"
+
+          # Merge guard: if origin has more today-picks than local, analyst
+          # pushed a new pick set between our checkout and now — use origin as
+          # base and overlay local's injury mutations (voided, void_reason,
+          # lineup_risk, injury_status_at_check, injury_check_time, lineup_update).
+          # On any error, falls back to local copy (preserves pre-guard behavior).
+          if [ -f "data/picks.json.local" ] && [ -f "data/picks.json.origin" ]; then
+            python ingest/merge_picks.py \
+              --local "data/picks.json.local" \
+              --origin "data/picks.json.origin" \
+              --output "data/picks.json"
+            rm -f "data/picks.json.local" "data/picks.json.origin"
+          elif [ -f "data/picks.json.local" ]; then
+            mv "data/picks.json.local" "data/picks.json"
+          fi
 
           if [ -n "$(git status --porcelain -- data/picks.json)" ]; then
             git add data/picks.json
@@ -136,9 +152,31 @@ jobs:
           git checkout -- . 2>/dev/null || true
           git pull --rebase origin main
 
+          # Save origin's picks.json (post-pull) for merge comparison
+          [ -f "data/picks.json" ] && cp "data/picks.json" "data/picks.json.origin"
+
+          # Restore non-picks files directly; picks.json is handled by merge guard below
           for f in "data/picks.json" "data/opportunity_flags.json"; do
+            if [ "$f" = "data/picks.json" ]; then
+              continue  # handled by merge guard
+            fi
             [ -f "$f.local" ] && mv "$f.local" "$f"
           done
+
+          # Merge guard: if origin has more today-picks than local, analyst
+          # pushed a new pick set between our checkout and now — use origin as
+          # base and overlay local's injury mutations (voided, void_reason,
+          # lineup_risk, injury_status_at_check, injury_check_time, lineup_update).
+          # On any error, falls back to local copy (preserves pre-guard behavior).
+          if [ -f "data/picks.json.local" ] && [ -f "data/picks.json.origin" ]; then
+            python ingest/merge_picks.py \
+              --local "data/picks.json.local" \
+              --origin "data/picks.json.origin" \
+              --output "data/picks.json"
+            rm -f "data/picks.json.local" "data/picks.json.origin"
+          elif [ -f "data/picks.json.local" ]; then
+            mv "data/picks.json.local" "data/picks.json"
+          fi
 
           CHANGED=0
           for f in "data/picks.json" "data/opportunity_flags.json"; do
