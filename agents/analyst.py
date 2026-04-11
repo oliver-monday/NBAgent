@@ -4079,15 +4079,72 @@ def apply_review_flags(
     Writes 'source': 'auto' on every entry so build_site.py can distinguish
     auto-review badges from manual ones.
 
-    Skips writing if the picks_review file already exists (manual review takes priority).
+    Write guard (staleness-aware, added 2026-04-11):
+      • Manual review files (any entry missing 'source': 'auto') are NEVER
+        overwritten — manual review always takes priority.
+      • Purely auto-generated files that already cover the current pick set
+        are left alone (no unnecessary API-burn regeneration).
+      • Purely auto-generated files that are stale relative to the current
+        pick set (e.g. same-day analyst re-run with a different shortlist)
+        are regenerated.
+      • Missing file → regenerate normally.
     Skips writing if verdict list is empty or cannot be matched to any pick.
     """
     if review_path.exists():
-        print(
-            f"[analyst] picks_review file already exists for today — "
-            f"skipping auto-review write (manual review takes priority)"
+        # Check whether the existing file is purely auto-generated
+        # and whether it covers the current pick set.
+        try:
+            with open(review_path) as f:
+                existing_review = json.load(f)
+        except Exception:
+            existing_review = []
+
+        has_manual = any(
+            e.get("source") != "auto" for e in existing_review
         )
-        return
+
+        if has_manual:
+            # File contains manual (Oliver-written) entries — never overwrite
+            print(
+                "[analyst] picks_review file has manual entries — "
+                "skipping auto-review write (manual review takes priority)"
+            )
+            return
+
+        # File is purely auto-generated — check if it covers the current picks
+        existing_keys = {
+            (
+                (e.get("player_name") or "").strip().lower(),
+                e.get("prop_type", ""),
+                e.get("pick_value"),
+            )
+            for e in existing_review
+        }
+        current_keys = {
+            (
+                (p.get("player_name") or "").strip().lower(),
+                p.get("prop_type", ""),
+                p.get("pick_value"),
+            )
+            for p in picks
+        }
+
+        new_picks = current_keys - existing_keys
+        if not new_picks:
+            # Existing auto-review covers all current picks — no action needed
+            print(
+                f"[analyst] picks_review file (auto) covers all {len(current_keys)} "
+                f"current picks — skipping regeneration"
+            )
+            return
+
+        # Stale: current picks have entries not covered by existing review
+        print(
+            f"[analyst] picks_review file is STALE — covers {len(existing_keys)} picks "
+            f"but current run has {len(current_keys)} ({len(new_picks)} uncovered). "
+            f"Regenerating."
+        )
+        # Fall through to regenerate the review file below
 
     if not verdicts:
         print("[analyst] Review returned no verdicts — skipping picks_review file")
