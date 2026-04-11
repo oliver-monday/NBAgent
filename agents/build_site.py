@@ -1945,8 +1945,11 @@ function renderPicks() {{
         const whr = info.without_player_hit_rate_pct !== undefined
           ? ` · ${{info.without_player_hit_rate_pct}}% w/o ${{triggeredBy.split(' ').pop()}}`
           : '';
+        const mkt = (info.market_implied_pct !== undefined && info.market_implied_pct !== null)
+          ? ` <span style="color:${{info.market_implied_pct <= (info.hit_rate_pct || 0) ? '#4CAF50' : '#FF9800'}};font-size:10px">(mkt ${{Math.round(info.market_implied_pct)}}%)</span>`
+          : '';
         return `<div style="margin:3px 0"><span style="color:#F5A623;font-weight:600">${{stat}} T${{info.tier}}</span>` +
-               ` <span style="color:var(--muted);font-size:11px">${{hr}}${{whr}}</span></div>`;
+               ` <span style="color:var(--muted);font-size:11px">${{hr}}${{whr}}</span>${{mkt}}</div>`;
       }}).join('');
 
       // Upgrade rows (upgrade_tiers — existing pick, higher tier now available)
@@ -1954,8 +1957,11 @@ function renderPicks() {{
       const utLines = Object.entries(utiers).map(([stat, info]) => {{
         const hr      = info.hit_rate_pct !== undefined ? ` ${{info.hit_rate_pct}}%` : '';
         const morning = info.morning_tier !== undefined ? `T${{info.morning_tier}}→` : '';
+        const mkt = (info.market_implied_pct !== undefined && info.market_implied_pct !== null)
+          ? ` <span style="color:${{info.market_implied_pct <= (info.hit_rate_pct || 0) ? '#4CAF50' : '#FF9800'}};font-size:10px">(mkt ${{Math.round(info.market_implied_pct)}}%)</span>`
+          : '';
         return `<div style="margin:3px 0"><span style="color:#64B5F6;font-weight:600">${{stat}} ${{morning}}T${{info.tier}}</span>` +
-               ` <span style="color:var(--muted);font-size:11px">${{hr}} (upgrade)</span></div>`;
+               ` <span style="color:var(--muted);font-size:11px">${{hr}} (upgrade)</span>${{mkt}}</div>`;
       }}).join('');
 
       const tierContent = (qtLines + utLines) ||

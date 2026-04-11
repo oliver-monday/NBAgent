@@ -31,6 +31,7 @@ PICKS_JSON    = DATA / "picks.json"
 LINEUPS_JSON  = DATA / "lineups_today.json"
 INJURIES_JSON = DATA / "injuries_today.json"
 MASTER_CSV    = DATA / "nba_master.csv"
+ODDS_AVAILABLE_JSON = DATA / "odds_available.json"
 
 # ── Config ─────────────────────────────────────────────────────────────────────
 MODEL          = "claude-sonnet-4-6"
@@ -49,6 +50,17 @@ _ABBR_NORM: dict[str, str] = {
 def _norm(abbr: str) -> str:
     a = str(abbr).upper().strip()
     return _ABBR_NORM.get(a, a)
+
+
+def _norm_odds_name(name: str) -> str:
+    """Normalize player name to match odds_available.json player keys.
+
+    Matches the normalization used by ingest/odds_today.py: lowercase, strip
+    all punctuation (keeping only [a-z0-9 ]), collapse whitespace. DIFFERENT
+    from _norm() — that one handles team abbreviations.
+    """
+    import re
+    return re.sub(r"[^a-z0-9 ]", "", str(name).lower()).strip()
 
 
 # ── Player stats helpers ────────────────────────────────────────────────────────
@@ -307,6 +319,28 @@ def build_opportunity_suggestions(
                     if status in ("OUT", "DOUBTFUL", "OFS"):
                         excluded_players.add(row["player_name"].strip().lower())
 
+    # Load today's FanDuel market availability — used to annotate each tier
+    # entry with market implied probability so users can see edge at a glance.
+    # Graceful no-op on missing/stale file.
+    odds_players: dict = {}
+    if ODDS_AVAILABLE_JSON.exists():
+        try:
+            with open(ODDS_AVAILABLE_JSON) as fh:
+                odds_data = json.load(fh)
+            if odds_data.get("date") == TODAY_STR:
+                odds_players = odds_data.get("players", {}) or {}
+                print(
+                    f"[lineup_update] loaded odds_available: "
+                    f"{len(odds_players)} players with market lines"
+                )
+            else:
+                print(
+                    f"[lineup_update] odds_available.json stale "
+                    f"(date={odds_data.get('date')} vs today={TODAY_STR}) — skipping"
+                )
+        except Exception as e:
+            print(f"[lineup_update] WARNING: could not load odds_available.json: {e}")
+
     # Morning spread from player_stats (written at analyst run time)
     # Map: norm_team → spread_abs (positive float, team's perspective unsigned)
     morning_spreads: dict[str, float] = {}
@@ -442,6 +476,21 @@ def build_opportunity_suggestions(
                     if without_hr is not None and without_n is not None and without_n >= 3:
                         tier_entry["without_player_hit_rate_pct"] = int(round(without_hr * 100))
                         tier_entry["without_player_n"]            = without_n
+
+                    # Enrich with FanDuel market implied probability at this
+                    # exact tier. Graceful no-op when no matching market line.
+                    odds_key = _norm_odds_name(tm_name)
+                    player_odds = odds_players.get(odds_key, {})
+                    prop_odds = player_odds.get(prop, []) or []
+                    for ol in prop_odds:
+                        if ol.get("tier") == tier:
+                            mkt_prob = ol.get("implied_prob")
+                            if mkt_prob is not None:
+                                tier_entry["market_implied_pct"] = mkt_prob
+                            mkt_odds = ol.get("odds")
+                            if mkt_odds is not None:
+                                tier_entry["market_odds"] = mkt_odds
+                            break
 
                     existing_pick = morning_picks_map.get((name_lower, prop))
                     if existing_pick is None:
