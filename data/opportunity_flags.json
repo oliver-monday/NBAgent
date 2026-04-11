@@ -1703,5 +1703,253 @@
     "spread_delta": null,
     "morning_context": null,
     "reasoning": "PTS T10 90% [up]; REB T4 70% [up]; 3PM T2 85% [up]"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "teammate",
+    "player_name": "Aaron Gordon",
+    "team": "DEN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": null,
+    "reasoning": "AST T2 75% [stable]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5)"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "teammate",
+    "player_name": "Cameron Johnson",
+    "team": "DEN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "PTS T10 75% [up]; AST T2 70% [up]; 3PM T1 90% [stable]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5); skipped this morning (merit_below_floor)"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "teammate",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 95,
+        "trend": "stable",
+        "volatility": "consistent"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "PTS T20 75% [stable]; AST T4 95% [stable]; 3PM T2 80% [up]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5); skipped this morning (merit_below_floor)"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate"
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": null,
+    "reasoning": "PTS T10 90% [stable]; REB T8 75% [stable]; 3PM T1 70% [up]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5)"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Isaiah Hartenstein",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": null,
+    "reasoning": "REB T6 70% [stable]; AST T2 80% [down]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5)"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": null,
+    "reasoning": "PTS T15 70% [stable]; AST T4 70% [up]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5)"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 25,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate"
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 85,
+        "trend": "up",
+        "volatility": "moderate"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": null,
+    "reasoning": "PTS T25 70% [stable]; AST T4 90% [stable]; 3PM T1 85% [up]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5)"
+  },
+  {
+    "date": "2026-04-10",
+    "generated_at": "2026-04-10T17:59:02.550769-07:00",
+    "triggered_by": "Jamal Murray",
+    "triggered_by_team": "DEN",
+    "side": "teammate",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "REB": {
+        "tier": 12,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "AST": {
+        "tier": 10,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
+    "morning_context": "skipped this morning (volatile_weak_combo)",
+    "reasoning": "PTS T20 80% [stable]; REB T12 80% [stable]; AST T10 70% [stable]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5); skipped this morning (volatile_weak_combo)"
   }
 ]
