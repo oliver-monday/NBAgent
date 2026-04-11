@@ -1815,13 +1815,16 @@ Treat them as requiring exceptional justification — do not pick them by defaul
     tier) before selecting. The tier calibrates below floor league-wide; a higher individual bar
     is needed to compensate. Essentially never select PTS T30 — season hit rate 56.8% (n=81).
   PTS T25 BLOWOUT HARD SKIP: If spread_abs >= 15 AND the player's team is the favored side
-    (negative spread), do NOT select PTS T25 or T30 for any player regardless of hit rate,
-    iron_floor tag, or elite scorer status. This is a hard skip — do not apply a confidence
-    cap and proceed. Emit a skip record with skip_reason=blowout_t25_skip.
-    Rationale: confirmed three times (Jokic Mar 17: spread_abs=15.5, 25min, 8 PTS; SGA Mar 18:
-    spread_abs=19.5, 26min, 20 PTS; manually caught pre-game). At extreme spreads, even elite
-    scorers face early rest and role subordination that makes T25 structurally unachievable.
-    The current cap-at-74% approach still generates the pick; a hard skip prevents it entirely.
+    (negative spread), do NOT select PTS T25 or T30. Skip the pick entirely and emit a skip
+    record with skip_reason=blowout_t25_skip.
+    EXCEPTION — elite scorers: Players with raw_avgs PTS >= 27.0 are exempt from this hard
+    skip. They proceed through normal T25 evaluation: the 80% hit rate bar (8+/10) still
+    applies, and the spread_abs >= 15 confidence cap (74% max) still constrains the pick.
+    A T25 pick for an elite scorer at spread_abs >= 15 survives only with genuinely elite
+    individual credentials (8+/10 hit rate) at a capped confidence (74%). H27 backtest:
+    primary scorers at spread_abs >= 15 hit T25 at 58.8% population — below floor, but elite
+    scorers with 8+/10 individual rates significantly outperform the population.
+    Non-elite scorers (raw_avgs PTS < 27.0) are still hard-skipped at spread_abs >= 15.
     Note: T20 and below for elite scorers in spread_abs 15+ games are still subject to the
     existing spread_abs >= 15 cap rule (74% max) — this hard skip applies only to T25 and T30.
 
@@ -2144,7 +2147,15 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   means nothing if the directional signal is declining — the 0-make outcome is within range.
   This rule does not apply to PTS or AST (trend has shown no sequential signal for those stats).
   If stepping down would take the tier below the minimum valid tier (T1 for 3PM), skip the
-  3PM pick entirely for that player.
+  3PM pick entirely for that player — UNLESS the player has iron_floor on 3PM OR a 9+/10
+  hit rate at T1. In that case, hold at T1 (do not skip) and apply a -5% confidence penalty
+  to reflect the declining trend. Rationale: iron_floor or 9+/10 at T1 confirms a structural
+  floor of 1+ make per game; the declining trend is real signal that warrants a confidence
+  deduction, but does not justify eliminating a near-certain prop. Fox 3PM T1 (actual 2) and
+  Wembanyama 3PM T1 (actual 2) were both false-skipped by the unconditional T1 step-down on
+  2026-04-10. This exception applies only to the trend=down step-down from T1 — the
+  trend=down + tough DvP hard skip and the trend=down + limited minutes hard skip still
+  override it when their conditions are met.
 - 3PM hard skip — trend=down AND limited minutes:
   If a player's 3PM trend is "down" AND their avg_minutes_last5 is ≤ 30, SKIP all 3PM picks
   for that player, including T1. Do not apply the step-down rule — skip outright.
@@ -2167,36 +2178,32 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   This skip rule is the sole exception — it applies only when BOTH conditions are met
   (trend=down AND tough DvP). A player with trend=down alone still uses the step-down rule.
   A player with tough DvP alone and trend=stable or up is unaffected.
-- 3PM hard skip — trend=down AND blowout_risk=True:
-  If a player's 3PM trend is "down" AND BLOWOUT_RISK=True is shown in their header (meaning
-  their team is heavily favored, spread_abs > 8), SKIP all 3PM picks for that player,
-  including T1. Do not apply the step-down rule — skip outright.
-  This rule overrides the [iron_floor] tag. Iron_floor reflects historical frequency of
-  hitting the tier; it does not protect against game-script volume compression in blowouts.
-  When a favored team's lead grows large, 3PM attempts decline disproportionately in the
-  fourth quarter — stars are benched, shot selection becomes conservative, and the floor on
-  3PM collapses regardless of the player's historical pattern.
-  Rationale: Donovan Mitchell 3PM T1 miss on 2026-03-13 in a 33-point CLE blowout win.
-  The system correctly applied BLOWOUT -10% and the trend=down step-down to T1, and the
-  pick still missed. The iron_floor tag was present and provided no protection. The
-  combination of declining trend + winning-side blowout makes even T1 3PM structurally
-  unreliable — the mechanics that produce zero makes are in play regardless of the tier floor.
-  Note: this skip applies only to BLOWOUT_RISK=True (favored team, spread_abs > 8).
-  A player on the losing-side team in a blowout is subject to the existing BLOWOUT_RISK
-  rules and secondary-scorer skip rules — not this rule. The mechanism here is specific to
-  winning-side players whose minutes get compressed when the game is decided early.
-- 3PM hard skip — extreme blowout regardless of trend (spread_abs ≥ 19):
-  If BLOWOUT_RISK=True AND spread_abs ≥ 19, SKIP all 3PM picks for ALL players on the
+- 3PM trend=down in blowout context (spread_abs 8–18):
+  When a player's 3PM trend is "down" AND BLOWOUT_RISK=True (spread_abs > 8 and < 19),
+  do NOT apply a hard skip. Apply the existing trend=down mandatory step-down rule instead
+  (one tier lower than your analytically selected floor). The step-down provides adequate
+  downside coverage.
+  Rationale: H19 backtest (2026-03-22, n=96–137) showed blowout_win 3PM hits at 78.8–79.2%
+  (lift=1.097–1.103) — above the 71.8% baseline. Players logging 24+ minutes in blowout
+  wins get catch-and-shoot opportunities in a relaxed offensive environment; the garbage-time
+  volume collapse that motivated the original hard skip only affects players below the
+  24-minute floor already excluded from pick consideration. The hard skip was blocking a
+  high-hit-rate population.
+  The trend=down step-down rule (defined above in this section) still applies normally —
+  step down one tier, and if the stepped-down tier does not qualify on hit rate, skip the
+  pick via normal merit evaluation. The T1 iron_floor exception (also defined above) applies
+  here: if the step-down reaches T1 and the player has iron_floor or 9+/10 at T1, hold at
+  T1 with a -5% confidence penalty instead of skipping.
+  Exception — extreme spreads: spread_abs >= 19 is handled by the separate unconditional
+  hard skip below (unchanged). Do not apply this relaxed rule at spread_abs >= 19.
+- 3PM hard skip — extreme blowout regardless of trend (spread_abs >= 19):
+  If BLOWOUT_RISK=True AND spread_abs >= 19, SKIP all 3PM picks for ALL players on the
   favored team, regardless of trend direction. This rule fires even when trend=up or
   trend=stable. Do not apply step-downs — skip outright including T1.
   Rationale: SGA went 0-for-3 on threes in a 29-point OKC blowout win on 2026-03-18
-  despite trend=up and a 9/10 T1 hit rate. At spread_abs ≥ 19 the game is effectively
+  despite trend=up and a 9/10 T1 hit rate. At spread_abs >= 19 the game is effectively
   decided before tip-off — shot selection collapses toward drives and free throws
-  regardless of the player's trend or role. The existing trend=down rule correctly handles
-  moderate blowouts; this companion rule closes the gap for extreme spreads where even
-  trend=up players face structural volume compression.
-  This rule is additive to the trend=down rule: if trend=down AND spread_abs ≥ 8, the
-  trend=down rule fires first. If trend=up or stable AND spread_abs ≥ 19, this rule fires.
+  regardless of the player's trend or role.
   skip_reason: 3pm_blowout_trend_down (reuse existing enum for auditor consistency).
 - PTS, AST: insufficient sequential signal. No adjustment needed based on last-game result.
 - 3PM confidence ceiling — 80% maximum for non-iron-floor picks:
@@ -2279,33 +2286,47 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     (74% maximum) to ALL players regardless of elite scorer status. At extreme spreads (15+),
     even elite scorers face minutes compression and early rest — the exemption applies only in
     the 8–14 spread range. Do not apply the exemption at spread_abs >= 15 under any
-    circumstances. Additionally, PTS T25 and T30 are hard-skipped entirely at spread_abs >= 15
-    on the favored side — see PTS T25 BLOWOUT HARD SKIP rule in TIER CEILING RULES above.
+    circumstances. Note: PTS T25 for elite scorers (raw_avgs PTS >= 27.0) is NOT hard-skipped
+    at spread_abs >= 15 — it proceeds through normal T25 evaluation at the 74% cap. Non-elite
+    scorers are still hard-skipped — see PTS T25 BLOWOUT HARD SKIP in TIER CEILING RULES.
 - "competitive" split = historical hit rate in close games (spread_abs ≤ 6.5).
   "blowout_games" split = historical hit rate in non-competitive games (spread_abs > 6.5).
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
     in even when BLOWOUT_RISK is False — the pattern may be real.
 - When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
 - BLOWOUT_RISK SECONDARY SCORER SKIP: When BLOWOUT_RISK=True is shown in a player's quant
-  header (meaning the player's team is the heavily favored side, spread_abs > 8), AND the
-  player is not the team's primary scoring option (i.e. the player does not lead the team in
-  PPG or is not the designated first option), do NOT select any PTS pick for this player
-  regardless of hit rate. Skip the PTS pick entirely. Secondary scorers on heavily favored
-  teams face asymmetric usage compression in the second half of blowout games: stars get
-  pulled in Q4 garbage time, and secondary scorers' minutes and shot attempts compress when
-  the game is decided early. Their aggregate tier hit rates do not price in this game-script
-  effect.
+  header AND spread_abs >= 13.5, AND the player is not the team's primary scoring option
+  (i.e. the player does not lead the team in PPG or is not the designated first option),
+  do NOT select any PTS pick for this player regardless of hit rate. Skip the PTS pick
+  entirely and emit a skip record with skip_reason=blowout_secondary_scorer.
+  At spread_abs >= 13.5, the blowout is near-certain before tip-off — secondary scorer minutes
+  compress meaningfully and aggregate tier hit rates do not price in this game-script risk.
+  At spread_abs 8–13 (BLOWOUT_RISK=True but below the >= 13.5 threshold): do NOT apply this
+  hard skip. Instead, apply the standard BLOWOUT_RISK confidence penalty (-10 to -15pp)
+  from KEY RULES — SPREAD / BLOWOUT RISK above. Secondary scorers at spread_abs 8–13 hit
+  PTS props at above-baseline rates (H19 backtest, n=140, lift=1.083) — the hard skip was
+  over-restricting picks that actually succeed.
   CRITICAL DIRECTION CHECK: This rule applies ONLY to the favored side — players whose quant
   header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players. A secondary
   scorer on a large underdog faces a different game-script (possible increased usage in
   catch-up attempts) and this rule has no jurisdiction. When in doubt, check the quant
   header: if BLOWOUT_RISK=True is not shown, this rule does not fire.
-  Primary scorers (team PPG leaders, first options) are exempt from this skip because their
-  usage is more protected even in blowout scenarios.
-  PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the model's primary/secondary classification
-  is ambiguous (e.g. a high-AST player who is also a ball-handler), use the quant data as the
-  authoritative tiebreaker. Check today's quant context for whitelisted teammates on the same
-  team: if any teammate has a higher best qualifying PTS tier, that teammate is the primary
+  T10 FLOOR EXCEPTION: This skip does NOT apply when the pick tier is T10 (PTS OVER 10).
+  T10 is the system's minimum PTS tier with near-certain population hit rates; the secondary
+  scorer minute-compression risk is adequately handled by existing min_floor rules. If the
+  player's best qualifying PTS tier is T10 and they are a secondary scorer at spread_abs
+  >= 13.5, evaluate the T10 pick on normal merit — do not hard-skip it.
+  Primary scorers (team PPG leaders, first options) are exempt from this skip at all spread
+  levels because their usage is more protected even in blowout scenarios.
+  CO-PRIMARY SCORER GATE: A player with raw_avgs PTS >= 22.0 is always classified as PRIMARY
+  regardless of teammate tier comparison. Two players above this threshold on the same team
+  are co-primaries; neither triggers this skip. Example: Fox (raw_avgs PTS ~25) and
+  Wembanyama (raw_avgs PTS ~24) are both above 22.0 — both are primaries, this skip fires
+  for neither. This gate overrides the tier-based tiebreaker below.
+  PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the co-primary gate above does not apply
+  (both players have raw_avgs PTS < 22.0), use the quant data as the authoritative
+  tiebreaker. Check today's quant context for whitelisted teammates on the same team:
+  if any teammate has a higher best qualifying PTS tier, that teammate is the primary
   scorer and this player is the secondary scorer — regardless of ball-handler role, playmaking
   designation, or assist volume. Example: Mitchell's best PTS tier is T20 and Harden's is T15
   → Mitchell is primary, Harden is secondary, BLOWOUT_SECONDARY_SCORER fires for Harden's
@@ -3013,13 +3034,16 @@ Treat them as requiring exceptional justification — do not pick them by defaul
     tier) before selecting. The tier calibrates below floor league-wide; a higher individual bar
     is needed to compensate. Essentially never select PTS T30 — season hit rate 56.8% (n=81).
   PTS T25 BLOWOUT HARD SKIP: If spread_abs >= 15 AND the player's team is the favored side
-    (negative spread), do NOT select PTS T25 or T30 for any player regardless of hit rate,
-    iron_floor tag, or elite scorer status. This is a hard skip — do not apply a confidence
-    cap and proceed. Emit a skip record with skip_reason=blowout_t25_skip.
-    Rationale: confirmed three times (Jokic Mar 17: spread_abs=15.5, 25min, 8 PTS; SGA Mar 18:
-    spread_abs=19.5, 26min, 20 PTS; manually caught pre-game). At extreme spreads, even elite
-    scorers face early rest and role subordination that makes T25 structurally unachievable.
-    The current cap-at-74% approach still generates the pick; a hard skip prevents it entirely.
+    (negative spread), do NOT select PTS T25 or T30. Skip the pick entirely and emit a skip
+    record with skip_reason=blowout_t25_skip.
+    EXCEPTION — elite scorers: Players with raw_avgs PTS >= 27.0 are exempt from this hard
+    skip. They proceed through normal T25 evaluation: the 80% hit rate bar (8+/10) still
+    applies, and the spread_abs >= 15 confidence cap (74% max) still constrains the pick.
+    A T25 pick for an elite scorer at spread_abs >= 15 survives only with genuinely elite
+    individual credentials (8+/10 hit rate) at a capped confidence (74%). H27 backtest:
+    primary scorers at spread_abs >= 15 hit T25 at 58.8% population — below floor, but elite
+    scorers with 8+/10 individual rates significantly outperform the population.
+    Non-elite scorers (raw_avgs PTS < 27.0) are still hard-skipped at spread_abs >= 15.
     Note: T20 and below for elite scorers in spread_abs 15+ games are still subject to the
     existing spread_abs >= 15 cap rule (74% max) — this hard skip applies only to T25 and T30.
 
@@ -3205,7 +3229,15 @@ KEY RULES — SEQUENTIAL GAME CONTEXT:
   means nothing if the directional signal is declining — the 0-make outcome is within range.
   This rule does not apply to PTS or AST (trend has shown no sequential signal for those stats).
   If stepping down would take the tier below the minimum valid tier (T1 for 3PM), skip the
-  3PM pick entirely for that player.
+  3PM pick entirely for that player — UNLESS the player has iron_floor on 3PM OR a 9+/10
+  hit rate at T1. In that case, hold at T1 (do not skip) and apply a -5% confidence penalty
+  to reflect the declining trend. Rationale: iron_floor or 9+/10 at T1 confirms a structural
+  floor of 1+ make per game; the declining trend is real signal that warrants a confidence
+  deduction, but does not justify eliminating a near-certain prop. Fox 3PM T1 (actual 2) and
+  Wembanyama 3PM T1 (actual 2) were both false-skipped by the unconditional T1 step-down on
+  2026-04-10. This exception applies only to the trend=down step-down from T1 — the
+  trend=down + tough DvP hard skip and the trend=down + limited minutes hard skip still
+  override it when their conditions are met.
 - 3PM hard skip — trend=down AND limited minutes:
   If a player's 3PM trend is "down" AND their avg_minutes_last5 is ≤ 30, SKIP all 3PM picks
   for that player, including T1. Do not apply the step-down rule — skip outright.
@@ -3338,33 +3370,47 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     (74% maximum) to ALL players regardless of elite scorer status. At extreme spreads (15+),
     even elite scorers face minutes compression and early rest — the exemption applies only in
     the 8–14 spread range. Do not apply the exemption at spread_abs >= 15 under any
-    circumstances. Additionally, PTS T25 and T30 are hard-skipped entirely at spread_abs >= 15
-    on the favored side — see PTS T25 BLOWOUT HARD SKIP rule in TIER CEILING RULES above.
+    circumstances. Note: PTS T25 for elite scorers (raw_avgs PTS >= 27.0) is NOT hard-skipped
+    at spread_abs >= 15 — it proceeds through normal T25 evaluation at the 74% cap. Non-elite
+    scorers are still hard-skipped — see PTS T25 BLOWOUT HARD SKIP in TIER CEILING RULES.
 - "competitive" split = historical hit rate in close games (spread_abs ≤ 6.5).
   "blowout_games" split = historical hit rate in non-competitive games (spread_abs > 6.5).
   → If blowout_games hit rate is materially lower than competitive (e.g., 80%→50%), factor that
     in even when BLOWOUT_RISK is False — the pattern may be real.
 - When spread=n/a (no spread data available), rely on blowout_risk flag and qualitative judgment.
 - BLOWOUT_RISK SECONDARY SCORER SKIP: When BLOWOUT_RISK=True is shown in a player's quant
-  header AND spread_abs ≥ 15, AND the player is not the team's primary scoring option
+  header AND spread_abs >= 13.5, AND the player is not the team's primary scoring option
   (i.e. the player does not lead the team in PPG or is not the designated first option),
   do NOT select any PTS pick for this player regardless of hit rate. Skip the PTS pick
   entirely and emit a skip record with skip_reason=blowout_secondary_scorer.
-  At spread_abs ≥ 15, the blowout is near-certain before tip-off — secondary scorer minutes
+  At spread_abs >= 13.5, the blowout is near-certain before tip-off — secondary scorer minutes
   compress meaningfully and aggregate tier hit rates do not price in this game-script risk.
-  At spread_abs 8–14 (BLOWOUT_RISK=True but below the ≥15 threshold): do NOT apply this
+  At spread_abs 8–13 (BLOWOUT_RISK=True but below the >= 13.5 threshold): do NOT apply this
   hard skip. Instead, apply the standard BLOWOUT_RISK confidence penalty (-10 to -15pp)
-  from KEY RULES — SPREAD / BLOWOUT RISK above. Secondary scorers at spread_abs 8–14 hit
+  from KEY RULES — SPREAD / BLOWOUT RISK above. Secondary scorers at spread_abs 8–13 hit
   PTS props at above-baseline rates (H19 backtest, n=140, lift=1.083) — the hard skip was
   over-restricting picks that actually succeed.
   CRITICAL DIRECTION CHECK: This rule applies ONLY to the favored side — players whose quant
-  header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players.
+  header shows BLOWOUT_RISK=True. Do NOT apply this rule to underdog players. A secondary
+  scorer on a large underdog faces a different game-script (possible increased usage in
+  catch-up attempts) and this rule has no jurisdiction. When in doubt, check the quant
+  header: if BLOWOUT_RISK=True is not shown, this rule does not fire.
+  T10 FLOOR EXCEPTION: This skip does NOT apply when the pick tier is T10 (PTS OVER 10).
+  T10 is the system's minimum PTS tier with near-certain population hit rates; the secondary
+  scorer minute-compression risk is adequately handled by existing min_floor rules. If the
+  player's best qualifying PTS tier is T10 and they are a secondary scorer at spread_abs
+  >= 13.5, evaluate the T10 pick on normal merit — do not hard-skip it.
   Primary scorers (team PPG leaders, first options) are exempt from this skip at all spread
   levels because their usage is more protected even in blowout scenarios.
-  PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the model's primary/secondary classification
-  is ambiguous (e.g. a high-AST player who is also a ball-handler), use the quant data as the
-  authoritative tiebreaker. Check today's quant context for whitelisted teammates on the same
-  team: if any teammate has a higher best qualifying PTS tier, that teammate is the primary
+  CO-PRIMARY SCORER GATE: A player with raw_avgs PTS >= 22.0 is always classified as PRIMARY
+  regardless of teammate tier comparison. Two players above this threshold on the same team
+  are co-primaries; neither triggers this skip. Example: Fox (raw_avgs PTS ~25) and
+  Wembanyama (raw_avgs PTS ~24) are both above 22.0 — both are primaries, this skip fires
+  for neither. This gate overrides the tier-based tiebreaker below.
+  PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the co-primary gate above does not apply
+  (both players have raw_avgs PTS < 22.0), use the quant data as the authoritative
+  tiebreaker. Check today's quant context for whitelisted teammates on the same team:
+  if any teammate has a higher best qualifying PTS tier, that teammate is the primary
   scorer and this player is the secondary scorer — regardless of ball-handler role, playmaking
   designation, or assist volume. Example: Mitchell's best PTS tier is T20 and Harden's is T15
   → Mitchell is primary, Harden is secondary, BLOWOUT_SECONDARY_SCORER fires for Harden's
