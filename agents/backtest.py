@@ -156,6 +156,93 @@ H21_BLOWUP_THRESH    = 3      # actual < tier - this → blowup
 H21_MIN_MISSES       = 3      # min misses per player-stat combo for player-level analysis
 H21_MIN_N            = 15     # min next-game instances per bucket for a verdict
 
+# H27 — Primary Scorer Blowout PTS Performance
+H27_SPREAD_THRESHOLDS     = [10, 12, 15]  # maps to blowout_risk(8+), cap-74(12+), hard-skip(15+)
+H27_PTS_TIERS             = [15, 20, 25, 30]  # PTS tiers to test (the actionable ones)
+H27_MIN_N                 = 10   # min instances per cell for a population verdict
+H27_MIN_PLAYER_N          = 3    # min high-spread games per player for per-player table
+H27_ACTUAL_BLOWOUT_MARGIN = 15   # final margin threshold to classify "actual blowout"
+PRIMARY_BLOWOUT_JSON      = DATA / "backtest_primary_blowout.json"
+
+# H31 — Playoff Series Progression
+H31_STATS = ["PTS", "REB", "AST", "3PM"]
+H31_STAT_COL = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+H31_TIERS = {
+    "PTS": [15, 20, 25, 30],
+    "REB": [4, 6, 8, 10],
+    "AST": [2, 4, 6, 8],
+    "3PM": [1, 2, 3],
+}
+H31_KEY_TIER = {"PTS": 20, "REB": 6, "AST": 4, "3PM": 2}
+H31_PHASES = ["early", "mid", "late"]
+H31_MIN_PHASE_N           = 5    # min games in a phase for per-player rate
+H31_MIN_TOTAL_PLAYOFF     = 15   # min total playoff games for per-player table
+H31_PROGRESSION_THRESHOLD = 8.0  # |late - early| >= 8pp at key tier → meaningful progression
+SERIES_PROGRESSION_JSON = DATA / "backtest_series_progression.json"
+
+# H32 — Player Consistency Index
+H32_STATS = ["PTS", "REB", "AST", "3PM"]
+H32_STAT_COL = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+H32_MIN_SLICE_N        = 5     # min games in a context slice to include in stability calc
+H32_MIN_TOTAL_GAMES    = 20    # min total games for a player to qualify
+H32_ALLWEATHER_RANGE   = 10.0  # max_rate - min_rate < 10pp → ALL_WEATHER
+H32_SENSITIVE_RANGE    = 20.0  # range >= 20pp → CONTEXT_SENSITIVE
+H32_SPREAD_THRESHOLD   = 6.5   # split competitive vs blowout-risk (mirrors quant.py)
+CONSISTENCY_INDEX_JSON = DATA / "backtest_consistency_index.json"
+
+# H30 — Minutes Elasticity
+H30_STATS = ["PTS", "REB", "AST", "3PM"]
+H30_STAT_COL = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+H30_TIERS = {
+    "PTS": [15, 20, 25, 30],
+    "REB": [4, 6, 8, 10],
+    "AST": [2, 4, 6, 8],
+    "3PM": [1, 2, 3],
+}
+H30_KEY_TIER = {"PTS": 20, "REB": 6, "AST": 4, "3PM": 2}
+H30_MIN_BUCKET_N     = 5         # min games in a bucket to include
+H30_MIN_TOTAL_GAMES  = 20        # min total games for a player to qualify
+H30_MINUTES_BINS     = [0, 30, 34, 38, 60]
+H30_MINUTES_LABELS   = ["low", "normal", "high", "extended"]
+# Elasticity flags — based on delta between "extended" (38+) and "normal" (30-34) at key tier
+H30_SCALES_THRESHOLD  = 10.0     # extended - normal >= +10pp → SCALES
+H30_INVERTS_THRESHOLD = -10.0    # extended - normal <= -10pp → INVERTS
+H30_POPULATION_MIN_MIN = 28      # pooled population filters to starter-level averages only
+MINUTES_ELASTICITY_JSON = DATA / "backtest_minutes_elasticity.json"
+
+# H29 — Player-Level Confidence Calibration
+H29_MIN_PICKS            = 10    # min graded picks for a per-player verdict
+H29_MIN_PROP_PICKS       = 5     # min picks per prop_type for per-prop breakdown
+H29_MIN_BAND_PICKS       = 3     # min picks per band for per-player band breakdown
+H29_OVER_CONF_THRESHOLD  = 8.0   # assigned - actual >= 8pp → OVER_CONFIDENT
+H29_UNDER_CONF_THRESHOLD = 8.0   # actual - assigned >= 8pp → UNDER_CONFIDENT
+H29_CONF_BANDS = [
+    (70, 75, "70-75"),
+    (76, 80, "76-80"),
+    (81, 85, "81-85"),
+    (86, 99, "86+"),
+]
+CONFIDENCE_CAL_JSON = DATA / "backtest_confidence_calibration.json"
+
+# H28 — Playoff Career Tier Performance
+H28_STATS = ["PTS", "REB", "AST", "3PM"]
+H28_STAT_COL = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+H28_TIERS = {
+    "PTS": [15, 20, 25, 30],
+    "REB": [4, 6, 8, 10],
+    "AST": [2, 4, 6, 8],
+    "3PM": [1, 2, 3],
+}
+# "Key tier" per stat — used for the summary flag (ELEVATOR/STABLE/SUPPRESSOR)
+H28_KEY_TIER = {"PTS": 20, "REB": 6, "AST": 4, "3PM": 2}
+H28_MIN_PLAYOFF_GAMES    = 10        # min playoff games for a reliable per-player verdict
+H28_LIMITED_SAMPLE_MIN   = 5         # 5-9 playoff games: report but flag as limited_sample
+H28_ELEVATOR_THRESHOLD   = 5.0       # delta >= +5pp at key tier = ELEVATOR
+H28_SUPPRESSOR_THRESHOLD = -5.0      # delta <= -5pp at key tier = SUPPRESSOR
+H28_ALLSTAR_TEAMS = {"CAN", "CHK", "DUR", "EAST", "GIA", "KEN", "LEB", "SHQ", "WEST"}
+PLAYOFF_CAREER_CSV  = DATA / "playoff_career_log.csv"
+PLAYOFF_CAREER_JSON = DATA / "backtest_playoff_career.json"
+
 _ABBR_NORM_BT = {
     "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
     "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
@@ -6766,6 +6853,2536 @@ def run_star_absence_analysis(
     print(f"[backtest] H26 results written → {STAR_ABSENCE_JSON}")
 
 
+# ── H27 — Primary Scorer Blowout PTS Performance ─────────────────────
+
+def run_primary_blowout_analysis(
+    player_log: pd.DataFrame,
+    master_df: pd.DataFrame,
+    args,
+) -> None:
+    """
+    H27 — Primary Scorer Blowout PTS Performance.
+
+    Tests whether primary scorers on the favored side reliably hit PTS tiers
+    in high-spread games (spread_abs ≥ 10/12/15), using PRE-GAME SPREAD as
+    the primary blowout classifier (the analyst rule fires on spread_abs,
+    not final margin). Secondary analysis layer tracks whether the anticipated
+    blowout actually materialized (final margin ≥ H27_ACTUAL_BLOWOUT_MARGIN)
+    to reveal whether suppression (if any) is game-script dependent or baked
+    into the spread itself.
+
+    Per-player breakdown at spread_abs ≥ 15 surfaces player-specific tendencies
+    (Jokic-style distributors vs. resilient primary scorers). Jokic isolation
+    check computes the primary-scorer T25 hit rate with and without him.
+
+    Motivation: blowout_t25_skip has 100% false skip rate (2/2 graded skips
+    would have hit). The rule was motivated by Jokic's blowout behavior and
+    may not generalize to other primary scorers.
+    """
+    if master_df.empty:
+        print("[backtest] WARNING: master_df empty — cannot run H27.")
+        return
+
+    window = getattr(args, "window", None) or ROLLING_WINDOW
+    print(f"[backtest] H27 primary-blowout | "
+          f"thresholds={H27_SPREAD_THRESHOLDS} | "
+          f"tiers={H27_PTS_TIERS} | "
+          f"min_n={H27_MIN_N} | "
+          f"min_player_n={H27_MIN_PLAYER_N} | "
+          f"window={window}")
+
+    # ── Step 1: Build spread lookup ───────────────────────────────────────
+    # {(game_id_str, team_upper): signed_spread}
+    spread_map: dict = {}
+    for _, row in master_df.iterrows():
+        gid  = str(row.get("game_id", "")).strip()
+        home = str(row.get("home_team_abbrev", "")).upper().strip()
+        away = str(row.get("away_team_abbrev", "")).upper().strip()
+        hs   = row.get("home_spread")
+        as_  = row.get("away_spread")
+        for team, spread in [(home, hs), (away, as_)]:
+            if team and not pd.isna(spread):
+                spread_map[(gid, team)] = float(spread)
+
+    # ── Step 2: Classify scorer role ─────────────────────────────────────
+    df = classify_player_role(player_log, window=window)
+
+    # ── Step 3: Join spread to player-game rows ──────────────────────────
+    df["_team_upper"] = df["team_abbrev"].astype(str).str.upper().str.strip()
+    df["_gid"]        = df["game_id"].astype(str).str.split(".").str[0].str.strip()
+    df["_date_str"]   = df["game_date"].dt.strftime("%Y-%m-%d")
+    df["signed_spread"] = df.apply(
+        lambda r: spread_map.get((r["_gid"], r["_team_upper"])),
+        axis=1,
+    )
+    df["spread_abs"] = df["signed_spread"].abs()
+    df["is_favorite"] = df["signed_spread"].apply(
+        lambda s: (s < 0) if pd.notna(s) else None
+    )
+
+    # Filter to rows with valid spread AND known scorer role
+    df = df[df["signed_spread"].notna() & (df["scorer_role"] != "unknown")].copy()
+
+    if df.empty:
+        print("[backtest] WARNING: no player-games with valid spread — cannot run H27.")
+        return
+
+    # ── Step 4: Join actual game margin (secondary analysis layer) ────────
+    # {(team_upper, date_str): actual_margin (positive = this team won)}
+    margin_lookup: dict = {}
+    for _, row in master_df.iterrows():
+        home = str(row.get("home_team_abbrev", "")).upper().strip()
+        away = str(row.get("away_team_abbrev", "")).upper().strip()
+        game_date = row.get("game_date")
+        if pd.isna(game_date):
+            continue
+        date_str = pd.Timestamp(game_date).strftime("%Y-%m-%d")
+        home_score = pd.to_numeric(row.get("home_score"), errors="coerce")
+        away_score = pd.to_numeric(row.get("away_score"), errors="coerce")
+        if pd.isna(home_score) or pd.isna(away_score):
+            continue
+        home_margin = float(home_score) - float(away_score)
+        if home:
+            margin_lookup[(home, date_str)] = home_margin
+        if away:
+            margin_lookup[(away, date_str)] = -home_margin
+
+    df["actual_margin"] = df.apply(
+        lambda r: margin_lookup.get((r["_team_upper"], r["_date_str"])),
+        axis=1,
+    )
+    # For the favorite, actual_margin > 0 means they won as expected.
+    # "actual_blowout" = the anticipated blowout materialized (favorite won by >= 15).
+    df["actual_blowout"] = df["actual_margin"].apply(
+        lambda m: (m >= H27_ACTUAL_BLOWOUT_MARGIN) if pd.notna(m) else None
+    )
+
+    # ── Step 5: Compute tier hit rates per cell ───────────────────────────
+    def _cell(subset: pd.DataFrame) -> dict:
+        """Compute per-tier hit rate + avg minutes for a subset of player-games."""
+        out: dict = {}
+        n = len(subset)
+        if n == 0:
+            for tier in H27_PTS_TIERS:
+                out[f"T{tier}"] = {"n": 0, "hits": 0, "hit_rate": None, "avg_minutes": None}
+            return out
+        avg_min = round(float(pd.to_numeric(subset["minutes_raw"], errors="coerce").mean()), 1)
+        pts_series = pd.to_numeric(subset["pts"], errors="coerce")
+        for tier in H27_PTS_TIERS:
+            hits = int((pts_series >= tier).sum())
+            out[f"T{tier}"] = {
+                "n":           n,
+                "hits":        hits,
+                "hit_rate":    round(hits / n, 3),
+                "avg_minutes": avg_min,
+            }
+        return out
+
+    # Baselines — all games in df for each role (no spread filter).
+    baseline_primary_df   = df[df["scorer_role"] == "primary"].copy()
+    baseline_secondary_df = df[df["scorer_role"] == "secondary"].copy()
+    baseline_primary      = _cell(baseline_primary_df)
+    baseline_secondary    = _cell(baseline_secondary_df)
+
+    results: dict = {}
+    for threshold in H27_SPREAD_THRESHOLDS:
+        key = f"spread_{threshold}"
+        fav = df[(df["is_favorite"] == True) & (df["spread_abs"] >= threshold)].copy()
+
+        primary_df   = fav[fav["scorer_role"] == "primary"].copy()
+        secondary_df = fav[fav["scorer_role"] == "secondary"].copy()
+
+        # Actual-outcome sub-splits
+        pri_actual_df = primary_df[primary_df["actual_blowout"] == True].copy()
+        pri_comp_df   = primary_df[primary_df["actual_blowout"] == False].copy()
+        sec_actual_df = secondary_df[secondary_df["actual_blowout"] == True].copy()
+        sec_comp_df   = secondary_df[secondary_df["actual_blowout"] == False].copy()
+
+        results[key] = {
+            "threshold":                threshold,
+            "n_primary":                len(primary_df),
+            "n_secondary":              len(secondary_df),
+            "primary":                  _cell(primary_df),
+            "primary_actual_blowout":   _cell(pri_actual_df),
+            "primary_competitive":      _cell(pri_comp_df),
+            "secondary":                _cell(secondary_df),
+            "secondary_actual_blowout": _cell(sec_actual_df),
+            "secondary_competitive":    _cell(sec_comp_df),
+            "baseline_primary":         baseline_primary,
+            "baseline_secondary":       baseline_secondary,
+        }
+
+    # ── Step 6: Per-player primary scorer breakdown (spread_abs ≥ 15) ────
+    high_spread_primary = df[
+        (df["is_favorite"] == True)
+        & (df["spread_abs"] >= 15)
+        & (df["scorer_role"] == "primary")
+    ].copy()
+
+    # Per-player full-log baselines (all games in df for this player) for comparison
+    # Baseline is computed across ALL games in df (spread-valid + any role) to capture
+    # the player's typical production regardless of spread context.
+    all_df = df.copy()
+    baseline_by_player: dict = {}
+    for player, grp in all_df.groupby("player_name"):
+        base_n = len(grp)
+        if base_n == 0:
+            continue
+        base_pts = pd.to_numeric(grp["pts"], errors="coerce")
+        base_min = pd.to_numeric(grp["minutes_raw"], errors="coerce")
+        baseline_by_player[player] = {
+            "avg_pts":     round(float(base_pts.mean()), 1),
+            "avg_minutes": round(float(base_min.mean()), 1),
+            "T15_rate":    round(int((base_pts >= 15).sum()) / base_n, 3),
+            "T20_rate":    round(int((base_pts >= 20).sum()) / base_n, 3),
+            "T25_rate":    round(int((base_pts >= 25).sum()) / base_n, 3),
+            "T30_rate":    round(int((base_pts >= 30).sum()) / base_n, 3),
+            "n":           base_n,
+        }
+
+    per_player_rows: list = []
+    for player, grp in high_spread_primary.groupby("player_name"):
+        n = len(grp)
+        if n < H27_MIN_PLAYER_N:
+            continue
+
+        pts_series = pd.to_numeric(grp["pts"], errors="coerce")
+        min_series = pd.to_numeric(grp["minutes_raw"], errors="coerce")
+
+        T15_hits = int((pts_series >= 15).sum())
+        T20_hits = int((pts_series >= 20).sum())
+        T25_hits = int((pts_series >= 25).sum())
+        T30_hits = int((pts_series >= 30).sum())
+
+        T15_rate = round(T15_hits / n, 3)
+        T20_rate = round(T20_hits / n, 3)
+        T25_rate = round(T25_hits / n, 3)
+        T30_rate = round(T30_hits / n, 3)
+
+        avg_spread_abs = round(float(grp["spread_abs"].mean()), 1)
+        avg_minutes    = round(float(min_series.mean()), 1)
+        avg_pts        = round(float(pts_series.mean()), 1)
+
+        actual_blowout_games = grp[grp["actual_blowout"] == True]
+        competitive_games    = grp[grp["actual_blowout"] == False]
+        n_actual_blowout     = len(actual_blowout_games)
+        n_competitive        = len(competitive_games)
+
+        def _sub_t25(sub: pd.DataFrame) -> "float | None":
+            if len(sub) < 2:
+                return None
+            sub_pts = pd.to_numeric(sub["pts"], errors="coerce")
+            return round(int((sub_pts >= 25).sum()) / len(sub), 3)
+
+        actual_blowout_T25_rate = _sub_t25(actual_blowout_games)
+        competitive_T25_rate    = _sub_t25(competitive_games)
+
+        base = baseline_by_player.get(player, {})
+        baseline_avg_pts     = base.get("avg_pts")
+        baseline_avg_minutes = base.get("avg_minutes")
+        baseline_T25_rate    = base.get("T25_rate")
+
+        if baseline_T25_rate is not None:
+            T25_delta_pp = round((T25_rate - baseline_T25_rate) * 100, 1)
+        else:
+            T25_delta_pp = None
+
+        if baseline_avg_minutes is not None:
+            minutes_delta = round(avg_minutes - baseline_avg_minutes, 1)
+        else:
+            minutes_delta = None
+
+        # Per-player flags
+        flags: list = []
+        if T25_delta_pp is not None and n >= 3:
+            if T25_delta_pp <= -15:
+                flags.append("PLAYER_SUPPRESSED")
+            elif T25_delta_pp >= 0:
+                flags.append("PLAYER_RESILIENT")
+        if minutes_delta is not None and minutes_delta <= -4.0:
+            flags.append("MINUTES_COMPRESSED")
+
+        # Individual game log for the evidence trail
+        game_log_rows: list = []
+        for _, g in grp.sort_values("game_date").iterrows():
+            g_pts = pd.to_numeric(g.get("pts"), errors="coerce")
+            g_min = pd.to_numeric(g.get("minutes_raw"), errors="coerce")
+            g_margin = g.get("actual_margin")
+            g_blowout = g.get("actual_blowout")
+            g_spread = g.get("spread_abs")
+            game_log_rows.append({
+                "date":           str(g.get("_date_str") or ""),
+                "opponent":       str(g.get("opp_abbrev") or ""),
+                "spread_abs":     round(float(g_spread), 1) if pd.notna(g_spread) else None,
+                "actual_margin":  round(float(g_margin), 1) if pd.notna(g_margin) else None,
+                "actual_blowout": bool(g_blowout) if pd.notna(g_blowout) else None,
+                "minutes":        round(float(g_min), 1) if pd.notna(g_min) else None,
+                "pts":            int(g_pts) if pd.notna(g_pts) else None,
+                "T20_hit":        bool(pd.notna(g_pts) and g_pts >= 20),
+                "T25_hit":        bool(pd.notna(g_pts) and g_pts >= 25),
+            })
+
+        team_abbrev = str(grp["team_abbrev"].mode().iloc[0]) if not grp["team_abbrev"].mode().empty else ""
+
+        per_player_rows.append({
+            "player":                   player,
+            "team":                     team_abbrev,
+            "n_high_spread":            n,
+            "n_actual_blowout":         n_actual_blowout,
+            "n_competitive":            n_competitive,
+            "avg_spread_abs":           avg_spread_abs,
+            "avg_minutes":              avg_minutes,
+            "avg_pts":                  avg_pts,
+            "T15_hits":                 T15_hits,
+            "T15_rate":                 T15_rate,
+            "T20_hits":                 T20_hits,
+            "T20_rate":                 T20_rate,
+            "T25_hits":                 T25_hits,
+            "T25_rate":                 T25_rate,
+            "T30_hits":                 T30_hits,
+            "T30_rate":                 T30_rate,
+            "baseline_avg_pts":         baseline_avg_pts,
+            "baseline_avg_minutes":     baseline_avg_minutes,
+            "baseline_T25_rate":        baseline_T25_rate,
+            "T25_delta_pp":             T25_delta_pp,
+            "minutes_delta":            minutes_delta,
+            "actual_blowout_T25_rate":  actual_blowout_T25_rate,
+            "competitive_T25_rate":     competitive_T25_rate,
+            "flags":                    flags,
+            "game_log":                 game_log_rows,
+        })
+
+    # Sort ascending by T25_delta_pp (most suppressed first — Jokic-type outliers on top).
+    # None deltas sort to the end.
+    per_player_rows.sort(
+        key=lambda r: (r["T25_delta_pp"] is None, r["T25_delta_pp"] if r["T25_delta_pp"] is not None else 0.0)
+    )
+
+    # ── Step 7: Verdict logic ─────────────────────────────────────────────
+    verdicts: dict = {}
+
+    # 7a — Population verdicts for primary scorers at each threshold
+    for threshold in H27_SPREAD_THRESHOLDS:
+        key = f"spread_{threshold}"
+        cell = results[key]["primary"].get("T25", {})
+        n = cell.get("n", 0) or 0
+        hr = cell.get("hit_rate")
+        if n < H27_MIN_N:
+            verdict = f"INSUFFICIENT_SAMPLE (n={n})"
+        elif hr is None:
+            verdict = f"INSUFFICIENT_SAMPLE (no hit_rate, n={n})"
+        elif hr >= 0.65:
+            verdict = f"MAINTAINS ({hr*100:.1f}%, n={n}) — primary scorers still deliver; hard skip over-penalizes"
+        elif hr >= 0.55:
+            verdict = f"MARGINAL ({hr*100:.1f}%, n={n}) — confidence cap may be better than hard skip"
+        else:
+            verdict = f"SUPPRESSED ({hr*100:.1f}%, n={n}) — hard skip justified"
+        verdicts[f"primary_T25_{key}"] = verdict
+
+    # 7b — Actual-outcome insight at spread_abs >= 15
+    key15 = "spread_15"
+    pri_actual  = results[key15]["primary_actual_blowout"].get("T25", {})
+    pri_comp    = results[key15]["primary_competitive"].get("T25", {})
+    n_a = pri_actual.get("n", 0) or 0
+    n_c = pri_comp.get("n", 0) or 0
+    hr_a = pri_actual.get("hit_rate")
+    hr_c = pri_comp.get("hit_rate")
+    if n_a < H27_MIN_N or n_c < H27_MIN_N or hr_a is None or hr_c is None:
+        outcome_insight = (
+            f"OUTCOME_INSUFFICIENT_SAMPLE (actual_blowout n={n_a}, competitive n={n_c})"
+        )
+    else:
+        delta_pp = round((hr_c - hr_a) * 100, 1)
+        # "Game script dependent" means the competitive bucket scores MUCH better than the
+        # actual-blowout bucket (i.e. when the game stays close, players hit; when it's a
+        # real blowout, they get suppressed). Flag if delta > 10pp.
+        if abs(delta_pp) > 10:
+            outcome_insight = (
+                f"GAME_SCRIPT_DEPENDENT (actual_blowout T25 {hr_a*100:.1f}% vs "
+                f"competitive {hr_c*100:.1f}%, delta={delta_pp:+.1f}pp) — "
+                f"suppression materializes only when blowout actually happens; "
+                f"spread alone may not be the right trigger"
+            )
+        else:
+            outcome_insight = (
+                f"OUTCOME_INDEPENDENT (actual_blowout T25 {hr_a*100:.1f}% vs "
+                f"competitive {hr_c*100:.1f}%, delta={delta_pp:+.1f}pp) — "
+                f"outcome split does not meaningfully change hit rate"
+            )
+    verdicts["actual_outcome_insight_spread_15"] = outcome_insight
+
+    # 7c — Jokic isolation check at spread_abs >= 15
+    high15 = df[
+        (df["is_favorite"] == True)
+        & (df["spread_abs"] >= 15)
+        & (df["scorer_role"] == "primary")
+    ].copy()
+
+    JOKIC_NAME = "Nikola Jokic"
+    jokic_present = JOKIC_NAME in high15["player_name"].values
+
+    if jokic_present:
+        with_jokic_pts = pd.to_numeric(high15["pts"], errors="coerce")
+        with_n = len(high15)
+        with_rate = round(int((with_jokic_pts >= 25).sum()) / with_n, 3) if with_n > 0 else None
+
+        ex_jokic = high15[high15["player_name"] != JOKIC_NAME].copy()
+        ex_pts = pd.to_numeric(ex_jokic["pts"], errors="coerce")
+        ex_n = len(ex_jokic)
+        ex_rate = round(int((ex_pts >= 25).sum()) / ex_n, 3) if ex_n > 0 else None
+
+        if with_rate is not None and ex_rate is not None:
+            delta_pp = round((ex_rate - with_rate) * 100, 1)
+            if delta_pp > 5:
+                jokic_verdict = (
+                    f"JOKIC_OUTLIER_CONFIRMED (T25 ex-Jokic {ex_rate*100:.1f}% "
+                    f"vs with {with_rate*100:.1f}%, delta=+{delta_pp:.1f}pp, "
+                    f"n_with={with_n}, n_ex={ex_n})"
+                )
+            else:
+                jokic_verdict = (
+                    f"JOKIC_OUTLIER_NOT_CONFIRMED (T25 ex-Jokic {ex_rate*100:.1f}% "
+                    f"vs with {with_rate*100:.1f}%, delta={delta_pp:+.1f}pp, "
+                    f"n_with={with_n}, n_ex={ex_n})"
+                )
+        else:
+            jokic_verdict = "JOKIC_INSUFFICIENT_SAMPLE"
+    else:
+        jokic_verdict = "JOKIC_NOT_IN_SAMPLE (no qualifying high-spread primary games)"
+    verdicts["jokic_isolation_spread_15"] = jokic_verdict
+
+    # ── Step 8: Print report ──────────────────────────────────────────────
+    print(f"\n{'='*65}")
+    print(f"  H27 — PRIMARY SCORER BLOWOUT PTS PERFORMANCE")
+    print(f"  Uses PRE-GAME SPREAD (not final margin)")
+    print(f"  Actual-outcome overlay: margin >= {H27_ACTUAL_BLOWOUT_MARGIN} = blowout materialized")
+    print(f"  Date range: {df['game_date'].min().date()} → {df['game_date'].max().date()}")
+    print(f"  Favored-side only (negative spread)")
+    print(f"{'='*65}")
+
+    bucket_order = [
+        ("primary",                  "primary"),
+        ("pri_actual_blowout",       "primary_actual_blowout"),
+        ("pri_competitive",          "primary_competitive"),
+        ("secondary",                "secondary"),
+        ("sec_actual_blowout",       "secondary_actual_blowout"),
+        ("sec_competitive",          "secondary_competitive"),
+        ("baseline_primary",         "baseline_primary"),
+        ("baseline_secondary",       "baseline_secondary"),
+    ]
+
+    def _fmt_rate(cell: dict) -> str:
+        hr = cell.get("hit_rate")
+        n  = cell.get("n", 0) or 0
+        if hr is None:
+            return f"   n/a ({n})"
+        return f"{hr*100:5.1f}% ({n})"
+
+    def _fmt_min(cell: dict) -> str:
+        am = cell.get("avg_minutes")
+        if am is None:
+            return "  n/a"
+        return f"{am:5.1f}"
+
+    for threshold in H27_SPREAD_THRESHOLDS:
+        key = f"spread_{threshold}"
+        r = results[key]
+        n_pri = r.get("n_primary", 0)
+        n_sec = r.get("n_secondary", 0)
+        print(f"\n  SPREAD_ABS >= {threshold}  (n_primary={n_pri}, n_secondary={n_sec})")
+        print(f"  {'─'*61}")
+        header = f"  {'Bucket':<22}{'T15':>13}{'T20':>13}{'T25':>13}{'T30':>13}  {'avg_min':>7}"
+        print(header)
+        for label, res_key in bucket_order:
+            cell_map = r.get(res_key) or {}
+            t15 = _fmt_rate(cell_map.get("T15", {}))
+            t20 = _fmt_rate(cell_map.get("T20", {}))
+            t25 = _fmt_rate(cell_map.get("T25", {}))
+            t30 = _fmt_rate(cell_map.get("T30", {}))
+            # avg_minutes is invariant across tiers for a given bucket; pull from T15
+            am  = _fmt_min(cell_map.get("T15", {}))
+            print(f"  {label:<22}{t15:>13}{t20:>13}{t25:>13}{t30:>13}  {am:>7}")
+
+    # Per-player table
+    print(f"\n  PER-PLAYER PRIMARY SCORERS (spread_abs >= 15, n >= {H27_MIN_PLAYER_N})")
+    print(f"  {'─'*61}")
+    if not per_player_rows:
+        print(f"  (no primary scorers with n >= {H27_MIN_PLAYER_N})")
+    else:
+        header = (
+            f"  {'Player':<22}{'Team':<6}{'n':>3}  {'blow/comp':>9}  "
+            f"{'avg_sprd':>9}  {'avg_min':>8}  {'min_d':>6}  "
+            f"{'avg_pts':>8}  {'T20':>7}  {'T25':>7}  "
+            f"{'base_T25':>9}  {'delta':>8}   {'flags'}"
+        )
+        print(header)
+        for row in per_player_rows:
+            player = (row["player"] or "")[:22]
+            team   = (row["team"]   or "")[:5]
+            n      = row["n_high_spread"]
+            blow_comp = f"{row['n_actual_blowout']}/{row['n_competitive']}"
+            avg_s  = row["avg_spread_abs"]
+            avg_m  = row["avg_minutes"]
+            min_d  = row["minutes_delta"]
+            avg_p  = row["avg_pts"]
+            t20_frac = f"{row['T20_hits']}/{n}"
+            t25_frac = f"{row['T25_hits']}/{n}"
+            base_t25 = row["baseline_T25_rate"]
+            delta    = row["T25_delta_pp"]
+            flags_str = ", ".join(row["flags"]) if row["flags"] else ""
+
+            min_d_str  = f"{min_d:+.1f}" if min_d is not None else "  n/a"
+            base_str   = f"{base_t25*100:.1f}%" if base_t25 is not None else "  n/a"
+            delta_str  = f"{delta:+.1f}pp" if delta is not None else "    n/a"
+
+            print(
+                f"  {player:<22}{team:<6}{n:>3}  {blow_comp:>9}  "
+                f"{avg_s:>9.1f}  {avg_m:>8.1f}  {min_d_str:>6}  "
+                f"{avg_p:>8.1f}  {t20_frac:>7}  {t25_frac:>7}  "
+                f"{base_str:>9}  {delta_str:>8}   {flags_str}"
+            )
+
+    print(f"\n  VERDICTS:")
+    for threshold in H27_SPREAD_THRESHOLDS:
+        vkey = f"primary_T25_spread_{threshold}"
+        print(f"    spread_abs >= {threshold} primary T25: {verdicts.get(vkey, '?')}")
+    print(f"    Actual-outcome insight (>= 15): {verdicts.get('actual_outcome_insight_spread_15', '?')}")
+    print(f"    Jokic isolation: {verdicts.get('jokic_isolation_spread_15', '?')}")
+
+    # ── Step 9: Write JSON output ─────────────────────────────────────────
+    out = {
+        "generated_at": dt.date.today().isoformat(),
+        "mode":         "primary-blowout",
+        "date_range": {
+            "start": str(df["game_date"].min().date()),
+            "end":   str(df["game_date"].max().date()),
+        },
+        "constants": {
+            "H27_SPREAD_THRESHOLDS":     H27_SPREAD_THRESHOLDS,
+            "H27_PTS_TIERS":             H27_PTS_TIERS,
+            "H27_MIN_N":                 H27_MIN_N,
+            "H27_MIN_PLAYER_N":          H27_MIN_PLAYER_N,
+            "H27_ACTUAL_BLOWOUT_MARGIN": H27_ACTUAL_BLOWOUT_MARGIN,
+            "rolling_window":            window,
+        },
+        "results":          results,
+        "per_player":       per_player_rows,
+        "verdicts":         verdicts,
+    }
+    out_path = Path(args.output) if getattr(args, "output", None) else PRIMARY_BLOWOUT_JSON
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n[backtest] H27 results → {out_path}")
+
+
+# ── H28 — Playoff Career Tier Performance ───────────────────────────
+
+def run_playoff_career_analysis(args) -> None:
+    """
+    H28 — Playoff Career Tier Performance.
+
+    Compares same-player regular season vs playoff tier hit rates across
+    PTS/REB/AST/3PM using multi-year career data from playoff_career_log.csv
+    (seasons 2021–2025). Produces per-player flags (ELEVATOR/STABLE/SUPPRESSOR
+    per stat, plus a cross-stat overall flag) that identify which players
+    historically elevate their production in playoffs and which compress.
+
+    Does NOT use load_player_log() / load_whitelist() — those expect the
+    player_game_log.csv schema. Loads playoff_career_log.csv directly so
+    regular and playoff comparisons use the same multi-year window and
+    identical schema.
+
+    Output feeds a future playoff context block injection into the analyst
+    prompt — NOT a standalone rule. No analyst.py changes in this task.
+    """
+    if not PLAYOFF_CAREER_CSV.exists():
+        print(f"[backtest] ERROR: {PLAYOFF_CAREER_CSV} not found.")
+        return
+
+    # ── Step 1: Load and validate data ────────────────────────────────────
+    df = pd.read_csv(PLAYOFF_CAREER_CSV)
+
+    # Filter All-Star / Rising Stars games from regular-season baseline.
+    # These have non-standard team abbreviations and only appear in regular season.
+    df = df[~df["team_abbrev"].isin(H28_ALLSTAR_TEAMS)].copy()
+    # Filter zero-minute appearances (DNPs — no `dnp` column in this CSV)
+    df = df[df["minutes"] > 0].copy()
+
+    reg = df[df["season_type"] == "regular"].copy()
+    po  = df[df["season_type"] == "playoff"].copy()
+
+    print(f"[backtest] H28 playoff-career | "
+          f"{len(reg):,} regular games, {len(po):,} playoff games")
+    print(f"[backtest] {po['player_name'].nunique()} players with playoff data "
+          f"(seasons {int(df['season'].min())}–{int(df['season'].max())})")
+
+    if po.empty:
+        print("[backtest] WARNING: no playoff games — cannot run H28.")
+        return
+
+    # ── Step 2: Per-player per-stat per-tier hit rates ────────────────────
+    player_entries: list = []
+    limited_entries: list = []
+
+    for player_name, player_po in po.groupby("player_name"):
+        n_playoff = len(player_po)
+        if n_playoff < H28_LIMITED_SAMPLE_MIN:
+            continue
+
+        player_reg = reg[reg["player_name"] == player_name]
+        n_regular = len(player_reg)
+        if n_regular == 0:
+            # No regular-season baseline — cannot compute deltas.
+            continue
+
+        sample_flag = (
+            "reliable"
+            if n_playoff >= H28_MIN_PLAYOFF_GAMES
+            else "limited_sample"
+        )
+
+        # Per-stat detail
+        stats_out: dict = {}
+        flag_counts = {"ELEVATOR": 0, "STABLE": 0, "SUPPRESSOR": 0}
+
+        for stat in H28_STATS:
+            col = H28_STAT_COL[stat]
+            key_tier = H28_KEY_TIER[stat]
+
+            tiers_out: dict = {}
+            key_reg_rate = None
+            key_po_rate = None
+            key_delta_pp = None
+
+            for tier in H28_TIERS[stat]:
+                reg_hits = int((player_reg[col] >= tier).sum())
+                reg_rate = round(reg_hits / n_regular, 3) if n_regular > 0 else None
+                po_hits  = int((player_po[col] >= tier).sum())
+                po_rate  = round(po_hits / n_playoff, 3)
+                if reg_rate is not None:
+                    delta_pp = round((po_rate - reg_rate) * 100, 1)
+                else:
+                    delta_pp = None
+                tiers_out[f"T{tier}"] = {
+                    "reg_hits": reg_hits,
+                    "reg_rate": reg_rate,
+                    "po_hits":  po_hits,
+                    "po_rate":  po_rate,
+                    "delta_pp": delta_pp,
+                }
+                if tier == key_tier:
+                    key_reg_rate = reg_rate
+                    key_po_rate  = po_rate
+                    key_delta_pp = delta_pp
+
+            # Per-stat flag at key tier
+            if key_delta_pp is None:
+                flag = "STABLE"
+            elif key_delta_pp >= H28_ELEVATOR_THRESHOLD:
+                flag = "ELEVATOR"
+            elif key_delta_pp <= H28_SUPPRESSOR_THRESHOLD:
+                flag = "SUPPRESSOR"
+            else:
+                flag = "STABLE"
+            flag_counts[flag] += 1
+
+            reg_avg = round(float(player_reg[col].mean()), 1) if n_regular > 0 else None
+            po_avg  = round(float(player_po[col].mean()), 1)
+            avg_delta = (
+                round(po_avg - reg_avg, 1) if reg_avg is not None else None
+            )
+
+            stats_out[stat] = {
+                "flag":              flag,
+                "key_tier":          key_tier,
+                "key_tier_reg_rate": key_reg_rate,
+                "key_tier_po_rate":  key_po_rate,
+                "key_tier_delta_pp": key_delta_pp,
+                "tiers":             tiers_out,
+                "reg_avg":           reg_avg,
+                "po_avg":            po_avg,
+                "avg_delta":         avg_delta,
+            }
+
+        # ── Step 3: Overall flag (cross-stat pattern) ─────────────────────
+        n_elev = flag_counts["ELEVATOR"]
+        n_supp = flag_counts["SUPPRESSOR"]
+        n_stab = flag_counts["STABLE"]
+        if n_elev >= 3:
+            overall_flag = "STRONG_ELEVATOR"
+        elif n_elev >= 2 and n_supp == 0:
+            overall_flag = "ELEVATOR"
+        elif n_supp >= 3:
+            overall_flag = "STRONG_SUPPRESSOR"
+        elif n_supp >= 2 and n_elev == 0:
+            overall_flag = "SUPPRESSOR"
+        elif n_stab == 4:
+            overall_flag = "STABLE"
+        else:
+            overall_flag = "MIXED"
+
+        # ── Step 4: Minutes + game log + entry assembly ───────────────────
+        reg_avg_min = round(float(player_reg["minutes"].mean()), 1) if n_regular > 0 else None
+        po_avg_min  = round(float(player_po["minutes"].mean()), 1)
+        minutes_delta = (
+            round(po_avg_min - reg_avg_min, 1) if reg_avg_min is not None else None
+        )
+
+        playoff_seasons = sorted([int(s) for s in player_po["season"].unique().tolist()])
+
+        game_log = [
+            {
+                "date":      str(row["game_date"]),
+                "season":    int(row["season"]),
+                "opponent":  str(row["opp_abbrev"]),
+                "home_away": str(row["home_away"]),
+                "minutes":   round(float(row["minutes"]), 1),
+                "pts":       int(row["pts"]),
+                "reb":       int(row["reb"]),
+                "ast":       int(row["ast"]),
+                "tpm":       int(row["tpm"]),
+            }
+            for _, row in player_po.sort_values("game_date").iterrows()
+        ]
+
+        # Total absolute delta across all 4 stat key tiers — for sorting.
+        total_abs_delta = sum(
+            abs(s["key_tier_delta_pp"] or 0) for s in stats_out.values()
+        )
+
+        entry = {
+            "player":          player_name,
+            "team":            str(player_po.sort_values("game_date")["team_abbrev"].iloc[-1]),
+            "n_playoff":       n_playoff,
+            "n_regular":       n_regular,
+            "playoff_seasons": playoff_seasons,
+            "sample_flag":     sample_flag,
+            "reg_avg_minutes": reg_avg_min,
+            "po_avg_minutes":  po_avg_min,
+            "minutes_delta":   minutes_delta,
+            "stats":           stats_out,
+            "overall_flag":    overall_flag,
+            "_total_abs_delta": total_abs_delta,
+            "playoff_game_log": game_log,
+        }
+
+        if sample_flag == "reliable":
+            player_entries.append(entry)
+        else:
+            limited_entries.append(entry)
+
+    # ── Step 4b: Sort ─────────────────────────────────────────────────────
+    flag_priority = {
+        "STRONG_ELEVATOR":    0,
+        "ELEVATOR":           1,
+        "MIXED":              2,
+        "STABLE":             3,
+        "SUPPRESSOR":         4,
+        "STRONG_SUPPRESSOR":  5,
+    }
+    def _sort_key(entry):
+        return (
+            flag_priority.get(entry["overall_flag"], 99),
+            -entry["_total_abs_delta"],
+            entry["player"],
+        )
+    player_entries.sort(key=_sort_key)
+    limited_entries.sort(key=_sort_key)
+
+    # ── Step 5: Population aggregation (pooled across qualifying players) ──
+    pool_players = {e["player"] for e in player_entries + limited_entries}
+    reg_pool = reg[reg["player_name"].isin(pool_players)].copy()
+    po_pool  = po[po["player_name"].isin(pool_players)].copy()
+
+    population: dict = {}
+    for stat in H28_STATS:
+        col = H28_STAT_COL[stat]
+        stat_out: dict = {}
+        for tier in H28_TIERS[stat]:
+            reg_n = len(reg_pool)
+            po_n  = len(po_pool)
+            reg_hits = int((reg_pool[col] >= tier).sum())
+            po_hits  = int((po_pool[col] >= tier).sum())
+            reg_rate = round(reg_hits / reg_n, 3) if reg_n > 0 else None
+            po_rate  = round(po_hits / po_n, 3)  if po_n  > 0 else None
+            if reg_rate is not None and po_rate is not None:
+                delta_pp = round((po_rate - reg_rate) * 100, 1)
+            else:
+                delta_pp = None
+            stat_out[f"T{tier}"] = {
+                "reg_n":    reg_n,
+                "reg_hits": reg_hits,
+                "reg_rate": reg_rate,
+                "po_n":     po_n,
+                "po_hits":  po_hits,
+                "po_rate":  po_rate,
+                "delta_pp": delta_pp,
+            }
+        population[stat] = stat_out
+
+    # ── Step 6: Print report ──────────────────────────────────────────────
+    print(f"\n{'='*65}")
+    print(f"  H28 — PLAYOFF CAREER TIER PERFORMANCE")
+    print(f"  Data: playoff_career_log.csv "
+          f"(seasons {int(df['season'].min())}–{int(df['season'].max())})")
+    print(f"  Regular: {len(reg):,} games | Playoff: {len(po):,} games | "
+          f"{len(player_entries) + len(limited_entries)} players qualified")
+    print(f"{'='*65}")
+
+    # Population table
+    print(f"\n  POPULATION (pooled, {len(pool_players)} qualifying players)")
+    print(f"  {'─'*61}")
+    print(f"  {'Stat':<6}{'Tier':<7}{'reg_rate':>10}{'po_rate':>11}{'delta':>10}")
+    for stat in H28_STATS:
+        for tier in H28_TIERS[stat]:
+            cell = population[stat][f"T{tier}"]
+            rr = cell["reg_rate"]
+            pr = cell["po_rate"]
+            dp = cell["delta_pp"]
+            rr_s = f"{rr*100:6.1f}%" if rr is not None else "   n/a"
+            pr_s = f"{pr*100:6.1f}%" if pr is not None else "   n/a"
+            dp_s = f"{dp:+6.1f}pp" if dp is not None else "   n/a"
+            print(f"  {stat:<6}T{tier:<6}{rr_s:>10}{pr_s:>11}{dp_s:>10}")
+
+    # Per-player table
+    def _stat_cell(entry: dict, stat: str) -> str:
+        s = entry["stats"].get(stat, {})
+        rr = s.get("key_tier_reg_rate")
+        pr = s.get("key_tier_po_rate")
+        dp = s.get("key_tier_delta_pp")
+        if rr is None or pr is None:
+            return "      n/a".ljust(15)
+        rr_i = int(round(rr * 100))
+        pr_i = int(round(pr * 100))
+        dp_s = f"{dp:+5.1f}pp" if dp is not None else "   n/a"
+        return f"{rr_i:>2}→{pr_i:<2} {dp_s}".ljust(15)
+
+    header = (
+        f"  {'Player':<24}{'Team':<6}{'po_n':>5}{'min_d':>7}  "
+        f"{'PTS(T20)':<15}{'REB(T6)':<15}{'AST(T4)':<15}{'3PM(T2)':<15}"
+        f"  {'overall'}"
+    )
+
+    if player_entries:
+        print(f"\n  PER-PLAYER ADJUSTMENTS — reliable (n_playoff >= {H28_MIN_PLAYOFF_GAMES})")
+        print(f"  {'─'*61}")
+        print(header)
+        for e in player_entries:
+            player = (e["player"] or "")[:24]
+            team   = (e["team"]   or "")[:5]
+            po_n   = e["n_playoff"]
+            md     = e["minutes_delta"]
+            md_s   = f"{md:+5.1f}" if md is not None else "  n/a"
+            pts_c  = _stat_cell(e, "PTS")
+            reb_c  = _stat_cell(e, "REB")
+            ast_c  = _stat_cell(e, "AST")
+            tpm_c  = _stat_cell(e, "3PM")
+            flag   = e["overall_flag"]
+            print(
+                f"  {player:<24}{team:<6}{po_n:>5}{md_s:>7}  "
+                f"{pts_c}{reb_c}{ast_c}{tpm_c}  {flag}"
+            )
+
+    if limited_entries:
+        print(f"\n  PER-PLAYER ADJUSTMENTS — ⚠ limited_sample "
+              f"({H28_LIMITED_SAMPLE_MIN}–{H28_MIN_PLAYOFF_GAMES - 1} playoff games)")
+        print(f"  {'─'*61}")
+        print(header)
+        for e in limited_entries:
+            player = ("⚠ " + (e["player"] or ""))[:24]
+            team   = (e["team"] or "")[:5]
+            po_n   = e["n_playoff"]
+            md     = e["minutes_delta"]
+            md_s   = f"{md:+5.1f}" if md is not None else "  n/a"
+            pts_c  = _stat_cell(e, "PTS")
+            reb_c  = _stat_cell(e, "REB")
+            ast_c  = _stat_cell(e, "AST")
+            tpm_c  = _stat_cell(e, "3PM")
+            flag   = e["overall_flag"]
+            print(
+                f"  {player:<24}{team:<6}{po_n:>5}{md_s:>7}  "
+                f"{pts_c}{reb_c}{ast_c}{tpm_c}  {flag}"
+            )
+
+    # ── Step 7: Write JSON output ─────────────────────────────────────────
+    def _clean(entry: dict) -> dict:
+        """Drop private sort-helper fields before JSON serialization."""
+        return {k: v for k, v in entry.items() if not k.startswith("_")}
+
+    all_entries_clean = [_clean(e) for e in player_entries + limited_entries]
+    summary = {e["player"]: e["overall_flag"] for e in all_entries_clean}
+
+    out = {
+        "metadata": {
+            "generated_at":    dt.date.today().isoformat(),
+            "mode":            "playoff-career",
+            "data_file":       str(PLAYOFF_CAREER_CSV),
+            "season_range":    [int(df["season"].min()), int(df["season"].max())],
+            "n_regular_games": len(reg),
+            "n_playoff_games": len(po),
+            "n_players":       len(all_entries_clean),
+            "n_reliable":      len(player_entries),
+            "n_limited":       len(limited_entries),
+            "constants": {
+                "H28_MIN_PLAYOFF_GAMES":    H28_MIN_PLAYOFF_GAMES,
+                "H28_LIMITED_SAMPLE_MIN":   H28_LIMITED_SAMPLE_MIN,
+                "H28_ELEVATOR_THRESHOLD":   H28_ELEVATOR_THRESHOLD,
+                "H28_SUPPRESSOR_THRESHOLD": H28_SUPPRESSOR_THRESHOLD,
+                "H28_KEY_TIER":             H28_KEY_TIER,
+                "H28_TIERS":                H28_TIERS,
+            },
+        },
+        "population": population,
+        "players":    all_entries_clean,
+        "summary":    summary,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else PLAYOFF_CAREER_JSON
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n[backtest] H28 results → {out_path}")
+
+
+# ── H29 — Player-Level Confidence Calibration ───────────────────────
+
+def run_confidence_calibration_analysis(picks: list, args) -> None:
+    """
+    H29 — Player-Level Confidence Calibration.
+
+    Audits the analyst's assigned confidence against actual hit rates,
+    per player. For each player with >= H29_MIN_PICKS graded picks,
+    computes the calibration delta (actual_hit_rate - avg_confidence)
+    and flags OVER_CONFIDENT / UNDER_CONFIDENT / WELL_CALIBRATED.
+
+    This is a pure meta-correction — it audits how accurately the system
+    uses its existing signals for each player, without adding any new
+    signal. With playoffs narrowing the pick pool to ~20 players,
+    per-player calibration deltas become directly actionable confidence
+    adjustments for repeated series-game picks.
+
+    Uses picks.json exclusively via load_picks_json(). Does NOT read
+    player_game_log.csv or playoff_career_log.csv.
+
+    Output feeds future analyst prompt calibration notes — NOT a
+    standalone rule. No analyst.py changes in this task.
+    """
+    if not picks:
+        print("[backtest] WARNING: no picks provided to H29.")
+        return
+
+    # ── Step 1: Optional date filter + enrich ─────────────────────────────
+    if getattr(args, "start", None):
+        picks = [p for p in picks if p.get("date", "") >= args.start]
+    if getattr(args, "end", None):
+        picks = [p for p in picks if p.get("date", "") <= args.end]
+
+    enriched: list = []
+    for p in picks:
+        conf = p.get("confidence_pct")
+        if conf is None:
+            continue
+        try:
+            conf_int = int(conf)
+        except (ValueError, TypeError):
+            continue
+        enriched.append({
+            "player":        (p.get("player_name") or "").strip(),
+            "prop_type":     p.get("prop_type", ""),
+            "confidence_pct": conf_int,
+            "hit":           p.get("result") == "HIT",
+            "pick_value":    p.get("pick_value"),
+            "actual_value":  p.get("actual_value"),
+            "date":          p.get("date", ""),
+        })
+
+    if not enriched:
+        print("[backtest] WARNING: no picks with confidence after filtering — cannot run H29.")
+        return
+
+    total_n     = len(enriched)
+    total_hits  = sum(1 for p in enriched if p["hit"])
+    total_rate  = round(total_hits / total_n, 3) if total_n > 0 else None
+    total_avg_conf = round(sum(p["confidence_pct"] for p in enriched) / total_n, 1)
+
+    date_min = min(p["date"] for p in enriched if p["date"]) if enriched else ""
+    date_max = max(p["date"] for p in enriched if p["date"]) if enriched else ""
+
+    print(f"[backtest] H29 confidence-calibration | "
+          f"{total_n} graded picks | "
+          f"overall {total_hits}/{total_n} = {(total_rate or 0)*100:.1f}% | "
+          f"avg confidence = {total_avg_conf}%")
+
+    # ── Step 2: Population confidence band calibration ────────────────────
+    population_bands: dict = {}
+    for lo, hi, label in H29_CONF_BANDS:
+        band_picks = [p for p in enriched if lo <= p["confidence_pct"] <= hi]
+        n = len(band_picks)
+        hits = sum(1 for p in band_picks if p["hit"])
+        if n > 0:
+            hit_rate = round(hits / n, 3)
+            avg_conf = round(sum(p["confidence_pct"] for p in band_picks) / n, 1)
+            delta_pp = round((hit_rate * 100) - avg_conf, 1)
+        else:
+            hit_rate = None
+            avg_conf = None
+            delta_pp = None
+        population_bands[label] = {
+            "n":              n,
+            "hits":           hits,
+            "hit_rate":       hit_rate,
+            "avg_confidence": avg_conf,
+            "delta_pp":       delta_pp,
+            "band_lo":        lo,
+            "band_hi":        hi,
+        }
+
+    # ── Step 3: Per-player calibration ────────────────────────────────────
+    by_player: dict = {}
+    for p in enriched:
+        by_player.setdefault(p["player"], []).append(p)
+
+    player_entries: list = []
+    for player_name, player_picks in by_player.items():
+        n_picks = len(player_picks)
+        if n_picks < H29_MIN_PICKS:
+            continue
+
+        n_hits           = sum(1 for p in player_picks if p["hit"])
+        actual_hit_rate  = round(n_hits / n_picks, 3)
+        avg_confidence   = round(
+            sum(p["confidence_pct"] for p in player_picks) / n_picks, 1
+        )
+        calibration_delta_pp = round(
+            (actual_hit_rate * 100) - avg_confidence, 1
+        )
+
+        # Per-prop breakdown (props with >= H29_MIN_PROP_PICKS)
+        by_prop: dict = {}
+        prop_buckets: dict = {}
+        for p in player_picks:
+            prop_buckets.setdefault(p["prop_type"], []).append(p)
+        for prop, prop_picks in prop_buckets.items():
+            n_prop = len(prop_picks)
+            if n_prop < H29_MIN_PROP_PICKS:
+                continue
+            hits_prop = sum(1 for p in prop_picks if p["hit"])
+            hr_prop   = round(hits_prop / n_prop, 3)
+            avg_prop  = round(
+                sum(p["confidence_pct"] for p in prop_picks) / n_prop, 1
+            )
+            delta_prop = round((hr_prop * 100) - avg_prop, 1)
+            by_prop[prop] = {
+                "n":              n_prop,
+                "hits":           hits_prop,
+                "hit_rate":       hr_prop,
+                "avg_confidence": avg_prop,
+                "delta_pp":       delta_prop,
+            }
+
+        # Per-band breakdown (bands with >= H29_MIN_BAND_PICKS)
+        by_band: dict = {}
+        for lo, hi, label in H29_CONF_BANDS:
+            band_picks = [
+                p for p in player_picks
+                if lo <= p["confidence_pct"] <= hi
+            ]
+            n_band = len(band_picks)
+            if n_band < H29_MIN_BAND_PICKS:
+                continue
+            hits_band = sum(1 for p in band_picks if p["hit"])
+            hr_band   = round(hits_band / n_band, 3)
+            avg_band  = round(
+                sum(p["confidence_pct"] for p in band_picks) / n_band, 1
+            )
+            delta_band = round((hr_band * 100) - avg_band, 1)
+            by_band[label] = {
+                "n":              n_band,
+                "hits":           hits_band,
+                "hit_rate":       hr_band,
+                "avg_confidence": avg_band,
+                "delta_pp":       delta_band,
+            }
+
+        # Miss severity
+        misses = [p for p in player_picks if not p["hit"]]
+        miss_count = len(misses)
+        miss_margins: list = []
+        for m in misses:
+            av = m.get("actual_value")
+            pv = m.get("pick_value")
+            if av is None or pv is None:
+                continue
+            try:
+                miss_margins.append(float(pv) - float(av))
+            except (ValueError, TypeError):
+                continue
+        if miss_margins:
+            avg_miss_margin = round(sum(miss_margins) / len(miss_margins), 1)
+        else:
+            avg_miss_margin = None
+
+        # Step 4 — Flag
+        if calibration_delta_pp <= -H29_OVER_CONF_THRESHOLD:
+            flag = "OVER_CONFIDENT"
+        elif calibration_delta_pp >= H29_UNDER_CONF_THRESHOLD:
+            flag = "UNDER_CONFIDENT"
+        else:
+            flag = "WELL_CALIBRATED"
+
+        player_dates = [p["date"] for p in player_picks if p["date"]]
+        first_pick = min(player_dates) if player_dates else ""
+        last_pick  = max(player_dates) if player_dates else ""
+
+        player_entries.append({
+            "player":               player_name,
+            "n_picks":              n_picks,
+            "n_hits":               n_hits,
+            "actual_hit_rate":      actual_hit_rate,
+            "avg_confidence":       avg_confidence,
+            "calibration_delta_pp": calibration_delta_pp,
+            "flag":                 flag,
+            "miss_count":           miss_count,
+            "avg_miss_margin":      avg_miss_margin,
+            "by_prop":              by_prop,
+            "by_band":              by_band,
+            "first_pick":           first_pick,
+            "last_pick":            last_pick,
+        })
+
+    # Sort by calibration_delta_pp ascending (most over-confident first)
+    player_entries.sort(key=lambda e: (e["calibration_delta_pp"], e["player"]))
+
+    # ── Step 5: Summary lists ─────────────────────────────────────────────
+    over_confident  = [e for e in player_entries if e["flag"] == "OVER_CONFIDENT"]
+    under_confident = [e for e in player_entries if e["flag"] == "UNDER_CONFIDENT"]
+    well_calibrated = [e for e in player_entries if e["flag"] == "WELL_CALIBRATED"]
+
+    # ── Step 6: Print report ──────────────────────────────────────────────
+    print(f"\n{'='*65}")
+    print(f"  H29 — PLAYER-LEVEL CONFIDENCE CALIBRATION")
+    print(f"  Source: picks.json ({total_n} graded picks)")
+    print(f"  Date range: {date_min} → {date_max}")
+    print(f"  Overall: {total_hits}/{total_n} = {(total_rate or 0)*100:.1f}% | "
+          f"avg assigned = {total_avg_conf}%")
+    print(f"{'='*65}")
+
+    # Population bands
+    print(f"\n  POPULATION CONFIDENCE BANDS")
+    print(f"  {'─'*61}")
+    print(f"  {'Band':<8}{'n':>6}{'avg_conf':>11}{'actual':>11}{'delta':>12}  notes")
+    for lo, hi, label in H29_CONF_BANDS:
+        b = population_bands[label]
+        n  = b["n"]
+        ac = b["avg_confidence"]
+        hr = b["hit_rate"]
+        dp = b["delta_pp"]
+        ac_s = f"{ac:.1f}%" if ac is not None else "   n/a"
+        hr_s = f"{hr*100:.1f}%" if hr is not None else "   n/a"
+        dp_s = f"{dp:+.1f}pp" if dp is not None else "    n/a"
+        note = ""
+        if dp is not None:
+            if dp >= H29_UNDER_CONF_THRESHOLD:
+                note = "UNDER_CONFIDENT"
+            elif dp <= -H29_OVER_CONF_THRESHOLD:
+                note = "OVER_CONFIDENT"
+        print(f"  {label:<8}{n:>6}{ac_s:>11}{hr_s:>11}{dp_s:>12}  {note}")
+
+    # Per-player table
+    print(f"\n  PER-PLAYER CALIBRATION (n >= {H29_MIN_PICKS}, sorted by delta ascending)")
+    print(f"  {'─'*61}")
+    if not player_entries:
+        print(f"  (no players with n >= {H29_MIN_PICKS})")
+    else:
+        header = (
+            f"  {'Player':<24}{'n':>4}{'hits':>6}{'actual':>9}"
+            f"{'avg_conf':>11}{'delta':>11}{'miss_mgn':>11}  flag"
+        )
+        print(header)
+        for e in player_entries:
+            player = (e["player"] or "")[:24]
+            n      = e["n_picks"]
+            hits   = e["n_hits"]
+            actual = e["actual_hit_rate"]
+            avg_c  = e["avg_confidence"]
+            delta  = e["calibration_delta_pp"]
+            mgn    = e["avg_miss_margin"]
+            flag   = e["flag"]
+            actual_s = f"{actual*100:.1f}%"
+            avg_c_s  = f"{avg_c:.1f}%"
+            delta_s  = f"{delta:+.1f}pp"
+            mgn_s    = f"{mgn:.1f}" if mgn is not None else "n/a"
+            print(
+                f"  {player:<24}{n:>4}{hits:>6}{actual_s:>9}"
+                f"{avg_c_s:>11}{delta_s:>11}{mgn_s:>11}  {flag}"
+            )
+
+    # Over-confident highlights
+    if over_confident:
+        print(f"\n  OVER-CONFIDENT PLAYERS (n >= {H29_MIN_PICKS}, delta <= -{int(H29_OVER_CONF_THRESHOLD)}pp):")
+        for e in over_confident:
+            print(
+                f"    {e['player']}: {e['actual_hit_rate']*100:.1f}% actual vs "
+                f"{e['avg_confidence']:.1f}% assigned "
+                f"(delta {e['calibration_delta_pp']:+.1f}pp, n={e['n_picks']})"
+            )
+            for prop, b in e["by_prop"].items():
+                tag = ""
+                if b["delta_pp"] <= -H29_OVER_CONF_THRESHOLD:
+                    tag = " ← prop-specific over-confidence"
+                print(
+                    f"      {prop}: {b['hit_rate']*100:.1f}% actual vs "
+                    f"{b['avg_confidence']:.1f}% assigned (n={b['n']}){tag}"
+                )
+
+    # Under-confident highlights
+    if under_confident:
+        print(f"\n  UNDER-CONFIDENT PLAYERS (n >= {H29_MIN_PICKS}, delta >= +{int(H29_UNDER_CONF_THRESHOLD)}pp):")
+        for e in under_confident:
+            print(
+                f"    {e['player']}: {e['actual_hit_rate']*100:.1f}% actual vs "
+                f"{e['avg_confidence']:.1f}% assigned "
+                f"(delta {e['calibration_delta_pp']:+.1f}pp, n={e['n_picks']})"
+            )
+            for prop, b in e["by_prop"].items():
+                tag = ""
+                if b["delta_pp"] >= H29_UNDER_CONF_THRESHOLD:
+                    tag = " ← consistent under-rating"
+                print(
+                    f"      {prop}: {b['hit_rate']*100:.1f}% actual vs "
+                    f"{b['avg_confidence']:.1f}% assigned (n={b['n']}){tag}"
+                )
+
+    # ── Step 7: Write JSON output ─────────────────────────────────────────
+    out = {
+        "metadata": {
+            "generated_at":     dt.date.today().isoformat(),
+            "mode":             "confidence-calibration",
+            "n_total_picks":    total_n,
+            "n_total_hits":     total_hits,
+            "overall_hit_rate": total_rate,
+            "avg_confidence":   total_avg_conf,
+            "date_range": {
+                "start": date_min,
+                "end":   date_max,
+            },
+            "constants": {
+                "H29_MIN_PICKS":            H29_MIN_PICKS,
+                "H29_MIN_PROP_PICKS":       H29_MIN_PROP_PICKS,
+                "H29_MIN_BAND_PICKS":       H29_MIN_BAND_PICKS,
+                "H29_OVER_CONF_THRESHOLD":  H29_OVER_CONF_THRESHOLD,
+                "H29_UNDER_CONF_THRESHOLD": H29_UNDER_CONF_THRESHOLD,
+                "H29_CONF_BANDS":           [[lo, hi, label] for lo, hi, label in H29_CONF_BANDS],
+            },
+        },
+        "population_bands": population_bands,
+        "players":          player_entries,
+        "summary": {
+            "n_players":        len(player_entries),
+            "n_over_confident": len(over_confident),
+            "n_under_confident": len(under_confident),
+            "n_well_calibrated": len(well_calibrated),
+            "over_confident_players":  [e["player"] for e in over_confident],
+            "under_confident_players": [e["player"] for e in under_confident],
+        },
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else CONFIDENCE_CAL_JSON
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n[backtest] H29 results → {out_path}")
+
+
+# ── H30 — Minutes Elasticity ─────────────────────────────────────────
+
+def run_minutes_elasticity_analysis(player_log: pd.DataFrame, args) -> None:
+    """
+    H30 — Minutes Elasticity.
+
+    Quantifies each player's production-vs-minutes relationship across four
+    absolute minutes buckets: low (<30), normal (30-34), high (34-38),
+    extended (38+). Elasticity is measured as the delta between "extended"
+    and "normal" hit rates at each stat's key tier. Flags players as
+    SCALES (delta >= +10pp), PLATEAUS (-10 to +10), or INVERTS (delta <= -10pp).
+
+    Motivated by the structural minutes increase in playoff basketball:
+    starters routinely play 36-42 min vs 32-36 regular season. Aggregate
+    tier rates are diluted by low-minute games that won't recur in playoffs,
+    so a player with a 50% aggregate T25 but 90% T25 at 38+ min is a
+    structurally stronger playoff T25 pick than the aggregate suggests.
+
+    Uses player_game_log.csv only (via load_player_log()). Does NOT read
+    nba_master.csv, picks.json, or playoff_career_log.csv.
+
+    Output feeds a future playoff confidence adjustment layer — NOT a
+    standalone rule. No analyst.py changes in this task.
+    """
+    if player_log.empty:
+        print("[backtest] WARNING: player_log is empty — cannot run H30.")
+        return
+
+    # ── Step 1: Add minutes buckets ──────────────────────────────────────
+    df = player_log.copy()
+    df["minutes_raw"] = pd.to_numeric(df["minutes_raw"], errors="coerce")
+    df = df[df["minutes_raw"].notna() & (df["minutes_raw"] > 0)].copy()
+
+    # right=False → [0,30)=low, [30,34)=normal, [34,38)=high, [38,60)=extended
+    df["min_bucket"] = pd.cut(
+        df["minutes_raw"],
+        bins=H30_MINUTES_BINS,
+        labels=H30_MINUTES_LABELS,
+        right=False,
+    )
+
+    print(f"[backtest] H30 minutes-elasticity | "
+          f"{len(df):,} player-games | "
+          f"{df['player_name'].nunique()} unique players")
+    print(f"[backtest] buckets: low(<30), normal(30-34), high(34-38), extended(38+) | "
+          f"min_bucket_n={H30_MIN_BUCKET_N} | min_total_games={H30_MIN_TOTAL_GAMES}")
+
+    # ── Step 2: Per-player, per-stat elasticity ──────────────────────────
+    player_entries: list = []
+
+    for player_name, player_games in df.groupby("player_name"):
+        n_total = len(player_games)
+        if n_total < H30_MIN_TOTAL_GAMES:
+            continue
+
+        team_abbrev = (
+            str(player_games.sort_values("game_date")["team_abbrev"].iloc[-1])
+            if not player_games.empty else ""
+        )
+        avg_minutes = round(float(player_games["minutes_raw"].mean()), 1)
+
+        bucket_counts = {
+            bucket: int(len(player_games[player_games["min_bucket"] == bucket]))
+            for bucket in H30_MINUTES_LABELS
+        }
+
+        stats_out: dict = {}
+        for stat in H30_STATS:
+            col = H30_STAT_COL[stat]
+            key_tier = H30_KEY_TIER[stat]
+
+            # Overall key-tier rate (all games for this player)
+            overall_hits = int((player_games[col] >= key_tier).sum())
+            overall_rate = round(overall_hits / n_total, 3) if n_total > 0 else None
+
+            # Per-tier, per-bucket detail
+            tiers_out: dict = {}
+            for tier in H30_TIERS[stat]:
+                bucket_cells: dict = {}
+                for bucket in H30_MINUTES_LABELS:
+                    sub = player_games[player_games["min_bucket"] == bucket]
+                    n_b = len(sub)
+                    if n_b < H30_MIN_BUCKET_N:
+                        continue
+                    hits_b = int((sub[col] >= tier).sum())
+                    rate_b = round(hits_b / n_b, 3)
+                    avg_b  = round(float(sub[col].mean()), 1)
+                    bucket_cells[bucket] = {
+                        "n":        n_b,
+                        "hits":     hits_b,
+                        "hit_rate": rate_b,
+                        "avg_stat": avg_b,
+                    }
+                tiers_out[f"T{tier}"] = bucket_cells
+
+            # Elasticity delta at the key tier (extended - normal)
+            key_cells = tiers_out.get(f"T{key_tier}", {})
+            normal_rate   = key_cells.get("normal",   {}).get("hit_rate")
+            extended_rate = key_cells.get("extended", {}).get("hit_rate")
+
+            if normal_rate is not None and extended_rate is not None:
+                elasticity_delta = round((extended_rate - normal_rate) * 100, 1)
+            else:
+                elasticity_delta = None
+
+            if elasticity_delta is None:
+                stat_flag = None
+            elif elasticity_delta >= H30_SCALES_THRESHOLD:
+                stat_flag = "SCALES"
+            elif elasticity_delta <= H30_INVERTS_THRESHOLD:
+                stat_flag = "INVERTS"
+            else:
+                stat_flag = "PLATEAUS"
+
+            # Monotonicity: do rates consistently increase from low → extended
+            # across all buckets with sufficient sample?
+            ordered_rates = [
+                key_cells[b]["hit_rate"]
+                for b in H30_MINUTES_LABELS
+                if b in key_cells and key_cells[b].get("hit_rate") is not None
+            ]
+            if len(ordered_rates) >= 3:
+                monotonic_up = all(
+                    ordered_rates[i] <= ordered_rates[i + 1]
+                    for i in range(len(ordered_rates) - 1)
+                )
+                monotonic_down = all(
+                    ordered_rates[i] >= ordered_rates[i + 1]
+                    for i in range(len(ordered_rates) - 1)
+                )
+            else:
+                monotonic_up = None
+                monotonic_down = None
+
+            stats_out[stat] = {
+                "key_tier":            key_tier,
+                "flag":                stat_flag,
+                "elasticity_delta_pp": elasticity_delta,
+                "monotonic_up":        monotonic_up,
+                "monotonic_down":      monotonic_down,
+                "tiers":               tiers_out,
+                "overall_key_tier_rate": overall_rate,
+            }
+
+        # ── Step 3: Overall player flag ──────────────────────────────────
+        pts_flag = stats_out["PTS"].get("flag")
+        if pts_flag == "SCALES":
+            overall_flag = "MINUTES_SCALER"
+        elif pts_flag == "INVERTS":
+            overall_flag = "MINUTES_INVERTER"
+        elif pts_flag == "PLATEAUS":
+            # Check if any other stat scales → SELECTIVE_SCALER
+            other_scales = any(
+                stats_out[s].get("flag") == "SCALES"
+                for s in H30_STATS if s != "PTS"
+            )
+            other_inverts = any(
+                stats_out[s].get("flag") == "INVERTS"
+                for s in H30_STATS if s != "PTS"
+            )
+            if other_scales and not other_inverts:
+                overall_flag = "SELECTIVE_SCALER"
+            elif all(
+                stats_out[s].get("flag") == "PLATEAUS"
+                for s in H30_STATS
+                if stats_out[s].get("flag") is not None
+            ):
+                overall_flag = "MINUTES_INDEPENDENT"
+            else:
+                overall_flag = "MIXED"
+        else:
+            overall_flag = "INSUFFICIENT_DATA"
+
+        # Playoff projection insight — extended rates and delta vs overall
+        extended_key_rates: dict = {}
+        vs_overall_delta: dict = {}
+        for stat in H30_STATS:
+            key_tier = H30_KEY_TIER[stat]
+            s = stats_out[stat]
+            ext_cell = s["tiers"].get(f"T{key_tier}", {}).get("extended", {})
+            ext_rate = ext_cell.get("hit_rate")
+            if ext_rate is not None:
+                extended_key_rates[stat] = ext_rate
+                overall_rate = s.get("overall_key_tier_rate")
+                if overall_rate is not None:
+                    vs_overall_delta[stat] = round((ext_rate - overall_rate) * 100, 1)
+
+        player_entries.append({
+            "player":          player_name,
+            "team":            team_abbrev,
+            "n_games":         n_total,
+            "avg_minutes":     avg_minutes,
+            "bucket_counts":   bucket_counts,
+            "stats":           stats_out,
+            "overall_flag":    overall_flag,
+            "playoff_projection": {
+                "extended_key_rates": extended_key_rates,
+                "vs_overall_delta":   vs_overall_delta,
+            },
+        })
+
+    # Sort by PTS elasticity descending (biggest scalers first)
+    def _sort_key(e: dict):
+        pts_elast = e["stats"]["PTS"].get("elasticity_delta_pp")
+        return (
+            0 if pts_elast is not None else 1,   # None values last
+            -(pts_elast if pts_elast is not None else 0),
+            e["player"],
+        )
+    player_entries.sort(key=_sort_key)
+
+    # ── Step 4: Population aggregation (pooled across starter-level players) ──
+    # Keep starter-level population (avg minutes >= 28) to match the playoff question.
+    player_avg_min = df.groupby("player_name")["minutes_raw"].mean()
+    starter_names = set(
+        player_avg_min[player_avg_min >= H30_POPULATION_MIN_MIN].index.tolist()
+    )
+    pool = df[df["player_name"].isin(starter_names)].copy()
+
+    population: dict = {}
+    for stat in H30_STATS:
+        col = H30_STAT_COL[stat]
+        tier_out: dict = {}
+        for tier in H30_TIERS[stat]:
+            bucket_out: dict = {}
+            for bucket in H30_MINUTES_LABELS:
+                sub = pool[pool["min_bucket"] == bucket]
+                n_b = len(sub)
+                if n_b == 0:
+                    bucket_out[bucket] = {"n": 0, "hit_rate": None}
+                    continue
+                hits = int((sub[col] >= tier).sum())
+                bucket_out[bucket] = {
+                    "n":        n_b,
+                    "hits":     hits,
+                    "hit_rate": round(hits / n_b, 3),
+                }
+            # Elasticity for the population at this tier
+            normal_rate   = bucket_out.get("normal",   {}).get("hit_rate")
+            extended_rate = bucket_out.get("extended", {}).get("hit_rate")
+            if normal_rate is not None and extended_rate is not None:
+                pop_elast = round((extended_rate - normal_rate) * 100, 1)
+            else:
+                pop_elast = None
+            bucket_out["elasticity_delta_pp"] = pop_elast
+            tier_out[f"T{tier}"] = bucket_out
+        population[stat] = tier_out
+
+    # ── Step 5: Print report ──────────────────────────────────────────────
+    date_min = df["game_date"].min().date() if len(df) > 0 else "?"
+    date_max = df["game_date"].max().date() if len(df) > 0 else "?"
+
+    print(f"\n{'='*65}")
+    print(f"  H30 — MINUTES ELASTICITY")
+    print(f"  Minutes buckets: low(<30), normal(30-34), high(34-38), extended(38+)")
+    print(f"  Elasticity = extended rate - normal rate at key tier")
+    print(f"  Date range: {date_min} → {date_max}")
+    print(f"  Qualified players: {len(player_entries)} "
+          f"(>= {H30_MIN_TOTAL_GAMES} total games)")
+    print(f"{'='*65}")
+
+    # Population table
+    print(f"\n  POPULATION (pooled, {len(starter_names)} starters with "
+          f"avg min >= {H30_POPULATION_MIN_MIN})")
+    print(f"  {'─'*61}")
+    print(f"  {'Stat':<5}{'Tier':<6}{'low':>9}{'normal':>11}{'high':>9}"
+          f"{'extended':>11}{'elasticity':>13}")
+    for stat in H30_STATS:
+        for tier in H30_TIERS[stat]:
+            cell_map = population[stat][f"T{tier}"]
+            row_parts = []
+            for bucket in H30_MINUTES_LABELS:
+                hr = cell_map.get(bucket, {}).get("hit_rate")
+                row_parts.append(f"{hr*100:5.1f}%" if hr is not None else "  n/a")
+            elast = cell_map.get("elasticity_delta_pp")
+            elast_s = f"{elast:+6.1f}pp" if elast is not None else "     n/a"
+            print(f"  {stat:<5}T{tier:<5}{row_parts[0]:>9}{row_parts[1]:>11}"
+                  f"{row_parts[2]:>9}{row_parts[3]:>11}{elast_s:>13}")
+
+    # Per-player tables grouped by overall flag
+    def _stat_progression(entry: dict, stat: str) -> str:
+        key_tier = H30_KEY_TIER[stat]
+        cell_map = entry["stats"][stat]["tiers"].get(f"T{key_tier}", {})
+        parts = []
+        for bucket in H30_MINUTES_LABELS:
+            hr = cell_map.get(bucket, {}).get("hit_rate")
+            if hr is not None:
+                parts.append(f"{int(round(hr * 100))}%")
+            else:
+                parts.append("—")
+        return "→".join(parts)
+
+    def _print_group(label: str, entries: list, tail_note: str = "") -> None:
+        if not entries:
+            return
+        print(f"\n  {label}{(' — ' + tail_note) if tail_note else ''} "
+              f"({len(entries)} players)")
+        print(f"  {'─'*61}")
+        header = (
+            f"  {'Player':<24}{'avg_min':>8}{'n_ext':>6}  "
+            f"{'PTS(T20) low→norm→high→ext':<32}"
+            f"{'elast':>8}   mono  flag"
+        )
+        print(header)
+        for e in entries:
+            player = (e["player"] or "")[:24]
+            avg_m  = e["avg_minutes"]
+            n_ext  = e["bucket_counts"].get("extended", 0)
+            prog   = _stat_progression(e, "PTS")
+            elast  = e["stats"]["PTS"].get("elasticity_delta_pp")
+            elast_s = f"{elast:+.1f}pp" if elast is not None else "   n/a"
+            mono_up = e["stats"]["PTS"].get("monotonic_up")
+            mono_s  = "↑" if mono_up is True else ("·" if mono_up is False else "?")
+            flag    = e["overall_flag"]
+            print(
+                f"  {player:<24}{avg_m:>8.1f}{n_ext:>6}  "
+                f"{prog:<32}{elast_s:>8}  {mono_s:>4}   {flag}"
+            )
+
+    scalers  = [e for e in player_entries if e["overall_flag"] == "MINUTES_SCALER"]
+    selective = [e for e in player_entries if e["overall_flag"] == "SELECTIVE_SCALER"]
+    mixed    = [e for e in player_entries if e["overall_flag"] == "MIXED"]
+    independent = [e for e in player_entries if e["overall_flag"] == "MINUTES_INDEPENDENT"]
+    inverters = [e for e in player_entries if e["overall_flag"] == "MINUTES_INVERTER"]
+    insufficient = [e for e in player_entries if e["overall_flag"] == "INSUFFICIENT_DATA"]
+
+    _print_group(
+        "MINUTES SCALERS",
+        scalers,
+        f"PTS elasticity >= +{int(H30_SCALES_THRESHOLD)}pp at key tier",
+    )
+    _print_group(
+        "SELECTIVE SCALERS",
+        selective,
+        "PTS plateaus but other stat scales",
+    )
+    _print_group(
+        "MIXED",
+        mixed,
+        "PTS plateaus with one or more inverting stats",
+    )
+    _print_group(
+        "MINUTES INDEPENDENT",
+        independent,
+        "all stats plateau",
+    )
+    _print_group(
+        "MINUTES INVERTERS",
+        inverters,
+        f"PTS elasticity <= {int(H30_INVERTS_THRESHOLD)}pp at key tier",
+    )
+    if insufficient:
+        _print_group(
+            "INSUFFICIENT DATA",
+            insufficient,
+            f"fewer than {H30_MIN_BUCKET_N} games in normal or extended buckets",
+        )
+
+    # ── Step 6: Write JSON output ─────────────────────────────────────────
+    out = {
+        "metadata": {
+            "generated_at": dt.date.today().isoformat(),
+            "mode":         "minutes-elasticity",
+            "date_range": {
+                "start": str(date_min),
+                "end":   str(date_max),
+            },
+            "constants": {
+                "H30_MIN_BUCKET_N":       H30_MIN_BUCKET_N,
+                "H30_MIN_TOTAL_GAMES":    H30_MIN_TOTAL_GAMES,
+                "H30_MINUTES_BINS":       H30_MINUTES_BINS,
+                "H30_MINUTES_LABELS":     H30_MINUTES_LABELS,
+                "H30_KEY_TIER":           H30_KEY_TIER,
+                "H30_SCALES_THRESHOLD":   H30_SCALES_THRESHOLD,
+                "H30_INVERTS_THRESHOLD":  H30_INVERTS_THRESHOLD,
+                "H30_POPULATION_MIN_MIN": H30_POPULATION_MIN_MIN,
+            },
+            "n_total_games":      int(len(df)),
+            "n_qualified_players": len(player_entries),
+            "flag_counts": {
+                "MINUTES_SCALER":      len(scalers),
+                "SELECTIVE_SCALER":    len(selective),
+                "MIXED":               len(mixed),
+                "MINUTES_INDEPENDENT": len(independent),
+                "MINUTES_INVERTER":    len(inverters),
+                "INSUFFICIENT_DATA":   len(insufficient),
+            },
+        },
+        "population": population,
+        "players":    player_entries,
+        "summary": {
+            "scalers":          [e["player"] for e in scalers],
+            "selective_scalers": [e["player"] for e in selective],
+            "mixed":            [e["player"] for e in mixed],
+            "independent":      [e["player"] for e in independent],
+            "inverters":        [e["player"] for e in inverters],
+            "insufficient":     [e["player"] for e in insufficient],
+        },
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else MINUTES_ELASTICITY_JSON
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n[backtest] H30 results → {out_path}")
+
+
+# ── H32 — Player Consistency Index ──────────────────────────────────
+
+def run_consistency_index_analysis(
+    player_log: pd.DataFrame,
+    master_df: pd.DataFrame,
+    args,
+) -> None:
+    """
+    H32 — Player Consistency Index.
+
+    Measures how stable each player's tier hit rate is across contextual
+    slices (Home/Away, Rest: B2B/Normal/Extended, Spread: Competitive/
+    Blowout-risk). Aggregate hit rates mask context variance — a player
+    with 80% overall and 5pp range across contexts is fundamentally
+    different from one with 80% and 25pp range.
+
+    Formalizes the iron_floor intuition across multiple context dimensions
+    and identifies each player's single worst vulnerability (stat,
+    dimension, range_pp). For playoffs this matters more: games skew
+    road-heavy (2-2-1-1-1), no B2Bs but dense scheduling, and higher-
+    leverage spread contexts.
+
+    Uses player_game_log.csv + nba_master.csv. Does NOT read picks.json
+    or playoff_career_log.csv.
+
+    Output feeds a future per-player context-weighted confidence layer —
+    NOT a standalone rule. No analyst.py changes in this task.
+    """
+    if player_log.empty:
+        print("[backtest] WARNING: player_log is empty — cannot run H32.")
+        return
+    if master_df.empty:
+        print("[backtest] WARNING: master_df is empty — cannot run H32.")
+        return
+
+    window = getattr(args, "window", None) or ROLLING_WINDOW
+    print(f"[backtest] H32 consistency-index | "
+          f"{len(player_log):,} player-games | "
+          f"window={window} | "
+          f"min_slice_n={H32_MIN_SLICE_N} | "
+          f"min_total_games={H32_MIN_TOTAL_GAMES}")
+
+    # ── Step 1: Build spread lookup (mirrors H19/H27 pattern) ────────────
+    spread_map: dict = {}
+    for _, row in master_df.iterrows():
+        gid  = str(row.get("game_id", "")).strip()
+        home = str(row.get("home_team_abbrev", "")).upper().strip()
+        away = str(row.get("away_team_abbrev", "")).upper().strip()
+        hs   = row.get("home_spread")
+        as_  = row.get("away_spread")
+        for team, spread in [(home, hs), (away, as_)]:
+            if team and not pd.isna(spread):
+                spread_map[(gid, team)] = float(spread)
+
+    # ── Step 2: Add context columns ──────────────────────────────────────
+    df = player_log.copy()
+    df = df.sort_values(["player_name", "game_date"]).reset_index(drop=True)
+
+    # Rest days — first game per player is NaN (no prior game)
+    df["rest_days"] = (
+        df.groupby("player_name")["game_date"].diff().dt.days - 1
+    )
+
+    def _rest_bucket(d):
+        if pd.isna(d):
+            return None
+        if d == 0:
+            return "B2B"
+        if d == 1:
+            return "normal"
+        if d >= 2:
+            return "extended"
+        return None
+
+    df["rest_bucket"] = df["rest_days"].apply(_rest_bucket)
+
+    # Home/Away already in df["home_away"] as "H" or "A"
+
+    # Spread context — join to master_df
+    df["_team_upper"] = df["team_abbrev"].astype(str).str.upper().str.strip()
+    df["_gid"]        = df["game_id"].astype(str).str.split(".").str[0].str.strip()
+
+    def _spread_lookup(row):
+        s = spread_map.get((row["_gid"], row["_team_upper"]))
+        return abs(s) if s is not None else None
+
+    df["spread_abs"] = df.apply(_spread_lookup, axis=1)
+
+    def _spread_bucket(s):
+        if s is None or pd.isna(s):
+            return None
+        return "competitive" if s <= H32_SPREAD_THRESHOLD else "blowout_risk"
+
+    df["spread_bucket"] = df["spread_abs"].apply(_spread_bucket)
+
+    # ── Step 3: Add best tiers ───────────────────────────────────────────
+    df = add_best_tiers(df, window=window)
+
+    # ── Step 4: Per-player, per-stat consistency ─────────────────────────
+    player_entries: list = []
+
+    for player_name, player_games in df.groupby("player_name"):
+        n_total = len(player_games)
+        if n_total < H32_MIN_TOTAL_GAMES:
+            continue
+
+        team_abbrev = (
+            str(player_games.sort_values("game_date")["team_abbrev"].iloc[-1])
+            if not player_games.empty else ""
+        )
+
+        stats_out: dict = {}
+
+        for stat in H32_STATS:
+            col       = H32_STAT_COL[stat]
+            bt_col    = f"best_tier_{stat}"
+            # Player needs at least some qualifying games with a best_tier
+            valid = player_games[player_games[bt_col].notna()]
+            if len(valid) < H32_MIN_SLICE_N:
+                continue
+
+            # Modal best_tier across the player's qualifying games — their
+            # "characteristic" tier. Using `.mode()` which returns a Series.
+            tier_mode_series = valid[bt_col].mode()
+            if tier_mode_series.empty:
+                continue
+            tier = int(tier_mode_series.iloc[0])
+
+            # Overall hit rate at this tier across all games (not just qualifying)
+            hits_overall = int((player_games[col] >= tier).sum())
+            overall_rate = round(hits_overall / n_total, 3) if n_total > 0 else None
+            n_qualifying = int((player_games[col] >= tier).sum() +
+                               (player_games[col] < tier).sum())
+
+            # Compute hit rate per context slice
+            slices: dict = {}
+
+            # Home / Away
+            for ha_code, ha_label in [("H", "home"), ("A", "away")]:
+                sub = player_games[player_games["home_away"] == ha_code]
+                n_sub = len(sub)
+                if n_sub >= H32_MIN_SLICE_N:
+                    hits_sub = int((sub[col] >= tier).sum())
+                    slices[ha_label] = {
+                        "n":        n_sub,
+                        "hits":     hits_sub,
+                        "hit_rate": round(hits_sub / n_sub, 3),
+                    }
+
+            # Rest buckets
+            for bucket in ("B2B", "normal", "extended"):
+                sub = player_games[player_games["rest_bucket"] == bucket]
+                n_sub = len(sub)
+                if n_sub >= H32_MIN_SLICE_N:
+                    hits_sub = int((sub[col] >= tier).sum())
+                    slices[f"rest_{bucket}"] = {
+                        "n":        n_sub,
+                        "hits":     hits_sub,
+                        "hit_rate": round(hits_sub / n_sub, 3),
+                    }
+
+            # Spread buckets
+            for bucket in ("competitive", "blowout_risk"):
+                sub = player_games[player_games["spread_bucket"] == bucket]
+                n_sub = len(sub)
+                if n_sub >= H32_MIN_SLICE_N:
+                    hits_sub = int((sub[col] >= tier).sum())
+                    slices[f"spread_{bucket}"] = {
+                        "n":        n_sub,
+                        "hits":     hits_sub,
+                        "hit_rate": round(hits_sub / n_sub, 3),
+                    }
+
+            # Need at least 3 context slices for meaningful stability
+            if len(slices) < 3:
+                continue
+
+            # Stability metrics
+            rates = [s["hit_rate"] for s in slices.values()]
+            range_pp = round((max(rates) - min(rates)) * 100, 1)
+            std_pp   = round(float(np.std(rates)) * 100, 1)
+            best_context  = max(slices.keys(), key=lambda k: slices[k]["hit_rate"])
+            worst_context = min(slices.keys(), key=lambda k: slices[k]["hit_rate"])
+
+            # Per-dimension ranges
+            dim_ranges: dict = {}
+
+            ha_rates = [
+                slices[k]["hit_rate"]
+                for k in ("home", "away")
+                if k in slices
+            ]
+            if len(ha_rates) == 2:
+                dim_ranges["home_away"] = round(
+                    abs(ha_rates[0] - ha_rates[1]) * 100, 1
+                )
+
+            rest_rates = [
+                slices[k]["hit_rate"]
+                for k in ("rest_B2B", "rest_normal", "rest_extended")
+                if k in slices
+            ]
+            if len(rest_rates) >= 2:
+                dim_ranges["rest"] = round(
+                    (max(rest_rates) - min(rest_rates)) * 100, 1
+                )
+
+            spread_rates = [
+                slices[k]["hit_rate"]
+                for k in ("spread_competitive", "spread_blowout_risk")
+                if k in slices
+            ]
+            if len(spread_rates) == 2:
+                dim_ranges["spread"] = round(
+                    abs(spread_rates[0] - spread_rates[1]) * 100, 1
+                )
+
+            worst_dimension = (
+                max(dim_ranges.keys(), key=lambda k: dim_ranges[k])
+                if dim_ranges else None
+            )
+
+            # Flag
+            if range_pp < H32_ALLWEATHER_RANGE:
+                stat_flag = "ALL_WEATHER"
+            elif range_pp >= H32_SENSITIVE_RANGE:
+                stat_flag = "CONTEXT_SENSITIVE"
+            else:
+                stat_flag = "MODERATE"
+
+            stats_out[stat] = {
+                "tier":             tier,
+                "overall_hit_rate": overall_rate,
+                "n_qualifying":     n_qualifying,
+                "flag":             stat_flag,
+                "range_pp":         range_pp,
+                "std_pp":           std_pp,
+                "best_context":     best_context,
+                "worst_context":    worst_context,
+                "slices":           slices,
+                "dim_ranges":       dim_ranges,
+                "worst_dimension":  worst_dimension,
+            }
+
+        if not stats_out:
+            continue
+
+        # ── Step 5: Overall player flag + worst vulnerability ─────────────
+        flags = [s["flag"] for s in stats_out.values()]
+        if all(f == "ALL_WEATHER" for f in flags):
+            overall_flag = "ALL_WEATHER"
+        elif any(f == "CONTEXT_SENSITIVE" for f in flags):
+            overall_flag = "HAS_VULNERABILITY"
+        else:
+            overall_flag = "MODERATE"
+
+        # Worst vulnerability — highest range_pp across all stats, reporting
+        # the dimension (from worst_dimension) and its dim-specific range.
+        worst_vuln: "dict | None" = None
+        worst_range = -1.0
+        for stat_name, s in stats_out.items():
+            wd = s.get("worst_dimension")
+            if wd is None:
+                continue
+            dim_rng = s["dim_ranges"].get(wd, 0.0)
+            if dim_rng > worst_range:
+                worst_range = dim_rng
+                worst_vuln = {
+                    "stat":      stat_name,
+                    "dimension": wd,
+                    "range_pp":  dim_rng,
+                }
+
+        player_entries.append({
+            "player":              player_name,
+            "team":                team_abbrev,
+            "n_games":             n_total,
+            "overall_flag":        overall_flag,
+            "worst_vulnerability": worst_vuln,
+            "stats":               stats_out,
+        })
+
+    # Sort: ALL_WEATHER (by n_games desc), MODERATE, HAS_VULNERABILITY (by
+    # worst vuln range desc).
+    flag_priority = {
+        "ALL_WEATHER":       0,
+        "MODERATE":          1,
+        "HAS_VULNERABILITY": 2,
+    }
+    def _sort_key(e: dict):
+        prio = flag_priority.get(e["overall_flag"], 99)
+        if prio == 0:   # ALL_WEATHER → by n_games desc
+            return (prio, -e["n_games"], e["player"])
+        if prio == 2:   # HAS_VULNERABILITY → by worst vuln range desc
+            wv = e.get("worst_vulnerability") or {}
+            return (prio, -(wv.get("range_pp") or 0.0), e["player"])
+        return (prio, -e["n_games"], e["player"])
+    player_entries.sort(key=_sort_key)
+
+    all_weather        = [e for e in player_entries if e["overall_flag"] == "ALL_WEATHER"]
+    moderate_group     = [e for e in player_entries if e["overall_flag"] == "MODERATE"]
+    context_sensitive  = [e for e in player_entries if e["overall_flag"] == "HAS_VULNERABILITY"]
+
+    # ── Step 6: Print report ──────────────────────────────────────────────
+    date_min = df["game_date"].min().date() if len(df) > 0 else "?"
+    date_max = df["game_date"].max().date() if len(df) > 0 else "?"
+
+    print(f"\n{'='*65}")
+    print(f"  H32 — PLAYER CONSISTENCY INDEX")
+    print(f"  Contexts: Home/Away, Rest (B2B/Normal/Extended), Spread (Competitive/Blowout)")
+    print(f"  Min slice n: {H32_MIN_SLICE_N} | Min total games: {H32_MIN_TOTAL_GAMES}")
+    print(f"  Range thresholds: ALL_WEATHER <{int(H32_ALLWEATHER_RANGE)}pp, "
+          f"CONTEXT_SENSITIVE ≥{int(H32_SENSITIVE_RANGE)}pp")
+    print(f"  Date range: {date_min} → {date_max}")
+    print(f"  Qualified players: {len(player_entries)} "
+          f"(ALL_WEATHER={len(all_weather)}, MODERATE={len(moderate_group)}, "
+          f"HAS_VULNERABILITY={len(context_sensitive)})")
+    print(f"{'='*65}")
+
+    def _stat_summary_cell(e: dict, stat: str) -> str:
+        s = e["stats"].get(stat)
+        if s is None:
+            return "—".ljust(15)
+        tier = s["tier"]
+        overall = s.get("overall_hit_rate")
+        rng = s.get("range_pp")
+        overall_s = f"{int(round(overall * 100))}%" if overall is not None else "n/a"
+        rng_s     = f"rng={rng:.0f}pp" if rng is not None else "rng=n/a"
+        return f"T{tier} {overall_s} {rng_s}".ljust(15)
+
+    def _print_allweather_group(label: str, entries: list) -> None:
+        if not entries:
+            return
+        print(f"\n  {label} ({len(entries)} players)")
+        print(f"  {'─'*61}")
+        header = (
+            f"  {'Player':<24}{'n':>5}  "
+            f"{'PTS':<15}{'REB':<15}{'AST':<15}{'3PM':<15}"
+        )
+        print(header)
+        for e in entries:
+            player = (e["player"] or "")[:24]
+            n      = e["n_games"]
+            pts    = _stat_summary_cell(e, "PTS")
+            reb    = _stat_summary_cell(e, "REB")
+            ast    = _stat_summary_cell(e, "AST")
+            tpm    = _stat_summary_cell(e, "3PM")
+            print(f"  {player:<24}{n:>5}  {pts}{reb}{ast}{tpm}")
+
+    def _vuln_detail(e: dict) -> str:
+        wv = e.get("worst_vulnerability") or {}
+        stat = wv.get("stat")
+        dim  = wv.get("dimension")
+        if stat is None or dim is None:
+            return ""
+        s = e["stats"].get(stat, {})
+        tier = s.get("tier")
+        slices = s.get("slices", {})
+        parts = []
+        if dim == "home_away":
+            for key in ("home", "away"):
+                if key in slices:
+                    parts.append(f"{key[0].upper()}:{int(round(slices[key]['hit_rate']*100))}%")
+        elif dim == "rest":
+            for key in ("rest_B2B", "rest_normal", "rest_extended"):
+                if key in slices:
+                    label = key.replace("rest_", "")
+                    parts.append(f"{label}:{int(round(slices[key]['hit_rate']*100))}%")
+        elif dim == "spread":
+            for key in ("spread_competitive", "spread_blowout_risk"):
+                if key in slices:
+                    label = "comp" if key == "spread_competitive" else "blow"
+                    parts.append(f"{label}:{int(round(slices[key]['hit_rate']*100))}%")
+        return " ".join(parts)
+
+    def _print_vuln_group(label: str, entries: list) -> None:
+        if not entries:
+            return
+        print(f"\n  {label} ({len(entries)} players)")
+        print(f"  {'─'*61}")
+        header = (
+            f"  {'Player':<24}{'n':>5}  "
+            f"{'Worst vulnerability':<34}{'Detail'}"
+        )
+        print(header)
+        for e in entries:
+            player = (e["player"] or "")[:24]
+            n      = e["n_games"]
+            wv     = e.get("worst_vulnerability") or {}
+            vuln_str = ""
+            if wv:
+                stat  = wv.get("stat", "?")
+                dim   = wv.get("dimension", "?")
+                rng   = wv.get("range_pp")
+                tier  = e["stats"].get(stat, {}).get("tier", "?")
+                rng_s = f"{rng:.0f}pp" if rng is not None else "n/a"
+                vuln_str = f"{stat}(T{tier}) {dim} rng={rng_s}"
+            detail = _vuln_detail(e)
+            print(f"  {player:<24}{n:>5}  {vuln_str:<34}{detail}")
+
+    _print_allweather_group(
+        f"ALL-WEATHER PLAYERS (range < {int(H32_ALLWEATHER_RANGE)}pp in all qualifying stats)",
+        all_weather,
+    )
+    _print_allweather_group(
+        f"MODERATE PLAYERS (all stats within {int(H32_ALLWEATHER_RANGE)}-{int(H32_SENSITIVE_RANGE)}pp range)",
+        moderate_group,
+    )
+    _print_vuln_group(
+        f"CONTEXT-SENSITIVE PLAYERS (range ≥ {int(H32_SENSITIVE_RANGE)}pp in any stat)",
+        context_sensitive,
+    )
+
+    # ── Step 7: Write JSON output ─────────────────────────────────────────
+    summary = {
+        "n_qualified":        len(player_entries),
+        "n_all_weather":      len(all_weather),
+        "n_moderate":         len(moderate_group),
+        "n_context_sensitive": len(context_sensitive),
+        "all_weather_players":      [e["player"] for e in all_weather],
+        "moderate_players":         [e["player"] for e in moderate_group],
+        "context_sensitive_players": [
+            {
+                "player":              e["player"],
+                "worst_vulnerability": e["worst_vulnerability"],
+            }
+            for e in context_sensitive
+        ],
+    }
+
+    out = {
+        "metadata": {
+            "generated_at": dt.date.today().isoformat(),
+            "mode":         "consistency-index",
+            "date_range": {
+                "start": str(date_min),
+                "end":   str(date_max),
+            },
+            "constants": {
+                "H32_MIN_SLICE_N":       H32_MIN_SLICE_N,
+                "H32_MIN_TOTAL_GAMES":   H32_MIN_TOTAL_GAMES,
+                "H32_ALLWEATHER_RANGE":  H32_ALLWEATHER_RANGE,
+                "H32_SENSITIVE_RANGE":   H32_SENSITIVE_RANGE,
+                "H32_SPREAD_THRESHOLD":  H32_SPREAD_THRESHOLD,
+                "rolling_window":        window,
+            },
+        },
+        "players": player_entries,
+        "summary": summary,
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else CONSISTENCY_INDEX_JSON
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n[backtest] H32 results → {out_path}")
+
+
+# ── H31 — Playoff Series Progression ────────────────────────────────
+
+def run_series_progression_analysis(args) -> None:
+    """
+    H31 — Playoff Series Progression.
+
+    Tests whether tier hit rates shift across phases of a 7-game playoff
+    series: early (games 1-2), mid (games 3-4), late (games 5-7).
+    Defensive scheming intensifies as a series progresses — primary scorers
+    get more aggressive attention, bench rotations tighten, elimination
+    pressure mounts. The question: is this measurable at the hit-rate level?
+
+    Complements H28 (overall playoff adjustment) by adding a within-series
+    temporal dimension. Population preview shows subtle effects (PTS flat,
+    REB/AST slight lift, 3PM slight decline); per-player analysis may
+    reveal stronger individual patterns (late risers, late faders).
+
+    Loads playoff_career_log.csv internally (same pattern as H28). Does NOT
+    use load_player_log() or load_master(). Infers series from
+    (season, sorted team pair) + uses cumcount per player to assign game
+    number within series.
+
+    Output feeds a future playoff context enhancement — NOT a standalone
+    rule. No analyst.py changes in this task.
+    """
+    if not PLAYOFF_CAREER_CSV.exists():
+        print(f"[backtest] ERROR: {PLAYOFF_CAREER_CSV} not found.")
+        return
+
+    # ── Step 1: Load data ─────────────────────────────────────────────────
+    raw = pd.read_csv(PLAYOFF_CAREER_CSV)
+    po = raw[raw["season_type"] == "playoff"].copy()
+    po = po[po["minutes"] > 0].copy()
+    po["game_date"] = pd.to_datetime(po["game_date"], errors="coerce")
+    po = po[po["game_date"].notna()].copy()
+
+    if po.empty:
+        print("[backtest] WARNING: no playoff games — cannot run H31.")
+        return
+
+    # ── Step 2: Infer series and assign game-in-series ───────────────────
+    po["matchup_str"] = po.apply(
+        lambda r: "-".join(sorted([str(r["team_abbrev"]), str(r["opp_abbrev"])])),
+        axis=1,
+    )
+    po = po.sort_values(
+        ["season", "matchup_str", "player_name", "game_date"]
+    ).reset_index(drop=True)
+    po["game_in_series"] = (
+        po.groupby(["season", "matchup_str", "player_name"]).cumcount() + 1
+    )
+
+    def _phase(g: int) -> str:
+        if g <= 2:
+            return "early"
+        if g <= 4:
+            return "mid"
+        return "late"
+
+    po["series_phase"] = po["game_in_series"].apply(_phase)
+
+    # Series length per player (total games this player played in this series)
+    po["series_length"] = po.groupby(
+        ["season", "matchup_str", "player_name"]
+    )["game_in_series"].transform("max")
+
+    n_series = po[["season", "matchup_str"]].drop_duplicates().shape[0]
+    print(f"[backtest] H31 series-progression | "
+          f"{len(po):,} playoff player-games | "
+          f"{n_series} series | "
+          f"{po['player_name'].nunique()} unique players")
+    print(f"[backtest] phase distribution: "
+          f"early={int((po['series_phase']=='early').sum())}, "
+          f"mid={int((po['series_phase']=='mid').sum())}, "
+          f"late={int((po['series_phase']=='late').sum())}")
+
+    # ── Step 3: Population-level phase analysis ──────────────────────────
+    population: dict = {}
+    for stat in H31_STATS:
+        col = H31_STAT_COL[stat]
+        tier_out: dict = {}
+        for tier in H31_TIERS[stat]:
+            phase_out: dict = {}
+            for phase in H31_PHASES:
+                sub = po[po["series_phase"] == phase]
+                n_p = len(sub)
+                if n_p == 0:
+                    phase_out[phase] = {
+                        "n": 0, "hits": 0, "hit_rate": None,
+                        "avg_stat": None, "avg_minutes": None,
+                    }
+                    continue
+                hits = int((sub[col] >= tier).sum())
+                phase_out[phase] = {
+                    "n":           n_p,
+                    "hits":        hits,
+                    "hit_rate":    round(hits / n_p, 3),
+                    "avg_stat":    round(float(sub[col].mean()), 1),
+                    "avg_minutes": round(float(sub["minutes"].mean()), 1),
+                }
+            # early→late delta
+            early_rate = phase_out.get("early", {}).get("hit_rate")
+            late_rate  = phase_out.get("late",  {}).get("hit_rate")
+            if early_rate is not None and late_rate is not None:
+                phase_out["early_to_late_delta_pp"] = round(
+                    (late_rate - early_rate) * 100, 1
+                )
+            else:
+                phase_out["early_to_late_delta_pp"] = None
+            tier_out[f"T{tier}"] = phase_out
+        population[stat] = tier_out
+
+    # ── Step 4: Per-player phase analysis ────────────────────────────────
+    player_entries: list = []
+
+    for player_name, player_po in po.groupby("player_name"):
+        n_total = len(player_po)
+        if n_total < H31_MIN_TOTAL_PLAYOFF:
+            continue
+
+        team_abbrev = str(player_po.sort_values("game_date")["team_abbrev"].iloc[-1])
+        n_series_for_player = player_po[
+            ["season", "matchup_str"]
+        ].drop_duplicates().shape[0]
+
+        phase_counts = {
+            phase: int((player_po["series_phase"] == phase).sum())
+            for phase in H31_PHASES
+        }
+
+        stats_out: dict = {}
+        for stat in H31_STATS:
+            col       = H31_STAT_COL[stat]
+            key_tier  = H31_KEY_TIER[stat]
+
+            # Per-phase at key tier
+            phases_out: dict = {}
+            for phase in H31_PHASES:
+                sub = player_po[player_po["series_phase"] == phase]
+                n_ph = len(sub)
+                if n_ph < H31_MIN_PHASE_N:
+                    continue
+                hits = int((sub[col] >= key_tier).sum())
+                phases_out[phase] = {
+                    "n":           n_ph,
+                    "hits":        hits,
+                    "hit_rate":    round(hits / n_ph, 3),
+                    "avg_stat":    round(float(sub[col].mean()), 1),
+                    "avg_minutes": round(float(sub["minutes"].mean()), 1),
+                }
+
+            # Progression delta at key tier (requires both early AND late)
+            early_rate = phases_out.get("early", {}).get("hit_rate")
+            late_rate  = phases_out.get("late",  {}).get("hit_rate")
+            if early_rate is not None and late_rate is not None:
+                progression_delta = round((late_rate - early_rate) * 100, 1)
+            else:
+                progression_delta = None
+
+            if progression_delta is None:
+                stat_flag = None
+            elif progression_delta >= H31_PROGRESSION_THRESHOLD:
+                stat_flag = "LATE_RISER"
+            elif progression_delta <= -H31_PROGRESSION_THRESHOLD:
+                stat_flag = "LATE_FADER"
+            else:
+                stat_flag = "STABLE"
+
+            # All-tier detail for completeness (per-phase hit rates at every
+            # tier, only phases with >= MIN_PHASE_N included)
+            all_tiers: dict = {}
+            for tier in H31_TIERS[stat]:
+                tier_phase_out: dict = {}
+                for phase in H31_PHASES:
+                    sub = player_po[player_po["series_phase"] == phase]
+                    n_ph = len(sub)
+                    if n_ph < H31_MIN_PHASE_N:
+                        continue
+                    hits = int((sub[col] >= tier).sum())
+                    tier_phase_out[phase] = {
+                        "n":        n_ph,
+                        "hit_rate": round(hits / n_ph, 3),
+                    }
+                all_tiers[f"T{tier}"] = tier_phase_out
+
+            stats_out[stat] = {
+                "key_tier":             key_tier,
+                "flag":                 stat_flag,
+                "progression_delta_pp": progression_delta,
+                "phases":               phases_out,
+                "all_tiers":            all_tiers,
+            }
+
+        # ── Step 5: Per-series game log ───────────────────────────────────
+        series_log: list = []
+        for (season, matchup), group in player_po.groupby(["season", "matchup_str"]):
+            group_sorted = group.sort_values("game_date")
+            games_list = []
+            for _, g in group_sorted.iterrows():
+                games_list.append({
+                    "game_num": int(g["game_in_series"]),
+                    "phase":    str(g["series_phase"]),
+                    "date":     str(g["game_date"].date()),
+                    "pts":      int(g["pts"]),
+                    "reb":      int(g["reb"]),
+                    "ast":      int(g["ast"]),
+                    "tpm":      int(g["tpm"]),
+                    "minutes":  round(float(g["minutes"]), 1),
+                })
+            series_log.append({
+                "season":        int(season),
+                "matchup":       str(matchup),
+                "series_length": int(group_sorted["series_length"].iloc[0]),
+                "games":         games_list,
+            })
+        # Sort series_log chronologically: by season asc then earliest game date
+        series_log.sort(
+            key=lambda s: (s["season"], min(g["date"] for g in s["games"]))
+        )
+
+        # Overall player flag — driven by PTS flag (primary playoff signal),
+        # falling back to any other stat flag if PTS has no data.
+        pts_flag = stats_out.get("PTS", {}).get("flag")
+        if pts_flag is not None:
+            overall_flag = pts_flag
+        else:
+            # Use any non-None flag from other stats
+            other_flags = [
+                stats_out[s].get("flag")
+                for s in H31_STATS
+                if stats_out.get(s, {}).get("flag") is not None
+            ]
+            if other_flags:
+                # If any LATE_RISER → LATE_RISER, etc.
+                if "LATE_RISER" in other_flags:
+                    overall_flag = "LATE_RISER"
+                elif "LATE_FADER" in other_flags:
+                    overall_flag = "LATE_FADER"
+                else:
+                    overall_flag = "STABLE"
+            else:
+                overall_flag = "INSUFFICIENT_DATA"
+
+        # Max absolute progression delta (for sorting within flag groups)
+        max_abs_delta = 0.0
+        for s in stats_out.values():
+            d = s.get("progression_delta_pp")
+            if d is not None and abs(d) > max_abs_delta:
+                max_abs_delta = abs(d)
+
+        player_entries.append({
+            "player":          player_name,
+            "team":            team_abbrev,
+            "n_playoff_games": n_total,
+            "n_series":        n_series_for_player,
+            "phase_counts":    phase_counts,
+            "stats":           stats_out,
+            "overall_flag":    overall_flag,
+            "_max_abs_delta":  max_abs_delta,
+            "series_log":      series_log,
+        })
+
+    # Sort: LATE_RISER (by PTS delta desc) → STABLE → LATE_FADER (by |delta| desc) → INSUFFICIENT
+    flag_priority = {
+        "LATE_RISER":        0,
+        "STABLE":            1,
+        "LATE_FADER":        2,
+        "INSUFFICIENT_DATA": 3,
+    }
+    def _sort_key(e: dict):
+        prio = flag_priority.get(e["overall_flag"], 99)
+        pts_delta = e["stats"].get("PTS", {}).get("progression_delta_pp") or 0
+        if prio == 0:
+            return (prio, -pts_delta, e["player"])
+        if prio == 2:
+            return (prio, -abs(pts_delta), e["player"])
+        return (prio, -e["_max_abs_delta"], e["player"])
+    player_entries.sort(key=_sort_key)
+
+    late_risers  = [e for e in player_entries if e["overall_flag"] == "LATE_RISER"]
+    stable       = [e for e in player_entries if e["overall_flag"] == "STABLE"]
+    late_faders  = [e for e in player_entries if e["overall_flag"] == "LATE_FADER"]
+    insufficient = [e for e in player_entries if e["overall_flag"] == "INSUFFICIENT_DATA"]
+
+    # ── Step 6: Print report ──────────────────────────────────────────────
+    date_min = po["game_date"].min().date()
+    date_max = po["game_date"].max().date()
+
+    print(f"\n{'='*65}")
+    print(f"  H31 — PLAYOFF SERIES PROGRESSION")
+    print(f"  Phases: early(G1-2), mid(G3-4), late(G5-7)")
+    print(f"  Data: playoff_career_log.csv "
+          f"(seasons {int(raw['season'].min())}–{int(raw['season'].max())})")
+    print(f"  {n_series} series | {len(player_entries)} players qualified "
+          f"(>= {H31_MIN_TOTAL_PLAYOFF} playoff games)")
+    print(f"{'='*65}")
+
+    # Population table
+    print(f"\n  POPULATION (pooled across all players)")
+    print(f"  {'─'*61}")
+    print(f"  {'Stat':<5}{'Tier':<6}{'early':>10}{'mid':>10}{'late':>10}{'delta(e→l)':>14}")
+    for stat in H31_STATS:
+        for tier in H31_TIERS[stat]:
+            cell = population[stat][f"T{tier}"]
+            e = cell.get("early", {}).get("hit_rate")
+            m = cell.get("mid",   {}).get("hit_rate")
+            l = cell.get("late",  {}).get("hit_rate")
+            d = cell.get("early_to_late_delta_pp")
+            e_s = f"{e*100:5.1f}%" if e is not None else "  n/a"
+            m_s = f"{m*100:5.1f}%" if m is not None else "  n/a"
+            l_s = f"{l*100:5.1f}%" if l is not None else "  n/a"
+            d_s = f"{d:+6.1f}pp" if d is not None else "     n/a"
+            print(f"  {stat:<5}T{tier:<5}{e_s:>10}{m_s:>10}{l_s:>10}{d_s:>14}")
+
+    # Per-player groups
+    def _pts_progression(entry: dict) -> str:
+        phases = entry["stats"].get("PTS", {}).get("phases", {})
+        parts = []
+        for phase in H31_PHASES:
+            hr = phases.get(phase, {}).get("hit_rate")
+            parts.append(f"{int(round(hr * 100))}%" if hr is not None else "—")
+        return "→".join(parts)
+
+    def _print_group(label: str, entries: list, tail_note: str = "") -> None:
+        if not entries:
+            return
+        print(f"\n  {label}{(' — ' + tail_note) if tail_note else ''} "
+              f"({len(entries)} players)")
+        print(f"  {'─'*61}")
+        header = (
+            f"  {'Player':<24}{'po_n':>6}{'series':>8}  "
+            f"{'PTS(T20) e→m→l':<22}{'delta':>10}   flag"
+        )
+        print(header)
+        for e in entries:
+            player = (e["player"] or "")[:24]
+            n      = e["n_playoff_games"]
+            n_ser  = e["n_series"]
+            prog   = _pts_progression(e)
+            delta  = e["stats"].get("PTS", {}).get("progression_delta_pp")
+            delta_s = f"{delta:+.1f}pp" if delta is not None else "    n/a"
+            flag = e["overall_flag"]
+            print(
+                f"  {player:<24}{n:>6}{n_ser:>8}  {prog:<22}{delta_s:>10}   {flag}"
+            )
+
+    _print_group(
+        "LATE_RISERS",
+        late_risers,
+        f"PTS delta >= +{int(H31_PROGRESSION_THRESHOLD)}pp early→late",
+    )
+    _print_group(
+        "STABLE",
+        stable,
+        "PTS delta within ±8pp",
+    )
+    _print_group(
+        "LATE_FADERS",
+        late_faders,
+        f"PTS delta <= -{int(H31_PROGRESSION_THRESHOLD)}pp early→late",
+    )
+    if insufficient:
+        _print_group(
+            "INSUFFICIENT_DATA",
+            insufficient,
+            "fewer than 5 games in early or late phase",
+        )
+
+    print(f"\n  ⚠ SAMPLE SIZE NOTE: Per-player late-phase data is inherently thin —")
+    print(f"    requires multiple 5+ game series. Flags with n_late < 10 should be")
+    print(f"    treated as directional, not definitive.")
+
+    # ── Step 7: Write JSON output ─────────────────────────────────────────
+    def _clean(e: dict) -> dict:
+        return {k: v for k, v in e.items() if not k.startswith("_")}
+
+    all_entries_clean = [_clean(e) for e in player_entries]
+
+    out = {
+        "metadata": {
+            "generated_at":     dt.date.today().isoformat(),
+            "mode":             "series-progression",
+            "data_file":        str(PLAYOFF_CAREER_CSV),
+            "season_range":     [int(raw["season"].min()), int(raw["season"].max())],
+            "date_range": {
+                "start": str(date_min),
+                "end":   str(date_max),
+            },
+            "n_series":         n_series,
+            "n_playoff_games":  len(po),
+            "n_qualified_players": len(player_entries),
+            "flag_counts": {
+                "LATE_RISER":        len(late_risers),
+                "STABLE":            len(stable),
+                "LATE_FADER":        len(late_faders),
+                "INSUFFICIENT_DATA": len(insufficient),
+            },
+            "constants": {
+                "H31_MIN_PHASE_N":           H31_MIN_PHASE_N,
+                "H31_MIN_TOTAL_PLAYOFF":     H31_MIN_TOTAL_PLAYOFF,
+                "H31_PROGRESSION_THRESHOLD": H31_PROGRESSION_THRESHOLD,
+                "H31_KEY_TIER":              H31_KEY_TIER,
+                "H31_TIERS":                 H31_TIERS,
+                "H31_PHASES":                H31_PHASES,
+            },
+        },
+        "population": population,
+        "players":    all_entries_clean,
+        "summary": {
+            "late_risers": [e["player"] for e in late_risers],
+            "stable":      [e["player"] for e in stable],
+            "late_faders": [e["player"] for e in late_faders],
+            "insufficient": [e["player"] for e in insufficient],
+        },
+    }
+
+    out_path = Path(args.output) if getattr(args, "output", None) else SERIES_PROGRESSION_JSON
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n[backtest] H31 results → {out_path}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -6780,10 +9397,36 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence' | 'primary-blowout' | 'playoff-career' | 'confidence-calibration' | 'minutes-elasticity' | 'consistency-index' | 'series-progression'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
+
+    # ── Playoff career tier performance (H28) ────────────────────────
+    # This mode reads playoff_career_log.csv directly — it does NOT need
+    # player_log / team_log / master_df, so exit early before standard loaders
+    # to avoid loading 20K unused rows.
+    if getattr(args, "mode", None) == "playoff-career":
+        run_playoff_career_analysis(args)
+        sys.exit(0)
+
+    # ── Player-level confidence calibration (H29) ────────────────────
+    # This mode reads picks.json only via load_picks_json() — it does NOT need
+    # player_log / team_log / master_df, so exit early before standard loaders.
+    if getattr(args, "mode", None) == "confidence-calibration":
+        picks = load_picks_json()
+        if not picks:
+            print("[backtest] No graded picks found — cannot run H29.")
+            sys.exit(0)
+        run_confidence_calibration_analysis(picks, args)
+        sys.exit(0)
+
+    # ── Playoff series progression (H31) ─────────────────────────────
+    # This mode reads playoff_career_log.csv directly — it does NOT need
+    # player_log / team_log / master_df, so exit early before standard loaders.
+    if getattr(args, "mode", None) == "series-progression":
+        run_series_progression_analysis(args)
+        sys.exit(0)
 
     print("[backtest] Loading data...")
     whitelist  = load_whitelist()
@@ -6898,6 +9541,21 @@ def main():
     # ── Star absence teammate impact (H26) ────────────────────────────────
     if getattr(args, "mode", None) == "star-absence":
         run_star_absence_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── Primary scorer blowout PTS (H27) ─────────────────────────────
+    if getattr(args, "mode", None) == "primary-blowout":
+        run_primary_blowout_analysis(player_log, master_df, args)
+        sys.exit(0)
+
+    # ── Minutes elasticity (H30) ─────────────────────────────────────
+    if getattr(args, "mode", None) == "minutes-elasticity":
+        run_minutes_elasticity_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── Player consistency index (H32) ───────────────────────────────
+    if getattr(args, "mode", None) == "consistency-index":
+        run_consistency_index_analysis(player_log, master_df, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

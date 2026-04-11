@@ -856,6 +856,75 @@ Today is a postseason game. Playoff and play-in basketball differs structurally 
 **What does NOT change:** Tier system rules, confidence floors, step-down mechanics, VOLATILE penalties, iron_floor designations, and all quantitative gates remain in full effect. This block provides behavioral context — it does not override any existing rule."""
 
 
+def build_playoff_adjustments(today_str: str) -> str:
+    """
+    Returns a PLAYOFF PLAYER ADJUSTMENTS context block with per-player
+    directional guidance synthesized from H27-H32 backtests (career playoff
+    data 2021-2025, current-season confidence calibration, minutes elasticity,
+    consistency index, and series progression analysis).
+
+    Date-gated to PLAYOFFS_R1_DATE — play-in teams have thin/no playoff history.
+    Annotation-only: informs confidence direction, not hard rules.
+    """
+    if today_str < PLAYOFFS_R1_DATE:
+        return ""
+
+    return """## PLAYOFF PLAYER ADJUSTMENTS (H27–H32 backtests, career data 2021–2025)
+
+Per-player directional guidance for playoff confidence calibration. These are
+annotation-only — use to inform confidence direction alongside quant data, not
+as hard overrides. Findings marked ⚠ have thin samples (n < 10 in the relevant
+bucket) and are directional, not directive.
+
+The system is ~10pp under-confident at population level (87% actual vs 77% assigned).
+Most regular-season rest/B2B vulnerabilities are NEUTRALIZED in playoffs (no B2Bs,
+consistent every-other-day scheduling). Playoff AST suppression is widespread — be
+cautious on AST picks unless the player is a confirmed AST elevator.
+
+PLAYER ADJUSTMENTS:
+
+SGA — NEUTRAL. Already optimally calibrated. PTS T20 near-certain regardless of context (100% at every minutes bucket). T25 strong and gets stronger late-series (+8pp). No prop to avoid.
+
+Jokic — BOOST PTS/3PM. PTS elevates +9pp in playoffs, scales with minutes (T25: 42%→72% at 38+ min), series-stable. 3PM +16pp playoff lift. AST: safe at T4 but CAUTION at T6+ (suppressed -12pp in playoffs). Most reliable and series-consistent playoff player overall.
+
+Ant Edwards — BOOST G1-4, CAUTION G5-7 PTS/3PM. STRONG_ELEVATOR (PTS +7pp, REB +21pp, AST +23pp) AND massive minutes scaler (T25: 25%→86% at 38+ min). BUT PTS fades -15pp in games 5-7 as defenses adjust. In late-series: shift to AST (rises +11pp late).
+
+Luka — BOOST PTS. System massively underrates (12/12 PTS picks hit, +16pp under-confident). Already at 100% PTS T20 at playoff minutes. AST dips -5.5pp in playoffs — still pickable but avoid high AST tiers. REB rises as series deepen.
+
+Tatum — PROP-SPECIFIC. Pick AST (elevates +17pp in playoffs, rises further late-series +16pp). REB stable-to-up. PTS suppresses -6.5pp. 3PM AVOID (-11pp playoff drop). Shifts to facilitator mode.
+
+Mitchell — CAUTION PTS, HARD AVOID 3PM. 3PM: 43% actual vs 76% assigned (worst-calibrated prop in system) AND -7.5pp playoff suppressor. PTS pickable early-series at conservative tiers (T20 not T25). AST safe early-series but fades late (-21pp).
+
+Brown — BOOST. System underrates (95.7% actual hit rate, +18pp under-confident). REB elevates +17pp in playoffs AND rises late-series. Most context-stable player. 3PM dips — avoid.
+
+Brunson — BOOST PTS. Biggest PTS elevator with reliable sample (+17pp T20, n=67). No series fade on PTS.
+
+Harden — AST ONLY. PTS collapses in playoffs (-8pp overall, -33pp in games 5-7 — largest fade in dataset). AST bulletproof (100% in mid and late games, 45 playoff games). PTS and 3PM: AVOID, especially games 5+.
+
+Curry — PTS good G1-4 (+5pp elevator), fades G5-7 (-15pp). AST rises late-series (+20pp). Shift from PTS to AST as series deepens. 3PM stable.
+
+Murray — BOOST early-series. PTS and REB elevate, scales with minutes (+39pp T25 elasticity). Comprehensive late fader (PTS/REB/AST all decline G5-7). Best in G1-4. Road games > home (19pp split).
+
+Booker — pick REB (elevates +13pp, rises +36pp late-series). PTS fades hard late (-22pp). AST fades harder (-28pp). 3PM dips. In playoffs, REB is the prop.
+
+Embiid — STRONG CAUTION PTS/AST. PTS: -12pp playoff drop, 52% in competitive games vs 100% in blowouts (H32). Playoff games are inherently competitive. AST: -18pp. Only REB is safe.
+
+KAT — STRONG CAUTION PTS/AST/3PM. Massive suppression across the board. REB only safe prop. May warm up within series (PTS late-riser +18pp) but baseline deeply suppressed.
+
+Herro — AVOID ALL PROPS. -29 to -37pp across every stat in 29 playoff games over 5 seasons. Structural, not variance.
+
+Maxey — CAUTION PTS/3PM/AST. Playoff suppressor despite strong minutes scaling — schematic suppression (game-planned as primary) overrides volume gains. AST may work late-series (+25pp late-riser). REB elevates.
+
+J. Williams — BOOST PTS/REB/AST. Strong elevator across the board. 3PM: AVOID in competitive-spread games (0% hit rate in competitive context).
+
+Reaves — BOOST. Broad elevator, system underrates (+13.5pp). PTS fades late; shift to REB/AST in deep series.
+
+Kawhi — BOOST PTS/REB when healthy. +19pp PTS, +18pp REB in playoffs. System underrates. Health is the only gate. 3PM has home/away split (24pp range) — check venue.
+
+Banchero — BOOST. 14/14 PTS picks hit in regular season. Massive minutes scaler (+38pp T25). System's biggest miscalibration (+19.5pp). ⚠ Limited playoff career sample (n=12).
+"""
+
+
 def load_player_stats() -> dict:
     """Load pre-computed quant stats from player_stats.json."""
     if not PLAYER_STATS_JSON.exists():
@@ -1596,6 +1665,8 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
     _playoff_ctx            = build_playoff_context(TODAY_STR)
     playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
+    _playoff_adj            = build_playoff_adjustments(TODAY_STR)
+    playoff_adjustments_section = f"{_playoff_adj}\n\n" if _playoff_adj else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
     series_context_section  = f"{series_context}\n\n"  if series_context  else ""
@@ -1771,7 +1842,7 @@ selection signals.
 {lineups_block}{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2608,6 +2679,8 @@ def build_scout_prompt(
     playoff_picture_section = f"{playoff_picture}\n\n" if playoff_picture else ""
     _playoff_ctx            = build_playoff_context(TODAY_STR)
     playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
+    _playoff_adj            = build_playoff_adjustments(TODAY_STR)
+    playoff_adjustments_section = f"{_playoff_adj}\n\n" if _playoff_adj else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
     series_context_section  = f"{series_context}\n\n"  if series_context  else ""
@@ -2659,7 +2732,7 @@ Use `priority: "high"` for players with multiple qualifying props, strong recent
 {lineups_block}{pre_game_section}## SEASON CONTEXT
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2850,6 +2923,7 @@ The Scout's assessment is advisory — use it as a starting point, not a constra
 {scout_shortlist_json}
 {build_playoff_context(TODAY_STR)}
 {f"{chr(10)}{series_context}{chr(10)}" if series_context else ""}
+{build_playoff_adjustments(TODAY_STR)}
 ## TODAY'S GAMES
 {games_block}
 

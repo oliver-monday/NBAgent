@@ -60,6 +60,7 @@ Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: Apri
 - ✅ Daily ingest `season_type` integration + playoff dual-write — added `season_type` column to `nba_master.csv` (from ESPN scoreboard `season.type`) and `player_game_log.csv` (joined via `game_id`). Postseason rows (type=3) automatically dual-written to `data/playoff_career_log.csv` by `append_playoff_rows()` in `espn_player_ingest.py` — upsert idempotent on `(player_id, game_id)`. Inert during regular season (returns immediately when no playoff rows present). `ingest.yml` commits `playoff_career_log.csv` alongside other ingest outputs. Keeps the file fresh for `compute_playoff_splits()` without manual backfill re-runs once playoffs start. (4/10)
 - ✅ Frontend — Playoff Career Profiles panel + Playoff Game Explorer added to Research tab in `build_site.py`. New `build_playoff_data()` reads `playoff_career_log.csv` at build time and produces `{profiles: [...], games: {...}}`. Research tab now stacks three collapsible sections: (1) **Playoff Career Profiles** — 58 sortable cards (sort by Games / PTS Δ / REB Δ / AST Δ / 3PM Δ / FG% Δ / A–Z) with colour-coded deltas, season chips, and expandable per-season breakdown; (2) **Playoff Game Explorer** — player/stat/season/round/opponent/H-A filters → tier hit rate table with bar charts + grouped-by-series game log with inferred round labels (R1/R2/CF/Finals); (3) **Player Explorer** — existing current-season explorer, wrapped in `renderCurrentSeasonExplorer()` and preserved byte-for-byte. Pure static data, no LLM calls, no runtime dependencies beyond pandas. Site size 1.14 MB → 1.53 MB (+391 KB, mostly the per-game playoff dataset). Verified in browser: 58 profiles render, Tatum 76g / Brown 74g / White 73g descending sort, Banchero +4.3 PTS Δ leads PTS sort, Tatum × 2023-24 × R1 filter shows 5 games vs MIA with small-sample badge, current-season explorer unchanged. (4/10)
 - ✅ Scout token budget fixed 4/10 — `SCOUT_MAX_TOKENS` 4096→12288, undersize fallback at <12 shortlisted on 40+ slates, prompt inclusion language strengthened. Root cause: 4096 output tokens physically limited Scout to ~8-9 structured entries, causing it to pre-filter aggressively and drop strong candidates (KAT 85% PTS, Brunson 75% PTS, OG Anunoby 90% PTS on 4/10). Now the Scout has ~3× the output headroom; if the model still under-delivers on a large slate, the undersize check falls back to single-call mode automatically. (4/10)
+- ✅ **Playoff Player Adjustments block** — `build_playoff_adjustments()` live in `agents/analyst.py`, date-gated to PLAYOFFS_R1_DATE (≥ 2026-04-18). Annotation-only per-player directional guidance for 20 players synthesized from H27–H32 backtests (career playoff data, minutes elasticity, confidence calibration, consistency index, series progression, blowout resilience). Wired into all 3 prompt builders: `build_prompt()` (v1 fallback), `build_scout_prompt()` (v2 scout), `build_pick_prompt()` (v2 pick — inline next to existing `build_playoff_context()` call). Review after first playoff week for analyst reasoning quality. (4/11)
 
 **Remaining gap items (April 12–13):**
 - Create `data/playoff_bracket.json` — populate once seeds are final after 4/11 games
@@ -268,6 +269,139 @@ All five key tiers cross the +3pp SIGNAL threshold with ≥10 observations. The 
 **Important caveat:** per-player direction varies. Population lift is strong but individual teammates can show drags (e.g. Jalen Green PTS cratered without Booker). Any production rule MUST check per-player without-star history before applying the population average — the two downstream items below both respect this.
 
 **Downstream consumers:** two items added to the April 12–13 gap queue (see below) — skip re-evaluation in `lineup_update.py` and analyst star-absence uplift annotation in `quant.py` + `analyst.py`. Both are designed to respect per-player history when available and fall back to population data only when per-player samples are thin.
+
+---
+
+### H27 — Primary Scorer Blowout PTS Performance
+**Status: FIRST RUN COMPLETE — MIXED verdict, action deferred (4/11)**
+**Mode: `--mode primary-blowout`**
+
+Tests whether `blowout_t25_skip` (hard-skip of primary scorer PTS T25/T30 at spread_abs ≥ 15) is correctly suppressing a structural risk, or whether the rule is over-penalizing a population that still hits T25 above baseline. Motivated by 100% false skip rate on graded data (Maxey 32, Wembanyama 40).
+
+**Headline findings:**
+- Primary scorers at spread_abs ≥ 15 hit PTS T25 at **58.8% (n=68)** — ABOVE the 50.6% full-dataset baseline. Verdict: MARGINAL.
+- **GAME_SCRIPT_DEPENDENT** signal is the most important result. When the spread said blowout AND the game actually materialized as one (final margin ≥ 15), primary T25 dropped to 45.7% (n=35). When the spread said blowout BUT the game stayed competitive, primary T25 elevated to 73.7% (n=19). **Delta: +28.0pp.** The rule is firing on a population that's roughly half pure-signal (real blowouts) and half false-positive (spreads that don't materialize).
+- Jokic hypothesis NOT confirmed — only 1 qualifying Jokic game in the sample (n_with=68 vs n_ex=67, delta=+0.9pp).
+- Per-player breakdown identifies 3 PLAYER_SUPPRESSED (Durant HOU, Cunningham DET, Luka LAL minutes-compressed) and 3 PLAYER_RESILIENT (Mitchell +17.2pp, Ball, Murray +51.6pp). Suppression concentrated in HOU/DET roster contexts, not uniform.
+
+**Action deferred for in-season:** single-season sample for actionable change. The GAME_SCRIPT_DEPENDENT finding is compelling but operationalizing it requires knowing whether the game will actually be a blowout at pick time, which we don't. Revisit after playoffs + multi-season sample. For now, per-player flags inform offseason discussion of player-specific rules.
+
+**Candidate rule changes (offseason):**
+1. Replace `blowout_t25_skip` hard skip with a -5pp confidence cap for primary scorers at spread_abs ≥ 15 — matches MARGINAL verdict
+2. Keep hard skip only for players with repeated PLAYER_SUPPRESSED flags across multiple seasons (player-specific)
+3. Consider retiring the rule entirely; the false skip rate (2/2) aligns with population T25 58.8% vs 50.6% baseline.
+
+---
+
+### H28 — Playoff Career Tier Performance
+**Status: FINDINGS INJECTED INTO ANALYST PROMPT (4/11) — H27/H28/H29/H30/H31/H32 synthesized into `build_playoff_adjustments()`, date-gated to PLAYOFFS_R1_DATE (4/18). Review analyst reasoning quality after first playoff week.**
+**Mode: `--mode playoff-career`**
+
+Compares per-player regular vs playoff career tier hit rates across PTS/REB/AST/3PM using `data/playoff_career_log.csv` (2021–2025, 18,168 regular + 1,883 playoff games). 58 players qualified (47 reliable with ≥10 playoff games, 11 limited-sample with 5–9). Per-player flags: ELEVATOR / STABLE / SUPPRESSOR per stat at key tier (PTS T20, REB T6, AST T4, 3PM T2); cross-stat overall flag: STRONG_ELEVATOR / ELEVATOR / MIXED / STABLE / SUPPRESSOR / STRONG_SUPPRESSOR.
+
+**Headline findings:**
+- Population deltas are small (PTS +0.7pp, REB +4.9pp, AST −4.9pp, 3PM −1.6pp at key tiers). The signal is entirely per-player.
+- **6 STRONG_ELEVATOR** players: Banchero, Paul George, Jalen Williams, CJ McCollum, Anthony Edwards, Austin Reaves — all lift across 3+ stats.
+- **15 STRONG_SUPPRESSOR** players including Tyler Herro (−37pp PTS T20), Julius Randle (−30pp REB), KAT (−36pp AST T4), Mikal Bridges, Payton Pritchard (uniformly crushed across all stats).
+- **Jokic** is ELEVATOR overall and gets *more* lethal in playoffs at PTS (+12.6pp at T30) — opposite of the H27-motivating anecdote. He compresses AST at higher tiers (T6 −12.2pp, T8 −13.7pp) but stays STABLE at T4. A rule reading the `tiers` sub-dict (not just the key-tier flag) gets the nuance for free.
+- **Tatum** is MIXED: PTS T20 −6.5pp suppression is absorbed by a +16.6pp AST T4 lift — usage profile shifts toward playmaking in playoffs.
+
+**Downstream consumers (deferred to separate task):** Playoff context block injection into analyst prompt. The JSON output (`data/backtest_playoff_career.json`) contains per-player `stats[stat].flag`, `key_tier_delta_pp`, full `tiers` sub-dict, and `playoff_game_log` for evidence review. Top-level `summary` dict maps `player_name → overall_flag` for quick lookup. No production rule changes shipped in this backtest.
+
+**Caveat:** Single-playoff-sample risk — Herro's 29-game sample is dominated by a specific tough matchup series; Randle's 30-game sample reflects the pre-MIN-trade Knicks context. Before using flags as directive signals, multi-season cross-validation is wise for any player with fewer than ~20 playoff games.
+
+---
+
+### H29 — Player-Level Confidence Calibration
+**Status: FIRST RUN COMPLETE — actionable signal confirmed (4/11)**
+**Mode: `--mode confidence-calibration`**
+
+Audits per-player calibration using 815 graded picks from `picks.json`. For each player with ≥10 picks, compares mean assigned confidence to actual hit rate. Flags OVER_CONFIDENT (delta ≤ −8pp), UNDER_CONFIDENT (delta ≥ +8pp), WELL_CALIBRATED.
+
+**Headline findings:**
+- **Overall hit rate 87.1%** (815 picks) vs **avg assigned confidence 77.1%** — a 10pp population under-confidence gap. Consistent with existing `audit_summary.json` `confidence_calibration_totals` and validates the pick mechanism.
+- **31 players qualified** (≥10 picks): 2 OVER_CONFIDENT, 18 UNDER_CONFIDENT, 11 WELL_CALIBRATED.
+- **OVER_CONFIDENT: Brandon Ingram (−15.2pp)** — PTS 40% (n=5) and AST 66.7% (n=6) both flagged prop-specific. **Donovan Mitchell (−10.4pp)** — PTS 60% (n=5) and 3PM 42.9% (n=7) are the culprits; his AST picks are fine. These are the only two players over-rated at threshold.
+- **UNDER_CONFIDENT clusters**: Paolo Banchero (+19.5pp, 95.7% actual), Cade Cunningham (+18.6pp), Jaylen Brown (+18.3pp), Wembanyama (+17.5pp), LeBron (+17.3pp), Luka (+15.7pp), Kon Knueppel (+14.6pp), SGA (+13.5pp), LaMelo Ball (+13.6pp), Austin Reaves (+13.5pp), Giannis (+12.3pp), Sengun (+12.2pp), Desmond Bane (+11.5pp), Kawhi Leonard (+11.2pp), Jokic (+10.6pp), James Harden (+10.2pp), Scottie Barnes (+9.8pp), Julius Randle (+8.5pp). Many of these players hit at 90–100% while being rated at 75–79% — systematic conservative floor.
+
+**Downstream consumer (deferred to separate task):** Per-player calibration lifts/caps could be injected into the analyst prompt as confidence adjustments or into the `bet_recommendation.calibrated_prob` computation as per-player overrides. Care needed to avoid double-counting with the existing band-based calibration already feeding the odds layer.
+
+**Caveat:** Small-sample risk for players with 10–15 picks (Wemby, Cunningham, Giannis, Duren, Flagg). The big-sample OVER_CONFIDENT cases (Mitchell 23, Ingram 13) are more trustworthy than their raw delta magnitude suggests — Mitchell's 3PM weakness is specifically coherent with his perimeter-heavy role on CLE.
+
+---
+
+### H30 — Minutes Elasticity
+**Status: FIRST RUN COMPLETE — strong population signal, per-player ranking ready (4/11)**
+**Mode: `--mode minutes-elasticity`**
+
+Quantifies per-player production-vs-minutes curves across 4 absolute minutes buckets: low (<30), normal (30–34), high (34–38), extended (38+). Elasticity = (extended − normal) hit rate delta at key tier (PTS T20, REB T6, AST T4, 3PM T2). Flags: SCALES (delta ≥ +10pp), PLATEAUS (−10 to +10pp), INVERTS (delta ≤ −10pp). Overall player flag driven by PTS flag with SELECTIVE_SCALER for PTS-plateau + other-stat-scales combinations.
+
+**Headline findings (3,533 non-DNP player-games, 58 unique players, 56 qualified at ≥20 games):**
+- **Population elasticity is massive**: PTS T20 +26.0pp, PTS T25 +28.9pp, REB T6 +17.0pp, AST T4 +21.1pp, AST T6 +26.7pp. Every bucket is monotonically higher than the previous one at every tested PTS/REB/AST tier. 3PM is weakest (+9.6pp at T2) — 3PM is more shot-allocation-bound than minutes-bound.
+- **23 MINUTES_SCALERS**: biggest deltas are Alperen Sengun (+54.7pp), Miles Bridges (+54.2pp), Jalen Johnson (+50.6pp), Paolo Banchero (+48.3pp), Bam Adebayo (+40.9pp), Scottie Barnes (+40.4pp), Brandon Ingram (+38.9pp), **Anthony Edwards (+37.5pp)**, **Jokic (+33.3pp)**, VJ Edgecombe, Austin Reaves, Derrick White, Desmond Bane, Joel Embiid, Devin Booker, Luka (+12.5pp, 57→88→100→100%), Jamal Murray, Tyrese Maxey, Julius Randle, Jabari Smith Jr., NAW, Kon Knueppel, Jaden McDaniels.
+- **6 SELECTIVE_SCALERS**: Rudy Gobert (REB scales, PTS plateaus), Kawhi Leonard (already near ceiling at 89→96→100→100% PTS), Payton Pritchard, Cameron Johnson, Amen Thompson, Kevin Durant.
+- **3 MIXED**: SGA (100%→100%→100%→100% PTS T20 — pure ceiling), Jaylen Brown, Cade Cunningham.
+- **2 MINUTES_INVERTERS**: Donovan Mitchell (−19.1pp, n_ext=7), LeBron James (−28.0pp, n_ext=5). Both small samples, both directionally consistent with age/efficiency-compression narratives but treat as suggestive, not definitive.
+- **22 INSUFFICIENT_DATA**: players whose avg minutes sits below ~32 so they don't have ≥5 games in the extended bucket (LaMelo, Jalen Green, Hartenstein, CJ McCollum, RJ Barrett, Holmgren, Mobley, many others). Not a bug — real information about regular-season minute allocation.
+
+**Ant Edwards T25 progression (the canonical extreme case):** 25% low → 50% normal → 69.6% high → **86.4% extended** = +61.4pp span. Aggregate T25 rate of 52% massively understates his playoff T25 capability.
+
+**Downstream consumer (deferred to separate task):** A future playoff confidence adjustment layer could directly use each scaler's `extended_key_rates` or `playoff_projection.vs_overall_delta` as per-player playoff bumps. Prime candidates for +5 to +10pp playoff confidence bumps: Banchero, Ant Edwards, Jalen Johnson, Sengun, Bam Adebayo, Jokic, Scottie Barnes, Luka, Jamal Murray, Maxey. No bump for MIXED/INSUFFICIENT players. Possible slight tax for Mitchell/LeBron — but given the small extended samples, prudent to wait for more data before penalizing them.
+
+**Caveat:** Many scaler deltas come from thin extended-bucket samples (5–12 games). The population-level signal is real at n=3,533 player-games, but individual per-player deltas carry sample noise. Any per-player rule should gate on n_extended ≥ 10 to be directive, and use the flag as directional guidance below that threshold.
+
+---
+
+### H32 — Player Consistency Index
+**Status: FIRST RUN COMPLETE — per-player vulnerability ranking ready (4/11)**
+**Mode: `--mode consistency-index`**
+
+Measures per-player tier hit rate stability across 3 context dimensions (Home/Away, Rest: B2B/Normal/Extended, Spread: Competitive/Blowout-risk). Formalizes the iron_floor intuition across multiple dimensions. Flags ALL_WEATHER (<10pp range), MODERATE (10–20pp), CONTEXT_SENSITIVE (≥20pp).
+
+**Headline finding: context-invariance is the exception.** Zero ALL_WEATHER players in the 56-player qualified pool. Only 4 MODERATE (Randle, Jamal Murray, Jaylen Brown, Norman Powell). All other 52 qualified players have at least one stat with ≥20pp range across contexts. The tight thresholds combined with slice-level sample noise make the flag taxonomy itself less useful than the *worst_vulnerability* ranking.
+
+**Dominant vulnerability dimension: REST** (33 of 56 players). Spread was worst for 13 players, Home/Away for 7. Rest-sensitivity is distributed so broadly that per-player quant-level gating is likely more impactful than any blanket rule.
+
+**Top 5 worst vulnerabilities (all at key tier, modal best_tier):**
+- Jalen Williams 3PM(T1) spread 64.3pp (comp:0% blow:64%)
+- Coby White PTS(T10) H/A 50.0pp (H:100% A:50%)
+- Joel Embiid PTS(T25) spread 48.3pp (comp:52% blow:100%) — **opposite of blowout_t25_skip assumption**
+- Paul George 3PM(T2) spread 46.4pp (comp:54% blow:100%)
+- Bennedict Mathurin PTS(T15) rest 43.3pp (B2B:83% normal:69% extended:40%)
+
+**Notable narrative patterns:**
+- **Jokic AST T8** compresses on B2B (57% B2B → 97% normal → 76% extended) — matches the existing one-tier step-down rule for AST on B2B nights.
+- **Joel Embiid PTS T25** flips the blowout_t25_skip intuition: his T25 hit rate is *higher* in blowout games (100%) than competitive ones (52%), not lower. Another data point against the aggressive hard-skip.
+- **Kevin Durant** plays dramatically better on the road (PTS T20 H:70% A:95%, 25pp range) — opposite of the usual home-court narrative.
+- **Kawhi Leonard** shows the mirror image (3PM T2 H:82% A:58%, 24pp range).
+
+**Downstream consumer (deferred to separate task):** A future playoff confidence-adjustment layer could read each player's `worst_vulnerability` + slice detail to flag the specific context in which that player is reliable or unreliable. Today's slate position (home/away + rest + spread_abs) would determine whether the vulnerability fires. Care needed to avoid over-correcting on small-sample slice noise: any per-player rule should gate on slice n ≥ 10 and dim_range ≥ 25pp to be directive.
+
+**Caveat:** Many worst-vulnerability samples come from thin slice populations (5–10 games). Slices with n<5 are already excluded, but the 5-game floor is still noisy. Population signal is clear at the dimension level (rest dominates vulnerability), but individual per-player dim_ranges carry sample noise for slices near the floor.
+
+---
+
+### H31 — Playoff Series Progression
+**Status: FIRST RUN COMPLETE — per-player within-series temporal signal validated (4/11)**
+**Mode: `--mode series-progression`**
+
+Tests whether tier hit rates shift across phases of a 7-game playoff series: early (G1–2), mid (G3–4), late (G5–7). Complements H28 (overall playoff delta) with a within-series temporal dimension. Data: `playoff_career_log.csv` (2021–2025, 1,883 playoff player-games, 73 series, 44 qualified players at ≥15 playoff games). Series inferred from (season, sorted team pair) with per-player `cumcount` for game-in-series numbering.
+
+**Headline findings:**
+- **Population deltas are small:** PTS +1.3pp (flat), REB +4.4pp (slight late lift), AST +3.7pp (slight late lift), 3PM −1.9pp (slight late decline). Only 3PM shows directional compression at the population level — defenses prioritize closing out on shooters as series narrow.
+- **Per-player distribution (44 qualified):** 11 LATE_RISER, 18 STABLE, 11 LATE_FADER, 4 INSUFFICIENT_DATA. A clean 25% rise / 41% stable / 25% fade / 9% insufficient split.
+- **Top LATE_FADER: James Harden (−33.1pp)** — quantifies his famous playoff collapses. From 56% PTS T20 in games 1–2 to 23% in games 5–7 across 45 playoff games in 8 series. Largest fade in the dataset.
+- **Surprising LATE_FADERS: Curry (−15.3pp)** and **Ant Edwards (−15.0pp)** — both fade in late games despite Curry's playoff-closer reputation and Edwards's MINUTES_SCALER flag from H30. Defensive adjustments catch up in games 5–7.
+- **Top LATE_RISER: Desmond Bane (+61.4pp)** — biggest rise but thin sample. More robust risers: Julius Randle (+25pp), Kawhi Leonard (+20pp, already near ceiling at 80→100→100%), KAT (+17.7pp), Andrew Wiggins (+13pp), SGA (+8.3pp).
+- **STABLE cluster includes: Jokic (+1.8pp)**, **Tatum (+7.1pp, just under threshold)**, Luka, LeBron, Embiid, Brunson, Jaylen Brown, Bam — the elite playoff performers cluster here.
+
+**Notable cross-backtest composition:**
+- **H28 + H30 + H31 together produce a 3-layer playoff confidence model.** H28: overall regular→playoff delta per player. H30: minutes-scaler bump for players who benefit from 38+ min. H31: within-series temporal adjustment based on game-in-series at pick time. A fully-wired playoff confidence layer would compose all three: start with regular-season confidence, apply H28 delta, apply H30 minutes bump if applicable, apply H31 phase adjustment based on today's position in the active series.
+- **Curry/Edwards/Booker all MINUTES_SCALERS (H30) + LATE_FADERS (H31):** they benefit from the aggregate playoff minutes bump but lose it back in games 5–7. Net effect likely neutral for early-round picks, negative for conference-finals picks.
+
+**Downstream consumer (deferred to separate task):** Future playoff confidence-adjustment layer could read `progression_delta_pp` + current game-in-series to apply phase-weighted confidence adjustments. Three-layer composition with H28 and H30 produces the most nuanced playoff model the backtest suite has generated.
+
+**Caveat:** Per-player late-phase data is inherently thin — requires multiple 5+ game series. Top LATE_FADERS (Harden n=45, Booker n=47, Curry n=43) have richer samples and should be trusted. Top LATE_RISERS like Bane, Norman Powell, Mathurin have n_late ~5–7 and should be treated as directional only. The population signal is noise-free but the per-player sample floor of 5 games is barely enough.
 
 ---
 

@@ -1,0 +1,1534 @@
+{
+  "generated_at": "2026-04-11",
+  "mode": "primary-blowout",
+  "date_range": {
+    "start": "2025-10-30",
+    "end": "2026-04-10"
+  },
+  "constants": {
+    "H27_SPREAD_THRESHOLDS": [
+      10,
+      12,
+      15
+    ],
+    "H27_PTS_TIERS": [
+      15,
+      20,
+      25,
+      30
+    ],
+    "H27_MIN_N": 10,
+    "H27_MIN_PLAYER_N": 3,
+    "H27_ACTUAL_BLOWOUT_MARGIN": 15,
+    "rolling_window": 10
+  },
+  "results": {
+    "spread_10": {
+      "threshold": 10,
+      "n_primary": 228,
+      "n_secondary": 464,
+      "primary": {
+        "T15": {
+          "n": 228,
+          "hits": 206,
+          "hit_rate": 0.904,
+          "avg_minutes": 32.1
+        },
+        "T20": {
+          "n": 228,
+          "hits": 180,
+          "hit_rate": 0.789,
+          "avg_minutes": 32.1
+        },
+        "T25": {
+          "n": 228,
+          "hits": 131,
+          "hit_rate": 0.575,
+          "avg_minutes": 32.1
+        },
+        "T30": {
+          "n": 228,
+          "hits": 84,
+          "hit_rate": 0.368,
+          "avg_minutes": 32.1
+        }
+      },
+      "primary_actual_blowout": {
+        "T15": {
+          "n": 84,
+          "hits": 73,
+          "hit_rate": 0.869,
+          "avg_minutes": 28.1
+        },
+        "T20": {
+          "n": 84,
+          "hits": 61,
+          "hit_rate": 0.726,
+          "avg_minutes": 28.1
+        },
+        "T25": {
+          "n": 84,
+          "hits": 37,
+          "hit_rate": 0.44,
+          "avg_minutes": 28.1
+        },
+        "T30": {
+          "n": 84,
+          "hits": 16,
+          "hit_rate": 0.19,
+          "avg_minutes": 28.1
+        }
+      },
+      "primary_competitive": {
+        "T15": {
+          "n": 81,
+          "hits": 74,
+          "hit_rate": 0.914,
+          "avg_minutes": 34.9
+        },
+        "T20": {
+          "n": 81,
+          "hits": 64,
+          "hit_rate": 0.79,
+          "avg_minutes": 34.9
+        },
+        "T25": {
+          "n": 81,
+          "hits": 50,
+          "hit_rate": 0.617,
+          "avg_minutes": 34.9
+        },
+        "T30": {
+          "n": 81,
+          "hits": 35,
+          "hit_rate": 0.432,
+          "avg_minutes": 34.9
+        }
+      },
+      "secondary": {
+        "T15": {
+          "n": 464,
+          "hits": 290,
+          "hit_rate": 0.625,
+          "avg_minutes": 29.3
+        },
+        "T20": {
+          "n": 464,
+          "hits": 164,
+          "hit_rate": 0.353,
+          "avg_minutes": 29.3
+        },
+        "T25": {
+          "n": 464,
+          "hits": 73,
+          "hit_rate": 0.157,
+          "avg_minutes": 29.3
+        },
+        "T30": {
+          "n": 464,
+          "hits": 29,
+          "hit_rate": 0.062,
+          "avg_minutes": 29.3
+        }
+      },
+      "secondary_actual_blowout": {
+        "T15": {
+          "n": 178,
+          "hits": 101,
+          "hit_rate": 0.567,
+          "avg_minutes": 25.8
+        },
+        "T20": {
+          "n": 178,
+          "hits": 56,
+          "hit_rate": 0.315,
+          "avg_minutes": 25.8
+        },
+        "T25": {
+          "n": 178,
+          "hits": 26,
+          "hit_rate": 0.146,
+          "avg_minutes": 25.8
+        },
+        "T30": {
+          "n": 178,
+          "hits": 8,
+          "hit_rate": 0.045,
+          "avg_minutes": 25.8
+        }
+      },
+      "secondary_competitive": {
+        "T15": {
+          "n": 160,
+          "hits": 110,
+          "hit_rate": 0.688,
+          "avg_minutes": 32.0
+        },
+        "T20": {
+          "n": 160,
+          "hits": 64,
+          "hit_rate": 0.4,
+          "avg_minutes": 32.0
+        },
+        "T25": {
+          "n": 160,
+          "hits": 32,
+          "hit_rate": 0.2,
+          "avg_minutes": 32.0
+        },
+        "T30": {
+          "n": 160,
+          "hits": 15,
+          "hit_rate": 0.094,
+          "avg_minutes": 32.0
+        }
+      },
+      "baseline_primary": {
+        "T15": {
+          "n": 1080,
+          "hits": 945,
+          "hit_rate": 0.875,
+          "avg_minutes": 33.2
+        },
+        "T20": {
+          "n": 1080,
+          "hits": 790,
+          "hit_rate": 0.731,
+          "avg_minutes": 33.2
+        },
+        "T25": {
+          "n": 1080,
+          "hits": 547,
+          "hit_rate": 0.506,
+          "avg_minutes": 33.2
+        },
+        "T30": {
+          "n": 1080,
+          "hits": 335,
+          "hit_rate": 0.31,
+          "avg_minutes": 33.2
+        }
+      },
+      "baseline_secondary": {
+        "T15": {
+          "n": 1975,
+          "hits": 1197,
+          "hit_rate": 0.606,
+          "avg_minutes": 30.2
+        },
+        "T20": {
+          "n": 1975,
+          "hits": 692,
+          "hit_rate": 0.35,
+          "avg_minutes": 30.2
+        },
+        "T25": {
+          "n": 1975,
+          "hits": 339,
+          "hit_rate": 0.172,
+          "avg_minutes": 30.2
+        },
+        "T30": {
+          "n": 1975,
+          "hits": 135,
+          "hit_rate": 0.068,
+          "avg_minutes": 30.2
+        }
+      }
+    },
+    "spread_12": {
+      "threshold": 12,
+      "n_primary": 154,
+      "n_secondary": 317,
+      "primary": {
+        "T15": {
+          "n": 154,
+          "hits": 141,
+          "hit_rate": 0.916,
+          "avg_minutes": 31.0
+        },
+        "T20": {
+          "n": 154,
+          "hits": 123,
+          "hit_rate": 0.799,
+          "avg_minutes": 31.0
+        },
+        "T25": {
+          "n": 154,
+          "hits": 84,
+          "hit_rate": 0.545,
+          "avg_minutes": 31.0
+        },
+        "T30": {
+          "n": 154,
+          "hits": 51,
+          "hit_rate": 0.331,
+          "avg_minutes": 31.0
+        }
+      },
+      "primary_actual_blowout": {
+        "T15": {
+          "n": 68,
+          "hits": 60,
+          "hit_rate": 0.882,
+          "avg_minutes": 27.1
+        },
+        "T20": {
+          "n": 68,
+          "hits": 51,
+          "hit_rate": 0.75,
+          "avg_minutes": 27.1
+        },
+        "T25": {
+          "n": 68,
+          "hits": 30,
+          "hit_rate": 0.441,
+          "avg_minutes": 27.1
+        },
+        "T30": {
+          "n": 68,
+          "hits": 10,
+          "hit_rate": 0.147,
+          "avg_minutes": 27.1
+        }
+      },
+      "primary_competitive": {
+        "T15": {
+          "n": 52,
+          "hits": 49,
+          "hit_rate": 0.942,
+          "avg_minutes": 34.7
+        },
+        "T20": {
+          "n": 52,
+          "hits": 43,
+          "hit_rate": 0.827,
+          "avg_minutes": 34.7
+        },
+        "T25": {
+          "n": 52,
+          "hits": 31,
+          "hit_rate": 0.596,
+          "avg_minutes": 34.7
+        },
+        "T30": {
+          "n": 52,
+          "hits": 22,
+          "hit_rate": 0.423,
+          "avg_minutes": 34.7
+        }
+      },
+      "secondary": {
+        "T15": {
+          "n": 317,
+          "hits": 199,
+          "hit_rate": 0.628,
+          "avg_minutes": 28.5
+        },
+        "T20": {
+          "n": 317,
+          "hits": 110,
+          "hit_rate": 0.347,
+          "avg_minutes": 28.5
+        },
+        "T25": {
+          "n": 317,
+          "hits": 48,
+          "hit_rate": 0.151,
+          "avg_minutes": 28.5
+        },
+        "T30": {
+          "n": 317,
+          "hits": 17,
+          "hit_rate": 0.054,
+          "avg_minutes": 28.5
+        }
+      },
+      "secondary_actual_blowout": {
+        "T15": {
+          "n": 142,
+          "hits": 77,
+          "hit_rate": 0.542,
+          "avg_minutes": 24.7
+        },
+        "T20": {
+          "n": 142,
+          "hits": 42,
+          "hit_rate": 0.296,
+          "avg_minutes": 24.7
+        },
+        "T25": {
+          "n": 142,
+          "hits": 18,
+          "hit_rate": 0.127,
+          "avg_minutes": 24.7
+        },
+        "T30": {
+          "n": 142,
+          "hits": 5,
+          "hit_rate": 0.035,
+          "avg_minutes": 24.7
+        }
+      },
+      "secondary_competitive": {
+        "T15": {
+          "n": 105,
+          "hits": 77,
+          "hit_rate": 0.733,
+          "avg_minutes": 32.6
+        },
+        "T20": {
+          "n": 105,
+          "hits": 43,
+          "hit_rate": 0.41,
+          "avg_minutes": 32.6
+        },
+        "T25": {
+          "n": 105,
+          "hits": 20,
+          "hit_rate": 0.19,
+          "avg_minutes": 32.6
+        },
+        "T30": {
+          "n": 105,
+          "hits": 10,
+          "hit_rate": 0.095,
+          "avg_minutes": 32.6
+        }
+      },
+      "baseline_primary": {
+        "T15": {
+          "n": 1080,
+          "hits": 945,
+          "hit_rate": 0.875,
+          "avg_minutes": 33.2
+        },
+        "T20": {
+          "n": 1080,
+          "hits": 790,
+          "hit_rate": 0.731,
+          "avg_minutes": 33.2
+        },
+        "T25": {
+          "n": 1080,
+          "hits": 547,
+          "hit_rate": 0.506,
+          "avg_minutes": 33.2
+        },
+        "T30": {
+          "n": 1080,
+          "hits": 335,
+          "hit_rate": 0.31,
+          "avg_minutes": 33.2
+        }
+      },
+      "baseline_secondary": {
+        "T15": {
+          "n": 1975,
+          "hits": 1197,
+          "hit_rate": 0.606,
+          "avg_minutes": 30.2
+        },
+        "T20": {
+          "n": 1975,
+          "hits": 692,
+          "hit_rate": 0.35,
+          "avg_minutes": 30.2
+        },
+        "T25": {
+          "n": 1975,
+          "hits": 339,
+          "hit_rate": 0.172,
+          "avg_minutes": 30.2
+        },
+        "T30": {
+          "n": 1975,
+          "hits": 135,
+          "hit_rate": 0.068,
+          "avg_minutes": 30.2
+        }
+      }
+    },
+    "spread_15": {
+      "threshold": 15,
+      "n_primary": 68,
+      "n_secondary": 150,
+      "primary": {
+        "T15": {
+          "n": 68,
+          "hits": 62,
+          "hit_rate": 0.912,
+          "avg_minutes": 30.4
+        },
+        "T20": {
+          "n": 68,
+          "hits": 54,
+          "hit_rate": 0.794,
+          "avg_minutes": 30.4
+        },
+        "T25": {
+          "n": 68,
+          "hits": 40,
+          "hit_rate": 0.588,
+          "avg_minutes": 30.4
+        },
+        "T30": {
+          "n": 68,
+          "hits": 25,
+          "hit_rate": 0.368,
+          "avg_minutes": 30.4
+        }
+      },
+      "primary_actual_blowout": {
+        "T15": {
+          "n": 35,
+          "hits": 30,
+          "hit_rate": 0.857,
+          "avg_minutes": 27.6
+        },
+        "T20": {
+          "n": 35,
+          "hits": 25,
+          "hit_rate": 0.714,
+          "avg_minutes": 27.6
+        },
+        "T25": {
+          "n": 35,
+          "hits": 16,
+          "hit_rate": 0.457,
+          "avg_minutes": 27.6
+        },
+        "T30": {
+          "n": 35,
+          "hits": 5,
+          "hit_rate": 0.143,
+          "avg_minutes": 27.6
+        }
+      },
+      "primary_competitive": {
+        "T15": {
+          "n": 19,
+          "hits": 18,
+          "hit_rate": 0.947,
+          "avg_minutes": 34.7
+        },
+        "T20": {
+          "n": 19,
+          "hits": 16,
+          "hit_rate": 0.842,
+          "avg_minutes": 34.7
+        },
+        "T25": {
+          "n": 19,
+          "hits": 14,
+          "hit_rate": 0.737,
+          "avg_minutes": 34.7
+        },
+        "T30": {
+          "n": 19,
+          "hits": 12,
+          "hit_rate": 0.632,
+          "avg_minutes": 34.7
+        }
+      },
+      "secondary": {
+        "T15": {
+          "n": 150,
+          "hits": 86,
+          "hit_rate": 0.573,
+          "avg_minutes": 27.4
+        },
+        "T20": {
+          "n": 150,
+          "hits": 45,
+          "hit_rate": 0.3,
+          "avg_minutes": 27.4
+        },
+        "T25": {
+          "n": 150,
+          "hits": 20,
+          "hit_rate": 0.133,
+          "avg_minutes": 27.4
+        },
+        "T30": {
+          "n": 150,
+          "hits": 9,
+          "hit_rate": 0.06,
+          "avg_minutes": 27.4
+        }
+      },
+      "secondary_actual_blowout": {
+        "T15": {
+          "n": 81,
+          "hits": 43,
+          "hit_rate": 0.531,
+          "avg_minutes": 24.1
+        },
+        "T20": {
+          "n": 81,
+          "hits": 22,
+          "hit_rate": 0.272,
+          "avg_minutes": 24.1
+        },
+        "T25": {
+          "n": 81,
+          "hits": 9,
+          "hit_rate": 0.111,
+          "avg_minutes": 24.1
+        },
+        "T30": {
+          "n": 81,
+          "hits": 3,
+          "hit_rate": 0.037,
+          "avg_minutes": 24.1
+        }
+      },
+      "secondary_competitive": {
+        "T15": {
+          "n": 40,
+          "hits": 26,
+          "hit_rate": 0.65,
+          "avg_minutes": 32.4
+        },
+        "T20": {
+          "n": 40,
+          "hits": 13,
+          "hit_rate": 0.325,
+          "avg_minutes": 32.4
+        },
+        "T25": {
+          "n": 40,
+          "hits": 7,
+          "hit_rate": 0.175,
+          "avg_minutes": 32.4
+        },
+        "T30": {
+          "n": 40,
+          "hits": 5,
+          "hit_rate": 0.125,
+          "avg_minutes": 32.4
+        }
+      },
+      "baseline_primary": {
+        "T15": {
+          "n": 1080,
+          "hits": 945,
+          "hit_rate": 0.875,
+          "avg_minutes": 33.2
+        },
+        "T20": {
+          "n": 1080,
+          "hits": 790,
+          "hit_rate": 0.731,
+          "avg_minutes": 33.2
+        },
+        "T25": {
+          "n": 1080,
+          "hits": 547,
+          "hit_rate": 0.506,
+          "avg_minutes": 33.2
+        },
+        "T30": {
+          "n": 1080,
+          "hits": 335,
+          "hit_rate": 0.31,
+          "avg_minutes": 33.2
+        }
+      },
+      "baseline_secondary": {
+        "T15": {
+          "n": 1975,
+          "hits": 1197,
+          "hit_rate": 0.606,
+          "avg_minutes": 30.2
+        },
+        "T20": {
+          "n": 1975,
+          "hits": 692,
+          "hit_rate": 0.35,
+          "avg_minutes": 30.2
+        },
+        "T25": {
+          "n": 1975,
+          "hits": 339,
+          "hit_rate": 0.172,
+          "avg_minutes": 30.2
+        },
+        "T30": {
+          "n": 1975,
+          "hits": 135,
+          "hit_rate": 0.068,
+          "avg_minutes": 30.2
+        }
+      }
+    }
+  },
+  "per_player": [
+    {
+      "player": "Kevin Durant",
+      "team": "HOU",
+      "n_high_spread": 4,
+      "n_actual_blowout": 1,
+      "n_competitive": 1,
+      "avg_spread_abs": 16.9,
+      "avg_minutes": 33.0,
+      "avg_pts": 22.8,
+      "T15_hits": 4,
+      "T15_rate": 1.0,
+      "T20_hits": 3,
+      "T20_rate": 0.75,
+      "T25_hits": 1,
+      "T25_rate": 0.25,
+      "T30_hits": 0,
+      "T30_rate": 0.0,
+      "baseline_avg_pts": 25.5,
+      "baseline_avg_minutes": 36.3,
+      "baseline_T25_rate": 0.561,
+      "T25_delta_pp": -31.1,
+      "minutes_delta": -3.3,
+      "actual_blowout_T25_rate": null,
+      "competitive_T25_rate": null,
+      "flags": [
+        "PLAYER_SUPPRESSED"
+      ],
+      "game_log": [
+        {
+          "date": "2025-11-13",
+          "opponent": "WSH",
+          "spread_abs": 17.0,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 31.0,
+          "pts": 23,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2025-12-04",
+          "opponent": "SAC",
+          "spread_abs": 15.5,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 32.0,
+          "pts": 24,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-04-01",
+          "opponent": "MIL",
+          "spread_abs": 17.5,
+          "actual_margin": 6.0,
+          "actual_blowout": false,
+          "minutes": 39.0,
+          "pts": 19,
+          "T20_hit": false,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-04-03",
+          "opponent": "UTAH",
+          "spread_abs": 17.5,
+          "actual_margin": 34.0,
+          "actual_blowout": true,
+          "minutes": 30.0,
+          "pts": 25,
+          "T20_hit": true,
+          "T25_hit": true
+        }
+      ]
+    },
+    {
+      "player": "Cade Cunningham",
+      "team": "DET",
+      "n_high_spread": 4,
+      "n_actual_blowout": 2,
+      "n_competitive": 2,
+      "avg_spread_abs": 16.6,
+      "avg_minutes": 23.0,
+      "avg_pts": 15.0,
+      "T15_hits": 2,
+      "T15_rate": 0.5,
+      "T20_hits": 1,
+      "T20_rate": 0.25,
+      "T25_hits": 1,
+      "T25_rate": 0.25,
+      "T30_hits": 1,
+      "T30_rate": 0.25,
+      "baseline_avg_pts": 23.9,
+      "baseline_avg_minutes": 33.4,
+      "baseline_T25_rate": 0.547,
+      "T25_delta_pp": -29.7,
+      "minutes_delta": -10.4,
+      "actual_blowout_T25_rate": 0.0,
+      "competitive_T25_rate": 0.5,
+      "flags": [
+        "PLAYER_SUPPRESSED",
+        "MINUTES_COMPRESSED"
+      ],
+      "game_log": [
+        {
+          "date": "2026-01-17",
+          "opponent": "IND",
+          "spread_abs": 15.5,
+          "actual_margin": 43.0,
+          "actual_blowout": true,
+          "minutes": 21.0,
+          "pts": 16,
+          "T20_hit": false,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-02-05",
+          "opponent": "WSH",
+          "spread_abs": 17.0,
+          "actual_margin": -9.0,
+          "actual_blowout": false,
+          "minutes": 38.0,
+          "pts": 30,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-12",
+          "opponent": "PHI",
+          "spread_abs": 15.5,
+          "actual_margin": 22.0,
+          "actual_blowout": true,
+          "minutes": 28.0,
+          "pts": 8,
+          "T20_hit": false,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-03-17",
+          "opponent": "WSH",
+          "spread_abs": 18.5,
+          "actual_margin": 13.0,
+          "actual_blowout": false,
+          "minutes": 5.0,
+          "pts": 6,
+          "T20_hit": false,
+          "T25_hit": false
+        }
+      ]
+    },
+    {
+      "player": "Luka Doncic",
+      "team": "LAL",
+      "n_high_spread": 3,
+      "n_actual_blowout": 2,
+      "n_competitive": 1,
+      "avg_spread_abs": 15.8,
+      "avg_minutes": 24.7,
+      "avg_pts": 25.0,
+      "T15_hits": 2,
+      "T15_rate": 0.667,
+      "T20_hits": 2,
+      "T20_rate": 0.667,
+      "T25_hits": 2,
+      "T25_rate": 0.667,
+      "T30_hits": 2,
+      "T30_rate": 0.667,
+      "baseline_avg_pts": 32.2,
+      "baseline_avg_minutes": 35.0,
+      "baseline_T25_rate": 0.815,
+      "T25_delta_pp": -14.8,
+      "minutes_delta": -10.3,
+      "actual_blowout_T25_rate": 0.5,
+      "competitive_T25_rate": null,
+      "flags": [
+        "MINUTES_COMPRESSED"
+      ],
+      "game_log": [
+        {
+          "date": "2025-12-01",
+          "opponent": "NO",
+          "spread_abs": 15.5,
+          "actual_margin": -17.0,
+          "actual_blowout": false,
+          "minutes": 35.0,
+          "pts": 34,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-27",
+          "opponent": "BKN",
+          "spread_abs": 16.5,
+          "actual_margin": 17.0,
+          "actual_blowout": true,
+          "minutes": 39.0,
+          "pts": 41,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-30",
+          "opponent": "WSH",
+          "spread_abs": 15.5,
+          "actual_margin": 19.0,
+          "actual_blowout": true,
+          "minutes": 0.0,
+          "pts": 0,
+          "T20_hit": false,
+          "T25_hit": false
+        }
+      ]
+    },
+    {
+      "player": "Shai Gilgeous-Alexander",
+      "team": "OKC",
+      "n_high_spread": 21,
+      "n_actual_blowout": 7,
+      "n_competitive": 5,
+      "avg_spread_abs": 17.2,
+      "avg_minutes": 30.6,
+      "avg_pts": 29.8,
+      "T15_hits": 21,
+      "T15_rate": 1.0,
+      "T20_hits": 21,
+      "T20_rate": 1.0,
+      "T25_hits": 16,
+      "T25_rate": 0.762,
+      "T30_hits": 12,
+      "T30_rate": 0.571,
+      "baseline_avg_pts": 30.7,
+      "baseline_avg_minutes": 32.8,
+      "baseline_T25_rate": 0.828,
+      "T25_delta_pp": -6.6,
+      "minutes_delta": -2.2,
+      "actual_blowout_T25_rate": 0.571,
+      "competitive_T25_rate": 0.8,
+      "flags": [],
+      "game_log": [
+        {
+          "date": "2025-11-16",
+          "opponent": "CHA",
+          "spread_abs": 17.0,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 29.0,
+          "pts": 33,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-11-18",
+          "opponent": "NO",
+          "spread_abs": 17.5,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 29.0,
+          "pts": 23,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2025-11-20",
+          "opponent": "SAC",
+          "spread_abs": 18.5,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 36.0,
+          "pts": 33,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-11-22",
+          "opponent": "UTAH",
+          "spread_abs": 16.0,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 30.0,
+          "pts": 31,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-11-24",
+          "opponent": "POR",
+          "spread_abs": 15.5,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 30.0,
+          "pts": 37,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-12-06",
+          "opponent": "DAL",
+          "spread_abs": 15.5,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 29.0,
+          "pts": 33,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-12-11",
+          "opponent": "PHX",
+          "spread_abs": 15.5,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 27.0,
+          "pts": 28,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-12-19",
+          "opponent": "LAC",
+          "spread_abs": 17.0,
+          "actual_margin": -5.0,
+          "actual_blowout": false,
+          "minutes": 29.0,
+          "pts": 32,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-12-23",
+          "opponent": "MEM",
+          "spread_abs": 15.5,
+          "actual_margin": -20.0,
+          "actual_blowout": false,
+          "minutes": 36.0,
+          "pts": 31,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-12-28",
+          "opponent": "PHI",
+          "spread_abs": 15.0,
+          "actual_margin": 25.0,
+          "actual_blowout": true,
+          "minutes": 29.0,
+          "pts": 27,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2025-12-30",
+          "opponent": "ATL",
+          "spread_abs": 17.0,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 36.0,
+          "pts": 39,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-01-01",
+          "opponent": "POR",
+          "spread_abs": 16.0,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 29.0,
+          "pts": 30,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-01-05",
+          "opponent": "CHA",
+          "spread_abs": 15.5,
+          "actual_margin": -27.0,
+          "actual_blowout": false,
+          "minutes": 30.0,
+          "pts": 21,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-01-07",
+          "opponent": "UTAH",
+          "spread_abs": 19.0,
+          "actual_margin": 4.0,
+          "actual_blowout": false,
+          "minutes": 42.0,
+          "pts": 46,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-01",
+          "opponent": "DAL",
+          "spread_abs": 16.0,
+          "actual_margin": 13.0,
+          "actual_blowout": false,
+          "minutes": 33.0,
+          "pts": 30,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-18",
+          "opponent": "BKN",
+          "spread_abs": 19.5,
+          "actual_margin": 29.0,
+          "actual_blowout": true,
+          "minutes": 26.0,
+          "pts": 20,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-03-21",
+          "opponent": "WSH",
+          "spread_abs": 20.5,
+          "actual_margin": 21.0,
+          "actual_blowout": true,
+          "minutes": 32.0,
+          "pts": 40,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-23",
+          "opponent": "PHI",
+          "spread_abs": 15.5,
+          "actual_margin": 20.0,
+          "actual_blowout": true,
+          "minutes": 29.0,
+          "pts": 22,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-03-27",
+          "opponent": "CHI",
+          "spread_abs": 19.5,
+          "actual_margin": 18.0,
+          "actual_blowout": true,
+          "minutes": 29.0,
+          "pts": 25,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-04-05",
+          "opponent": "UTAH",
+          "spread_abs": 22.5,
+          "actual_margin": 35.0,
+          "actual_blowout": true,
+          "minutes": 24.0,
+          "pts": 20,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-04-07",
+          "opponent": "LAL",
+          "spread_abs": 17.5,
+          "actual_margin": 36.0,
+          "actual_blowout": true,
+          "minutes": 28.0,
+          "pts": 25,
+          "T20_hit": true,
+          "T25_hit": true
+        }
+      ]
+    },
+    {
+      "player": "Jaylen Brown",
+      "team": "BOS",
+      "n_high_spread": 6,
+      "n_actual_blowout": 3,
+      "n_competitive": 2,
+      "avg_spread_abs": 17.1,
+      "avg_minutes": 31.7,
+      "avg_pts": 24.8,
+      "T15_hits": 6,
+      "T15_rate": 1.0,
+      "T20_hits": 5,
+      "T20_rate": 0.833,
+      "T25_hits": 4,
+      "T25_rate": 0.667,
+      "T30_hits": 1,
+      "T30_rate": 0.167,
+      "baseline_avg_pts": 27.3,
+      "baseline_avg_minutes": 32.2,
+      "baseline_T25_rate": 0.703,
+      "T25_delta_pp": -3.6,
+      "minutes_delta": -0.5,
+      "actual_blowout_T25_rate": 0.667,
+      "competitive_T25_rate": 0.5,
+      "flags": [],
+      "game_log": [
+        {
+          "date": "2025-11-22",
+          "opponent": "BKN",
+          "spread_abs": 15.0,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 32.0,
+          "pts": 26,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-02-27",
+          "opponent": "BKN",
+          "spread_abs": 17.5,
+          "actual_margin": 37.0,
+          "actual_blowout": true,
+          "minutes": 30.0,
+          "pts": 28,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-14",
+          "opponent": "WSH",
+          "spread_abs": 20.5,
+          "actual_margin": 11.0,
+          "actual_blowout": false,
+          "minutes": 31.0,
+          "pts": 16,
+          "T20_hit": false,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-03-20",
+          "opponent": "MEM",
+          "spread_abs": 15.5,
+          "actual_margin": 5.0,
+          "actual_blowout": false,
+          "minutes": 38.0,
+          "pts": 30,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-04-03",
+          "opponent": "MIL",
+          "spread_abs": 17.5,
+          "actual_margin": 32.0,
+          "actual_blowout": true,
+          "minutes": 30.0,
+          "pts": 26,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-04-10",
+          "opponent": "NO",
+          "spread_abs": 16.5,
+          "actual_margin": 26.0,
+          "actual_blowout": true,
+          "minutes": 29.0,
+          "pts": 23,
+          "T20_hit": true,
+          "T25_hit": false
+        }
+      ]
+    },
+    {
+      "player": "Tyrese Maxey",
+      "team": "PHI",
+      "n_high_spread": 3,
+      "n_actual_blowout": 2,
+      "n_competitive": 1,
+      "avg_spread_abs": 15.5,
+      "avg_minutes": 36.0,
+      "avg_pts": 26.0,
+      "T15_hits": 3,
+      "T15_rate": 1.0,
+      "T20_hits": 3,
+      "T20_rate": 1.0,
+      "T25_hits": 2,
+      "T25_rate": 0.667,
+      "T30_hits": 0,
+      "T30_rate": 0.0,
+      "baseline_avg_pts": 28.1,
+      "baseline_avg_minutes": 37.9,
+      "baseline_T25_rate": 0.684,
+      "T25_delta_pp": -1.7,
+      "minutes_delta": -1.9,
+      "actual_blowout_T25_rate": 0.5,
+      "competitive_T25_rate": null,
+      "flags": [],
+      "game_log": [
+        {
+          "date": "2026-01-05",
+          "opponent": "DEN",
+          "spread_abs": 15.0,
+          "actual_margin": -1.0,
+          "actual_blowout": false,
+          "minutes": 46.0,
+          "pts": 28,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-01-07",
+          "opponent": "WSH",
+          "spread_abs": 16.0,
+          "actual_margin": 21.0,
+          "actual_blowout": true,
+          "minutes": 28.0,
+          "pts": 22,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-04-01",
+          "opponent": "WSH",
+          "spread_abs": 15.5,
+          "actual_margin": 22.0,
+          "actual_blowout": true,
+          "minutes": 34.0,
+          "pts": 28,
+          "T20_hit": true,
+          "T25_hit": true
+        }
+      ]
+    },
+    {
+      "player": "LaMelo Ball",
+      "team": "CHA",
+      "n_high_spread": 4,
+      "n_actual_blowout": 4,
+      "n_competitive": 0,
+      "avg_spread_abs": 16.5,
+      "avg_minutes": 27.5,
+      "avg_pts": 20.2,
+      "T15_hits": 3,
+      "T15_rate": 0.75,
+      "T20_hits": 2,
+      "T20_rate": 0.5,
+      "T25_hits": 1,
+      "T25_rate": 0.25,
+      "T30_hits": 0,
+      "T30_rate": 0.0,
+      "baseline_avg_pts": 19.9,
+      "baseline_avg_minutes": 27.5,
+      "baseline_T25_rate": 0.232,
+      "T25_delta_pp": 1.8,
+      "minutes_delta": 0.0,
+      "actual_blowout_T25_rate": 0.25,
+      "competitive_T25_rate": null,
+      "flags": [
+        "PLAYER_RESILIENT"
+      ],
+      "game_log": [
+        {
+          "date": "2026-03-21",
+          "opponent": "MEM",
+          "spread_abs": 16.5,
+          "actual_margin": 23.0,
+          "actual_blowout": true,
+          "minutes": 29.0,
+          "pts": 29,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-24",
+          "opponent": "SAC",
+          "spread_abs": 16.5,
+          "actual_margin": 44.0,
+          "actual_blowout": true,
+          "minutes": 23.0,
+          "pts": 20,
+          "T20_hit": true,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-03-31",
+          "opponent": "BKN",
+          "spread_abs": 17.5,
+          "actual_margin": 31.0,
+          "actual_blowout": true,
+          "minutes": 28.0,
+          "pts": 14,
+          "T20_hit": false,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-04-03",
+          "opponent": "IND",
+          "spread_abs": 15.5,
+          "actual_margin": 21.0,
+          "actual_blowout": true,
+          "minutes": 30.0,
+          "pts": 18,
+          "T20_hit": false,
+          "T25_hit": false
+        }
+      ]
+    },
+    {
+      "player": "Donovan Mitchell",
+      "team": "CLE",
+      "n_high_spread": 6,
+      "n_actual_blowout": 2,
+      "n_competitive": 3,
+      "avg_spread_abs": 16.6,
+      "avg_minutes": 32.0,
+      "avg_pts": 32.2,
+      "T15_hits": 6,
+      "T15_rate": 1.0,
+      "T20_hits": 5,
+      "T20_rate": 0.833,
+      "T25_hits": 5,
+      "T25_rate": 0.833,
+      "T30_hits": 4,
+      "T30_rate": 0.667,
+      "baseline_avg_pts": 27.2,
+      "baseline_avg_minutes": 32.9,
+      "baseline_T25_rate": 0.661,
+      "T25_delta_pp": 17.2,
+      "minutes_delta": -0.9,
+      "actual_blowout_T25_rate": 0.5,
+      "competitive_T25_rate": 1.0,
+      "flags": [
+        "PLAYER_RESILIENT"
+      ],
+      "game_log": [
+        {
+          "date": "2025-12-13",
+          "opponent": "WSH",
+          "spread_abs": 15.5,
+          "actual_margin": null,
+          "actual_blowout": null,
+          "minutes": 35.0,
+          "pts": 48,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-02-11",
+          "opponent": "WSH",
+          "spread_abs": 17.5,
+          "actual_margin": 25.0,
+          "actual_blowout": true,
+          "minutes": 28.0,
+          "pts": 30,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-02-19",
+          "opponent": "BKN",
+          "spread_abs": 16.0,
+          "actual_margin": 28.0,
+          "actual_blowout": true,
+          "minutes": 21.0,
+          "pts": 17,
+          "T20_hit": false,
+          "T25_hit": false
+        },
+        {
+          "date": "2026-03-15",
+          "opponent": "DAL",
+          "spread_abs": 16.5,
+          "actual_margin": -10.0,
+          "actual_blowout": false,
+          "minutes": 39.0,
+          "pts": 26,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-03-30",
+          "opponent": "UTAH",
+          "spread_abs": 17.5,
+          "actual_margin": 9.0,
+          "actual_blowout": false,
+          "minutes": 36.0,
+          "pts": 34,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-04-05",
+          "opponent": "IND",
+          "spread_abs": 16.5,
+          "actual_margin": 9.0,
+          "actual_blowout": false,
+          "minutes": 33.0,
+          "pts": 38,
+          "T20_hit": true,
+          "T25_hit": true
+        }
+      ]
+    },
+    {
+      "player": "Jamal Murray",
+      "team": "DEN",
+      "n_high_spread": 3,
+      "n_actual_blowout": 1,
+      "n_competitive": 2,
+      "avg_spread_abs": 19.2,
+      "avg_minutes": 37.0,
+      "avg_pts": 31.3,
+      "T15_hits": 3,
+      "T15_rate": 1.0,
+      "T20_hits": 3,
+      "T20_rate": 1.0,
+      "T25_hits": 3,
+      "T25_rate": 1.0,
+      "T30_hits": 2,
+      "T30_rate": 0.667,
+      "baseline_avg_pts": 25.1,
+      "baseline_avg_minutes": 35.1,
+      "baseline_T25_rate": 0.484,
+      "T25_delta_pp": 51.6,
+      "minutes_delta": 1.9,
+      "actual_blowout_T25_rate": null,
+      "competitive_T25_rate": 1.0,
+      "flags": [
+        "PLAYER_RESILIENT"
+      ],
+      "game_log": [
+        {
+          "date": "2026-03-27",
+          "opponent": "UTAH",
+          "spread_abs": 18.5,
+          "actual_margin": 6.0,
+          "actual_blowout": false,
+          "minutes": 39.0,
+          "pts": 31,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-04-01",
+          "opponent": "UTAH",
+          "spread_abs": 16.5,
+          "actual_margin": 13.0,
+          "actual_blowout": false,
+          "minutes": 37.0,
+          "pts": 37,
+          "T20_hit": true,
+          "T25_hit": true
+        },
+        {
+          "date": "2026-04-08",
+          "opponent": "MEM",
+          "spread_abs": 22.5,
+          "actual_margin": 17.0,
+          "actual_blowout": true,
+          "minutes": 35.0,
+          "pts": 26,
+          "T20_hit": true,
+          "T25_hit": true
+        }
+      ]
+    }
+  ],
+  "verdicts": {
+    "primary_T25_spread_10": "MARGINAL (57.5%, n=228) \u2014 confidence cap may be better than hard skip",
+    "primary_T25_spread_12": "SUPPRESSED (54.5%, n=154) \u2014 hard skip justified",
+    "primary_T25_spread_15": "MARGINAL (58.8%, n=68) \u2014 confidence cap may be better than hard skip",
+    "actual_outcome_insight_spread_15": "GAME_SCRIPT_DEPENDENT (actual_blowout T25 45.7% vs competitive 73.7%, delta=+28.0pp) \u2014 suppression materializes only when blowout actually happens; spread alone may not be the right trigger",
+    "jokic_isolation_spread_15": "JOKIC_OUTLIER_NOT_CONFIRMED (T25 ex-Jokic 59.7% vs with 58.8%, delta=+0.9pp, n_with=68, n_ex=67)"
+  }
+}

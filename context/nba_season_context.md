@@ -90,7 +90,11 @@ These players are out for the season. Their teammates' current stat lines alread
 
 ---
 
-### PLAYER NOTES — AVAILABILITY AND ROLE CONTEXT
+### PLAYER NOTES — ELITE PERFORMANCE, AVAILABILITY, AND ROLE CONTEXT
+
+**Shai Gilgeous-Alexander (aka SGA) (OKC)** currently holds the NBA record for the most consecutive regular-season games with 20 or more points. This historic run began on November 1, 2024, surpassing the previous record of 126 games held by Wilt Chamberlain (1961–1963) after SGA reached 127 games on March 12, 2026
+
+**Nikola Jokić (DEN)** is the only player in NBA history to average a triple-double in back-to-back seasons (2024-25 and 2025-26). He is also the first center to ever average a triple-double for a full season. Jokić has accomplished this rare milestone three times in his career, alongside Oscar Robertson (1 time) and Russell Westbrook (4 times), making him one of only three players to average a triple-double for a season. Career Totals: As of early April 2026, Jokić has recorded 193 career triple-doubles, ranking second all-time behind Westbrook's 203.
 
 **Darius Garland (LAC):** Chronic left toe issue that has followed him for over a year. Had toe surgery last offseason, missed 16 games with CLE before the Feb 2026 trade, and has already sat out at least one LAC game (Mar 13 vs CHI) with toe management. The Clippers are deliberately not playing him on back-to-backs — Kris Dunn starts at PG when Garland sits. In his five LAC appearances through Mar 13: 17.9 PPG / 6.7 APG, 25.4 min/g overall; last 3 games as starter: 21.7 PPG / 6.3 APG in 26.3 min. Role: clear #2 scorer/creator behind Kawhi Leonard. When healthy, operates as the primary ball-handler and pick-and-roll initiator when Kawhi is off-ball. **Availability is the primary risk factor — always check injury report before picking Garland.** He does not play B2B second nights.
 
