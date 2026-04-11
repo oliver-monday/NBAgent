@@ -610,6 +610,210 @@ def save_opportunity_flags(suggestions: list[dict]) -> None:
     )
 
 
+# H26 population deltas at key tiers (from 2026 season backtest, n=31 obs)
+# Mirror of agents/quant.py SA_POPULATION_DELTAS — copied here to avoid a
+# cross-module import of quant.py constants. If the quant values change,
+# update both.
+_SA_POPULATION_DELTAS = {
+    "PTS_T15": 11.3,
+    "PTS_T20": 12.7,
+    "PTS_T25": 10.5,
+    "AST_T4":  9.6,
+    "AST_T6":  6.7,
+}
+
+
+def build_skip_reconsiderations(
+    changes: list[dict],
+    player_stats: dict,
+    game_log: "pd.DataFrame | None",
+    now_iso: str,
+) -> list[dict]:
+    """
+    Re-evaluate morning merit_below_floor skips when a team's leading scorer
+    is confirmed OUT. Uses star_absence_lift data from player_stats.json (H26)
+    and compute_without_player_rates() for per-player without-star hit rates.
+
+    Only reconsiders PTS and AST skips — REB and 3PM showed no H26 signal.
+    Returns list of skip_reconsideration cards for opportunity_flags.json.
+
+    PERSONAL_DRAG_WARNING players are explicitly excluded — if the per-player
+    data shows a drag, the population lift does NOT apply regardless of the
+    underlying reasoning signal. This guard must fire before any reconsider
+    logic to prevent the Jalen-Green-without-Booker type misses.
+
+    Graceful no-op paths: no new_absence changes, no skip records today, no
+    merit_below_floor PTS/AST skips, player not in player_stats, player has
+    no star_absence_lift data (Part 1 not live yet), star not in today's
+    absent_names set, game_log unavailable AND no per-player delta data,
+    qualifier disqualifies reconsideration.
+    """
+    # Identify leading-scorer absences from today's changes
+    absence_changes = [c for c in changes if c.get("change_type") == "new_absence"]
+    if not absence_changes:
+        return []
+
+    # Build set of newly-absent player names (lowered for matching)
+    absent_names: set[str] = {
+        c["player_name"].strip().lower() for c in absence_changes
+    }
+
+    # Load today's skipped picks (keyed dict — used as existence check)
+    skipped: dict[str, list[str]] = load_morning_skips()
+    if not skipped:
+        return []
+
+    # Load full skip records for tier and prop details
+    skip_records: list[dict] = []
+    if SKIPPED_PICKS_JSON.exists():
+        try:
+            with open(SKIPPED_PICKS_JSON) as fh:
+                all_skips = json.load(fh)
+            skip_records = [
+                s for s in all_skips
+                if s.get("date") == TODAY_STR
+                and s.get("skip_reason") == "merit_below_floor"
+                and s.get("prop_type") in ("PTS", "AST")
+            ]
+        except Exception as e:
+            print(f"[lineup_update] WARNING: could not load skip records: {e}")
+            return []
+
+    if not skip_records:
+        return []
+
+    reconsiderations: list[dict] = []
+
+    for skip in skip_records:
+        skip_player = skip.get("player_name", "").strip()
+        skip_team   = _norm(skip.get("team", ""))
+        skip_prop   = skip.get("prop_type", "")
+        skip_tier   = skip.get("tier_considered")
+        if not skip_player or not skip_prop or skip_tier is None:
+            continue
+
+        # Get this player's stats
+        ps = player_stats.get(skip_player)
+        if ps is None:
+            continue
+
+        # Check if this player has star_absence_lift data (requires Part 1)
+        sal = ps.get("star_absence_lift")
+        if sal is None:
+            continue
+
+        star_name = sal.get("star_name", "")
+        qualifier = sal.get("qualifier", "")
+
+        # Is the star newly absent today?
+        if star_name.strip().lower() not in absent_names:
+            continue
+
+        # Skip if personal drag — population lift does NOT apply
+        # (INVARIANT: this guard must fire before any reconsider logic.
+        # If this player historically performs worse without the star,
+        # reconsideration is structurally invalid regardless of other signals.)
+        if qualifier == "PERSONAL_DRAG_WARNING":
+            print(
+                f"[lineup_update] skip-recon: {skip_player} {skip_prop} T{skip_tier} "
+                f"— DRAG_WARNING for {star_name}, skipping reconsideration"
+            )
+            continue
+
+        # Check without-star hit rate at the skip tier using game log
+        without_hr: "float | None" = None
+        without_n:  "int | None"   = None
+        if game_log is not None:
+            without_rates = compute_without_player_rates(
+                skip_player, star_name, game_log
+            )
+            prop_without = without_rates.get(skip_prop, {})
+            tier_data = prop_without.get(skip_tier)
+            if tier_data is not None:
+                without_hr = tier_data["hit_rate"]
+                without_n  = tier_data["n"]
+
+        # Determine if reconsideration is justified
+        # Path A: per-player without-star rate at this tier ≥ 70%
+        # Path B: no per-player data but population delta is positive and qualifier allows
+        reconsider = False
+        reasoning_parts: list[str] = []
+
+        if without_hr is not None and without_n is not None and without_n >= 3:
+            if without_hr >= 0.70:
+                reconsider = True
+                reasoning_parts.append(
+                    f"without-{star_name} hit rate {int(round(without_hr * 100))}% "
+                    f"(n={without_n}) at T{skip_tier} — crosses 70% floor"
+                )
+            else:
+                reasoning_parts.append(
+                    f"without-{star_name} hit rate {int(round(without_hr * 100))}% "
+                    f"(n={without_n}) at T{skip_tier} — still below 70%"
+                )
+        else:
+            # No per-player data at this specific tier — check population delta
+            pop_key = f"{skip_prop}_T{skip_tier}"
+            pop_delta = _SA_POPULATION_DELTAS.get(pop_key)
+            if pop_delta is not None and qualifier in (
+                "STRONG_PERSONAL_SIGNAL", "POPULATION_ONLY", "NEUTRAL_PERSONAL_DATA"
+            ):
+                # Use per-player key_deltas if available at this tier
+                kd = sal.get("key_deltas") or {}
+                player_delta = kd.get(pop_key)
+                if player_delta is not None and player_delta > 0:
+                    reconsider = True
+                    reasoning_parts.append(
+                        f"player-specific delta +{player_delta}pp at {pop_key} "
+                        f"[{qualifier}]"
+                    )
+                elif qualifier != "NEUTRAL_PERSONAL_DATA":
+                    reconsider = True
+                    reasoning_parts.append(
+                        f"population delta +{pop_delta}pp at {pop_key} "
+                        f"[{qualifier}]"
+                    )
+
+        if not reconsider:
+            continue
+
+        reasoning_parts.insert(0, f"{star_name} confirmed OUT")
+        reasoning_parts.append(f"original skip: merit_below_floor")
+
+        card: dict = {
+            "date":              TODAY_STR,
+            "generated_at":      now_iso,
+            "triggered_by":      star_name,
+            "triggered_by_team": skip_team,
+            "side":              "teammate",
+            "player_name":       skip_player,
+            "team":              skip_team,
+            "card_type":         "skip_reconsideration",
+            "prop_type":         skip_prop,
+            "tier_considered":   skip_tier,
+            "original_skip_reason": "merit_below_floor",
+            "without_star_hit_rate_pct": (
+                int(round(without_hr * 100)) if without_hr is not None else None
+            ),
+            "without_star_n":   without_n,
+            "star_absence_qualifier": qualifier,
+            "reasoning":        "; ".join(reasoning_parts),
+            # These fields are required by the existing save_opportunity_flags dedup
+            "qualifying_tiers": {},
+            "upgrade_tiers":    {},
+            "spread_delta":     None,
+            "morning_context":  "skipped this morning (merit_below_floor)",
+        }
+        reconsiderations.append(card)
+
+        print(
+            f"[lineup_update] skip-recon: {skip_player} {skip_prop} T{skip_tier} "
+            f"reconsidered — {'; '.join(reasoning_parts)}"
+        )
+
+    return reconsiderations
+
+
 def build_pick_quant_summary(player_name: str, prop_type: str, player_stats: dict) -> str:
     """
     Build a slim quant summary for a single pick player + prop type.
@@ -1487,6 +1691,40 @@ def main() -> None:
                 print(f"[lineup_update] opportunity: {len(suggestions)} suggestion(s) surfaced")
         else:
             print("[lineup_update] opportunity: no qualifying teammate suggestions found")
+
+    # ── Skip reconsideration — re-evaluate merit_below_floor skips on star absence ──
+    # H26 Part 2: when a team's leading scorer is confirmed OUT today, re-check
+    # morning merit_below_floor PTS/AST skips against star_absence_lift data to
+    # see if any cross the 70% floor and warrant reconsideration. Outputs go to
+    # opportunity_flags.json via the same save_opportunity_flags() pipeline with
+    # card_type="skip_reconsideration".
+    if has_absences and not debug:
+        game_log_recon = game_log if game_log is not None else load_game_log()
+        recons = build_skip_reconsiderations(
+            changes=changes,
+            player_stats=player_stats,
+            game_log=game_log_recon,
+            now_iso=now_iso,
+        )
+        if recons:
+            save_opportunity_flags(recons)
+            print(f"[lineup_update] skip-recon: {len(recons)} reconsideration(s) surfaced")
+        else:
+            print("[lineup_update] skip-recon: no qualifying reconsiderations found")
+    elif has_absences and debug:
+        game_log_recon = game_log if game_log is not None else load_game_log()
+        recons = build_skip_reconsiderations(
+            changes=changes,
+            player_stats=player_stats,
+            game_log=game_log_recon,
+            now_iso=now_iso,
+        )
+        if recons:
+            print(f"[lineup_update] DEBUG skip-recon: {len(recons)} reconsideration(s) (not saved):")
+            for r in recons:
+                print(f"  {r['player_name']} {r['prop_type']} T{r['tier_considered']} — {r['reasoning']}")
+        else:
+            print("[lineup_update] DEBUG skip-recon: no qualifying reconsiderations found")
 
 
 if __name__ == "__main__":

@@ -68,13 +68,13 @@ Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: Apri
 - Deactivate non-playoff teams on whitelist
 - Verify 4/10 run: walked_tier emission, market gate, pre-game reporter fixes, pretip sweep, CLV computation
 - Layer 3 frontend implementation (if Layers 1+2 verified clean)
-- **Skip Re-evaluation on Star Absence** (depends on H26 confirmed) — see item below
-- ✅ **Analyst Star-Absence Uplift Annotation** shipped 2026-04-11 (Part 1 of 2). `compute_star_absence_deltas()` in `quant.py`, `star_absence_lift` field in `player_stats.json`, STAR_ABSENT_LIFT annotation in `build_quant_context()` gated on star being in today's OUT set, per-qualifier guidance added to WITHOUT-STAR BASELINE rule (build_prompt) and TEAMMATE ABSENCE USAGE ABSORPTION rule (build_pick_prompt). Annotation-only — no directive rules. Validated end-to-end with Tatum/Brown case (+27.3pp PTS T20 STRONG_PERSONAL_SIGNAL). Part 2 below (Skip Re-evaluation in lineup_update.py) still pending.
+- ✅ **Skip Re-evaluation on Star Absence** shipped 2026-04-11 (Part 2 of 2, H26 downstream loop closed). `build_skip_reconsiderations()` in `agents/lineup_update.py` re-evaluates morning `merit_below_floor` PTS/AST skips when a team's leading scorer is confirmed OUT. Reads `star_absence_lift` from `player_stats.json` (Part 1), uses `compute_without_player_rates()` for per-player gate, emits `card_type="skip_reconsideration"` cards to `opportunity_flags.json` via existing `save_opportunity_flags()` pipeline. PERSONAL_DRAG_WARNING guard fires before any reconsider logic (Jalen Green / Booker case). Runtime-tested with synthetic fixture reproducing the Tatum/Brown motivating case — PTS T20 reconsidered with `+27.3pp` player-specific delta; REB/volatile_weak_combo/wrong-date/DRAG skips all correctly filtered out.
+- ✅ **Analyst Star-Absence Uplift Annotation** shipped 2026-04-11 (Part 1 of 2). `compute_star_absence_deltas()` in `quant.py`, `star_absence_lift` field in `player_stats.json`, STAR_ABSENT_LIFT annotation in `build_quant_context()` gated on star being in today's OUT set, per-qualifier guidance added to WITHOUT-STAR BASELINE rule (build_prompt) and TEAMMATE ABSENCE USAGE ABSORPTION rule (build_pick_prompt). Annotation-only — no directive rules. Validated end-to-end with Tatum/Brown case (+27.3pp PTS T20 STRONG_PERSONAL_SIGNAL). Part 2 above (Skip Re-evaluation in lineup_update.py) shipped same day — H26 downstream loop now fully closed.
 
 ---
 
 #### Skip Re-evaluation on Star Absence
-**Priority:** April 12–13 gap
+**Status: ✅ SHIPPED 2026-04-11 (Part 2 of 2)** — `build_skip_reconsiderations()` in `agents/lineup_update.py` re-evaluates `merit_below_floor` PTS/AST skips on star absence; reads `star_absence_lift` from Part 1's quant output; PERSONAL_DRAG_WARNING guard prevents the Jalen Green / Booker class of misses; outputs `skip_reconsideration` cards to `opportunity_flags.json`. Runtime-tested with synthetic Tatum/Brown fixture (+27.3pp PTS T20 reconsidered). H26 downstream loop now fully closed.
 **Depends on:** H26 (CONFIRMED SIGNAL, 4/10)
 **Scope:** `agents/lineup_update.py`, `data/opportunity_flags.json`, reads `data/skipped_picks.json` + `data/player_stats.json`
 
