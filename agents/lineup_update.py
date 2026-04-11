@@ -268,6 +268,7 @@ def build_opportunity_suggestions(
     player_stats: dict,
     game_log: "pd.DataFrame | None",
     now_iso: str,
+    injuries: dict | None = None,
 ) -> list[dict]:
     """
     For each whitelisted player going OUT today, surface whitelisted teammates
@@ -278,6 +279,12 @@ def build_opportunity_suggestions(
     Deduplicates by (player_name, prop_type) — one card per player per prop.
     Annotates each card with live spread delta when available.
 
+    When `injuries` is provided, players with status OUT / DOUBTFUL / OFS are
+    excluded from the scan — they should never be surfaced as opportunities
+    because they aren't available to benefit from anyone's absence. Default
+    `None` preserves backward compatibility with callers that don't pass
+    injuries (the filter is a no-op in that case).
+
     Returns list of suggestion dicts. Empty list when no qualifying absences
     or no whitelisted players with qualifying tiers found.
     """
@@ -285,6 +292,20 @@ def build_opportunity_suggestions(
     absence_changes = [c for c in changes if c.get("change_type") == "new_absence"]
     if not absence_changes:
         return []
+
+    # Build set of players who are OUT/DOUBTFUL/OFS — never surface these as
+    # opportunities. Keyed by name_lower (trimmed). A player who is themselves
+    # unavailable cannot benefit from anyone else's absence.
+    excluded_players: set[str] = set()
+    if injuries:
+        for key, val in injuries.items():
+            if key == "fetched_at" or not isinstance(val, list):
+                continue
+            for row in val:
+                if isinstance(row, dict) and row.get("player_name"):
+                    status = (row.get("status") or "").upper()
+                    if status in ("OUT", "DOUBTFUL", "OFS"):
+                        excluded_players.add(row["player_name"].strip().lower())
 
     # Morning spread from player_stats (written at analyst run time)
     # Map: norm_team → spread_abs (positive float, team's perspective unsigned)
@@ -371,6 +392,10 @@ def build_opportunity_suggestions(
 
                 # Skip absent player — they cannot benefit from their own absence
                 if name_lower == absent_name.strip().lower():
+                    continue
+
+                # Skip players who are themselves OUT/DOUBTFUL/OFS
+                if name_lower in excluded_players:
                     continue
 
                 # Build qualifying_tiers (new picks) and upgrade_tiers (better tier
@@ -1389,6 +1414,7 @@ def main() -> None:
             player_stats=player_stats,
             game_log=game_log,
             now_iso=now_iso,
+            injuries=injuries,
         )
         if suggestions:
             if debug:
