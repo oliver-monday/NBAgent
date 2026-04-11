@@ -48,7 +48,7 @@ For any player you think you know the team for, verify against this list first.
 **Prior-year deadline moves (Feb 2025) — these players have been on their new teams all of 2025-26:**
 - Luka Doncic: DAL -> LAL (3-team trade)
 - Anthony Davis: LAL -> DAL (same trade)
-- De'Aaron Fox: SAC -> SAS (3-team trade — Fox has been a Spur all season)
+- De'Aaron Fox: SAC -> SAS (3-team trade — Fox has been a Spur all 2025-26 season)
 - Zach LaVine: CHI -> SAC (same 3-team trade)
 
 **Offseason 2025:**

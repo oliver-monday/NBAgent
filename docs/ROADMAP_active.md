@@ -69,7 +69,7 @@ Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: Apri
 - Verify 4/10 run: walked_tier emission, market gate, pre-game reporter fixes, pretip sweep, CLV computation
 - Layer 3 frontend implementation (if Layers 1+2 verified clean)
 - **Skip Re-evaluation on Star Absence** (depends on H26 confirmed) — see item below
-- **Analyst Star-Absence Uplift Annotation** (depends on H26 confirmed) — see item below
+- ✅ **Analyst Star-Absence Uplift Annotation** shipped 2026-04-11 (Part 1 of 2). `compute_star_absence_deltas()` in `quant.py`, `star_absence_lift` field in `player_stats.json`, STAR_ABSENT_LIFT annotation in `build_quant_context()` gated on star being in today's OUT set, per-qualifier guidance added to WITHOUT-STAR BASELINE rule (build_prompt) and TEAMMATE ABSENCE USAGE ABSORPTION rule (build_pick_prompt). Annotation-only — no directive rules. Validated end-to-end with Tatum/Brown case (+27.3pp PTS T20 STRONG_PERSONAL_SIGNAL). Part 2 below (Skip Re-evaluation in lineup_update.py) still pending.
 
 ---
 
@@ -96,7 +96,7 @@ If the re-estimated confidence crosses 70%, write a `skip_reconsideration` entry
 ---
 
 #### Analyst Star-Absence Uplift Annotation
-**Priority:** April 12–13 gap
+**Status: ✅ SHIPPED 2026-04-11 (Part 1 of 2)** — `compute_star_absence_deltas()` in `quant.py` produces `star_absence_lift` field in `player_stats.json`; `build_quant_context()` renders `STAR_ABSENT_LIFT` two-line annotation gated on star being in today's OUT set; per-qualifier guidance added to `WITHOUT-STAR BASELINE` rule in `build_prompt()` and to `TEAMMATE ABSENCE USAGE ABSORPTION` rule in `build_pick_prompt()`. Runtime invariant verified (49/49 players pass `n_with + n_without == total` check). Motivating Tatum/Brown case reproduces exactly (PTS T25 +57.6pp, PTS T20 +27.3pp, STRONG_PERSONAL_SIGNAL). Annotation-only — no directive rules. Part 2 (Skip Re-evaluation) still pending.
 **Depends on:** H26 (CONFIRMED SIGNAL, 4/10)
 **Scope:** `agents/quant.py` (compute population + per-player deltas at context-build time), `agents/analyst.py` (annotation injection + prompt rule)
 

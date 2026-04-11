@@ -78,6 +78,23 @@ TPM_TIERS = [1, 2, 3, 4]
 TIERS    = {"PTS": PTS_TIERS, "REB": REB_TIERS, "AST": AST_TIERS, "3PM": TPM_TIERS}
 STAT_COL = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
 
+# H26 star-absence lift — population deltas from 2026 season backtest (n=31 obs)
+# Informs STAR_ABSENT_LIFT annotation in build_quant_context(); annotation-only,
+# no directive rules. See docs/BACKTESTS.md H26 for method + findings.
+SA_KEY_TIERS = {
+    "PTS": [15, 20, 25],
+    "AST": [4, 6],
+}
+SA_POPULATION_DELTAS = {
+    "PTS_T15": 11.3,
+    "PTS_T20": 12.7,
+    "PTS_T25": 10.5,
+    "AST_T4":  9.6,
+    "AST_T6":  6.7,
+}
+SA_MIN_STAR_GAMES  = 20   # leading scorer must have ≥20 non-DNP games
+SA_MIN_CONDITION_N = 3    # min games in each condition (with/without) per player
+
 
 # ── Loaders ───────────────────────────────────────────────────────────
 
@@ -1966,6 +1983,105 @@ def compute_teammate_absence_splits(
     }
 
 
+def compute_star_absence_deltas(
+    player_log: pd.DataFrame,
+    player_name: str,
+    team: str,
+    star_name: str,
+    star_ppg: float,
+    star_absent_game_ids: set,
+) -> dict | None:
+    """
+    Compute per-player tier hit rate deltas at H26 key tiers (PTS T15/T20/T25,
+    AST T4/T6) between games WITH and WITHOUT the team's leading scorer.
+
+    Companion to compute_teammate_absence_splits() — that function uses the top
+    WHITELISTED teammate and produces absolute without-star rates for the
+    WITHOUT-STAR BASELINE rule. This function uses the team's OVERALL leading
+    scorer (not whitelist-filtered) and produces with-vs-without DELTAS at H26
+    key tiers for the STAR_ABSENT_LIFT annotation. Both fields coexist.
+
+    Returns dict with per-tier deltas (pp), directional qualifier, and star
+    metadata. Returns None if the player IS the star or has insufficient data.
+
+    Directional qualifier values:
+      STRONG_PERSONAL_SIGNAL  — mean delta > +3pp across qualifying tiers
+      NEUTRAL_PERSONAL_DATA   — mean delta in [-3, +3]pp
+      PERSONAL_DRAG_WARNING   — mean delta < -3pp (this player suffers when star out)
+      POPULATION_ONLY         — <SA_MIN_CONDITION_N without-star games (no per-player signal)
+
+    DataFrame sort direction: not relevant — we use .isin() for game_id filtering,
+    not positional slicing.
+    DNP exclusion: applied via dnp != "1" (coerced numeric).
+    """
+    if player_name == star_name:
+        return None
+
+    # Get player's active non-DNP games on this team
+    player_games = player_log[
+        (player_log["player_name"] == player_name)
+        & (player_log["team_abbrev"].str.upper() == team.upper())
+        & (pd.to_numeric(player_log["dnp"], errors="coerce").fillna(0) != 1)
+    ].copy()
+
+    if len(player_games) < MIN_GAMES:
+        return None
+
+    # Split into with-star and without-star
+    without_mask = player_games["game_id"].isin(star_absent_game_ids)
+    without_games = player_games[without_mask]
+    with_games = player_games[~without_mask]
+
+    n_without = len(without_games)
+    n_with = len(with_games)
+
+    if n_with < MIN_GAMES:
+        return None  # Need sufficient with-star baseline
+
+    # Compute deltas at key tiers
+    key_deltas: dict[str, float] = {}
+    for stat, tiers in SA_KEY_TIERS.items():
+        col = STAT_COL.get(stat)
+        if col is None or col not in player_games.columns:
+            continue
+        for tier in tiers:
+            with_vals = pd.to_numeric(with_games[col], errors="coerce").dropna()
+            without_vals = pd.to_numeric(without_games[col], errors="coerce").dropna()
+
+            if len(with_vals) < SA_MIN_CONDITION_N or len(without_vals) < SA_MIN_CONDITION_N:
+                continue
+
+            with_rate = float((with_vals >= tier).sum() / len(with_vals))
+            without_rate = float((without_vals >= tier).sum() / len(without_vals))
+            delta_pp = round((without_rate - with_rate) * 100, 1)
+
+            key_deltas[f"{stat}_T{tier}"] = delta_pp
+
+    # Classify directional qualifier
+    if n_without < SA_MIN_CONDITION_N:
+        qualifier = "POPULATION_ONLY"
+    elif not key_deltas:
+        qualifier = "POPULATION_ONLY"
+    else:
+        deltas = list(key_deltas.values())
+        mean_delta = sum(deltas) / len(deltas)
+        if mean_delta > 3.0:
+            qualifier = "STRONG_PERSONAL_SIGNAL"
+        elif mean_delta < -3.0:
+            qualifier = "PERSONAL_DRAG_WARNING"
+        else:
+            qualifier = "NEUTRAL_PERSONAL_DATA"
+
+    return {
+        "star_name": star_name,
+        "star_ppg": round(star_ppg, 1),
+        "n_without": n_without,
+        "n_with": n_with,
+        "key_deltas": key_deltas,
+        "qualifier": qualifier,
+    }
+
+
 def build_player_stats(
     player_log: pd.DataFrame,
     b2b_teams: set[str],
@@ -2008,6 +2124,42 @@ def build_player_stats(
     if master_df is not None and not master_df.empty:
         for _team in teams_today:
             _rest_cache[_team] = compute_rest_context(_team, master_df)
+
+    # Pre-compute team leading scorers for star-absence lift (H26)
+    # Uses full player_log (not whitelist-filtered) to find the actual team leader.
+    # Returns tuple of (star_name, star_ppg, set_of_game_ids_where_star_was_absent)
+    # keyed by uppercase team abbreviation. Empty when team has no qualifying leader.
+    _team_stars: dict[str, tuple[str, float, set]] = {}
+    for _ts_team in teams_today:
+        _ts_team_log = player_log[
+            player_log["team_abbrev"].str.upper() == _ts_team
+        ]
+        _ts_best_name: str | None = None
+        _ts_best_ppg = 0.0
+        for _ts_pn in _ts_team_log["player_name"].unique():
+            _ts_pgames = _ts_team_log[
+                (_ts_team_log["player_name"] == _ts_pn)
+                & (pd.to_numeric(_ts_team_log["dnp"], errors="coerce").fillna(0) != 1)
+            ]
+            if len(_ts_pgames) < SA_MIN_STAR_GAMES:
+                continue
+            _ts_ppg = float(_ts_pgames["pts"].mean())
+            if _ts_ppg > _ts_best_ppg:
+                _ts_best_ppg = _ts_ppg
+                _ts_best_name = _ts_pn
+        if _ts_best_name is not None:
+            _ts_all_gids = set(_ts_team_log["game_id"].unique())
+            _ts_star_active = set(
+                _ts_team_log[
+                    (_ts_team_log["player_name"] == _ts_best_name)
+                    & (pd.to_numeric(_ts_team_log["dnp"], errors="coerce").fillna(0) != 1)
+                ]["game_id"].unique()
+            )
+            _team_stars[_ts_team] = (
+                _ts_best_name,
+                _ts_best_ppg,
+                _ts_all_gids - _ts_star_active,
+            )
 
     log = player_log[player_log["team_abbrev"].str.upper().isin(teams_today)].copy()
     if whitelist:
@@ -2174,6 +2326,19 @@ def build_player_stats(
                 if stat in trend:
                     trend[stat] = val
 
+        # Star-absence lift — per-player deltas at key tiers vs team's leading scorer (H26)
+        # Uses team's OVERALL PPG leader (not whitelist-filtered, ≥20 games).
+        # Complementary to key_teammate_absent above — that one uses top whitelisted
+        # teammate with absolute without-star rates; this one uses overall team leader
+        # with with-vs-without deltas at H26 key tiers. Both fields coexist.
+        _star_info = _team_stars.get(team)
+        star_absence_lift = None
+        if _star_info is not None and _star_info[0] != player_name:
+            star_absence_lift = compute_star_absence_deltas(
+                player_log, player_name, team,
+                _star_info[0], _star_info[1], _star_info[2],
+            )
+
         stats_out[player_name] = {
             "team": team,
             "whitelisted_teammates": sorted(teammate_corr.keys()),
@@ -2204,6 +2369,7 @@ def build_player_stats(
             "teammate_correlations": teammate_corr,
             "bounce_back": bounce_back,
             "key_teammate_absent": key_teammate_absent,
+            "star_absence_lift": star_absence_lift,
             "volatility": volatility,
             "shooting_regression": shooting_regression,
             "playoff_profile":    compute_playoff_splits(player_name, playoff_career_df),

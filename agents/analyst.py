@@ -1263,6 +1263,45 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
                     + " | ".join(kta_parts)
                 )
 
+        # Star-absence lift annotation (H26) — fires when team's leading scorer is OUT today
+        # Informational only — no directive rules. The WITHOUT-STAR BASELINE two-gate rule
+        # in the analyst prompt still governs tier qualification.
+        sal = s.get("star_absence_lift")
+        star_lift_line = ""
+        if sal and sal.get("star_name", "") in _out_set:
+            _sal_star = sal["star_name"]
+            _sal_qual = sal.get("qualifier", "POPULATION_ONLY")
+            _sal_n    = sal.get("n_without", 0)
+            _sal_kd   = sal.get("key_deltas") or {}
+
+            # Population reference line (H26 constants, see quant.py SA_POPULATION_DELTAS)
+            star_lift_line = (
+                f"  STAR_ABSENT_LIFT: [{_sal_star} OUT] "
+                f"population PTS T15-T25 +11 to +13pp, AST T4 +10pp"
+            )
+
+            # Per-player line with directional qualifier
+            if _sal_kd and _sal_qual != "POPULATION_ONLY":
+                _sal_best_key = max(_sal_kd, key=lambda k: _sal_kd[k])
+                _sal_best_d   = _sal_kd[_sal_best_key]
+                _sal_sign     = "+" if _sal_best_d >= 0 else ""
+                star_lift_line += (
+                    f"\n  Player-specific ({_sal_n}g): "
+                    f"{_sal_best_key.replace('_', ' ')} "
+                    f"delta {_sal_sign}{_sal_best_d}pp [{_sal_qual}]"
+                )
+                if _sal_qual == "PERSONAL_DRAG_WARNING":
+                    star_lift_line += (
+                        " — population lift does NOT apply to this player"
+                    )
+            else:
+                # Hardcoded 3 = SA_MIN_CONDITION_N from quant.py (not imported to avoid
+                # a cross-module coupling; update here if the quant constant changes)
+                star_lift_line += (
+                    f"\n  Player-specific: <3 without-star games "
+                    f"[{_sal_qual}]"
+                )
+
         stat_parts = []
         bounce_back_all    = s.get("bounce_back") or {}
         volatility_all     = s.get("volatility") or {}
@@ -1463,9 +1502,10 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
             ga_flag    = f" [SHORT_SAMPLE:{games_available}g]" if games_available < 8 else ""
             lines.append(
                 f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{ga_flag}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
-                + (momentum_line  + "\n" if momentum_line  else "")
-                + (teammates_line + "\n" if teammates_line else "")
-                + (kta_line      + "\n" if kta_line       else "")
+                + (momentum_line   + "\n" if momentum_line   else "")
+                + (teammates_line  + "\n" if teammates_line  else "")
+                + (kta_line        + "\n" if kta_line        else "")
+                + (star_lift_line  + "\n" if star_lift_line  else "")
                 + (opp_absence_str + "\n" if opp_absence_str else "")
                 + "\n".join(stat_parts)
             )
@@ -2055,7 +2095,19 @@ RETURN FROM INJURY — SHORT SAMPLE INSTABILITY:
 WITHOUT-STAR BASELINE — TWO REQUIRED GATES:
 The quant context shows a "Without [Player X] (their avg=Ypt, n=Zg):" line when a key teammate
 has been absent for ≥3 recent games. This Without-Star data shows the player's hit rates and
-averages in a lineup without that teammate. Two gates govern its use:
+averages in a lineup without that teammate. Two gates govern its use.
+
+A separate STAR_ABSENT_LIFT annotation may appear below the Without line, showing population-level
+and per-player directional impact when the team's leading scorer is OUT (H26 backtest: +11-13pp PTS,
++10pp AST at key tiers). The STAR_ABSENT_LIFT annotation is informational context that supports
+confidence reasoning — it does NOT override the two gates below. Key rules:
+  - [PERSONAL_DRAG_WARNING]: this player historically does WORSE without the star. Do NOT apply
+    the population lift. The individual drag overrides the population average.
+  - [STRONG_PERSONAL_SIGNAL]: this player has a confirmed personal benefit. Factor positively
+    into confidence reasoning alongside Gate 1 and Gate 2 evidence.
+  - [POPULATION_ONLY]: no per-player history. Population average is directional context only —
+    do not use it as primary tier evidence.
+  - [NEUTRAL_PERSONAL_DATA]: per-player delta is near zero. No meaningful lift or drag.
 
 GATE 1 — CONFIRMED-OUT REQUIREMENT: A Without-Star baseline may only be used as the PRIMARY
 tier qualifier for a pick when the absent star is confirmed OUT in today's injury report or
@@ -3126,6 +3178,18 @@ If the "Without X" line is absent (insufficient absence history):
   the standard tier.
 If the teammate is playing today (not in injury report): ignore this rule entirely.
 Do not apply absence adjustments when the high-usage teammate is confirmed active.
+
+A separate STAR_ABSENT_LIFT annotation may appear below the "Without" line, showing population-level
+and per-player directional impact when the team's leading scorer is OUT (H26 backtest: +11-13pp PTS,
++10pp AST at key tiers). The STAR_ABSENT_LIFT annotation is informational context that supports
+confidence reasoning — it does NOT override the rules above. Key qualifiers:
+  - [PERSONAL_DRAG_WARNING]: this player historically does WORSE without the star. Do NOT apply
+    the population lift. The individual drag overrides the population average.
+  - [STRONG_PERSONAL_SIGNAL]: this player has a confirmed personal benefit. Factor positively
+    into confidence reasoning alongside the Without-X baseline evidence.
+  - [POPULATION_ONLY]: no per-player history. Population average is directional context only —
+    do not use it as primary tier evidence.
+  - [NEUTRAL_PERSONAL_DATA]: per-player delta is near zero. No meaningful lift or drag.
 
 KEY RULES — REST & FATIGUE:
 - Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),
