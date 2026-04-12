@@ -2164,7 +2164,8 @@ function renderPicks() {{
   }});
 
   // ── Opportunity flags — amber/blue cards below main picks ───────────────
-  const opps = (DATA.opportunity_flags || []).filter(f => f.date === DATA.today_str);
+  const voidedNames = new Set((DATA.today_picks || []).filter(p => p.voided).map(p => (p.player_name || '').toLowerCase()));
+  const opps = (DATA.opportunity_flags || []).filter(f => f.date === DATA.today_str && !voidedNames.has((f.player_name || '').toLowerCase()));
   if (opps.length) {{
     html += `<div class="section-header" style="margin-top:24px;color:#F5A623;">⚡ OPPORTUNITIES — Late-Scratch Pickups</div>`;
     opps.forEach(opp => {{
