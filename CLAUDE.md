@@ -119,7 +119,7 @@ post_game_reporter.py runs as first step of auditor.yml (fetches ESPN recaps + R
 | pre_game_reporter.py | claude-sonnet-4-6 | 2048 | ESPN player news, nba_season_context.md | pre_game_news.json, context_flags.md |
 | analyst.py (Scout) | claude-sonnet-4-6 / opus-4-6 | 4096 | player_stats.json, injuries, lineups, game logs, nba_season_context, standings, team_defense_narratives, pre_game_news, player_profiles, leaderboard, odds_available.json | Scout shortlist (20–25 players) |
 | analyst.py (Pick) | claude-sonnet-4-6 | 32000 | Scout shortlist, filtered player_stats.json, injuries, audit_log (last 5), audit_summary, odds_available.json | picks.json (append), skipped_picks.json |
-| parlay.py | claude-sonnet-4-6 | 4096 | picks.json, player_stats.json, audit_log (last 3 parlay feedback) | parlays.json (append) |
+| parlay.py | claude-sonnet-4-6 | 4096 | picks.json, player_stats.json, audit_log (last 3 parlay feedback) | parlays.json (append); output includes `card_type` ("core"/"bold", 1 bold per day) |
 | post_game_reporter.py | claude-sonnet-4-6 | 2048 | picks.json (yesterday), ESPN athlete news, Brave Search | post_game_news.json |
 | auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings, picks_review_YYYY-MM-DD.json (optional) | audit_log.json, audit_summary.json, updates picks + parlays in-place, grades skipped_picks.json |
 | playoff_matchup.py | — (pure Python) | — | playoff_bracket.json, nba_master.csv, player_game_log.csv, player_whitelist.csv | playoff_matchup.json (no-op if bracket absent) |

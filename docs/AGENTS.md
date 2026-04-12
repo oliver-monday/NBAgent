@@ -284,11 +284,11 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 1. Load today's picks with `confidence_pct ≥ 70` and `result == null`
 1a. Load `picks_review_TODAY.json`; exclude any pick with `verdict == "manual_skip"` from candidate pool; tag remaining picks with `_human_verdict` ("trim"/"keep"/null)
 2. Build all 2–6 leg combinations (no duplicate players)
-3. Filter: implied odds must be +100 to +600 American
-4. Filter: skip combos with `scoring_rivals` or `board_rivals` between same-team players
+3. Filter: implied odds must be +100 to +900 American
+4. Filter: skip combos with `scoring_rivals` or `board_rivals` or `cannibalization_strong` between same-team players
 4a. Filter: skip combos with >1 trim-verdict pick; trim picks require ≥2 clean-verdict anchors (non-trim legs)
 5. Score each combo on: confidence product, floor confidence, correlation quality, game spread
-6. Send top 15 scored combos to Claude → returns 3–5 curated parlays
+6. Send top 25 scored combos to Claude (with leg-count diversity enforcement: ≥3 with 4+ legs, ≥2 with 2 legs) → returns 3–5 curated parlays with `card_type` ("core" or "bold")
 
 **Implied odds formula:**
 ```
@@ -312,11 +312,11 @@ CORR_BONUS = {
 ```
 
 **Claude selection criteria (in priority order):**
-1. Implied odds +100 to +300 preferred; +300–600 OK if all legs strong
-2. Floor confidence — weakest leg matters most, prefer ≥75%
-3. Positive correlation tags
+1. Implied odds: core cards +100–350, bold card +400–800
+2. Floor confidence — weakest leg matters most; core ≥75%, bold may allow one 70–74% leg with STRONG edge
+3. Positive correlation tags — bold card especially benefits from correlation to offset leg count
 4. Game spread — multi-game more robust than same-game stacks
-5. Variety across 3–5 selections (mix of leg counts)
+5. Variety — MANDATORY: ≥1 2-leg + ≥1 4+ leg, ≥2 different leg counts. Exactly one `card_type: "bold"` per day.
 6. Edge quality — prefer STRONG/POSITIVE `edge_tier` legs (calibrated system confidence exceeds FanDuel market); avoid FADE legs; max 1 FADE per parlay, requires all other legs POSITIVE/STRONG
 
 **Output schema (appended as bundle to `parlays.json`):**

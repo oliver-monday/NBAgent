@@ -55,9 +55,9 @@ MAX_TOKENS = 4096
 MIN_LEGS = 2
 MAX_LEGS = 6
 TARGET_MIN_ODDS = 100   # +100 American
-TARGET_MAX_ODDS = 600   # soft ceiling — avoid ultra-long shots
+TARGET_MAX_ODDS = 900   # soft ceiling — opens 4-5 leg ambitious plays while staying sub-lottery
 MIN_CONFIDENCE  = 70    # individual leg floor
-TOP_N_TO_CLAUDE = 15    # how many pre-scored combos to send Claude
+TOP_N_TO_CLAUDE = 25    # how many pre-scored combos to send Claude
 MAX_COMBO_PICKS = 25    # cap picks before combination building — C(57,6)=34M blows up the runner
 AUDIT_CONTEXT_ENTRIES = 3  # keep lean — parlay prompt is already large
 
@@ -614,7 +614,7 @@ def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
 
     top = candidates[:TOP_N_TO_CLAUDE]
 
-    # Diversity check: if any single player appears in >80% of top candidates,
+    # Diversity check 1: if any single player appears in >80% of top candidates,
     # replace the bottom third with the best candidates that exclude that player.
     # This prevents a high-confidence player from monopolizing the candidate pool
     # and leaving Claude with no alternatives.
@@ -640,6 +640,33 @@ def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
             top = top[:TOP_N_TO_CLAUDE - len(alternatives)] + alternatives
             print(f"[parlay] Diversity fix: {dom_name} appeared in {dom_count}/{TOP_N_TO_CLAUDE} "
                   f"top candidates — replaced bottom {len(alternatives)} with alternatives")
+
+    # Diversity check 2: leg-count variety enforcement.
+    # Ensure the candidate pool includes a spread of leg counts so Claude can
+    # construct varied parlays instead of fifteen 3-leggers.
+    # Targets: ≥3 candidates with 4+ legs, ≥2 candidates with exactly 2 legs.
+    # Backfill from remaining candidates (beyond top N) if needed,
+    # replacing from the bottom of the current top list.
+    top_ids = {id(c) for c in top}
+    remaining = [c for c in candidates if id(c) not in top_ids]
+
+    def _leg_count_backfill(top_list, remaining_pool, target_legs_fn, target_count, label):
+        """Backfill candidates matching target_legs_fn until target_count is met."""
+        current = sum(1 for c in top_list if target_legs_fn(c["n_legs"]))
+        if current >= target_count:
+            return top_list
+        needed = target_count - current
+        backfill = [c for c in remaining_pool if target_legs_fn(c["n_legs"])][:needed]
+        if not backfill:
+            return top_list
+        # Replace from the bottom of the current list
+        top_list = top_list[:len(top_list) - len(backfill)] + backfill
+        print(f"[parlay] Leg-count diversity: backfilled {len(backfill)} {label} "
+              f"candidates (had {current}, target {target_count})")
+        return top_list
+
+    top = _leg_count_backfill(top, remaining, lambda n: n >= 4, 3, "4+ leg")
+    top = _leg_count_backfill(top, remaining, lambda n: n == 2, 2, "2-leg")
 
     return top
 
@@ -687,19 +714,30 @@ def build_parlay_prompt(candidates: list[dict], audit_feedback: str = "", cannib
 Today is {TODAY_STR}.
 
 ## YOUR TASK
-Select 3–5 of the best parlay combinations from the pre-scored candidates below.
+Select 3–5 parlay combinations from the pre-scored candidates below.
 Each candidate has already passed:
-  - Implied odds filter: +100 to +600 American
+  - Implied odds filter: +100 to +900 American
   - Minimum 70% confidence per leg
   - No known negative teammate correlations (scoring_rivals, board_rivals)
 
+**MANDATORY VARIETY RULE — non-negotiable:**
+You MUST include at least one 2-leg parlay (tight, high-confidence, +100 to +200 range) AND at least one 4+ leg parlay (ambitious, correlation-driven). The remaining 1–3 parlays are your choice of leg count.
+
+**BOLD CARD — exactly one per day:**
+Designate exactly one of your 3–5 parlays as the "bold card" by setting `"card_type": "bold"`. All others get `"card_type": "core"`. The bold card is the audience's higher-risk, higher-reward play:
+  - Target range: +400 to +800
+  - 4–5 legs
+  - Allowed to include one speculative leg (70–74% confidence with STRONG edge and soft matchup)
+  - Should still have a coherent rationale — not random legs stapled together
+  - The bold card MAY be the same parlay that satisfies the 4+ leg mandate, or a separate one
+
 ## SELECTION CRITERIA — in priority order
-1. **Implied odds target**: prefer +100 to +300. Above +300 is fine if all legs are very strong.
-2. **Floor confidence**: the weakest leg matters most. Prefer combos where even the weakest leg is ≥75%.
-3. **Positive correlation**: "feeder_target" and "volume_game" tags mean legs tend to win together — prefer these.
+1. **Implied odds target**: for core cards, prefer +100 to +350. For the bold card, target +400 to +800.
+2. **Floor confidence**: the weakest leg matters most. For core cards, prefer combos where even the weakest leg is ≥75%. The bold card may include one leg at 70–74% if the edge is STRONG or POSITIVE.
+3. **Positive correlation**: "feeder_target" and "volume_game" tags mean legs tend to win together — prefer these. The bold card especially benefits from positive correlation to offset its higher leg count.
 4. **Game spread**: multi-game parlays are more robust than same-game stacks (same-game stacks are fine if correlation is genuinely positive).
-5. **Variety**: across your 3–5 selections, aim for a mix of leg counts (some tight 2-leggers, some 3–4 leg plays, maybe one 5+ if all legs are elite).
-6. **Edge quality**: Each leg now includes `edge_tier` (STRONG / POSITIVE / NEUTRAL / FADE / NO_MARKET) and `cal_edge` (calibrated edge in percentage points vs FanDuel market). Prefer legs with STRONG or POSITIVE edge — these are props where our calibrated system confidence exceeds FanDuel's implied probability. FADE legs mean the market is more confident than our calibrated read. Candidates with 2+ FADE legs have already been filtered out — every candidate below has at most 1 FADE leg. When a candidate has exactly 1 FADE leg, prefer combos where the other legs are POSITIVE or STRONG to compensate.
+5. **Variety**: your 3–5 selections MUST span at least two different leg counts. A set of three 3-leggers is a violation of the variety rule. Aim for a spread — e.g. one 2-leg, two 3-leg, one 4-leg bold card.
+6. **Edge quality**: Each leg includes `edge_tier` (STRONG / POSITIVE / NEUTRAL / FADE / NO_MARKET) and `cal_edge` (calibrated edge in percentage points vs FanDuel market). A +250 parlay with 4 POSITIVE-edge legs is more valuable than a +120 parlay with 3 NEUTRAL-edge legs because edge compounds across legs. Prefer parlays where `edge_tier` is POSITIVE or STRONG on at least half the legs. FADE legs mean the market is more confident than our calibrated read. Candidates with 2+ FADE legs have already been filtered out. When a candidate has exactly 1 FADE leg, prefer combos where the other legs are POSITIVE or STRONG to compensate.
 
 ## AVOID
 - Any single player appearing in more than 1 of today's parlays, regardless of prop type.
@@ -714,6 +752,8 @@ Each candidate has already passed:
 - Combos where the rationale would be "all soft matchups" with no deeper logic
 - Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
 - Parlays where the single allowed FADE leg is the weakest leg by confidence AND the other legs are all NEUTRAL — prefer combos where at least one non-FADE leg is POSITIVE or STRONG
+- Making all parlays the same leg count — the variety rule is mandatory, not a suggestion
+- A bold card that is just a slightly worse version of a core card — the bold card should be structurally different (more legs, wider odds, different game coverage)
 
 ## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS
 {audit_feedback if audit_feedback else "No prior parlay audit data available."}
@@ -733,6 +773,7 @@ Returning `[]` is explicitly acceptable and preferred over reasoning about why p
 [
   {{
     "label": "short evocative name, 2-4 words, e.g. 'NYK Feeder Stack' or 'Wednesday Sweeper'",
+    "card_type": "core | bold (exactly one parlay must be 'bold', all others 'core')",
     "type": "same_game_stack | multi_game | mixed",
     "legs": [
       {{
