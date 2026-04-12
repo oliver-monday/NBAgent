@@ -49,6 +49,7 @@ ODDS_JSON           = DATA / "odds_today.json"
 ODDS_AVAILABLE_JSON = DATA / "odds_available.json"
 ODDS_PRETIP_JSON    = DATA / "odds_pretip.json"
 AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
+CONFIDENCE_CAL_JSON = DATA / "backtest_confidence_calibration.json"
 WHITELIST_CSV       = ROOT / "playerprops" / "player_whitelist.csv"
 
 # ── Config ─────────────────────────────────────────────────────────────────────
@@ -320,39 +321,83 @@ def _load_calibration_bands() -> dict[str, float] | None:
         return None
 
 
-def _get_calibrated_prob(stated_confidence: float, bands: dict[str, float]) -> float:
+# Minimum graded picks for per-player calibration override
+PER_PLAYER_CAL_MIN_PICKS = 10
+
+
+def _load_per_player_calibration() -> dict[str, float] | None:
     """
-    Map a stated confidence percentage to a calibrated probability using
-    the calibration bands from audit_summary.json.
-
-    Band mapping:
-      70-75%  → stated 70.0–75.99
-      76-80%  → stated 76.0–80.99
-      81-85%  → stated 81.0–85.99
-      86%+    → stated 86.0+
-
-    If bands are missing or the stated confidence doesn't fall in any band,
-    returns the stated confidence unchanged (conservative fallback).
+    Load per-player actual hit rates from H29 backtest output.
+    Returns a dict mapping normalized player name → actual hit rate (0-1 scale).
+    Only includes players with >= PER_PLAYER_CAL_MIN_PICKS graded picks.
+    Returns None if the file doesn't exist or has no player data.
     """
-    if not bands:
-        return stated_confidence / 100.0
+    if not CONFIDENCE_CAL_JSON.exists():
+        print("[odds] backtest_confidence_calibration.json not found — per-player calibration unavailable")
+        return None
+    try:
+        with open(CONFIDENCE_CAL_JSON) as f:
+            data = json.load(f)
+        players = data.get("players", [])
+        if not players:
+            print("[odds] No player calibration data in H29 output")
+            return None
+        cal = {}
+        for p in players:
+            name = p.get("player", "")
+            n = p.get("n_picks", 0)
+            rate = p.get("actual_hit_rate")
+            if name and n >= PER_PLAYER_CAL_MIN_PICKS and rate is not None:
+                cal[_norm_name(name)] = float(rate)
+        print(f"[odds] Per-player calibration loaded: {len(cal)} players")
+        return cal if cal else None
+    except Exception as e:
+        print(f"[odds] WARNING: could not load per-player calibration: {e}")
+        return None
 
-    sc = float(stated_confidence)
-    if sc >= 86.0:
-        rate = bands.get("86+")
-    elif sc >= 81.0:
-        rate = bands.get("81-85")
-    elif sc >= 76.0:
-        rate = bands.get("76-80")
-    elif sc >= 70.0:
-        rate = bands.get("70-75")
-    else:
-        rate = None
 
-    if rate is not None:
-        return float(rate)
-    # Fallback: return stated confidence as decimal
-    return sc / 100.0
+def _get_calibrated_prob(
+    stated_confidence: float,
+    bands: dict[str, float],
+    player_name: str | None = None,
+    per_player: dict[str, float] | None = None,
+) -> tuple[float, str]:
+    """
+    Map a stated confidence percentage to a calibrated probability.
+
+    Priority:
+      1. Per-player actual hit rate from H29 data (if player has >= 10 picks)
+      2. Population-level calibration band from audit_summary.json
+      3. Stated confidence unchanged (conservative fallback)
+
+    Returns (calibrated_probability, source) where source is one of:
+      "per_player", "population_band", "fallback"
+    """
+    # Priority 1: per-player override
+    if per_player and player_name:
+        norm = _norm_name(player_name)
+        if norm in per_player:
+            return per_player[norm], "per_player"
+
+    # Priority 2: population band
+    if bands:
+        sc = float(stated_confidence)
+        if sc >= 86.0:
+            rate = bands.get("86+")
+        elif sc >= 81.0:
+            rate = bands.get("81-85")
+        elif sc >= 76.0:
+            rate = bands.get("76-80")
+        elif sc >= 70.0:
+            rate = bands.get("70-75")
+        else:
+            rate = None
+
+        if rate is not None:
+            return float(rate), "population_band"
+
+    # Priority 3: fallback to stated confidence
+    return float(stated_confidence) / 100.0, "fallback"
 
 
 def pretip_sweep(window_minutes: int = 360) -> None:
@@ -752,6 +797,7 @@ def compute_edge(all_picks: list[dict]) -> int:
     Picks without market data get recommendation_tier = "NO_MARKET".
     """
     bands = _load_calibration_bands()
+    per_player = _load_per_player_calibration()
 
     n_enriched = 0
     for pick in all_picks:
@@ -779,8 +825,9 @@ def compute_edge(all_picks: list[dict]) -> int:
             n_enriched += 1
             continue
 
-        # Compute calibrated probability
-        cal_prob = _get_calibrated_prob(confidence, bands)
+        # Compute calibrated probability (per-player H29 override → population band → fallback)
+        player_name = pick.get("player_name", "")
+        cal_prob, cal_source = _get_calibrated_prob(confidence, bands, player_name, per_player)
         cal_prob_pct = round(cal_prob * 100, 1)
         market_pct = float(market_implied)
 
@@ -821,6 +868,7 @@ def compute_edge(all_picks: list[dict]) -> int:
         pick["bet_recommendation"] = {
             "calibrated_prob":     cal_prob_pct,
             "calibration_band":    band_label,
+            "calibration_source":  cal_source,
             "calibrated_edge_pct": edge_pct,
             "market_implied_prob": market_pct,
             "kelly_quarter":       kelly_quarter,
@@ -830,7 +878,7 @@ def compute_edge(all_picks: list[dict]) -> int:
 
         print(
             f"[odds] EDGE: {pick.get('player_name')} {pick.get('prop_type')} T{pick.get('pick_value')} — "
-            f"stated {confidence}% → cal {cal_prob_pct}% vs market {market_pct}% → "
+            f"stated {confidence}% → cal {cal_prob_pct}% ({cal_source}) vs market {market_pct}% → "
             f"edge {edge_pct:+.1f}pp → {tier}"
             f"{f' (¼K={kelly_quarter:.1%})' if kelly_quarter > 0 else ''}"
         )
