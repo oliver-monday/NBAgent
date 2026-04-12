@@ -243,6 +243,14 @@ H28_ALLSTAR_TEAMS = {"CAN", "CHK", "DUR", "EAST", "GIA", "KEN", "LEB", "SHQ", "W
 PLAYOFF_CAREER_CSV  = DATA / "playoff_career_log.csv"
 PLAYOFF_CAREER_JSON = DATA / "backtest_playoff_career.json"
 
+# H33 — Teammate Scoring Cannibalization
+CANNIBALIZATION_JSON        = DATA / "backtest_teammate_cannibalization.json"
+TC_MIN_COPLAY_GAMES    = 20   # min co-played non-DNP games for a pair
+TC_MIN_CONDITION_GAMES = 8    # min games in each condition bucket (partner-hit / partner-miss)
+TC_MIN_TEAM_PLAYERS    = 3    # min whitelisted players on a team to analyze
+TC_STRONG_THRESHOLD    = 15.0 # |delta| >= this = STRONG cannibalization/synergy
+TC_MODERATE_THRESHOLD  = 8.0  # |delta| >= this = MODERATE signal
+
 _ABBR_NORM_BT = {
     "GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
     "UTAH": "UTA", "WSH": "WAS", "UTH": "UTA",
@@ -252,15 +260,27 @@ _ABBR_NORM_BT = {
 # ── Loaders ───────────────────────────────────────────────────────────
 
 def load_whitelist() -> set:
+    """
+    Returns set of (lowercase_name, uppercase_team) tuples for active players.
+    Includes tuples for both team_abbr AND team_abbr_alt (when non-empty) so
+    that ESPN short abbreviations (SA, GS, NY, UTAH) match alongside standard
+    NBA abbreviations (SAS, GSW, NYK, UTA).
+    Mirrors the canonical pattern in quant.py's load_whitelist().
+    """
     if not WHITELIST_CSV.exists():
         print("[backtest] WARNING: whitelist not found — no player filtering.")
         return set()
     df = pd.read_csv(WHITELIST_CSV, dtype=str)
     active = df[df["active"].astype(str).str.strip() == "1"]
-    return set(zip(
-        active["player_name"].str.strip().str.lower(),
-        active["team_abbr"].str.strip().str.upper(),
-    ))
+    pairs: set = set()
+    for _, row in active.iterrows():
+        name = row["player_name"].strip().lower()
+        abbr = row["team_abbr"].strip().upper()
+        alt  = str(row.get("team_abbr_alt") or "").strip().upper()
+        pairs.add((name, abbr))
+        if alt:
+            pairs.add((name, alt))
+    return pairs
 
 
 def load_player_log(whitelist: set, args) -> pd.DataFrame:
@@ -9383,6 +9403,428 @@ def run_series_progression_analysis(args) -> None:
     print(f"\n[backtest] H31 results → {out_path}")
 
 
+def run_teammate_cannibalization_analysis(
+    player_log: pd.DataFrame,
+    args,
+) -> None:
+    """
+    H33 — Teammate scoring cannibalization.
+
+    For each team with TC_MIN_TEAM_PLAYERS+ whitelisted co-playing players,
+    computes pairwise conditional tier hit rates:
+      - A's PTS/AST tier hit rate on nights when B HITS B's best PTS tier
+      - A's PTS/AST tier hit rate on nights when B MISSES B's best PTS tier
+      - Delta = cannibalization index (negative = zero-sum, positive = synergy)
+
+    Asymmetric: A→B and B→A are computed separately (Fox when Castle hits
+    is different from Castle when Fox hits).
+
+    League-wide, no team filter. Prints formatted report and writes JSON.
+    """
+
+    STAT_COL_TC = {"PTS": "pts", "AST": "ast"}
+    TIERS_TC = {
+        "PTS": [10, 15, 20, 25, 30],
+        "AST": [2, 4, 6, 8],
+    }
+
+    print(f"[backtest] H33 teammate-cannibalization | "
+          f"min_coplay={TC_MIN_COPLAY_GAMES} | "
+          f"min_condition={TC_MIN_CONDITION_GAMES} | "
+          f"min_team_players={TC_MIN_TEAM_PLAYERS}")
+
+    # ── Step 1: Identify whitelisted players per team ─────────────────────
+    # player_log already excludes DNPs (from load_player_log)
+    # Build per-player summary: team, game count, PTS avg, best qualifying tier
+    player_summary: dict[str, dict] = {}
+    for pname, grp in player_log.groupby("player_name"):
+        # Use most recent team
+        grp_sorted = grp.sort_values("game_date", ascending=False)
+        team = grp_sorted["team_abbrev"].iloc[0].strip().upper()
+        n_games = len(grp)
+        if n_games < 10:
+            continue
+
+        pts_vals = pd.to_numeric(grp["pts"], errors="coerce").dropna()
+        ast_vals = pd.to_numeric(grp["ast"], errors="coerce").dropna()
+        if len(pts_vals) == 0:
+            continue
+
+        pts_avg = float(pts_vals.mean())
+
+        # Find best qualifying PTS tier (highest tier with ≥70% hit rate, L20)
+        recent_pts = pd.to_numeric(
+            grp_sorted.head(20)["pts"], errors="coerce"
+        ).dropna()
+        best_pts_tier = None
+        if len(recent_pts) >= 10:
+            for t in sorted(TIERS_TC["PTS"], reverse=True):
+                hr = float((recent_pts >= t).sum() / len(recent_pts))
+                if hr >= 0.70:
+                    best_pts_tier = t
+                    break
+
+        # Find best qualifying AST tier
+        recent_ast = pd.to_numeric(
+            grp_sorted.head(20)["ast"], errors="coerce"
+        ).dropna()
+        best_ast_tier = None
+        if len(recent_ast) >= 10:
+            for t in sorted(TIERS_TC["AST"], reverse=True):
+                hr = float((recent_ast >= t).sum() / len(recent_ast))
+                if hr >= 0.70:
+                    best_ast_tier = t
+                    break
+
+        player_summary[pname] = {
+            "team": team,
+            "n_games": n_games,
+            "pts_avg": round(pts_avg, 1),
+            "ast_avg": round(float(ast_vals.mean()), 1) if len(ast_vals) > 0 else 0.0,
+            "best_pts_tier": best_pts_tier,
+            "best_ast_tier": best_ast_tier,
+        }
+
+    # Group players by team
+    team_players: dict[str, list[str]] = {}
+    for pname, info in player_summary.items():
+        team_players.setdefault(info["team"], []).append(pname)
+
+    # Filter to teams with enough players
+    qualifying_teams = {
+        t: players for t, players in team_players.items()
+        if len(players) >= TC_MIN_TEAM_PLAYERS
+    }
+    print(f"[backtest] {len(qualifying_teams)} teams with {TC_MIN_TEAM_PLAYERS}+ "
+          f"whitelisted players")
+
+    # ── Step 2: Build per-player game-date → stat lookup ──────────────────
+    # For fast pairwise conditioning: player → {game_date → {pts, ast}}
+    player_game_stats: dict[str, dict[str, dict]] = {}
+    for pname, grp in player_log.groupby("player_name"):
+        if pname not in player_summary:
+            continue
+        stats_by_date: dict[str, dict] = {}
+        for _, row in grp.iterrows():
+            gdate = str(row["game_date"]).strip()
+            pts = pd.to_numeric(row.get("pts"), errors="coerce")
+            ast = pd.to_numeric(row.get("ast"), errors="coerce")
+            if pd.notna(pts):
+                stats_by_date[gdate] = {
+                    "pts": float(pts),
+                    "ast": float(ast) if pd.notna(ast) else 0.0,
+                    "game_id": str(row.get("game_id", "")),
+                }
+        player_game_stats[pname] = stats_by_date
+
+    # ── Step 3: Compute pairwise conditional hit rates ────────────────────
+    team_results: dict[str, dict] = {}
+
+    for team, players in sorted(qualifying_teams.items()):
+        # Sort by PTS avg descending for readable output
+        players_sorted = sorted(
+            players,
+            key=lambda p: player_summary[p]["pts_avg"],
+            reverse=True,
+        )
+
+        pair_results: list[dict] = []
+
+        for i, player_a in enumerate(players_sorted):
+            a_stats = player_game_stats.get(player_a, {})
+            a_info = player_summary[player_a]
+
+            for j, player_b in enumerate(players_sorted):
+                if i == j:
+                    continue
+
+                b_stats = player_game_stats.get(player_b, {})
+                b_info = player_summary[player_b]
+
+                # Find co-played dates (both have stats on the same date)
+                coplay_dates = sorted(set(a_stats.keys()) & set(b_stats.keys()))
+                n_coplay = len(coplay_dates)
+
+                if n_coplay < TC_MIN_COPLAY_GAMES:
+                    continue
+
+                # For each stat (PTS, AST), condition A's hit rate on B's
+                # performance at B's best tier for that stat
+                for stat in ("PTS", "AST"):
+                    col = STAT_COL_TC[stat]
+                    b_best_tier = b_info.get(f"best_{col}_tier")
+                    a_best_tier = a_info.get(f"best_{col}_tier")
+
+                    if b_best_tier is None or a_best_tier is None:
+                        continue
+
+                    # Split co-played dates by B's performance at B's best tier
+                    b_hit_dates = []
+                    b_miss_dates = []
+                    for d in coplay_dates:
+                        b_val = b_stats[d].get(col, 0.0)
+                        if b_val >= b_best_tier:
+                            b_hit_dates.append(d)
+                        else:
+                            b_miss_dates.append(d)
+
+                    n_b_hit = len(b_hit_dates)
+                    n_b_miss = len(b_miss_dates)
+
+                    if (n_b_hit < TC_MIN_CONDITION_GAMES
+                            or n_b_miss < TC_MIN_CONDITION_GAMES):
+                        continue
+
+                    # A's hit rate at A's best tier, conditioned on B
+                    a_hits_when_b_hits = sum(
+                        1 for d in b_hit_dates
+                        if a_stats[d].get(col, 0.0) >= a_best_tier
+                    )
+                    a_hits_when_b_misses = sum(
+                        1 for d in b_miss_dates
+                        if a_stats[d].get(col, 0.0) >= a_best_tier
+                    )
+
+                    a_rate_when_b_hits = round(
+                        a_hits_when_b_hits / n_b_hit * 100, 1
+                    )
+                    a_rate_when_b_misses = round(
+                        a_hits_when_b_misses / n_b_miss * 100, 1
+                    )
+                    # A's unconditional hit rate at A's best tier across co-played
+                    a_total_hits = a_hits_when_b_hits + a_hits_when_b_misses
+                    a_unconditional = round(a_total_hits / n_coplay * 100, 1)
+
+                    # Cannibalization index:
+                    # negative = A does worse when B has big night (zero-sum)
+                    # positive = A does better when B has big night (synergy)
+                    cannib_idx = round(a_rate_when_b_hits - a_rate_when_b_misses, 1)
+
+                    # Classify
+                    abs_idx = abs(cannib_idx)
+                    if abs_idx >= TC_STRONG_THRESHOLD:
+                        strength = "STRONG"
+                    elif abs_idx >= TC_MODERATE_THRESHOLD:
+                        strength = "MODERATE"
+                    else:
+                        strength = "WEAK"
+
+                    if cannib_idx < -TC_MODERATE_THRESHOLD:
+                        label = f"CANNIBALIZATION_{strength}"
+                    elif cannib_idx > TC_MODERATE_THRESHOLD:
+                        label = f"SYNERGY_{strength}"
+                    else:
+                        label = "INDEPENDENT"
+
+                    pair_results.append({
+                        "player_a": player_a,
+                        "player_b": player_b,
+                        "stat": stat,
+                        "a_tier": a_best_tier,
+                        "b_tier": b_best_tier,
+                        "n_coplay": n_coplay,
+                        "n_b_hit": n_b_hit,
+                        "n_b_miss": n_b_miss,
+                        "a_rate_when_b_hits": a_rate_when_b_hits,
+                        "a_rate_when_b_misses": a_rate_when_b_misses,
+                        "a_unconditional": a_unconditional,
+                        "cannib_idx": cannib_idx,
+                        "label": label,
+                    })
+
+        # Team-level classification
+        pts_pairs = [p for p in pair_results if p["stat"] == "PTS"]
+        n_cannib = sum(
+            1 for p in pts_pairs
+            if p["cannib_idx"] < -TC_MODERATE_THRESHOLD
+        )
+        n_synergy = sum(
+            1 for p in pts_pairs
+            if p["cannib_idx"] > TC_MODERATE_THRESHOLD
+        )
+        n_independent = sum(
+            1 for p in pts_pairs
+            if abs(p["cannib_idx"]) <= TC_MODERATE_THRESHOLD
+        )
+
+        if n_cannib >= 3:
+            team_pattern = "CANNIBALIZATION_CLUSTER"
+        elif n_synergy >= 3:
+            team_pattern = "SYNERGY_CLUSTER"
+        elif n_cannib > n_synergy:
+            team_pattern = "MIXED_CANNIBALIZATION"
+        elif n_synergy > n_cannib:
+            team_pattern = "MIXED_SYNERGY"
+        else:
+            team_pattern = "INDEPENDENT"
+
+        # Parlay warning pairs: PTS cannibalization pairs
+        parlay_warnings = [
+            {
+                "pair": f"{p['player_a']}↔{p['player_b']}",
+                "stat": p["stat"],
+                "cannib_idx": p["cannib_idx"],
+                "label": p["label"],
+            }
+            for p in pair_results
+            if p["cannib_idx"] < -TC_MODERATE_THRESHOLD
+        ]
+
+        team_results[team] = {
+            "n_players": len(players_sorted),
+            "players": [
+                {
+                    "name": p,
+                    "pts_avg": player_summary[p]["pts_avg"],
+                    "ast_avg": player_summary[p]["ast_avg"],
+                    "best_pts_tier": player_summary[p]["best_pts_tier"],
+                    "best_ast_tier": player_summary[p]["best_ast_tier"],
+                }
+                for p in players_sorted
+            ],
+            "team_pattern": team_pattern,
+            "n_pts_pairs_analyzed": len(pts_pairs),
+            "n_cannibalization": n_cannib,
+            "n_synergy": n_synergy,
+            "n_independent": n_independent,
+            "pair_results": pair_results,
+            "parlay_warnings": parlay_warnings,
+        }
+
+    # ── Step 4: Population summary ────────────────────────────────────────
+    all_pairs = []
+    for tr in team_results.values():
+        all_pairs.extend(tr["pair_results"])
+
+    pts_pairs_all = [p for p in all_pairs if p["stat"] == "PTS"]
+    ast_pairs_all = [p for p in all_pairs if p["stat"] == "AST"]
+
+    def _summarize(pairs: list[dict]) -> dict:
+        if not pairs:
+            return {"n": 0}
+        idxs = [p["cannib_idx"] for p in pairs]
+        return {
+            "n": len(pairs),
+            "mean_cannib_idx": round(sum(idxs) / len(idxs), 1),
+            "median_cannib_idx": round(
+                sorted(idxs)[len(idxs) // 2], 1
+            ),
+            "n_cannibalization": sum(
+                1 for x in idxs if x < -TC_MODERATE_THRESHOLD
+            ),
+            "n_synergy": sum(
+                1 for x in idxs if x > TC_MODERATE_THRESHOLD
+            ),
+            "n_independent": sum(
+                1 for x in idxs if abs(x) <= TC_MODERATE_THRESHOLD
+            ),
+            "strongest_cannib": min(idxs),
+            "strongest_synergy": max(idxs),
+        }
+
+    population = {
+        "PTS": _summarize(pts_pairs_all),
+        "AST": _summarize(ast_pairs_all),
+    }
+
+    # ── Step 5: Print formatted report ────────────────────────────────────
+    print(f"\n{'='*80}")
+    print(f"H33 — TEAMMATE SCORING CANNIBALIZATION")
+    print(f"{'='*80}")
+    print(f"\nTeams analyzed: {len(team_results)}")
+    print(f"Total PTS pairs: {len(pts_pairs_all)} | "
+          f"AST pairs: {len(ast_pairs_all)}")
+
+    # Population summary
+    for stat_name, stat_pop in population.items():
+        if stat_pop["n"] == 0:
+            continue
+        print(f"\n--- {stat_name} Population (n={stat_pop['n']} directional pairs) ---")
+        print(f"  Mean cannib index: {stat_pop['mean_cannib_idx']:+.1f}pp")
+        print(f"  Median: {stat_pop['median_cannib_idx']:+.1f}pp")
+        print(f"  Cannibalization: {stat_pop['n_cannibalization']} | "
+              f"Synergy: {stat_pop['n_synergy']} | "
+              f"Independent: {stat_pop['n_independent']}")
+        print(f"  Strongest cannib: {stat_pop['strongest_cannib']:+.1f}pp | "
+              f"Strongest synergy: {stat_pop['strongest_synergy']:+.1f}pp")
+
+    # Per-team details — sorted by number of cannibalization pairs descending
+    sorted_teams = sorted(
+        team_results.items(),
+        key=lambda x: x[1]["n_cannibalization"],
+        reverse=True,
+    )
+
+    for team, tr in sorted_teams:
+        pts_pairs_team = [p for p in tr["pair_results"] if p["stat"] == "PTS"]
+        if not pts_pairs_team:
+            continue
+
+        print(f"\n{'─'*70}")
+        print(f"  {team} ({tr['n_players']} players, "
+              f"pattern={tr['team_pattern']})")
+        print(f"  PTS pairs: {len(pts_pairs_team)} | "
+              f"cannib={tr['n_cannibalization']} "
+              f"synergy={tr['n_synergy']} "
+              f"indep={tr['n_independent']}")
+
+        # Player roster
+        for p in tr["players"]:
+            pts_t = f"T{p['best_pts_tier']}" if p["best_pts_tier"] else "—"
+            ast_t = f"T{p['best_ast_tier']}" if p["best_ast_tier"] else "—"
+            print(f"    {p['name']:25s} PTS={p['pts_avg']:5.1f} (best {pts_t})  "
+                  f"AST={p['ast_avg']:4.1f} (best {ast_t})")
+
+        # Pair details — sort by cannib_idx ascending (worst cannibalization first)
+        for p in sorted(tr["pair_results"], key=lambda x: x["cannib_idx"]):
+            sign = "+" if p["cannib_idx"] >= 0 else ""
+            print(
+                f"    {p['player_a']:20s} {p['stat']} T{p['a_tier']} "
+                f"when {p['player_b']:15s} hits T{p['b_tier']}: "
+                f"{p['a_rate_when_b_hits']:5.1f}% "
+                f"(n={p['n_b_hit']:2d}) | "
+                f"misses: {p['a_rate_when_b_misses']:5.1f}% "
+                f"(n={p['n_b_miss']:2d}) | "
+                f"idx={sign}{p['cannib_idx']:.1f}pp "
+                f"[{p['label']}]"
+            )
+
+        # Parlay warnings
+        if tr["parlay_warnings"]:
+            print(f"  ⚠ PARLAY WARNINGS:")
+            for pw in tr["parlay_warnings"]:
+                print(f"    Never parlay: {pw['pair']} {pw['stat']} "
+                      f"(idx={pw['cannib_idx']:+.1f}pp)")
+
+    # ── Step 6: Write JSON ────────────────────────────────────────────────
+    output = {
+        "backtest": "H33_teammate_cannibalization",
+        "run_date": str(pd.Timestamp.now().date()),
+        "filters": {
+            "start": getattr(args, "start", None),
+            "end": getattr(args, "end", None),
+            "season": getattr(args, "season", None),
+        },
+        "config": {
+            "TC_MIN_COPLAY_GAMES":    TC_MIN_COPLAY_GAMES,
+            "TC_MIN_CONDITION_GAMES": TC_MIN_CONDITION_GAMES,
+            "TC_MIN_TEAM_PLAYERS":    TC_MIN_TEAM_PLAYERS,
+            "TC_STRONG_THRESHOLD":    TC_STRONG_THRESHOLD,
+            "TC_MODERATE_THRESHOLD":  TC_MODERATE_THRESHOLD,
+        },
+        "teams_analyzed":     len(team_results),
+        "total_pts_pairs":    len(pts_pairs_all),
+        "total_ast_pairs":    len(ast_pairs_all),
+        "population_summary": population,
+        "team_results":       team_results,
+    }
+
+    CANNIBALIZATION_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with open(CANNIBALIZATION_JSON, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"\n[backtest] H33 results written → {CANNIBALIZATION_JSON}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main():
@@ -9397,7 +9839,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence' | 'primary-blowout' | 'playoff-career' | 'confidence-calibration' | 'minutes-elasticity' | 'consistency-index' | 'series-progression'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence' | 'primary-blowout' | 'playoff-career' | 'confidence-calibration' | 'minutes-elasticity' | 'consistency-index' | 'series-progression' | 'teammate-cannibalization'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -9556,6 +9998,11 @@ def main():
     # ── Player consistency index (H32) ───────────────────────────────
     if getattr(args, "mode", None) == "consistency-index":
         run_consistency_index_analysis(player_log, master_df, args)
+        sys.exit(0)
+
+    # ── Teammate scoring cannibalization (H33) ────────────────────────
+    if getattr(args, "mode", None) == "teammate-cannibalization":
+        run_teammate_cannibalization_analysis(player_log, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

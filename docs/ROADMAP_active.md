@@ -410,6 +410,22 @@ Tests whether tier hit rates shift across phases of a 7-game playoff series: ear
 
 ---
 
+### H33 — Teammate Scoring Cannibalization
+**Status: FIRST RUN COMPLETE — results pending Oliver review (4/11)**
+**Mode: `--mode teammate-cannibalization`**
+
+Measures pairwise conditional tier hit rates between teammates. For players A and B on the same team, computes A's hit rate at A's best tier on nights when B hits vs misses B's best tier. Cannibalization index = delta (negative = zero-sum, positive = synergy). Asymmetric (A→B ≠ B→A). Covers PTS and AST. League-wide, no team filter.
+
+**First run (14 teams, 68 PTS pairs, 58 AST pairs):** Population PTS mean cannib index −0.6pp (roughly centered — not a systemic bias). 21 cannibalization pairs / 12 synergy / 35 independent. Strongest cannibalization: −23.1pp (Reaves PTS when LeBron hits). Strongest synergy: +33.8pp (Herro/Bam PTS in MIA).
+
+**Key team patterns:** HOU CANNIBALIZATION_CLUSTER (4 PTS cannib pairs — KD presence suppresses Sengun/Amen/Jabari). LAL CANNIBALIZATION_CLUSTER (Luka/LeBron/Reaves PTS zero-sum). DEN CANNIBALIZATION_CLUSTER (Jokic/Murray/Cameron Johnson). PHI SYNERGY_CLUSTER (Maxey/Embiid PTS cannibalize each other but VJ Edgecombe synergizes with both). MIN fully INDEPENDENT.
+
+**Note:** SAS (Fox/Castle/Wembanyama — the motivating hypothesis) is missing from results due to a pre-existing backtest whitelist loader issue: `load_whitelist()` in `backtest.py` doesn't emit `team_abbr_alt` tuples (SAS→SA, NYK→NY, GSW→GS), so those 10 players are filtered out before analysis runs. Same root cause as the 2026-03-25 whitelist fix in quant/analyst — the backtest loader was never updated. NYK (Brunson/KAT/OG/Bridges) and GSW (Curry) are also missing. Fix is a separate task on the backtest loader, not this mode.
+
+**Downstream consumer (deferred):** Parlay agent same-team PTS co-pick warnings. Potential quant annotation for cannibalization pairs. Playoff matchup dossier enrichment.
+
+---
+
 ## Untested Hypotheses
 (none active — H9 closed 2026-04-09 as annotation-only deployment)
 

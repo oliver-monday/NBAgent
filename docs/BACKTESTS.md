@@ -38,6 +38,51 @@ All findings applied. Full methodology preserved in git history. Key results:
 
 ## Open Hypotheses (Pending Backtest)
 
+### H33 — Teammate Scoring Cannibalization
+
+**Status: FIRST RUN COMPLETE — April 11, 2026 — pending Oliver review**
+**Mode:** `--mode teammate-cannibalization`
+**Output:** `data/backtest_teammate_cannibalization.json`
+**Data:** `data/player_game_log.csv` (3,645 non-DNP player-games, 58 unique players, 14 qualifying teams with 3+ whitelisted co-playing players)
+
+**Question:** For teammates A and B, does A's tier hit rate differ meaningfully on nights when B hits vs misses B's best tier? If yes, same-team PTS parlays may be structurally trapped.
+
+**Motivation:** On balanced scoring teams (SAS has 8 players averaging 10+ PPG), the existing `teammate_correlations` Pearson r on raw stat values answers a different question than the betting-relevant one. Pearson r says "when Fox scores more, does Castle score more?" — but the pick system asks "does Fox hit T15 on nights Castle also hits T15?" This backtest answers the tier-level conditionality question directly.
+
+**Method:** For each team with ≥3 whitelisted players who co-played ≥20 games, compute all directional pairwise conditional hit rates. For players A and B on the same team, split co-played dates by whether B hit B's best tier ("B-hit" dates vs "B-miss" dates). Require ≥8 games in each condition bucket. Compute A's hit rate at A's best tier on B-hit dates vs B-miss dates. Cannibalization index = A_rate_when_B_hits − A_rate_when_B_misses. Negative = zero-sum (A does worse when B has big night). Positive = synergy (A does better when B has big night). **Asymmetric:** A→B and B→A computed separately.
+
+**Constants:** `TC_MIN_COPLAY_GAMES=20` | `TC_MIN_CONDITION_GAMES=8` | `TC_MIN_TEAM_PLAYERS=3` | `TC_STRONG_THRESHOLD=15.0` | `TC_MODERATE_THRESHOLD=8.0`
+
+**First run (14 teams, 68 PTS directional pairs, 58 AST pairs):**
+
+**Population PTS:** Mean cannib index −0.6pp (roughly centered, not a systemic bias). 21 cannibalization / 12 synergy / 35 independent. Strongest: −23.1pp (Reaves PTS when LeBron hits T15), +33.8pp (Herro PTS when Bam hits T15).
+
+**Population AST:** Mean cannib index +0.2pp. 17 cannibalization / 15 synergy / 26 independent. Strongest: −42.9pp (Miles Bridges AST when Coby White hits T2), +28.6pp (Herro AST when Bam hits T2).
+
+**Team patterns:**
+
+| Team | Pattern | PTS Cannib | PTS Synergy | Key Finding |
+|------|---------|-----------|-------------|-------------|
+| HOU | CANNIBALIZATION_CLUSTER | 4 | 0 | KD's presence suppresses Sengun/Amen/Jabari T15. Never parlay HOU PTS. |
+| LAL | CANNIBALIZATION_CLUSTER | 3 | 0 | Luka/LeBron/Reaves PTS is zero-sum. Reaves→LeBron −23.1pp. |
+| DEN | CANNIBALIZATION_CLUSTER | 3 | 0 | Jokic→Cameron Johnson PTS −20.6pp. Murray→Cameron Johnson −13.3pp. |
+| CHA | CANNIBALIZATION_CLUSTER | 3 | 3 | Miller↔Bridges PTS cannibalize; Miller↔LaMelo PTS synergize. |
+| PHI | SYNERGY_CLUSTER | 2 | 4 | Maxey↔Embiid PTS cannibalize (−19/−22pp), but Edgecombe synergizes with both (+10 to +32pp). |
+| BOS | MIXED_CANNIBALIZATION | 2 | 0 | Pritchard↔Derrick White PTS cannibalize (−14/−13pp). Brown-anchored pairs independent. |
+| CLE | MIXED_CANNIBALIZATION | 2 | 0 | Jarrett Allen↔Mitchell PTS cannibalize (−16/−12pp). Mobley independent of both. |
+| MIN | INDEPENDENT | 0 | 0 | Edwards/Randle/McDaniels/Gobert all operate independently. Safe to parlay MIN PTS. |
+| ATL | MIXED_SYNERGY | 0 | 2 | Jalen Johnson synergizes strongly with NAW (+18/+29pp). |
+| MIA | MIXED_SYNERGY | 0 | 2 | Bam↔Herro is the strongest synergy pair in the dataset (+32/+34pp PTS). |
+
+**Known gap:** SAS (Fox/Castle/Wembanyama — the motivating hypothesis), NYK (Brunson/KAT/OG/Bridges), and GSW (Curry) are missing due to a pre-existing issue: `backtest.py` `load_whitelist()` doesn't emit `team_abbr_alt` tuples (SAS→SA, NYK→NY, GSW→GS). The quant/analyst `load_whitelist()` was fixed in March 2025; the backtest version was not. Fix is a separate one-line task on `load_whitelist()` in `backtest.py`, after which H33 can be re-run to cover those teams.
+
+**Downstream consumers (deferred):**
+1. Parlay agent: inject cannibalization pairs as same-team PTS co-pick warnings (never parlay HOU/LAL/DEN PTS stacks).
+2. Quant annotation: `CANNIBALIZATION: [partner] (idx=−X.Xpp)` on player stat lines, visible to Analyst for confidence reasoning.
+3. Playoff matchup dossier: enrich per-series context with team cannibalization/synergy patterns.
+
+---
+
 ### H31 — Playoff Series Progression
 
 **Status: FIRST RUN COMPLETE — April 11, 2026**
@@ -954,5 +999,6 @@ Role breakdown (underdog_10plus): primary ball-handler 80.0% (n=10), secondary 7
 | In-game blowout regime (H19)       | **MIXED** (2026-03-22)                 | Favored secondary: ELEVATED not suppressed (PTS lift=1.083, 3PM lift=1.103). Underdog secondary AST: COLLAPSE (lift=0.713, n=59). Underdog REB secondary: COLLAPSE (lift=0.858, n=60). | ✅ Finding 1 applied (2026-03-22): secondary scorer skip narrowed to spread_abs ≥ 15 in `build_pick_prompt()`. ✅ Finding 2 applied (2026-03-22): 3PM blowout trend-down hard skip (spread_abs 8–18) retired; trend=down step-down applies instead. spread_abs ≥ 19 unconditional skip unchanged. Underdog AST collapse flagged for annotation-only rule. |
 | Losing-side AST suppression (H20) | **NO_SIGNAL** (2026-03-22)             | underdog_10plus 75.9% vs baseline 74.1% (lift=1.024, n=54); no suppression detected                                                   | ❌ Closed — no rule change; rerun with multi-season data if archetype persists in audit |
 | Elite opposing rebounder (H14)    | **NO_SIGNAL** (2026-03-22, n=1,709)   | thresh=10.0: elite_present 70.3% vs no_elite 69.8% (delta=−0.5pp). H14b team REB flat (70.5% vs 70.1%). No suppression at any threshold (8/10/12). | ❌ CLOSED — no rule change. Sengun vs. Jokic was variance. |
+| Teammate cannibalization (H33)    | **FIRST RUN COMPLETE** (2026-04-11, 14 teams, 68 PTS pairs) | Population PTS mean −0.6pp (centered). HOU/LAL/DEN CANNIBALIZATION_CLUSTER. PHI SYNERGY_CLUSTER. Strongest cannib −23.1pp (Reaves→LeBron PTS), strongest synergy +33.8pp (Herro→Bam PTS). SAS/NYK/GSW missing (backtest whitelist loader issue). | ⏳ Pending Oliver review. Downstream: parlay co-pick warnings, quant annotation, playoff dossier. |
 
 
