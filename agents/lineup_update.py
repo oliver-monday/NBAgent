@@ -341,18 +341,32 @@ def build_opportunity_suggestions(
         return []
 
     # Build set of players who are OUT/DOUBTFUL/OFS — never surface these as
-    # opportunities. Keyed by name_lower (trimmed). A player who is themselves
-    # unavailable cannot benefit from anyone else's absence.
+    # opportunities. Built from two sources for robust matching:
+    #
+    # Source 1: voided picks (full names, confirmed OUT by lineup_watch)
+    # Source 2: raw injury JSON (abbreviated Rotowire names, broader coverage)
+    #
+    # Both are normalized to lowercase for comparison against player_stats names.
     excluded_players: set[str] = set()
+
+    # Source 1: voided picks — full names, no format mismatch
+    for p in today_picks:
+        if p.get("voided", False):
+            excluded_players.add(p.get("player_name", "").strip().lower())
+
+    # Source 2: raw injuries — use "name" field (Rotowire format), extract
+    # last name for fuzzy matching since Rotowire uses "F. LastName" format
     if injuries:
         for key, val in injuries.items():
             if key == "fetched_at" or not isinstance(val, list):
                 continue
             for row in val:
-                if isinstance(row, dict) and row.get("player_name"):
-                    status = (row.get("status") or "").upper()
-                    if status in ("OUT", "DOUBTFUL", "OFS"):
-                        excluded_players.add(row["player_name"].strip().lower())
+                if not isinstance(row, dict):
+                    continue
+                raw_name = (row.get("name") or row.get("player_name") or "").strip()
+                status = (row.get("status") or "").upper()
+                if status in ("OUT", "DOUBTFUL", "OFS") and raw_name:
+                    excluded_players.add(raw_name.lower())
 
     # Load today's FanDuel market availability — used to annotate each tier
     # entry with market implied probability so users can see edge at a glance.
