@@ -409,13 +409,13 @@ def parse_scoreboard(date_obj: dt.date, data: Dict[str, Any]) -> List[Dict[str, 
             "season_type": safe_int((ev.get("season") or {}).get("type")),
 
             "home_team_name": home_info["name"],
-            "home_team_abbrev": home_info["abbrev"],
+            "home_team_abbrev": to_roto_code(home_info["abbrev"]),
             "home_score": home_info["score"],
             "home_ml": None,        # will be filled later for today's pre-game odds
             "home_spread": None,    # will be filled later for today's pre-game odds
 
             "away_team_name": away_info["name"],
-            "away_team_abbrev": away_info["abbrev"],
+            "away_team_abbrev": to_roto_code(away_info["abbrev"]),
             "away_score": away_info["score"],
             "away_ml": None,        # will be filled later for today's pre-game odds
             "away_spread": None,    # will be filled later for today's pre-game odds

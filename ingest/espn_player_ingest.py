@@ -126,6 +126,19 @@ def minutes_to_decimal(min_raw: str) -> float:
     except ValueError:
         return 0.0
 
+# ESPN → standard NBA team abbreviation normalization
+# Applied at write time so all downstream consumers see consistent abbrevs.
+_ABBR_NORM = {
+    "GS": "GSW", "SA": "SAS", "NO": "NOP",
+    "NY": "NYK", "UTAH": "UTA", "WSH": "WAS",
+    "PHO": "PHX",
+}
+
+def _norm_team(abbr: str) -> str:
+    """Normalize ESPN team abbreviation to standard NBA abbreviation."""
+    a = str(abbr).upper().strip()
+    return _ABBR_NORM.get(a, a)
+
 def build_session() -> requests.Session:
     """Requests session with retries for transient ESPN failures."""
     session = requests.Session()
@@ -202,7 +215,7 @@ def infer_game_meta_from_summary(summary_json: Dict[str, Any]) -> Tuple[dt.date,
             continue
         team_map[tid] = {
             "team_id": tid,
-            "abbrev": team.get("abbreviation") or team.get("shortDisplayName") or "",
+            "abbrev": _norm_team(team.get("abbreviation") or team.get("shortDisplayName") or ""),
             "homeAway": c.get("homeAway") or "",
             "score": c.get("score"),
         }
@@ -221,7 +234,7 @@ def parse_boxscore_players(summary_json: Dict[str, Any]) -> List[Dict[str, Any]]
     for team_block in players_blocks:
         team = team_block.get("team") or {}
         team_id = str(team.get("id") or "")
-        team_abbrev = team.get("abbreviation") or team.get("shortDisplayName") or ""
+        team_abbrev = _norm_team(team.get("abbreviation") or team.get("shortDisplayName") or "")
         stats_groups = team_block.get("statistics") or []
 
         for grp in stats_groups:
@@ -416,7 +429,7 @@ def parse_boxscore_teams(summary_json: Dict[str, Any]) -> List[Dict[str, Any]]:
     for team_block in teams_blocks:
         team = team_block.get("team") or {}
         team_id = str(team.get("id") or "")
-        team_abbrev = team.get("abbreviation") or team.get("shortDisplayName") or ""
+        team_abbrev = _norm_team(team.get("abbreviation") or team.get("shortDisplayName") or "")
         stats_list = team_block.get("statistics") or team_block.get("stats") or []
         if not stats_list:
             continue
