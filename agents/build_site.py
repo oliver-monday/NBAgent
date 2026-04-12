@@ -2822,7 +2822,7 @@ renderParlays();
 function renderBuilder() {{
   const container = document.getElementById('parlay-builder-container');
   if (!container) return;
-  const picks = (DATA.today_picks || []).filter(p => !p.voided && p.result == null);
+  const picks = (DATA.today_picks || []).map((p, i) => ({{ ...p, _origIdx: i }})).filter(p => !p.voided && p.result == null);
   if (!picks.length) {{ container.innerHTML = ''; return; }}
 
   // Group picks by game matchup
@@ -2833,7 +2833,7 @@ function renderBuilder() {{
     const gameKey = [team, opp].sort().join('_');
     const gt = p.game_time || '';
     if (!games[gameKey]) games[gameKey] = {{ teams: [team, opp].sort(), time: gt, picks: [] }};
-    games[gameKey].picks.push({{ ...p, _idx: i }});
+    games[gameKey].picks.push({{ ...p, _idx: p._origIdx }});
   }});
 
   // State: set of selected pick indices
