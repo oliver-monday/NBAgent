@@ -2966,7 +2966,8 @@ function renderBuilder() {{
         // Same team: check correlation
         if (aTeam === bTeam) {{
           const corrKey = aName + '|' + bName + '|' + aPt + '_' + bPt;
-          const ce = corr[corrKey];
+          const corrKeyRev = aName + '|' + bName + '|' + bPt + '_' + aPt;
+          const ce = corr[corrKey] || corr[corrKeyRev];
           if (ce && ce.tag && ce.tag !== 'independent' && ce.tag !== 'insufficient_data') {{
             const isPos = ['feeder_target', 'volume_game', 'pace_beneficiary', 'positively_correlated', 'cannibalization_synergy'].includes(ce.tag);
             const icon = isPos ? '⊕' : '⊖';
@@ -3048,7 +3049,7 @@ function copyBuilder() {{
     const edgeStr = br.calibrated_edge_pct != null
       ? ' (edge ' + (br.calibrated_edge_pct > 0 ? '+' : '') + br.calibrated_edge_pct.toFixed(1) + 'pp)'
       : '';
-    return leg.player_name + ' ' + leg.prop_type + ' OVER ' + leg.pick_value + ' (' + leg.confidence_pct + '%)' + edgeStr;
+    return leg.player_name + ' ' + leg.pick_value + ' ' + leg.prop_type;
   }});
 
   let oddsInt = 0;
