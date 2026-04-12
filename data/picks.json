@@ -325,11 +325,13 @@
     "result": "HIT",
     "actual_value": 18.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "triggered_by": [
+        "Hugo Gonzalez (BOS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -390,11 +392,13 @@
     "result": "MISS",
     "actual_value": 4.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "triggered_by": [
+        "Hugo Gonzalez (BOS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -414,11 +418,13 @@
     "result": "HIT",
     "actual_value": 18.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "triggered_by": [
+        "Hugo Gonzalez (BOS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -455,11 +461,13 @@
     "result": "HIT",
     "actual_value": 20.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "triggered_by": [
+        "Hugo Gonzalez (BOS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -817,10 +825,10 @@
         "Pelle Larsson (MIA) removed from projected starters",
         "Jalen Wilson (BKN) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 86,
-      "revised_reasoning": "Okongwu OUT removes ATL's rim anchor; Bam faces weakened frontcourt with Bradley/Koloko, easier boards."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Okongwu (rim_anchor) out; Bam competes against Tony Bradley and Christian Koloko \u2014 significant frontcourt downgrade."
     }
   },
   {
@@ -841,10 +849,10 @@
     "actual_value": 14.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starters absent lack profiles; soft BKN defense already baked in; DNP risk unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Wilson out weakens BKN defense; Ingram trend=up vs soft defense amplifies upside slightly."
     }
   },
   {
@@ -882,10 +890,10 @@
     "actual_value": 2.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN changes don't alter Ingram AST structure; depleted opponent already factored in morning pick."
+      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
     }
   },
   {
@@ -903,7 +911,14 @@
     "opp_defense_rating": "tough",
     "reasoning": "Elite offensive load-bearer; SAS elite rim protection hurts paint points but perimeter scoring holds.",
     "result": "HIT",
-    "actual_value": 26.0
+    "actual_value": 26.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jarace Walker out removes IND defensive versatility; Cunningham gets easier driving lanes vs IND frontcourt."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1539,14 +1554,11 @@
     "result": "HIT",
     "actual_value": 16.0,
     "lineup_update": {
-      "triggered_by": [
-        "Naji Marshall (DAL) removed from projected starters",
-        "P.J. Washington (DAL) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -1679,10 +1691,10 @@
     "actual_value": 16.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -1703,10 +1715,10 @@
     "actual_value": 2.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -1727,10 +1739,10 @@
     "actual_value": 3.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts don't directly affect Barnes AST; volatile tag, no meaningful revision warranted."
+      "revised_reasoning": "Wilson absence doesn't meaningfully change AST outlook; VOLATILE tag limits revision."
     }
   },
   {
@@ -1902,10 +1914,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -1928,10 +1940,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -1980,10 +1992,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -2040,10 +2052,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -2433,10 +2445,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
       "revised_confidence_pct": 84,
-      "revised_reasoning": "ATL missing Daniels and Johnson collapses defense; Bam as hub benefits from scrambled ATL rotations."
+      "revised_reasoning": "ATL devastated by absences; Bam as playmaking hub faces weak defenders, more broken possessions and kick-outs."
     }
   },
   {
@@ -2767,7 +2779,16 @@
     "tier_walk": "PTS: 25\u21923/10 20\u21926/10 15\u21929/10\u2713",
     "reasoning": "9/10 at T15, blowout_games 91% confirms floor holds; BLOWOUT_RISK caps at 80%.",
     "result": "NO_DATA",
-    "actual_value": null
+    "actual_value": null,
+    "lineup_update": {
+      "triggered_by": [
+        "Jalen Wilson (BKN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jarace Walker out removes IND defensive versatility; Cunningham gets easier driving lanes vs IND frontcourt."
+    }
   },
   {
     "date": "2026-03-07",
@@ -2887,10 +2908,10 @@
     "actual_value": 25.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -3494,10 +3515,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Okongwu and Jalen Johnson OUT removes ATL rim anchor and primary creator; Bam gets easier paint access."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "ATL missing Okongwu, Johnson, McCollum, Daniels; Bam gets easier paint access and volume vs skeleton roster."
     }
   },
   {
@@ -3545,7 +3566,16 @@
     "iron_floor": false,
     "reasoning": "B2B rate 78% at T15; Cunningham's 30min floor and confirmed starter role protect this prop.",
     "result": "HIT",
-    "actual_value": 26.0
+    "actual_value": 26.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Pelle Larsson (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jarace Walker out removes IND defensive versatility; Cunningham gets easier driving lanes vs IND frontcourt."
+    }
   },
   {
     "date": "2026-03-08",
@@ -3734,10 +3764,10 @@
     "actual_value": 18.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-10T15:20:29.607439-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Giddey, Okoro, Yabusele all out for CHI weakens defense substantially; Bane faces easier scoring environment."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Hugo Gonzalez out reduces BOS perimeter depth; Bane gets slightly easier looks from the wing."
     }
   },
   {
@@ -3786,10 +3816,10 @@
     "actual_value": 33.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -3812,10 +3842,10 @@
     "actual_value": 11.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starters absent lack profiles; soft BKN defense already baked in; DNP risk unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Wilson out weakens BKN defense; Ingram trend=up vs soft defense amplifies upside slightly."
     }
   },
   {
@@ -3911,10 +3941,10 @@
     "actual_value": 11.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -3937,10 +3967,10 @@
     "actual_value": 3.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -3989,10 +4019,10 @@
     "actual_value": 22.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -4015,10 +4045,10 @@
     "actual_value": 4.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -5167,10 +5197,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Okongwu and Jalen Johnson OUT removes ATL rim anchor and primary creator; Bam gets easier paint access."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "ATL missing Okongwu, Johnson, McCollum, Daniels; Bam gets easier paint access and volume vs skeleton roster."
     }
   },
   {
@@ -5408,10 +5438,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -5459,10 +5489,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -5488,10 +5518,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -5517,10 +5547,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -5546,10 +5576,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -5769,10 +5799,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -5798,10 +5828,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starters absent lack profiles; soft BKN defense already baked in; DNP risk unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Wilson out weakens BKN defense; Ingram trend=up vs soft defense amplifies upside slightly."
     }
   },
   {
@@ -5827,10 +5857,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN changes don't alter Ingram AST structure; depleted opponent already factored in morning pick."
+      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
     }
   },
   {
@@ -6126,10 +6156,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 91,
-      "revised_reasoning": "Gobert OUT removes rim anchor and help-side deterrence; Bane's consistent 3PM tag plus trend=up amplified significantly."
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Gonzalez out weakens BOS perimeter rotation; Bane trend=up 3PM shooter benefits from softer coverage."
     }
   },
   {
@@ -6685,10 +6715,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -6714,10 +6744,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -6743,10 +6773,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -6794,10 +6824,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -6895,13 +6925,11 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -7011,10 +7039,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -7135,10 +7163,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 86,
-      "revised_reasoning": "Okongwu OUT removes ATL's rim anchor; Bam faces weakened frontcourt with Bradley/Koloko, easier boards."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Okongwu (rim_anchor) out; Bam competes against Tony Bradley and Christian Koloko \u2014 significant frontcourt downgrade."
     }
   },
   {
@@ -7471,10 +7499,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 91,
-      "revised_reasoning": "Gobert OUT removes rim anchor and help-side deterrence; Bane's consistent 3PM tag plus trend=up amplified significantly."
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Gonzalez out weakens BOS perimeter rotation; Bane trend=up 3PM shooter benefits from softer coverage."
     }
   },
   {
@@ -8116,10 +8144,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -8514,10 +8542,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN changes don't alter Ingram AST structure; depleted opponent already factored in morning pick."
+      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
     }
   },
   {
@@ -9050,10 +9078,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -9080,10 +9108,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts don't directly affect Barnes AST; volatile tag, no meaningful revision warranted."
+      "revised_reasoning": "Wilson absence doesn't meaningfully change AST outlook; VOLATILE tag limits revision."
     }
   },
   {
@@ -9229,10 +9257,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -9259,10 +9287,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -9420,11 +9448,13 @@
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "triggered_by": [
+        "Pelle Larsson (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 91,
-      "revised_reasoning": "Gobert OUT removes rim anchor and help-side deterrence; Bane's consistent 3PM tag plus trend=up amplified significantly."
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Gonzalez out weakens BOS perimeter rotation; Bane trend=up 3PM shooter benefits from softer coverage."
     }
   },
   {
@@ -9724,10 +9754,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -9754,10 +9784,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -9784,10 +9814,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -9985,11 +10015,13 @@
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [
+        "Pelle Larsson (MIA) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -10391,10 +10423,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -10421,10 +10453,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -10449,7 +10481,14 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": true,
-    "void_reason": "manual_void: PTS pick generated in error (over-constrained rule cascade produced egregiously low T10 tier; voided pre-result to exclude from hit rate calculations)"
+    "void_reason": "manual_void: PTS pick generated in error (over-constrained rule cascade produced egregiously low T10 tier; voided pre-result to exclude from hit rate calculations)",
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jarace Walker out removes IND defensive versatility; Cunningham gets easier driving lanes vs IND frontcourt."
+    }
   },
   {
     "date": "2026-03-15",
@@ -10539,10 +10578,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN changes don't alter Ingram AST structure; depleted opponent already factored in morning pick."
+      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
     }
   },
   {
@@ -11288,12 +11327,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Kawhi Leonard (LAC) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Kawhi Leonard (LAC) removed from projected starters"
       ],
-      "updated_at": "2026-03-16T17:01:04.021316-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Kawhi OUT as high-usage scorer forces Garland into primary offensive role; more shot volume lifts already-perfect hit rate."
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Kawhi out removes LAC primary scorer; Garland usage likely rises as secondary creator steps up."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -11360,12 +11399,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Kawhi Leonard (LAC) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Kawhi Leonard (LAC) removed from projected starters"
       ],
-      "updated_at": "2026-03-16T17:01:04.021316-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Kawhi OUT as perimeter threat means defense focuses less on Garland off-ball; more open 3PM looks on already-perfect rate."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Kawhi out means Garland gets more offensive volume and open looks; trend=down partially offset."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -11957,11 +11996,17 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [
+        "Onyeka Okongwu (ATL) removed from projected starters",
+        "Jalen Johnson (ATL) removed from projected starters",
+        "Nickeil Alexander-Walker (ATL) removed from projected starters",
+        "Dyson Daniels (ATL) removed from projected starters",
+        "CJ McCollum (ATL) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -12015,10 +12060,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -12047,10 +12092,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -12107,7 +12152,14 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": true,
-    "void_reason": "Q1 injury exit: back spasms after hard fall, ruled out for remainder (5 min played) \u2014 voided post-hoc per sportsbook standard for mid-game injury exits"
+    "void_reason": "Q1 injury exit: back spasms after hard fall, ruled out for remainder (5 min played) \u2014 voided post-hoc per sportsbook standard for mid-game injury exits",
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jarace Walker out removes IND defensive versatility; Cunningham gets easier driving lanes vs IND frontcourt."
+    }
   },
   {
     "date": "2026-03-17",
@@ -12777,10 +12829,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -12809,10 +12861,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -12841,10 +12893,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -12873,10 +12925,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -12979,10 +13031,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -13792,10 +13844,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -13824,10 +13876,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -13993,10 +14045,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -14025,10 +14077,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-10T15:20:29.607439-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Giddey, Okoro, Yabusele all out for CHI weakens defense substantially; Bane faces easier scoring environment."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Hugo Gonzalez out reduces BOS perimeter depth; Bane gets slightly easier looks from the wing."
     }
   },
   {
@@ -14089,10 +14141,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 91,
-      "revised_reasoning": "Gobert OUT removes rim anchor and help-side deterrence; Bane's consistent 3PM tag plus trend=up amplified significantly."
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Gonzalez out weakens BOS perimeter rotation; Bane trend=up 3PM shooter benefits from softer coverage."
     }
   },
   {
@@ -14148,10 +14200,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -14180,10 +14232,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -14212,10 +14264,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -14248,10 +14300,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -14863,10 +14915,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -14895,10 +14947,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -15285,13 +15337,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Marcus Smart (LAL) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -15642,10 +15692,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -15674,10 +15724,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -15799,10 +15849,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN changes don't alter Ingram AST structure; depleted opponent already factored in morning pick."
+      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
     }
   },
   {
@@ -16011,11 +16061,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -16138,10 +16190,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -16170,10 +16222,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -16204,10 +16256,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -16238,10 +16290,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -16297,10 +16349,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -16357,10 +16409,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -16389,10 +16441,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -16420,13 +16472,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -16514,10 +16564,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 91,
-      "revised_reasoning": "Gobert OUT removes rim anchor and help-side deterrence; Bane's consistent 3PM tag plus trend=up amplified significantly."
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Gonzalez out weakens BOS perimeter rotation; Bane trend=up 3PM shooter benefits from softer coverage."
     }
   },
   {
@@ -16973,11 +17023,13 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "triggered_by": [
+        "Kawhi Leonard (LAC) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -17006,11 +17058,13 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "triggered_by": [
+        "Kawhi Leonard (LAC) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -17039,11 +17093,13 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "triggered_by": [
+        "Kawhi Leonard (LAC) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts don't directly affect Barnes AST; volatile tag, no meaningful revision warranted."
+      "revised_reasoning": "Wilson absence doesn't meaningfully change AST outlook; VOLATILE tag limits revision."
     }
   },
   {
@@ -17472,10 +17528,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     }
   },
   {
@@ -17598,10 +17654,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -17633,10 +17689,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -17694,10 +17750,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -17729,10 +17785,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -17764,10 +17820,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -18109,10 +18165,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -18144,10 +18200,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -18553,10 +18609,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -18586,10 +18642,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -19035,12 +19091,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters",
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Okongwu and Jalen Johnson OUT removes ATL rim anchor and primary creator; Bam gets easier paint access."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "ATL missing Okongwu, Johnson, McCollum, Daniels; Bam gets easier paint access and volume vs skeleton roster."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -19072,12 +19129,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters",
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
       "revised_confidence_pct": 84,
-      "revised_reasoning": "ATL missing Daniels and Johnson collapses defense; Bam as hub benefits from scrambled ATL rotations."
+      "revised_reasoning": "ATL devastated by absences; Bam as playmaking hub faces weak defenders, more broken possessions and kick-outs."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -20092,13 +20150,11 @@
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Mark Williams (PHX) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T15:20:04.982996-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Mark Williams OUT removes PHX rim anchor; Banchero gets easier paint access, higher FG%, more volume driving."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -20128,10 +20184,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-10T15:20:29.607439-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Giddey, Okoro, Yabusele all out for CHI weakens defense substantially; Bane faces easier scoring environment."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Hugo Gonzalez out reduces BOS perimeter depth; Bane gets slightly easier looks from the wing."
     },
     "market_line": 14.5,
     "market_implied_prob": 83.33,
@@ -20887,10 +20943,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -20927,10 +20983,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -20996,10 +21052,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -21034,10 +21090,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -21069,11 +21125,13 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -21109,11 +21167,13 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -21149,11 +21209,13 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -21187,11 +21249,13 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -21225,11 +21289,13 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -21265,11 +21331,13 @@
     "injury_check_time": "2026-04-03T22:02:12.523999-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -21306,10 +21374,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -21341,10 +21409,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts don't directly affect Barnes AST; volatile tag, no meaningful revision warranted."
+      "revised_reasoning": "Wilson absence doesn't meaningfully change AST outlook; VOLATILE tag limits revision."
     }
   },
   {
@@ -21422,10 +21490,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starters absent lack profiles; soft BKN defense already baked in; DNP risk unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Wilson out weakens BKN defense; Ingram trend=up vs soft defense amplifies upside slightly."
     }
   },
   {
@@ -22067,10 +22135,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -22105,10 +22173,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -22178,10 +22246,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -22216,10 +22284,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -22254,10 +22322,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -22292,10 +22360,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -23335,10 +23403,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -23375,10 +23443,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -23415,10 +23483,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts don't directly affect Barnes AST; volatile tag, no meaningful revision warranted."
+      "revised_reasoning": "Wilson absence doesn't meaningfully change AST outlook; VOLATILE tag limits revision."
     }
   },
   {
@@ -23658,13 +23726,11 @@
     "injury_check_time": "2026-04-08T21:59:15.092650-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Julius Randle (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-10T15:20:29.607439-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Giddey, Okoro, Yabusele all out for CHI weakens defense substantially; Bane faces easier scoring environment."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Hugo Gonzalez out reduces BOS perimeter depth; Bane gets slightly easier looks from the wing."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -23756,16 +23822,11 @@
     "injury_check_time": "2026-04-08T21:59:15.092650-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters",
-        "Rudy Gobert (MIN) removed from projected starters",
-        "Anthony Edwards (MIN) removed from projected starters",
-        "Julius Randle (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-08T15:24:53.381389-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 91,
-      "revised_reasoning": "Gobert OUT removes rim anchor and help-side deterrence; Bane's consistent 3PM tag plus trend=up amplified significantly."
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Gonzalez out weakens BOS perimeter rotation; Bane trend=up 3PM shooter benefits from softer coverage."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -24609,10 +24670,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -24657,10 +24718,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -24705,10 +24766,10 @@
       "triggered_by": [
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts don't directly affect Barnes AST; volatile tag, no meaningful revision warranted."
+      "revised_reasoning": "Wilson absence doesn't meaningfully change AST outlook; VOLATILE tag limits revision."
     }
   },
   {
@@ -24858,10 +24919,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     },
     "voided": false,
     "human_verdict": "keep",
@@ -24909,10 +24970,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     },
     "voided": false,
     "human_verdict": "keep",
@@ -25070,10 +25131,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starters absent lack profiles; soft BKN defense already baked in; DNP risk unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Wilson out weakens BKN defense; Ingram trend=up vs soft defense amplifies upside slightly."
     }
   },
   {
@@ -25121,10 +25182,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN changes don't alter Ingram AST structure; depleted opponent already factored in morning pick."
+      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
     }
   },
   {
@@ -25417,15 +25478,11 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T21:34:57.155051-07:00",
     "lineup_update": {
-      "triggered_by": [
-        "Isaac Okoro (CHI) removed from projected starters",
-        "Josh Giddey (CHI) removed from projected starters",
-        "Guerschon Yabusele (CHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-10T16:08:11.794195-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Multiple CHI starters OUT weakens defensive structure; soft CHI defense now even more porous for Bane scoring."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Hugo Gonzalez out reduces BOS perimeter depth; Bane gets slightly easier looks from the wing."
     },
     "voided": false,
     "human_verdict": "trim",
@@ -25703,10 +25760,10 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -25752,10 +25809,10 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -25801,10 +25858,10 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -25850,10 +25907,10 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -25899,10 +25956,10 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -25948,10 +26005,10 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT negligible defensive impact; Bridges 9-game streak and T10 floor structurally intact."
+      "revised_reasoning": "Shamet is a role player; Bridges PTS not meaningfully affected by his absence."
     }
   },
   {
@@ -26486,10 +26543,10 @@
       "triggered_by": [
         "Jalen Wilson (BKN) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starter changes minor; Wilson still projected 26min; no meaningful impact on Barnes PTS floor."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jalen Wilson out reduces BKN defensive cohesion; Barnes iron_floor PTS gets slight boost vs depleted roster."
     }
   },
   {
@@ -26534,10 +26591,10 @@
       "triggered_by": [
         "Jalen Wilson (BKN) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN frontcourt changes minimal; no rim anchor profile provided; iron_floor REB intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "BKN frontcourt weakened with Wilson out; Barnes competes against softer rebounding group."
     }
   },
   {
@@ -26582,10 +26639,10 @@
       "triggered_by": [
         "Jalen Wilson (BKN) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts don't directly affect Barnes AST; volatile tag, no meaningful revision warranted."
+      "revised_reasoning": "Wilson absence doesn't meaningfully change AST outlook; VOLATILE tag limits revision."
     }
   },
   {
@@ -26630,10 +26687,10 @@
       "triggered_by": [
         "Jalen Wilson (BKN) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN starters absent lack profiles; soft BKN defense already baked in; DNP risk unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Wilson out weakens BKN defense; Ingram trend=up vs soft defense amplifies upside slightly."
     }
   },
   {
@@ -26678,10 +26735,10 @@
       "triggered_by": [
         "Jalen Wilson (BKN) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN changes don't alter Ingram AST structure; depleted opponent already factored in morning pick."
+      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
     }
   },
   {
@@ -26726,10 +26783,10 @@
       "triggered_by": [
         "Jalen Wilson (BKN) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "BKN lineup shifts minor; no defensive anchor removed; Quickley T10 floor structurally intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Wilson out softens BKN perimeter defense; Quickley 100% blowout rate gets modest boost."
     }
   },
   {
@@ -26774,10 +26831,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet is a role player; his absence negligibly affects NYK defense; LaMelo pick unchanged."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet out reduces NYK perimeter pressure; LaMelo trend=up vs softer guard defense."
     }
   },
   {
@@ -26822,10 +26879,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minor; no perimeter defensive anchor lost; LaMelo AST floor vs depleted NYK intact."
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Shamet absence softens NYK ball-pressure defense; LaMelo primary creator benefits with more open looks."
     }
   },
   {
@@ -26870,10 +26927,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet role-player absence negligible; NYK defensive structure largely intact for Knueppel PTS."
+      "revised_reasoning": "Shamet is a role player; Knueppel's PTS pick not directly impacted by his absence."
     }
   },
   {
@@ -26918,10 +26975,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT minimal AST impact on Knueppel; no direct connection warranting revision."
+      "revised_reasoning": "Shamet out doesn't meaningfully shift Knueppel AST distribution; unchanged."
     }
   },
   {
@@ -26966,10 +27023,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet absence minor; VOLATILE tag limits revision; NYK core defense unchanged for Miller."
+      "revised_reasoning": "Shamet is a role player; VOLATILE tag limits revision for Miller PTS."
     }
   },
   {
@@ -27014,10 +27071,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 70,
-      "revised_reasoning": "Shamet role-player; trend=down penalty intact; no meaningful connection to Miller AST revision."
+      "revised_reasoning": "Shamet absence has no direct impact on Miller AST; iron_floor holds."
     }
   },
   {
@@ -27062,10 +27119,10 @@
       "triggered_by": [
         "Landry Shamet (NYK) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Shamet OUT negligible defensive impact; Bridges 9-game streak and T10 floor structurally intact."
+      "revised_reasoning": "Shamet is a role player; Bridges PTS not meaningfully affected by his absence."
     }
   },
   {
@@ -27188,15 +27245,15 @@
       "triggered_by": [
         "Onyeka Okongwu (ATL) removed from projected starters",
         "Jalen Johnson (ATL) removed from projected starters",
-        "Dyson Daniels (ATL) removed from projected starters",
         "Nickeil Alexander-Walker (ATL) removed from projected starters",
+        "Dyson Daniels (ATL) removed from projected starters",
         "CJ McCollum (ATL) removed from projected starters",
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Okongwu and Jalen Johnson OUT removes ATL rim anchor and primary creator; Bam gets easier paint access."
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "ATL missing Okongwu, Johnson, McCollum, Daniels; Bam gets easier paint access and volume vs skeleton roster."
     }
   },
   {
@@ -27241,15 +27298,15 @@
       "triggered_by": [
         "Onyeka Okongwu (ATL) removed from projected starters",
         "Jalen Johnson (ATL) removed from projected starters",
-        "Dyson Daniels (ATL) removed from projected starters",
         "Nickeil Alexander-Walker (ATL) removed from projected starters",
+        "Dyson Daniels (ATL) removed from projected starters",
         "CJ McCollum (ATL) removed from projected starters",
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
       "revised_confidence_pct": 84,
-      "revised_reasoning": "ATL missing Daniels and Johnson collapses defense; Bam as hub benefits from scrambled ATL rotations."
+      "revised_reasoning": "ATL devastated by absences; Bam as playmaking hub faces weak defenders, more broken possessions and kick-outs."
     }
   },
   {
@@ -27294,15 +27351,15 @@
       "triggered_by": [
         "Onyeka Okongwu (ATL) removed from projected starters",
         "Jalen Johnson (ATL) removed from projected starters",
-        "Dyson Daniels (ATL) removed from projected starters",
         "Nickeil Alexander-Walker (ATL) removed from projected starters",
+        "Dyson Daniels (ATL) removed from projected starters",
         "CJ McCollum (ATL) removed from projected starters",
         "Pelle Larsson (MIA) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:17:30.603278-07:00",
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
       "direction": "up",
-      "revised_confidence_pct": 86,
-      "revised_reasoning": "Okongwu OUT removes ATL's rim anchor; Bam faces weakened frontcourt with Bradley/Koloko, easier boards."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Okongwu (rim_anchor) out; Bam competes against Tony Bradley and Christian Koloko \u2014 significant frontcourt downgrade."
     }
   },
   {
@@ -27547,7 +27604,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-12T13:52:55.268311-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Kawhi Leonard (LAC) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Kawhi out removes LAC primary scorer; Garland usage likely rises as secondary creator steps up."
+    }
   },
   {
     "date": "2026-04-12",
@@ -27586,7 +27652,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-12T13:52:55.268311-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Kawhi Leonard (LAC) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Kawhi out means Garland gets more offensive volume and open looks; trend=down partially offset."
+    }
   },
   {
     "date": "2026-04-12",
@@ -27703,7 +27778,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-12T13:52:55.268311-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Hugo Gonzalez (BOS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Hugo Gonzalez out reduces BOS perimeter depth; Bane gets slightly easier looks from the wing."
+    }
   },
   {
     "date": "2026-04-12",
@@ -27742,7 +27826,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-12T13:52:55.268311-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Hugo Gonzalez (BOS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Gonzalez out weakens BOS perimeter rotation; Bane trend=up 3PM shooter benefits from softer coverage."
+    }
   },
   {
     "date": "2026-04-12",
@@ -27781,7 +27874,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-12T13:52:55.268311-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Hugo Gonzalez (BOS) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gonzalez out reduces BOS defensive depth; Banchero primary scorer faces slightly easier defensive looks."
+    }
   },
   {
     "date": "2026-04-12",
@@ -27820,6 +27922,15 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-12T13:52:55.268311-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jarace Walker (IND) removed from projected starters"
+      ],
+      "updated_at": "2026-04-12T13:52:56.784560-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Jarace Walker out removes IND defensive versatility; Cunningham gets easier driving lanes vs IND frontcourt."
+    }
   }
 ]
