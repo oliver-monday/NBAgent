@@ -10,6 +10,7 @@ Updated: 2026-04-11
 - **Whitelist maintenance** — deactivate non-playoff teams once seeds are set (April 12–13). East: MIL, CHI, BKN, IND, WAS. West: NOP, MEM, DAL, SAC, UTA. Reactivate if play-in surprises occur.
 - **Season end handling** — workflows need to be paused/disabled in the off-season (roughly late June). Simplest approach: disable the cron schedules in each `.yml`, re-enable in October.
 - **DST reversal (November 2026)** — all UTC offsets in `injuries.yml` and `odds_pretip.yml` must be incremented by 1 when clocks fall back (PDT → PST, UTC-7 → UTC-8). Add to October re-enable checklist.
+- ✅ **Node.js 20→24 migration (4/12):** `checkout@v4→@v6`, `setup-python@v5→@v6` across all 8 workflows. `upload-pages-artifact@v3` and `deploy-pages@v4` unchanged (no Node 24 versions released upstream yet — residual warning expected until upstream updates).
 
 ### Odds Integration
 **Multi-phase implementation. Phases 1–1.9 complete. Pre-tip sweep + CLV live. Phase 2 offseason.**
@@ -189,7 +190,7 @@ Trim picks (including VOLATILE 3PM with iron_floor) hit at 92.9% vs 89.0% for ke
 The 76–80% band carries the most picks and has the highest overperformance gap. If this band starts underperforming during playoffs (different game dynamics), it would be the first sign of calibration drift. Track per-round.
 
 #### W9 — Post-Game Reporter False Positives
-**Status: OPEN — close after 4/12 run if no false positives reported. Redesigned 4/8, three clean game days since with no issues.**
+**Status: CLOSED (2026-04-12) — zero false positives across 4+ clean game days since the 4/8 LLM classification redesign. 4/12 run produced empty players dict (correct — no 4/11 picks to investigate). Redesign confirmed working.**
 
 Post-game reporter was redesigned from deterministic phrase-matching to Claude LLM classification on 4/8. Monitor for false positive injury exit classifications.
 
