@@ -1951,5 +1951,268 @@
     "spread_delta": "spread moved 10.0pts smaller since morning (was 12.5, now 2.5)",
     "morning_context": "skipped this morning (volatile_weak_combo)",
     "reasoning": "PTS T20 80% [stable]; REB T12 80% [stable]; AST T10 70% [stable]; spread moved 10.0pts smaller since morning (was 12.5, now 2.5); skipped this morning (volatile_weak_combo)"
+  },
+  {
+    "date": "2026-04-12",
+    "generated_at": "2026-04-12T14:49:57.004060-07:00",
+    "triggered_by": "Jalen Johnson",
+    "triggered_by_team": "ATL",
+    "side": "opponent",
+    "player_name": "Andrew Wiggins",
+    "team": "MIA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "consistent",
+        "market_implied_pct": 93.33,
+        "market_odds": -1400
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "morning_context": null,
+    "reasoning": "3PM T1 75% [up] (mkt 93%, edge -18pp); spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "best_edge_pp": -18.3,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-12",
+    "generated_at": "2026-04-12T14:49:57.004060-07:00",
+    "triggered_by": "Jalen Johnson",
+    "triggered_by_team": "ATL",
+    "side": "opponent",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 86.67,
+        "market_odds": -650
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 84.85,
+        "market_odds": -560,
+        "morning_tier": 10,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": "spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "3PM T1 75% [up] (mkt 87%, edge -12pp); PTS T15 80% [down] (mkt 85%, edge -5pp); spread moved 6.0pts larger since morning (was 4.5, now 10.5); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -4.8,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-12",
+    "generated_at": "2026-04-12T14:49:57.004060-07:00",
+    "triggered_by": "Jalen Johnson",
+    "triggered_by_team": "ATL",
+    "side": "teammate",
+    "player_name": "CJ McCollum",
+    "team": "ATL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 74.68,
+        "market_odds": -295
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 62.96,
+        "market_odds": -170
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 85,
+        "trend": "up",
+        "volatility": "moderate",
+        "market_implied_pct": 94.12,
+        "market_odds": -1600
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "morning_context": null,
+    "reasoning": "PTS T15 70% [stable] (mkt 75%, edge -5pp); AST T4 70% [stable] (mkt 63%, edge +7pp); 3PM T1 85% [up] (mkt 94%, edge -9pp); spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "best_edge_pp": 7.0,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-12",
+    "generated_at": "2026-04-12T14:49:57.004060-07:00",
+    "triggered_by": "Nickeil Alexander-Walker",
+    "triggered_by_team": "ATL",
+    "side": "teammate",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 81.13,
+        "market_odds": -430
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 71.43,
+        "market_odds": -250
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 96.77,
+        "market_odds": -3000
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 83.87,
+        "market_odds": -520
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "morning_context": "skipped this morning (reb_floor_skip)",
+    "reasoning": "PTS T15 80% [down] (mkt 81%, edge -1pp); REB T8 70% [up] (mkt 71%, edge -1pp); AST T4 85% [down] (mkt 97%, edge -12pp); 3PM T1 75% [down] (mkt 84%, edge -9pp); spread moved 6.0pts larger since morning (was 4.5, now 10.5); skipped this morning (reb_floor_skip)",
+    "best_edge_pp": -1.1,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-12",
+    "generated_at": "2026-04-12T14:49:57.004060-07:00",
+    "triggered_by": "Jalen Johnson",
+    "triggered_by_team": "ATL",
+    "side": "teammate",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 65.99,
+        "market_odds": -194
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 90.91,
+        "market_odds": -1000
+      },
+      "3PM": {
+        "tier": 3,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 72.6,
+        "market_odds": -265
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "morning_context": null,
+    "reasoning": "PTS T20 75% [up] (mkt 66%, edge +9pp); AST T2 80% [down] (mkt 91%, edge -11pp); 3PM T3 75% [up] (mkt 73%, edge +2pp); spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "best_edge_pp": 9.0,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-12",
+    "generated_at": "2026-04-12T14:49:57.004060-07:00",
+    "triggered_by": "Jalen Johnson",
+    "triggered_by_team": "ATL",
+    "side": "opponent",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "consistent",
+        "market_implied_pct": 95.24,
+        "market_odds": -2000
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "consistent",
+        "market_implied_pct": 97.22,
+        "market_odds": -3500
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "consistent",
+        "market_implied_pct": 97.22,
+        "market_odds": -3500
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "morning_context": null,
+    "reasoning": "PTS T10 80% [down] (mkt 95%, edge -15pp); AST T2 80% [stable] (mkt 97%, edge -17pp); 3PM T1 80% [down] (mkt 97%, edge -17pp); spread moved 6.0pts larger since morning (was 4.5, now 10.5)",
+    "best_edge_pp": -15.2,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
