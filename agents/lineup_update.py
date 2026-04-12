@@ -853,6 +853,22 @@ def build_skip_reconsiderations(
                         f"[{qualifier}]"
                     )
 
+        # Path C: H33 cannibalization release — player was STRONGLY suppressed
+        # by the absent star. Even without sufficient without-star game history,
+        # the cannibalization mechanism itself predicts a meaningful lift.
+        if not reconsider:
+            cannib = _load_cannib_data()
+            if cannib:
+                key_ab = (skip_player.strip().lower(), star_name.strip().lower(), skip_prop)
+                key_ba = (star_name.strip().lower(), skip_player.strip().lower(), skip_prop)
+                entry = cannib.get(key_ab) or cannib.get(key_ba)
+                if entry and entry["cannib_idx"] < -15.0:
+                    reconsider = True
+                    reasoning_parts.append(
+                        f"H33 cannibalization release: {skip_prop} was suppressed "
+                        f"{entry['cannib_idx']:.1f}pp by {star_name} → ceiling freed"
+                    )
+
         if not reconsider:
             continue
 
