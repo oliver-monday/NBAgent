@@ -269,6 +269,41 @@ def compute_without_player_rates(
 
 
 OPPORTUNITY_FLAGS_JSON = DATA / "opportunity_flags.json"
+CANNIBALIZATION_JSON   = DATA / "backtest_teammate_cannibalization.json"
+
+_cannib_cache: dict | None = None
+
+
+def _load_cannib_data() -> dict:
+    """
+    Load H33 cannibalization backtest results.
+    Returns {(player_a_lower, player_b_lower, stat): {cannib_idx, label}}
+    Cached at module level. Returns empty dict if file missing.
+    """
+    global _cannib_cache
+    if _cannib_cache is not None:
+        return _cannib_cache
+    _cannib_cache = {}
+    if not CANNIBALIZATION_JSON.exists():
+        return _cannib_cache
+    try:
+        with open(CANNIBALIZATION_JSON) as f:
+            data = json.load(f)
+        for _team, tr in data.get("team_results", {}).items():
+            for pair in tr.get("pair_results", []):
+                key = (
+                    pair["player_a"].strip().lower(),
+                    pair["player_b"].strip().lower(),
+                    pair["stat"],
+                )
+                _cannib_cache[key] = {
+                    "cannib_idx": pair["cannib_idx"],
+                    "label": pair["label"],
+                }
+    except Exception as e:
+        print(f"[lineup_update] WARNING: could not load H33 data: {e}")
+    return _cannib_cache
+
 
 # Qualifying absence tags — only these trigger teammate surfacing
 _OPPORTUNITY_TRIGGER_TAGS = {"defensive_anchor", "rim_anchor", "high_usage"}
@@ -522,16 +557,51 @@ def build_opportunity_suggestions(
                     if skip_reasons else None
                 )
 
-                # Build reasoning summary
+                # Build reasoning summary — include odds edge when available
                 all_tiers = {**qualifying_tiers, **upgrade_tiers}
-                reason_parts = [
-                    f"{ct} T{td['tier']} {td['hit_rate_pct']}% [{td['trend']}]"
-                    for ct, td in all_tiers.items()
-                ]
+                reason_parts = []
+                best_edge: float | None = None
+                best_edge_prop: str | None = None
+                for ct, td in all_tiers.items():
+                    base = f"{ct} T{td['tier']} {td['hit_rate_pct']}% [{td['trend']}]"
+                    mkt = td.get("market_implied_pct")
+                    if mkt is not None:
+                        edge = td["hit_rate_pct"] - mkt
+                        base += f" (mkt {mkt:.0f}%, edge {edge:+.0f}pp)"
+                        if best_edge is None or edge > best_edge:
+                            best_edge = edge
+                            best_edge_prop = ct
+                    reason_parts.append(base)
                 if spread_delta_str:
                     reason_parts.append(spread_delta_str)
                 if morning_context:
                     reason_parts.append(morning_context)
+
+                # H33 cannibalization enrichment — teammate side only
+                cannib_freed = False
+                cannib_idx_best: float | None = None
+                cannib_detail: str | None = None
+                if side == "teammate":
+                    cannib = _load_cannib_data()
+                    if cannib:
+                        # Check each qualifying/upgrade prop for cannibalization
+                        for _prop in list(qualifying_tiers.keys()) + list(upgrade_tiers.keys()):
+                            if _prop not in ("PTS", "AST"):
+                                continue
+                            key_ab = (name_lower, absent_name.strip().lower(), _prop)
+                            key_ba = (absent_name.strip().lower(), name_lower, _prop)
+                            entry = cannib.get(key_ab) or cannib.get(key_ba)
+                            if entry and entry["cannib_idx"] < -8.0:
+                                cannib_freed = True
+                                if cannib_idx_best is None or entry["cannib_idx"] < cannib_idx_best:
+                                    cannib_idx_best = entry["cannib_idx"]
+                                    cannib_detail = (
+                                        f"{_prop} was cannibalized {entry['cannib_idx']:.1f}pp "
+                                        f"by {absent_name} → freed ceiling"
+                                    )
+
+                if cannib_freed and cannib_detail:
+                    reason_parts.append(f"H33: {cannib_detail}")
 
                 suggestion = {
                     "date":              TODAY_STR,
@@ -547,6 +617,12 @@ def build_opportunity_suggestions(
                     "spread_delta":      spread_delta_str or None,
                     "morning_context":   morning_context,
                     "reasoning":         "; ".join(reason_parts),
+                    "best_edge_pp":      round(best_edge, 1) if best_edge is not None else None,
+                    "best_edge_prop":    best_edge_prop,
+                    "priority":          "high" if cannib_freed else "standard",
+                    "cannib_freed":      cannib_freed,
+                    "cannib_idx":        cannib_idx_best,
+                    "cannib_detail":     cannib_detail,
                 }
 
                 # Dedup by player name — keep card with more total actionable props
@@ -559,7 +635,10 @@ def build_opportunity_suggestions(
                 ):
                     seen[dedup_key] = suggestion
 
-    suggestions = list(seen.values())
+    suggestions = sorted(
+        seen.values(),
+        key=lambda s: (0 if s.get("priority") == "high" else 1, s.get("player_name", "")),
+    )
     print(
         f"[lineup_update] opportunity: {len(suggestions)} unique player "
         f"card(s) from {len(absence_changes)} absence(s)"
@@ -1681,10 +1760,12 @@ def main() -> None:
                         f"{p} T{d['morning_tier']}→T{d['tier']}"
                         for p, d in s.get("upgrade_tiers", {}).items()
                     ) or "—"
+                    pri_str = " ★ HIGH" if s.get("priority") == "high" else ""
+                    cannib_str = f" | H33: {s['cannib_detail']}" if s.get("cannib_detail") else ""
                     print(
-                        f"  {s['player_name']} ({s['team']}) [{s['card_type']}] "
+                        f"  {s['player_name']} ({s['team']}) [{s['card_type']}]{pri_str} "
                         f"new={qt_str} upgrade={up_str} "
-                        f"← {s['triggered_by']} ({s['side']})"
+                        f"← {s['triggered_by']} ({s['side']}){cannib_str}"
                     )
             else:
                 save_opportunity_flags(suggestions)
