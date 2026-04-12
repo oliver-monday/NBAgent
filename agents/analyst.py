@@ -2330,7 +2330,9 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     selection and confidence logic for these players — blowout context is informational, not
     penalizing. The 27.0 threshold applies to raw_avgs PTS only; REB/AST/3PM props for the
     same player are still subject to normal blowout rules.
-    Example players currently meeting this threshold: Shai Gilgeous-Alexander.
+    Example players currently meeting this threshold: Shai Gilgeous-Alexander, Luka Doncic,
+    Anthony Edwards (plus Tyrese Maxey and Kawhi Leonard hovering just above ~27.0). Always
+    verify against today's quant data — the 27.0 gate reads live raw_avgs, not these examples.
     Note: this exemption does not remove the BLOWOUT_RISK annotation from the pick or
     override the BLOWOUT_SECONDARY_SCORER SKIP for non-primary scorers — it applies
     only to primary elite scorers on the favored team.
@@ -2372,19 +2374,22 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   levels because their usage is more protected even in blowout scenarios.
   CO-PRIMARY SCORER GATE: A player with raw_avgs PTS >= 22.0 is always classified as PRIMARY
   regardless of teammate tier comparison. Two players above this threshold on the same team
-  are co-primaries; neither triggers this skip. Example: Fox (raw_avgs PTS ~25) and
-  Wembanyama (raw_avgs PTS ~24) are both above 22.0 — both are primaries, this skip fires
-  for neither. This gate overrides the tier-based tiebreaker below.
+  are co-primaries; neither triggers this skip. Example: on CLE, Mitchell (~26 PPG) and
+  Harden (~23 PPG) are both above 22.0 — both are primaries, this skip fires for neither
+  even when Harden's best qualifying PTS tier is lower than Mitchell's. This gate overrides
+  the tier-based tiebreaker below. Always verify against today's quant data, not these
+  illustrative numbers.
   PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the co-primary gate above does not apply
-  (both players have raw_avgs PTS < 22.0), use the quant data as the authoritative
+  (the candidate player has raw_avgs PTS < 22.0), use the quant data as the authoritative
   tiebreaker. Check today's quant context for whitelisted teammates on the same team:
   if any teammate has a higher best qualifying PTS tier, that teammate is the primary
   scorer and this player is the secondary scorer — regardless of ball-handler role, playmaking
-  designation, or assist volume. Example: Mitchell's best PTS tier is T20 and Harden's is T15
-  → Mitchell is primary, Harden is secondary, BLOWOUT_SECONDARY_SCORER fires for Harden's
-  PTS pick. Harden's role as the primary ball-handler does not override this determination.
-  If no teammate quant data is available or no teammate is whitelisted on this team today,
-  fall back to season PPG average as the tiebreaker (higher PPG = primary).
+  designation, or assist volume. Example: on a team where the candidate player's best PTS
+  tier is T10 and a teammate's best PTS tier is T15, the candidate is classified as secondary
+  and BLOWOUT_SECONDARY_SCORER fires for their PTS pick. A ball-handler role does not override
+  this determination — the quant tier comparison is authoritative. If no teammate quant data
+  is available or no teammate is whitelisted on this team today, fall back to season PPG
+  average as the tiebreaker (higher PPG = primary). Always verify against today's quant data.
 
 - ROAD UNDERDOG NEAR-THRESHOLD PTS PENALTY: When ALL of the following are true, apply
   a -5% precautionary confidence reduction to the PTS pick before finalizing:
@@ -2460,7 +2465,7 @@ KEY RULES — VOLATILITY:
         iron_floor have a confirmed assist floor that makes the 7/10 or 8/10 qualification
         structurally sound, not marginal.
     (c) The player is Victor Wembanyama on a PTS prop — his established blowout exemption
-        philosophy extends to volatile_weak_combo on PTS. As SAS's primary scorer (24.3 PPG
+        philosophy extends to volatile_weak_combo on PTS. As SAS's primary scorer (~24.6 PPG
         team leader), his scoring floor is structurally insulated from the volatility concern
         that drives this rule. Apply standard VOLATILE treatment (-5% confidence deduction)
         rather than a hard skip. Audit evidence: Wembanyama PTS T20 (7/10) hard-skipped by
@@ -3426,7 +3431,9 @@ KEY RULES — SPREAD / BLOWOUT RISK:
     selection and confidence logic for these players — blowout context is informational, not
     penalizing. The 27.0 threshold applies to raw_avgs PTS only; REB/AST/3PM props for the
     same player are still subject to normal blowout rules.
-    Example players currently meeting this threshold: Shai Gilgeous-Alexander.
+    Example players currently meeting this threshold: Shai Gilgeous-Alexander, Luka Doncic,
+    Anthony Edwards (plus Tyrese Maxey and Kawhi Leonard hovering just above ~27.0). Always
+    verify against today's quant data — the 27.0 gate reads live raw_avgs, not these examples.
     Note: this exemption does not remove the BLOWOUT_RISK annotation from the pick or
     override the BLOWOUT_SECONDARY_SCORER SKIP for non-primary scorers — it applies
     only to primary elite scorers on the favored team.
@@ -3468,19 +3475,22 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   levels because their usage is more protected even in blowout scenarios.
   CO-PRIMARY SCORER GATE: A player with raw_avgs PTS >= 22.0 is always classified as PRIMARY
   regardless of teammate tier comparison. Two players above this threshold on the same team
-  are co-primaries; neither triggers this skip. Example: Fox (raw_avgs PTS ~25) and
-  Wembanyama (raw_avgs PTS ~24) are both above 22.0 — both are primaries, this skip fires
-  for neither. This gate overrides the tier-based tiebreaker below.
+  are co-primaries; neither triggers this skip. Example: on CLE, Mitchell (~26 PPG) and
+  Harden (~23 PPG) are both above 22.0 — both are primaries, this skip fires for neither
+  even when Harden's best qualifying PTS tier is lower than Mitchell's. This gate overrides
+  the tier-based tiebreaker below. Always verify against today's quant data, not these
+  illustrative numbers.
   PRIMARY vs. SECONDARY SCORER TIEBREAKER: When the co-primary gate above does not apply
-  (both players have raw_avgs PTS < 22.0), use the quant data as the authoritative
+  (the candidate player has raw_avgs PTS < 22.0), use the quant data as the authoritative
   tiebreaker. Check today's quant context for whitelisted teammates on the same team:
   if any teammate has a higher best qualifying PTS tier, that teammate is the primary
   scorer and this player is the secondary scorer — regardless of ball-handler role, playmaking
-  designation, or assist volume. Example: Mitchell's best PTS tier is T20 and Harden's is T15
-  → Mitchell is primary, Harden is secondary, BLOWOUT_SECONDARY_SCORER fires for Harden's
-  PTS pick. Harden's role as the primary ball-handler does not override this determination.
-  If no teammate quant data is available or no teammate is whitelisted on this team today,
-  fall back to season PPG average as the tiebreaker (higher PPG = primary).
+  designation, or assist volume. Example: on a team where the candidate player's best PTS
+  tier is T10 and a teammate's best PTS tier is T15, the candidate is classified as secondary
+  and BLOWOUT_SECONDARY_SCORER fires for their PTS pick. A ball-handler role does not override
+  this determination — the quant tier comparison is authoritative. If no teammate quant data
+  is available or no teammate is whitelisted on this team today, fall back to season PPG
+  average as the tiebreaker (higher PPG = primary). Always verify against today's quant data.
 
 - ROAD UNDERDOG NEAR-THRESHOLD PTS PENALTY: When ALL of the following are true, apply
   a -5% precautionary confidence reduction to the PTS pick before finalizing:
@@ -3556,7 +3566,7 @@ KEY RULES — VOLATILITY:
         iron_floor have a confirmed assist floor that makes the 7/10 or 8/10 qualification
         structurally sound, not marginal.
     (c) The player is Victor Wembanyama on a PTS prop — his established blowout exemption
-        philosophy extends to volatile_weak_combo on PTS. As SAS's primary scorer (24.3 PPG
+        philosophy extends to volatile_weak_combo on PTS. As SAS's primary scorer (~24.6 PPG
         team leader), his scoring floor is structurally insulated from the volatility concern
         that drives this rule. Apply standard VOLATILE treatment (-5% confidence deduction)
         rather than a hard skip. Audit evidence: Wembanyama PTS T20 (7/10) hard-skipped by
