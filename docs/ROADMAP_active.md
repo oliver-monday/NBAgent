@@ -34,7 +34,7 @@ Updated: 2026-04-09
 - **`quant.py` runs twice** — once in `ingest.yml` and once in `analyst.yml`. Intentional (ensures freshness) but adds ~10s to runtime. Low priority.
 
 ### Frontend
-- **Layer 3 — Line movement indicators** — specced (see Odds Integration above). Shows morning→pretip movement on pick cards. Implement after 4/10 verification of Layers 1+2.
+- ✅ **Layer 3 — Line movement indicators** (shipped 2026-04-11) — `agents/build_site.py`. Card-face indicator for >3pp moves (Market agrees ↑ / disagrees ↓, prob shift and edge strikethrough); odds drawer shows full detail for all >0.5pp moves. Teal/amber color coding. Voided picks excluded. Uses `morning_implied_prob` + `market_implied_prob` + `bet_recommendation.calibrated_prob` already present on picks.
 - **Parlays tab historical stats banner** — hidden until graded parlay history exists. Evaluate whether to add a rolling chart once data accumulates.
 - **Mobile layout** — current pick cards are readable but not optimized for small screens. Low priority.
 - **"Stay Away?" UI caution flag** — informational badge when 2+ risk signals co-occur. Deferred to offseason — requires team momentum accumulation and signal threshold calibration.
@@ -67,7 +67,7 @@ Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: Apri
 - Update `context/nba_season_context.md` — add PLAYOFFS section with bracket, revisit H15 suppressor notes for actual matchups
 - Deactivate non-playoff teams on whitelist
 - Verify 4/10 run: walked_tier emission, market gate, pre-game reporter fixes, pretip sweep, CLV computation
-- Layer 3 frontend implementation (if Layers 1+2 verified clean)
+- ✅ Layer 3 frontend implementation — shipped 2026-04-11 in `agents/build_site.py`.
 - ✅ **Skip Re-evaluation on Star Absence** shipped 2026-04-11 (Part 2 of 2, H26 downstream loop closed). `build_skip_reconsiderations()` in `agents/lineup_update.py` re-evaluates morning `merit_below_floor` PTS/AST skips when a team's leading scorer is confirmed OUT. Reads `star_absence_lift` from `player_stats.json` (Part 1), uses `compute_without_player_rates()` for per-player gate, emits `card_type="skip_reconsideration"` cards to `opportunity_flags.json` via existing `save_opportunity_flags()` pipeline. PERSONAL_DRAG_WARNING guard fires before any reconsider logic (Jalen Green / Booker case). Runtime-tested with synthetic fixture reproducing the Tatum/Brown motivating case — PTS T20 reconsidered with `+27.3pp` player-specific delta; REB/volatile_weak_combo/wrong-date/DRAG skips all correctly filtered out.
 - ✅ **Analyst Star-Absence Uplift Annotation** shipped 2026-04-11 (Part 1 of 2). `compute_star_absence_deltas()` in `quant.py`, `star_absence_lift` field in `player_stats.json`, STAR_ABSENT_LIFT annotation in `build_quant_context()` gated on star being in today's OUT set, per-qualifier guidance added to WITHOUT-STAR BASELINE rule (build_prompt) and TEAMMATE ABSENCE USAGE ABSORPTION rule (build_pick_prompt). Annotation-only — no directive rules. Validated end-to-end with Tatum/Brown case (+27.3pp PTS T20 STRONG_PERSONAL_SIGNAL). Part 2 above (Skip Re-evaluation in lineup_update.py) shipped same day — H26 downstream loop now fully closed.
 

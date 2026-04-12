@@ -1228,6 +1228,14 @@ def generate_html(d: dict) -> str:
     .edge-line.positive {{ color: #2dd4bf; }}
     .edge-line.neutral {{ color: var(--muted); }}
     .edge-line.fade    {{ color: #ef4444; }}
+    .movement-line {{ font-size: 10px; margin-top: 6px; white-space: nowrap; line-height: 1.5; }}
+    .movement-line.agrees {{ color: #2dd4bf; }}
+    .movement-line.disagrees {{ color: #FF9800; }}
+    .movement-line.significant {{ font-weight: 600; }}
+    .movement-line .edge-shift {{ font-size: 9px; opacity: 0.8; }}
+    .movement-line .edge-shift s {{ text-decoration-color: inherit; opacity: 0.6; }}
+    .movement-drawer {{ font-size: 10px; color: var(--muted); margin-top: 2px;
+      line-height: 1.6; font-family: monospace; opacity: 0.75; }}
     .odds-sizing-toggle {{ display: inline-flex; align-items: center; gap: 4px; margin-top: 6px;
       font-size: 10px; color: var(--muted); cursor: pointer; user-select: none;
       background: none; border: 1px solid var(--border); border-radius: 4px;
@@ -1759,6 +1767,43 @@ function buildEdgeLine(p) {{
   return `<div class="edge-line ${{cls}}">${{tier}}${{edgeStr}}</div>`;
 }}
 
+function buildMovementLine(p) {{
+  // Line movement indicator — shows market direction since morning
+  // Card face: >3pp moves only. Drawer: all moves >0.5pp via buildOddsSizing.
+  if (p.voided) return '';
+  const morning = p.morning_implied_prob;
+  const current = p.market_implied_prob;
+  if (morning == null || current == null) return '';
+
+  const delta = current - morning;
+  const absDelta = Math.abs(delta);
+
+  // Dead zone — movement too small to be meaningful
+  if (absDelta < 3.0) return '';  // <3pp only in drawer, not card face
+
+  const agrees = delta > 0;  // market prob UP = agrees with our OVER pick
+  const arrow = agrees ? '↑' : '↓';
+  const label = agrees ? 'Market agrees' : 'Market disagrees';
+  const cls = agrees ? 'agrees' : 'disagrees';
+
+  // Prob shift display (rounded to integers for compactness)
+  const probStr = `${{Math.round(morning)}}→${{Math.round(current)}}%`;
+
+  // Edge shift — show old edge (strikethrough) → new edge
+  const br = p.bet_recommendation || {{}};
+  const calProb = br.calibrated_prob;
+  let edgeStr = '';
+  if (calProb != null) {{
+    const morningEdge = (calProb - morning).toFixed(1);
+    const currentEdge = (calProb - current).toFixed(1);
+    const mSign = morningEdge >= 0 ? '+' : '';
+    const cSign = currentEdge >= 0 ? '+' : '';
+    edgeStr = ` <span class="edge-shift">edge <s>${{mSign}}${{morningEdge}}</s> → ${{cSign}}${{currentEdge}}pp</span>`;
+  }}
+
+  return `<div class="movement-line significant ${{cls}}">${{label}} ${{arrow}}&nbsp; ${{probStr}}${{edgeStr}}</div>`;
+}}
+
 // Headline confidence shown on pick cards. Prefers the calibrated probability
 // from bet_recommendation (system's actual expected hit rate after historical
 // calibration) — falls back to raw confidence_pct when no market data exists.
@@ -1784,6 +1829,28 @@ function buildOddsSizing(p) {{
   if (br.calibrated_prob != null) lines.push(`<div>Calibrated prob: ${{br.calibrated_prob.toFixed(1)}}%</div>`);
   if (br.calibrated_edge_pct != null) lines.push(`<div>Edge: ${{br.calibrated_edge_pct > 0 ? '+' : ''}}${{br.calibrated_edge_pct.toFixed(1)}}pp</div>`);
   if (br.kelly_quarter != null) lines.push(`<div>Quarter-Kelly: ${{(br.kelly_quarter * 100).toFixed(1)}}%</div>`);
+
+  // Line movement detail (inside drawer — shows all moves >0.5pp)
+  const _morning = p.morning_implied_prob;
+  const _current = p.market_implied_prob;
+  if (_morning != null && _current != null) {{
+    const _delta = _current - _morning;
+    const _absDelta = Math.abs(_delta);
+    if (_absDelta >= 0.5) {{
+      const _dir = _delta > 0 ? 'agrees ↑' : 'disagrees ↓';
+      const _color = _delta > 0 ? '#2dd4bf' : '#FF9800';
+      lines.push(`<div class="movement-drawer">── Line Movement ──</div>`);
+      lines.push(`<div style="color:${{_color}}">Market ${{_dir}} ${{_delta > 0 ? '+' : ''}}${{_delta.toFixed(1)}}pp</div>`);
+      lines.push(`<div>Morning prob: ${{_morning.toFixed(1)}}%</div>`);
+      lines.push(`<div>Current prob: ${{_current.toFixed(1)}}%</div>`);
+      if (br.calibrated_prob != null) {{
+        const _mEdge = br.calibrated_prob - _morning;
+        const _cEdge = br.calibrated_prob - _current;
+        lines.push(`<div>Morning edge: ${{_mEdge > 0 ? '+' : ''}}${{_mEdge.toFixed(1)}}pp</div>`);
+        lines.push(`<div>Current edge: ${{_cEdge > 0 ? '+' : ''}}${{_cEdge.toFixed(1)}}pp</div>`);
+      }}
+    }}
+  }}
 
   const alts = p.alt_tiers || [];
   if (alts.length) {{
@@ -1912,6 +1979,7 @@ function renderPicks() {{
                 `Revised (${{lu.revised_confidence_pct}}%): ${{lu.revised_reasoning}}<br>` +
                 `Morning (${{p.confidence_pct}}%): ${{p.reasoning}}</div>`;
             }})()}}
+            ${{buildMovementLine(p)}}
             ${{buildOddsSizing(p)}}
             ${{p.tier_walk ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : ''}}
           </div>
