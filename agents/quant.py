@@ -41,6 +41,7 @@ WHITELIST_CSV     = ROOT / "playerprops" / "player_whitelist.csv"
 PLAYER_STATS_JSON             = DATA / "player_stats.json"
 TEAM_DEFENSE_NARRATIVES_JSON  = DATA / "team_defense_narratives.json"
 PLAYOFF_CAREER_LOG            = DATA / "playoff_career_log.csv"
+CANNIBALIZATION_JSON          = DATA / "backtest_teammate_cannibalization.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -143,6 +144,42 @@ def load_playoff_career_data() -> pd.DataFrame | None:
     except Exception as e:
         print(f"[quant] WARNING: could not load playoff_career_log.csv: {e}")
         return None
+
+
+# Module-level cache for H33 cannibalization data
+_cannib_cache: dict | None = None
+
+
+def _load_cannib_data() -> dict:
+    """
+    Load H33 cannibalization backtest results into a lookup dict.
+    Returns {(player_a_lower, player_b_lower, stat): {cannib_idx, label}}
+    Cached at module level. Returns empty dict if file missing.
+    """
+    global _cannib_cache
+    if _cannib_cache is not None:
+        return _cannib_cache
+    _cannib_cache = {}
+    if not CANNIBALIZATION_JSON.exists():
+        return _cannib_cache
+    try:
+        with open(CANNIBALIZATION_JSON) as f:
+            data = json.load(f)
+        for _team, tr in data.get("team_results", {}).items():
+            for pair in tr.get("pair_results", []):
+                key = (
+                    pair["player_a"].strip().lower(),
+                    pair["player_b"].strip().lower(),
+                    pair["stat"],
+                )
+                _cannib_cache[key] = {
+                    "cannib_idx": pair["cannib_idx"],
+                    "label": pair["label"],
+                }
+        print(f"[quant] loaded H33 cannibalization data: {len(_cannib_cache)} pairs")
+    except Exception as e:
+        print(f"[quant] WARNING: could not load H33 data: {e}")
+    return _cannib_cache
 
 
 def load_todays_games() -> list[dict]:
@@ -2072,6 +2109,24 @@ def compute_star_absence_deltas(
         else:
             qualifier = "NEUTRAL_PERSONAL_DATA"
 
+    # H33 cannibalization mechanism — look up this player↔star pair
+    # A negative cannib_idx means: when the star hits their tier, this player's
+    # rate drops → the star being OUT frees this player's ceiling
+    # A positive cannib_idx means: when the star hits, this player benefits →
+    # the star being OUT may hurt this player (lost synergy)
+    cannib = _load_cannib_data()
+    cannib_mechanism: dict[str, dict] = {}
+    if cannib:
+        for _stat in ("PTS", "AST"):
+            # Look up: this player's rate conditioned on the star's performance
+            key = (player_name.strip().lower(), star_name.strip().lower(), _stat)
+            entry = cannib.get(key)
+            if entry:
+                cannib_mechanism[_stat] = {
+                    "cannib_idx": entry["cannib_idx"],
+                    "label": entry["label"],
+                }
+
     return {
         "star_name": star_name,
         "star_ppg": round(star_ppg, 1),
@@ -2079,6 +2134,7 @@ def compute_star_absence_deltas(
         "n_with": n_with,
         "key_deltas": key_deltas,
         "qualifier": qualifier,
+        "cannib_mechanism": cannib_mechanism if cannib_mechanism else None,
     }
 
 

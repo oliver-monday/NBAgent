@@ -1302,6 +1302,34 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
                     f"[{_sal_qual}]"
                 )
 
+            # H33 cannibalization mechanism line (Spec 1)
+            _sal_cm = sal.get("cannib_mechanism")
+            if _sal_cm:
+                _cm_parts = []
+                for _cm_stat in ("PTS", "AST"):
+                    _cm_entry = _sal_cm.get(_cm_stat)
+                    if _cm_entry:
+                        _cm_idx = _cm_entry["cannib_idx"]
+                        if _cm_idx < -8.0:
+                            _cm_parts.append(
+                                f"{_cm_stat} was cannibalized {_cm_idx:.1f}pp "
+                                f"by {_sal_star} → freed ceiling"
+                            )
+                        elif _cm_idx > 8.0:
+                            _cm_parts.append(
+                                f"{_cm_stat} had +{_cm_idx:.1f}pp synergy with "
+                                f"{_sal_star} → may decline without"
+                            )
+                        else:
+                            _cm_parts.append(
+                                f"{_cm_stat} independent of {_sal_star} "
+                                f"({_cm_idx:+.1f}pp) → minimal change"
+                            )
+                if _cm_parts:
+                    star_lift_line += (
+                        f"\n  H33 mechanism: {'; '.join(_cm_parts)}"
+                    )
+
         stat_parts = []
         bounce_back_all    = s.get("bounce_back") or {}
         volatility_all     = s.get("volatility") or {}
@@ -2108,6 +2136,15 @@ confidence reasoning — it does NOT override the two gates below. Key rules:
   - [POPULATION_ONLY]: no per-player history. Population average is directional context only —
     do not use it as primary tier evidence.
   - [NEUTRAL_PERSONAL_DATA]: per-player delta is near zero. No meaningful lift or drag.
+  - When an "H33 mechanism" line is present, use the cannibalization index to weight
+    the expected lift direction:
+    · "freed ceiling" (cannib_idx < -8pp): this player was actively suppressed by the
+      star's usage. Expect HIGHER than population lift — the suppression is removed.
+    · "independent" (cannib_idx near zero): the star's presence/absence barely affects
+      this player. Expect LOWER than population lift.
+    · "may decline without" (cannib_idx > +8pp): this player benefited from the star's
+      presence (synergy). The star being OUT may HURT this player's production — treat
+      the population lift with skepticism for this specific player.
 
 GATE 1 — CONFIRMED-OUT REQUIREMENT: A Without-Star baseline may only be used as the PRIMARY
 tier qualifier for a pick when the absent star is confirmed OUT in today's injury report or
@@ -3195,6 +3232,15 @@ confidence reasoning — it does NOT override the rules above. Key qualifiers:
   - [POPULATION_ONLY]: no per-player history. Population average is directional context only —
     do not use it as primary tier evidence.
   - [NEUTRAL_PERSONAL_DATA]: per-player delta is near zero. No meaningful lift or drag.
+  - When an "H33 mechanism" line is present, use the cannibalization index to weight
+    the expected lift direction:
+    · "freed ceiling" (cannib_idx < -8pp): this player was actively suppressed by the
+      star's usage. Expect HIGHER than population lift — the suppression is removed.
+    · "independent" (cannib_idx near zero): the star's presence/absence barely affects
+      this player. Expect LOWER than population lift.
+    · "may decline without" (cannib_idx > +8pp): this player benefited from the star's
+      presence (synergy). The star being OUT may HURT this player's production — treat
+      the population lift with skepticism for this specific player.
 
 KEY RULES — REST & FATIGUE:
 - Player header shows "B2B" (back-to-back, 0 days rest), "rest=Xd" (days since last game),

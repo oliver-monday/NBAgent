@@ -42,6 +42,7 @@ STANDINGS_JSON       = DATA / "standings_today.json"
 SKIPPED_PICKS_JSON   = DATA / "skipped_picks.json"
 SKIP_ARCHIVE_JSON    = DATA / "skipped_picks_archive.json"
 MASTER_CSV           = DATA / "nba_master.csv"
+CANNIBALIZATION_JSON = DATA / "backtest_teammate_cannibalization.json"
 PICKS_REVIEW_DIR     = DATA  # daily files: data/picks_review_YYYY-MM-DD.json
 
 ET = ZoneInfo("America/Los_Angeles")
@@ -566,6 +567,42 @@ def grade_picks(picks: list[dict], game_log: pd.DataFrame) -> list[dict]:
     return graded
 
 
+# ── H33 cannibalization data for parlay grading ──────────────────────
+
+_cannib_cache: dict | None = None
+
+
+def _load_cannib_data() -> dict:
+    """
+    Load H33 cannibalization data for parlay grading enrichment.
+    Returns {(player_a_lower, player_b_lower, stat): {cannib_idx, label}}
+    Cached at module level. Returns empty dict if file missing.
+    """
+    global _cannib_cache
+    if _cannib_cache is not None:
+        return _cannib_cache
+    _cannib_cache = {}
+    if not CANNIBALIZATION_JSON.exists():
+        return _cannib_cache
+    try:
+        with open(CANNIBALIZATION_JSON) as f:
+            data = json.load(f)
+        for _team, tr in data.get("team_results", {}).items():
+            for pair in tr.get("pair_results", []):
+                key = (
+                    pair["player_a"].strip().lower(),
+                    pair["player_b"].strip().lower(),
+                    pair["stat"],
+                )
+                _cannib_cache[key] = {
+                    "cannib_idx": pair["cannib_idx"],
+                    "label": pair["label"],
+                }
+    except Exception as e:
+        print(f"[auditor] WARNING: could not load H33 cannibalization data: {e}")
+    return _cannib_cache
+
+
 def grade_parlays(parlays: list[dict], graded_picks: list[dict]) -> list[dict]:
     """
     Grade each parlay using the already-graded picks as source of truth.
@@ -618,6 +655,47 @@ def grade_parlays(parlays: list[dict], graded_picks: list[dict]) -> list[dict]:
         p["legs_hit"]    = hits
         p["legs_total"]  = total
         p["leg_results"] = leg_results
+
+        # H33 cannibalization pair detection on missed parlays
+        cannib_flags = []
+        if parlay_result == "MISS":
+            cannib = _load_cannib_data()
+            if cannib:
+                missed_legs = [r for r in leg_results if r["result"] == "MISS"]
+                for i, l1 in enumerate(missed_legs):
+                    for l2 in missed_legs[i + 1:]:
+                        # Same-team check via graded_picks lookup
+                        t1 = None
+                        t2 = None
+                        for gp in graded_picks:
+                            if gp["player_name"].lower() == l1["player_name"].lower():
+                                t1 = gp.get("team", "").upper()
+                            if gp["player_name"].lower() == l2["player_name"].lower():
+                                t2 = gp.get("team", "").upper()
+                        if not t1 or not t2 or t1 != t2:
+                            continue
+                        # Same stat check
+                        if l1["prop_type"] != l2["prop_type"]:
+                            continue
+                        stat = l1["prop_type"]
+                        key_ab = (l1["player_name"].lower(), l2["player_name"].lower(), stat)
+                        key_ba = (l2["player_name"].lower(), l1["player_name"].lower(), stat)
+                        entry = cannib.get(key_ab) or cannib.get(key_ba)
+                        if entry and entry["cannib_idx"] < -8.0:
+                            cannib_flags.append({
+                                "player_a": l1["player_name"],
+                                "player_b": l2["player_name"],
+                                "stat": stat,
+                                "cannib_idx": entry["cannib_idx"],
+                                "label": entry["label"],
+                                "note": (
+                                    f"{l1['player_name']} and {l2['player_name']} are an H33 "
+                                    f"cannibalization pair ({entry['cannib_idx']:+.1f}pp) — "
+                                    f"correlated failure, not independent variance"
+                                ),
+                            })
+
+        p["cannibalization_flags"] = cannib_flags if cannib_flags else None
         graded_parlays.append(p)
 
     return graded_parlays
@@ -807,7 +885,7 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
 ## PARLAY ANALYSIS TASK
 4. Parlay hit rate this session: {p_hits}/{len(graded_parlays)}. Write a one-line summary of the parlay card result — e.g. "Clean 5/5 sweep anchored by iron-floor PTS legs" or "2/5 — the Jokic AST leg was the consistent failure point."
 5. For each PARLAY HIT: identify in one sentence what made the combination work — correlation logic, matchup stack, or game script alignment.
-6. For each PARLAY MISS: identify in one sentence which leg failed and the root cause. Was the correlation assumption wrong? Was a leg too aggressive given known risks?
+6. For each PARLAY MISS: identify in one sentence which leg failed and the root cause. Was the correlation assumption wrong? Was a leg too aggressive given known risks? CHECK the `cannibalization_flags` field on each missed parlay — if present, two failed legs are a known H33 cannibalization pair whose correlated failure was structurally predictable. Reference the specific cannibalization index and pair names in your parlay_lessons so the Parlay Agent learns to avoid this construction. A cannibalization miss is NOT independent variance — it is a parlay construction error that the system should not repeat.
 7. parlay_reinforcements: write at least 1 item (max 3). Focus on combination patterns and leg types that succeeded — not individual pick quality, which is covered above. At least one item must reference a specific leg structure or correlation type.
 8. parlay_lessons: write at least 1 item (max 3) when any parlay missed. If all parlays hit, write 1 item noting what structural risk existed that could have caused a miss (e.g. correlated legs, anchor player concentration, aggressive tier on a secondary leg). The Parlay Agent must always receive at least one constructive note per session.
 """
