@@ -934,6 +934,87 @@ def enrich_alt_tiers(today_picks: list[dict]) -> None:
         pick["alt_tiers"] = alt_tiers
 
 
+CANNIBALIZATION_JSON = DATA / "backtest_teammate_cannibalization.json"
+
+
+def build_cannib_lookup() -> dict:
+    """
+    Build a slim H33 cannibalization lookup for the frontend.
+    Key: "name_a|name_b|STAT" (names sorted, lowercased).
+    Value: {"idx": float, "label": str}
+    Returns {} gracefully if data file is missing.
+    """
+    if not CANNIBALIZATION_JSON.exists():
+        return {}
+    try:
+        with open(CANNIBALIZATION_JSON) as f:
+            data = json.load(f)
+        lookup = {}
+        for team, tr in data.get("team_results", {}).items():
+            for pair in tr.get("pair_results", []):
+                names = sorted([
+                    pair["player_a"].strip().lower(),
+                    pair["player_b"].strip().lower(),
+                ])
+                stat = pair["stat"]
+                label = pair.get("label", "")
+                # Only include MODERATE or STRONG signals
+                if "MODERATE" not in label and "STRONG" not in label:
+                    continue
+                key = f"{names[0]}|{names[1]}|{stat}"
+                lookup[key] = {
+                    "idx": round(pair["cannib_idx"], 1),
+                    "label": label,
+                }
+        print(f"[build_site] cannib lookup: {len(lookup)} pairs")
+        return lookup
+    except Exception as e:
+        print(f"[build_site] WARNING: cannib lookup failed: {e}")
+        return {}
+
+
+def build_corr_lookup(today_picks: list) -> dict:
+    """
+    Build a slim correlation tag lookup for the frontend builder.
+    Reads teammate_correlations from player_stats.json for today's players.
+    Key: "player_a_lower|player_b_lower|STATA_STATB" (direction-aware, NOT sorted).
+    Value: {"tag": str, "r": float|null}
+    Returns {} gracefully if data file is missing.
+    """
+    if not PLAYER_STATS_JSON.exists():
+        return {}
+    try:
+        stats = load_json(PLAYER_STATS_JSON, {})
+        if not stats:
+            return {}
+
+        # Only extract for today's players (reduces payload)
+        today_names = {(p.get("player_name") or "").strip() for p in today_picks}
+        today_names.discard("")
+
+        lookup = {}
+        for player_name in today_names:
+            pdata = stats.get(player_name, {})
+            tc = pdata.get("teammate_correlations", {})
+            for teammate_name, entry in tc.items():
+                if teammate_name not in today_names:
+                    continue
+                for stat_pair, corr_data in entry.get("correlations", {}).items():
+                    tag = corr_data.get("tag", "independent")
+                    r_val = corr_data.get("r")
+                    key = f"{player_name.lower()}|{teammate_name.lower()}|{stat_pair}"
+                    lookup[key] = {
+                        "tag": tag,
+                        "r": round(r_val, 2) if r_val is not None else None,
+                    }
+
+        print(f"[build_site] corr lookup: {len(lookup)} entries")
+        return lookup
+    except Exception as e:
+        print(f"[build_site] WARNING: corr lookup failed: {e}")
+        return {}
+
+
 def build_site():
     picks     = load_json(PICKS_JSON, [])
     audit_log = load_json(AUDIT_LOG_JSON, [])
@@ -945,6 +1026,7 @@ def build_site():
     opportunity_flags = load_opportunity_flags()
     explorer_data     = build_explorer_data()
     playoff_data      = build_playoff_data()
+    cannib_lookup     = build_cannib_lookup()
 
     # Build lookup dict from review file: key → {verdict, trim_reasons, auto_reviewed}
     # Covers both auto (source="auto") and manual (no source field) review entries.
@@ -992,6 +1074,7 @@ def build_site():
             p["auto_reviewed"]  = False
 
     enrich_alt_tiers(today_picks)
+    corr_lookup       = build_corr_lookup(today_picks)
 
     top_picks = get_top_picks(today_picks)
 
@@ -1045,6 +1128,8 @@ def build_site():
         "opportunity_flags":  opportunity_flags,
         "explorer":           explorer_data,
         "playoff":            playoff_data,
+        "cannib_lookup":      cannib_lookup,
+        "corr_lookup":        corr_lookup,
         "top_picks": top_picks,
         "best_bets": best_bets,
         "top_picks_history": {
@@ -1083,6 +1168,8 @@ def generate_html(d: dict) -> str:
     opportunity_flags_json  = json.dumps(d.get("opportunity_flags", []))
     explorer_json           = json.dumps(d.get("explorer", {}))
     playoff_json            = json.dumps(d.get("playoff", {}))
+    cannib_json             = json.dumps(d.get("cannib_lookup", {}))
+    corr_json               = json.dumps(d.get("corr_lookup", {}))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1457,6 +1544,83 @@ def generate_html(d: dict) -> str:
                          border-top: 1px solid var(--border); padding-top: 10px;
                          margin-top: 10px; line-height: 1.5; }}
 
+    /* Spec 3: cannibalization badges between parlay legs */
+    .cannib-badge {{ display: flex; align-items: center; gap: 5px;
+                     font-size: 10px; font-weight: 600; padding: 2px 0;
+                     margin: -2px 0 -2px 8px; }}
+    .cannib-badge.cannib-neg {{ color: #f59e0b; }}
+    .cannib-badge.cannib-pos {{ color: var(--accent2); }}
+
+    /* Parlay Builder */
+    .builder-section {{ margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; }}
+    .builder-header {{ font-size: 11px; font-weight: 700; text-transform: uppercase;
+                       letter-spacing: 1.5px; color: var(--accent); margin-bottom: 16px;
+                       display: flex; align-items: center; gap: 8px; }}
+    .builder-layout {{ display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }}
+    @media (max-width: 700px) {{
+      .builder-layout {{ grid-template-columns: 1fr; }}
+    }}
+    .builder-picks {{ max-height: 500px; overflow-y: auto; }}
+    .builder-game-group {{ margin-bottom: 12px; }}
+    .builder-game-header {{ font-size: 11px; font-weight: 700; color: var(--muted);
+                            text-transform: uppercase; letter-spacing: 0.5px;
+                            padding: 6px 0; border-bottom: 1px solid var(--border);
+                            margin-bottom: 6px; display: flex; justify-content: space-between; }}
+    .builder-pick-row {{ display: flex; align-items: center; justify-content: space-between;
+                         padding: 8px 10px; border-radius: 8px; cursor: pointer;
+                         transition: background 0.12s; border: 1px solid transparent;
+                         margin-bottom: 2px; }}
+    .builder-pick-row:hover {{ background: var(--surface2); }}
+    .builder-pick-row.selected {{ background: rgba(232,112,58,0.08);
+                                  border-color: var(--accent); }}
+    .builder-pick-row.voided {{ opacity: 0.35; cursor: not-allowed;
+                                text-decoration: line-through; }}
+    .builder-pick-left {{ display: flex; align-items: center; gap: 8px; min-width: 0; }}
+    .builder-pick-name {{ font-size: 13px; font-weight: 600; white-space: nowrap;
+                          overflow: hidden; text-overflow: ellipsis; }}
+    .builder-pick-stat {{ font-size: 11px; font-weight: 700; padding: 1px 5px;
+                          border-radius: 4px; }}
+    .builder-pick-tier {{ font-size: 14px; font-weight: 800; }}
+    .builder-pick-conf {{ font-size: 11px; color: var(--muted); white-space: nowrap; }}
+
+    .builder-card {{ background: var(--surface); border: 1px solid var(--border);
+                     border-radius: 12px; padding: 16px; position: sticky; top: 110px; }}
+    .builder-card-empty {{ color: var(--muted); font-size: 13px;
+                           text-align: center; padding: 24px 0; }}
+    .builder-leg-row {{ display: flex; align-items: center; justify-content: space-between;
+                        padding: 6px 0; border-bottom: 1px solid var(--border); }}
+    .builder-leg-row:last-of-type {{ border-bottom: none; }}
+    .builder-leg-remove {{ color: var(--miss); cursor: pointer; font-size: 12px;
+                           background: none; border: none; padding: 2px 6px; }}
+    .builder-leg-remove:hover {{ background: rgba(239,68,68,0.1); border-radius: 4px; }}
+    .builder-stats-row {{ display: flex; gap: 16px; flex-wrap: wrap;
+                          padding: 12px 0; border-top: 1px solid var(--border);
+                          margin-top: 8px; }}
+    .builder-stat {{ text-align: center; }}
+    .builder-stat .val {{ font-size: 18px; font-weight: 800; }}
+    .builder-stat .lbl {{ font-size: 10px; color: var(--muted); text-transform: uppercase;
+                          letter-spacing: 0.3px; }}
+    .builder-edge-pos {{ color: var(--hit); }}
+    .builder-edge-neg {{ color: var(--miss); }}
+    .builder-edge-neutral {{ color: var(--muted); }}
+    .builder-warnings {{ margin-top: 10px; padding-top: 10px;
+                         border-top: 1px solid var(--border); }}
+    .builder-warning-item {{ font-size: 11px; padding: 3px 0; display: flex;
+                             align-items: center; gap: 5px; }}
+    .builder-actions {{ display: flex; gap: 8px; margin-top: 12px;
+                        padding-top: 12px; border-top: 1px solid var(--border); }}
+    .builder-btn {{ padding: 7px 16px; border-radius: 6px; font-size: 12px;
+                    font-weight: 600; cursor: pointer; border: 1px solid var(--border);
+                    background: var(--surface2); color: var(--text);
+                    transition: all 0.12s; }}
+    .builder-btn:hover {{ border-color: var(--accent); }}
+    .builder-btn-accent {{ background: var(--accent); color: #000;
+                           border-color: var(--accent); }}
+    .builder-btn-accent:hover {{ opacity: 0.85; }}
+    .builder-copied {{ font-size: 11px; color: var(--hit); margin-left: 8px;
+                       opacity: 0; transition: opacity 0.2s; }}
+    .builder-copied.show {{ opacity: 1; }}
+
     /* Top Picks section */
     .top-picks-header {{ font-size: 11px; font-weight: 700; text-transform: uppercase;
                          letter-spacing: 1.5px; color: var(--accent); margin-bottom: 10px; }}
@@ -1525,7 +1689,7 @@ def generate_html(d: dict) -> str:
   <div id="best-bets-container"></div>
   <div id="picks-container"></div>
 </div>
-<div id="tab-parlays" class="page"><div id="parlays-container"></div></div>
+<div id="tab-parlays" class="page"><div id="parlays-container"></div><div id="parlay-builder-container"></div></div>
 <div id="tab-results" class="page">
   <div class="results-cards-row">
     <div class="results-card">
@@ -1603,6 +1767,8 @@ const DATA = {{
   opportunity_flags: {opportunity_flags_json},
   explorer:          {explorer_json},
   playoff:           {playoff_json},
+  cannib_lookup:     {cannib_json},
+  corr_lookup:       {corr_json},
 }};
 
 function showTab(name) {{
@@ -2587,7 +2753,7 @@ function renderParlays() {{
         </div>
         <div class="parlay-legs">`;
 
-    legs.forEach(leg => {{
+    legs.forEach((leg, legIdx) => {{
       const pt   = leg.prop_type || leg.prop || '';
       const team = leg.team || '';
       const opp  = leg.opponent || '';
@@ -2599,6 +2765,27 @@ function renderParlays() {{
       const lr = leg.result;
       if (lr === 'HIT')  legResultIcon = `<span class="leg-result-hit">✓</span>`;
       else if (lr === 'MISS') legResultIcon = `<span class="leg-result-miss">✗</span>`;
+
+      // Spec 3: cannibalization badge — check previous leg for H33 pair
+      if (legIdx > 0) {{
+        const prev = legs[legIdx - 1];
+        const prevPt = prev.prop_type || prev.prop || '';
+        if (pt === prevPt && (leg.team || '') === (prev.team || '')) {{
+          const pair = [
+            (prev.player_name || '').toLowerCase(),
+            (leg.player_name || '').toLowerCase()
+          ].sort();
+          const cKey = pair[0] + '|' + pair[1] + '|' + pt;
+          const ce = (DATA.cannib_lookup || {{}})[cKey];
+          if (ce) {{
+            const isNeg = ce.idx < 0;
+            const icon = isNeg ? '⊖' : '⊕';
+            const cls  = isNeg ? 'cannib-neg' : 'cannib-pos';
+            const word = isNeg ? 'cannibalization' : 'synergy';
+            html += `<div class="cannib-badge ${{cls}}" title="${{pt}} pair: ${{ce.idx > 0 ? '+' : ''}}${{ce.idx}}pp">${{icon}} ${{word}}</div>`;
+          }}
+        }}
+      }}
 
       html += `
         <div class="parlay-leg">
@@ -2628,6 +2815,263 @@ function renderParlays() {{
 }}
 
 renderParlays();
+
+// ── CUSTOM PARLAY BUILDER ──
+
+function renderBuilder() {{
+  const container = document.getElementById('parlay-builder-container');
+  if (!container) return;
+  const picks = (DATA.today_picks || []).filter(p => !p.voided && p.result == null);
+  if (!picks.length) {{ container.innerHTML = ''; return; }}
+
+  // Group picks by game matchup
+  const games = {{}};
+  picks.forEach((p, i) => {{
+    const team = p.team || '';
+    const opp  = p.opponent || '';
+    const gameKey = [team, opp].sort().join('_');
+    const gt = p.game_time || '';
+    if (!games[gameKey]) games[gameKey] = {{ teams: [team, opp].sort(), time: gt, picks: [] }};
+    games[gameKey].picks.push({{ ...p, _idx: i }});
+  }});
+
+  // State: set of selected pick indices
+  if (!window._builderState) window._builderState = new Set();
+  const selected = window._builderState;
+
+  // Build pick list (left column)
+  let pickListHtml = '';
+  Object.values(games).forEach(g => {{
+    const label = g.teams.join(' vs ') + (g.time ? ' · ' + g.time : '');
+    pickListHtml += `<div class="builder-game-group">`;
+    pickListHtml += `<div class="builder-game-header"><span>${{label}}</span></div>`;
+    g.picks.forEach(p => {{
+      const sel = selected.has(p._idx);
+      const pt = p.prop_type || '';
+      const propCls = {{'PTS':'prop-PTS','REB':'prop-REB','AST':'prop-AST','3PM':'prop-3PM'}}[pt] || '';
+      const conf = p.confidence_pct ? p.confidence_pct + '%' : '';
+      const edge = (p.bet_recommendation || {{}}).calibrated_edge_pct;
+      const edgeStr = edge != null ? (edge > 0 ? '+' : '') + edge.toFixed(1) + 'pp' : '';
+      const edgeCls = edge > 0 ? 'builder-edge-pos' : edge < 0 ? 'builder-edge-neg' : 'builder-edge-neutral';
+      pickListHtml += `<div class="builder-pick-row ${{sel ? 'selected' : ''}}"
+        onclick="toggleBuilderLeg(${{p._idx}})">
+        <div class="builder-pick-left">
+          <span class="builder-pick-name">${{p.player_name || ''}}</span>
+          <span class="builder-pick-stat ${{propCls}}">${{pt}}</span>
+          <span class="builder-pick-tier">T${{p.pick_value}}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="builder-pick-conf">${{conf}}</span>
+          ${{edgeStr ? `<span class="builder-pick-conf ${{edgeCls}}">${{edgeStr}}</span>` : ''}}
+        </div>
+      </div>`;
+    }});
+    pickListHtml += `</div>`;
+  }});
+
+  // Build "Your Parlay" card (right column)
+  const allPicks = DATA.today_picks || [];
+  const legs = [...selected].map(i => allPicks[i]).filter(Boolean);
+  let cardHtml = '';
+
+  if (!legs.length) {{
+    cardHtml = `<div class="builder-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px">Your Parlay</div>
+      <div class="builder-card-empty">Click picks on the left to build a parlay</div>
+    </div>`;
+  }} else {{
+    // Compute combined probability
+    let combinedProb = 1;
+    let totalEdge = 0;
+    let edgeCount = 0;
+    legs.forEach(leg => {{
+      const br = leg.bet_recommendation || {{}};
+      const prob = br.calibrated_prob != null ? br.calibrated_prob / 100 : leg.confidence_pct / 100;
+      combinedProb *= prob;
+      if (br.calibrated_edge_pct != null) {{
+        totalEdge += br.calibrated_edge_pct;
+        edgeCount++;
+      }}
+    }});
+
+    // American odds
+    let oddsInt = 0;
+    if (combinedProb > 0 && combinedProb < 1) {{
+      oddsInt = combinedProb < 0.5
+        ? Math.round(((1 / combinedProb) - 1) * 100)
+        : Math.round(-100 / ((1 / combinedProb) - 1));
+    }}
+    const oddsStr = oddsInt >= 0 ? '+' + oddsInt : '' + oddsInt;
+
+    // Payout for $10 bet
+    const decimalOdds = oddsInt >= 0 ? (oddsInt / 100) + 1 : (100 / Math.abs(oddsInt)) + 1;
+    const payout = (10 * decimalOdds).toFixed(2);
+
+    // Edge display
+    const edgeCls = totalEdge > 0 ? 'builder-edge-pos' : totalEdge < 0 ? 'builder-edge-neg' : 'builder-edge-neutral';
+    const edgeSign = totalEdge > 0 ? '+' : '';
+
+    // Render legs
+    let legsHtml = '';
+    const cannib = DATA.cannib_lookup || {{}};
+    const corr   = DATA.corr_lookup || {{}};
+
+    legs.forEach((leg, i) => {{
+      const pt = leg.prop_type || '';
+      const propCls = {{'PTS':'prop-PTS','REB':'prop-REB','AST':'prop-AST','3PM':'prop-3PM'}}[pt] || '';
+      const br = leg.bet_recommendation || {{}};
+      const prob = br.calibrated_prob != null ? br.calibrated_prob.toFixed(1) + '%' : leg.confidence_pct + '%';
+      const idx = [...selected][i];
+
+      legsHtml += `<div class="builder-leg-row">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${{leg.player_name}}</span>
+          <span class="builder-pick-stat ${{propCls}}" style="flex-shrink:0">${{pt}}</span>
+          <span style="font-weight:800;flex-shrink:0">T${{leg.pick_value}}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:12px;color:var(--muted)">${{prob}}</span>
+          <button class="builder-leg-remove" onclick="toggleBuilderLeg(${{idx}})">✕</button>
+        </div>
+      </div>`;
+    }});
+
+    // Warnings: cannib + correlation
+    let warningsHtml = '';
+    for (let i = 0; i < legs.length; i++) {{
+      for (let j = i + 1; j < legs.length; j++) {{
+        const a = legs[i], b = legs[j];
+        const aName = (a.player_name || '').toLowerCase();
+        const bName = (b.player_name || '').toLowerCase();
+        const aTeam = a.team || '', bTeam = b.team || '';
+        const aPt = a.prop_type || '', bPt = b.prop_type || '';
+
+        // Same team, same stat: check cannib
+        if (aTeam === bTeam && aPt === bPt) {{
+          const pair = [aName, bName].sort();
+          const cKey = pair[0] + '|' + pair[1] + '|' + aPt;
+          const ce = cannib[cKey];
+          if (ce) {{
+            const isNeg = ce.idx < 0;
+            const icon = isNeg ? '⊖' : '⊕';
+            const color = isNeg ? 'var(--3pm)' : 'var(--accent2)';
+            const word = isNeg ? 'cannibalization' : 'synergy';
+            warningsHtml += `<div class="builder-warning-item" style="color:${{color}}">
+              ${{icon}} ${{a.player_name}} ↔ ${{b.player_name}} ${{aPt}}: ${{word}} (${{ce.idx > 0 ? '+' : ''}}${{ce.idx}}pp)
+            </div>`;
+            continue;
+          }}
+        }}
+
+        // Same team: check correlation
+        if (aTeam === bTeam) {{
+          const corrKey = aName + '|' + bName + '|' + aPt + '_' + bPt;
+          const ce = corr[corrKey];
+          if (ce && ce.tag && ce.tag !== 'independent' && ce.tag !== 'insufficient_data') {{
+            const isPos = ['feeder_target', 'volume_game', 'pace_beneficiary', 'positively_correlated', 'cannibalization_synergy'].includes(ce.tag);
+            const icon = isPos ? '⊕' : '⊖';
+            const color = isPos ? 'var(--accent2)' : 'var(--3pm)';
+            const tagDisplay = ce.tag.replace(/_/g, ' ');
+            warningsHtml += `<div class="builder-warning-item" style="color:${{color}}">
+              ${{icon}} ${{a.player_name}} ↔ ${{b.player_name}}: ${{tagDisplay}}${{ce.r != null ? ' (r=' + ce.r + ')' : ''}}
+            </div>`;
+          }}
+        }}
+      }}
+    }}
+
+    cardHtml = `<div class="builder-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px">Your Parlay · ${{legs.length}} leg${{legs.length !== 1 ? 's' : ''}}</div>
+      ${{legsHtml}}
+      <div class="builder-stats-row">
+        <div class="builder-stat">
+          <div class="val">${{(combinedProb * 100).toFixed(1)}}%</div>
+          <div class="lbl">combined prob</div>
+        </div>
+        <div class="builder-stat">
+          <div class="val">${{oddsStr}}</div>
+          <div class="lbl">odds</div>
+        </div>
+        <div class="builder-stat">
+          <div class="val">$${{payout}}</div>
+          <div class="lbl">$10 payout</div>
+        </div>
+        ${{edgeCount > 0 ? `<div class="builder-stat">
+          <div class="val ${{edgeCls}}">${{edgeSign}}${{totalEdge.toFixed(1)}}pp</div>
+          <div class="lbl">net edge</div>
+        </div>` : ''}}
+      </div>
+      ${{warningsHtml ? `<div class="builder-warnings">${{warningsHtml}}</div>` : ''}}
+      <div class="builder-actions">
+        <button class="builder-btn" onclick="clearBuilder()">Clear</button>
+        <button class="builder-btn builder-btn-accent" onclick="copyBuilder()">Copy to clipboard</button>
+        <span class="builder-copied" id="builder-copied-msg">Copied!</span>
+      </div>
+    </div>`;
+  }}
+
+  container.innerHTML = `
+    <div class="builder-section">
+      <div class="builder-header">🔧 Parlay Builder</div>
+      <div class="builder-layout">
+        <div class="builder-picks">${{pickListHtml}}</div>
+        <div>${{cardHtml}}</div>
+      </div>
+    </div>`;
+}}
+
+function toggleBuilderLeg(idx) {{
+  if (!window._builderState) window._builderState = new Set();
+  if (window._builderState.has(idx)) {{
+    window._builderState.delete(idx);
+  }} else {{
+    window._builderState.add(idx);
+  }}
+  renderBuilder();
+}}
+
+function clearBuilder() {{
+  window._builderState = new Set();
+  renderBuilder();
+}}
+
+function copyBuilder() {{
+  const allPicks = DATA.today_picks || [];
+  const legs = [...(window._builderState || [])].map(i => allPicks[i]).filter(Boolean);
+  if (!legs.length) return;
+
+  let combinedProb = 1;
+  const lines = legs.map(leg => {{
+    const br = leg.bet_recommendation || {{}};
+    const prob = br.calibrated_prob != null ? br.calibrated_prob / 100 : leg.confidence_pct / 100;
+    combinedProb *= prob;
+    const edgeStr = br.calibrated_edge_pct != null
+      ? ' (edge ' + (br.calibrated_edge_pct > 0 ? '+' : '') + br.calibrated_edge_pct.toFixed(1) + 'pp)'
+      : '';
+    return leg.player_name + ' ' + leg.prop_type + ' OVER ' + leg.pick_value + ' (' + leg.confidence_pct + '%)' + edgeStr;
+  }});
+
+  let oddsInt = 0;
+  if (combinedProb > 0 && combinedProb < 1) {{
+    oddsInt = combinedProb < 0.5
+      ? Math.round(((1 / combinedProb) - 1) * 100)
+      : Math.round(-100 / ((1 / combinedProb) - 1));
+  }}
+  const oddsStr = oddsInt >= 0 ? '+' + oddsInt : '' + oddsInt;
+  const decimalOdds = oddsInt >= 0 ? (oddsInt / 100) + 1 : (100 / Math.abs(oddsInt)) + 1;
+  const payout = (10 * decimalOdds).toFixed(2);
+
+  const text = 'NBAgent Custom Parlay — ' + DATA.today_str + '\\n'
+    + lines.join('\\n')
+    + '\\nCombined: ' + (combinedProb * 100).toFixed(1) + '% | ' + oddsStr + ' | $10 → $' + payout;
+
+  navigator.clipboard.writeText(text).then(() => {{
+    const msg = document.getElementById('builder-copied-msg');
+    if (msg) {{ msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 1500); }}
+  }}).catch(() => {{}});
+}}
+
+renderBuilder();
 
 // ── PLAYER EXPLORER ──
 // ── Round label helper (inferred from series order within each season) ──

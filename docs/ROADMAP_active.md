@@ -63,6 +63,7 @@ Status: ACTIVE — final regular season day 4/12 (15-game slate). Play-in: April
 - ✅ **Playoff Player Adjustments block** — `build_playoff_adjustments()` live in `agents/analyst.py`, date-gated to PLAYOFFS_R1_DATE (≥ 2026-04-18). Annotation-only per-player directional guidance for 20 players synthesized from H27–H32 backtests (career playoff data, minutes elasticity, confidence calibration, consistency index, series progression, blowout resilience). Wired into all 3 prompt builders: `build_prompt()` (v1 fallback), `build_scout_prompt()` (v2 scout), `build_pick_prompt()` (v2 pick — inline next to existing `build_playoff_context()` call). Review after first playoff week for analyst reasoning quality. (4/11)
 
 - ✅ **Parlay Track 1: Variety + Bold Card** shipped 2026-04-12 — TARGET_MAX_ODDS 600→900, TOP_N_TO_CLAUDE 15→25, leg-count diversity enforcement in `build_candidates()`, prompt variety mandate (1×2-leg + 1×4-leg minimum), bold card concept (`card_type` field), odds-aware edge reasoning in SELECTION CRITERIA.
+- ✅ **Parlay Builder UI + Spec 3 Cannib Badges** shipped 2026-04-12 — custom parlay builder on Parlays tab (click picks, live odds/payout/edge, H33+corr warnings, copy to clipboard). Spec 3: ⊖/⊕ cannibalization badges inline on system parlay legs. `build_site.py` only.
 
 **Remaining gap items (April 12–13):**
 - Create `data/playoff_bracket.json` — populate once seeds are final after 4/11 games
