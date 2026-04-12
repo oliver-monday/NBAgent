@@ -1,6 +1,6 @@
 # NBAgent — Roadmap - Active
 
-Updated: 2026-04-09
+Updated: 2026-04-11
 
 ---
 
@@ -23,7 +23,7 @@ Updated: 2026-04-09
 
 **Completed phases:** Phase 1 data collection (3/31), Phase 1.5 prefetch + market gate (4/7), Phase 1.75 calibration-corrected edge (4/7), Phase 1.8 parlay edge awareness (4/7), Phase 1.9 frontend odds display (4/7), alt-tier edge display (4/9), pre-tip odds sweep Layer 1 (4/9), CLV tracking Layer 2 (4/9).
 
-**Layer 3 — Frontend line movement indicators: SPECCED, not yet implemented.** Spec saved locally (`layer3_movement_indicators_spec.md`). Shows ↑/↓/→ arrows on pick cards based on morning-to-pretip line movement. Implement after confirming Layers 1+2 on 4/10 run. `build_site.py` only.
+**Layer 3 — Frontend line movement indicators: ✅ SHIPPED (2026-04-11).** Card-face "Market agrees ↑ / disagrees ↓" for >3pp moves with edge strikethrough; full detail in odds drawer for >0.5pp moves. `build_site.py` only.
 
 **Phase 2 — Decision support UI (offseason):** "Market disagrees" flag, Kelly sizing display, edge tracking dashboard, value-first picking. Extends Phase 1.9 display with contextual warnings.
 
@@ -44,7 +44,7 @@ Updated: 2026-04-09
 ## Active Queue — In Priority Order
 
 ### P1 — Playoffs Transition
-Status: ACTIVE — 2 regular season game days remain (4/10, 4/11). Play-in: April 14–17. Playoffs R1: April 18.
+Status: ACTIVE — final regular season day 4/12 (15-game slate). Play-in: April 14–17. Playoffs R1: April 18.
 
 **Completed playoff prep:**
 - ✅ Playoff context block — date-gated `## PLAYOFF CONTEXT` section fires on/after 4/14. Annotation-only behavioral framing (tighter rotations, pace compression, series dynamics). Dispatched 4/9.
@@ -166,14 +166,14 @@ REB has the worst miss profile of any prop type. Root cause: raw L10 floor overs
 CLE's aggregate 3PM DvP rates as "soft" but their switching scheme neutralizes perimeter looks. Architectural limitation of team-level DvP. CLE scheme note added to `nba_season_context.md`. Generalize only if similar misses appear for other switching teams.
 
 #### W4 — FG_COLD Tier-Step Revisit
-**Status: WATCH — insufficient instances**
+**Status: CLOSED (2026-04-11) — insufficient evidence through full regular season. H10 verdict was NOISE. No additional FG_COLD ≥ -15% PTS misses accumulated to justify revisiting. Defer to offseason with fresh multi-season data if pattern re-emerges.**
 
 Question: should FG_COLD ≥ -15% trigger a hard tier step-down on PTS picks? H10 evaluated confidence adjustments (verdict: noise), not tier step-downs — distinct mechanisms. Do not act until 3–5 additional FG_COLD ≥ -15% PTS misses accumulate.
 
 #### W5 — Skip Validation
 **Status: WATCH — 75% season-wide FSR. Offseason overhaul priority #1.**
 
-Skip rules collectively produce a 75% false skip rate. `ast_hard_gate` and `reb_floor_skip` have been partially addressed with exemptions. Full skip rule redesign is the top offseason priority.
+Skip rules collectively produce a 75% false skip rate. `ast_hard_gate` and `reb_floor_skip` have been partially addressed with exemptions. Four additional refinements shipped 2026-04-11 (see W13): blowout_t25 elite exemption, secondary scorer T10 + co-primary gate, 3PM T1 iron_floor exception, monolithic prompt 3PM blowout alignment. Monitor W13 for regression. Full skip rule redesign remains top offseason priority.
 
 #### W6 — 3PM VOLATILE × iron_floor
 **Status: CLOSED — addressed by trim badge removal context (4/9)**
@@ -186,7 +186,7 @@ Trim picks (including VOLATILE 3PM with iron_floor) hit at 92.9% vs 89.0% for ke
 The 76–80% band carries the most picks and has the highest overperformance gap. If this band starts underperforming during playoffs (different game dynamics), it would be the first sign of calibration drift. Track per-round.
 
 #### W9 — Post-Game Reporter False Positives
-**Status: OPEN — monitor with LLM classification (redesigned 4/8)**
+**Status: OPEN — close after 4/12 run if no false positives reported. Redesigned 4/8, three clean game days since with no issues.**
 
 Post-game reporter was redesigned from deterministic phrase-matching to Claude LLM classification on 4/8. Monitor for false positive injury exit classifications.
 
@@ -199,6 +199,20 @@ All per-athlete ESPN fetches failing across every player with a valid athlete_id
 **Status: OPEN — monitor in production (opened 2026-04-11)**
 
 Four prompt refinements shipped 2026-04-11 addressing high-false-skip-rate rules: (1) `blowout_t25_skip` now exempts elite scorers (raw_avgs PTS >= 27.0) — they proceed through normal T25 eval at the 74% cap instead of hard-skipping; (2) `blowout_secondary_scorer` threshold lowered from >= 15 → >= 13.5, with a new `T10 FLOOR EXCEPTION` (T10 PTS picks are never hard-skipped by this rule) and a `CO-PRIMARY SCORER GATE` (any player with raw_avgs PTS >= 22.0 is always PRIMARY, preventing the rule from firing against one of two co-primaries on the same team); (3) 3PM trend=down T1 step-down now has an `iron_floor OR 9+/10` exception — instead of skipping outright, hold at T1 with a -5% confidence penalty; (4) monolithic `build_prompt()` 3PM blowout rule aligned with the H19-relaxed version in `build_pick_prompt()` (step-down at spread_abs 8–18 instead of hard-skip, with the spread_abs >= 19 unconditional hard-skip unchanged). **What to watch:** skip validation table in `audit_summary.json` — these four rules should show reduced false skip rates over the next ~10 days of audited picks. Specifically: `blowout_t25_skip` FSR should drop as elite scorers with 8+/10 hit rates no longer get blocked; `blowout_secondary_scorer` FSR should drop as T10 picks and co-primaries no longer trigger it; and 3PM picks for players with iron_floor at T1 should no longer appear in the skip archive when trend turns down. Any regression (hits at reduced confidence that should have been skipped) should surface within 20–30 picks if the relaxation was too aggressive. Review around 2026-04-21.
+
+#### W12 — DET Defensive Scheme Impact on AST/PTS Props
+**Status: OPEN — expand scope to full team defense investigation (opened 4/11)**
+
+DET is the #1 seed in the East and will feature in every round of the Eastern Conference playoffs. Initial signal: 0/2 CHA AST hits vs DET on 4/10 (non-primary creators Miller 0 AST, Knueppel 1 AST). Auditor flagged DET tough defense compressing secondary-creator AST production.
+
+**Broadened scope (4/11):** Revisit ALL team defense hypotheses and scheme-based rules for playoff relevance:
+- H15 suppressors (HOU, PHX, PHI) — do any appear in DET's bracket path?
+- DET-specific: does their switching/tough interior defense suppress AST for non-primary creators systematically, or was 4/10 variance?
+- MIN×AST suppressor (n=11, below formal gate) — MIN likely in West bracket; monitor if matchup occurs
+- CLE switching scheme (W3) — CLE is a top East seed; perimeter 3PM suppression relevant if CLE draws a shooter-heavy opponent
+- IND amplifier (100%, n=23) — IND may appear in play-in; if they make the bracket their amplifier effect is worth sizing
+
+Investigate post-4/12 when bracket is set. Cross-reference H15 suppressor/amplifier teams against actual R1 matchups and prioritize scheme notes for those specific series.
 
 ---
 
@@ -221,15 +235,15 @@ Three suppressors: HOU (65.2%, n=23), PHX (75.0%, n=24), PHI (64.7%, n=17). One 
 ---
 
 ### H16 — 3PA Volume Gate
-**Status: IMPLEMENTED — verdict pending**
+**Status: IMPLEMENTED — scheduled for rerun after 4/12 games**
 **Mode: `--mode 3pa-volume-gate`**
 
-Was 99/150 graded 3PM picks as of Mar 22. Check current count — may have reached threshold for rerun. If not, defer to offseason.
+Was 99/150 graded 3PM picks as of Mar 22. Run with whatever count exists after 4/12 final regular season slate. Results feed offseason 3PM rule refinement.
 
 ---
 
 ### H24 — Market Disagreement Gate
-**Status: DESIGNED — queued for backtest when ~50+ odds-enriched picks are graded**
+**Status: DESIGNED — scheduled for implementation + run after 4/12 games (gate likely crossed)**
 **Mode: `--mode market-disagreement` (not yet implemented)**
 
 **Question:** Do picks where FanDuel implied probability exceeds system confidence by ≥15pp (`edge_pct ≤ -15`) hit at a meaningfully lower rate than other picks?
@@ -243,7 +257,7 @@ Was 99/150 graded 3PM picks as of Mar 22. Check current count — may have reach
 ---
 
 ### H25 — Trim Escalation Signal
-**Status: DESIGNED — queued for backtest when ~30+ trim-verdict picks have outcomes**
+**Status: DESIGNED — scheduled for implementation + run after 4/12 games**
 **Mode: `--mode trim-escalation` (not yet implemented)**
 
 **Question:** Do picks with `verdict: "trim"` AND `confidence_pct ≤ 75` AND at least one structural weakness flag (VOLATILE tag, vs_tough < 60%, road underdog) hit at a meaningfully lower rate than other trimmed picks?
@@ -411,7 +425,7 @@ Tests whether tier hit rates shift across phases of a 7-game playoff series: ear
 ---
 
 ### H33 — Teammate Scoring Cannibalization
-**Status: FIRST RUN COMPLETE — results pending Oliver review (4/11)**
+**Status: INTEGRATED INTO PARLAY AGENT (4/11) — STRONG pairs blocked, MODERATE penalized, SYNERGY boosted, prompt context injected**
 **Mode: `--mode teammate-cannibalization`**
 
 Measures pairwise conditional tier hit rates between teammates. For players A and B on the same team, computes A's hit rate at A's best tier on nights when B hits vs misses B's best tier. Cannibalization index = delta (negative = zero-sum, positive = synergy). Asymmetric (A→B ≠ B→A). Covers PTS and AST. League-wide, no team filter.

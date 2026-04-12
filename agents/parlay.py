@@ -42,6 +42,7 @@ PARLAYS_JSON      = DATA / "parlays.json"
 AUDIT_LOG_JSON    = DATA / "audit_log.json"
 INJURIES_JSON     = DATA / "injuries_today.json"
 PICKS_REVIEW_DIR  = DATA  # daily files: data/picks_review_YYYY-MM-DD.json
+CANNIBALIZATION_JSON = DATA / "backtest_teammate_cannibalization.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -62,15 +63,18 @@ AUDIT_CONTEXT_ENTRIES = 3  # keep lean — parlay prompt is already large
 
 # Correlation scoring weights
 CORR_BONUS = {
-    "feeder_target":       +0.10,
-    "volume_game":         +0.05,
-    "pace_beneficiary":    +0.05,
-    "positively_correlated": +0.05,
-    "independent":          0.00,
-    "insufficient_data":    0.00,
-    "board_rivals":        -0.05,
-    "scoring_rivals":      -0.10,
-    "negatively_correlated": -0.08,
+    "feeder_target":           +0.10,
+    "volume_game":             +0.05,
+    "pace_beneficiary":        +0.05,
+    "positively_correlated":   +0.05,
+    "cannibalization_synergy": +0.08,   # H33 synergy pair
+    "independent":              0.00,
+    "insufficient_data":        0.00,
+    "cannibalization_moderate":-0.06,   # H33 moderate cannibalization
+    "board_rivals":            -0.05,
+    "scoring_rivals":          -0.10,
+    "negatively_correlated":   -0.08,
+    "cannibalization_strong":  -0.12,   # H33 strong cannibalization
 }
 
 
@@ -254,6 +258,148 @@ def load_parlay_audit_feedback() -> str:
     return "\n".join(lines)
 
 
+# ── H33 Cannibalization data ─────────────────────────────────────────
+
+# Module-level cache for cannibalization data — loaded once per run
+_cannib_cache: dict | None = None
+
+
+def load_cannibalization_data() -> dict:
+    """
+    Load H33 cannibalization backtest results.
+    Returns a dict keyed by (player_a_lower, player_b_lower, stat) -> {
+        cannib_idx, label, a_tier, b_tier, n_coplay
+    }
+    Returns empty dict if file is missing or unreadable.
+    Cached at module level — safe to call repeatedly.
+    """
+    global _cannib_cache
+    if _cannib_cache is not None:
+        return _cannib_cache
+
+    _cannib_cache = {}
+    if not CANNIBALIZATION_JSON.exists():
+        print("[parlay] cannibalization data not found — skipping H33 integration")
+        return _cannib_cache
+
+    try:
+        with open(CANNIBALIZATION_JSON) as f:
+            data = json.load(f)
+
+        for team, tr in data.get("team_results", {}).items():
+            for pair in tr.get("pair_results", []):
+                key = (
+                    pair["player_a"].strip().lower(),
+                    pair["player_b"].strip().lower(),
+                    pair["stat"],
+                )
+                _cannib_cache[key] = {
+                    "cannib_idx": pair["cannib_idx"],
+                    "label": pair["label"],
+                    "a_tier": pair["a_tier"],
+                    "b_tier": pair["b_tier"],
+                    "n_coplay": pair["n_coplay"],
+                    "a_rate_when_b_hits": pair["a_rate_when_b_hits"],
+                    "a_rate_when_b_misses": pair["a_rate_when_b_misses"],
+                }
+
+        print(f"[parlay] loaded H33 cannibalization data: {len(_cannib_cache)} pair entries")
+    except Exception as e:
+        print(f"[parlay] WARNING: could not load cannibalization data: {e}")
+
+    return _cannib_cache
+
+
+def build_cannibalization_context(picks: list[dict]) -> str:
+    """
+    Build a concise prompt block showing cannibalization/synergy pairs
+    relevant to today's picks. Only includes pairs where BOTH players
+    are in today's pick pool.
+
+    Returns empty string if no cannibalization data or no relevant pairs.
+    """
+    cannib = load_cannibalization_data()
+    if not cannib:
+        return ""
+
+    # Build set of today's players (lowered name → {prop_types picked})
+    today_players: dict[str, set[str]] = {}
+    for p in picks:
+        name = p["player_name"].strip().lower()
+        today_players.setdefault(name, set()).add(p["prop_type"])
+
+    # Find relevant pairs: both players in today's pool, stat matches a picked prop
+    relevant: list[dict] = []
+    seen_keys: set[tuple] = set()
+
+    for (pa, pb, stat), entry in cannib.items():
+        if pa not in today_players or pb not in today_players:
+            continue
+        if stat not in today_players[pa] or stat not in today_players[pb]:
+            continue
+
+        # Dedup: show each pair once (use sorted names)
+        dedup = tuple(sorted([pa, pb])) + (stat,)
+        if dedup in seen_keys:
+            continue
+        seen_keys.add(dedup)
+
+        relevant.append({
+            "player_a": pa,
+            "player_b": pb,
+            "stat": stat,
+            "cannib_idx": entry["cannib_idx"],
+            "label": entry["label"],
+            "a_tier": entry["a_tier"],
+            "b_tier": entry["b_tier"],
+        })
+
+    if not relevant:
+        return ""
+
+    # Sort: strongest cannibalization first, then synergy
+    relevant.sort(key=lambda x: x["cannib_idx"])
+
+    lines = [
+        "## SAME-TEAM SCORING CANNIBALIZATION (H33 backtest, season-wide data)",
+        "When two same-team players are in the same parlay, their tier hit rates",
+        "interact. Negative index = one player's big night suppresses the other.",
+        "STRONG cannibalization pairs have been pre-filtered from candidates above.",
+        "Use MODERATE pairs and SYNERGY pairs to inform your selection reasoning.",
+        "",
+    ]
+
+    for r in relevant:
+        idx = r["cannib_idx"]
+        sign = "+" if idx >= 0 else ""
+        label = r["label"]
+
+        if "CANNIBALIZATION" in label:
+            icon = "⊖ NEVER CO-PICK" if "STRONG" in label else "⊖ CAUTION"
+        elif "SYNERGY" in label:
+            icon = "⊕ SYNERGY"
+        else:
+            icon = "— INDEPENDENT"
+
+        # Capitalize names for readability
+        a_display = r["player_a"].title()
+        b_display = r["player_b"].title()
+        lines.append(
+            f"{icon}: {a_display} {r['stat']} T{r['a_tier']} ↔ "
+            f"{b_display} {r['stat']} T{r['b_tier']} "
+            f"(idx={sign}{idx:.1f}pp)"
+        )
+
+    lines.append("")
+    lines.append(
+        "Prefer ⊕ SYNERGY pairs as parlay legs — they co-hit more often "
+        "than independent odds suggest. Avoid ⊖ pairs even at MODERATE level "
+        "unless the other legs strongly compensate."
+    )
+
+    return "\n".join(lines)
+
+
 # ── Correlation lookup ────────────────────────────────────────────────
 
 def get_correlation_tag(p1: dict, p2: dict, player_stats: dict) -> str:
@@ -295,9 +441,30 @@ def get_correlation_tag(p1: dict, p2: dict, player_stats: dict) -> str:
     entry = corrs.get(key) or corrs.get(alt_key)
 
     if entry:
-        return entry.get("tag", "independent")
+        pearson_tag = entry.get("tag", "independent")
+    else:
+        pearson_tag = "independent"
 
-    return "independent"
+    # H33 cannibalization override for same-team pairs
+    # Check if these two players have a cannibalization signal at their prop types
+    cannib = load_cannibalization_data()
+    if cannib:
+        # Cannibalization is stat-specific: only override when both picks are the
+        # same stat type AND that stat matches the backtest data
+        if stat1 == stat2 and stat1 in ("PTS", "AST"):
+            key_ab = (name1.strip().lower(), name2.strip().lower(), stat1)
+            key_ba = (name2.strip().lower(), name1.strip().lower(), stat1)
+            entry_c = cannib.get(key_ab) or cannib.get(key_ba)
+            if entry_c:
+                label = entry_c["label"]
+                if "CANNIBALIZATION_STRONG" in label:
+                    return "cannibalization_strong"
+                elif "CANNIBALIZATION_MODERATE" in label:
+                    return "cannibalization_moderate"
+                elif "SYNERGY_STRONG" in label or "SYNERGY_MODERATE" in label:
+                    return "cannibalization_synergy"
+
+    return pearson_tag
 
 
 # ── Combination scoring ───────────────────────────────────────────────
@@ -334,10 +501,11 @@ def score_combination(legs: list[dict], player_stats: dict) -> dict:
 
     # Determine dominant correlation type
     if any(t in ("feeder_target", "volume_game", "pace_beneficiary",
-                 "positively_correlated") for t in corr_tags):
+                 "positively_correlated", "cannibalization_synergy") for t in corr_tags):
         correlation = "positive"
     elif any(t in ("scoring_rivals", "board_rivals",
-                   "negatively_correlated") for t in corr_tags):
+                   "negatively_correlated", "cannibalization_strong",
+                   "cannibalization_moderate") for t in corr_tags):
         correlation = "negative"
     else:
         correlation = "independent"
@@ -410,7 +578,7 @@ def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
             for p1, p2 in combinations(legs, 2):
                 if p1.get("team") == p2.get("team"):
                     tag = get_correlation_tag(p1, p2, player_stats)
-                    if tag in ("scoring_rivals", "board_rivals"):
+                    if tag in ("scoring_rivals", "board_rivals", "cannibalization_strong"):
                         has_negative = True
                         break
             if has_negative:
@@ -478,7 +646,7 @@ def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
 
 # ── Prompt builder ────────────────────────────────────────────────────
 
-def build_parlay_prompt(candidates: list[dict], audit_feedback: str = "") -> str:
+def build_parlay_prompt(candidates: list[dict], audit_feedback: str = "", cannibalization_context: str = "") -> str:
     # Slim down legs for prompt — Claude doesn't need full pick objects
     slim = []
     for i, c in enumerate(candidates):
@@ -549,6 +717,8 @@ Each candidate has already passed:
 
 ## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS
 {audit_feedback if audit_feedback else "No prior parlay audit data available."}
+
+{cannibalization_context}
 
 ## PRE-SCORED CANDIDATES
 {candidates_block}
@@ -791,7 +961,8 @@ def main():
         sys.exit(0)
 
     audit_feedback = load_parlay_audit_feedback()
-    prompt  = build_parlay_prompt(candidates, audit_feedback)
+    cannib_ctx = build_cannibalization_context(picks)
+    prompt  = build_parlay_prompt(candidates, audit_feedback, cannib_ctx)
     parlays = call_parlay_agent(prompt)
     print(f"[parlay] Claude returned {len(parlays)} parlays")
 
