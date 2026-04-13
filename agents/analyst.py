@@ -44,6 +44,7 @@ LINEUPS_JSON                 = DATA / "lineups_today.json"
 SKIPPED_PICKS_JSON           = DATA / "skipped_picks.json"
 ODDS_AVAILABLE_JSON          = DATA / "odds_available.json"
 PLAYOFF_MATCHUP_JSON         = DATA / "playoff_matchup.json"
+SERIES_PROGRESSION_JSON      = DATA / "backtest_series_progression.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -975,6 +976,151 @@ All other rules (tier system, iron_floor, VOLATILE, B2B, matchup, skip rules
 not listed above) remain unchanged."""
 
 
+def build_series_progression_rules(today_str: str) -> str:
+    """
+    Returns a GAME-IN-SERIES CONFIDENCE MODIFIER block when any active
+    playoff series is at Game 5 or beyond.
+
+    Reads:
+      - data/playoff_matchup.json → game_in_series per active series
+      - data/backtest_series_progression.json → per-player LATE_FADER/LATE_RISER flags
+
+    Date-gated to PLAYOFFS_R1_DATE. Returns "" when:
+      - Before R1 start date
+      - No active series at Game 5+
+      - H31 data file missing
+      - playoff_matchup.json missing/stale
+    """
+    if today_str < PLAYOFFS_R1_DATE:
+        return ""
+
+    # ── Load playoff_matchup.json for game_in_series ──
+    if not PLAYOFF_MATCHUP_JSON.exists():
+        return ""
+    try:
+        with open(PLAYOFF_MATCHUP_JSON) as f:
+            matchup_data = json.load(f)
+        if matchup_data.get("date") != TODAY_STR:
+            return ""
+    except Exception:
+        return ""
+
+    # Check if any active series is at Game 5+
+    late_series: list[dict] = []
+    for s in matchup_data.get("series", []):
+        if not s.get("game_today"):
+            continue
+        gin = s.get("game_in_series", 1)
+        if gin >= 5:
+            late_series.append(s)
+
+    if not late_series:
+        return ""
+
+    # ── Load H31 series progression data ──
+    if not SERIES_PROGRESSION_JSON.exists():
+        print("[analyst] backtest_series_progression.json not found — "
+              "series progression rules unavailable")
+        return ""
+    try:
+        with open(SERIES_PROGRESSION_JSON) as f:
+            h31_data = json.load(f)
+    except Exception as e:
+        print(f"[analyst] WARNING: could not load series progression: {e}")
+        return ""
+
+    # Build player → flag lookup
+    player_flags: dict[str, str] = {}
+    for entry in h31_data.get("players", []):
+        name = entry.get("player", "").strip().lower()
+        flag = entry.get("overall_flag", "")
+        if name and flag in ("LATE_FADER", "LATE_RISER", "STABLE"):
+            player_flags[name] = flag
+
+    if not player_flags:
+        return ""
+
+    # ── Build per-team rosters in today's late-series games ──
+    late_teams: set[str] = set()
+    series_info: list[str] = []
+    for s in late_series:
+        late_teams.add(s["home_team"])
+        late_teams.add(s["away_team"])
+        series_info.append(
+            f"{s['home_team']} vs {s['away_team']} — "
+            f"Game {s.get('game_in_series', '?')}"
+        )
+
+    # Filter H31 flags to FADER/RISER players (all are relevant —
+    # the analyst sees the full whitelisted roster in quant context)
+    relevant_faders: list[str] = []
+    relevant_risers: list[str] = []
+    for name, flag in player_flags.items():
+        if flag == "LATE_FADER":
+            relevant_faders.append(name.title())
+        elif flag == "LATE_RISER":
+            relevant_risers.append(name.title())
+
+    if not relevant_faders and not relevant_risers:
+        return ""
+
+    # ── Build the prompt block ──
+    lines = [
+        "## GAME-IN-SERIES CONFIDENCE MODIFIER (H31 — active for Games 5-7)",
+        "",
+        "The following series are at Game 5 or beyond today:",
+    ]
+    for si in series_info:
+        lines.append(f"  • {si}")
+    lines.append("")
+    lines.append(
+        "H31 backtest (2021-2025 playoff career data) shows per-player production "
+        "shifts across series phases. In Games 5-7, defensive schemes tighten and "
+        "some players systematically fade while others rise. Apply these adjustments "
+        "AFTER normal confidence computation:"
+    )
+    lines.append("")
+
+    if relevant_faders:
+        lines.append("LATE_FADER players (apply -5% confidence on PTS props in Games 5-7):")
+        for name in sorted(relevant_faders):
+            lines.append(f"  • {name}")
+        lines.append(
+            "  → These players' PTS production historically drops ≥8pp from Games 1-2 "
+            "to Games 5-7. The -5% penalty is conservative vs the measured deltas "
+            "(Harden -33pp, Curry -15pp, Edwards -15pp). Apply to PTS props only — "
+            "other stats may not show the same pattern."
+        )
+        lines.append("")
+
+    if relevant_risers:
+        lines.append("LATE_RISER players (apply +3% confidence on PTS props in Games 5-7):")
+        for name in sorted(relevant_risers):
+            lines.append(f"  • {name}")
+        lines.append(
+            "  → These players' PTS production historically rises ≥8pp from Games 1-2 "
+            "to Games 5-7. The +3% bonus is conservative — reflects proven late-series "
+            "elevation. Apply to PTS props only. Cannot push above a cap ceiling."
+        )
+        lines.append("")
+
+    lines.append(
+        "STABLE players (not listed above): no adjustment. Their production is "
+        "consistent across all series phases."
+    )
+    lines.append("")
+    lines.append(
+        "NOTE: This modifier does NOT fire in Games 1-4 (insufficient series-phase "
+        "signal). It activates automatically when game_in_series reaches 5."
+    )
+
+    result = "\n".join(lines)
+    print(f"[analyst] Series progression rules active for {len(late_series)} "
+          f"late-series game(s) — {len(relevant_faders)} faders, "
+          f"{len(relevant_risers)} risers")
+    return result
+
+
 def load_player_stats() -> dict:
     """Load pre-computed quant stats from player_stats.json."""
     if not PLAYER_STATS_JSON.exists():
@@ -1785,6 +1931,8 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
     playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
     _playoff_adj            = build_playoff_adjustments(TODAY_STR)
     playoff_adjustments_section = f"{_playoff_adj}\n\n" if _playoff_adj else ""
+    _series_prog            = build_series_progression_rules(TODAY_STR)
+    series_progression_section = f"{_series_prog}\n\n" if _series_prog else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
     series_context_section  = f"{series_context}\n\n"  if series_context  else ""
@@ -1963,7 +2111,7 @@ selection signals.
 {lineups_block}{pre_game_section}## SEASON CONTEXT — READ BEFORE INTERPRETING INJURIES OR PLAYER LOGS
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}{series_progression_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -2846,6 +2994,8 @@ def build_scout_prompt(
     playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
     _playoff_adj            = build_playoff_adjustments(TODAY_STR)
     playoff_adjustments_section = f"{_playoff_adj}\n\n" if _playoff_adj else ""
+    _series_prog            = build_series_progression_rules(TODAY_STR)
+    series_progression_section = f"{_series_prog}\n\n" if _series_prog else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
     leaderboard_section     = f"{leaderboard}\n\n"     if leaderboard     else ""
     series_context_section  = f"{series_context}\n\n"  if series_context  else ""
@@ -2897,7 +3047,7 @@ Use `priority: "high"` for players with multiple qualifying props, strong recent
 {lineups_block}{pre_game_section}## SEASON CONTEXT
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}{series_progression_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -3089,6 +3239,7 @@ The Scout's assessment is advisory — use it as a starting point, not a constra
 {build_playoff_context(TODAY_STR)}
 {f"{chr(10)}{series_context}{chr(10)}" if series_context else ""}
 {build_playoff_adjustments(TODAY_STR)}
+{build_series_progression_rules(TODAY_STR)}
 ## TODAY'S GAMES
 {games_block}
 

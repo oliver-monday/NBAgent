@@ -413,8 +413,10 @@ def format_series_block(series_data: dict) -> str:
         series_record = f"Tied {hw}-{aw}"
 
     conf_str = f" — {conf}" if conf else ""
+    game_num = series_data.get("game_in_series", total_played + 1)
+    phase    = series_data.get("series_phase", "early")
     lines: list[str] = [
-        f"=== {home} vs {away}{conf_str} | {series_record} ===",
+        f"=== {home} vs {away}{conf_str} | {series_record} | GAME {game_num} ({phase.upper()}) ===",
         f"State: {home} [{state['home_state'].upper()}] / {away} [{state['away_state'].upper()}]",
         f"Note: {state['note']}",
     ]
@@ -558,6 +560,15 @@ def main() -> None:
 
         series_state = compute_series_state(home_wins, away_wins)
 
+        # Next game number in this series (1-indexed)
+        game_in_series = len(game_results) + 1
+        if game_in_series <= 2:
+            series_phase = "early"
+        elif game_in_series <= 4:
+            series_phase = "mid"
+        else:
+            series_phase = "late"
+
         # Build per-player stats for whitelisted players on these two teams
         players_out: dict[str, dict] = {}
         for player_lower, player_team in whitelist.items():
@@ -579,22 +590,25 @@ def main() -> None:
                 }
 
         series_entry = {
-            "series_id":   series_id,
-            "conference":  conf,
-            "home_team":   home,
-            "away_team":   away,
-            "home_wins":   home_wins,
-            "away_wins":   away_wins,
+            "series_id":    series_id,
+            "conference":   conf,
+            "home_team":    home,
+            "away_team":    away,
+            "home_wins":    home_wins,
+            "away_wins":    away_wins,
             "games_played": len(game_results),
-            "game_today":  game_today,
+            "game_in_series": game_in_series,
+            "series_phase":   series_phase,
+            "game_today":   game_today,
             "series_state": series_state,
-            "game_log":    game_results,
-            "players":     players_out,
+            "game_log":     game_results,
+            "players":      players_out,
         }
         all_series_data.append(series_entry)
 
         print(
             f"[playoff_matchup] {series_id}: {home} {home_wins}-{away_wins} {away} | "
+            f"G{game_in_series} ({series_phase}) | "
             f"{len(game_results)} games played | {len(players_out)} WL players | "
             f"game_today={game_today}"
         )
