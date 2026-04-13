@@ -44,6 +44,14 @@ Updated: 2026-04-11
 
 ## Active Queue — In Priority Order
 
+### P-HIGH: Rotowire Projected Minutes + Usage Scraping
+**Priority: Ship before R1 (April 18)**
+**File:** `ingest/rotowire_injuries_only.py` (extend existing scraper)
+**Why:** Projected starting minutes and on/off usage data from Rotowire is behind the paid tier Oliver has subscribed to. High value for playoff injury scenarios — e.g., LeBron's projected minutes jump from ~32 to ~38+ without Doncic/Reaves is a strong quantitative signal the analyst currently lacks. The login flow already exists in `rotowire_injuries_only.py`; the engineering task is parsing the projected minutes page DOM (different structure from the injury/lineup page). Output feeds `lineups_today.json` projected_minutes and onoff_usage fields, which `analyst.py` already reads via `load_lineup_context()`.
+**Status:** Deferred from earlier in the season due to DOM parsing complexity. Now urgent for LAL R1 context.
+
+---
+
 ### P1 — Playoffs Transition
 Status: ACTIVE — final regular season day 4/12 (15-game slate). Play-in: April 14–17. Playoffs R1: April 18.
 

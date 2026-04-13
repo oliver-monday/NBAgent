@@ -854,6 +854,8 @@ Today is a postseason game. Playoff and play-in basketball differs structurally 
 
 **Data window caution:** The L20 game window will include regular-season games through early playoff rounds. Regular-season hit rates against a variety of opponents provide a useful baseline but should be weighted with appropriate caution when evaluating a specific playoff matchup where the opponent has had days to game-plan. Matchup-specific tier hit rates (vs_soft/vs_tough) remain valid contextual signals.
 
+**L5/L10 window caution:** The final regular-season week included widespread rest, minutes compression, and low-stakes game contexts for most playoff teams. L5 averages and trend tags (up/down/stable) entering the first playoff games are unreliable — many stars sat 1-3 of their last 5 games or played 20-25 minutes in meaningless contests. Weight L20 tier hit rates and full-season profiles over L5 indicators for the first 2-3 playoff games. Once the L5 window refills with playoff-intensity data (typically by Game 3 of any series), L5 trend signals become reliable again.
+
 **What does NOT change:** Tier system rules, confidence floors, step-down mechanics, VOLATILE penalties, iron_floor designations, and all quantitative gates remain in full effect. This block provides behavioral context — it does not override any existing rule."""
 
 

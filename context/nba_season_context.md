@@ -192,10 +192,26 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 #### EAST R1
 
 ##### (3) NYK vs (6) ATL
-*(Series begins Apr 18)*
+*(Game 1: Apr 18, 6 PM ET at MSG. NYK won season series 2-1, outscored by 6 total pts — razor thin.)*
+
+**Pre-Series Intel (sources: NBA.com, ESPN, SI — Apr 13):**
+- ATL finished 22-9 after Feb 14. Won Southeast Division. Deliberately chose 6-seed (rested starters in finale). This is not a soft draw — ATL is the hottest team in the East entering playoffs.
+- ATL's surge driven by Jalen Johnson's emergence as a triple-double threat and Nickeil Alexander-Walker's career-best 20.8 PPG (+11.4 from last year). Both are playoff unknowns — first postseason for this ATL core since 2023.
+- Key offensive weapon for NYK: Brunson-Towns PnR. ATL has no answer for Towns rolling to the rim while Brunson draws help. Mitchell Robinson's offensive rebounding gives NYK 4-5 extra possessions per game.
+- Key defensive question: Who guards Brunson? ATL doesn't have an elite perimeter stopper. Expect ATL to switch aggressively to prevent Brunson from getting downhill.
+- NYK rested entire starting lineup on 4/12. Fully healthy and fresh. ATL rested starters 4/12 as well.
 
 ##### (4) CLE vs (5) TOR
-*(Series begins Apr 18)*
+*(Game 1: Apr 18, 1 PM ET at Cleveland. TOR swept season series 3-0, but all before Dec — pre-Harden CLE.)*
+
+**Pre-Series Intel (sources: NBA.com, The Athletic, Raptors Republic, SI — Apr 13):**
+- CLE is a fundamentally different team post-Harden trade (19-6 with Harden). Season series is misleading — TOR never faced Mitchell-Harden backcourt together. CLE's full starting five (Mitchell/Harden/Wade/Mobley/Allen) has only 92 minutes together — LEAST continuity of any playoff team.
+- TOR defensive question: Who guards Mitchell? TOR doesn't start their best Mitchell defender (Ja'Kobe Walter). Walter + Jamal Shead had success on Mitchell in Nov 24 game. Expect TOR to deploy Walter off bench for heavy Mitchell minutes.
+- Harden as facilitator: He deferred to Mitchell and elevated Mobley/Allen. Harden's downhill driving will test Barrett/Quickley physically. Barnes-Quickley PnR can attack Harden defensively.
+- TOR's offensive identity: led NBA in fast break points (18.6/game), 3rd in AST. CLE must prevent transition — set defense neutralizes TOR's pace advantage. Ingram is the key half-court creator if pace slows.
+- CLE switching scheme (H15 note W3): relevant for TOR perimeter scorers (Ingram, Barnes 3PM). Watch for CLE switching to neutralize off-ball guard looks.
+- First playoff trip for TOR's young core (Barnes, Barrett, Ingram, Quickley) — experience gap is real. CLE has Mitchell's 50-point playoff games + Harden's deep postseason history.
+- ⚠ Quickley hamstring (Apr 12 exit): if he misses games, TOR loses secondary creator and screening action. Barrett + Shead absorb minutes but offensive ceiling drops.
 
 ##### (1) DET vs (8) TBD
 *(Awaiting play-in result)*
@@ -206,10 +222,28 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 #### WEST R1
 
 ##### (3) DEN vs (6) MIN
-*(Series begins Apr 18)*
+*(Game 1: Apr 18, 3:30 PM ET at Denver. DEN won season series 3-1. Third playoff meeting in 4 years.)*
+
+**Pre-Series Intel (sources: NBA.com, The Athletic, SI, ESPN — Apr 13):**
+- Rivalry series: DEN won 2023 R1 (4-1), MIN won 2024 R2 (4-3). Teams know each other intimately. DEN enters on 12-game win streak, NBA's #1 offense (121.2 ORtg).
+- Jokic-Murray two-man game is the engine: 170 Murray assists to Jokic (most in NBA), 894 Jokic ball-screens for Murray (most to any single teammate), 453 Jokic handoffs to Murray (165 more than any other combo). Disrupting this connection is MIN's primary defensive objective.
+- DEN's defensive weakness: 21st-ranked defense. Perimeter defenders (Murray, Braun, Cam Johnson) cannot guard Edwards — "Nuggets don't have anyone they can count on to guard Edwards" (SI). Edwards' driving game should feast against DEN's perimeter D. This is MIN's undeniable advantage.
+- Edwards health update (The Athletic, Krawczynski): "All signs are he will be ready to roll. McDaniels is 100 percent. Naz Reid's shoulder appears to be improving. Gobert and Randle got rest in final 3 games."
+- MIN concern: Naz Reid's shooting (3P% dropped from 38.5% to 27.8% since ASB). MIN needs his bench scoring. Ayo Dosunmu has been "outstanding" since trade deadline as secondary creator.
+- Pace factor: DEN's #1 offense suggests high-scoring games. MIN's switching defense (H15 note: MIN×AST suppressor confirmed) will try to compress pace. Christmas Day game went to OT (Jokic 56/16/15, Edwards 44) — expect fireworks.
+- Tim Hardaway Jr. venue factor: Had two explosive 3rd-quarter performances in Minneapolis this season (5-for-5 from 3 in one game). Monitor as a bench scoring wildcard.
 
 ##### (4) LAL vs (5) HOU
-*(Series begins Apr 18)*
+*(Game 1: Apr 18, 8:30 PM ET at LA. LAL won season series 2-1, but Doncic was difference-maker in both wins.)*
+
+**Pre-Series Intel (sources: NBA.com, The Athletic, CBS Sports, SI — Apr 13):**
+- ⚠ CATASTROPHIC INJURY MISMATCH: LAL without Doncic AND Reaves. LeBron (41) is sole offensive engine. LAL went 3-2 in final 5 games without both stars, LeBron averaged 25.5 PPG on 56% shooting. But playoff intensity for 38+ minutes is a different demand.
+- HOU enters on 8-game win streak, Durant averaging 26 PPG on 52-40-87 splits. Team has found its groove with Durant as offensive anchor + young core (Sengun, Amen Thompson, Jabari Smith Jr.).
+- Rebounding mismatch: HOU has league-best REB% (54.5% — highest since tracking began 1996-97). LAL 13th (49.8%). When LAL misses, they won't get second chances.
+- HOU defensive target: Reed Sheppard was outscored by 29 pts (-21.9 per 100 poss) in 78 minutes vs LAL this season, shot 5-for-18 from 3. LAL should target him on switches. If he underperforms, Rockets coaching must adjust.
+- LAL offensive keys (per NBA.com): Hachimura must score to keep offense afloat + guard Durant. LeBron in half-court isolation against HOU's length is tough — LAL needs pace, transition, and unexpected role player contributions.
+- Both teams are H15 confirmed system-wide suppressors (HOU: -21.9pp, LAL: -10.7pp). This is the ONLY R1 series where both teams suppress opponent picks. Extremely challenging pick environment in both directions.
+- Betting lines: HOU massive favorite (-600 series ML). Expert consensus: Rockets in 5. LAL's best hope is stealing 1-2 home games, surviving to R2 where Doncic/Reaves could return (~May 3-4 timeline).
 
 ##### (1) OKC vs (8) TBD
 *(Awaiting play-in result)*
