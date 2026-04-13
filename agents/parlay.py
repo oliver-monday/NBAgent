@@ -77,6 +77,11 @@ CORR_BONUS = {
     "cannibalization_strong":  -0.12,   # H33 strong cannibalization
 }
 
+# P2.3 — Same-game concentration penalty (probability scale, ×10 in composite)
+# Applied per leg beyond 2 from any single game. Discourages correlated downside
+# from game-script concentration without blocking same-game stacks.
+GAME_CONCENTRATION_PENALTY = -0.05   # per excess leg beyond 2 from same game
+
 
 # ── Injury exclusion helpers ──────────────────────────────────────────
 
@@ -485,11 +490,20 @@ def score_combination(legs: list[dict], player_stats: dict) -> dict:
 
     # Games represented
     games_set = set()
+    game_leg_counts: dict[str, int] = {}
     for p in legs:
         home = p["team"] if p.get("home_away") == "H" else p.get("opponent", "")
         away = p["team"] if p.get("home_away") == "A" else p.get("opponent", "")
-        games_set.add(f"{away}@{home}")
+        gkey = f"{away}@{home}"
+        games_set.add(gkey)
+        game_leg_counts[gkey] = game_leg_counts.get(gkey, 0) + 1
     n_games = len(games_set)
+
+    # Game concentration penalty: penalize excess legs beyond 2 from any single game
+    concentration_penalty = sum(
+        max(0, count - 2) * GAME_CONCENTRATION_PENALTY
+        for count in game_leg_counts.values()
+    )
 
     # Correlation scoring across all pairs
     corr_score  = 0.0
@@ -523,13 +537,14 @@ def score_combination(legs: list[dict], player_stats: dict) -> dict:
         parlay_type = "mixed"
 
     # Composite score: higher = better
-    # Weights: confidence product (main driver) + floor bonus + corr bonus + spread bonus
+    # Weights: confidence product (main driver) + floor bonus + corr bonus + spread bonus + concentration
     composite = (
         combined_p * 100          # base: confidence product scaled
         + floor_conf * 0.3        # reward high floor
         + avg_conf * 0.2          # reward high average
         + corr_score * 10         # correlation quality
         + (n_games - 1) * 2       # reward game spread
+        + concentration_penalty * 10  # penalize same-game concentration (P2.3)
     )
 
     return {
@@ -544,6 +559,7 @@ def score_combination(legs: list[dict], player_stats: dict) -> dict:
         "corr_tags": corr_tags,
         "parlay_type": parlay_type,
         "n_games": n_games,
+        "concentration_penalty": round(concentration_penalty, 3),
         "composite_score": round(composite, 2),
     }
 

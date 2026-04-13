@@ -726,7 +726,128 @@ Notable H15b prop-specific updates (≥5 picks):
 
 5. **HOU suppressor holding and strengthening** (updated 65.2%/n=23 from 61.9%/n=21). Signal stable across the larger sample. HOU season context note remains in place.
 
-**Next run:** End of season / playoffs — close tracking of MIN×AST for ≥15 pick gate clearance. No further structural re-runs planned.
+**Run 4 — April 12, 2026 (815 picks, baseline 87.1%, full regular season):**
+
+H15a results — confirmed suppressors and amplifiers (≥15 picks):
+
+| Opponent | n | Hit Rate | vs Baseline | Verdict |
+|----------|---|----------|-------------|---------|
+| PHI | 20 | 65.0% | −22.1pp | **SUPPRESSOR** (confirmed — upgraded from "under review") |
+| HOU | 23 | 65.2% | −21.9pp | **SUPPRESSOR** (stable across all 4 runs) |
+| LAL | 34 | 76.5% | −10.7pp | **SUPPRESSOR** (new — crossed ≥15/≥10pp gate) |
+| PHX | 34 | 82.4% | −4.8pp | **CLOSED** (regressed from 75.0%/n=24 to 82.4%/n=34 — mean reversion) |
+| IND | 38 | 100.0% | +12.9pp | **AMPLIFIER** (stable — 15 more picks, all hits) |
+
+Notable H15b prop-specific updates (≥5 picks):
+
+| Matchup | n | Hit Rate | vs Prop Baseline | Verdict |
+|---------|---|----------|------------------|---------|
+| DET × AST | 8 | 50.0% | −37.2pp vs 87.2% AST | WATCH — below ≥15 gate but extreme magnitude |
+| MIN × AST | 16 | 75.0% | −12.2pp vs 87.2% AST | **CONFIRMED** — crossed ≥15 gate (softened from −22pp at n=11) |
+| PHI × PTS | 7 | 57.1% | −30.7pp vs 87.8% PTS | SUPPRESSOR (prop-specific, strongest PTS signal) |
+| PHI × 3PM | 5 | 40.0% | −45.6pp vs 85.6% 3PM | SUPPRESSOR (prop-specific, extreme) |
+| LAL × PTS | 13 | 76.9% | −10.9pp vs 87.8% PTS | SUPPRESSOR (prop-specific, main driver) |
+
+H15c miss margin (≥3 misses):
+
+| Opponent | Misses | Mean margin | Pattern |
+|----------|--------|-------------|---------|
+| SAS | 6 | −5.0 | Floor compression (stable) |
+| CHA | 3 | −5.0 | Floor compression |
+| LAL | 8 | −3.75 | Moderate compression (new) |
+| PHX | 6 | −2.83 | Near-miss |
+| HOU | 8 | −2.38 | Near-miss |
+| PHI | 7 | −2.29 | Near-miss |
+
+Overall miss margin baseline (n=105): mean=−2.58 | median=−2.0 | p25=−3.0 | p75=−1.0
+
+**Key findings:**
+
+1. **PHI confirmed as system-wide suppressor at full-season scale (65.0%, n=20, −22.1pp).** Originally flagged as "under review" due to stale roster/record assumptions. Full-season data with PHI at 45-37 (Maxey+George active) confirms the signal is real. PTS 57.1% and 3PM 40.0% are the most extreme per-prop suppressions in the dataset. Upgraded in `nba_season_context.md`.
+
+2. **PHX dropped below suppressor threshold (82.4%, n=34, −4.8pp).** 10 additional picks went 8/10, pulling the rate from 75.0% to 82.4%. The "Durant team" mechanism hypothesis is falsified — HOU held while PHX reverted. PHX closed as suppressor in `nba_season_context.md`.
+
+3. **LAL confirmed as new suppressor (76.5%, n=34, −10.7pp).** Crosses both gates. PTS is the main driver (76.9%, n=13). Miss margin −3.75 indicates moderate compression. Mechanism unclear. Added to `nba_season_context.md`.
+
+4. **MIN×AST crossed ≥15 gate (75.0%, n=16, −12.2pp) — confirmed prop-specific suppressor.** Signal softened from −22pp at n=11 — additional picks diluted the magnitude. Still actionable at −12pp. Relevant for DEN-MIN R1 (Jokic AST). Updated in `nba_season_context.md`.
+
+5. **DET×AST at 50.0% (n=8, −37.2pp) — new watch item.** Below formal gate but magnitude is the largest in the dataset. DET is the 1-seed East. Monitor through R1.
+
+**Status: FINAL regular-season run. Playoff-specific reruns may be warranted if scheme notes need updating mid-playoffs.**
+
+---
+
+### H16 — 3PA Volume Gate for 3PM Tier Picks
+
+**Status: NOISE — CLOSED (Apr 12, 2026)**
+**Mode:** `--mode 3pa-volume-gate`
+**Output:** `data/backtest_3pa_volume_gate.json`
+**Data:** `data/picks.json` (132 graded 3PM picks) + `data/player_game_log.csv` (L10 3PA computation)
+
+**Question:** Do 3PM tier hit rates differ meaningfully between high-volume and low-volume three-point shooters? Is a pre-game 3PA volume gate warranted?
+
+**Run 1 — March 22, 2026 (99 3PM picks):** Insufficient data — low-volume bucket had n=2.
+
+**Run 2 — April 12, 2026 (132 3PM picks):**
+
+H16a (tier hit rate by L10 3PA bucket): Low-volume (avg 3PA < 3.0) has n=2 — structurally untestable. Mid-volume (3.0–5.0) T1: 88.9% (n=18). High-volume (≥5.0) T1: 88.3% (n=60). No separation between mid and high volume. The system already self-selects high-volume shooters — low-volume players are never picked.
+
+H16b (volume × efficiency profile): High-vol/high-% 88.7% (n=71) vs high-vol/low-% 78.1% (n=41) — a 10.7pp gap, but below the 15pp actionable threshold. The separation is in efficiency (3P%), not volume (3PA). This is a confounded restatement of shooting regression (H10, already closed as NOISE).
+
+H16c (game-level 3PA floor — post-hoc): Hit rate rises monotonically from 86.9% (≥1 3PA) to 95.0% (≥5 3PA). The mechanism is real (more attempts = more chances) but post-hoc — actual 3PA is not known pre-game.
+
+**Verdict: NOISE — CLOSED.** The pre-game volume gate the hypothesis proposed is solving a problem that doesn't exist. The analyst already implicitly filters to high-volume shooters. No code changes, no prompt rules, no annotations.
+
+---
+
+### H24 — Market Disagreement Gate
+
+**Status: INSUFFICIENT DATA — deferred to mid-playoffs (Apr 12, 2026)**
+**Mode:** `--mode market-disagreement`
+**Output:** `data/backtest_market_disagreement.json`
+**Data:** `data/picks.json` (134 picks with `bet_recommendation` market data, out of 815 total)
+
+**Question:** Do picks where the FanDuel market-implied probability is significantly lower than the system's stated confidence hit at a meaningfully lower rate?
+
+**First run — April 12, 2026 (134 odds-enriched picks, 11 days of data):**
+
+Zero picks in the `market_much_lower` bucket (gap ≤ −15pp). Only 1 pick in `market_lower` (gap −15 to −5pp). The system's known ~10pp under-confidence (H29) means the market almost always agrees with our OVER picks MORE than we do — the gap distribution clusters entirely on the positive side.
+
+| Bucket | n | Hit Rate | vs Baseline |
+|--------|---|----------|-------------|
+| Market MUCH LOWER (≤ −15pp) | 0 | n/a | — |
+| Market lower (−15 to −5pp) | 1 | 100% | — |
+| Agreement (−5 to +5pp) | 14 | 85.7% | −3.1pp |
+| Market higher (+5 to +15pp) | 53 | 83.0% | −5.8pp |
+| Market MUCH HIGHER (≥ +15pp) | 66 | 93.9% | +5.1pp |
+
+**Verdict: INSUFFICIENT DATA — cannot evaluate.** The triggering condition (market thinks OVER is less likely than system states) does not occur with the current under-confident system. If P1.1 (per-player calibration) shifts stated confidences closer to market rates, the gap distribution may change. Rerun at 200+ odds-enriched picks, ideally after per-player calibration has been active for 2+ weeks.
+
+---
+
+### H25 — Trim Escalation Signal
+
+**Status: CONFIRMED ANTI-PREDICTIVE — CLOSED (Apr 12, 2026)**
+**Mode:** `--mode trim-escalation`
+**Output:** `data/backtest_trim_escalation.json`
+**Data:** `data/picks.json` (324 picks with `human_verdict` field from daily picks review)
+
+**Question:** Do picks with `verdict: "trim"` AND `confidence_pct ≤ 75` AND structural weakness flags hit at a meaningfully lower rate than other trimmed picks? Should trim → manual_skip escalation be implemented?
+
+**First run — April 12, 2026 (324 reviewed picks):**
+
+| Verdict | n | Hits | Hit Rate |
+|---------|---|------|----------|
+| keep | 192 | 170 | 88.5% |
+| **trim** | **118** | **109** | **92.4%** |
+| manual_skip | 14 | 13 | 92.9% |
+
+**Trim paradox confirmed at full-season scale.** Trim picks hit at +3.9pp above keeps. The sub-population analysis reinforces the paradox:
+- Triple flag (trim + conf ≤75 + VOLATILE): 92.9% (n=56) — the "worst" trims hit at the same rate as the overall trim pool
+- Iron_floor trims: 100% (n=21)
+- Without iron_floor trims: still 90.7% (n=97)
+
+**Verdict: CONFIRMED ANTI-PREDICTIVE — CLOSED.** The review agent's trim signal identifies the system's *safest* picks, not its riskiest. Implementing trim → manual_skip escalation would remove picks that hit at 92.4%. The ⚠ Caution badge removal on 4/9 was validated. Trims are informational for parlay quality filtering only — they should not influence confidence, pick selection, or downstream skip logic.
 
 ---
 
@@ -992,13 +1113,16 @@ Role breakdown (underdog_10plus): primary ball-handler 80.0% (n=10), secondary 7
 | FG% Safety Margin (H11)        | Structural — shipped without backtest     | Explainability feature; validates via audit log                                                                                        | ✅ ft_safety_margin in quant + analyst                                                        |
 | Shot Volume / H13              | NOISE / CONFOUNDED                        | Median FGA sanity check failed                                                                                                         | ❌ Closed                                                                                     |
 | Positional DvP (H8)            | **REVERT (PTS/REB/AST) / KEEP (3PM)**     | Team-level beats positional on PTS/REB/AST (lift adv −0.05 to −0.06); 3PM positional lift adv +0.106. Inversion on PTS/REB frontcourt. | ⚠️ Remove `DvP [POS]` from prompt for PTS/REB/AST; retain field in quant; 3PM activation TBD |
-| Player × Opponent H2H (H9)     | QUEUED                                    | —                                                                                                                                      | ⏳ ~mid-April 2026                                                                            |
-| Opponent team hit rate (H15)   | **HOU CONFIRMED SUPPRESSOR** (2026-03-22, n=538) | HOU 61.9% (n=21, −23.4pp). MIN×AST 55.6% (n=9, −29.5pp) — active scrutiny, below formal gate. SAS floor compression (n=6, −5.0). | ✅ `nba_season_context.md` updated: HOU suppressor note added, MIN×AST upgraded, SAS note updated. Re-run at ≥600 picks. |
+| Player × Opponent H2H (H9)     | **DEPLOYED** (2026-04-09) — annotation-only | Deployed as `h2h_splits` in quant.py + analyst.py. Formal backtest bypassed — annotation-only at small n=2–4 does not warrant backtest-first. | ✅ Live in production. Annotation-only, no directive rules. |
+| Opponent team hit rate (H15)   | **FOURTH RUN** (2026-04-12, n=815) | PHI confirmed (65.0%, −22.1pp). HOU stable (65.2%). LAL new (76.5%, −10.7pp). PHX closed (82.4%, regressed). MIN×AST confirmed (75.0%, n=16). DET×AST watch (50.0%, n=8). IND amplifier stable (100%, n=38). | ✅ `nba_season_context.md` fully updated with playoff matchup context for all entries. |
 | Spread context (H17)           | **NOISE — CLOSED** (2026-03-22, n=538) | Overall spread-to-hit-rate flat; current ≤6 vs >6 split gap = −0.3pp (zero). Best threshold 9.5 → 3.6pp gap — not actionable. 3PM ≥10 (n≈30, 69–71%) below floor but contradicted by H19 blowout_win finding. | ❌ CLOSED — no rules warranted. Blowout rules justified by specific miss archetypes, not this signal. |
 | Miss Anatomy / H21 (player-level) | **NOISE — CLOSED** (2026-03-22, n=1,482) | PTS delta 0.6pp, REB delta 2.0pp, AST delta 0.8pp — all below 4pp threshold. 3PM blowup n=11 (insufficient). No player-level signal at actionable sample sizes. | ❌ CLOSED — no directive rule shipped. `near_miss_rate`/`blowup_rate` remain in quant for Player Profiles only. |
 | In-game blowout regime (H19)       | **MIXED** (2026-03-22)                 | Favored secondary: ELEVATED not suppressed (PTS lift=1.083, 3PM lift=1.103). Underdog secondary AST: COLLAPSE (lift=0.713, n=59). Underdog REB secondary: COLLAPSE (lift=0.858, n=60). | ✅ Finding 1 applied (2026-03-22): secondary scorer skip narrowed to spread_abs ≥ 15 in `build_pick_prompt()`. ✅ Finding 2 applied (2026-03-22): 3PM blowout trend-down hard skip (spread_abs 8–18) retired; trend=down step-down applies instead. spread_abs ≥ 19 unconditional skip unchanged. Underdog AST collapse flagged for annotation-only rule. |
 | Losing-side AST suppression (H20) | **NO_SIGNAL** (2026-03-22)             | underdog_10plus 75.9% vs baseline 74.1% (lift=1.024, n=54); no suppression detected                                                   | ❌ Closed — no rule change; rerun with multi-season data if archetype persists in audit |
 | Elite opposing rebounder (H14)    | **NO_SIGNAL** (2026-03-22, n=1,709)   | thresh=10.0: elite_present 70.3% vs no_elite 69.8% (delta=−0.5pp). H14b team REB flat (70.5% vs 70.1%). No suppression at any threshold (8/10/12). | ❌ CLOSED — no rule change. Sengun vs. Jokic was variance. |
-| Teammate cannibalization (H33)    | **FIRST RUN COMPLETE** (2026-04-11, 14 teams, 68 PTS pairs) | Population PTS mean −0.6pp (centered). HOU/LAL/DEN CANNIBALIZATION_CLUSTER. PHI SYNERGY_CLUSTER. Strongest cannib −23.1pp (Reaves→LeBron PTS), strongest synergy +33.8pp (Herro→Bam PTS). SAS/NYK/GSW missing (backtest whitelist loader issue). | ⏳ Pending Oliver review. Downstream: parlay co-pick warnings, quant annotation, playoff dossier. |
+| Teammate cannibalization (H33)    | **INTEGRATED INTO PARLAY** (2026-04-11) | 14 teams, 68 PTS pairs, 58 AST pairs. HOU/LAL/DEN CANNIBALIZATION_CLUSTER. PHI SYNERGY_CLUSTER. Strongest cannib −23.1pp (Reaves→LeBron PTS), strongest synergy +33.8pp (Herro→Bam PTS). Whitelist loader fix landed; SAS/NYK/GSW data confirmed present in rerun. | ✅ STRONG pairs blocked, MODERATE penalized, SYNERGY boosted in parlay scoring. Cannib/synergy badges on frontend. |
+| 3PA volume gate (H16)             | **NOISE — CLOSED** (2026-04-12, n=132 3PM picks) | Low-vol bucket n=2 (system self-selects high-vol shooters). Mid vs high T1: 88.9% vs 88.3% (no gap). Efficiency split (H16b) is confounded H10 restatement. Mechanism validated post-hoc only. | ❌ CLOSED — no rule, no annotation. System already implicitly enforces volume gate. |
+| Market disagreement (H24)         | **INSUFFICIENT DATA** (2026-04-12, n=134 odds-enriched) | Zero picks in market_much_lower bucket. System under-confidence means market always agrees MORE. Triggering condition does not exist with current calibration. | ⏳ Rerun at 200+ picks after per-player calibration (P1.1) shifts gap distribution. |
+| Trim escalation (H25)             | **ANTI-PREDICTIVE — CLOSED** (2026-04-12, n=324 reviewed) | Trim 92.4% vs keep 88.5% (+3.9pp paradox). Triple-flag trims 92.9% (n=56). Iron_floor trims 100% (n=21). Trim signal identifies safest picks, not riskiest. | ❌ CLOSED — do NOT implement trim→manual_skip. Trim badge removal (4/9) validated. Trims for parlay filtering only. |
 
 
