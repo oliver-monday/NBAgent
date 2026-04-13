@@ -15,8 +15,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-12",
@@ -32,10 +32,10 @@
       "penalties_applied": "VOLATILE -5%, BLOWOUT resilient net -5%",
       "prop_minimum_floor": 70
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-12",
@@ -52,10 +52,10 @@
       "tier_considered": 1,
       "reason": "trend=down step-down T2\u2192T1; T1 has no FanDuel market for Brandon Miller 3PM"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-12",
@@ -72,10 +72,10 @@
       "tier_considered": 1,
       "reason": "no FanDuel market available for Coby White 3PM T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-12",
@@ -91,10 +91,10 @@
       "penalties_applied": "VOLATILE -5%",
       "prop_minimum_floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-12",
@@ -112,8 +112,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-12",
@@ -129,10 +129,10 @@
       "penalties_applied": "VOLATILE -5%, BLOWOUT -10%",
       "prop_minimum_floor": 70
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 4"
   },
   {
     "date": "2026-04-12",
@@ -148,10 +148,10 @@
       "penalties_applied": "trend=down step T2\u2192T1, VOLATILE -5%, BLOWOUT -10%",
       "prop_minimum_floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-12",
@@ -167,10 +167,10 @@
       "penalties_applied": "VOLATILE -5%, BLOWOUT -10%",
       "prop_minimum_floor": 78
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-12",
@@ -189,8 +189,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-12",
@@ -206,10 +206,10 @@
       "ast_tier": 6,
       "reason": "VOLATILE tag + AST T6 = mandatory hard skip; no iron_floor + trend=up exception"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-12",
@@ -225,10 +225,10 @@
       "ast_tier": 6,
       "reason": "VOLATILE tag + AST T6 = mandatory hard skip; no iron_floor exception available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-12",
@@ -242,9 +242,9 @@
     "rule_context": {
       "reason": "No quant overall hit rates available; H2H n=3 insufficient for qualifying tier confirmation per minimum 5-game sample rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 10"
   }
 ]
