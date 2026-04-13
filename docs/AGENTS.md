@@ -480,6 +480,33 @@ One card per player per triggering absence (deduped by `(date, player_name_lower
 
 ---
 
+## injury_profiles.py — Injury & Availability Profiles
+
+**Purpose:** Computes per-player injury risk and availability metrics from historical game log data, overlaid with current injury report. Pure Python — no LLM call.
+
+**Runs:** Daily in `analyst.yml` after `playoff_matchup.py`, before odds prefetch.
+
+**Inputs:** `player_game_log.csv`, `nba_master.csv`, `player_whitelist.csv`, `injuries_today.json`
+
+**Output:** `data/injury_profiles.json` — one entry per active whitelisted player with:
+- `availability`: games_played, team_games, pct, total_absences, dnp_count
+- `absence_profile`: longest_streak, streak_count, absences_last_14d/30d, days_since_last_game
+- `minutes_profile`: season_avg, l5_avg, l20_avg, trend (stable/declining/increasing)
+- `b2b_profile`: b2b_total, b2b_played, b2b_sat, sit_rate_pct
+- `current_injury`: status + details from injuries_today.json (null if not listed)
+- `risk_tier`: OUT / ELEVATED / MANAGED / CLEAR
+- `elevated_reasons`: list of triggered conditions (only present when tier=ELEVATED)
+
+**Risk tier classification:**
+- **OUT** — currently listed as OUT in injury report
+- **ELEVATED** — any of: availability <85%, ≥2 absences in last 14d, recently returned (played recently after gap), minutes declining ≥15% L5 vs L20, currently GTD
+- **MANAGED** — B2B sit rate >50%
+- **CLEAR** — no material concerns
+
+**Downstream consumer:** Future `## PLAYOFF INJURY LANDSCAPE` analyst context block (separate task).
+
+---
+
 ## build_site.py — Frontend Generator
 
 Pure Python, no JS dependencies in output. Reads all data files, writes `site/index.html`.

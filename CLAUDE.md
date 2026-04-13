@@ -40,6 +40,7 @@ NBAgent/
 │   ├── lineup_update.py      # Afternoon amendment agent — diffs morning lineup snapshot vs current, calls Claude, writes lineup_update sub-objects to picks
 │   ├── backtest.py           # Standalone retrospective signal analysis — multiple modes (see docs/BACKTESTS.md)
 │   ├── playoff_matchup.py    # Pure Python — reads playoff_bracket.json + game logs, writes playoff_matchup.json; no-op if bracket absent
+│   ├── injury_profiles.py    # Pure Python — computes per-player availability %, absence patterns, minutes trends, B2B sit rates, risk tier (OUT/ELEVATED/MANAGED/CLEAR)
 │   └── build_site.py         # Static site generator (5-tab dark theme SPA); renders voided/risk/update/review badges
 ├── ingest/
 │   ├── espn_daily_ingest.py        # Game slate + spreads + standings from ESPN API → nba_master.csv, standings_today.json
@@ -123,6 +124,7 @@ post_game_reporter.py runs as first step of auditor.yml (fetches ESPN recaps + R
 | post_game_reporter.py | claude-sonnet-4-6 | 2048 | picks.json (yesterday), ESPN athlete news, Brave Search | post_game_news.json |
 | auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings, picks_review_YYYY-MM-DD.json (optional) | audit_log.json, audit_summary.json, updates picks + parlays in-place, grades skipped_picks.json |
 | playoff_matchup.py | — (pure Python) | — | playoff_bracket.json, nba_master.csv, player_game_log.csv, player_whitelist.csv | playoff_matchup.json (no-op if bracket absent) |
+| injury_profiles.py | — (pure Python) | — | player_game_log.csv, nba_master.csv, player_whitelist.csv, injuries_today.json | injury_profiles.json |
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |
 | lineup_update.py | claude-sonnet-4-6 | 2048 | lineups_today.json (snapshot), injuries_today.json, picks.json, nba_master.csv | picks.json (lineup_update sub-object on affected picks) |
 
