@@ -49,6 +49,9 @@ ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 YESTERDAY = TODAY - dt.timedelta(days=1)
 YESTERDAY_STR = YESTERDAY.strftime("%Y-%m-%d")
+PLAYOFFS_R1_DATE = "2026-04-18"
+PLAYOFF_CAL_MIN_PICKS = 15   # min graded playoff picks before check fires
+PLAYOFF_CAL_DIVERGE_PP = 10  # pp divergence threshold for warning
 
 # ── Config ───────────────────────────────────────────────────────────
 MODEL = "claude-sonnet-4-6"
@@ -1335,6 +1338,124 @@ def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list
     save_audit_report(audit_entry, graded_picks, graded_parlays, skips=skips)
 
 
+def _compute_playoff_calibration(
+    regular_season_bands: dict,
+) -> tuple[dict | None, list[str]]:
+    """
+    Compute playoff-specific confidence calibration from picks.json.
+    Compares playoff-only hit rates per band to regular-season baselines.
+
+    Returns (playoff_cal_dict, warnings) where:
+      - playoff_cal_dict: per-band playoff stats, or None if insufficient data
+      - warnings: list of warning strings for divergent bands (empty if none)
+
+    Only fires when >= PLAYOFF_CAL_MIN_PICKS graded playoff picks exist.
+    """
+    warnings: list[str] = []
+
+    if not PICKS_JSON.exists():
+        return None, warnings
+
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+    except Exception as e:
+        print(f"[auditor] WARNING: could not read picks.json for playoff cal: {e}")
+        return None, warnings
+
+    # Filter to graded playoff picks (date >= PLAYOFFS_R1_DATE, non-voided, HIT or MISS)
+    playoff_picks = [
+        p for p in all_picks
+        if p.get("date", "") >= PLAYOFFS_R1_DATE
+        and not p.get("voided", False)
+        and p.get("result") in ("HIT", "MISS")
+    ]
+
+    if len(playoff_picks) < PLAYOFF_CAL_MIN_PICKS:
+        if playoff_picks:
+            print(f"[auditor] Playoff calibration: {len(playoff_picks)} picks — "
+                  f"waiting for {PLAYOFF_CAL_MIN_PICKS} before analysis")
+        return None, warnings
+
+    # Group by confidence band
+    bands_map = {
+        "70-75": (70.0, 75.99),
+        "76-80": (76.0, 80.99),
+        "81-85": (81.0, 85.99),
+        "86+":   (86.0, 999.0),
+    }
+    band_data: dict = {b: {"picks": 0, "hits": 0} for b in bands_map}
+
+    for p in playoff_picks:
+        conf = p.get("confidence_pct")
+        result = p.get("result")
+        if conf is None:
+            continue
+        sc = float(conf)
+        for band_label, (lo, hi) in bands_map.items():
+            if lo <= sc <= hi:
+                band_data[band_label]["picks"] += 1
+                if result == "HIT":
+                    band_data[band_label]["hits"] += 1
+                break
+
+    # Build playoff calibration summary
+    playoff_cal: dict = {}
+    total_playoff = sum(d["picks"] for d in band_data.values())
+    total_playoff_hits = sum(d["hits"] for d in band_data.values())
+
+    for band_label, d in band_data.items():
+        n = d["picks"]
+        h = d["hits"]
+        rate = round(h / n * 100, 1) if n > 0 else None
+
+        # Compare to regular-season band
+        rs_band = regular_season_bands.get(band_label, {})
+        rs_rate = rs_band.get("hit_rate_pct")
+        divergence = round(rate - rs_rate, 1) if rate is not None and rs_rate is not None else None
+
+        playoff_cal[band_label] = {
+            "picks":               n,
+            "hits":                h,
+            "hit_rate_pct":        rate,
+            "regular_season_pct":  rs_rate,
+            "divergence_pp":       divergence,
+        }
+
+        # Warn on significant underperformance
+        if (divergence is not None
+                and divergence <= -PLAYOFF_CAL_DIVERGE_PP
+                and n >= 5):  # require at least 5 picks in the band
+            msg = (f"[PLAYOFF CALIBRATION WARNING] {band_label}% band: "
+                   f"playoff {rate}% vs regular-season {rs_rate}% "
+                   f"(Δ{divergence:+.1f}pp, n={n})")
+            print(msg)
+            warnings.append(
+                f"Playoff calibration divergence in {band_label}% band: "
+                f"{rate}% actual vs {rs_rate}% regular-season "
+                f"({divergence:+.1f}pp, n={n}). Investigate whether this is "
+                f"structural (playoff defense, scheme adaptation) or variance."
+            )
+
+    # Overall playoff hit rate
+    overall_rate = round(total_playoff_hits / total_playoff * 100, 1) if total_playoff > 0 else None
+    playoff_cal["_overall"] = {
+        "picks":        total_playoff,
+        "hits":         total_playoff_hits,
+        "hit_rate_pct": overall_rate,
+        "date_range": {
+            "start": min(p.get("date", "") for p in playoff_picks),
+            "end":   max(p.get("date", "") for p in playoff_picks),
+        },
+    }
+
+    print(f"[auditor] Playoff calibration check: {total_playoff} picks, "
+          f"{overall_rate}% overall"
+          f"{f', {len(warnings)} warning(s)' if warnings else ''}")
+
+    return playoff_cal, warnings
+
+
 def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = None):
     """Roll up all audit entries into a longitudinal summary for the Analyst."""
     if not audit_log:
@@ -1544,6 +1665,15 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         "human_flag_precision":    human_flag_precision,
         "clv_summary":             clv_summary,
     }
+
+    # ── Playoff calibration early warning (P1.5) ──────────────────────
+    playoff_cal, playoff_warnings = _compute_playoff_calibration(conf_summary)
+    if playoff_cal is not None:
+        summary["playoff_calibration"] = playoff_cal
+    if playoff_warnings:
+        # Append warnings to recent_recommendations so the Analyst sees them
+        existing_recs = summary.get("recent_recommendations", [])
+        summary["recent_recommendations"] = existing_recs + playoff_warnings
 
     with open(AUDIT_SUMMARY_JSON, "w") as f:
         json.dump(summary, f, indent=2)
