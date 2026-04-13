@@ -1184,9 +1184,9 @@ def compute_lineup_diff(lineups: dict, injuries: dict, today_picks: list[dict] |
             continue
         team = _norm(key)
         injury_map[team] = {
-            row["player_name"].strip().lower(): row.get("status", "UNKNOWN")
+            row["name"].strip().lower(): row.get("status", "UNKNOWN")
             for row in val
-            if isinstance(row, dict) and row.get("player_name")
+            if isinstance(row, dict) and row.get("name")
         }
 
     changes: list[dict] = []

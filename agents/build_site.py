@@ -1315,7 +1315,7 @@ def generate_html(d: dict) -> str:
     .edge-line.positive {{ color: #2dd4bf; }}
     .edge-line.neutral {{ color: var(--muted); }}
     .edge-line.fade    {{ color: #ef4444; }}
-    .movement-line {{ font-size: 10px; margin-top: 6px; white-space: nowrap; line-height: 1.5; }}
+    .movement-line {{ font-size: 10px; margin-top: 6px; line-height: 1.5; }}
     .movement-line.agrees {{ color: #2dd4bf; }}
     .movement-line.disagrees {{ color: #FF9800; }}
     .movement-line.significant {{ font-weight: 600; }}
