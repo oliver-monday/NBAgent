@@ -7,12 +7,15 @@ data, overlaid with current injury report status. Writes data/injury_profiles.js
 
 Runs daily in analyst.yml after quant.py. Can also be run standalone.
 
-Risk tiers:
-  OUT       — Currently listed as OUT in injuries_today.json
-  ELEVATED  — Recently returned from absence (<14 days), or season availability <85%,
-               or significant minutes decline (L5 << L20), or currently GTD
-  MANAGED   — B2B sit rate >50%, or periodic rest pattern detected
-  CLEAR     — No material concerns
+Output status:
+  OUT          — Currently listed as OUT in injuries_today.json
+  DOUBTFUL     — Currently listed as DOUBTFUL
+  QUESTIONABLE — Currently listed as QUESTIONABLE
+  ACTIVE       — Not on injury report or no injury data available
+
+Risk classification is NOT automated — the curated PLAYOFF INJURY LANDSCAPE
+in nba_season_context.md provides the qualitative intelligence layer. This
+agent provides the quantitative data foundation only.
 """
 
 from __future__ import annotations
@@ -42,11 +45,8 @@ ESPN_TO_STANDARD = {
     "NO": "NOP", "WSH": "WAS",
 }
 
-# Risk classification thresholds
-AVAIL_ELEVATED_PCT    = 85.0   # below this → ELEVATED
-RECENT_ABSENCE_DAYS   = 14     # absence within this window → ELEVATED
-MINUTES_DECLINE_PCT   = 15.0   # L5 avg < L20 avg by this % → ELEVATED
-B2B_SIT_RATE_MANAGED  = 50.0   # B2B sit rate above this → MANAGED
+# No automated risk classification — data provider only.
+# See context/nba_season_context.md PLAYOFF INJURY LANDSCAPE for curated risk assessment.
 MIN_GAMES_FOR_PROFILE = 5      # need at least this many games for meaningful stats
 
 
@@ -298,9 +298,9 @@ def compute_minutes_profile(player_games: list[dict], team: str) -> dict | None:
     trend = "stable"
     if l5_avg is not None and l20_avg is not None and l20_avg > 0:
         delta_pct = (l5_avg - l20_avg) / l20_avg * 100
-        if delta_pct <= -MINUTES_DECLINE_PCT:
+        if delta_pct <= -15.0:
             trend = "declining"
-        elif delta_pct >= MINUTES_DECLINE_PCT:
+        elif delta_pct >= 15.0:
             trend = "increasing"
 
     return {
@@ -345,60 +345,6 @@ def compute_b2b_profile(
     }
 
 
-def classify_risk_tier(
-    availability: dict | None,
-    absence_profile: dict | None,
-    minutes_profile: dict | None,
-    b2b_profile: dict | None,
-    injury: dict | None,
-) -> str:
-    """
-    Classify into OUT / ELEVATED / MANAGED / CLEAR.
-    Priority: OUT > ELEVATED > MANAGED > CLEAR.
-    """
-    # OUT: currently on injury report as OUT
-    if injury and injury.get("status") == "OUT":
-        return "OUT"
-
-    # ELEVATED checks
-    elevated_reasons = []
-
-    # Currently DOUBTFUL or QUESTIONABLE
-    if injury and injury.get("status") in ("DOUBTFUL", "QUESTIONABLE"):
-        elevated_reasons.append("currently_gtd")
-
-    # Low season availability
-    if availability and availability["pct"] < AVAIL_ELEVATED_PCT:
-        elevated_reasons.append("low_availability")
-
-    # Recent absences (within 14 days)
-    if absence_profile and (absence_profile.get("absences_last_14d") or 0) >= 2:
-        elevated_reasons.append("recent_absences")
-
-    # Recently returned (played recently after a gap)
-    if absence_profile:
-        days_since = absence_profile.get("days_since_last_game")
-        absences_14 = absence_profile.get("absences_last_14d") or 0
-        # Played recently but had absences in the window → recently returned
-        if days_since is not None and days_since <= 5 and absences_14 >= 3:
-            elevated_reasons.append("recently_returned")
-
-    # Minutes declining significantly
-    if minutes_profile and minutes_profile.get("trend") == "declining":
-        elevated_reasons.append("minutes_declining")
-
-    if elevated_reasons:
-        return "ELEVATED"
-
-    # MANAGED: high B2B sit rate
-    if b2b_profile:
-        sit_rate = b2b_profile.get("sit_rate_pct")
-        if sit_rate is not None and sit_rate >= B2B_SIT_RATE_MANAGED:
-            return "MANAGED"
-
-    return "CLEAR"
-
-
 # ── Main ──────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -423,7 +369,7 @@ def main() -> None:
     print(f"[injury_profiles] {len(whitelist)} active players, game log through {game_log_through}")
 
     players_out: dict[str, dict] = {}
-    tier_counts = {"OUT": 0, "ELEVATED": 0, "MANAGED": 0, "CLEAR": 0}
+    status_counts = {"OUT": 0, "DOUBTFUL": 0, "QUESTIONABLE": 0, "ACTIVE": 0}
 
     for wp in whitelist:
         name = wp["name"]
@@ -440,31 +386,16 @@ def main() -> None:
 
         injury = injuries.get(name_norm)
 
-        risk_tier = classify_risk_tier(
-            availability, absence_profile, minutes_profile, b2b_profile, injury
-        )
-        tier_counts[risk_tier] = tier_counts.get(risk_tier, 0) + 1
-
-        # Build elevated_reasons list for transparency
-        elevated_reasons = []
-        if risk_tier == "ELEVATED":
-            if injury and injury.get("status") in ("DOUBTFUL", "QUESTIONABLE"):
-                elevated_reasons.append("currently_gtd")
-            if availability and availability["pct"] < AVAIL_ELEVATED_PCT:
-                elevated_reasons.append(f"availability_{availability['pct']}%")
-            if absence_profile and (absence_profile.get("absences_last_14d") or 0) >= 2:
-                elevated_reasons.append(f"absences_last_14d={absence_profile['absences_last_14d']}")
-            if absence_profile:
-                days_since = absence_profile.get("days_since_last_game")
-                absences_14 = absence_profile.get("absences_last_14d") or 0
-                if days_since is not None and days_since <= 5 and absences_14 >= 3:
-                    elevated_reasons.append("recently_returned")
-            if minutes_profile and minutes_profile.get("trend") == "declining":
-                elevated_reasons.append("minutes_declining")
+        # Derive current status from injury overlay (no automated risk classification)
+        if injury and injury.get("status"):
+            current_status = injury["status"]  # OUT, DOUBTFUL, QUESTIONABLE
+        else:
+            current_status = "ACTIVE"
+        status_counts[current_status] = status_counts.get(current_status, 0) + 1
 
         entry = {
             "team": team,
-            "risk_tier": risk_tier,
+            "current_status": current_status,
             "availability": availability,
             "absence_profile": absence_profile,
             "minutes_profile": minutes_profile,
@@ -474,23 +405,20 @@ def main() -> None:
                 "details": injury["details"] if injury else None,
             } if injury else None,
         }
-        if elevated_reasons:
-            entry["elevated_reasons"] = elevated_reasons
 
         players_out[name] = entry
 
-        # Log non-CLEAR players
-        if risk_tier != "CLEAR":
-            reasons_str = f" ({', '.join(elevated_reasons)})" if elevated_reasons else ""
+        # Log players with injury report status
+        if current_status != "ACTIVE":
             inj_str = f" [{injury['status']}: {injury['details']}]" if injury else ""
-            print(f"  {risk_tier}: {name} ({team}){inj_str}{reasons_str}")
+            print(f"  {current_status}: {name} ({team}){inj_str}")
 
     # ── Write output ──────────────────────────────────────────────────
     output = {
         "generated_at": dt.datetime.now(PT).isoformat(),
         "game_log_through": game_log_through,
         "total_players": len(players_out),
-        "tier_summary": tier_counts,
+        "status_summary": status_counts,
         "players": players_out,
     }
 
@@ -499,8 +427,8 @@ def main() -> None:
 
     print(
         f"[injury_profiles] Saved injury_profiles.json"
-        f" (OUT={tier_counts['OUT']}, ELEVATED={tier_counts['ELEVATED']},"
-        f" MANAGED={tier_counts['MANAGED']}, CLEAR={tier_counts['CLEAR']})"
+        f" (OUT={status_counts.get('OUT', 0)}, DOUBTFUL={status_counts.get('DOUBTFUL', 0)},"
+        f" QUESTIONABLE={status_counts.get('QUESTIONABLE', 0)}, ACTIVE={status_counts.get('ACTIVE', 0)})"
     )
 
 

@@ -539,28 +539,27 @@ actual_value, would_have_hit, skip_verdict, skip_verdict_notes
 Rolled-up season stats written fresh after every auditor run by `save_audit_summary()`. Consumed by `analyst.py` as `## ROLLING PERFORMANCE SUMMARY`. Key blocks: `overall` (season hit rates, injury_exclusions, voided count), `prop_type_breakdown` (per-stat rates), `confidence_calibration_totals` (per-band actual vs stated — keys: `"70-75"`, `"76-80"`, `"81-85"`, `"86+"`, each with `picks`, `hits`, `misses`, `hit_rate_pct`), `skip_validation` (per-rule false skip rates), `clv_summary` (CLV rollup — `total_with_clv`, `beat_close`, `lost_close`, `no_movement`, `avg_clv_pp`, `beat_close_pct`, `beat_close_hit_rate_pct`, `lost_close_hit_rate_pct`, `no_move_hit_rate_pct`; ±0.5pp threshold for movement classification), `human_flag_precision` (season hit/miss rates grouped by `human_verdict` — "keep"/"trim"/"manual_skip" — computed from `picks.json` directly; accumulates automatically without explicit audit_log entries).
 
 ### injury_profiles.json
-Written daily by `agents/injury_profiles.py` in `analyst.yml`. Per-player injury risk and availability metrics.
+Written daily by `agents/injury_profiles.py` in `analyst.yml`. Per-player availability metrics + current injury status. Data provider only — no automated risk classification.
 ```json
 {
   "generated_at": "ISO timestamp",
   "game_log_through": "YYYY-MM-DD",
   "total_players": 68,
-  "tier_summary": {"OUT": 0, "ELEVATED": 49, "MANAGED": 0, "CLEAR": 19},
+  "status_summary": {"OUT": 0, "DOUBTFUL": 0, "QUESTIONABLE": 0, "ACTIVE": 68},
   "players": {
     "Player Name": {
       "team": "abbrev",
-      "risk_tier": "OUT|ELEVATED|MANAGED|CLEAR",
+      "current_status": "OUT|DOUBTFUL|QUESTIONABLE|ACTIVE",
       "availability": {"games_played": 64, "team_games": 82, "pct": 78.0, "total_absences": 18, "dnp_count": 2},
       "absence_profile": {"longest_streak": 8, "streak_count": 3, "absences_last_14d": 5, "absences_last_30d": 8, "days_since_last_game": 1, "last_game_date": "2026-04-12"},
       "minutes_profile": {"season_avg": 33.5, "l5_avg": 28.2, "l20_avg": 34.1, "trend": "declining"},
       "b2b_profile": {"b2b_total": 12, "b2b_played": 8, "b2b_sat": 4, "sit_rate_pct": 33.3},
-      "current_injury": {"status": "QUESTIONABLE", "details": "Knee"} | null,
-      "elevated_reasons": ["availability_78.0%", "absences_last_14d=5", "minutes_declining"]
+      "current_injury": {"status": "QUESTIONABLE", "details": "Knee"} | null
     }
   }
 }
 ```
-Risk tiers: OUT (injury report), ELEVATED (<85% avail, recent absences, minutes declining, GTD), MANAGED (>50% B2B sit rate), CLEAR (no concerns). `elevated_reasons` only present when tier=ELEVATED.
+`current_status` derived from `injuries_today.json` overlay — no automated risk classification. Curated risk assessment lives in `### PLAYOFF INJURY LANDSCAPE` section of `context/nba_season_context.md`.
 
 ---
 

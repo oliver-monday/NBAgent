@@ -66,7 +66,8 @@ Status: ACTIVE — final regular season day 4/12 (15-game slate). Play-in: April
 - ✅ **Parlay Track 1: Variety + Bold Card** shipped 2026-04-12 — TARGET_MAX_ODDS 600→900, TOP_N_TO_CLAUDE 15→25, leg-count diversity enforcement in `build_candidates()`, prompt variety mandate (1×2-leg + 1×4-leg minimum), bold card concept (`card_type` field), odds-aware edge reasoning in SELECTION CRITERIA.
 - ✅ **Parlay Builder UI + Spec 3 Cannib Badges** shipped 2026-04-12 — custom parlay builder on Parlays tab (click picks, live odds/payout/edge, H33+corr warnings, copy to clipboard). Spec 3: ⊖/⊕ cannibalization badges inline on system parlay legs. `build_site.py` only.
 
-- ✅ **Injury Profiles agent** shipped 2026-04-13 — `agents/injury_profiles.py` computes per-player availability, absence patterns, minutes trends, B2B sit rates, risk tier (OUT/ELEVATED/MANAGED/CLEAR). Runs in `analyst.yml`. Phase 2: wire into analyst prompt as `## PLAYOFF INJURY LANDSCAPE` context block.
+- ✅ **Injury Profiles agent** shipped 2026-04-13 — `agents/injury_profiles.py` (data provider, no auto-classification). Simplified 4/13: removed noisy risk tier auto-classifier; now outputs `current_status` from injury overlay only. Curated `### PLAYOFF INJURY LANDSCAPE` section added to `nba_season_context.md` with confirmed OUT players + active concerns + R1 matchup context. `build_playoff_adjustments()` updated with injury annotations (Luka/Reaves/Embiid OUT, Edwards knee, + Cade/LeBron/Wemby entries).
+- **Monitor:** Update PLAYOFF INJURY LANDSCAPE in `nba_season_context.md` as injury statuses change (Quickley MRI, Edwards Game 1 output, Wemby Game 1 output, Doncic re-evaluation Apr 14).
 
 **Remaining gap items (April 12–13):**
 - Create `data/playoff_bracket.json` — populate once seeds are final after 4/11 games

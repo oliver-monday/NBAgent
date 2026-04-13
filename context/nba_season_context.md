@@ -156,6 +156,35 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 
 ---
 
+### PLAYOFF INJURY LANDSCAPE
+*Last updated: 2026-04-13. Update this section as statuses change — the analyst reads it before every pick.*
+
+**CONFIRMED OUT FOR R1:**
+
+- **Luka Doncic (LAL)** — Grade 2 left hamstring strain (Apr 2 vs OKC). Same hamstring he tweaked Feb 5. In Spain for stem cell injection treatment. Re-evaluation Apr 14. OUT for R1 Game 1. Best case: late R1 (Games 4-5 if series goes long). Realistic: R2 (~May 3-4). Without Doncic + Reaves, LeBron is LAL's sole offensive engine.
+- **Austin Reaves (LAL)** — Grade 2 oblique strain (Apr 2 vs OKC, same game as Doncic). 4-6 week timeline. Per Charania (Apr 13): "out for the majority of the first-round series; earliest first week of May." 12-25% reinjury risk if rushed.
+- **Joel Embiid (PHI)** — Emergency appendectomy (Apr 10 in Houston). No return timeline. Typical recovery ~23 days. Almost certainly out for play-in AND early R1. Has played only 38 games this season (chronic knee management). PHI's playoff path without Embiid is severely compromised.
+
+**ACTIVE WITH DOCUMENTED CONCERNS:**
+
+- **Anthony Edwards (MIN)** — Right knee patellofemoral pain ("runner's knee"). Missed 11 of final 14 regular season games. Expected to play through it in playoffs. Same condition that sidelined Curry for 27 games. May not be at full capacity — conservative tiers recommended until Game 1 production confirms health.
+- **Jaden McDaniels (MIN)** — Left knee patella tendinopathy + bone bruise. Missed 6 of final 9 games. Returned Apr 8. Only ~4 games since injury. Key two-way player for MIN — monitor minutes in early games.
+- **Immanuel Quickley (TOR)** — Right hamstring tightness (exited Q2 on Apr 12, did not return). MRI pending. Same right leg as 8-game plantar fasciitis absence earlier in April. Availability for CLE R1 (Apr 18) uncertain.
+- **Cade Cunningham (DET)** — Collapsed left lung (pneumothorax, mild) from collision Mar 17. Missed 11 games. Returned Apr 9. On a minutes ramp-up: L5 avg 23.6 min vs 33.4 season avg. AST production held immediately (10 AST in 26 min in return game). PTS will lag until minutes normalize (~Game 3+).
+- **Victor Wembanyama (SAS)** — Left rib contusion (collision with Paul George, Apr 6). MRI clean. Sat 3 of final 4 regular season games. Expected available for R1 (Apr 18, 6 days rest). Also managing right ankle pain. Rib contusions cause pain on contact — may limit aggressiveness early.
+- **Stephon Castle (SAS)** — Knee soreness. Was OUT Apr 9 alongside Wemby. Monitor status for R1.
+- **Stephen Curry (GSW)** — Right knee ("runner's knee"). Missed 27 games. Returned Apr 7 on ~25 min restriction. Only 3 games since return. Still ramping for play-in. Per-minute production solid but conditioning uncertain.
+- **Aaron Gordon (DEN)** — Calf/hamstring strains recurring over past two seasons. Missed 40 games this season. DEN's key defensive anchor. If he misses games vs MIN, DEN defense suffers significantly.
+
+**R1 MATCHUP INJURY CONTEXT:**
+
+- **(4) LAL vs (5) HOU:** Catastrophic injury mismatch. LAL without Doncic AND Reaves. LeBron (41) as sole offensive engine vs full-strength HOU. Both teams are confirmed H15 suppressors. Most challenging pick environment in R1.
+- **(3) DEN vs (6) MIN:** Both teams have injury concerns. Edwards' knee and McDaniels' ramp-up vs Gordon's durability. If Edwards is <100%, series tips to DEN. Jokic healthy and having best season.
+- **(4) CLE vs (5) TOR:** Quickley's hamstring is the key variable. CLE appears healthy with Harden integrated.
+- **PHI play-in vs ORL:** Embiid OUT. Maxey + George + Edgecombe must carry. If PHI advances, they face BOS without their best player.
+
+---
+
 ### PLAYOFF SERIES DIARIES
 
 After each playoff game, add 3-4 lines under the relevant series header: key stat lines, defensive adjustments observed, scheme changes, and expectations for the next game. This is the qualitative layer that captures within-series defensive adaptation the quant pipeline cannot model.

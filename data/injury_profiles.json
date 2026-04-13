@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-04-13T14:00:49.730918-07:00",
+  "generated_at": "2026-04-13T15:13:09.929238-07:00",
   "game_log_through": "2026-04-12",
   "total_players": 68,
-  "tier_summary": {
+  "status_summary": {
     "OUT": 0,
-    "ELEVATED": 49,
-    "MANAGED": 0,
-    "CLEAR": 19
+    "DOUBTFUL": 0,
+    "QUESTIONABLE": 0,
+    "ACTIVE": 68
   },
   "players": {
     "Cade Cunningham": {
       "team": "DET",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 64,
         "team_games": 82,
@@ -39,17 +39,11 @@
         "b2b_sat": 4,
         "sit_rate_pct": 28.6
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_78.0%",
-        "absences_last_14d=5",
-        "recently_returned",
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Jalen Duren": {
       "team": "DET",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 74,
         "team_games": 82,
@@ -77,14 +71,11 @@
         "b2b_sat": 1,
         "sit_rate_pct": 7.1
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Ausar Thompson": {
       "team": "DET",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 73,
         "team_games": 82,
@@ -116,7 +107,7 @@
     },
     "Jalen Brunson": {
       "team": "NYK",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 75,
         "team_games": 83,
@@ -144,14 +135,11 @@
         "b2b_sat": 2,
         "sit_rate_pct": 14.3
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Karl-Anthony Towns": {
       "team": "NYK",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 78,
         "team_games": 83,
@@ -179,14 +167,11 @@
         "b2b_sat": 1,
         "sit_rate_pct": 7.1
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "OG Anunoby": {
       "team": "NYK",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 69,
         "team_games": 83,
@@ -214,14 +199,11 @@
         "b2b_sat": 2,
         "sit_rate_pct": 14.3
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_83.1%"
-      ]
+      "current_injury": null
     },
     "Mikal Bridges": {
       "team": "NYK",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 83,
         "team_games": 83,
@@ -249,14 +231,11 @@
         "b2b_sat": 0,
         "sit_rate_pct": 0.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Brandon Ingram": {
       "team": "TOR",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 78,
         "team_games": 82,
@@ -288,7 +267,7 @@
     },
     "Scottie Barnes": {
       "team": "TOR",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 79,
         "team_games": 82,
@@ -320,7 +299,7 @@
     },
     "RJ Barrett": {
       "team": "TOR",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 58,
         "team_games": 82,
@@ -348,14 +327,11 @@
         "b2b_sat": 9,
         "sit_rate_pct": 60.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_70.7%"
-      ]
+      "current_injury": null
     },
     "Immanuel Quickley": {
       "team": "TOR",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 71,
         "team_games": 82,
@@ -383,16 +359,11 @@
         "b2b_sat": 6,
         "sit_rate_pct": 40.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=5",
-        "recently_returned",
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Jaylen Brown": {
       "team": "BOS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 76,
         "team_games": 82,
@@ -420,14 +391,11 @@
         "b2b_sat": 4,
         "sit_rate_pct": 30.8
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Derrick White": {
       "team": "BOS",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 79,
         "team_games": 82,
@@ -459,7 +427,7 @@
     },
     "Payton Pritchard": {
       "team": "BOS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 80,
         "team_games": 82,
@@ -487,14 +455,11 @@
         "b2b_sat": 2,
         "sit_rate_pct": 15.4
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Jayson Tatum": {
       "team": "BOS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 14,
         "team_games": 82,
@@ -522,16 +487,11 @@
         "b2b_sat": 13,
         "sit_rate_pct": 100.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_17.1%",
-        "absences_last_14d=3",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Neemias Queta": {
       "team": "BOS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 79,
         "team_games": 82,
@@ -559,14 +519,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 23.1
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Tyrese Maxey": {
       "team": "PHI",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 70,
         "team_games": 82,
@@ -598,7 +555,7 @@
     },
     "Joel Embiid": {
       "team": "PHI",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 39,
         "team_games": 82,
@@ -626,15 +583,11 @@
         "b2b_sat": 10,
         "sit_rate_pct": 62.5
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_47.6%",
-        "absences_last_14d=5"
-      ]
+      "current_injury": null
     },
     "Paul George": {
       "team": "PHI",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 44,
         "team_games": 82,
@@ -662,14 +615,11 @@
         "b2b_sat": 9,
         "sit_rate_pct": 56.2
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_53.7%"
-      ]
+      "current_injury": null
     },
     "VJ Edgecombe": {
       "team": "PHI",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 75,
         "team_games": 82,
@@ -701,7 +651,7 @@
     },
     "Paolo Banchero": {
       "team": "ORL",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 72,
         "team_games": 82,
@@ -733,7 +683,7 @@
     },
     "Desmond Bane": {
       "team": "ORL",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 82,
         "team_games": 82,
@@ -761,14 +711,11 @@
         "b2b_sat": 1,
         "sit_rate_pct": 7.1
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Tyler Herro": {
       "team": "MIA",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 52,
         "team_games": 83,
@@ -796,15 +743,11 @@
         "b2b_sat": 8,
         "sit_rate_pct": 47.1
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_62.7%",
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Bam Adebayo": {
       "team": "MIA",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 76,
         "team_games": 83,
@@ -836,7 +779,7 @@
     },
     "Norman Powell": {
       "team": "MIA",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 77,
         "team_games": 83,
@@ -864,15 +807,11 @@
         "b2b_sat": 2,
         "sit_rate_pct": 11.8
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=3",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Andrew Wiggins": {
       "team": "MIA",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 76,
         "team_games": 83,
@@ -904,7 +843,7 @@
     },
     "Donovan Mitchell": {
       "team": "CLE",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 71,
         "team_games": 82,
@@ -932,15 +871,11 @@
         "b2b_sat": 5,
         "sit_rate_pct": 35.7
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=3",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Evan Mobley": {
       "team": "CLE",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 66,
         "team_games": 82,
@@ -968,15 +903,11 @@
         "b2b_sat": 5,
         "sit_rate_pct": 35.7
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_80.5%",
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Jarrett Allen": {
       "team": "CLE",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 57,
         "team_games": 82,
@@ -1004,16 +935,11 @@
         "b2b_sat": 5,
         "sit_rate_pct": 35.7
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_69.5%",
-        "absences_last_14d=4",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "James Harden": {
       "team": "CLE",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 26,
         "team_games": 82,
@@ -1041,15 +967,11 @@
         "b2b_sat": 10,
         "sit_rate_pct": 71.4
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_31.7%",
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Jalen Johnson": {
       "team": "ATL",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 74,
         "team_games": 82,
@@ -1081,7 +1003,7 @@
     },
     "Nickeil Alexander-Walker": {
       "team": "ATL",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 79,
         "team_games": 82,
@@ -1113,7 +1035,7 @@
     },
     "CJ McCollum": {
       "team": "ATL",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 41,
         "team_games": 82,
@@ -1141,14 +1063,11 @@
         "b2b_sat": 9,
         "sit_rate_pct": 69.2
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_50.0%"
-      ]
+      "current_injury": null
     },
     "Miles Bridges": {
       "team": "CHA",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 80,
         "team_games": 82,
@@ -1180,7 +1099,7 @@
     },
     "LaMelo Ball": {
       "team": "CHA",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 71,
         "team_games": 82,
@@ -1212,7 +1131,7 @@
     },
     "Kon Knueppel": {
       "team": "CHA",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 80,
         "team_games": 82,
@@ -1244,7 +1163,7 @@
     },
     "Brandon Miller": {
       "team": "CHA",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 64,
         "team_games": 82,
@@ -1272,14 +1191,11 @@
         "b2b_sat": 4,
         "sit_rate_pct": 25.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_78.0%"
-      ]
+      "current_injury": null
     },
     "Coby White": {
       "team": "CHA",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 23,
         "team_games": 82,
@@ -1307,14 +1223,11 @@
         "b2b_sat": 12,
         "sit_rate_pct": 75.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_28.0%"
-      ]
+      "current_injury": null
     },
     "Shai Gilgeous-Alexander": {
       "team": "OKC",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 68,
         "team_games": 82,
@@ -1342,15 +1255,11 @@
         "b2b_sat": 4,
         "sit_rate_pct": 28.6
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_82.9%",
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Chet Holmgren": {
       "team": "OKC",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 70,
         "team_games": 82,
@@ -1378,14 +1287,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 21.4
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Jalen Williams": {
       "team": "OKC",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 33,
         "team_games": 82,
@@ -1413,16 +1319,11 @@
         "b2b_sat": 10,
         "sit_rate_pct": 71.4
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_40.2%",
-        "absences_last_14d=4",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Isaiah Hartenstein": {
       "team": "OKC",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 49,
         "team_games": 82,
@@ -1450,16 +1351,11 @@
         "b2b_sat": 8,
         "sit_rate_pct": 57.1
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_59.8%",
-        "absences_last_14d=3",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Nikola Jokic": {
       "team": "DEN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 65,
         "team_games": 83,
@@ -1487,14 +1383,11 @@
         "b2b_sat": 4,
         "sit_rate_pct": 23.5
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_78.3%"
-      ]
+      "current_injury": null
     },
     "Jamal Murray": {
       "team": "DEN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 77,
         "team_games": 83,
@@ -1522,14 +1415,11 @@
         "b2b_sat": 1,
         "sit_rate_pct": 5.9
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Aaron Gordon": {
       "team": "DEN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 40,
         "team_games": 83,
@@ -1557,15 +1447,11 @@
         "b2b_sat": 9,
         "sit_rate_pct": 52.9
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_48.2%",
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Cameron Johnson": {
       "team": "DEN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 55,
         "team_games": 83,
@@ -1593,14 +1479,11 @@
         "b2b_sat": 7,
         "sit_rate_pct": 41.2
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_66.3%"
-      ]
+      "current_injury": null
     },
     "Luka Doncic": {
       "team": "LAL",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 65,
         "team_games": 82,
@@ -1628,16 +1511,11 @@
         "b2b_sat": 4,
         "sit_rate_pct": 28.6
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_79.3%",
-        "absences_last_14d=5",
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Austin Reaves": {
       "team": "LAL",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 52,
         "team_games": 82,
@@ -1665,15 +1543,11 @@
         "b2b_sat": 5,
         "sit_rate_pct": 35.7
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_63.4%",
-        "absences_last_14d=5"
-      ]
+      "current_injury": null
     },
     "LeBron James": {
       "team": "LAL",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 60,
         "team_games": 82,
@@ -1701,14 +1575,11 @@
         "b2b_sat": 7,
         "sit_rate_pct": 50.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_73.2%"
-      ]
+      "current_injury": null
     },
     "Victor Wembanyama": {
       "team": "SAS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 65,
         "team_games": 83,
@@ -1736,16 +1607,11 @@
         "b2b_sat": 4,
         "sit_rate_pct": 26.7
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_78.3%",
-        "absences_last_14d=3",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Stephon Castle": {
       "team": "SAS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 69,
         "team_games": 83,
@@ -1773,15 +1639,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 20.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_83.1%",
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "De'Aaron Fox": {
       "team": "SAS",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 73,
         "team_games": 83,
@@ -1813,7 +1675,7 @@
     },
     "Devin Vassell": {
       "team": "SAS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 69,
         "team_games": 83,
@@ -1841,14 +1703,11 @@
         "b2b_sat": 6,
         "sit_rate_pct": 40.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_83.1%"
-      ]
+      "current_injury": null
     },
     "Dylan Harper": {
       "team": "SAS",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 70,
         "team_games": 83,
@@ -1876,14 +1735,11 @@
         "b2b_sat": 2,
         "sit_rate_pct": 13.3
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_84.3%"
-      ]
+      "current_injury": null
     },
     "Kevin Durant": {
       "team": "HOU",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 78,
         "team_games": 82,
@@ -1915,7 +1771,7 @@
     },
     "Alperen Sengun": {
       "team": "HOU",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 73,
         "team_games": 82,
@@ -1947,7 +1803,7 @@
     },
     "Amen Thompson": {
       "team": "HOU",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 80,
         "team_games": 82,
@@ -1979,7 +1835,7 @@
     },
     "Jabari Smith Jr.": {
       "team": "HOU",
-      "risk_tier": "CLEAR",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 80,
         "team_games": 82,
@@ -2011,7 +1867,7 @@
     },
     "Anthony Edwards": {
       "team": "MIN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 61,
         "team_games": 83,
@@ -2039,16 +1895,11 @@
         "b2b_sat": 5,
         "sit_rate_pct": 33.3
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_73.5%",
-        "absences_last_14d=5",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Julius Randle": {
       "team": "MIN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 79,
         "team_games": 83,
@@ -2076,14 +1927,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 20.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=3"
-      ]
+      "current_injury": null
     },
     "Jaden McDaniels": {
       "team": "MIN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 73,
         "team_games": 83,
@@ -2111,15 +1959,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 20.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=6",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Rudy Gobert": {
       "team": "MIN",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 79,
         "team_games": 83,
@@ -2147,14 +1991,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 20.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "absences_last_14d=3"
-      ]
+      "current_injury": null
     },
     "Devin Booker": {
       "team": "PHX",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 64,
         "team_games": 82,
@@ -2182,15 +2023,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 18.8
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_78.0%",
-        "absences_last_14d=2"
-      ]
+      "current_injury": null
     },
     "Jalen Green": {
       "team": "PHX",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 34,
         "team_games": 82,
@@ -2218,15 +2055,11 @@
         "b2b_sat": 7,
         "sit_rate_pct": 43.8
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_41.5%",
-        "minutes_declining"
-      ]
+      "current_injury": null
     },
     "Stephen Curry": {
       "team": "GSW",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 43,
         "team_games": 83,
@@ -2254,16 +2087,11 @@
         "b2b_sat": 8,
         "sit_rate_pct": 47.1
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_51.8%",
-        "absences_last_14d=3",
-        "recently_returned"
-      ]
+      "current_injury": null
     },
     "Kawhi Leonard": {
       "team": "LAC",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 65,
         "team_games": 82,
@@ -2291,14 +2119,11 @@
         "b2b_sat": 3,
         "sit_rate_pct": 20.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_79.3%"
-      ]
+      "current_injury": null
     },
     "Darius Garland": {
       "team": "LAC",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 19,
         "team_games": 82,
@@ -2326,14 +2151,11 @@
         "b2b_sat": 12,
         "sit_rate_pct": 80.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_23.2%"
-      ]
+      "current_injury": null
     },
     "Bennedict Mathurin": {
       "team": "LAC",
-      "risk_tier": "ELEVATED",
+      "current_status": "ACTIVE",
       "availability": {
         "games_played": 26,
         "team_games": 82,
@@ -2361,10 +2183,7 @@
         "b2b_sat": 9,
         "sit_rate_pct": 60.0
       },
-      "current_injury": null,
-      "elevated_reasons": [
-        "availability_31.7%"
-      ]
+      "current_injury": null
     }
   }
 }

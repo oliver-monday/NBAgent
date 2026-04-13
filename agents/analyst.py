@@ -888,9 +888,9 @@ SGA — NEUTRAL. Already optimally calibrated. PTS T20 near-certain regardless o
 
 Jokic — BOOST PTS/3PM. PTS elevates +9pp in playoffs, scales with minutes (T25: 42%→72% at 38+ min), series-stable. 3PM +16pp playoff lift. AST: safe at T4 but CAUTION at T6+ (suppressed -12pp in playoffs). Most reliable and series-consistent playoff player overall.
 
-Ant Edwards — BOOST G1-4, CAUTION G5-7 PTS/3PM. STRONG_ELEVATOR (PTS +7pp, REB +21pp, AST +23pp) AND massive minutes scaler (T25: 25%→86% at 38+ min). BUT PTS fades -15pp in games 5-7 as defenses adjust. In late-series: shift to AST (rises +11pp late).
+Ant Edwards — BOOST G1-4, CAUTION G5-7 PTS/3PM. ⚠ INJURY NOTE: Playing through right knee (runner's knee), missed 11 of last 14 games. Profile assumes healthy Edwards — if knee limits him, dial back to conservative tiers (T20 not T25) until Game 1 production confirms health. When healthy: STRONG_ELEVATOR (PTS +7pp, REB +21pp, AST +23pp) AND massive minutes scaler (T25: 25%→86% at 38+ min). PTS fades -15pp in games 5-7. Late-series: shift to AST (+11pp late).
 
-Luka — BOOST PTS. System massively underrates (12/12 PTS picks hit, +16pp under-confident). Already at 100% PTS T20 at playoff minutes. AST dips -5.5pp in playoffs — still pickable but avoid high AST tiers. REB rises as series deepen.
+Luka — ⚠ OUT (Grade 2 left hamstring, Apr 2). DO NOT generate picks. Expected R2 return at earliest. If he returns mid-series: PTS is the prop (system massively underrates, 12/12 picks hit). AST dips in playoffs. REB rises late-series.
 
 Tatum — PROP-SPECIFIC. Pick AST (elevates +17pp in playoffs, rises further late-series +16pp). REB stable-to-up. PTS suppresses -6.5pp. 3PM AVOID (-11pp playoff drop). Shifts to facilitator mode.
 
@@ -908,7 +908,7 @@ Murray — BOOST early-series. PTS and REB elevate, scales with minutes (+39pp T
 
 Booker — pick REB (elevates +13pp, rises +36pp late-series). PTS fades hard late (-22pp). AST fades harder (-28pp). 3PM dips. In playoffs, REB is the prop.
 
-Embiid — STRONG CAUTION PTS/AST. PTS: -12pp playoff drop, 52% in competitive games vs 100% in blowouts (H32). Playoff games are inherently competitive. AST: -18pp. Only REB is safe.
+Embiid — ⚠ OUT (appendectomy, Apr 10). DO NOT generate picks. No return timeline. If he returns: STRONG CAUTION PTS/AST (-12pp PTS drop, -18pp AST). Only REB safe.
 
 KAT — STRONG CAUTION PTS/AST/3PM. Massive suppression across the board. REB only safe prop. May warm up within series (PTS late-riser +18pp) but baseline deeply suppressed.
 
@@ -918,11 +918,17 @@ Maxey — CAUTION PTS/3PM/AST. Playoff suppressor despite strong minutes scaling
 
 J. Williams — BOOST PTS/REB/AST. Strong elevator across the board. 3PM: AVOID in competitive-spread games (0% hit rate in competitive context).
 
-Reaves — BOOST. Broad elevator, system underrates (+13.5pp). PTS fades late; shift to REB/AST in deep series.
+Reaves — ⚠ OUT (Grade 2 oblique, Apr 2). DO NOT generate picks. Earliest return: first week of May. If he returns: broad elevator, system underrates (+13.5pp). PTS fades late; shift to REB/AST.
 
 Kawhi — BOOST PTS/REB when healthy. +19pp PTS, +18pp REB in playoffs. System underrates. Health is the only gate. 3PM has home/away split (24pp range) — check venue.
 
 Banchero — BOOST. 14/14 PTS picks hit in regular season. Massive minutes scaler (+38pp T25). System's biggest miscalibration (+19.5pp). ⚠ Limited playoff career sample (n=12).
+
+Cade Cunningham — RAMP-UP. Returned Apr 9 from collapsed lung (missed 11 games). ⚠ Minutes restricted: L5 avg 23.6 vs 33.4 season avg. AST production held immediately (10 AST in 26 min on return) — AST T6/T8 is safe even at reduced minutes. PTS will lag in Games 1-2 until minutes normalize to ~30+. By Game 3+, expect near-full capacity. DET went 8-3 without him — team is deeper than perceived.
+
+LeBron James — LOAD RISK. 41 years old, now sole offensive engine with Doncic and Reaves both OUT. PTS/AST usage skyrockets but H30 data shows he INVERTS at extended minutes (production drops). Age + sole-carrier burden = caution at high PTS tiers. AST may benefit (more ball-handling, more assists to role players). Do not pick PTS above T25. Monitor fatigue game-to-game.
+
+Wembanyama — CLEAR (with rib caveat). Left rib contusion (Apr 6), MRI clean. Sat final 3 regular season games. Expected available Game 1 (6 days rest). Rib pain may limit aggressiveness in first game or two — contact-heavy plays affected. Also managing right ankle. If Game 1 output is below his norm, treat as short-term pain management, not structural.
 """
 
 
