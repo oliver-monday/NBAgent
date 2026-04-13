@@ -75,6 +75,10 @@ MINUTES_DNP_THRESHOLD    = 0    # zero minutes → DNP candidate
 MINUTES_LOW_THRESHOLD    = 15   # < 15 min → potential injury exit or restriction
 MINUTES_STAT_THRESHOLD   = 20   # < 20 min AND any zero stat → investigate
 
+# Brave Web Search config
+BRAVE_SEARCH_URL         = "https://api.search.brave.com/res/v1/web/search"
+BRAVE_MAX_SNIPPET_CHARS  = 500
+
 
 # ── Data loaders ──────────────────────────────────────────────────────
 
@@ -99,11 +103,11 @@ def load_yesterdays_player_names() -> set[str]:
 
 def load_yesterdays_missed_pick_names() -> set[str]:
     """
-    Return lowercase player names from yesterday's picks where result == "MISS".
-    Ungraded picks (result=None) are excluded — the reporter runs before the auditor
-    grades picks, so including None would treat every ungraded pick as a missed pick
-    and fetch Brave/ESPN for all players regardless of outcome.
-    Only explicitly-graded MISSes trigger web narrative enrichment.
+    DEPRECATED: This function always returns an empty set because the reporter runs
+    before the auditor grades picks (result is always None at runtime).
+    Replaced by compute_likely_misses() which compares box score actuals to pick
+    thresholds without requiring auditor grading.
+    Retained for reference only — not called in the active pipeline.
     """
     if not PICKS_JSON.exists():
         return set()
@@ -179,6 +183,64 @@ def _get_miss_pick_meta(player_name_lower: str) -> dict:
     except Exception:
         pass
     return {}
+
+
+def compute_likely_misses(
+    player_names: set[str], game_rows: dict[str, dict]
+) -> tuple[set[str], dict[str, dict]]:
+    """
+    Compare actual box score stats to pick thresholds to identify likely misses.
+    Works pre-grading — does NOT require auditor to have set result=MISS.
+    Replaces load_yesterdays_missed_pick_names() which was broken (always empty).
+
+    Returns:
+        (likely_miss_names, likely_miss_meta)
+        likely_miss_meta: {name: {prop_type, pick_value, actual_value, team}}
+            — first likely-miss pick per player (for Claude context injection)
+    """
+    PROP_TO_STAT = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
+    likely: set[str] = set()
+    meta: dict[str, dict] = {}
+    if not PICKS_JSON.exists():
+        return likely, meta
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+        for p in all_picks:
+            if p.get("date") != YESTERDAY_STR:
+                continue
+            name = (p.get("player_name") or "").strip().lower()
+            if name not in player_names:
+                continue
+            if p.get("voided"):
+                continue
+            prop_type = (p.get("prop_type") or "").upper()
+            stat_col = PROP_TO_STAT.get(prop_type)
+            if not stat_col:
+                continue
+            pick_value = p.get("pick_value")
+            if pick_value is None:
+                continue
+            row = game_rows.get(name)
+            if not row:
+                continue
+            try:
+                actual = float(row.get(stat_col, 0) or 0)
+                threshold = float(pick_value)
+                if actual < threshold:
+                    likely.add(name)
+                    if name not in meta:  # keep first miss meta only
+                        meta[name] = {
+                            "prop_type":    prop_type,
+                            "pick_value":   str(pick_value),
+                            "actual_value": str(actual),
+                            "team":         p.get("team", ""),
+                        }
+            except (ValueError, TypeError):
+                continue
+    except Exception as e:
+        print(f"[post_game_reporter] WARNING: could not compute likely misses: {e}")
+    return likely, meta
 
 
 def _norm_name(name: str) -> str:
@@ -485,6 +547,50 @@ def fetch_rotowire_news(
     return result
 
 
+# ── Brave injury search ──────────────────────────────────────────────
+
+def fetch_brave_injury_search(player_name: str) -> str | None:
+    """
+    Search Brave Web for recent injury news about a player.
+    Returns concatenated snippets from top results, or None on failure.
+    Graceful: returns None if BRAVE_API_KEY is unset or API errors.
+    """
+    api_key = os.environ.get("BRAVE_API_KEY", "")
+    if not api_key:
+        return None
+    query = f"{player_name} NBA injury"
+    try:
+        resp = requests.get(
+            BRAVE_SEARCH_URL,
+            headers={
+                "Accept": "application/json",
+                "X-Subscription-Token": api_key,
+            },
+            params={"q": query, "count": 3},
+            timeout=REQUEST_TIMEOUT,
+        )
+        if resp.status_code != 200:
+            print(f"[post_game_reporter] Brave search for '{player_name}': HTTP {resp.status_code}")
+            return None
+        data = resp.json()
+        results = data.get("web", {}).get("results", [])
+        if not results:
+            return None
+        snippets = []
+        for r in results[:3]:
+            desc = (r.get("description") or "").strip()
+            title = (r.get("title") or "").strip()
+            if desc:
+                snippets.append(f"{title}: {desc}" if title else desc)
+        if not snippets:
+            return None
+        combined = " | ".join(snippets)
+        return combined[:BRAVE_MAX_SNIPPET_CHARS]
+    except Exception as e:
+        print(f"[post_game_reporter] Brave search error for '{player_name}': {e}")
+        return None
+
+
 # ── Claude classification ────────────────────────────────────────────
 
 def call_claude_classify_events(players_context: list[dict]) -> dict[str, dict]:
@@ -549,8 +655,13 @@ def call_claude_classify_events(players_context: list[dict]) -> dict[str, dict]:
             for b in blurbs[:3]:
                 block += f"  - {b}\n"
 
+        # Brave injury search (for likely-miss players)
+        brave = ctx.get("brave_injury_result")
+        if brave:
+            block += f"BRAVE INJURY SEARCH:\n  {brave}\n"
+
         # Flag if no sources available
-        if not headlines and not recap and not blurbs:
+        if not headlines and not recap and not blurbs and not brave:
             block += "NO EXTERNAL SOURCES AVAILABLE — classify from box score only.\n"
 
         player_blocks.append(block)
@@ -581,11 +692,13 @@ def call_claude_classify_events(players_context: list[dict]) -> dict[str, dict]:
 
     system_prompt = (
         "You are a factual sports reporter classifying NBA post-game events. "
-        "Use the provided sources (ESPN recaps, ESPN athlete news, Rotowire news) "
-        "to determine what happened to each player. Prioritize explicit source evidence "
-        "over inference. If a source says a player 'left with' or 'exited' or 'won't return' "
-        "or 'did not return' or any variation indicating a mid-game departure, classify as "
-        "injury_exit with confidence=confirmed. Return only valid JSON."
+        "Use the provided sources (ESPN recaps, ESPN athlete news, Rotowire news, "
+        "Brave web search) to determine what happened to each player. Prioritize "
+        "explicit source evidence over inference. If a source says a player 'left with' "
+        "or 'exited' or 'won't return' or 'did not return' or any variation indicating "
+        "a mid-game departure, classify as injury_exit with confidence=confirmed. "
+        "Brave injury search results are particularly reliable for surfacing mid-game "
+        "injury exits that other sources may miss. Return only valid JSON."
     )
 
     try:
@@ -636,7 +749,8 @@ def main() -> None:
 
     athlete_ids       = load_athlete_id_map()
     game_rows         = load_yesterday_game_rows(player_names)
-    missed_pick_names = load_yesterdays_missed_pick_names()
+    likely_miss_names, likely_miss_meta = compute_likely_misses(player_names, game_rows)
+    print(f"[post_game_reporter] Likely misses (pre-grading): {len(likely_miss_names)} players")
     injury_statuses   = load_yesterdays_picks_with_status()
 
     # Classify each player's fetch reason for logging
@@ -647,7 +761,7 @@ def main() -> None:
     rest_count = 0
     for name in sorted(player_names):
         row = game_rows.get(name)
-        _flag, reason = should_fetch(row, is_missed_pick=(name in missed_pick_names))
+        _flag, reason = should_fetch(row, is_missed_pick=(name in likely_miss_names))
         fetch_reasons[name] = reason
         if reason == "missed_pick":
             missed_count += 1
@@ -716,13 +830,30 @@ def main() -> None:
     if rw_session:
         rotowire_news = fetch_rotowire_news(rw_session, players_to_fetch)
 
+    # ── Step 3.5: Brave injury search for likely-miss players ────────
+    brave_results: dict[str, str] = {}
+    if likely_miss_names:
+        brave_api_key = os.environ.get("BRAVE_API_KEY", "")
+        if brave_api_key:
+            for name in sorted(likely_miss_names):
+                result = fetch_brave_injury_search(name)
+                if result:
+                    brave_results[name] = result
+                    print(f"[post_game_reporter] Brave hit: {name}")
+            print(
+                f"[post_game_reporter] Brave search: {len(brave_results)}/{len(likely_miss_names)}"
+                f" returned results"
+            )
+        else:
+            print("[post_game_reporter] BRAVE_API_KEY not set — skipping Brave injury search")
+
     # ── Step 4: Build context and call Claude ─────────────────────────
     players_context: list[dict] = []
     for name in sorted(players_to_fetch):
         row = game_rows.get(name)
         minutes = parse_minutes(row) if row else None
         injury_status = injury_statuses.get(name, "NOT_LISTED")
-        is_missed = name in missed_pick_names
+        is_missed = name in likely_miss_names
 
         # ESPN news headlines
         headlines = []
@@ -733,7 +864,8 @@ def main() -> None:
                 headlines.append(f"{h}: {d}" if h and d else (h or d))
 
         # Pick meta for missed picks
-        pick_meta = _get_miss_pick_meta(name) if is_missed else {}
+        # Pick meta for likely-miss picks (computed from box score vs threshold)
+        pick_meta = likely_miss_meta.get(name, {}) if is_missed else {}
 
         ctx = {
             "name": name,
@@ -744,6 +876,7 @@ def main() -> None:
             "espn_news_headlines": headlines[:5],
             "recap_text": player_recap.get(name, ""),
             "rotowire_blurbs": rotowire_news.get(name, [])[:3],
+            "brave_injury_result": brave_results.get(name),
             "pick_meta": pick_meta,
         }
         players_context.append(ctx)
