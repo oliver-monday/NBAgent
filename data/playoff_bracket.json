@@ -1,0 +1,101 @@
+{
+  "season": "2025-26",
+  "round": 1,
+  "playoff_start_date": "2026-04-18",
+  "play_in": {
+    "east": {
+      "7v8": {"home": "PHI", "away": "ORL", "date": "2026-04-14", "winner": null},
+      "9v10": {"home": "CHA", "away": "MIA", "date": "2026-04-15", "winner": null},
+      "final": {"home": null, "away": null, "date": "2026-04-17", "winner": null}
+    },
+    "west": {
+      "7v8": {"home": "PHX", "away": "POR", "date": "2026-04-14", "winner": null},
+      "9v10": {"home": "LAC", "away": "GSW", "date": "2026-04-15", "winner": null},
+      "final": {"home": null, "away": null, "date": "2026-04-17", "winner": null}
+    }
+  },
+  "standings": {
+    "east": [
+      {"seed": 1, "team": "DET", "record": "60-22"},
+      {"seed": 2, "team": "BOS", "record": "56-26"},
+      {"seed": 3, "team": "NYK", "record": "53-29"},
+      {"seed": 4, "team": "CLE", "record": "52-30"},
+      {"seed": 5, "team": "TOR", "record": "46-36"},
+      {"seed": 6, "team": "ATL", "record": "46-36"},
+      {"seed": 7, "team": "PHI", "record": "45-37"},
+      {"seed": 8, "team": "ORL", "record": "45-37"},
+      {"seed": 9, "team": "CHA", "record": "44-38"},
+      {"seed": 10, "team": "MIA", "record": "43-39"}
+    ],
+    "west": [
+      {"seed": 1, "team": "OKC", "record": "64-18"},
+      {"seed": 2, "team": "SAS", "record": "62-20"},
+      {"seed": 3, "team": "DEN", "record": "54-28"},
+      {"seed": 4, "team": "LAL", "record": "53-29"},
+      {"seed": 5, "team": "HOU", "record": "52-30"},
+      {"seed": 6, "team": "MIN", "record": "49-33"},
+      {"seed": 7, "team": "PHX", "record": "45-37"},
+      {"seed": 8, "team": "POR", "record": "42-40"},
+      {"seed": 9, "team": "LAC", "record": "42-40"},
+      {"seed": 10, "team": "GSW", "record": "37-45"}
+    ]
+  },
+  "series": [
+    {
+      "series_id": "E1",
+      "conference": "East",
+      "home_team": "DET",
+      "away_team": "TBD",
+      "best_of": 7
+    },
+    {
+      "series_id": "E2",
+      "conference": "East",
+      "home_team": "BOS",
+      "away_team": "TBD",
+      "best_of": 7
+    },
+    {
+      "series_id": "E3",
+      "conference": "East",
+      "home_team": "NYK",
+      "away_team": "ATL",
+      "best_of": 7
+    },
+    {
+      "series_id": "E4",
+      "conference": "East",
+      "home_team": "CLE",
+      "away_team": "TOR",
+      "best_of": 7
+    },
+    {
+      "series_id": "W1",
+      "conference": "West",
+      "home_team": "OKC",
+      "away_team": "TBD",
+      "best_of": 7
+    },
+    {
+      "series_id": "W2",
+      "conference": "West",
+      "home_team": "SAS",
+      "away_team": "TBD",
+      "best_of": 7
+    },
+    {
+      "series_id": "W3",
+      "conference": "West",
+      "home_team": "DEN",
+      "away_team": "MIN",
+      "best_of": 7
+    },
+    {
+      "series_id": "W4",
+      "conference": "West",
+      "home_team": "LAL",
+      "away_team": "HOU",
+      "best_of": 7
+    }
+  ]
+}
