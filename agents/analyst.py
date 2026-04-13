@@ -925,6 +925,56 @@ Banchero — BOOST. 14/14 PTS picks hit in regular season. Massive minutes scale
 """
 
 
+def build_playoff_blowout_override(today_str: str) -> str:
+    """
+    Returns a PLAYOFF BLOWOUT ADJUSTMENT block that explicitly overrides
+    regular-season spread_abs thresholds with playoff-calibrated values.
+
+    Date-gated to PLAYOFFS_R1_DATE — play-in games (Apr 14-17) use regular-season
+    thresholds. Activates for Round 1 and beyond.
+
+    All thresholds raised by +3 points. Penalty reduced from -10% to -5%.
+    Structural rationale: playoff starters play 38-42 min regardless of margin,
+    Q4 rest patterns from regular season are eliminated, and playoff spreads
+    cluster 3-7 where blowout risk is structurally lower.
+    """
+    if today_str < PLAYOFFS_R1_DATE:
+        return ""
+
+    return """## PLAYOFF BLOWOUT ADJUSTMENT — THRESHOLD OVERRIDES (active: R1+)
+
+In playoff games, blowout dynamics differ structurally: stars play 38-42 minutes
+regardless of margin, starters are rarely pulled in Q4, and managed rest is
+eliminated. The following threshold adjustments REPLACE the regular-season values
+stated in KEY RULES — SPREAD / BLOWOUT RISK and the CONFIDENCE CAPS summary in
+KEY FRAMEWORK above. When these overrides conflict with the regular-season rules,
+these overrides win.
+
+PENALTY OVERRIDE:
+- BLOWOUT_RISK confidence penalty: -5% (replaces -10%)
+- BLOWOUT-RESILIENT offset: full neutralization (iron_floor + BLOWOUT_RISK = net 0%)
+
+THRESHOLD OVERRIDES (each raised +3 from regular season):
+- spread_abs > 11 → 80% ceiling (replaces > 8)
+- spread_abs ≥ 15 → 74% PTS ceiling / LARGE SPREAD PTS CAP (replaces ≥ 12)
+- spread_abs > 16 → 80% cap ALL players on favored team (replaces > 13)
+- spread_abs ≥ 16.5 → BLOWOUT_SECONDARY_SCORER PTS skip (replaces ≥ 13.5)
+- spread_abs ≥ 18 → elite scorer exemption expires (replaces ≥ 15)
+- spread_abs ≥ 18 → PTS T25 hard skip for non-elite scorers (replaces ≥ 15)
+- 3PM blowout trend-down relaxed window: spread_abs 11-21 (replaces 8-18)
+- 3PM extreme blowout hard skip: spread_abs ≥ 22 (replaces ≥ 19)
+
+KEY PRINCIPLE: The BLOWOUT_RISK=True flag in quant headers still fires at
+spread_abs > 8 (unchanged — that is a quant-level annotation). But the
+CONFIDENCE PENALTIES and CAPS that reference specific spread_abs thresholds
+use the raised values above. A game at spread_abs=10 will show BLOWOUT_RISK=True
+in the quant header, but in playoffs that spread does NOT trigger the 80% ceiling
+or the -5% penalty — those require spread_abs > 11.
+
+All other rules (tier system, iron_floor, VOLATILE, B2B, matchup, skip rules
+not listed above) remain unchanged."""
+
+
 def load_player_stats() -> dict:
     """Load pre-computed quant stats from player_stats.json."""
     if not PLAYER_STATS_JSON.exists():
@@ -2448,7 +2498,7 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   or spread_abs > 7 (already handled by BLOWOUT_RISK=True logic at spread_abs ≥ 8).
   It does NOT apply when the player has [iron_floor] on their PTS stat — iron_floor
   confirms the player's scoring floor holds regardless of game script.
-
+{build_playoff_blowout_override(TODAY_STR)}
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
@@ -3558,7 +3608,7 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   or spread_abs > 7 (already handled by BLOWOUT_RISK=True logic at spread_abs ≥ 8).
   It does NOT apply when the player has [iron_floor] on their PTS stat — iron_floor
   confirms the player's scoring floor holds regardless of game script.
-
+{build_playoff_blowout_override(TODAY_STR)}
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
