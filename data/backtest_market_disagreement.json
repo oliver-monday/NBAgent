@@ -1,0 +1,39 @@
+{
+  "mode": "market-disagreement",
+  "generated_at": "2026-04-12",
+  "total_with_market": 134,
+  "total_without_market": 681,
+  "baseline_hit_rate": 88.8,
+  "bucket_results": {
+    "market_much_lower": {
+      "n": 0,
+      "hits": 0,
+      "rate": null,
+      "delta": null
+    },
+    "market_lower": {
+      "n": 1,
+      "hits": 1,
+      "rate": 100.0,
+      "delta": 11.2
+    },
+    "agreement": {
+      "n": 14,
+      "hits": 12,
+      "rate": 85.7,
+      "delta": -3.1
+    },
+    "market_higher": {
+      "n": 53,
+      "hits": 44,
+      "rate": 83.0,
+      "delta": -5.8
+    },
+    "market_much_higher": {
+      "n": 66,
+      "hits": 62,
+      "rate": 93.9,
+      "delta": 5.1
+    }
+  }
+}

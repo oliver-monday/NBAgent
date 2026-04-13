@@ -231,46 +231,36 @@ Deployed as annotation-only feature in `agents/quant.py` (`compute_h2h_splits()`
 ---
 
 ### H15 — Opponent Team Pick Suppression / Lift
-**Status: THIRD RUN COMPLETE (Mar 31, ≥600 picks) — stable**
+**Status: FOURTH RUN COMPLETE (Apr 12, 815 picks) — stable**
 **Mode: `--mode opp-team-hit-rate`**
 
-Three suppressors: HOU (65.2%, n=23), PHX (75.0%, n=24), PHI (64.7%, n=17). One amplifier: IND (100.0%, n=23). MIN×AST at 63.6% (n=11) — needs ≥15 for formal gate, unlikely to reach before season end. All notes in `nba_season_context.md`. Fourth run optional — sample has grown to 778+ picks but suppressor team samples are unlikely to have grown proportionally. Revisit post-R1 if suppressors appear in playoff matchups.
+Three suppressors: HOU (65.2%, n=23), PHI (65.0%, n=20), LAL (76.5%, n=34, NEW — crossed ≥15 gate at -10.7pp). PHX dropped below suppressor threshold (82.3%, n=34, -4.8pp — was 75.0% at n=24). One amplifier: IND (100.0%, n=38). MIN×AST at 75.0% (n=16) — crossed ≥15 gate but -12.2pp is prop-specific only, not system-wide. DET×AST at 50.0% (n=8) — new watch item for playoffs. All notes in `nba_season_context.md`. CLOSED for regular season — revisit post-R1 if suppressors appear in playoff matchups.
 
 ---
 
 ### H16 — 3PA Volume Gate
-**Status: IMPLEMENTED — scheduled for rerun after 4/12 games**
+**Status: RERUN COMPLETE (Apr 12, 132 3PM picks) — insufficient low-volume data**
 **Mode: `--mode 3pa-volume-gate`**
 
-Was 99/150 graded 3PM picks as of Mar 22. Run with whatever count exists after 4/12 final regular season slate. Results feed offseason 3PM rule refinement.
+132 graded 3PM picks (was 99 at Mar 22). Low-volume bucket (avg 3PA < 3) has only n=2 at T1 — insufficient for a volume gate verdict. High-vol/high-% hits at 88.7% vs high-vol/low-% at 78.0% (10.7pp gap, below 15pp actionable threshold but directionally consistent with efficiency mattering more than volume). H16c mechanism validated: hit rate rises monotonically 86.9% → 95.0% as actual 3PA increases from ≥1 to ≥5. Defer to offseason — the system's whitelist already filters to high-volume shooters, making the low-volume population structurally thin.
 
 ---
 
 ### H24 — Market Disagreement Gate
-**Status: DESIGNED — scheduled for implementation + run after 4/12 games (gate likely crossed)**
-**Mode: `--mode market-disagreement` (not yet implemented)**
+**Status: FIRST RUN COMPLETE (Apr 12) — INSUFFICIENT DATA, rerun post-playoffs**
+**Mode: `--mode market-disagreement`**
 
-**Question:** Do picks where FanDuel implied probability exceeds system confidence by ≥15pp (`edge_pct ≤ -15`) hit at a meaningfully lower rate than other picks?
-
-**Proposed rule:** When `market_implied_prob − confidence_pct ≥ 15` AND the pick does not carry `iron_floor`, exclude with `skip_reason = market_disagreement`. Lives in the analyst prompt as a KEY RULE using the prefetched odds data from `odds_available.json` (already loaded by the market availability gate).
-
-**Trigger:** Auditor Rec #1 from the 4/9 audit — Barnes AST T4 at 74% confidence vs 91.67% market-implied probability, missed badly. The thesis is that when the market prices a leg 15+ percentage points tighter than the system, the market has information (rotation, load, matchup) the system lacks.
+134 picks with market data (odds integration only live since 3/31 — 11 days). Zero picks in `market_much_lower` bucket (gap ≤ -15pp). The system's systematic under-confidence means market almost always agrees MORE than the system states — market gaps are overwhelmingly positive (+5 to +30pp). The original hypothesis (market disagrees = bad pick) cannot be tested because the disagreement direction is backwards from expectation. Rerun after 200+ odds-enriched picks accumulate (mid-May).
 
 **Activation gate:** ≥50 graded picks with `bet_recommendation` data in `picks.json`. Currently accumulating since the 4/7 odds integration shipped. Re-check count weekly — when it crosses 50, implement the mode and run the backtest before shipping the prompt rule.
 
 ---
 
 ### H25 — Trim Escalation Signal
-**Status: DESIGNED — scheduled for implementation + run after 4/12 games**
-**Mode: `--mode trim-escalation` (not yet implemented)**
+**Status: FIRST RUN COMPLETE (Apr 12) — PARADOX CONFIRMED, no escalation warranted**
+**Mode: `--mode trim-escalation`**
 
-**Question:** Do picks with `verdict: "trim"` AND `confidence_pct ≤ 75` AND at least one structural weakness flag (VOLATILE tag, vs_tough < 60%, road underdog) hit at a meaningfully lower rate than other trimmed picks?
-
-**Proposed rule:** Review agent escalates `trim` → `manual_skip` when all three conditions are met simultaneously. Lives in the Review agent prompt as a stay-away gate. Does not touch the Pick stage — the escalation happens downstream in Stage 3.
-
-**Trigger:** Auditor Rec #4 from the 4/9 audit — both session misses that day had trim recommendations AND ≤75% confidence AND a structural weakness flag. Thesis: trim-verdict picks as a class hit at 92.9% season-to-date (very safe), but the sub-population that combines all three weakness signals may be where the trim verdict is under-calling the risk.
-
-**Activation gate:** ≥30 `trim`-verdict picks with graded HIT/MISS outcomes across historical `picks_review_*.json` files. Currently 116 trim picks season-to-date (per `human_flag_precision` block), but the sub-population of `trim + ≤75% + weakness flag` is much smaller — need to measure it first before running the backtest.
+324 reviewed picks analyzed. **Trim picks hit at 92.4% (n=118) vs keeps at 88.5% (n=192)** — a +3.9pp PARADOX where the "weaker" verdict outperforms. Triple flag (trim + conf ≤75 + VOLATILE) hits at 92.9% (n=56) — above the 70% floor. Iron_floor trims: 100% (n=21). The review agent's trim signal is anti-predictive — it flags the system's safest picks. Trim badge removal (4/9) was correct. No escalation rule warranted. CLOSED.
 
 ---
 

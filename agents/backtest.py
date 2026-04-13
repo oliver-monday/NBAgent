@@ -4667,6 +4667,422 @@ def run_positional_dvp_analysis(
     print(f"\n{'='*60}\n")
 
 
+# ── H24 — Market Disagreement Gate ─────────────────────────────────────
+
+H24_OUTPUT = DATA / "backtest_market_disagreement.json"
+
+def run_market_disagreement_analysis(picks: list, args) -> None:
+    """H24 — Market Disagreement Gate.
+
+    Reads picks.json. Tests whether picks where FanDuel market implied
+    probability exceeds system confidence by a large margin hit at a
+    meaningfully lower rate. If so, a market-disagreement skip gate is
+    warranted.
+
+    Buckets:
+      agreement:         market_gap < 5pp
+      mild_disagreement: 5 ≤ market_gap < 10
+      moderate_disagreement: 10 ≤ market_gap < 15
+      strong_disagreement:   market_gap ≥ 15
+    where market_gap = market_implied_prob − confidence_pct (positive = market
+    thinks OVER is MORE likely than system stated).
+    """
+    from collections import defaultdict
+    sep = "─" * 60
+
+    # Optional date filter
+    if getattr(args, "start", None):
+        picks = [p for p in picks if p.get("date", "") >= args.start]
+    if getattr(args, "end", None):
+        picks = [p for p in picks if p.get("date", "") <= args.end]
+
+    # Filter to picks with market data
+    enriched = []
+    no_market = 0
+    for p in picks:
+        br = p.get("bet_recommendation") or {}
+        market_prob = br.get("market_implied_prob") or p.get("market_implied_prob")
+        conf = p.get("confidence_pct")
+        if market_prob is None or conf is None:
+            no_market += 1
+            continue
+        market_prob = float(market_prob)
+        conf = float(conf)
+        # market_gap: positive = market says OVER more likely than system
+        # (market agrees with our OVER pick MORE than we do)
+        # negative = market says OVER less likely than we stated
+        market_gap = round(market_prob - conf, 1)
+
+        enriched.append({
+            "date":        p.get("date", ""),
+            "player":      p.get("player_name", ""),
+            "prop_type":   p.get("prop_type", ""),
+            "pick_value":  p.get("pick_value"),
+            "confidence":  conf,
+            "market_prob": market_prob,
+            "market_gap":  market_gap,
+            "iron_floor":  bool(p.get("iron_floor")),
+            "hit":         p["result"] == "HIT",
+            "result":      p["result"],
+        })
+
+    print(f"\n{'=' * 60}")
+    print(f"H24 — Market Disagreement Gate Backtest")
+    print(f"{'=' * 60}")
+    print(f"Population: {len(enriched)} picks with market data "
+          f"({no_market} without market data excluded)")
+    if enriched:
+        print(f"Date range: {min(e['date'] for e in enriched)} to "
+              f"{max(e['date'] for e in enriched)}")
+
+    if len(enriched) < 20:
+        print(f"\n[H24] Only {len(enriched)} picks with market data — "
+              f"need ≥50 for meaningful analysis. Exiting.")
+        return
+
+    # ── Overall stats ──
+    total_hits = sum(1 for e in enriched if e["hit"])
+    baseline = round(total_hits / len(enriched) * 100, 1)
+    print(f"Baseline: {baseline}% ({total_hits}/{len(enriched)})")
+
+    # ── Bucket analysis ──
+    # Note: we examine market_gap in BOTH directions
+    # Positive gap = market MORE confident in OVER than system
+    # Negative gap = market LESS confident in OVER than system (market disagrees)
+    buckets = {
+        "market_much_lower":    lambda g: g <= -15,
+        "market_lower":         lambda g: -15 < g <= -5,
+        "agreement":            lambda g: -5 < g < 5,
+        "market_higher":        lambda g: 5 <= g < 15,
+        "market_much_higher":   lambda g: g >= 15,
+    }
+    bucket_labels = {
+        "market_much_lower":  "Market MUCH LOWER (gap ≤ -15pp)",
+        "market_lower":       "Market lower (-15 < gap ≤ -5pp)",
+        "agreement":          "Agreement (-5 < gap < +5pp)",
+        "market_higher":      "Market higher (+5 ≤ gap < +15pp)",
+        "market_much_higher": "Market MUCH HIGHER (gap ≥ +15pp)",
+    }
+
+    print(f"\n{sep}")
+    print(f"Hit Rate by Market Gap Bucket")
+    print(f"(market_gap = market_implied_prob − confidence_pct)")
+    print(f"Negative gap = market thinks OVER is LESS likely than system stated")
+    print(f"{sep}")
+
+    bucket_results = {}
+    for bname, bfn in buckets.items():
+        bpicks = [e for e in enriched if bfn(e["market_gap"])]
+        n = len(bpicks)
+        hits = sum(1 for e in bpicks if e["hit"])
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        delta = round(rate - baseline, 1) if rate is not None else None
+        bucket_results[bname] = {"n": n, "hits": hits, "rate": rate, "delta": delta}
+        if rate is not None:
+            flag = ""
+            if n < 15:
+                flag = " [BELOW MIN]"
+            elif delta is not None and delta <= -10:
+                flag = " ⚠ SIGNAL"
+            print(f"  {bucket_labels[bname]:>45}: "
+                  f"{rate:>5}% "
+                  f"(n={n:>3}, Δ{delta:+.1f}pp){flag}")
+        else:
+            print(f"  {bucket_labels[bname]:>45}: n/a (n={n})")
+
+    # ── Iron floor interaction ──
+    print(f"\n{sep}")
+    print(f"Iron Floor Interaction (market_gap ≤ -10pp)")
+    print(f"{sep}")
+
+    neg_picks = [e for e in enriched if e["market_gap"] <= -10]
+    if neg_picks:
+        iron = [e for e in neg_picks if e["iron_floor"]]
+        no_iron = [e for e in neg_picks if not e["iron_floor"]]
+        for label, sub in [("With iron_floor", iron), ("Without iron_floor", no_iron)]:
+            n = len(sub)
+            hits = sum(1 for e in sub if e["hit"])
+            rate = round(hits / n * 100, 1) if n > 0 else None
+            if rate is not None:
+                print(f"  {label:>25}: {rate}% (n={n})")
+            else:
+                print(f"  {label:>25}: n/a (n={n})")
+    else:
+        print("  No picks with market_gap ≤ -10pp")
+
+    # ── Per-prop breakdown at strong disagreement ──
+    print(f"\n{sep}")
+    print(f"Per-Prop Breakdown (market_gap ≤ -10pp)")
+    print(f"{sep}")
+
+    for pt in ["PTS", "REB", "AST", "3PM"]:
+        sub = [e for e in enriched if e["market_gap"] <= -10 and e["prop_type"] == pt]
+        n = len(sub)
+        hits = sum(1 for e in sub if e["hit"])
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        if rate is not None:
+            print(f"  {pt:>4}: {rate}% (n={n})")
+        else:
+            print(f"  {pt:>4}: n/a (n={n})")
+
+    # ── Worst misses list ──
+    print(f"\n{sep}")
+    print(f"Largest Market Disagreement Misses (gap ≤ -10pp AND MISS)")
+    print(f"{sep}")
+
+    misses = sorted(
+        [e for e in enriched if e["market_gap"] <= -10 and not e["hit"]],
+        key=lambda e: e["market_gap"]
+    )
+    for m in misses[:15]:
+        print(f"  {m['date']} {m['player']:.<25} {m['prop_type']} T{m['pick_value']} "
+              f"conf={m['confidence']:.0f}% mkt={m['market_prob']:.0f}% "
+              f"gap={m['market_gap']:+.1f}pp {'🛡' if m['iron_floor'] else ''}")
+
+    # ── Save JSON ──
+    output = {
+        "mode": "market-disagreement",
+        "generated_at": dt.date.today().isoformat(),
+        "total_with_market": len(enriched),
+        "total_without_market": no_market,
+        "baseline_hit_rate": baseline,
+        "bucket_results": bucket_results,
+    }
+    with open(H24_OUTPUT, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"\n[H24] Results saved → {H24_OUTPUT}")
+
+    # ── Verdict guidance ──
+    print(f"\n{sep}")
+    print("VERDICT GUIDANCE:")
+    neg_result = bucket_results.get("market_much_lower", {})
+    if neg_result.get("n", 0) >= 15 and (neg_result.get("delta") or 0) <= -10:
+        print("  ⚠ ACTIONABLE: market_much_lower bucket underperforms by "
+              f"{neg_result['delta']:+.1f}pp — market disagreement skip gate warranted")
+    elif neg_result.get("n", 0) < 15:
+        print(f"  INSUFFICIENT DATA: only {neg_result.get('n', 0)} picks in "
+              "market_much_lower bucket (need ≥15)")
+    else:
+        print("  NO SIGNAL: market disagreement does not predict lower hit rate")
+    print(f"{'=' * 60}\n")
+
+
+# ── H25 — Trim Escalation Signal ───────────────────────────────────────
+
+H25_OUTPUT = DATA / "backtest_trim_escalation.json"
+
+def run_trim_escalation_analysis(picks: list, args) -> None:
+    """H25 — Trim Escalation Signal.
+
+    Reads picks.json. Tests whether picks with human verdict 'trim' AND
+    low confidence AND structural weakness flags hit at a meaningfully lower
+    rate than other trimmed picks. If so, a trim → manual_skip escalation
+    rule is warranted in the review agent.
+    """
+    sep = "─" * 60
+
+    # Optional date filter
+    if getattr(args, "start", None):
+        picks = [p for p in picks if p.get("date", "") >= args.start]
+    if getattr(args, "end", None):
+        picks = [p for p in picks if p.get("date", "") <= args.end]
+
+    # All graded picks (for baseline comparison)
+    all_n = len(picks)
+    all_hits = sum(1 for p in picks if p["result"] == "HIT")
+    all_rate = round(all_hits / all_n * 100, 1) if all_n > 0 else 0.0
+
+    # Filter to picks with human_verdict
+    reviewed = [p for p in picks if p.get("human_verdict") in ("keep", "trim", "manual_skip")]
+    if not reviewed:
+        print("[H25] No picks with human_verdict found — cannot run analysis.")
+        return
+
+    print(f"\n{'=' * 60}")
+    print(f"H25 — Trim Escalation Signal Backtest")
+    print(f"{'=' * 60}")
+    print(f"All graded picks: {all_n} ({all_rate}% hit rate)")
+    print(f"Picks with human_verdict: {len(reviewed)}")
+
+    # ── Hit rate by verdict ──
+    print(f"\n{sep}")
+    print("Hit Rate by Human Verdict")
+    print(sep)
+
+    verdict_stats = {}
+    for verdict in ("keep", "trim", "manual_skip"):
+        sub = [p for p in reviewed if p["human_verdict"] == verdict]
+        n = len(sub)
+        hits = sum(1 for p in sub if p["result"] == "HIT")
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        verdict_stats[verdict] = {"n": n, "hits": hits, "rate": rate}
+        if rate is not None:
+            print(f"  {verdict:>12}: {rate}% (n={n}, {hits} hits)")
+        else:
+            print(f"  {verdict:>12}: n/a (n={n})")
+
+    # ── Trim picks deep dive ──
+    trim_picks = [p for p in reviewed if p["human_verdict"] == "trim"]
+    if len(trim_picks) < 10:
+        print(f"\n[H25] Only {len(trim_picks)} trim picks — need ≥10 for analysis.")
+        # Still save what we have
+        output = {
+            "mode": "trim-escalation",
+            "generated_at": dt.date.today().isoformat(),
+            "total_reviewed": len(reviewed),
+            "verdict_stats": verdict_stats,
+            "trim_count": len(trim_picks),
+        }
+        with open(H25_OUTPUT, "w") as f:
+            json.dump(output, f, indent=2)
+        print(f"[H25] Results saved → {H25_OUTPUT}")
+        return
+
+    # Enrich trim picks with structural weakness flags
+    enriched_trims = []
+    for p in trim_picks:
+        tier_walk = str(p.get("tier_walk", "") or "")
+        has_volatile = "VOLATILE" in tier_walk.upper()
+        has_iron = bool(p.get("iron_floor"))
+        conf = p.get("confidence_pct", 99)
+
+        enriched_trims.append({
+            "date":         p.get("date", ""),
+            "player":       p.get("player_name", ""),
+            "prop_type":    p.get("prop_type", ""),
+            "pick_value":   p.get("pick_value"),
+            "confidence":   float(conf),
+            "hit":          p["result"] == "HIT",
+            "volatile":     has_volatile,
+            "iron_floor":   has_iron,
+        })
+
+    # ── Trim by confidence bucket ──
+    print(f"\n{sep}")
+    print("Trim Picks by Confidence Bucket")
+    print(sep)
+
+    conf_buckets = [
+        ("≤74%",  lambda c: c <= 74),
+        ("75%",   lambda c: c == 75),
+        ("76-80%", lambda c: 76 <= c <= 80),
+        ("81%+",  lambda c: c >= 81),
+    ]
+    for label, fn in conf_buckets:
+        sub = [e for e in enriched_trims if fn(e["confidence"])]
+        n = len(sub)
+        hits = sum(1 for e in sub if e["hit"])
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        flag = " [BELOW MIN]" if n < 10 else ""
+        if rate is not None:
+            print(f"  {label:>8}: {rate}% (n={n}){flag}")
+        else:
+            print(f"  {label:>8}: n/a (n={n})")
+
+    # ── VOLATILE interaction ──
+    print(f"\n{sep}")
+    print("Trim Picks: VOLATILE Tag Interaction")
+    print(sep)
+
+    vol = [e for e in enriched_trims if e["volatile"]]
+    no_vol = [e for e in enriched_trims if not e["volatile"]]
+    for label, sub in [("VOLATILE in tier_walk", vol), ("No VOLATILE", no_vol)]:
+        n = len(sub)
+        hits = sum(1 for e in sub if e["hit"])
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        if rate is not None:
+            print(f"  {label:>25}: {rate}% (n={n})")
+        else:
+            print(f"  {label:>25}: n/a (n={n})")
+
+    # ── Triple flag: trim + low conf + volatile ──
+    print(f"\n{sep}")
+    print("Triple Flag: trim + conf ≤ 75 + VOLATILE")
+    print(sep)
+
+    triple = [e for e in enriched_trims if e["confidence"] <= 75 and e["volatile"]]
+    non_triple = [e for e in enriched_trims
+                  if not (e["confidence"] <= 75 and e["volatile"])]
+    for label, sub in [("Triple flag (escalation candidate)", triple),
+                       ("Other trims", non_triple)]:
+        n = len(sub)
+        hits = sum(1 for e in sub if e["hit"])
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        if rate is not None:
+            print(f"  {label:>40}: {rate}% (n={n})")
+        else:
+            print(f"  {label:>40}: n/a (n={n})")
+
+    # ── Iron floor protective effect ──
+    print(f"\n{sep}")
+    print("Iron Floor Protective Effect on Trims")
+    print(sep)
+
+    iron = [e for e in enriched_trims if e["iron_floor"]]
+    no_iron = [e for e in enriched_trims if not e["iron_floor"]]
+    for label, sub in [("With iron_floor", iron), ("Without iron_floor", no_iron)]:
+        n = len(sub)
+        hits = sum(1 for e in sub if e["hit"])
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        if rate is not None:
+            print(f"  {label:>25}: {rate}% (n={n})")
+        else:
+            print(f"  {label:>25}: n/a (n={n})")
+
+    # ── Per-prop trim hit rate ──
+    print(f"\n{sep}")
+    print("Trim Hit Rate by Prop Type")
+    print(sep)
+
+    for pt in ["PTS", "REB", "AST", "3PM"]:
+        sub = [e for e in enriched_trims if e["prop_type"] == pt]
+        n = len(sub)
+        hits = sum(1 for e in sub if e["hit"])
+        rate = round(hits / n * 100, 1) if n > 0 else None
+        if rate is not None:
+            print(f"  {pt:>4}: {rate}% (n={n})")
+        else:
+            print(f"  {pt:>4}: n/a (n={n})")
+
+    # ── Save JSON ──
+    output = {
+        "mode": "trim-escalation",
+        "generated_at": dt.date.today().isoformat(),
+        "total_reviewed": len(reviewed),
+        "verdict_stats": verdict_stats,
+        "trim_count": len(enriched_trims),
+    }
+    with open(H25_OUTPUT, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"\n[H25] Results saved → {H25_OUTPUT}")
+
+    # ── Verdict guidance ──
+    print(f"\n{sep}")
+    print("VERDICT GUIDANCE:")
+    trim_rate = verdict_stats.get("trim", {}).get("rate")
+    keep_rate = verdict_stats.get("keep", {}).get("rate")
+    if trim_rate is not None and keep_rate is not None:
+        delta = round(trim_rate - keep_rate, 1)
+        if delta > 2:
+            print(f"  PARADOX: trim picks hit BETTER than keeps ({trim_rate}% vs {keep_rate}%).")
+            print("  The review agent's trim signal is anti-predictive — trims are good picks.")
+            print("  Consider: trim-as-endorsement, or review agent miscalibration.")
+        elif delta < -5:
+            print(f"  SIGNAL: trim picks underperform keeps by {-delta:.1f}pp.")
+            print("  Trim escalation to manual_skip is warranted for low-confidence trims.")
+        else:
+            print(f"  NOISE: trim vs keep delta is {delta:+.1f}pp — not actionable.")
+    n_triple = len(triple)
+    if n_triple >= 10:
+        triple_hits = sum(1 for e in triple if e["hit"])
+        triple_rate = round(triple_hits / n_triple * 100, 1)
+        print(f"  Triple flag: {triple_rate}% (n={n_triple}) — "
+              f"{'ACTIONABLE' if triple_rate < 70 else 'holds above floor'}")
+    else:
+        print(f"  Triple flag: only {n_triple} picks — insufficient for verdict")
+    print(f"{'=' * 60}\n")
+
+
 # ── Opponent Team Hit Rate Backtest (H15) ─────────────────────────────
 
 def run_opp_team_hit_rate_analysis(picks: list, args) -> None:
@@ -9839,7 +10255,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence' | 'primary-blowout' | 'playoff-career' | 'confidence-calibration' | 'minutes-elasticity' | 'consistency-index' | 'series-progression' | 'teammate-cannibalization'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence' | 'primary-blowout' | 'playoff-career' | 'confidence-calibration' | 'minutes-elasticity' | 'consistency-index' | 'series-progression' | 'teammate-cannibalization' | 'market-disagreement' | 'trim-escalation'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -10003,6 +10419,24 @@ def main():
     # ── Teammate scoring cannibalization (H33) ────────────────────────
     if getattr(args, "mode", None) == "teammate-cannibalization":
         run_teammate_cannibalization_analysis(player_log, args)
+        sys.exit(0)
+
+    # ── Market disagreement (H24) ────────────────────────────────────
+    if getattr(args, "mode", None) == "market-disagreement":
+        picks = load_picks_json()
+        if not picks:
+            print("[backtest] No graded picks found — cannot run H24.")
+            sys.exit(0)
+        run_market_disagreement_analysis(picks, args)
+        sys.exit(0)
+
+    # ── Trim escalation (H25) ────────────────────────────────────────
+    if getattr(args, "mode", None) == "trim-escalation":
+        picks = load_picks_json()
+        if not picks:
+            print("[backtest] No graded picks found — cannot run H25.")
+            sys.exit(0)
+        run_trim_escalation_analysis(picks, args)
         sys.exit(0)
 
     # ── Calibration-only fast path ────────────────────────────────────

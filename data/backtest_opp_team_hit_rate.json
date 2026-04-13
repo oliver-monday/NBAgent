@@ -1,17 +1,17 @@
 {
   "mode": "opp-team-hit-rate",
-  "generated_at": "2026-03-26T10:35:54",
+  "generated_at": "2026-04-12T23:04:16",
   "date_range": {
     "start": "2026-03-04",
-    "end": "2026-03-25"
+    "end": "2026-04-10"
   },
-  "total_picks": 600,
-  "baseline_hit_rate": 0.8567,
+  "total_picks": 815,
+  "baseline_hit_rate": 0.8712,
   "baseline_by_prop": {
-    "PTS": 0.8599,
-    "REB": 0.8491,
-    "AST": 0.858,
-    "3PM": 0.8559
+    "PTS": 0.8784,
+    "REB": 0.8682,
+    "AST": 0.8721,
+    "3PM": 0.8561
   },
   "constants": {
     "OTH_MIN_PICKS": 15,
@@ -25,267 +25,319 @@
     "suppressors": [
       {
         "opponent": "PHI",
-        "picks": 17,
-        "hits": 11,
-        "hit_rate": 0.6471,
-        "delta": -0.2096
+        "picks": 20,
+        "hits": 13,
+        "hit_rate": 0.65,
+        "delta": -0.2212
       },
       {
         "opponent": "HOU",
         "picks": 23,
         "hits": 15,
         "hit_rate": 0.6522,
-        "delta": -0.2045
+        "delta": -0.219
       },
       {
-        "opponent": "PHX",
-        "picks": 24,
-        "hits": 18,
-        "hit_rate": 0.75,
-        "delta": -0.1067
+        "opponent": "LAL",
+        "picks": 34,
+        "hits": 26,
+        "hit_rate": 0.7647,
+        "delta": -0.1065
       }
     ],
     "amplifiers": [
       {
         "opponent": "IND",
-        "picks": 23,
-        "hits": 23,
+        "picks": 38,
+        "hits": 38,
         "hit_rate": 1.0,
-        "delta": 0.1433
+        "delta": 0.1288
       }
     ],
     "neutral": [
       {
-        "opponent": "MIN",
-        "picks": 37,
-        "hits": 29,
-        "hit_rate": 0.7838,
-        "delta": -0.0729
-      },
-      {
-        "opponent": "MIL",
+        "opponent": "DET",
         "picks": 21,
         "hits": 17,
         "hit_rate": 0.8095,
-        "delta": -0.0471
+        "delta": -0.0616
       },
       {
-        "opponent": "CHA",
-        "picks": 16,
-        "hits": 13,
-        "hit_rate": 0.8125,
-        "delta": -0.0442
-      },
-      {
-        "opponent": "NYK",
-        "picks": 17,
-        "hits": 14,
+        "opponent": "PHX",
+        "picks": 34,
+        "hits": 28,
         "hit_rate": 0.8235,
-        "delta": -0.0331
-      },
-      {
-        "opponent": "POR",
-        "picks": 17,
-        "hits": 14,
-        "hit_rate": 0.8235,
-        "delta": -0.0331
-      },
-      {
-        "opponent": "SAS",
-        "picks": 35,
-        "hits": 29,
-        "hit_rate": 0.8286,
-        "delta": -0.0281
-      },
-      {
-        "opponent": "LAL",
-        "picks": 25,
-        "hits": 21,
-        "hit_rate": 0.84,
-        "delta": -0.0167
+        "delta": -0.0476
       },
       {
         "opponent": "ORL",
-        "picks": 32,
-        "hits": 27,
-        "hit_rate": 0.8438,
-        "delta": -0.0129
+        "picks": 40,
+        "hits": 33,
+        "hit_rate": 0.825,
+        "delta": -0.0462
       },
       {
-        "opponent": "DAL",
-        "picks": 32,
-        "hits": 28,
+        "opponent": "MIN",
+        "picks": 52,
+        "hits": 43,
+        "hit_rate": 0.8269,
+        "delta": -0.0442
+      },
+      {
+        "opponent": "CLE",
+        "picks": 25,
+        "hits": 21,
+        "hit_rate": 0.84,
+        "delta": -0.0312
+      },
+      {
+        "opponent": "SAS",
+        "picks": 42,
+        "hits": 36,
+        "hit_rate": 0.8571,
+        "delta": -0.014
+      },
+      {
+        "opponent": "MIL",
+        "picks": 29,
+        "hits": 25,
+        "hit_rate": 0.8621,
+        "delta": -0.0091
+      },
+      {
+        "opponent": "CHA",
+        "picks": 22,
+        "hits": 19,
+        "hit_rate": 0.8636,
+        "delta": -0.0075
+      },
+      {
+        "opponent": "POR",
+        "picks": 24,
+        "hits": 21,
         "hit_rate": 0.875,
-        "delta": 0.0183
-      },
-      {
-        "opponent": "GSW",
-        "picks": 17,
-        "hits": 15,
-        "hit_rate": 0.8824,
-        "delta": 0.0257
-      },
-      {
-        "opponent": "TOR",
-        "picks": 17,
-        "hits": 15,
-        "hit_rate": 0.8824,
-        "delta": 0.0257
-      },
-      {
-        "opponent": "OKC",
-        "picks": 18,
-        "hits": 16,
-        "hit_rate": 0.8889,
-        "delta": 0.0322
+        "delta": 0.0038
       },
       {
         "opponent": "WAS",
         "picks": 18,
         "hits": 16,
         "hit_rate": 0.8889,
-        "delta": 0.0322
+        "delta": 0.0177
       },
       {
-        "opponent": "DEN",
-        "picks": 25,
-        "hits": 23,
-        "hit_rate": 0.92,
-        "delta": 0.0633
+        "opponent": "DAL",
+        "picks": 39,
+        "hits": 35,
+        "hit_rate": 0.8974,
+        "delta": 0.0263
       },
       {
-        "opponent": "BOS",
-        "picks": 27,
-        "hits": 25,
-        "hit_rate": 0.9259,
-        "delta": 0.0693
+        "opponent": "OKC",
+        "picks": 20,
+        "hits": 18,
+        "hit_rate": 0.9,
+        "delta": 0.0288
+      },
+      {
+        "opponent": "NOP",
+        "picks": 21,
+        "hits": 19,
+        "hit_rate": 0.9048,
+        "delta": 0.0336
+      },
+      {
+        "opponent": "GSW",
+        "picks": 22,
+        "hits": 20,
+        "hit_rate": 0.9091,
+        "delta": 0.0379
+      },
+      {
+        "opponent": "TOR",
+        "picks": 22,
+        "hits": 20,
+        "hit_rate": 0.9091,
+        "delta": 0.0379
       },
       {
         "opponent": "MEM",
-        "picks": 15,
-        "hits": 14,
-        "hit_rate": 0.9333,
-        "delta": 0.0767
+        "picks": 23,
+        "hits": 21,
+        "hit_rate": 0.913,
+        "delta": 0.0419
       },
       {
         "opponent": "MIA",
-        "picks": 32,
-        "hits": 30,
-        "hit_rate": 0.9375,
-        "delta": 0.0808
+        "picks": 47,
+        "hits": 43,
+        "hit_rate": 0.9149,
+        "delta": 0.0437
       },
       {
-        "opponent": "SAC",
-        "picks": 17,
-        "hits": 16,
-        "hit_rate": 0.9412,
-        "delta": 0.0845
+        "opponent": "NYK",
+        "picks": 36,
+        "hits": 33,
+        "hit_rate": 0.9167,
+        "delta": 0.0455
       },
       {
         "opponent": "CHI",
+        "picks": 27,
+        "hits": 25,
+        "hit_rate": 0.9259,
+        "delta": 0.0548
+      },
+      {
+        "opponent": "DEN",
+        "picks": 29,
+        "hits": 27,
+        "hit_rate": 0.931,
+        "delta": 0.0599
+      },
+      {
+        "opponent": "UTA",
+        "picks": 16,
+        "hits": 15,
+        "hit_rate": 0.9375,
+        "delta": 0.0663
+      },
+      {
+        "opponent": "BOS",
+        "picks": 33,
+        "hits": 31,
+        "hit_rate": 0.9394,
+        "delta": 0.0682
+      },
+      {
+        "opponent": "SAC",
         "picks": 22,
         "hits": 21,
         "hit_rate": 0.9545,
-        "delta": 0.0979
+        "delta": 0.0834
       }
     ],
     "insufficient_sample": [
       "ATL",
       "BKN",
-      "CLE",
-      "DET",
-      "LAC",
-      "NOP",
-      "UTA"
+      "LAC"
     ]
   },
   "h15b_by_prop": {
     "PTS": {
-      "baseline": 0.8599,
+      "baseline": 0.8784,
       "suppressors": [
         {
           "opponent": "PHI",
-          "picks": 5,
-          "hits": 2,
-          "hit_rate": 0.4,
-          "delta": -0.4599
+          "picks": 7,
+          "hits": 4,
+          "hit_rate": 0.5714,
+          "delta": -0.3069
         },
         {
           "opponent": "HOU",
           "picks": 12,
           "hits": 8,
           "hit_rate": 0.6667,
-          "delta": -0.1932
+          "delta": -0.2117
         },
         {
-          "opponent": "PHX",
-          "picks": 7,
-          "hits": 5,
-          "hit_rate": 0.7143,
-          "delta": -0.1456
+          "opponent": "CLE",
+          "picks": 8,
+          "hits": 6,
+          "hit_rate": 0.75,
+          "delta": -0.1284
+        },
+        {
+          "opponent": "LAL",
+          "picks": 13,
+          "hits": 10,
+          "hit_rate": 0.7692,
+          "delta": -0.1091
         }
       ],
       "amplifiers": [
         {
-          "opponent": "CHI",
-          "picks": 7,
-          "hits": 7,
-          "hit_rate": 1.0,
-          "delta": 0.1401
-        },
-        {
           "opponent": "DET",
-          "picks": 5,
-          "hits": 5,
+          "picks": 10,
+          "hits": 10,
           "hit_rate": 1.0,
-          "delta": 0.1401
+          "delta": 0.1216
         },
         {
           "opponent": "GSW",
-          "picks": 5,
-          "hits": 5,
-          "hit_rate": 1.0,
-          "delta": 0.1401
-        },
-        {
-          "opponent": "IND",
-          "picks": 6,
-          "hits": 6,
-          "hit_rate": 1.0,
-          "delta": 0.1401
-        },
-        {
-          "opponent": "MIA",
-          "picks": 12,
-          "hits": 12,
-          "hit_rate": 1.0,
-          "delta": 0.1401
-        },
-        {
-          "opponent": "MIL",
           "picks": 8,
           "hits": 8,
           "hit_rate": 1.0,
-          "delta": 0.1401
+          "delta": 0.1216
+        },
+        {
+          "opponent": "IND",
+          "picks": 13,
+          "hits": 13,
+          "hit_rate": 1.0,
+          "delta": 0.1216
+        },
+        {
+          "opponent": "MIA",
+          "picks": 17,
+          "hits": 17,
+          "hit_rate": 1.0,
+          "delta": 0.1216
+        },
+        {
+          "opponent": "MIL",
+          "picks": 11,
+          "hits": 11,
+          "hit_rate": 1.0,
+          "delta": 0.1216
+        },
+        {
+          "opponent": "NOP",
+          "picks": 6,
+          "hits": 6,
+          "hit_rate": 1.0,
+          "delta": 0.1216
         },
         {
           "opponent": "OKC",
           "picks": 6,
           "hits": 6,
           "hit_rate": 1.0,
-          "delta": 0.1401
+          "delta": 0.1216
+        },
+        {
+          "opponent": "SAC",
+          "picks": 6,
+          "hits": 6,
+          "hit_rate": 1.0,
+          "delta": 0.1216
         }
       ]
     },
     "REB": {
-      "baseline": 0.8491,
+      "baseline": 0.8682,
       "suppressors": [
         {
-          "opponent": "ORL",
+          "opponent": "PHX",
+          "picks": 5,
+          "hits": 3,
+          "hit_rate": 0.6,
+          "delta": -0.2682
+        },
+        {
+          "opponent": "MIA",
           "picks": 6,
           "hits": 4,
           "hit_rate": 0.6667,
-          "delta": -0.1824
+          "delta": -0.2016
+        },
+        {
+          "opponent": "ORL",
+          "picks": 7,
+          "hits": 5,
+          "hit_rate": 0.7143,
+          "delta": -0.1539
         }
       ],
       "amplifiers": [
@@ -294,189 +346,203 @@
           "picks": 5,
           "hits": 5,
           "hit_rate": 1.0,
-          "delta": 0.1509
+          "delta": 0.1318
         },
         {
           "opponent": "CHI",
           "picks": 5,
           "hits": 5,
           "hit_rate": 1.0,
-          "delta": 0.1509
+          "delta": 0.1318
         },
         {
           "opponent": "IND",
           "picks": 6,
           "hits": 6,
           "hit_rate": 1.0,
-          "delta": 0.1509
+          "delta": 0.1318
         },
         {
-          "opponent": "LAL",
+          "opponent": "NOP",
           "picks": 5,
           "hits": 5,
           "hit_rate": 1.0,
-          "delta": 0.1509
+          "delta": 0.1318
+        },
+        {
+          "opponent": "OKC",
+          "picks": 5,
+          "hits": 5,
+          "hit_rate": 1.0,
+          "delta": 0.1318
         }
       ]
     },
     "AST": {
-      "baseline": 0.858,
+      "baseline": 0.8721,
       "suppressors": [
         {
-          "opponent": "MIN",
-          "picks": 11,
-          "hits": 7,
-          "hit_rate": 0.6364,
-          "delta": -0.2216
-        },
-        {
-          "opponent": "CHA",
-          "picks": 6,
+          "opponent": "DET",
+          "picks": 8,
           "hits": 4,
-          "hit_rate": 0.6667,
-          "delta": -0.1913
+          "hit_rate": 0.5,
+          "delta": -0.3721
         },
         {
           "opponent": "HOU",
           "picks": 9,
           "hits": 6,
           "hit_rate": 0.6667,
-          "delta": -0.1913
+          "delta": -0.2054
         },
         {
-          "opponent": "GSW",
+          "opponent": "CHA",
           "picks": 7,
           "hits": 5,
           "hit_rate": 0.7143,
-          "delta": -0.1437
+          "delta": -0.1578
+        },
+        {
+          "opponent": "MIN",
+          "picks": 16,
+          "hits": 12,
+          "hit_rate": 0.75,
+          "delta": -0.1221
         }
       ],
       "amplifiers": [
         {
           "opponent": "DAL",
-          "picks": 10,
-          "hits": 10,
+          "picks": 14,
+          "hits": 14,
           "hit_rate": 1.0,
-          "delta": 0.142
+          "delta": 0.1279
         },
         {
           "opponent": "DEN",
-          "picks": 6,
-          "hits": 6,
+          "picks": 7,
+          "hits": 7,
           "hit_rate": 1.0,
-          "delta": 0.142
+          "delta": 0.1279
         },
         {
           "opponent": "IND",
-          "picks": 6,
-          "hits": 6,
+          "picks": 14,
+          "hits": 14,
           "hit_rate": 1.0,
-          "delta": 0.142
+          "delta": 0.1279
         },
         {
           "opponent": "MEM",
-          "picks": 5,
-          "hits": 5,
+          "picks": 9,
+          "hits": 9,
           "hit_rate": 1.0,
-          "delta": 0.142
-        },
-        {
-          "opponent": "MIA",
-          "picks": 11,
-          "hits": 11,
-          "hit_rate": 1.0,
-          "delta": 0.142
-        },
-        {
-          "opponent": "PHI",
-          "picks": 5,
-          "hits": 5,
-          "hit_rate": 1.0,
-          "delta": 0.142
+          "delta": 0.1279
         },
         {
           "opponent": "TOR",
-          "picks": 5,
-          "hits": 5,
+          "picks": 6,
+          "hits": 6,
           "hit_rate": 1.0,
-          "delta": 0.142
+          "delta": 0.1279
+        },
+        {
+          "opponent": "UTA",
+          "picks": 6,
+          "hits": 6,
+          "hit_rate": 1.0,
+          "delta": 0.1279
         },
         {
           "opponent": "WAS",
           "picks": 6,
           "hits": 6,
           "hit_rate": 1.0,
-          "delta": 0.142
+          "delta": 0.1279
         }
       ]
     },
     "3PM": {
-      "baseline": 0.8559,
+      "baseline": 0.8561,
       "suppressors": [
         {
           "opponent": "PHI",
           "picks": 5,
           "hits": 2,
           "hit_rate": 0.4,
-          "delta": -0.4559
+          "delta": -0.4561
+        },
+        {
+          "opponent": "LAL",
+          "picks": 5,
+          "hits": 3,
+          "hit_rate": 0.6,
+          "delta": -0.2561
         },
         {
           "opponent": "DAL",
           "picks": 7,
           "hits": 5,
           "hit_rate": 0.7143,
-          "delta": -0.1416
+          "delta": -0.1418
         }
       ],
       "amplifiers": [
         {
           "opponent": "BOS",
-          "picks": 8,
-          "hits": 8,
+          "picks": 10,
+          "hits": 10,
           "hit_rate": 1.0,
-          "delta": 0.1441
+          "delta": 0.1439
+        },
+        {
+          "opponent": "CHA",
+          "picks": 5,
+          "hits": 5,
+          "hit_rate": 1.0,
+          "delta": 0.1439
         },
         {
           "opponent": "CHI",
           "picks": 5,
           "hits": 5,
           "hit_rate": 1.0,
-          "delta": 0.1441
+          "delta": 0.1439
         },
         {
           "opponent": "DEN",
           "picks": 5,
           "hits": 5,
           "hit_rate": 1.0,
-          "delta": 0.1441
+          "delta": 0.1439
         },
         {
           "opponent": "IND",
           "picks": 5,
           "hits": 5,
           "hit_rate": 1.0,
-          "delta": 0.1441
-        },
-        {
-          "opponent": "MIA",
-          "picks": 6,
-          "hits": 6,
-          "hit_rate": 1.0,
-          "delta": 0.1441
+          "delta": 0.1439
         },
         {
           "opponent": "MIN",
-          "picks": 8,
-          "hits": 8,
+          "picks": 10,
+          "hits": 10,
           "hit_rate": 1.0,
-          "delta": 0.1441
+          "delta": 0.1439
+        },
+        {
+          "opponent": "NYK",
+          "picks": 7,
+          "hits": 7,
+          "hit_rate": 1.0,
+          "delta": 0.1439
         },
         {
           "opponent": "ORL",
-          "picks": 5,
-          "hits": 5,
+          "picks": 6,
+          "hits": 6,
           "hit_rate": 1.0,
-          "delta": 0.1441
+          "delta": 0.1439
         }
       ]
     }
@@ -501,14 +567,24 @@
         "mean_margin": -2.83
       },
       {
-        "opponent": "PHI",
-        "n_misses": 6,
+        "opponent": "CLE",
+        "n_misses": 4,
         "mean_margin": -2.5
       },
       {
         "opponent": "HOU",
         "n_misses": 8,
         "mean_margin": -2.38
+      },
+      {
+        "opponent": "PHI",
+        "n_misses": 7,
+        "mean_margin": -2.29
+      },
+      {
+        "opponent": "MIN",
+        "n_misses": 9,
+        "mean_margin": -2.22
       },
       {
         "opponent": "DAL",
@@ -521,19 +597,24 @@
         "mean_margin": -1.67
       },
       {
+        "opponent": "DET",
+        "n_misses": 4,
+        "mean_margin": -1.5
+      },
+      {
+        "opponent": "MIA",
+        "n_misses": 4,
+        "mean_margin": -1.5
+      },
+      {
         "opponent": "MIL",
         "n_misses": 4,
         "mean_margin": -1.5
       },
       {
-        "opponent": "MIN",
-        "n_misses": 8,
-        "mean_margin": -1.5
-      },
-      {
         "opponent": "ORL",
-        "n_misses": 5,
-        "mean_margin": -1.4
+        "n_misses": 7,
+        "mean_margin": -1.29
       }
     ],
     "all_opponents": [
@@ -544,9 +625,21 @@
         "classification": "floor_compression"
       },
       {
+        "opponent": "CLE",
+        "n_misses": 4,
+        "mean_margin": -2.5,
+        "classification": "near_miss"
+      },
+      {
         "opponent": "DAL",
         "n_misses": 4,
         "mean_margin": -1.75,
+        "classification": "near_miss"
+      },
+      {
+        "opponent": "DET",
+        "n_misses": 4,
+        "mean_margin": -1.5,
         "classification": "near_miss"
       },
       {
@@ -557,9 +650,15 @@
       },
       {
         "opponent": "LAL",
-        "n_misses": 4,
-        "mean_margin": -4.0,
+        "n_misses": 8,
+        "mean_margin": -3.75,
         "classification": "other"
+      },
+      {
+        "opponent": "MIA",
+        "n_misses": 4,
+        "mean_margin": -1.5,
+        "classification": "near_miss"
       },
       {
         "opponent": "MIL",
@@ -569,8 +668,8 @@
       },
       {
         "opponent": "MIN",
-        "n_misses": 8,
-        "mean_margin": -1.5,
+        "n_misses": 9,
+        "mean_margin": -2.22,
         "classification": "near_miss"
       },
       {
@@ -581,14 +680,14 @@
       },
       {
         "opponent": "ORL",
-        "n_misses": 5,
-        "mean_margin": -1.4,
+        "n_misses": 7,
+        "mean_margin": -1.29,
         "classification": "near_miss"
       },
       {
         "opponent": "PHI",
-        "n_misses": 6,
-        "mean_margin": -2.5,
+        "n_misses": 7,
+        "mean_margin": -2.29,
         "classification": "near_miss"
       },
       {
@@ -611,7 +710,7 @@
       }
     ],
     "overall_distribution": {
-      "mean": -2.59,
+      "mean": -2.58,
       "median": -2.0,
       "p25": -3.0,
       "p75": -1.0
