@@ -4383,5 +4383,46 @@
         "cannibalization_flags": null
       }
     ]
+  },
+  {
+    "date": "2026-04-14",
+    "parlays": [
+      {
+        "label": "CHA-MIA Anchor Duo",
+        "card_type": "core",
+        "type": "same_game_stack",
+        "legs": [
+          {
+            "player_name": "Kon Knueppel",
+            "team": "CHA",
+            "opponent": "MIA",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "feeder"
+          },
+          {
+            "player_name": "Bam Adebayo",
+            "team": "MIA",
+            "opponent": "CHA",
+            "prop_type": "REB",
+            "pick_value": 8,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+144",
+        "confidence_product": 0.624,
+        "correlation": "positive",
+        "rationale": "Two POSITIVE-edge legs from same game; Knueppel AST trend-up soft matchup, Adebayo REB iron-floor anchor.",
+        "date": "2026-04-14",
+        "id": "parlay_2026-04-14_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 2
+      }
+    ]
   }
 ]

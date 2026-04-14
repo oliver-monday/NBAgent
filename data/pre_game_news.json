@@ -1,14 +1,65 @@
 {
-  "date": "2026-04-13",
-  "generated_at": "2026-04-13T07:33:04.806919-07:00",
-  "player_notes": {},
-  "game_notes": {},
-  "raw_item_count": 0,
-  "filtered_item_count": 0,
-  "fetch_errors": [],
+  "date": "2026-04-14",
+  "generated_at": "2026-04-14T07:48:35.202525-07:00",
+  "player_notes": {
+    "stephen curry": "Curry will be on a minutes restriction in the Warriors' play-in game vs. the Clippers. Cap all volume-dependent props (points, assists, 3PM) accordingly.",
+    "luka doncic": "Doncic is returning to L.A. from Spain on Friday after receiving injections for a Grade 2 left hamstring strain; playoff availability remains unknown. Avoid Lakers props dependent on his presence until status is confirmed."
+  },
+  "game_notes": {
+    "GSW vs LAC": "Curry and two other Warriors are on minutes restrictions, suppressing GSW offensive upside. Clippers' opponents may see elevated usage."
+  },
+  "raw_item_count": 50,
+  "filtered_item_count": 49,
+  "fetch_errors": [
+    "Tyler Herro",
+    "Bam Adebayo",
+    "Norman Powell",
+    "Andrew Wiggins",
+    "Miles Bridges",
+    "LaMelo Ball",
+    "Kon Knueppel",
+    "Brandon Miller",
+    "Coby White",
+    "Devin Booker",
+    "Jalen Green"
+  ],
   "no_id_errors": [],
-  "espn_errors": [],
+  "espn_errors": [
+    "Tyler Herro",
+    "Bam Adebayo",
+    "Norman Powell",
+    "Andrew Wiggins",
+    "Miles Bridges",
+    "LaMelo Ball",
+    "Kon Knueppel",
+    "Brandon Miller",
+    "Coby White",
+    "Devin Booker",
+    "Jalen Green"
+  ],
   "no_news_players": [],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "Luka Doncic (LAL)",
+      "current_context_fact": "Re-evaluation Apr 14. OUT for R1 Game 1. Best case: late R1 (Games 4-5 if series goes long). Realistic: R2 (~May 3-4).",
+      "conflict": "News (Apr 13): 'Luka Doncic is returning to L.A. on Friday from Spain, where he received multiple injections for his Grade 2 left hamstring strain.' Status still described as 'unknown' \u2014 return to LA on Friday (Apr 18) aligns with Game 1 date, but no clearance confirmed. The Apr 14 re-evaluation date in context may be superseded by this Friday return timeline.",
+      "urgency": "monitor",
+      "suggested_action": "Update Doncic note: re-evaluation was expected Apr 14 but he is returning to LA from Spain on Friday (Apr 18 \u2014 same day as Game 1). Status remains unknown. 'OUT for R1 Game 1' remains the operative assumption until a clearance is confirmed, but monitor for any status update upon his return Friday."
+    },
+    {
+      "player_or_team": "Stephen Curry (GSW)",
+      "current_context_fact": "Returned Apr 7 on ~25 min restriction. Only 3 games since return. Still ramping for play-in. Per-minute production solid but conditioning uncertain.",
+      "conflict": "News (Apr 14): 'Stephen Curry is one of three Golden State Warriors who will be on a minutes restriction in the team's play-in game against the Clippers in Los Angeles on Wednesday.' Confirms minutes restriction is still active for the play-in game today (Apr 14). Also notable: two other unnamed Warriors are also on minutes restrictions \u2014 this is new information not reflected in context.",
+      "urgency": "monitor",
+      "suggested_action": "Update Curry note to confirm minutes restriction remains active for Apr 14 play-in vs LAC. Add that two other Warriors players are also on minutes restrictions for this game (identities not yet confirmed in news). This affects GSW's overall competitiveness in the play-in."
+    },
+    {
+      "player_or_team": "Cooper Flagg (DAL)",
+      "current_context_fact": "No mention of Cooper Flagg in context document.",
+      "conflict": "News (Apr 13): 'Ryan Nembhard broke Dallas coach Jason Kidd's club rookie record with 23 assists after No. 1 pick Cooper Flagg's debut season ended with an ankle [injury].' Cooper Flagg is confirmed as DAL's No. 1 pick who played this season and ended it with an ankle injury. The context doc has no mention of Flagg despite him being a significant roster addition for DAL.",
+      "urgency": "monitor",
+      "suggested_action": "Add Cooper Flagg to DAL roster notes as the No. 1 overall pick who played this season. His debut season ended with an ankle injury. DAL is eliminated so this has no immediate playoff pick relevance, but the context doc should reflect his existence for completeness."
+    }
+  ],
   "staleness_flags": []
 }

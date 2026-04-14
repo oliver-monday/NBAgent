@@ -1,47 +1,69 @@
 [
   {
-    "date": "2026-04-12",
-    "player_name": "Victor Wembanyama",
-    "team": "SAS",
-    "opponent": "DEN",
+    "date": "2026-04-14",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "opponent": "MIA",
     "prop_type": "AST",
-    "tier_considered": 2,
+    "tier_considered": 4,
     "direction": "OVER",
-    "skip_reason": "merit_below_floor",
+    "skip_reason": "no_market",
     "rule_context": {
-      "confidence_after_penalties": 65,
-      "penalties_applied": "VOLATILE -5%, BLOWOUT -10%",
-      "prop_minimum_floor": 70
+      "player_name": "LaMelo Ball",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "FanDuel market for LaMelo Ball AST only offers T6/T8/T10/T12; T4 is not available. T6 not supported by quant data (best qualifying tier is T4)."
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-12",
-    "player_name": "Immanuel Quickley",
-    "team": "TOR",
-    "opponent": "BKN",
-    "prop_type": "AST",
+    "date": "2026-04-14",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "opponent": "MIA",
+    "prop_type": "3PM",
     "tier_considered": 4,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "confidence_after_penalties": 65,
-      "penalties_applied": "VOLATILE -5%, BLOWOUT resilient net -5%",
-      "prop_minimum_floor": 70
+      "player_name": "LaMelo Ball",
+      "prop_type": "3PM",
+      "tier_considered": 4,
+      "reason": "VOLATILE+iron_floor incompatibility overrides iron_floor; VOLATILE -5% applied to 75% = 70%, below 75% 3PM minimum confidence floor."
     },
-    "actual_value": 5.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-12",
+    "date": "2026-04-14",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "opponent": "MIA",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Kon Knueppel",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "Trend=down mandatory step-down from T2 to T1; T1 not available in FanDuel market for Knueppel 3PM (markets: T2/T3/T4 only)."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-14",
     "player_name": "Brandon Miller",
     "team": "CHA",
-    "opponent": "NYK",
+    "opponent": "MIA",
     "prop_type": "3PM",
     "tier_considered": 2,
     "direction": "OVER",
@@ -49,202 +71,112 @@
     "rule_context": {
       "player_name": "Brandon Miller",
       "prop_type": "3PM",
-      "tier_considered": 1,
-      "reason": "trend=down step-down T2\u2192T1; T1 has no FanDuel market for Brandon Miller 3PM"
-    },
-    "actual_value": 3.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
-  },
-  {
-    "date": "2026-04-12",
-    "player_name": "Coby White",
-    "team": "CHA",
-    "opponent": "NYK",
-    "prop_type": "3PM",
-    "tier_considered": 1,
-    "direction": "OVER",
-    "skip_reason": "no_market",
-    "rule_context": {
-      "player_name": "Coby White",
-      "prop_type": "3PM",
-      "tier_considered": 1,
-      "reason": "no FanDuel market available for Coby White 3PM T1"
-    },
-    "actual_value": 3.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
-  },
-  {
-    "date": "2026-04-12",
-    "player_name": "Bam Adebayo",
-    "team": "MIA",
-    "opponent": "ATL",
-    "prop_type": "3PM",
-    "tier_considered": 1,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "confidence_after_penalties": 70,
-      "penalties_applied": "VOLATILE -5%",
-      "prop_minimum_floor": 75
-    },
-    "actual_value": 1.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
-  },
-  {
-    "date": "2026-04-12",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "MIA",
-    "prop_type": "REB",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "reb_floor_skip",
-    "rule_context": {
-      "l10_third_lowest_reb": 6,
-      "pick_value": 6,
-      "reason": "25th-percentile gate: pick_value=6 equals 3rd-lowest L10 value=6; not strictly less; no lower valid market tier"
+      "tier_considered": 2,
+      "reason": "Trend=down mandatory step-down from T2 to T1; T1 not available in FanDuel market for Miller 3PM (markets: T2/T3/T4 only)."
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-12",
-    "player_name": "Tyrese Maxey",
-    "team": "PHI",
-    "opponent": "MIL",
+    "date": "2026-04-14",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "opponent": "CHA",
     "prop_type": "AST",
-    "tier_considered": 4,
+    "tier_considered": 2,
     "direction": "OVER",
-    "skip_reason": "merit_below_floor",
+    "skip_reason": "min_floor_tier_step",
     "rule_context": {
-      "confidence_after_penalties": 65,
-      "penalties_applied": "VOLATILE -5%, BLOWOUT -10%",
-      "prop_minimum_floor": 70
+      "player_name": "Tyler Herro",
+      "prop_type": "AST",
+      "tier_considered": 2,
+      "reason": "min_floor=0.0 <20 triggers AST caution step-down from T2; no valid lower AST tier exists (T2 is minimum). SKIP."
     },
-    "actual_value": 1.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 1.0 < tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-12",
-    "player_name": "Tyrese Maxey",
-    "team": "PHI",
-    "opponent": "MIL",
+    "date": "2026-04-14",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "opponent": "CHA",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_low_minutes",
+    "rule_context": {
+      "player_name": "Tyler Herro",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "Trend=down AND avg_minutes=25.9 \u226430 triggers hard skip for 3PM including T1."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "opponent": "POR",
     "prop_type": "3PM",
     "tier_considered": 2,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "confidence_after_penalties": 70,
-      "penalties_applied": "trend=down step T2\u2192T1, VOLATILE -5%, BLOWOUT -10%",
-      "prop_minimum_floor": 75
-    },
-    "actual_value": 2.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
-  },
-  {
-    "date": "2026-04-12",
-    "player_name": "VJ Edgecombe",
-    "team": "PHI",
-    "opponent": "MIL",
-    "prop_type": "REB",
-    "tier_considered": 4,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "confidence_after_penalties": 65,
-      "penalties_applied": "VOLATILE -5%, BLOWOUT -10%",
-      "prop_minimum_floor": 78
-    },
-    "actual_value": 7.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
-  },
-  {
-    "date": "2026-04-12",
-    "player_name": "Kawhi Leonard",
-    "team": "LAC",
-    "opponent": "GSW",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "no_market",
-    "rule_context": {
-      "player_name": "Kawhi Leonard",
-      "prop_type": "PTS",
-      "tier_considered": 15,
-      "reason": "FG_MARGIN_NEG step-down T20\u2192T15; T15 not in FanDuel market for Kawhi Leonard PTS (T20 T25 T30 only)"
+      "player_name": "Devin Booker",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "VOLATILE -5% reduces 75% to 70%, below the 75% 3PM minimum confidence floor."
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-12",
-    "player_name": "Darius Garland",
-    "team": "LAC",
-    "opponent": "GSW",
-    "prop_type": "AST",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "volatile_ast_t6",
-    "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 6,
-      "reason": "VOLATILE tag + AST T6 = mandatory hard skip; no iron_floor + trend=up exception"
-    },
-    "actual_value": 6.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
-  },
-  {
-    "date": "2026-04-12",
-    "player_name": "Stephon Castle",
-    "team": "SAS",
-    "opponent": "DEN",
-    "prop_type": "AST",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "volatile_ast_t6",
-    "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 6,
-      "reason": "VOLATILE tag + AST T6 = mandatory hard skip; no iron_floor exception available"
-    },
-    "actual_value": 9.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
-  },
-  {
-    "date": "2026-04-12",
-    "player_name": "Paul George",
-    "team": "PHI",
-    "opponent": "MIL",
-    "prop_type": "PTS",
-    "tier_considered": 10,
+    "date": "2026-04-14",
+    "player_name": "Andrew Wiggins",
+    "team": "MIA",
+    "opponent": "CHA",
+    "prop_type": "3PM",
+    "tier_considered": 1,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "reason": "No quant overall hit rates available; H2H n=3 insufficient for qualifying tier confirmation per minimum 5-game sample rule"
+      "player_name": "Andrew Wiggins",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "Overall=70% at T1 is below the 75% 3PM minimum confidence floor requirement."
     },
-    "actual_value": 11.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 11.0 \u2265 tier 10"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "opponent": "POR",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_low_minutes",
+    "rule_context": {
+      "player_name": "Jalen Green",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "Trend=down AND avg_minutes=20.1 \u226430 triggers hard skip for all 3PM including T1."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]

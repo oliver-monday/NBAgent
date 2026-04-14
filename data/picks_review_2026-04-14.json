@@ -1,0 +1,146 @@
+[
+  {
+    "date": "2026-04-14",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD:-15% flag is active on a secondary creator who is already dependent on shot-making efficiency; audit history explicitly documents that Knueppel PTS missed in a prior FG_COLD context against a tough defense, and while MIA is soft today, a cold-shooting night with a thin margin at T10 is a documented fragility for this player type."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with FG_MARGIN_THIN (only 5% safety floor) means a single cold-shooting sequence leaves Miller short; the post_miss_hr lift is positive but typical_miss of 4 pts below means misses are not shallow \u2014 one bad night drops him well under the threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post-miss hit rate of only 50% (lift=+0.68) is materially below the overall 80% tier rate and well below any other pick on this slate; combined with FG_MARGIN_THIN (8%) and a tough CHA defense, Adebayo's PTS floor is genuinely fragile after a miss \u2014 the bounce-back effect is inverted here rather than supportive."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "prop_type": "REB",
+    "pick_value": 8,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Bam Adebayo",
+    "team": "MIA",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor=0.0 is a critical red flag \u2014 a single DNP or early exit produces a miss with zero statistical cushion, and the system's own reasoning flagged this as critical; even at T10, minutes fragility at this level means the pick is contingent on Herro simply taking the floor for meaningful time, not on his scoring ability."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Miles Bridges",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor=23.9 is below the 24-minute structural threshold, meaning a single low-minutes game \u2014 well within normal variance for a secondary scorer \u2014 produces a miss; post_miss_hr of only 57% (lift=+0.70) also indicates Bridges does not reliably bounce back, making this floor doubly fragile."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Coby White",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "min_floor=15.8 is severely below the 24-minute threshold \u2014 the lowest on the slate \u2014 meaning White's scoring floor is almost entirely contingent on minutes allocation, not scoring ability; with an average of only 18.7 minutes, any minor game-script deviation (CHA blowing out MIA or getting blown out early) compresses his floor below any viable threshold, and post_miss_hr of 60% offers no meaningful bounce-back cushion."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Coby White",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "With avg_minutes of only 18.7, White's 3PM prop faces the same minutes-fragility structural risk as his PTS pick \u2014 a reduced role or early exit leaves insufficient shot attempts to clear even the T1 threshold, regardless of the strong 95% overall rate."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-14",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
