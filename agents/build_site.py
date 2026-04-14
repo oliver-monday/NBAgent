@@ -1909,6 +1909,21 @@ function buildHitRate(p) {{
     </div>`;
 }}
 
+// Escape HTML special chars in analyst-generated free-text fields (tier_walk,
+// reasoning, rationale). Without this, any '<' or '&' in the text (e.g. the
+// analyst writing 'pick<floor') breaks the DOM — the browser parses 'pick<floor'
+// as a fake opening tag and swallows subsequent content as attributes, which
+// collapses the card grid. Applied to every interpolation of free-text below.
+function escapeHtml(s) {{
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}}
+
 function buildMicroStats(p) {{
   const pills = [];
   // Trend
@@ -2113,7 +2128,7 @@ function renderPicks() {{
         ? `<span class="review-badge-skip">${{isAutoReview ? '🤖 Stay Away' : '⚠ Flagged'}}</span>`
         : '';
       const reviewReasons = (p.trim_reasons && p.trim_reasons.length && reviewVerdict === 'manual_skip')
-        ? `<span style="font-size:10px;color:var(--muted);margin-left:4px">${{p.trim_reasons.join(' · ')}}</span>`
+        ? `<span style="font-size:10px;color:var(--muted);margin-left:4px">${{escapeHtml(p.trim_reasons.join(' · '))}}</span>`
         : '';
       const reviewHtml = reviewBadge
         ? `<div style="margin-top:4px">${{reviewBadge}}${{reviewReasons}}</div>`
@@ -2132,7 +2147,7 @@ function renderPicks() {{
             ${{statusBadge}}
             ${{reviewHtml}}
             ${{buildMicroStats(p)}}
-            ${{p.reasoning ? `<div class="reasoning">${{p.reasoning}}</div>` : ''}}
+            ${{p.reasoning ? `<div class="reasoning">${{escapeHtml(p.reasoning)}}</div>` : ''}}
             ${{(function() {{
               const lu = p.lineup_update;
               if (!lu || lu.direction === 'unchanged') return '';
@@ -2141,13 +2156,13 @@ function renderPicks() {{
               const timeStr = lu.updated_at ? new Date(lu.updated_at).toLocaleTimeString('en-US', {{hour:'numeric',minute:'2-digit'}}) : '';
               const triggered = (lu.triggered_by || []).join('; ');
               return `<button class="${{cls}}" onclick="toggleLineupUpdate(this)">${{arrow}} Updated ${{timeStr}}</button>` +
-                `<div class="lineup-update-body">Triggered by: ${{triggered}}<br>` +
-                `Revised (${{lu.revised_confidence_pct}}%): ${{lu.revised_reasoning}}<br>` +
-                `Morning (${{p.confidence_pct}}%): ${{p.reasoning}}</div>`;
+                `<div class="lineup-update-body">Triggered by: ${{escapeHtml(triggered)}}<br>` +
+                `Revised (${{lu.revised_confidence_pct}}%): ${{escapeHtml(lu.revised_reasoning)}}<br>` +
+                `Morning (${{p.confidence_pct}}%): ${{escapeHtml(p.reasoning)}}</div>`;
             }})()}}
             ${{buildMovementLine(p)}}
             ${{buildOddsSizing(p)}}
-            ${{p.tier_walk ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : ''}}
+            ${{p.tier_walk ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{escapeHtml(p.tier_walk)}}</div>` : ''}}
           </div>
           <div class="pick-right">
             <div class="pick-line">
@@ -2583,9 +2598,9 @@ function renderTopPicks() {{
     const ironBadge = p.iron_floor
       ? `<div><span class="tp-iron-badge">🔒 Iron Floor</span></div>` : '';
     const reasoning = p.reasoning
-      ? `<div class="tp-reasoning">${{p.reasoning}}</div>` : '';
+      ? `<div class="tp-reasoning">${{escapeHtml(p.reasoning)}}</div>` : '';
     const tierWalk = p.tier_walk
-      ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : '';
+      ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{escapeHtml(p.tier_walk)}}</div>` : '';
     const lineupUpdateBadge = (function() {{
       const lu = p.lineup_update;
       if (!lu || lu.direction === 'unchanged') return '';
@@ -2594,9 +2609,9 @@ function renderTopPicks() {{
       const timeStr = lu.updated_at ? new Date(lu.updated_at).toLocaleTimeString('en-US', {{hour:'numeric',minute:'2-digit'}}) : '';
       const triggered = (lu.triggered_by || []).join('; ');
       return `<button class="${{cls}}" onclick="toggleLineupUpdate(this)">${{arrow}} Updated ${{timeStr}}</button>` +
-        `<div class="lineup-update-body">Triggered by: ${{triggered}}<br>` +
-        `Revised (${{lu.revised_confidence_pct}}%): ${{lu.revised_reasoning}}<br>` +
-        `Morning (${{p.confidence_pct}}%): ${{p.reasoning}}</div>`;
+        `<div class="lineup-update-body">Triggered by: ${{escapeHtml(triggered)}}<br>` +
+        `Revised (${{lu.revised_confidence_pct}}%): ${{escapeHtml(lu.revised_reasoning)}}<br>` +
+        `Morning (${{p.confidence_pct}}%): ${{escapeHtml(p.reasoning)}}</div>`;
     }})();
 
     html += `
@@ -2647,9 +2662,9 @@ function renderBestBets() {{
     const borderColor = tier === 'STRONG' ? '#22c55e' : '#2dd4bf';
     const gameTime = p.game_time ? ` · ${{p.game_time}}` : '';
     const reasoning = p.reasoning
-      ? `<div class="tp-reasoning">${{p.reasoning}}</div>` : '';
+      ? `<div class="tp-reasoning">${{escapeHtml(p.reasoning)}}</div>` : '';
     const tierWalk = p.tier_walk
-      ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{p.tier_walk}}</div>` : '';
+      ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{escapeHtml(p.tier_walk)}}</div>` : '';
 
     html += `
       <div class="best-bet-card" style="border-left-color:${{borderColor}}">
@@ -2806,7 +2821,7 @@ function renderParlays() {{
     html += `</div>`;
 
     if (p.rationale) {{
-      html += `<div class="parlay-rationale">${{p.rationale}}</div>`;
+      html += `<div class="parlay-rationale">${{escapeHtml(p.rationale)}}</div>`;
     }}
 
     html += `</div>`;
