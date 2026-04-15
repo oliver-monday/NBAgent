@@ -2214,5 +2214,264 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-04-14",
+    "generated_at": "2026-04-14T20:40:06.274421-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "teammate",
+    "player_name": "Andrew Wiggins",
+    "team": "MIA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "moderate",
+        "market_implied_pct": 90.91,
+        "market_odds": -1000
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "3PM T1 70% [up] (mkt 91%, edge -21pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -20.9,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-14",
+    "generated_at": "2026-04-14T20:40:06.274421-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 95,
+        "trend": "down",
+        "volatility": "consistent",
+        "market_implied_pct": 87.5,
+        "market_odds": -700
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 83.87,
+        "market_odds": -520,
+        "morning_tier": 10,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (no_market)",
+    "reasoning": "3PM T2 95% [down] (mkt 88%, edge +8pp); PTS T15 75% [stable] (mkt 84%, edge -9pp); skipped this morning (no_market)",
+    "best_edge_pp": 7.5,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-14",
+    "generated_at": "2026-04-14T20:40:06.274421-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "Coby White",
+    "team": "CHA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 80.39,
+        "market_odds": -410
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T2 70% [down] (mkt 80%, edge -10pp)",
+    "best_edge_pp": -10.4,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-14",
+    "generated_at": "2026-04-14T20:40:06.274421-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 82.14,
+        "market_odds": -460
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 87.01,
+        "market_odds": -670
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (no_market)",
+    "reasoning": "REB T4 75% [stable] (mkt 82%, edge -7pp); 3PM T2 80% [down] (mkt 87%, edge -7pp); skipped this morning (no_market)",
+    "best_edge_pp": -7.0,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-14",
+    "generated_at": "2026-04-14T20:40:06.274421-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 81.13,
+        "market_odds": -430
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 90,
+        "trend": "up",
+        "volatility": "moderate"
+      },
+      "3PM": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 62.41,
+        "market_odds": -166
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (no_market, merit_below_floor)",
+    "reasoning": "REB T4 75% [stable] (mkt 81%, edge -6pp); AST T4 90% [up]; 3PM T4 75% [up] (mkt 62%, edge +13pp); skipped this morning (no_market, merit_below_floor)",
+    "best_edge_pp": 12.6,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-14",
+    "generated_at": "2026-04-14T20:40:06.274421-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "opponent",
+    "player_name": "Miles Bridges",
+    "team": "CHA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 85.51,
+        "market_odds": -590
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 82.14,
+        "market_odds": -460
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 70% [up] (mkt 86%, edge -16pp); AST T2 70% [up] (mkt 82%, edge -12pp)",
+    "best_edge_pp": -12.1,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-14",
+    "generated_at": "2026-04-14T20:40:06.274421-07:00",
+    "triggered_by": "Bam Adebayo",
+    "triggered_by_team": "MIA",
+    "side": "teammate",
+    "player_name": "Tyler Herro",
+    "team": "MIA",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "consistent",
+        "market_implied_pct": 97.22,
+        "market_odds": -3500
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "consistent",
+        "market_implied_pct": 95.65,
+        "market_odds": -2200
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (min_floor_tier_step, 3pm_trend_down_low_minutes)",
+    "reasoning": "AST T2 80% [stable] (mkt 97%, edge -17pp); 3PM T1 80% [down] (mkt 96%, edge -16pp); skipped this morning (min_floor_tier_step, 3pm_trend_down_low_minutes)",
+    "best_edge_pp": -15.7,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
