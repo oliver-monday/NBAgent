@@ -28145,8 +28145,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "9/10 hit rate at T15 vs MIA's 29th-ranked defense, play-in max minutes confirmed.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 30.0,
     "market_line": 14.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -28164,7 +28164,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.43
   },
   {
     "date": "2026-04-14",
@@ -28185,8 +28188,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 hit rate at T10 vs MIA's soft defense; FG_COLD flag is informational at T10 tier.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 6.0,
     "market_line": 9.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -28204,7 +28207,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD:-15% flag is active on a secondary creator who is already dependent on shot-making efficiency; audit history explicitly documents that Knueppel PTS missed in a prior FG_COLD context against a tough defense, and while MIA is soft today, a cold-shooting night with a thin margin at T10 is a documented fragility for this player type."
+    ],
+    "clv_pp": 0.62
   },
   {
     "date": "2026-04-14",
@@ -28225,8 +28233,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 overall at T2, 93% vs soft defense, trend up, H2H 4/4 vs MIA.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 1.5,
     "market_implied_prob": 88.24,
     "market_book": "fanduel",
@@ -28244,7 +28252,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -1.23
   },
   {
     "date": "2026-04-14",
@@ -28265,8 +28276,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN forces step to T10; VOLATILE applied; soft MIA defense supports floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 23.0,
     "market_line": 9.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -28284,7 +28295,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with FG_MARGIN_THIN (only 5% safety floor) means a single cold-shooting sequence leaves Miller short; the post_miss_hr lift is positive but typical_miss of 4 pts below means misses are not shallow \u2014 one bad night drops him well under the threshold."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-14",
@@ -28305,8 +28321,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor at T2, 9/10 overall, 91% vs soft MIA defense, H2H 2/2 vs MIA.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 1.5,
     "market_implied_prob": 90.0,
     "market_book": "fanduel",
@@ -28324,7 +28340,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 3.33
   },
   {
     "date": "2026-04-14",
@@ -28366,7 +28385,11 @@
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Post-miss hit rate of only 50% (lift=+0.68) is materially below the overall 80% tier rate and well below any other pick on this slate; combined with FG_MARGIN_THIN (8%) and a tough CHA defense, Adebayo's PTS floor is genuinely fragile after a miss \u2014 the bounce-back effect is inverted here rather than supportive."
+    ]
   },
   {
     "date": "2026-04-14",
@@ -28408,7 +28431,9 @@
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-14",
@@ -28450,7 +28475,9 @@
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "keep",
+    "trim_reasons": []
   },
   {
     "date": "2026-04-14",
@@ -28471,8 +28498,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "75% overall at T10, vs_tough=79%, play-in proj_min=35; road underdog -5% brings to 70%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 23.0,
     "market_line": 9.5,
     "market_implied_prob": 98.04,
     "market_book": "fanduel",
@@ -28490,7 +28517,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "min_floor=0.0 is a critical red flag \u2014 a single DNP or early exit produces a miss with zero statistical cushion, and the system's own reasoning flagged this as critical; even at T10, minutes fragility at this level means the pick is contingent on Herro simply taking the floor for meaningful time, not on his scoring ability."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-14",
@@ -28511,8 +28543,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 at T10, H2H 4/4 vs MIA, 85% vs soft defense; min_floor cap at 84%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 28.0,
     "market_line": 9.5,
     "market_implied_prob": 90.0,
     "market_book": "fanduel",
@@ -28530,7 +28562,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "min_floor=23.9 is below the 24-minute structural threshold, meaning a single low-minutes game \u2014 well within normal variance for a secondary scorer \u2014 produces a miss; post_miss_hr of only 57% (lift=+0.70) also indicates Bridges does not reliably bounce back, making this floor doubly fragile."
+    ],
+    "clv_pp": 3.33
   },
   {
     "date": "2026-04-14",
@@ -28551,8 +28588,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/10 at T10, soft MIA defense, play-in minutes boost; thin min_floor=15.8 warrants caution.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "market_line": 9.5,
     "market_implied_prob": 77.78,
     "market_book": "fanduel",
@@ -28570,7 +28607,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "min_floor=15.8 is severely below the 24-minute threshold \u2014 the lowest on the slate \u2014 meaning White's scoring floor is almost entirely contingent on minutes allocation, not scoring ability; with an average of only 18.7 minutes, any minor game-script deviation (CHA blowing out MIA or getting blown out early) compresses his floor below any viable threshold, and post_miss_hr of 60% offers no meaningful bounce-back cushion."
+    ],
+    "clv_pp": 5.18
   },
   {
     "date": "2026-04-14",
@@ -28591,8 +28633,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T1, [consistent] tag, trend=up; 80% cap applied as non-iron-floor 3PM pick.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 0.5,
     "market_implied_prob": 87.01,
     "market_book": "fanduel",
@@ -28610,7 +28652,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "With avg_minutes of only 18.7, White's 3PM prop faces the same minutes-fragility structural risk as his PTS pick \u2014 a reduced role or early exit leaves insufficient shot attempts to clear even the T1 threshold, regardless of the strong 95% overall rate."
+    ],
+    "clv_pp": 1.5
   },
   {
     "date": "2026-04-14",
@@ -28631,8 +28678,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor at T4, 8/10 overall, vs_tough=81%, trend=up, play-in max minutes guaranteed.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 3.5,
     "market_implied_prob": 89.47,
     "market_book": "fanduel",
@@ -28650,6 +28697,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-14T22:12:35.886001-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.53
   }
 ]

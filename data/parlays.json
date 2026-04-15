@@ -4419,9 +4419,26 @@
         "rationale": "Two POSITIVE-edge legs from same game; Knueppel AST trend-up soft matchup, Adebayo REB iron-floor anchor.",
         "date": "2026-04-14",
         "id": "parlay_2026-04-14_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 2
+        "result": "MISS",
+        "legs_hit": 0,
+        "legs_total": 2,
+        "leg_results": [
+          {
+            "player_name": "Kon Knueppel",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "MISS",
+            "actual_value": 1.0
+          },
+          {
+            "player_name": "Bam Adebayo",
+            "prop_type": "REB",
+            "pick_value": 8,
+            "result": null,
+            "actual_value": null
+          }
+        ],
+        "cannibalization_flags": null
       }
     ]
   }

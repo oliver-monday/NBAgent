@@ -14,10 +14,10 @@
       "tier_considered": 4,
       "reason": "FanDuel market for LaMelo Ball AST only offers T6/T8/T10/T12; T4 is not available. T6 not supported by quant data (best qualifying tier is T4)."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-14",
@@ -34,10 +34,10 @@
       "tier_considered": 4,
       "reason": "VOLATILE+iron_floor incompatibility overrides iron_floor; VOLATILE -5% applied to 75% = 70%, below 75% 3PM minimum confidence floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
   },
   {
     "date": "2026-04-14",
@@ -54,10 +54,10 @@
       "tier_considered": 2,
       "reason": "Trend=down mandatory step-down from T2 to T1; T1 not available in FanDuel market for Knueppel 3PM (markets: T2/T3/T4 only)."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-04-14",
@@ -74,10 +74,10 @@
       "tier_considered": 2,
       "reason": "Trend=down mandatory step-down from T2 to T1; T1 not available in FanDuel market for Miller 3PM (markets: T2/T3/T4 only)."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-14",
@@ -94,10 +94,10 @@
       "tier_considered": 2,
       "reason": "min_floor=0.0 <20 triggers AST caution step-down from T2; no valid lower AST tier exists (T2 is minimum). SKIP."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-14",
@@ -114,10 +114,10 @@
       "tier_considered": 1,
       "reason": "Trend=down AND avg_minutes=25.9 \u226430 triggers hard skip for 3PM including T1."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-14",
@@ -134,10 +134,10 @@
       "tier_considered": 2,
       "reason": "VOLATILE -5% reduces 75% to 70%, below the 75% 3PM minimum confidence floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-04-14",
@@ -154,10 +154,10 @@
       "tier_considered": 1,
       "reason": "Overall=70% at T1 is below the 75% 3PM minimum confidence floor requirement."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-14",
@@ -174,9 +174,9 @@
       "tier_considered": 1,
       "reason": "Trend=down AND avg_minutes=20.1 \u226430 triggers hard skip for all 3PM including T1."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   }
 ]
