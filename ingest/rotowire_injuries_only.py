@@ -52,31 +52,50 @@ def _short_status(s: str) -> str:
 
 def login_rotowire(session: requests.Session) -> bool:
     """
-    POST credentials to Rotowire login endpoint.
-    Returns True on success, False on failure.
+    POST credentials to Rotowire login endpoint. Returns True on success.
     Credentials are read from env vars ROTOWIRE_EMAIL and ROTOWIRE_PASSWORD.
+
+    Rotowire's login form uses the field name "email" (confirmed via
+    agents/post_game_reporter.py which authenticates successfully and
+    fetches premium news in production). An earlier version of this
+    function sent "username" as the field name; the endpoint returned
+    HTTP 200 but granted only a non-premium session, which silently
+    limited the projected-minutes page to ~half the slate. Fixed
+    2026-04-15. We try "email" first and fall back to "username" so the
+    scraper is resilient to either field accepted by the endpoint.
     """
     email    = os.environ.get("ROTOWIRE_EMAIL", "")
     password = os.environ.get("ROTOWIRE_PASSWORD", "")
     if not email or not password:
         print("[injuries] ROTOWIRE_EMAIL / ROTOWIRE_PASSWORD not set — skipping auth")
         return False
-    try:
-        resp = session.post(
-            ROTOWIRE_LOGIN_URL,
-            data={"username": email, "password": password},
-            headers={"User-Agent": USER_AGENT},
-            timeout=12,
-            allow_redirects=True,
-        )
-        if resp.status_code == 200:
-            print("[injuries] Rotowire login succeeded")
-            return True
-        print(f"[injuries] Rotowire login HTTP {resp.status_code}")
-        return False
-    except Exception as exc:
-        print(f"[injuries] Rotowire login error: {exc}")
-        return False
+
+    for field_name in ("email", "username"):
+        try:
+            # Reset cookies between attempts so a partial/failed first
+            # login can't poison the second attempt's cookie jar.
+            session.cookies.clear()
+            resp = session.post(
+                ROTOWIRE_LOGIN_URL,
+                data={field_name: email, "password": password},
+                headers={"User-Agent": USER_AGENT},
+                timeout=12,
+                allow_redirects=True,
+            )
+        except Exception as exc:
+            print(f"[injuries] Rotowire login error (field={field_name}): {exc}")
+            continue
+        if resp.status_code != 200:
+            print(f"[injuries] Rotowire login HTTP {resp.status_code} (field={field_name})")
+            continue
+        cookie_count = len(session.cookies)
+        cookie_names = sorted(c.name for c in session.cookies)
+        print(f"[injuries] Rotowire login OK (field={field_name}, "
+              f"cookies={cookie_count}: {cookie_names})")
+        return True
+
+    print("[injuries] Rotowire login: all attempts failed")
+    return False
 
 
 def fetch_rotowire_html(session: requests.Session | None = None) -> str | None:
@@ -428,6 +447,16 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
                 if "Subscriber Exclusive" in ancestor.get_text():
                     break  # This team's data is subscription-gated; stop here
 
+                # Require the ancestor to contain the "STARTERS" section header.
+                # Projected Minutes panels have this header on both the dedicated
+                # projected-minutes.php page and inline on the main nba-lineups.php
+                # page. Expected Lineup panels (which also have 2+ player links on
+                # the lineups page) use position labels (PG/SG/SF/PF/C) instead
+                # and lack this header — this filter rejects them cleanly.
+                ancestor_text_lower = ancestor.get_text(" ", strip=True).lower()
+                if "starters" not in ancestor_text_lower:
+                    continue
+
                 players: list[dict] = []
                 current_section = "STARTERS"
 
@@ -460,6 +489,14 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
                     if not parent:
                         continue
                     full_text = parent.get_text(" ", strip=True)
+                    # Require a digit in the enclosing li — Projected Minutes entries
+                    # always carry a minute integer (including 0 for OUT players).
+                    # Expected Lineup entries (position label + name + optional status)
+                    # never contain digits and must be rejected here. This filter is
+                    # load-bearing on the main lineups page where the logo anchor may
+                    # resolve to an ancestor wrapping both panel types.
+                    if not any(ch.isdigit() for ch in full_text):
+                        continue
                     # Remove the player name from text to isolate status + minutes
                     remainder = full_text.replace(name, "", 1).strip()
 
@@ -480,7 +517,13 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
                             "injury_status": inj_status,
                         })
 
-                if players:
+                # Accept this ancestor only if at least one player carries a
+                # positive projected-minutes value. A panel that matched the
+                # "starters" text filter but yielded all-zero minutes likely
+                # wraps mixed content — keep walking up in search of a cleaner
+                # container.
+                positive = sum(1 for p in players if p.get("minutes", 0) > 0)
+                if players and positive >= 1:
                     result[team] = players
                     break  # Found data for this team; stop walking up
 
@@ -495,6 +538,9 @@ def parse_projected_minutes(soup: BeautifulSoup) -> dict[str, list[dict]]:
     )
     print(f"[injuries] projected_minutes: parsed {len(result)} teams, "
           f"{populated} players with minutes > 0")
+    if result:
+        team_list = ", ".join(sorted(result.keys()))
+        print(f"[injuries] projected_minutes teams found: {team_list}")
     return result
 
 
@@ -696,7 +742,11 @@ def main() -> int:
         if isinstance(v, dict) and v.get("starters")
     )
 
-    # ── New panels (subscription-gated) ──────────────────────────────────
+    # ── Premium panels (subscription-gated) ──────────────────────────────
+    # Rotowire's dedicated projected-minutes.php page serves ALL teams when
+    # authenticated with the correct login field (see login_rotowire). If
+    # coverage is still incomplete after auth fix, check diag output in
+    # data/minutes_diag.json for the real blocker (JS rendering, CSRF, etc.)
     projected_minutes: dict = {}
     onoff_usage: dict = {}
     if authenticated:
@@ -707,6 +757,27 @@ def main() -> int:
             onoff_usage = parse_onoff_usage(soup_minutes)
         else:
             print("[injuries] projected-minutes page unavailable — skipping premium panels")
+
+        if projected_minutes:
+            pm_teams = ", ".join(sorted(projected_minutes.keys()))
+            populated = sum(
+                1 for players in projected_minutes.values()
+                for p in players
+                if isinstance(p.get("minutes"), int) and p["minutes"] > 0
+            )
+            print(f"[injuries] projected_minutes: {len(projected_minutes)} teams "
+                  f"({pm_teams}), {populated} players with minutes > 0")
+
+            # Surface coverage gap relative to the parsed lineups slate so the
+            # ops log clearly shows when the dedicated-page auth is partially
+            # gating content — the diag script can be re-run to investigate.
+            lineup_teams_set = {t for t, d in lineups.items()
+                                if isinstance(d, dict) and d.get("starters")}
+            missing = sorted(lineup_teams_set - set(projected_minutes.keys()))
+            if missing:
+                print(f"[injuries] projected_minutes COVERAGE GAP: "
+                      f"{len(missing)} teams in lineups but not in projected_minutes: "
+                      f"{missing}")
     else:
         print("[injuries] Skipping projected_minutes + onoff_usage — not authenticated")
 
