@@ -856,7 +856,7 @@ Today is a postseason game. Playoff and play-in basketball differs structurally 
 
 **L5/L10 window caution:** The final regular-season week included widespread rest, minutes compression, and low-stakes game contexts for most playoff teams. L5 averages and trend tags (up/down/stable) entering the first playoff games are unreliable — many stars sat 1-3 of their last 5 games or played 20-25 minutes in meaningless contests. Weight L20 tier hit rates and full-season profiles over L5 indicators for the first 2-3 playoff games. Once the L5 window refills with playoff-intensity data (typically by Game 3 of any series), L5 trend signals become reliable again.
 
-**What does NOT change:** Tier system rules, confidence floors, step-down mechanics, VOLATILE penalties, iron_floor designations, and all quantitative gates remain in full effect. This block provides behavioral context — it does not override any existing rule."""
+**What does NOT change:** Tier system rules, confidence floors, step-down mechanics, iron_floor designations, and all quantitative gates remain in full effect. This block provides behavioral context. See PLAYOFF RULE MODIFICATIONS below for specific rule overrides active during postseason."""
 
 
 def build_playoff_adjustments(today_str: str) -> str:
@@ -982,6 +982,58 @@ or the -5% penalty — those require spread_abs > 11.
 
 All other rules (tier system, iron_floor, VOLATILE, B2B, matchup, skip rules
 not listed above) remain unchanged."""
+
+
+def build_playoff_rule_modifications(today_str: str) -> str:
+    """
+    Returns a PLAYOFF RULE MODIFICATIONS block that explicitly overrides
+    three regular-season rules during postseason games. Date-gated to
+    PLAYOFF_START_DATE — active for both play-in and playoff games.
+
+    These are DIRECTIVE overrides, not annotations. They supersede the
+    corresponding rules in KEY RULES sections when active.
+    """
+    if today_str < PLAYOFF_START_DATE:
+        return ""
+
+    return """
+## PLAYOFF RULE MODIFICATIONS — ACTIVE OVERRIDES
+
+The following rules are MODIFIED during playoff and play-in games. These overrides
+supersede the corresponding regular-season rules stated elsewhere in this prompt.
+The rationale is structural: the regular-season data that calibrated these rules
+includes managed rest, DNPs, and low-stakes games — behavioral patterns that do
+not exist in postseason basketball.
+
+**OVERRIDE 1 — MIN_FLOOR CONFIDENCE CAP SUSPENSION:**
+The regular-season rule caps PTS confidence at 84% when floor_minutes < 24.
+During playoffs/play-in: this cap is SUSPENDED when the player's Rotowire
+projected_minutes (from the LINEUPS section) is ≥ 30. The min_floor value is
+computed from L10 regular-season data that includes rest games and managed-minutes
+nights — it understates the player's actual playoff floor when they are projected
+for full playoff minutes. When projected_minutes is ≥ 30, evaluate confidence
+normally per all other rules with no 84% ceiling from min_floor.
+If projected_minutes is unavailable or < 30, the regular-season 84% cap still applies.
+
+**OVERRIDE 2 — VOLATILE DEDUCTION REDUCED:**
+The regular-season VOLATILE deduction is -5%. During playoffs/play-in: the VOLATILE
+confidence deduction is reduced to -3%. The VOLATILE tag is computed from regular-season
+game logs that include rest/DNP games and low-effort late-season contests. These
+outlier-low performances inflate the variance metric. In postseason games, effort and
+minutes are maximized, compressing the distribution. The -3% deduction preserves
+appropriate caution for genuinely volatile players while not over-penalizing players
+whose VOLATILE tag is an artifact of regular-season load management.
+All other VOLATILE rules (iron_floor interaction, VOLATILE+AST T6 skip, weak-combo
+skip) remain unchanged — only the base confidence deduction changes from -5% to -3%.
+
+**OVERRIDE 3 — TEAM MOMENTUM IS INFORMATIONAL ONLY:**
+During playoffs/play-in: the team_momentum tag (hot/cold/neutral) shown in the quant
+context is INFORMATIONAL ONLY. Do not use it to adjust confidence in either direction.
+Regular-season momentum is driven by schedule difficulty, rest patterns, and opponent
+quality variation that do not apply in playoff matchups. A team tagged "cold" may have
+deliberately rested starters in the final week; a team tagged "hot" may have beaten
+tanking opponents. Neither signal is predictive of playoff performance.
+"""
 
 
 def build_series_progression_rules(today_str: str) -> str:
@@ -2655,6 +2707,7 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   It does NOT apply when the player has [iron_floor] on their PTS stat — iron_floor
   confirms the player's scoring floor holds regardless of game script.
 {build_playoff_blowout_override(TODAY_STR)}
+{build_playoff_rule_modifications(TODAY_STR)}
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
@@ -3768,6 +3821,7 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   It does NOT apply when the player has [iron_floor] on their PTS stat — iron_floor
   confirms the player's scoring floor holds regardless of game script.
 {build_playoff_blowout_override(TODAY_STR)}
+{build_playoff_rule_modifications(TODAY_STR)}
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
