@@ -4,14 +4,14 @@
   "playoff_start_date": "2026-04-18",
   "play_in": {
     "east": {
-      "7v8": {"home": "PHI", "away": "ORL", "date": "2026-04-14", "winner": null},
-      "9v10": {"home": "CHA", "away": "MIA", "date": "2026-04-15", "winner": null},
-      "final": {"home": null, "away": null, "date": "2026-04-17", "winner": null}
+      "7v8": {"home": "PHI", "away": "ORL", "date": "2026-04-15", "winner": null},
+      "9v10": {"home": "CHA", "away": "MIA", "date": "2026-04-14", "winner": "CHA"},
+      "final": {"home": null, "away": "CHA", "date": "2026-04-17", "winner": null, "note": "home = loser of PHI/ORL (TBD)"}
     },
     "west": {
-      "7v8": {"home": "PHX", "away": "POR", "date": "2026-04-14", "winner": null},
+      "7v8": {"home": "PHX", "away": "POR", "date": "2026-04-14", "winner": "POR"},
       "9v10": {"home": "LAC", "away": "GSW", "date": "2026-04-15", "winner": null},
-      "final": {"home": null, "away": null, "date": "2026-04-17", "winner": null}
+      "final": {"home": "PHX", "away": null, "date": "2026-04-17", "winner": null, "note": "away = winner of LAC/GSW (TBD)"}
     }
   },
   "standings": {
@@ -25,7 +25,7 @@
       {"seed": 7, "team": "PHI", "record": "45-37"},
       {"seed": 8, "team": "ORL", "record": "45-37"},
       {"seed": 9, "team": "CHA", "record": "44-38"},
-      {"seed": 10, "team": "MIA", "record": "43-39"}
+      {"seed": 10, "team": "MIA", "record": "43-39", "eliminated": true}
     ],
     "west": [
       {"seed": 1, "team": "OKC", "record": "64-18"},
@@ -80,7 +80,7 @@
       "series_id": "W2",
       "conference": "West",
       "home_team": "SAS",
-      "away_team": "TBD",
+      "away_team": "POR",
       "best_of": 7
     },
     {
