@@ -1,64 +1,73 @@
 {
-  "date": "2026-04-14",
-  "generated_at": "2026-04-14T07:48:35.202525-07:00",
+  "date": "2026-04-15",
+  "generated_at": "2026-04-15T07:30:29.628481-07:00",
   "player_notes": {
-    "stephen curry": "Curry will be on a minutes restriction in the Warriors' play-in game vs. the Clippers. Cap all volume-dependent props (points, assists, 3PM) accordingly.",
-    "luka doncic": "Doncic is returning to L.A. from Spain on Friday after receiving injections for a Grade 2 left hamstring strain; playoff availability remains unknown. Avoid Lakers props dependent on his presence until status is confirmed."
+    "stephen curry": "On a minutes restriction for Warriors' play-in game vs. Clippers on Wednesday. Cap points, rebounds, assists, and 3PM props accordingly \u2014 reduced floor time meaningfully limits upside.",
+    "luka doncic": "Still out indefinitely (Grade 2 left hamstring strain); returning to L.A. from Spain on Friday but coach Redick has no timeline. Fade all Doncic props; monitor Lakers rotation implications.",
+    "bam adebayo": "Suffered a lower back injury (tripped by LaMelo Ball) in the second quarter of the play-in game and was ruled out for the second half. Monitor status for next game; injury concern is real.",
+    "deni avdija": "Scored 41 points in play-in win over Suns \u2014 confirms primary scoring role for Blazers heading into playoffs (No. 7 seed). Positive lean on points and 3PM props.",
+    "lamelo ball": "Made the game-winning layup in OT of play-in win over Heat; Hornets advance as No. 8 seed. Confirmed primary usage/clutch role \u2014 positive lean on all props."
   },
   "game_notes": {
-    "GSW vs LAC": "Curry and two other Warriors are on minutes restrictions, suppressing GSW offensive upside. Clippers' opponents may see elevated usage."
+    "GSW vs LAC": "Curry plus two other Warriors are on minutes restrictions for this play-in game \u2014 significantly impacts Golden State's overall production and rotation depth.",
+    "LAL vs HOU": "Luka Doncic remains out indefinitely; Lakers' offense runs through Anthony Davis and supporting cast. Elevates props for Davis and other Lakers role players."
   },
   "raw_item_count": 50,
   "filtered_item_count": 49,
   "fetch_errors": [
-    "Tyler Herro",
-    "Bam Adebayo",
-    "Norman Powell",
-    "Andrew Wiggins",
-    "Miles Bridges",
-    "LaMelo Ball",
-    "Kon Knueppel",
-    "Brandon Miller",
-    "Coby White",
-    "Devin Booker",
-    "Jalen Green"
+    "Tyrese Maxey",
+    "Joel Embiid",
+    "Paul George",
+    "VJ Edgecombe",
+    "Paolo Banchero",
+    "Desmond Bane",
+    "Stephen Curry",
+    "Kawhi Leonard",
+    "Darius Garland",
+    "Bennedict Mathurin"
   ],
   "no_id_errors": [],
   "espn_errors": [
-    "Tyler Herro",
-    "Bam Adebayo",
-    "Norman Powell",
-    "Andrew Wiggins",
-    "Miles Bridges",
-    "LaMelo Ball",
-    "Kon Knueppel",
-    "Brandon Miller",
-    "Coby White",
-    "Devin Booker",
-    "Jalen Green"
+    "Tyrese Maxey",
+    "Joel Embiid",
+    "Paul George",
+    "VJ Edgecombe",
+    "Paolo Banchero",
+    "Desmond Bane",
+    "Stephen Curry",
+    "Kawhi Leonard",
+    "Darius Garland",
+    "Bennedict Mathurin"
   ],
   "no_news_players": [],
   "suggested_context_updates": [
     {
+      "player_or_team": "Portland Trail Blazers / Phoenix Suns",
+      "current_context_fact": "Play-In Schedule: Apr 15: ... LAC (9) vs GSW (10) West \u2014 losers eliminated. R1 MATCHUPS: (2) SAS vs (7) TBD (awaiting play-in result)",
+      "conflict": "Today's news confirms Portland Trail Blazers beat Phoenix Suns 114-110 in the West play-in game (Apr 15). POR has secured the West 7-seed. SAS will face POR in R1. PHX is eliminated from the 7/8 game and will play in the Apr 17 loser-bracket game for the 8-seed.",
+      "urgency": "critical",
+      "suggested_action": "Update West play-in results: POR wins 7-seed game over PHX. Update SAS R1 opponent to POR. PHX now plays Apr 17 for 8-seed vs the LAC/GSW loser. Update ELIMINATED list to add PHX if they lose Apr 17, or update bracket accordingly."
+    },
+    {
+      "player_or_team": "Charlotte Hornets / Miami Heat",
+      "current_context_fact": "Play-In Schedule: Apr 15: CHA (9) vs MIA (10) East \u2014 losers eliminated. R1 MATCHUPS: (1) DET vs (8) TBD (awaiting play-in result)",
+      "conflict": "Today's news confirms Charlotte Hornets beat Miami Heat 127-126 in OT in the East play-in game (Apr 15). CHA has advanced; MIA is eliminated. DET will face CHA in R1. Additionally, Bam Adebayo suffered a lower back injury in the game (fell in Q2, ruled out in second half) \u2014 relevant injury note though MIA is now eliminated.",
+      "urgency": "critical",
+      "suggested_action": "Update East play-in results: CHA wins 9/10 game over MIA. MIA is eliminated. Update DET R1 opponent to CHA. CHA now plays Apr 17 for the 8-seed vs the PHI/ORL loser. Add MIA to ELIMINATED list."
+    },
+    {
       "player_or_team": "Luka Doncic (LAL)",
-      "current_context_fact": "Re-evaluation Apr 14. OUT for R1 Game 1. Best case: late R1 (Games 4-5 if series goes long). Realistic: R2 (~May 3-4).",
-      "conflict": "News (Apr 13): 'Luka Doncic is returning to L.A. on Friday from Spain, where he received multiple injections for his Grade 2 left hamstring strain.' Status still described as 'unknown' \u2014 return to LA on Friday (Apr 18) aligns with Game 1 date, but no clearance confirmed. The Apr 14 re-evaluation date in context may be superseded by this Friday return timeline.",
-      "urgency": "monitor",
-      "suggested_action": "Update Doncic note: re-evaluation was expected Apr 14 but he is returning to LA from Spain on Friday (Apr 18 \u2014 same day as Game 1). Status remains unknown. 'OUT for R1 Game 1' remains the operative assumption until a clearance is confirmed, but monitor for any status update upon his return Friday."
+      "current_context_fact": "OUT for R1 Game 1. Best case: late R1 (Games 4-5 if series goes long). Realistic: R2 (~May 3-4). Re-evaluation Apr 14.",
+      "conflict": "Two news items update Doncic's status: (1) JJ Redick stated Apr 15 he has no additional information on Doncic's return and called him 'out indefinitely.' (2) A separate report from Apr 13 states Doncic is returning to LA on Friday (Apr 18) from Spain. The 'out indefinitely' language from Redick is more pessimistic than 'best case late R1' framing in the context doc.",
+      "urgency": "critical",
+      "suggested_action": "Update Doncic injury note: Redick says 'out indefinitely' as of Apr 15 \u2014 no confirmed return timeline. Doncic returning to LA on Friday Apr 18 for further evaluation. Remove the 'best case: late R1 (Games 4-5)' framing as it is no longer supported by the coach's public statements. The realistic timeline may now be R2 or later."
     },
     {
       "player_or_team": "Stephen Curry (GSW)",
-      "current_context_fact": "Returned Apr 7 on ~25 min restriction. Only 3 games since return. Still ramping for play-in. Per-minute production solid but conditioning uncertain.",
-      "conflict": "News (Apr 14): 'Stephen Curry is one of three Golden State Warriors who will be on a minutes restriction in the team's play-in game against the Clippers in Los Angeles on Wednesday.' Confirms minutes restriction is still active for the play-in game today (Apr 14). Also notable: two other unnamed Warriors are also on minutes restrictions \u2014 this is new information not reflected in context.",
+      "current_context_fact": "Stephen Curry (GSW) \u2014 Right knee ('runner's knee'). Missed 27 games. Returned Apr 7 on ~25 min restriction. Only 3 games since return. Still ramping for play-in. Per-minute production solid but conditioning uncertain.",
+      "conflict": "Today's news confirms Curry will be on a minutes restriction in GSW's play-in game vs LAC (Apr 16). He is one of three Warriors on minutes restrictions. This is consistent with the context doc's ramp-up note but confirms the restriction is still formally in place for the play-in game specifically.",
       "urgency": "monitor",
-      "suggested_action": "Update Curry note to confirm minutes restriction remains active for Apr 14 play-in vs LAC. Add that two other Warriors players are also on minutes restrictions for this game (identities not yet confirmed in news). This affects GSW's overall competitiveness in the play-in."
-    },
-    {
-      "player_or_team": "Cooper Flagg (DAL)",
-      "current_context_fact": "No mention of Cooper Flagg in context document.",
-      "conflict": "News (Apr 13): 'Ryan Nembhard broke Dallas coach Jason Kidd's club rookie record with 23 assists after No. 1 pick Cooper Flagg's debut season ended with an ankle [injury].' Cooper Flagg is confirmed as DAL's No. 1 pick who played this season and ended it with an ankle injury. The context doc has no mention of Flagg despite him being a significant roster addition for DAL.",
-      "urgency": "monitor",
-      "suggested_action": "Add Cooper Flagg to DAL roster notes as the No. 1 overall pick who played this season. His debut season ended with an ankle injury. DAL is eliminated so this has no immediate playoff pick relevance, but the context doc should reflect his existence for completeness."
+      "suggested_action": "Update Curry note to confirm minutes restriction is formally in place for the LAC play-in game (Apr 16). Note that two other unnamed Warriors are also on restrictions. If GSW advances, monitor whether restriction is lifted for R1."
     }
   ],
   "staleness_flags": []

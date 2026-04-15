@@ -1,0 +1,138 @@
+[
+  {
+    "date": "2026-04-15",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on an AST T4 pick with no iron_floor means the distribution is wide \u2014 a single quiet playmaking night easily misses. The 70% confidence reflects the structural softness, but AST props for volatile players at T4+ have confirmed suppression risk per historical audit."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with FG_COLD:-9% and trend=down on a secondary scorer is the exact profile the audit history flagged as structurally fragile \u2014 efficiency-dependent scoring with a cold-shooting signal means one off night from the field lands this well below 10. Historical lessons specifically note FG_COLD on secondary-scorer PTS should carry meaningful weight even at T10."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Audit history documents a confirmed multi-instance Bane blowout PTS miss pattern as a secondary scorer, and the system now flags Bane PTS at spread \u226510 when ORL is favored; this spread is only 2.5 but the min_floor of 17.9 (vs avg 29.3) exposes extreme minutes fragility \u2014 a single low-usage game produces a miss. The post_miss_hr of 67% (lift=0.87) further confirms below-average recovery probability on this prop."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 17.9 vs avg 29.3 is the most extreme minutes fragility on the slate \u2014 Bane's AST accumulation is entirely contingent on logging meaningful minutes, and any game where he plays his floor (~18 min) renders the T2 AST threshold very difficult to clear. Iron_floor protects the hit rate in normal games but does not insulate against a genuine low-minutes outcome."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with a min_floor of only 24.8 (avg 30.8) on a T20 PTS pick means a single low-minutes game \u2014 well within Kawhi's documented load-management variance \u2014 produces a miss. LAC is favored by 5.5, adding blowout/Q4-rest risk for a player already known for managed minutes, and the VOLATILE + FG_MARGIN_NEG flags compound the fragility."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Kawhi Leonard",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Darius Garland",
+    "team": "LAC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "FG_COLD:-17% is well above the audit-documented threshold where cold-shooting becomes structurally predictive for secondary-scorer PTS misses, combined with VOLATILE, FG_MARGIN_THIN:10%, and a min_floor of only 23.4 \u2014 one below-average shooting night (already the recent trend) on a player with thin minutes protection produces a miss. This is the exact FG_COLD + volatile + secondary-scorer combination the historical lessons identified as warranting at minimum a soft skip."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Darius Garland",
+    "team": "LAC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE on an AST T6 pick with no iron_floor, trend=down, and a min_floor of 23.4 creates layered fragility: AST accumulation at T6+ requires both significant minutes and active playmaking usage, neither of which is guaranteed. The audit history confirms VOLATILE + AST T6+ is a hard gate tier, and 70% confidence reflects genuine structural softness."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Stephen Curry",
+    "team": "GSW",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Team momentum=cold combined with VOLATILE, a post_miss_hr of only 67% (lift=0.93), and a min_floor of 25.0 on a player averaging just 27.5 minutes means a cold night from a team already in a slump could compress both usage and output. The typical_miss of 5.5 pts below threshold signals when he misses, he misses badly \u2014 the floor is not sticky."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-15",
+    "player_name": "Stephen Curry",
+    "team": "GSW",
+    "prop_type": "3PM",
+    "pick_value": 3,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
