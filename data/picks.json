@@ -28721,8 +28721,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor T20 at 95%, soft ORL defense, play-in max minutes, Embiid OUT.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 31.0,
     "market_line": 19.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -28740,7 +28740,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-15",
@@ -28761,8 +28764,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Primary initiator with Embiid OUT; VOLATILE -5% brings to floor at 70%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 88.24,
     "market_book": "fanduel",
@@ -28780,7 +28783,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on an AST T4 pick with no iron_floor means the distribution is wide \u2014 a single quiet playmaking night easily misses. The 70% confidence reflects the structural softness, but AST props for volatile players at T4+ have confirmed suppression risk per historical audit."
+    ],
+    "clv_pp": -0.27
   },
   {
     "date": "2026-04-15",
@@ -28801,8 +28809,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor AST T2 at 85%, trend=up, play-in max minutes, competitive=92%.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 1.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -28820,7 +28828,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-15",
@@ -28841,8 +28852,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Soft ORL defense, play-in max minutes; VOLATILE and FG_COLD reduce to 70% floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 19.0,
     "market_line": 9.5,
     "market_implied_prob": 89.47,
     "market_book": "fanduel",
@@ -28860,7 +28871,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with FG_COLD:-9% and trend=down on a secondary scorer is the exact profile the audit history flagged as structurally fragile \u2014 efficiency-dependent scoring with a cold-shooting signal means one off night from the field lands this well below 10. Historical lessons specifically note FG_COLD on secondary-scorer PTS should carry meaningful weight even at T10."
+    ],
+    "clv_pp": -1.44
   },
   {
     "date": "2026-04-15",
@@ -28881,8 +28897,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG and min_floor steps land at T10; VOLATILE -5%, High Confidence Gate caps at 80%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 34.0,
     "market_line": 9.5,
     "market_implied_prob": 97.22,
     "market_book": "fanduel",
@@ -28900,7 +28916,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Audit history documents a confirmed multi-instance Bane blowout PTS miss pattern as a secondary scorer, and the system now flags Bane PTS at spread \u226510 when ORL is favored; this spread is only 2.5 but the min_floor of 17.9 (vs avg 29.3) exposes extreme minutes fragility \u2014 a single low-usage game produces a miss. The post_miss_hr of 67% (lift=0.87) further confirms below-average recovery probability on this prop."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-15",
@@ -28921,8 +28942,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor AST T2 at 85%, play-in max minutes, competitive=94%, mid defense caps at 80%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -28940,7 +28961,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 17.9 vs avg 29.3 is the most extreme minutes fragility on the slate \u2014 Bane's AST accumulation is entirely contingent on logging meaningful minutes, and any game where he plays his floor (~18 min) renders the T2 AST threshold very difficult to clear. Iron_floor protects the hit rate in normal games but does not insulate against a genuine low-minutes outcome."
+    ],
+    "clv_pp": -2.42
   },
   {
     "date": "2026-04-15",
@@ -28961,8 +28987,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "VOLATILE_weak_combo skips T25; FG_MARGIN_NEG steps to T20; VOLATILE -5% lands at 75%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "market_line": 19.5,
     "market_implied_prob": 92.31,
     "market_book": "fanduel",
@@ -28980,7 +29006,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with a min_floor of only 24.8 (avg 30.8) on a T20 PTS pick means a single low-minutes game \u2014 well within Kawhi's documented load-management variance \u2014 produces a miss. LAC is favored by 5.5, adding blowout/Q4-rest risk for a player already known for managed minutes, and the VOLATILE + FG_MARGIN_NEG flags compound the fragility."
+    ],
+    "clv_pp": -2.43
   },
   {
     "date": "2026-04-15",
@@ -29001,8 +29032,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "9/10 AST T2, soft GSW defense with depleted roster, trend=up, 97% blowout hit rate.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -29020,7 +29051,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.5
   },
   {
     "date": "2026-04-15",
@@ -29041,8 +29075,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_COLD:-17% and min_floor<24 force T15\u2192T10; VOLATILE -5% nets 75% at conservative floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "market_line": 9.5,
     "market_implied_prob": 98.59,
     "market_book": "fanduel",
@@ -29060,7 +29094,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "FG_COLD:-17% is well above the audit-documented threshold where cold-shooting becomes structurally predictive for secondary-scorer PTS misses, combined with VOLATILE, FG_MARGIN_THIN:10%, and a min_floor of only 23.4 \u2014 one below-average shooting night (already the recent trend) on a player with thin minutes protection produces a miss. This is the exact FG_COLD + volatile + secondary-scorer combination the historical lessons identified as warranting at minimum a soft skip."
+    ],
+    "clv_pp": 0.55
   },
   {
     "date": "2026-04-15",
@@ -29081,8 +29120,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "VOLATILE+T6 hard skip fires; T4 re-evaluated at 75% after VOLATILE -5%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 3.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -29100,7 +29139,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE on an AST T6 pick with no iron_floor, trend=down, and a min_floor of 23.4 creates layered fragility: AST accumulation at T6+ requires both significant minutes and active playmaking usage, neither of which is guaranteed. The audit history confirms VOLATILE + AST T6+ is a hard gate tier, and 70% confidence reflects genuine structural softness."
+    ],
+    "clv_pp": 1.12
   },
   {
     "date": "2026-04-15",
@@ -29121,8 +29165,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T20 VOLATILE -5% fails 70% floor; T15 estimated 85% \u2192 VOLATILE -5% \u2192 80% at mid cap.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 35.0,
     "market_line": 14.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -29140,7 +29184,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Team momentum=cold combined with VOLATILE, a post_miss_hr of only 67% (lift=0.93), and a min_floor of 25.0 on a player averaging just 27.5 minutes means a cold night from a team already in a slump could compress both usage and output. The typical_miss of 5.5 pts below threshold signals when he misses, he misses badly \u2014 the floor is not sticky."
+    ],
+    "clv_pp": -0.91
   },
   {
     "date": "2026-04-15",
@@ -29161,8 +29210,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "iron_floor+VOLATILE incompatibility overrides floor; 80% base \u2192VOLATILE-5%\u219275% at 3PM floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 2.5,
     "market_implied_prob": 81.48,
     "market_book": "fanduel",
@@ -29180,6 +29229,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-15T22:18:21.254794-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.35
   }
 ]

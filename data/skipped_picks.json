@@ -14,10 +14,10 @@
       "tier_considered": 2,
       "reason": "trend=down mandatory step T2\u2192T1 applied; at T1 VOLATILE -5% from ~90% base lands at ~75% which is at exact 3PM floor. Pick emitted at T1 \u2014 actually this was emitted above. This skip record is not needed."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-15",
@@ -34,10 +34,10 @@
       "tier_considered": 4,
       "reason": "80% overall VOLATILE -5% = 75%, below 78% REB minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-15",
@@ -54,10 +54,10 @@
       "tier_considered": 6,
       "reason": "70% overall at T6 fails 78% REB minimum confidence floor before any VOLATILE penalty"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-04-15",
@@ -76,10 +76,10 @@
       "opp_today_rating": "mid",
       "reason": "AST T4+ hard gate: position=PF, opp_today=mid (not soft) \u2014 gate requires soft for frontcourt players at T4+"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-15",
@@ -96,10 +96,10 @@
       "tier_considered": 25,
       "reason": "VOLATILE tag + 7/10 (70%) overall at T25 \u2014 volatile_weak_combo hard skip fires at T25+"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 21.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 21.0 < tier 25"
   },
   {
     "date": "2026-04-15",
@@ -116,10 +116,10 @@
       "tier_considered": 2,
       "reason": "75% overall at T2, VOLATILE -5% = 70%, below 75% 3PM minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 2"
   },
   {
     "date": "2026-04-15",
@@ -136,10 +136,10 @@
       "tier_considered": 6,
       "reason": "VOLATILE tag + AST tier T6 \u2014 volatile_ast_t6 hard skip fires unconditionally; no iron_floor+trend=up exception present"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-15",
@@ -158,10 +158,10 @@
       "trend": "down",
       "reason": "trend=down + avg_minutes=29.6 \u2264 30 \u2014 hard skip fires after trend=down step-down T2\u2192T1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-15",
@@ -178,10 +178,10 @@
       "tier_considered": 20,
       "reason": "70% overall at T20, VOLATILE -5% = 65%, below 70% PTS floor; stepped to T15 which qualifies"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 35.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 35.0 \u2265 tier 20"
   },
   {
     "date": "2026-04-15",
@@ -199,10 +199,10 @@
       "fg_margin_thin_pct": 5,
       "reason": "FG_MARGIN_THIN:5% fires at T10 (minimum valid PTS tier); no lower tier exists \u2014 full cascade exhausted, skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 23.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 23.0 \u2265 tier 10"
   },
   {
     "date": "2026-04-15",
@@ -219,9 +219,9 @@
       "tier_considered": 4,
       "reason": "75% overall at T4, VOLATILE -5% = 70%, below 78% REB minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 4"
   }
 ]
