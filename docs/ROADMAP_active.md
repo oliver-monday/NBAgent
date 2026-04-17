@@ -21,7 +21,7 @@ Swept against ROADMAP_resolved.md — all items shipped through 2026-04-16 verif
 - `odds_pretip.yml` runs: hourly from noon–7 PM PT. Closing-line re-fetch architecture (4/11) re-fetches games when closer to tip by ≥30min. Tip-off guard (4/11) prevents post-tip odds from contaminating CLV.
 - `odds.yml`: manual-trigger only, for ad-hoc re-fetches
 - `auditor.py`: computes per-pick CLV, aggregates `clv_summary`. Playoff calibration early warning (4/12) fires when ≥15 graded playoff picks exist and any confidence band diverges ≥10pp from regular-season baseline.
-- Paid tier ($30/month, 20k credits) planned for playoffs — eliminates credit budget constraints
+- Paid tier ($30/month, 20k credits) active — no credit budget constraints
 
 **Completed phases:** Phase 1 (3/31), Phase 1.5 prefetch + market gate (4/7), Phase 1.75 calibration-corrected edge (4/7), Phase 1.8 parlay edge awareness (4/7), Phase 1.9 frontend odds display (4/7), alt-tier edge display (4/9), pre-tip sweep Layer 1 (4/9), CLV tracking Layer 2 (4/9), ✅ Layer 3 line movement indicators (4/11), ✅ P1.1 per-player calibration wiring H29→odds (4/12), ✅ P1.5 playoff calibration early warning (4/12), ✅ pretip closing-line re-fetch + tip-off guard (4/11).
 

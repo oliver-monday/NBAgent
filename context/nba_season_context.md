@@ -217,7 +217,18 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 *(8-seed determined Apr 17: ORL vs CHA. Game 1: Apr 19.)*
 
 ##### (2) BOS vs (7) PHI
-*(Game 1: Apr 18 at Boston. PHI without Embiid. PHI is confirmed system-wide suppressor — BOS picks require extra scrutiny. PHI won play-in over ORL 109-97.)*
+*(Game 1: Apr 19, 1 PM ET at TD Garden. BOS won season series 2-2 but Tatum missed all 4 games — PHI has never faced this version of BOS.)*
+
+**Pre-Series Intel (sources: NBA.com, Boston Globe, NBC Sports Boston, NBC Sports Philadelphia, ESPN — Apr 16):**
+- Embiid OUT (appendectomy Apr 10). No return timeline. PHI's offense without Embiid is perimeter-oriented — Maxey becomes sole engine. Drummond and Bona are the two primary centers; neither is an offensive threat.
+- Paul George returned Mar 25 from a 25-game suspension (anti-drug program violation). Has looked refreshed and explosive — described the time off as a "blessing in disguise" for his body. Played the final 10 games including the play-in. Averaged 28 PPG and 7 REB over his last 4 appearances. Available and healthy for R1.
+- Maxey career-high season: 28.3 PPG / 6.6 APG in 70 games. Against BOS specifically: 30.0 PPG, 8.8 APG, 51.4% from 3 on 8.8 attempts per game — he torched them. Will average 42+ min per game in this series. He is the series for PHI.
+- Edgecombe: 16.0 PPG / 5.6 REB in 75 games (3rd overall pick). Scored 34 in his NBA debut at TD Garden on opening night. Has the ability to keep PHI's offense afloat when Maxey rests. Maxey+Edgecombe backcourt loves to run in transition — BOS has been susceptible to transition scoring this season.
+- Key defensive matchup: Baylor Scheierman guarded Maxey for 42 possessions in the March game and held him to 3-for-10. Expect BOS to deploy Scheierman as the primary Maxey defender. BOS will also try to attack Maxey on the other end.
+- PHI owns the best clutch-time defense in the NBA (98.6 DRTG in 174 clutch minutes). Both of PHI's regular-season wins vs BOS were decided by 1-2 points in clutch time. BOS must build leads and avoid letting PHI hang around late.
+- BOS offensive rebounding advantage: 33.6% OREB rate (5th in NBA) vs PHI's 67.8% DREB rate (26th). Drummond, Garza, and Jordan Walsh crash the glass. Second-chance points could be decisive.
+- BOS opened as 10.5-point Game 1 favorites. Consensus: Celtics in 5. PHI's best hope is stealing a game in Philly on Maxey/George eruptions.
+- ⚠ PHI is a confirmed system-wide suppressor (65.0% hit rate, −22.1pp). Apply extra scrutiny to ALL BOS player props in this series. Tatum's return adds a variable PHI hasn't game-planned against — monitor whether the suppressor holds when BOS is at full strength.
 
 #### WEST R1
 
@@ -249,7 +260,19 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 *(8-seed determined Apr 17: PHX vs GSW. Game 1: Apr 19.)*
 
 ##### (2) SAS vs (7) POR
-*(Game 1: Apr 18 at San Antonio. POR upset PHX in play-in to claim 7-seed. SAS floor compression pattern active — opponent players miss well below tier thresholds (mean miss margin −5.0). Wemby expected available after 6 days rest from rib contusion.)*
+*(Game 1: Apr 19, 9 PM ET at Frost Bank Center. SAS won season series 2-1, but Wemby missed all 3 games.)*
+
+**Pre-Series Intel (sources: NBA.com, Pounding the Rock, SI, The Big Lead, Blazer's Edge — Apr 16):**
+- Wembanyama's playoff debut. He missed all 3 regular-season games vs POR (rib contusion, rest). POR's defensive schemes against SAS have never faced Wemby — this is a true unknown for Splitter's game plan. Expected available after 8 days rest from rib contusion (Apr 6). Also managing right ankle. Monitor Game 1 aggressiveness — rib pain may limit contact plays initially.
+- SAS went 30-1 from Feb 1 against non-DEN teams. 3rd in both OFFRTG and DEFRTG, 2nd-best NETRTG (+8.3). League-best DREB% (72.4%) — directly attacks POR's biggest strength (second-chance points).
+- POR starting five: Scoot Henderson / Jrue Holiday / Toumani Camara / Deni Avdija / Donovan Clingan. Jerami Grant (right calf strain, missed final 7 games) is questionable — may come off bench if active.
+- Avdija is POR's franchise player: first All-Star season, career-highs across the board (24.2 PPG / 6.9 REB / 6.7 APG). Torched SAS in the season series — 31.7 PPG, 7.3 REB, 8.0 AST on 55% FG and 53% from 3 across 3 games. Dropped 40/12/7 in the play-in win over PHX. The question: can he sustain this against Wemby's rim deterrence, which he never faced?
+- Clingan vs Wemby is the marquee big-man matchup. Clingan: elite rebounder (highest individual DREB% in NBA at 28.5%), has added a 3-point shot. But Avdija-Clingan shared minutes have a -2.3 NRTG this season (both are great individually but haven't synergized as a pair). If SAS exploits this, POR's defense-first identity breaks down.
+- POR's biggest vulnerability: league's most turnover-prone team. SAS's switching defense and Wemby's rim deterrence will force contested decisions. POR generated 16% of its points from second chances (league-high) — SAS's league-best DREB% directly neutralizes this lifeline.
+- POR's strength: 3rd-best DEFRTG post-All-Star break (109.3 in 26 games). Camara and Thybulle provide elite perimeter defense. Clingan anchors the paint. If POR can slow the game and force half-court execution, they're competitive.
+- Coaching subplot: Tiago Splitter (POR interim) played for SAS 2010-15, won a championship there. He knows the Spurs' DNA — but SAS under Mitch Johnson is a different team than Pop's Spurs. Johnson making his own playoff coaching debut.
+- Jrue Holiday brings championship-caliber playoff experience to POR's young core. Could be the steadying force in tight games. Henderson (20 years old) and Clingan (21) are in their first playoff series.
+- SAS -2000 series favorites — the most lopsided series odds in R1. SAS floor compression pattern active — opponent players miss well below tier thresholds (mean miss margin −5.0, n=6 misses). Be conservative on POR player props, especially in San Antonio.
 
 ---
 
