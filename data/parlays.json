@@ -4441,5 +4441,46 @@
         "cannibalization_flags": null
       }
     ]
+  },
+  {
+    "date": "2026-04-17",
+    "parlays": [
+      {
+        "label": "3PM Sharpshooter Sweep",
+        "card_type": "core",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "CHA",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Stephen Curry",
+            "team": "GSW",
+            "opponent": "PHX",
+            "prop_type": "3PM",
+            "pick_value": 3,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "correlation_role": "scorer"
+          }
+        ],
+        "implied_odds": "+114",
+        "confidence_product": 0.6,
+        "correlation": "independent",
+        "rationale": "Two elite shooters in soft defensive matchups with strong hit rates and POSITIVE/NEUTRAL edge across independent games.",
+        "date": "2026-04-17",
+        "id": "parlay_2026-04-17_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 2
+      }
+    ]
   }
 ]

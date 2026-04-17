@@ -1,0 +1,192 @@
+[
+  {
+    "date": "2026-04-17",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a 3PM prop with iron_floor incompatibility already stripped means no floor protection \u2014 LaMelo's wide 3PM distribution (raw avg 4.4 but volatile) means a cold-shooting night easily produces a miss at T2, and the 75% confidence reflects a real structural gap rather than a padded floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Miles Bridges",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 23.9 is just below the 24-minute threshold for minutes fragility, and the post-miss bounce-back hit rate is only 60% (lift=0.73 negative), meaning Bridges has a documented pattern of sequential underperformance \u2014 a single low-usage game produces a miss at a tier the system already walked down to T10."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Miles Bridges",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Kon Knueppel",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD at -30% is a severe active efficiency flag \u2014 per historical lessons, FG_COLD on a PTS prop signals a structurally elevated same-game miss probability, and the confidence was already stepped down significantly; a player in active shooting cold spell at T10 is one more cold-FG night from a miss even at this conservative tier."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a downward trend already forced a mandatory step-down to T2, but raw_avg 3PM of 3.2 with volatile distribution means the floor at T2 is pattern-based rather than structural \u2014 a cold-shooting night (well within normal variance for a volatile 3PM shooter) produces a miss, and there is no iron_floor protection."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Coby White",
+    "team": "CHA",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "min_floor of 15.8 with avg minutes of only 19.5 means White's PTS floor is highly minutes-contingent \u2014 proj_min=22 failed Override 1 (requires \u226530) yet the pick was kept, and post-miss bounce-back is only 60% (lift=0.76). A single foul trouble or game-script adjustment easily drops him to 15-17 minutes, well below what's needed to clear PTS T10 reliably."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Coby White",
+    "team": "CHA",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Same structural minutes risk as the PTS pick \u2014 min_floor of 15.8 and avg minutes of 19.5 make the 3PM floor entirely contingent on White getting meaningful run; any game-script reduction or foul trouble collapses the opportunity base for even a T1 3PM threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 17.9 with avg minutes of 29.8 signals extreme minutes volatility \u2014 the gap between floor and average is the largest on the slate, and VOLATILE tag plus FG_MARGIN_THIN (1%, the most severe thin margin present) means Bane is one cold night or reduced-minutes game away from missing even this stepped-down T10 threshold; typical miss is 6.0 pts below, the highest miss depth on the slate."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Stephen Curry",
+    "team": "GSW",
+    "prop_type": "3PM",
+    "pick_value": 3,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Stephen Curry",
+    "team": "GSW",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE on a cold-momentum team (team_momentum=cold) with a tough defense and min_floor=25.0 averaging only 28.3 minutes \u2014 the narrow average-to-floor gap means any minute compression under the cold team context pushes Curry's volatile PTS distribution toward a miss; post-miss bounce-back is only 67% and the typical miss is 5.5 pts below, indicating meaningful downside when he misses."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Per historical lessons, iron_floor AST props on non-primary-playmakers (even with high raw_avg_AST=5.7) carry structural miss risk when the player's game concentrates on scoring \u2014 Booker is primarily a scorer, and in a competitive game where PHX may rely on him for buckets, assist accumulation to reach T4 (a relatively high AST threshold) is role-dependent rather than guaranteed even with iron_floor protection."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "min_floor=0.0 is a critical flag \u2014 the system notes this as CRITICAL and proj_min is only 21.1 average, meaning Green's floor is entirely undefined and a single DNP, rest decision, or early exit produces a total miss; VOLATILE tag compounds this with a wide scoring distribution, and typical miss depth is 6.0 pts below threshold \u2014 the structural floor is absent."
+    ],
+    "source": "auto"
+  }
+]
