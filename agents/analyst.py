@@ -417,7 +417,10 @@ def render_playoff_picture(standings_path=STANDINGS_JSON) -> str:
       Out of Contention— rank 13–15 (and not Eliminated)
 
     Returns empty string if file missing or parse fails — never blocks a run.
+    Paused during postseason — standings are frozen and already in season context.
     """
+    if TODAY_STR >= PLAYOFF_START_DATE:
+        return ""
     try:
         if not Path(standings_path).exists():
             print("[analyst] standings_today.json not found — skipping playoff picture.")
