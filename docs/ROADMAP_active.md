@@ -198,9 +198,7 @@ The 76–80% band carries the most picks and has the highest overperformance gap
 Post-game reporter was redesigned from deterministic phrase-matching to Claude LLM classification on 4/8. Monitor for false positive injury exit classifications.
 
 #### W10 — ESPN Athlete News API
-**Status: SYSTEMIC — monitor whether endpoint recovers (4/10)**
-
-All per-athlete ESPN fetches failing across every player with a valid athlete_id — this is not a missing-ID problem, it's the ESPN public athlete news endpoint itself (monitor for recovery upstream). Pre-game news still arrives via the league-wide feed (`fetch_league_news`), which is unaffected. Error diagnostics are now fully split in `pre_game_news.json`: `no_id_errors` (athlete_id missing from `player_dim.csv`), `espn_errors` (HTTP/network failure on the athlete endpoint), `no_news_players` (fetch succeeded but returned zero items). Combined `fetch_errors` retained for backward compatibility. Shipped 4/10 alongside the `team_abbr_alt` match fix in `load_target_players()` which recovered 10 NYK/SAS/GSW players who had been silently dropped because the whitelist uses Rotowire abbrevs and `nba_master.csv` uses ESPN short codes.
+**Status: CLOSED (2026-04-16) — endpoint removed from both reporters. Code using the failing `common/v3/athletes/{id}/news` endpoint has been fully stripped from `post_game_reporter.py` and `pre_game_reporter.py`. League-wide news (`site/v2`) still works in pre-game reporter. Re-enable if ESPN restores the endpoint.**
 
 #### W13 — Skip Rule Refinements: T10 floor exception + co-primary gate + elite exemption + 3PM T1 iron_floor
 **Status: OPEN — monitor in production (opened 2026-04-11)**

@@ -39,7 +39,6 @@ DATA            = ROOT / "data"
 
 PICKS_JSON      = DATA / "picks.json"
 GAME_LOG_CSV    = DATA / "player_game_log.csv"
-PLAYER_DIM_CSV  = DATA / "player_dim.csv"
 POST_GAME_JSON  = DATA / "post_game_news.json"
 MASTER_CSV      = DATA / "nba_master.csv"
 
@@ -50,10 +49,6 @@ YESTERDAY     = TODAY - dt.timedelta(days=1)
 YESTERDAY_STR = YESTERDAY.strftime("%Y-%m-%d")
 
 # ── Config ────────────────────────────────────────────────────────────
-ESPN_NEWS_URL    = (
-    "https://site.api.espn.com/apis/common/v3/sports/basketball/nba"
-    "/athletes/{athlete_id}/news"
-)
 ESPN_RECAP_URL   = "https://www.espn.com/nba/recap/_/gameId/{game_id}"
 ROTOWIRE_NEWS_URL  = "https://www.rotowire.com/basketball/news.php"
 ROTOWIRE_LOGIN_URL = "https://www.rotowire.com/users/login.php"
@@ -243,39 +238,6 @@ def compute_likely_misses(
     return likely, meta
 
 
-def _norm_name(name: str) -> str:
-    """Normalize player name to match player_dim.csv's player_name_norm convention.
-    Hyphens → space, apostrophes/periods removed, collapse whitespace, lowercase."""
-    s = name.lower().strip()
-    s = s.replace("-", " ")
-    for ch in ("'", "\u2019", "."):
-        s = s.replace(ch, "")
-    return " ".join(s.split())
-
-
-def load_athlete_id_map() -> dict[str, str]:
-    """
-    Load player_dim.csv and return {player_name_norm (lowercase): player_id}.
-    Uses player_name_norm column which is already lowercase.
-    Where a player appears multiple times, the most recent row wins.
-    """
-    id_map: dict[str, str] = {}
-    if not PLAYER_DIM_CSV.exists():
-        print("[post_game_reporter] player_dim.csv not found — no athlete IDs available.")
-        return id_map
-    try:
-        with open(PLAYER_DIM_CSV, newline="") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                name = (row.get("player_name_norm") or "").strip().lower()
-                aid  = (row.get("player_id") or "").strip()
-                if name and aid:
-                    id_map[name] = aid
-    except Exception as e:
-        print(f"[post_game_reporter] WARNING: could not load player_dim.csv: {e}")
-    return id_map
-
-
 def load_yesterday_game_rows(player_names: set[str]) -> dict[str, dict]:
     """
     Scan player_game_log.csv for yesterday's rows matching our player list.
@@ -372,24 +334,6 @@ def should_fetch(game_row: dict | None, is_missed_pick: bool = False) -> tuple[b
                 pass
 
     return False, "normal"
-
-
-# ── ESPN news fetch ───────────────────────────────────────────────────
-
-def fetch_espn_news(athlete_id: str) -> tuple[list[dict], bool]:
-    """
-    Fetch news items from ESPN athlete news endpoint.
-    Returns (news_items, fetch_ok).
-    fetch_ok=False means an HTTP/network error occurred.
-    """
-    url = ESPN_NEWS_URL.format(athlete_id=athlete_id)
-    try:
-        resp = requests.get(url, timeout=REQUEST_TIMEOUT)
-        resp.raise_for_status()
-        data = resp.json()
-        return data.get("feed", []), True
-    except Exception:
-        return [], False
 
 
 # ── ESPN recap fetch ─────────────────────────────────────────────────
@@ -747,7 +691,6 @@ def main() -> None:
 
     print(f"[post_game_reporter] Yesterday's picks: {len(player_names)} unique players")
 
-    athlete_ids       = load_athlete_id_map()
     game_rows         = load_yesterday_game_rows(player_names)
     likely_miss_names, likely_miss_meta = compute_likely_misses(player_names, game_rows)
     print(f"[post_game_reporter] Likely misses (pre-grading): {len(likely_miss_names)} players")
@@ -779,22 +722,13 @@ def main() -> None:
         f" {rest_count} routine)"
     )
 
-    # ── Step 1: Fetch ESPN athlete news per player ────────────────────
+    # ── Step 1: ESPN athlete news — DISABLED (endpoint failing) ───────
+    # ESPN athlete news endpoint (common/v3) has been returning errors
+    # since mid-April 2026. Brave Search + ESPN recaps + Rotowire cover
+    # the same use cases. Re-enable if ESPN fixes the endpoint.
     espn_news_by_player: dict[str, list[dict]] = {}
     fetch_errors: list[str] = []
     espn_fetch_status: dict[str, bool | None] = {}
-
-    for name in sorted(players_to_fetch):
-        aid = athlete_ids.get(_norm_name(name))
-        if aid:
-            news_items, fetch_ok = fetch_espn_news(aid)
-            espn_news_by_player[name] = news_items
-            espn_fetch_status[name] = fetch_ok
-            if not fetch_ok:
-                fetch_errors.append(name)
-        else:
-            espn_news_by_player[name] = []
-            espn_fetch_status[name] = None  # no athlete ID
 
     # ── Step 2: Fetch ESPN recaps per game ────────────────────────────
     # Collect team abbreviations from picks for filtering game_ids
@@ -891,7 +825,6 @@ def main() -> None:
         row = game_rows.get(name)
         minutes = parse_minutes(row) if row else None
         injury_status = injury_statuses.get(name, "NOT_LISTED")
-        aid = athlete_ids.get(_norm_name(name))
 
         # Use Claude result if available, else fall back to deterministic DNP detection
         cr = claude_results.get(name)

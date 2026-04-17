@@ -41,7 +41,6 @@ DATA           = ROOT / "data"
 
 MASTER_CSV       = DATA / "nba_master.csv"
 WHITELIST_CSV    = ROOT / "playerprops" / "player_whitelist.csv"
-PLAYER_DIM_CSV   = DATA / "player_dim.csv"
 PRE_GAME_JSON    = DATA / "pre_game_news.json"
 CONTEXT_MD       = ROOT / "context" / "nba_season_context.md"
 CONTEXT_FLAGS_MD = DATA / "context_flags.md"
@@ -53,10 +52,6 @@ TODAY     = NOW.date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
 # ── Config ────────────────────────────────────────────────────────────
-ESPN_ATHLETE_NEWS_URL = (
-    "https://site.api.espn.com/apis/common/v3/sports/basketball/nba"
-    "/athletes/{athlete_id}/news"
-)
 ESPN_LEAGUE_NEWS_URL = (
     "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news?limit=50"
 )
@@ -140,44 +135,6 @@ def load_target_players(teams_today: set[str]) -> list[dict]:
         return []
 
 
-def _norm_name(name: str) -> str:
-    """Normalize player name to match player_dim.csv's player_name_norm convention.
-    Hyphens → space, apostrophes/periods removed, collapse whitespace, lowercase."""
-    s = name.lower().strip()
-    s = s.replace("-", " ")
-    for ch in ("'", "\u2019", "."):
-        s = s.replace(ch, "")
-    return " ".join(s.split())
-
-
-def load_athlete_id_map() -> dict[str, str]:
-    """
-    Load player_dim.csv → {player_name_norm (lowercase): player_id}.
-    Uses player_name_norm column if present; falls back to lowercasing player_name.
-    Where a player appears multiple times, the most recent row wins (last-write).
-    """
-    id_map: dict[str, str] = {}
-    if not PLAYER_DIM_CSV.exists():
-        print("[pre_game_reporter] player_dim.csv not found — ESPN athlete lookups unavailable.")
-        return id_map
-    try:
-        with open(PLAYER_DIM_CSV, newline="") as f:
-            reader = csv.DictReader(f)
-            fieldnames = reader.fieldnames or []
-            use_norm = "player_name_norm" in fieldnames
-            for row in reader:
-                if use_norm:
-                    name = (row.get("player_name_norm") or "").strip().lower()
-                else:
-                    name = (row.get("player_name") or "").strip().lower()
-                aid = (row.get("player_id") or "").strip()
-                if name and aid:
-                    id_map[name] = aid
-    except Exception as e:
-        print(f"[pre_game_reporter] WARNING: could not load player_dim.csv: {e}")
-    return id_map
-
-
 # ── ESPN news fetch ───────────────────────────────────────────────────
 
 def _parse_item(item: dict, player_name: str) -> dict | None:
@@ -210,26 +167,6 @@ def _parse_item(item: dict, player_name: str) -> dict | None:
         "description": description,
         "published":   published,
     }
-
-
-def fetch_player_news(athlete_id: str, player_name_lower: str) -> tuple[list[dict], bool]:
-    """
-    Fetch athlete-specific news from ESPN.
-    Returns (parsed_items, fetch_ok). fetch_ok=False on any HTTP/network error.
-    """
-    url = ESPN_ATHLETE_NEWS_URL.format(athlete_id=athlete_id)
-    try:
-        resp = requests.get(url, timeout=REQUEST_TIMEOUT)
-        resp.raise_for_status()
-        data = resp.json()
-        raw_items = data.get("feed", [])
-        parsed = [
-            r for item in raw_items
-            if (r := _parse_item(item, player_name_lower)) is not None
-        ]
-        return parsed, True
-    except Exception:
-        return [], False
 
 
 def fetch_league_news(target_names_lower: set[str]) -> list[dict]:
@@ -756,9 +693,6 @@ def write_output(
     fetch_errors:    list[str],
     context_flags:   list | None = None,
     staleness_flags: list[str] | None = None,
-    no_id_errors:    list[str] | None = None,
-    espn_errors:     list[str] | None = None,
-    no_news_players: list[str] | None = None,
 ) -> None:
     output = {
         "date":                      TODAY_STR,
@@ -768,9 +702,6 @@ def write_output(
         "raw_item_count":            raw_count,
         "filtered_item_count":       filtered_count,
         "fetch_errors":              fetch_errors,
-        "no_id_errors":              no_id_errors    if no_id_errors    is not None else [],
-        "espn_errors":               espn_errors     if espn_errors     is not None else [],
-        "no_news_players":           no_news_players if no_news_players is not None else [],
         "suggested_context_updates": context_flags   if context_flags   is not None else [],
         "staleness_flags":           staleness_flags if staleness_flags is not None else [],
     }
@@ -811,46 +742,20 @@ def main() -> None:
         f"{len(target_players)} tracked players"
     )
 
-    # Build athlete_id lookup and name set for league news matching
-    athlete_id_map     = load_athlete_id_map()
     target_names_lower = {p["player_name"].lower() for p in target_players}
 
-    # Step 2 — fetch ESPN news per player (only today's tracked players)
-    all_raw_items:   list[dict] = []
-    no_id_errors:    list[str]  = []    # no athlete_id in player_dim.csv
-    espn_errors:     list[str]  = []    # ESPN HTTP/network failure
-    no_news_players: list[str]  = []    # ESPN succeeded but no relevant items
+    # Step 2 — fetch ESPN league news (per-player athlete endpoint disabled)
+    # The ESPN athlete news endpoint (common/v3) has been failing since
+    # mid-April 2026. League-wide news (site/v2) still works and catches
+    # player-specific items by name matching.
+    all_raw_items: list[dict] = []
+    fetch_errors: list[str] = []
 
-    for player in target_players:
-        name = player["player_name"]
-        aid  = athlete_id_map.get(_norm_name(name))
-        if not aid:
-            no_id_errors.append(name)
-            continue
-        items, ok = fetch_player_news(aid, name.lower())
-        if not ok:
-            espn_errors.append(name)
-            continue
-        if not items:
-            no_news_players.append(name)
-        all_raw_items.extend(items)
-
-    # Combined list for backward compatibility (analyst doesn't read it,
-    # but keeps the field present for any tooling that checks it)
-    fetch_errors = no_id_errors + espn_errors
-
-    print(
-        f"[pre_game_reporter] ESPN news fetched: {len(target_players)} players — "
-        f"{len(no_id_errors)} no athlete_id, {len(espn_errors)} HTTP errors, "
-        f"{len(no_news_players)} no news, "
-        f"{len(target_players) - len(no_id_errors) - len(espn_errors) - len(no_news_players)} with items"
-    )
-
-    # Fetch league-wide news once — matched to tracked players or tagged "_game"
     league_items = fetch_league_news(target_names_lower)
     all_raw_items.extend(league_items)
 
     raw_count = len(all_raw_items)
+    print(f"[pre_game_reporter] ESPN league news: {len(league_items)} items")
 
     # Step 3 — filter to prop-relevant items only
     filtered_items = [item for item in all_raw_items if is_prop_relevant(item)]
@@ -873,9 +778,6 @@ def main() -> None:
     write_output(
         player_notes, game_notes, raw_count, filtered_count, fetch_errors,
         context_flags, staleness_flags,
-        no_id_errors=no_id_errors,
-        espn_errors=espn_errors,
-        no_news_players=no_news_players,
     )
 
 
