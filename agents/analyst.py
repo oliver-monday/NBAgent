@@ -1005,15 +1005,20 @@ The rationale is structural: the regular-season data that calibrated these rules
 includes managed rest, DNPs, and low-stakes games — behavioral patterns that do
 not exist in postseason basketball.
 
-**OVERRIDE 1 — MIN_FLOOR CONFIDENCE CAP SUSPENSION:**
-The regular-season rule caps PTS confidence at 84% when floor_minutes < 24.
-During playoffs/play-in: this cap is SUSPENDED when the player's Rotowire
-projected_minutes (from the LINEUPS section) is ≥ 30. The min_floor value is
-computed from L10 regular-season data that includes rest games and managed-minutes
-nights — it understates the player's actual playoff floor when they are projected
-for full playoff minutes. When projected_minutes is ≥ 30, evaluate confidence
-normally per all other rules with no 84% ceiling from min_floor.
-If projected_minutes is unavailable or < 30, the regular-season 84% cap still applies.
+**OVERRIDE 1 — MIN_FLOOR SUSPENSION (CAP + STEP-DOWN):**
+The regular-season rules (a) cap PTS confidence at 84% when floor_minutes < 24,
+and (b) mandate a one-tier step-down at T15+ when min_floor < 24.
+During playoffs/play-in: BOTH the 84% cap AND the mandatory step-down are
+SUSPENDED when the player's Rotowire projected_minutes (from the LINEUPS section)
+is ≥ 30. The min_floor value is computed from L10 regular-season data that includes
+rest games and managed-minutes nights — it understates the player's actual playoff
+floor when they are projected for full playoff minutes. When projected_minutes is
+≥ 30, evaluate the pick at the analytically selected tier with no min_floor penalty.
+If projected_minutes is unavailable or < 30, both regular-season rules still apply.
+Play-in evidence (Apr 14-15): Bane (min_floor 17.9, played 40 min), Garland
+(min_floor 23.4, played 31), Curry (min_floor 25.0, played 36), Maxey (played 42)
+— all played well above regular-season floors in single-elimination context. The
+step-down would have forced T10 picks on players who cleared T20+ by 10+ points.
 
 **OVERRIDE 2 — VOLATILE DEDUCTION REDUCED:**
 The regular-season VOLATILE deduction is -5%. During playoffs/play-in: the VOLATILE
@@ -2359,6 +2364,25 @@ road games against championship-caliber defenses, wings with modest assist avera
 AST avg < 6.0) are operating in a situational context that the historical iron_floor pattern
 does not capture. The floor is for stable contexts — this is not a stable context.
 
+IRON-FLOOR AST ROLE-PURITY CHECK: When a player has [iron_floor] on their AST stat BUT
+their raw_avgs PTS is more than 3× their raw_avgs AST, the iron_floor designation is
+DOWNGRADED to soft_floor for AST confidence purposes. Effect: reduce the confidence you
+would otherwise assign by 5pp (e.g. 80% → 75%). The tier remains valid — soft_floor still
+protects the tier selection — but the confidence must reflect the structural fragility of
+AST iron_floor on non-primary-playmakers.
+Rationale: iron_floor on AST is most durable for primary playmakers whose role includes
+consistent creation (PG/combo guards with raw_avgs AST ≥ 5.0). For wings and secondary
+scorers whose primary output is scoring (PTS >> AST), a game where usage concentrates on
+scoring can produce 0-1 assists regardless of minutes played. The iron_floor tag reflects
+games where the player happened to contribute playmaking — it does not guarantee assist
+accumulation when the player's role assignment eliminates creation responsibility.
+This rule does NOT apply when raw_avgs AST ≥ 5.0 — primary playmakers retain full
+iron_floor protection on AST regardless of PTS volume.
+Document in tier_walk when this fires: "soft_floor (PTS/AST ratio > 3×, −5pp confidence)".
+Audit evidence: Edgecombe AST T2 (iron_floor, 80% confidence) missed with 1 AST in 42 min
+in a competitive play-in game — 19 PTS, 11 REB, but zero playmaking production. His role
+concentrated entirely on scoring/rebounding. raw_avgs PTS >> AST triggered this pattern.
+
 RETURN FROM INJURY — SHORT SAMPLE INSTABILITY:
 - When a player header shows [SHORT_SAMPLE:Ng] (fewer than 8 played games in L10 window),
   the player has recently returned from injury or missed an extended stretch. Their L10
@@ -3540,6 +3564,25 @@ Rationale: iron_floor reflects a structural historical minimum across all game c
 road games against championship-caliber defenses, wings with modest assist averages (SF/SG,
 AST avg < 6.0) are operating in a situational context that the historical iron_floor pattern
 does not capture. The floor is for stable contexts — this is not a stable context.
+
+IRON-FLOOR AST ROLE-PURITY CHECK: When a player has [iron_floor] on their AST stat BUT
+their raw_avgs PTS is more than 3× their raw_avgs AST, the iron_floor designation is
+DOWNGRADED to soft_floor for AST confidence purposes. Effect: reduce the confidence you
+would otherwise assign by 5pp (e.g. 80% → 75%). The tier remains valid — soft_floor still
+protects the tier selection — but the confidence must reflect the structural fragility of
+AST iron_floor on non-primary-playmakers.
+Rationale: iron_floor on AST is most durable for primary playmakers whose role includes
+consistent creation (PG/combo guards with raw_avgs AST ≥ 5.0). For wings and secondary
+scorers whose primary output is scoring (PTS >> AST), a game where usage concentrates on
+scoring can produce 0-1 assists regardless of minutes played. The iron_floor tag reflects
+games where the player happened to contribute playmaking — it does not guarantee assist
+accumulation when the player's role assignment eliminates creation responsibility.
+This rule does NOT apply when raw_avgs AST ≥ 5.0 — primary playmakers retain full
+iron_floor protection on AST regardless of PTS volume.
+Document in tier_walk when this fires: "soft_floor (PTS/AST ratio > 3×, −5pp confidence)".
+Audit evidence: Edgecombe AST T2 (iron_floor, 80% confidence) missed with 1 AST in 42 min
+in a competitive play-in game — 19 PTS, 11 REB, but zero playmaking production. His role
+concentrated entirely on scoring/rebounding. raw_avgs PTS >> AST triggered this pattern.
 
 RETURN FROM INJURY — SHORT SAMPLE INSTABILITY:
 - When a player header shows [SHORT_SAMPLE:Ng] (fewer than 8 played games in L10 window),

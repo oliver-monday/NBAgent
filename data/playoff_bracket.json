@@ -4,16 +4,17 @@
   "playoff_start_date": "2026-04-18",
   "play_in": {
     "east": {
-      "7v8": {"home": "PHI", "away": "ORL", "date": "2026-04-15", "winner": null},
+      "7v8": {"home": "PHI", "away": "ORL", "date": "2026-04-15", "winner": "PHI"},
       "9v10": {"home": "CHA", "away": "MIA", "date": "2026-04-14", "winner": "CHA"},
-      "final": {"home": null, "away": "CHA", "date": "2026-04-17", "winner": null, "note": "home = loser of PHI/ORL (TBD)"}
+      "final": {"home": "ORL", "away": "CHA", "date": "2026-04-17", "winner": null}
     },
     "west": {
       "7v8": {"home": "PHX", "away": "POR", "date": "2026-04-14", "winner": "POR"},
-      "9v10": {"home": "LAC", "away": "GSW", "date": "2026-04-15", "winner": null},
-      "final": {"home": "PHX", "away": null, "date": "2026-04-17", "winner": null, "note": "away = winner of LAC/GSW (TBD)"}
+      "9v10": {"home": "LAC", "away": "GSW", "date": "2026-04-15", "winner": "GSW"},
+      "final": {"home": "PHX", "away": "GSW", "date": "2026-04-17", "winner": null}
     }
   },
+  "eliminated": ["MIA", "LAC"],
   "standings": {
     "east": [
       {"seed": 1, "team": "DET", "record": "60-22"},
@@ -36,7 +37,7 @@
       {"seed": 6, "team": "MIN", "record": "49-33"},
       {"seed": 7, "team": "PHX", "record": "45-37"},
       {"seed": 8, "team": "POR", "record": "42-40"},
-      {"seed": 9, "team": "LAC", "record": "42-40"},
+      {"seed": 9, "team": "LAC", "record": "42-40", "eliminated": true},
       {"seed": 10, "team": "GSW", "record": "37-45"}
     ]
   },
@@ -46,13 +47,14 @@
       "conference": "East",
       "home_team": "DET",
       "away_team": "TBD",
-      "best_of": 7
+      "best_of": 7,
+      "note": "8-seed determined Apr 17: ORL vs CHA"
     },
     {
       "series_id": "E2",
       "conference": "East",
       "home_team": "BOS",
-      "away_team": "TBD",
+      "away_team": "PHI",
       "best_of": 7
     },
     {
@@ -74,7 +76,8 @@
       "conference": "West",
       "home_team": "OKC",
       "away_team": "TBD",
-      "best_of": 7
+      "best_of": 7,
+      "note": "8-seed determined Apr 17: PHX vs GSW"
     },
     {
       "series_id": "W2",

@@ -77,9 +77,9 @@ These players are out for the season. Their teammates' current stat lines alread
 - Tyrese Haliburton (IND) — Achilles torn in 2025 Finals Game 7. Full season without him.
 - Fred VanVleet (HOU) — ACL, pre-season. Full season without him.
 - Damian Lillard (POR) — Achilles torn in 2025 playoffs. Out all season.
+- Kyrie Irving (DAL) — ACL torn March 2025. Missed all of 2025-26.
 
 **Out most of season:**
-- Kyrie Irving (DAL) — ACL torn March 2025. Missed all or nearly all of 2025-26.
 - Jayson Tatum (BOS) — Achilles surgery May 2025. Returned ~March 6, 2026; BOS role distribution reflects nearly a full season without him.
 
 **Mid-season ending injuries:**
@@ -138,26 +138,26 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 | 9 | LAC | 42-40 | Play-In |
 | 10 | GSW | 37-45 | Play-In |
 
-**ELIMINATED:** BKN, CHI, DAL, IND, MEM, MIL, NOP, SAC, UTA, WAS
+**ELIMINATED:** BKN, CHI, DAL, IND, LAC, MEM, MIA, MIL, NOP, SAC, UTA, WAS
 
-**R1 MATCHUPS (3v6 and 4v5 locked; 1v8 and 2v7 TBD after play-in)**
+**R1 MATCHUPS (confirmed; 1v8 seeds determined Apr 17 play-in finals)**
 
 | East | West |
 |------|------|
-| (1) DET vs (8) TBD | (1) OKC vs (8) TBD |
-| (2) BOS vs (7) TBD | (2) SAS vs (7) TBD |
+| (1) DET vs (8) TBD (ORL or CHA, Apr 17) | (1) OKC vs (8) TBD (PHX or GSW, Apr 17) |
+| (2) BOS vs (7) PHI | (2) SAS vs (7) POR |
 | (3) NYK vs (6) ATL | (3) DEN vs (6) MIN |
 | (4) CLE vs (5) TOR | (4) LAL vs (5) HOU |
 
-**PLAY-IN SCHEDULE**
-- Apr 14: PHI (7) vs ORL (8) East | PHX (7) vs POR (8) West — winners → 7-seed
-- Apr 15: CHA (9) vs MIA (10) East | LAC (9) vs GSW (10) West — losers eliminated
-- Apr 17: 7/8 loser vs 9/10 winner in each conference → 8-seed
+**PLAY-IN RESULTS**
+- Apr 14: CHA (9) def. MIA (10) East — MIA eliminated | POR (8) def. PHX (7) West — POR → 7-seed, PHX to final
+- Apr 15: PHI (7) def. ORL (8) East 109-97 — PHI → 7-seed, ORL to final | GSW (10) def. LAC (9) West — LAC eliminated
+- Apr 17: ORL vs CHA (East 8-seed final) | PHX vs GSW (West 8-seed final)
 
 ---
 
 ### PLAYOFF INJURY LANDSCAPE
-*Last updated: 2026-04-13. Update this section as statuses change — the analyst reads it before every pick.*
+*Last updated: 2026-04-16. Update this section as statuses change — the analyst reads it before every pick.*
 
 **CONFIRMED OUT FOR R1:**
 
@@ -181,7 +181,7 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 - **(4) LAL vs (5) HOU:** Catastrophic injury mismatch. LAL without Doncic AND Reaves. LeBron (41) as sole offensive engine vs full-strength HOU. Both teams are confirmed H15 suppressors. Most challenging pick environment in R1.
 - **(3) DEN vs (6) MIN:** Both teams have injury concerns. Edwards' knee and McDaniels' ramp-up vs Gordon's durability. If Edwards is <100%, series tips to DEN. Jokic healthy and having best season.
 - **(4) CLE vs (5) TOR:** Quickley's hamstring is the key variable. CLE appears healthy with Harden integrated.
-- **PHI play-in vs ORL:** Embiid OUT. Maxey + George + Edgecombe must carry. If PHI advances, they face BOS without their best player.
+- **(2) BOS vs (7) PHI:** Embiid OUT (appendectomy Apr 10, ~23-day recovery — unlikely before R1 G4 at earliest). PHI won play-in 109-97 behind Maxey (31 pts) and Edgecombe (19/11/1). PHI is a confirmed system-wide suppressor (65.0% hit rate, −22.1pp) — apply suppressor treatment to ALL BOS player props in this series. BOS fully healthy with Tatum back since Mar 6.
 
 ---
 
@@ -214,10 +214,10 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 - ⚠ Quickley hamstring (Apr 12 exit): if he misses games, TOR loses secondary creator and screening action. Barrett + Shead absorb minutes but offensive ceiling drops.
 
 ##### (1) DET vs (8) TBD
-*(Awaiting play-in result)*
+*(8-seed determined Apr 17: ORL vs CHA. Game 1: Apr 19.)*
 
-##### (2) BOS vs (7) TBD
-*(Awaiting play-in result)*
+##### (2) BOS vs (7) PHI
+*(Game 1: Apr 18 at Boston. PHI without Embiid. PHI is confirmed system-wide suppressor — BOS picks require extra scrutiny. PHI won play-in over ORL 109-97.)*
 
 #### WEST R1
 
@@ -239,17 +239,17 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 **Pre-Series Intel (sources: NBA.com, The Athletic, CBS Sports, SI — Apr 13):**
 - ⚠ CATASTROPHIC INJURY MISMATCH: LAL without Doncic AND Reaves. LeBron (41) is sole offensive engine. LAL went 3-2 in final 5 games without both stars, LeBron averaged 25.5 PPG on 56% shooting. But playoff intensity for 38+ minutes is a different demand.
 - HOU enters on 8-game win streak, Durant averaging 26 PPG on 52-40-87 splits. Team has found its groove with Durant as offensive anchor + young core (Sengun, Amen Thompson, Jabari Smith Jr.).
-- Rebounding mismatch: HOU has league-best REB% (54.5% — highest since tracking began 1996-97). LAL 13th (49.8%). When LAL misses, they won't get second chances.
+- Rebounding mismatch: HOU has league-best REB% (54.5% — highest since tracking began 1996-97). LAL 13th (49.8%). When LAL misses, they won't get second chances. Caveat: Steven Adams (HOU) = OFS, he had averaged ~5 Offensive Rebounds before season ending injury.
 - HOU defensive target: Reed Sheppard was outscored by 29 pts (-21.9 per 100 poss) in 78 minutes vs LAL this season, shot 5-for-18 from 3. LAL should target him on switches. If he underperforms, Rockets coaching must adjust.
 - LAL offensive keys (per NBA.com): Hachimura must score to keep offense afloat + guard Durant. LeBron in half-court isolation against HOU's length is tough — LAL needs pace, transition, and unexpected role player contributions.
 - Both teams are H15 confirmed system-wide suppressors (HOU: -21.9pp, LAL: -10.7pp). This is the ONLY R1 series where both teams suppress opponent picks. Extremely challenging pick environment in both directions.
 - Betting lines: HOU massive favorite (-600 series ML). Expert consensus: Rockets in 5. LAL's best hope is stealing 1-2 home games, surviving to R2 where Doncic/Reaves could return (~May 3-4 timeline).
 
 ##### (1) OKC vs (8) TBD
-*(Awaiting play-in result)*
+*(8-seed determined Apr 17: PHX vs GSW. Game 1: Apr 19.)*
 
-##### (2) SAS vs (7) TBD
-*(Awaiting play-in result)*
+##### (2) SAS vs (7) POR
+*(Game 1: Apr 18 at San Antonio. POR upset PHX in play-in to claim 7-seed. SAS floor compression pattern active — opponent players miss well below tier thresholds (mean miss margin −5.0). Wemby expected available after 6 days rest from rib contusion.)*
 
 ---
 
