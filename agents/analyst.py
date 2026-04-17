@@ -1044,6 +1044,96 @@ tanking opponents. Neither signal is predictive of playoff performance.
 """
 
 
+def build_elimination_override(today_str: str) -> str:
+    """
+    Returns an ELIMINATION GAME OVERRIDE block when any of today's games
+    are elimination games (play-in, or any playoff game where a team is
+    one loss from elimination, or the closing-out team in such a game).
+
+    Reads playoff_bracket.json to determine elimination context.
+    Date-gated to PLAYOFF_START_DATE. Returns "" during regular season.
+    """
+    if today_str < PLAYOFF_START_DATE:
+        return ""
+
+    # Determine if today has elimination games
+    is_elimination = False
+
+    # Play-in games are always elimination for at least one team
+    try:
+        if PLAYOFF_MATCHUP_JSON.exists():
+            with open(PLAYOFF_MATCHUP_JSON) as f:
+                matchup_data = json.load(f)
+            # If playoff_matchup.py reports any series, check game_in_series
+            for series in matchup_data.get("series", []):
+                gis = series.get("game_in_series", 0)
+                home_w = series.get("home_wins", 0)
+                away_w = series.get("away_wins", 0)
+                # Elimination: either team is one loss from being out
+                if home_w == 3 or away_w == 3:
+                    is_elimination = True
+                    break
+    except Exception:
+        pass
+
+    # Play-in dates are always elimination context
+    if today_str <= "2026-04-17" and today_str >= PLAYOFF_START_DATE:
+        is_elimination = True
+
+    if not is_elimination:
+        return ""
+
+    return """
+## ELIMINATION GAME OVERRIDE — ACTIVE
+
+One or more of today's games are elimination games (play-in final or playoff series
+where a team faces elimination). The following overrides apply to ALL players in
+elimination games. These supersede the regular-season and standard playoff rules below.
+
+**MINUTES RULES FULLY SUSPENDED:**
+In elimination games, minutes compression concerns are structurally invalid. Teams
+play their rotation players maximum minutes — starters play 36-42 min, key bench
+players play their full allotment or more. Coaches do not manage minutes in win-or-
+go-home games. Therefore:
+- The mandatory min_floor < 24 step-down does NOT apply.
+- The 84% min_floor confidence cap does NOT apply.
+- Do NOT cite min_floor, avg_minutes, or floor_minutes as a reason to reduce
+  confidence, step down a tier, or skip a pick.
+- Rotowire proj_min is the authoritative minutes estimate for today. If proj_min ≥ 20
+  for any rotation player, treat their minutes floor as structurally sound.
+
+**L5/L10 WINDOW DATA — DEPRIORITIZE REGULAR-SEASON REST GAMES:**
+For players whose L5/L10 windows include end-of-season rest games or DNPs (visible
+as min_floor near 0 or trend=down driven by rest), the most recent high-stakes game
+(prior play-in game or prior playoff game in the current series) is the most
+informative data point — not the L10 aggregate. If a player scored 35 points in 39
+minutes two days ago in a play-in game, that performance supersedes an L10 window
+that includes 3 DNPs from the final regular-season week.
+
+**CLOSE-OUT GAMES INCLUDED:**
+These overrides apply equally to the team facing elimination AND the team trying to
+close out the series. Both sides play maximum-effort, maximum-minutes basketball in
+elimination scenarios.
+
+**⚠ SWEEP CONTEXT (3-0 series, Game 4):**
+When a series is 3-0 and today is Game 4, a unique asymmetry applies:
+- **Trailing team (facing sweep):** Will either play with desperate energy (pride,
+  home crowd, nothing to lose) or mentally check out and accept elimination. There
+  is almost no middle ground. If they fall behind by 15+ points at halftime, expect
+  early starters rest and counting stat collapse. Prefer conservative tiers for their
+  players unless the first half confirms they are competing. The "gentleman's sweep"
+  dynamic (trailing team wins Game 4 at home on pride) occurs roughly 25% of the time
+  historically — do not assume the sweep is automatic.
+- **Leading team (trying to sweep):** May play below peak intensity — the series is
+  structurally won and urgency is reduced. Prefer conservative PTS tiers for their
+  stars. AST and REB may be less affected (still accumulated in lower-intensity play).
+  Do not assign top_pick to any player on the leading team in a potential sweep game.
+This annotation is informational — it does not override tier or confidence rules.
+Use it to inform your reasoning when the series score warrants caution in both
+directions.
+"""
+
+
 def build_series_progression_rules(today_str: str) -> str:
     """
     Returns a GAME-IN-SERIES CONFIDENCE MODIFIER block when any active
@@ -1999,6 +2089,8 @@ def build_prompt(games: list[dict], player_context: str, injuries: dict, audit_c
     playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
     _playoff_adj            = build_playoff_adjustments(TODAY_STR)
     playoff_adjustments_section = f"{_playoff_adj}\n\n" if _playoff_adj else ""
+    _elim_override          = build_elimination_override(TODAY_STR)
+    elimination_override_section = f"{_elim_override}\n\n" if _elim_override else ""
     _series_prog            = build_series_progression_rules(TODAY_STR)
     series_progression_section = f"{_series_prog}\n\n" if _series_prog else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
@@ -2478,6 +2570,14 @@ Document in tier_walk whether Without-Star data was used (and which gate(s) appl
 MINUTES FLOOR — THRESHOLD EVENT FRAGILITY:
 - The min_floor= value in each player header is the 10th-percentile of their L10 minutes.
   It represents the worst-case realistic playing time in recent games.
+- PROJECTED MINUTES OVERRIDE: When a player's header shows proj_min=X from Rotowire,
+  treat proj_min as the PRIMARY minutes baseline for today's game. Rotowire projected
+  minutes are a curated expert projection that accounts for game context, coaching
+  tendencies, and lineup decisions. When proj_min ≥ 28 AND min_floor < 24, do NOT apply
+  the mandatory min_floor step-down — the low min_floor reflects historical variance
+  (rest games, DNPs, load management) that the expert projection has already overridden
+  for today. Still apply the 84% confidence cap when proj_min < 30 per Override 1 rules.
+  When proj_min is unavailable, fall back to min_floor rules as normal.
 - For PTS picks at T15 or higher: if min_floor < 24, you MUST step down exactly one full tier
   before finalizing the pick (e.g. T15 → T10, T20 → T15). Do not treat this as a confidence
   reduction option — the step-down is mandatory. Rationale: two independent audit misses (Ball
@@ -2735,6 +2835,7 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   confirms the player's scoring floor holds regardless of game script.
 {build_playoff_blowout_override(TODAY_STR)}
 {build_playoff_rule_modifications(TODAY_STR)}
+{build_elimination_override(TODAY_STR)}
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
@@ -3082,6 +3183,8 @@ def build_scout_prompt(
     playoff_context_section = f"{_playoff_ctx}\n\n" if _playoff_ctx else ""
     _playoff_adj            = build_playoff_adjustments(TODAY_STR)
     playoff_adjustments_section = f"{_playoff_adj}\n\n" if _playoff_adj else ""
+    _elim_override          = build_elimination_override(TODAY_STR)
+    elimination_override_section = f"{_elim_override}\n\n" if _elim_override else ""
     _series_prog            = build_series_progression_rules(TODAY_STR)
     series_progression_section = f"{_series_prog}\n\n" if _series_prog else ""
     team_defense_section    = f"{team_defense}\n\n"    if team_defense    else ""
@@ -3135,7 +3238,7 @@ Use `priority: "high"` for players with multiple qualifying props, strong recent
 {lineups_block}{pre_game_section}## SEASON CONTEXT
 {season_context if season_context else "No season context file found."}
 
-{playoff_picture_section}{playoff_context_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}{series_progression_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
+{playoff_picture_section}{playoff_context_section}{elimination_override_section}{leaderboard_section}{team_defense_section}{series_context_section}{playoff_adjustments_section}{series_progression_section}## PLAYER RECENT PERFORMANCE (last {RECENT_GAME_WINDOW} games)
 {player_context}
 
 ## QUANT STATS — PRE-COMPUTED TIER ANALYSIS
@@ -3609,6 +3712,14 @@ RETURN FROM INJURY — SHORT SAMPLE INSTABILITY:
 MINUTES FLOOR — THRESHOLD EVENT FRAGILITY:
 - The min_floor= value in each player header is the 10th-percentile of their L10 minutes.
   It represents the worst-case realistic playing time in recent games.
+- PROJECTED MINUTES OVERRIDE: When a player's header shows proj_min=X from Rotowire,
+  treat proj_min as the PRIMARY minutes baseline for today's game. Rotowire projected
+  minutes are a curated expert projection that accounts for game context, coaching
+  tendencies, and lineup decisions. When proj_min ≥ 28 AND min_floor < 24, do NOT apply
+  the mandatory min_floor step-down — the low min_floor reflects historical variance
+  (rest games, DNPs, load management) that the expert projection has already overridden
+  for today. Still apply the 84% confidence cap when proj_min < 30 per Override 1 rules.
+  When proj_min is unavailable, fall back to min_floor rules as normal.
 - For PTS picks at T15 or higher: if min_floor < 24, you MUST step down exactly one full tier
   before finalizing the pick (e.g. T15 → T10, T20 → T15). Do not treat this as a confidence
   reduction option — the step-down is mandatory. Rationale: two independent audit misses (Ball
@@ -3868,6 +3979,7 @@ KEY RULES — SPREAD / BLOWOUT RISK:
   confirms the player's scoring floor holds regardless of game script.
 {build_playoff_blowout_override(TODAY_STR)}
 {build_playoff_rule_modifications(TODAY_STR)}
+{build_elimination_override(TODAY_STR)}
 KEY RULES — VOLATILITY:
 - Every stat line is tagged [consistent], [VOLATILE], or unlabeled (moderate).
 - Consistent: player hits this tier in a stable, predictable pattern. No adjustment needed.
@@ -4269,7 +4381,7 @@ CRITICAL: Verify your JSON is well-formed before stopping. Every opening {{ must
 
 # ── Review stage (Stage 3) ──────────────────────────────────────────
 
-def build_review_context(picks: list[dict], player_stats: dict) -> str:
+def build_review_context(picks: list[dict], player_stats: dict, lineup_context: dict | None = None) -> str:
     """
     Build a compact per-pick vulnerability card for the Review prompt.
     Extracts only the risk-relevant quant fields — not the full stats block.
@@ -4307,6 +4419,17 @@ def build_review_context(picks: list[dict], player_stats: dict) -> str:
         mf         = s.get("minutes_floor") or {}
         floor_min  = mf.get("floor_minutes")
         avg_min    = mf.get("avg_minutes")
+
+        # Projected minutes from Rotowire (via lineup_context)
+        proj_min   = None
+        if lineup_context:
+            player_lower = name.strip().lower()
+            team_upper   = team.strip().upper()
+            team_lc      = lineup_context.get(team_upper, {})
+            pm_map       = team_lc.get("projected_minutes") or {}
+            pm_entry     = pm_map.get(player_lower)
+            if pm_entry:
+                proj_min = pm_entry.get("minutes")
 
         # Opp defense for this prop
         opp_def    = (s.get("opp_defense") or {}).get(prop, {})
@@ -4370,6 +4493,8 @@ def build_review_context(picks: list[dict], player_stats: dict) -> str:
         min_str = ""
         if floor_min is not None and avg_min is not None:
             min_str = f"min_floor={floor_min:.1f}(avg={avg_min:.1f})"
+            if proj_min is not None:
+                min_str += f" proj_min={proj_min}"
 
         b2b_hr_str = ""
         if b2b and b2b_tier_hr is not None and b2b_n is not None:
@@ -4481,6 +4606,13 @@ the hit rate alone does not capture:
 - Minutes fragility: a floor_minutes below 24 on a PTS T15+ pick means a single low-minutes
   game — well within normal variance — produces a miss. The floor is contingent on minutes,
   not guaranteed.
+  **EXCEPTION — ELIMINATION GAMES:** In play-in finals, Game 7s, and any game where a team
+  faces elimination (or is closing out a series), minutes fragility concerns are structurally
+  invalid. Coaches play rotation players maximum minutes — there is no DNP risk, no rest
+  risk, no early benching. Do NOT flag minutes fragility, min_floor, or avg_minutes as
+  vulnerabilities in elimination games. Do NOT escalate to stay_away or manual_skip based
+  on minutes concerns in elimination games. If proj_min is shown on the vulnerability card
+  and is ≥ 20, treat the player's minutes as structurally sound regardless of min_floor.
 - Dense schedule fatigue: 4+ games in 5 nights compresses recovery in ways the aggregate
   hit rate may not reflect if the current dense stretch is atypical.
 - Post-miss sequential slump for REB: REB is confirmed slump-persistent. A player who missed
@@ -5541,7 +5673,7 @@ def main():
     if not picks:
         print("[analyst] No picks to review — skipping Review stage")
     else:
-        review_context = build_review_context(picks, filtered_stats)
+        review_context = build_review_context(picks, filtered_stats, lineup_context=lineup_context)
         review_prompt  = build_review_prompt(picks, review_context, audit_summary)
         print(f"[analyst] Review call using {MODEL} ({len(picks)} picks to stress-test)")
         verdicts = call_review(review_prompt, model=MODEL)
