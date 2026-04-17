@@ -12,7 +12,27 @@
       "player_name": "LaMelo Ball",
       "prop_type": "REB",
       "tier_considered": 4,
-      "reason": "75% overall VOLATILE -3% playoff reduction = 72%, below 78% REB minimum confidence floor"
+      "reason": "VOLATILE -3% deduction reduces 75% base to 72%, below 78% REB minimum confidence floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "LaMelo Ball",
+    "team": "CHA",
+    "opponent": "ORL",
+    "prop_type": "3PM",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "LaMelo Ball",
+      "prop_type": "3PM",
+      "tier_considered": 4,
+      "reason": "iron_floor overridden by VOLATILE incompatibility on 3PM; non-iron-floor confidence chain falls below 75% 3PM minimum floor after -3% deduction"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -32,7 +52,7 @@
       "player_name": "Miles Bridges",
       "prop_type": "REB",
       "tier_considered": 4,
-      "reason": "75% overall VOLATILE -3% playoff reduction = 72%, below 78% REB minimum confidence floor"
+      "reason": "VOLATILE -3% deduction reduces 75% base to 72%, below 78% REB minimum confidence floor"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -44,15 +64,55 @@
     "player_name": "Kon Knueppel",
     "team": "CHA",
     "opponent": "ORL",
-    "prop_type": "REB",
-    "tier_considered": 4,
+    "prop_type": "3PM",
+    "tier_considered": 2,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
       "player_name": "Kon Knueppel",
-      "prop_type": "REB",
-      "tier_considered": 4,
-      "reason": "75% overall VOLATILE -3% playoff reduction = 72%, below 78% REB minimum confidence floor"
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "trend=down step-down from T3 to T2 applied; VOLATILE -3% reduces 75% base to 72%, below 75% 3PM minimum confidence floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Brandon Miller",
+    "team": "CHA",
+    "opponent": "ORL",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Brandon Miller",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "trend=down step-down from T3 to T2 applied; VOLATILE -3% reduces confidence below 75% 3PM minimum floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "opponent": "CHA",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Paolo Banchero",
+      "prop_type": "PTS",
+      "tier_considered": 10,
+      "reason": "FG_MARGIN_NEG mandatory step-down from T15 to T10; T10 has no FanDuel market available for Banchero PTS"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -72,7 +132,7 @@
       "player_name": "Paolo Banchero",
       "prop_type": "REB",
       "tier_considered": 6,
-      "reason": "70% overall VOLATILE -3% playoff reduction = 67%, below 78% REB minimum confidence floor"
+      "reason": "VOLATILE -3% deduction reduces 70% base to 67%, below 78% REB minimum confidence floor; 25th-pct gate borderline concern"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -81,58 +141,18 @@
   },
   {
     "date": "2026-04-17",
-    "player_name": "Stephen Curry",
-    "team": "GSW",
-    "opponent": "PHX",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "opponent": "CHA",
     "prop_type": "AST",
     "tier_considered": 4,
     "direction": "OVER",
-    "skip_reason": "merit_below_floor",
+    "skip_reason": "ast_hard_gate",
     "rule_context": {
-      "player_name": "Stephen Curry",
+      "player_name": "Paolo Banchero",
       "prop_type": "AST",
       "tier_considered": 4,
-      "reason": "70% overall VOLATILE -3% playoff reduction = 67%, below 70% minimum confidence floor"
-    },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
-  },
-  {
-    "date": "2026-04-17",
-    "player_name": "Devin Booker",
-    "team": "PHX",
-    "opponent": "GSW",
-    "prop_type": "PTS",
-    "tier_considered": 25,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Devin Booker",
-      "prop_type": "PTS",
-      "tier_considered": 25,
-      "reason": "T25 ceiling rule requires 8+/10 (80%); only 7/10 (75%) in recent window \u2014 fails T25 gate"
-    },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
-  },
-  {
-    "date": "2026-04-17",
-    "player_name": "Devin Booker",
-    "team": "PHX",
-    "opponent": "GSW",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Devin Booker",
-      "prop_type": "3PM",
-      "tier_considered": 2,
-      "reason": "70% overall VOLATILE -3% playoff reduction = 67%, below 75% 3PM minimum confidence floor"
+      "reason": "PF position triggers AST T4+ hard gate; opp_today=tough (not soft), gate fires \u2014 SKIP T4"
     },
     "actual_value": null,
     "would_have_hit": null,
@@ -152,9 +172,27 @@
       "player_name": "Jalen Green",
       "prop_type": "3PM",
       "tier_considered": 1,
-      "trend": "down",
-      "avg_minutes_last5": 21.1,
-      "reason": "3PM trend=down AND avg_minutes_last5 \u2264 30 \u2014 hard skip fires; no tier below T1 and exceptions not met"
+      "reason": "trend=down mandatory step-down would take below T1 minimum; no iron_floor and not 9+/10 at T1 \u2014 hard skip per rule"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-17",
+    "player_name": "Stephen Curry",
+    "team": "GSW",
+    "opponent": "PHX",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Stephen Curry",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "overall=70% (7/10), VOLATILE -3% \u2192 67%, trend=down, vs_soft=57% materially below overall \u2014 confidence below 70% floor after adjustments"
     },
     "actual_value": null,
     "would_have_hit": null,

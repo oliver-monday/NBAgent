@@ -4446,16 +4446,16 @@
     "date": "2026-04-17",
     "parlays": [
       {
-        "label": "3PM Sharpshooter Sweep",
+        "label": "Charlotte Volume Lock",
         "card_type": "core",
-        "type": "multi_game",
+        "type": "mixed",
         "legs": [
           {
-            "player_name": "Desmond Bane",
-            "team": "ORL",
-            "opponent": "CHA",
-            "prop_type": "3PM",
-            "pick_value": 1,
+            "player_name": "Coby White",
+            "team": "CHA",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 10,
             "direction": "OVER",
             "confidence_pct": 80,
             "correlation_role": "scorer"
@@ -4468,18 +4468,74 @@
             "pick_value": 3,
             "direction": "OVER",
             "confidence_pct": 75,
-            "correlation_role": "scorer"
+            "correlation_role": "independent"
           }
         ],
-        "implied_odds": "+114",
+        "implied_odds": "+120",
         "confidence_product": 0.6,
         "correlation": "independent",
-        "rationale": "Two elite shooters in soft defensive matchups with strong hit rates and POSITIVE/NEUTRAL edge across independent games.",
+        "rationale": "POSITIVE-edge White PTS anchors; Curry 3PM vs soft PHX defense adds clean independent value.",
         "date": "2026-04-17",
         "id": "parlay_2026-04-17_01",
         "result": null,
         "legs_hit": null,
         "legs_total": 2
+      },
+      {
+        "label": "Friday Night Fireworks",
+        "card_type": "bold",
+        "type": "mixed",
+        "legs": [
+          {
+            "player_name": "Miles Bridges",
+            "team": "CHA",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Kon Knueppel",
+            "team": "CHA",
+            "opponent": "ORL",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Desmond Bane",
+            "team": "ORL",
+            "opponent": "CHA",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "pace_play"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "GSW",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+144",
+        "confidence_product": 0.372,
+        "correlation": "positive",
+        "rationale": "High-pace CHA-ORL volume game fuels Bridges and Knueppel PTS plus Bane 3PM; Booker AST vs soft GSW defense extends reward.",
+        "date": "2026-04-17",
+        "id": "parlay_2026-04-17_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 4
       }
     ]
   }
