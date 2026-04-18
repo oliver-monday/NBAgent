@@ -1,53 +1,46 @@
 {
-  "date": "2026-04-17",
-  "generated_at": "2026-04-17T13:59:26.632338-07:00",
+  "date": "2026-04-18",
+  "generated_at": "2026-04-18T07:01:44.807115-07:00",
   "player_notes": {
-    "lamelo ball": "Ball avoided suspension after the Bam Adebayo tripping incident (only fined); no availability concerns heading into the Hornets' play-in game vs. Orlando.",
-    "stephen curry": "Curry scored 35 pts with 7 three-pointers in the play-in win over the Clippers; carrying heavy offensive load and in strong form heading into the Suns series.",
-    "desmond bane": "Bane is now with Orlando after the trade; monitor his role/minutes integration with the Magic in the play-in game vs. Charlotte."
+    "kevin durant": "Questionable for Game 1 vs. Lakers with a right knee contusion sustained in practice. Rockets are optimistic but monitor official status closely \u2014 significant prop risk if he sits or is limited.",
+    "james harden": "Now with the Cavaliers after a midseason trade; Cavs are a substantially different team than the Raptors faced in November. Harden likely in a primary playmaking role for CLE in this playoff series.",
+    "jock landale": "Out at least two weeks to start playoffs (sprained right ankle). Minor rotation impact for ATL vs. NYK \u2014 potential slight uptick for Hawks' other big men."
   },
   "game_notes": {
-    "CHA vs ORL": "LaMelo Ball (no suspension, fully available) leads Charlotte; Desmond Bane's role and minutes with Orlando may still be settling \u2014 watch for lineup/usage clarity closer to tip.",
-    "GSW vs PHX": "Curry enters off a 35-point, 7-three performance; Draymond Green also noted as a key defensive factor. Warriors advancing to face Suns."
+    "HOU vs LAL": "Kevin Durant questionable (knee contusion) for Game 1 \u2014 if he misses or is restricted, significant role/usage redistribution for Rockets' supporting cast.",
+    "ATL vs NYK": "Hawks backup C Jock Landale out for at least first two weeks with a sprained ankle \u2014 minimal but notable rotation shift for Atlanta bigs."
   },
   "raw_item_count": 50,
   "filtered_item_count": 48,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Stephen Curry (GSW)",
-      "current_context_fact": "Stephen Curry (GSW) \u2014 Right knee ('runner's knee'). Missed 27 games. Returned Apr 7 on ~25 min restriction. Only 3 games since return. Still ramping for play-in. Per-minute production solid but conditioning uncertain.",
-      "conflict": "Multiple news items from Apr 16 confirm Curry scored 35 points (27 in the second half) with 7 three-pointers, leading the Warriors past the Clippers 126-121 in the play-in game. This is a major performance update \u2014 he has now played at least 4 games since his return, and his conditioning/output was elite, not uncertain.",
+      "player_or_team": "Kevin Durant (HOU)",
+      "current_context_fact": "HOU enters on 8-game win streak, Durant averaging 26 PPG on 52-40-87 splits. Team has found its groove with Durant as offensive anchor.",
+      "conflict": "Today's news reports Durant sustained a right knee contusion during practice this week and is listed as questionable for Game 1 vs. Lakers. Rockets are 'optimistic it will not be a significant issue' but his availability is now uncertain.",
       "urgency": "critical",
-      "suggested_action": "Update Curry's status: he has now completed the play-in game with a 35-point, 7-3PM performance. Remove 'conditioning uncertain' caveat and update games-since-return to at least 4. Note that his minutes restriction may have been lifted or significantly relaxed given the workload in this game. GSW advances to face the PHX/GSW play-in final on Apr 17."
+      "suggested_action": "Add Durant to the R1 injury landscape under 'ACTIVE WITH DOCUMENTED CONCERNS': 'Kevin Durant (HOU) \u2014 Right knee contusion sustained in practice week of Apr 14. Questionable for Game 1 vs LAL (Apr 18). Rockets optimistic, but monitor official injury report.' Also update the LAL vs HOU matchup context to note Durant's status as a key variable."
     },
     {
-      "player_or_team": "GSW (play-in bracket)",
-      "current_context_fact": "Apr 15: GSW (10) def. LAC (9) West \u2014 LAC eliminated. Apr 17: PHX vs GSW (West 8-seed final)",
-      "conflict": "News confirms the Warriors defeated the Clippers on Apr 15 (published Apr 16), consistent with context. However, the 'Stephen A.: Porzingis will be the key for the Warriors' headline references 'Warriors' matchup against the Suns,' confirming the PHX vs GSW play-in final is indeed scheduled for Apr 17. No direct conflict, but the Porzingis framing is notable \u2014 context doc does not list Porzingis as a GSW player of note for the play-in game, though it does record him as traded to GSW. This is consistent with context.",
-      "urgency": "monitor",
-      "suggested_action": "No change needed to bracket structure \u2014 context is accurate. Optionally flag Kristaps Porzingis (GSW) as an active contributor being discussed as a key player for the Warriors' play-in vs PHX, in case prop picks are generated for that game."
+      "player_or_team": "OKC vs (8) seed \u2014 Play-In Results",
+      "current_context_fact": "Play-In bracket shows: '(1) OKC vs (8) TBD (PHX or GSW, Apr 17)' and 'Apr 17: PHX vs GSW (West 8-seed final)' with result TBD.",
+      "conflict": "Today's news confirms PHX defeated GSW 111-96 to secure the No. 8 seed. OKC's R1 opponent is now confirmed as the Phoenix Suns.",
+      "urgency": "critical",
+      "suggested_action": "Update West R1 bracket to: '(1) OKC vs (8) PHX'. Add play-in result: 'Apr 17: PHX (7) def. GSW (10) 111-96 \u2014 PHX \u2192 8-seed, GSW eliminated.' Add a new OKC vs PHX series diary section. Also update GSW status to 'eliminated'."
     },
     {
-      "player_or_team": "LaMelo Ball / MIA play-in context",
-      "current_context_fact": "Apr 14: CHA (9) def. MIA (10) East \u2014 MIA eliminated",
-      "conflict": "News items from Apr 16-17 reference LaMelo Ball being fined (not suspended) for tripping Bam Adebayo, with Spoelstra saying no further penalty is needed and LaMelo saying 'no rift with Bam.' This incident occurred during the CHA vs MIA play-in game, consistent with CHA defeating MIA. No factual conflict with the outcome, but confirms LaMelo was involved in a notable incident during that game that the context doc does not mention.",
-      "urgency": "monitor",
-      "suggested_action": "Add a note that LaMelo Ball received a fine (not suspension) for tripping Bam Adebayo during the Apr 14 play-in game. He is available for CHA's Apr 17 play-in final vs ORL with no suspension risk."
+      "player_or_team": "ORL vs CHA \u2014 Play-In Results / DET (1) seed opponent",
+      "current_context_fact": "Play-In bracket shows: '(1) DET vs (8) TBD (ORL or CHA, Apr 17)' and 'Apr 17: ORL vs CHA (East 8-seed final)' with result TBD.",
+      "conflict": "Today's news confirms ORL defeated CHA 121-90 (a 'play-in record' 35-point first-half lead, final 121-90) to advance as the 8-seed. DET's R1 opponent is now confirmed as the Orlando Magic.",
+      "urgency": "critical",
+      "suggested_action": "Update East R1 bracket to: '(1) DET vs (8) ORL'. Add play-in result: 'Apr 17: ORL (8) def. CHA (9) 121-90 \u2014 ORL \u2192 8-seed, CHA eliminated.' Update the DET vs TBD series diary header to 'DET vs ORL'. Also update CHA status to 'eliminated'."
     },
     {
-      "player_or_team": "ATL \u2014 Jock Landale",
-      "current_context_fact": "No mention of Jock Landale injury in the season context document under ATL or playoff injury landscape.",
-      "conflict": "News from Apr 16 reports: 'Atlanta Hawks center Jock Landale will miss at least the first two weeks of the NBA playoffs because of his sprained right ankle.' This is a new injury not captured in the context doc's playoff injury landscape.",
+      "player_or_team": "Steve Kerr (GSW)",
+      "current_context_fact": "GSW head coach listed as Steve Kerr with no change note.",
+      "conflict": "Today's news reports Kerr acknowledged his future with the Warriors was uncertain following their season-ending loss to the Suns, saying 'When the run ends, sometimes it's time for new blood and new ideas.' This signals a potential coaching change, though nothing is confirmed.",
       "urgency": "monitor",
-      "suggested_action": "Add Jock Landale (ATL) to the playoff injury landscape under 'Active with Documented Concerns' or 'Confirmed Out for R1 start': out at least first two weeks of playoffs (sprained right ankle). Relevant for NYK vs ATL R1 picks \u2014 ATL's frontcourt depth is reduced."
-    },
-    {
-      "player_or_team": "Trae Young / WAS roster note",
-      "current_context_fact": "Wizards expect coach Brian Keefe to remain \u2014 context doc lists WAS as eliminated with Trae Young on roster and Brian Keefe as coach.",
-      "conflict": "News confirms 'The Wizards expect to have Brian Keefe return as their coach in 2026-27 after a season that saw them add Anthony Davis and Trae Young and finish with the NBA's worst record.' This is consistent with context doc facts (Trae Young traded to WAS, Anthony Davis traded to WAS, Brian Keefe as coach). No factual conflict.",
-      "urgency": "monitor",
-      "suggested_action": "No change needed \u2014 news confirms existing context facts. Optionally note that WAS finished with the NBA's worst record (relevant for draft lottery context)."
+      "suggested_action": "Add a note to the GSW head coach entry: 'Post-season: Kerr publicly acknowledged uncertainty about his future after play-in loss to PHX (Apr 17). Monitor for potential coaching change announcement \u2014 not confirmed, but risk of staleness is elevated.'"
     }
   ],
   "staleness_flags": []

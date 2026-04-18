@@ -4586,5 +4586,92 @@
         "cannibalization_flags": null
       }
     ]
+  },
+  {
+    "date": "2026-04-18",
+    "parlays": [
+      {
+        "label": "Rebound Trio Lock",
+        "card_type": "core",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Scottie Barnes",
+            "team": "TOR",
+            "opponent": "CLE",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "team": "DEN",
+            "opponent": "MIN",
+            "prop_type": "REB",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "correlation_role": "rebounder"
+          }
+        ],
+        "implied_odds": "+104",
+        "confidence_product": 0.6552,
+        "correlation": "independent",
+        "rationale": "Two elite rebounders at conservative tiers with 8-9/10 hit rates across independent high-pace playoff games.",
+        "date": "2026-04-18",
+        "id": "parlay_2026-04-18_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 2
+      },
+      {
+        "label": "Saturday Volume Sweep",
+        "card_type": "core",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Julius Randle",
+            "team": "MIN",
+            "opponent": "DEN",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 82,
+            "correlation_role": "scorer"
+          },
+          {
+            "player_name": "Amen Thompson",
+            "team": "HOU",
+            "opponent": "LAL",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Evan Mobley",
+            "team": "CLE",
+            "opponent": "TOR",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+103",
+        "confidence_product": 0.492,
+        "correlation": "independent",
+        "rationale": "Three-game spread with high-floor scorers and rebounders; Mobley AST T2 carries a positive cal_edge of +1.77pp.",
+        "date": "2026-04-18",
+        "id": "parlay_2026-04-18_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      }
+    ]
   }
 ]
