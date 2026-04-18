@@ -354,19 +354,49 @@ def build_opportunity_suggestions(
         if p.get("voided", False):
             excluded_players.add(p.get("player_name", "").strip().lower())
 
-    # Source 2: raw injuries — use "name" field (Rotowire format), extract
-    # last name for fuzzy matching since Rotowire uses "F. LastName" format
+    # Source 2: raw injuries — resolve Rotowire abbreviated names
+    # (e.g. "L. Doncic") to full player_stats names (e.g. "luka doncic")
+    # via last-name + team matching. Falls back to adding the raw
+    # abbreviated name when no player_stats match is found.
+    #
+    # Build team→full_name index from player_stats for resolution.
+    _team_to_fullnames: dict[str, list[str]] = {}
+    for ps_name, ps_data in player_stats.items():
+        ps_team = _norm(ps_data.get("team", ""))
+        if ps_team:
+            _team_to_fullnames.setdefault(ps_team, []).append(
+                ps_name.strip().lower()
+            )
+
     if injuries:
-        for key, val in injuries.items():
-            if key == "fetched_at" or not isinstance(val, list):
+        for team_key, val in injuries.items():
+            if not isinstance(val, list):
                 continue
+            # Normalize team key from injury JSON
+            inj_team = _norm(team_key)
             for row in val:
                 if not isinstance(row, dict):
                     continue
                 raw_name = (row.get("name") or row.get("player_name") or "").strip()
                 status = (row.get("status") or "").upper()
-                if status in ("OUT", "DOUBTFUL", "OFS") and raw_name:
-                    excluded_players.add(raw_name.lower())
+                if status not in ("OUT", "DOUBTFUL", "OFS") or not raw_name:
+                    continue
+
+                # Always add the raw abbreviated name (backward compat)
+                excluded_players.add(raw_name.lower())
+
+                # Resolve to full name: extract last name from "F. LastName"
+                # or "FirstName LastName" and match against player_stats on
+                # the same team.
+                name_parts = raw_name.replace(".", "").strip().split()
+                if not name_parts:
+                    continue
+                last_name = name_parts[-1].lower()
+
+                # Search player_stats names on the same team for last-name match
+                for full_name in _team_to_fullnames.get(inj_team, []):
+                    if full_name.split()[-1] == last_name:
+                        excluded_players.add(full_name)
 
     # Load today's FanDuel market availability — used to annotate each tier
     # entry with market implied probability so users can see edge at a glance.
