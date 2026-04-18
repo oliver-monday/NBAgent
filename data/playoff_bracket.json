@@ -6,15 +6,15 @@
     "east": {
       "7v8": {"home": "PHI", "away": "ORL", "date": "2026-04-15", "winner": "PHI"},
       "9v10": {"home": "CHA", "away": "MIA", "date": "2026-04-14", "winner": "CHA"},
-      "final": {"home": "ORL", "away": "CHA", "date": "2026-04-17", "winner": null}
+      "final": {"home": "ORL", "away": "CHA", "date": "2026-04-17", "winner": "ORL"}
     },
     "west": {
       "7v8": {"home": "PHX", "away": "POR", "date": "2026-04-14", "winner": "POR"},
       "9v10": {"home": "LAC", "away": "GSW", "date": "2026-04-15", "winner": "GSW"},
-      "final": {"home": "PHX", "away": "GSW", "date": "2026-04-17", "winner": null}
+      "final": {"home": "PHX", "away": "GSW", "date": "2026-04-17", "winner": "PHX"}
     }
   },
-  "eliminated": ["MIA", "LAC"],
+  "eliminated": ["MIA", "LAC", "CHA", "GSW"],
   "standings": {
     "east": [
       {"seed": 1, "team": "DET", "record": "60-22"},
@@ -25,7 +25,7 @@
       {"seed": 6, "team": "ATL", "record": "46-36"},
       {"seed": 7, "team": "PHI", "record": "45-37"},
       {"seed": 8, "team": "ORL", "record": "45-37"},
-      {"seed": 9, "team": "CHA", "record": "44-38"},
+      {"seed": 9, "team": "CHA", "record": "44-38", "eliminated": true},
       {"seed": 10, "team": "MIA", "record": "43-39", "eliminated": true}
     ],
     "west": [
@@ -35,10 +35,10 @@
       {"seed": 4, "team": "LAL", "record": "53-29"},
       {"seed": 5, "team": "HOU", "record": "52-30"},
       {"seed": 6, "team": "MIN", "record": "49-33"},
-      {"seed": 7, "team": "PHX", "record": "45-37"},
-      {"seed": 8, "team": "POR", "record": "42-40"},
+      {"seed": 7, "team": "POR", "record": "42-40"},
+      {"seed": 8, "team": "PHX", "record": "45-37"},
       {"seed": 9, "team": "LAC", "record": "42-40", "eliminated": true},
-      {"seed": 10, "team": "GSW", "record": "37-45"}
+      {"seed": 10, "team": "GSW", "record": "37-45", "eliminated": true}
     ]
   },
   "series": [
@@ -46,9 +46,8 @@
       "series_id": "E1",
       "conference": "East",
       "home_team": "DET",
-      "away_team": "TBD",
-      "best_of": 7,
-      "note": "8-seed determined Apr 17: ORL vs CHA"
+      "away_team": "ORL",
+      "best_of": 7
     },
     {
       "series_id": "E2",
@@ -75,9 +74,8 @@
       "series_id": "W1",
       "conference": "West",
       "home_team": "OKC",
-      "away_team": "TBD",
-      "best_of": 7,
-      "note": "8-seed determined Apr 17: PHX vs GSW"
+      "away_team": "PHX",
+      "best_of": 7
     },
     {
       "series_id": "W2",

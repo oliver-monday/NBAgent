@@ -118,10 +118,10 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 | 4 | CLE | 52-30 | Playoffs |
 | 5 | TOR | 46-36 | Playoffs |
 | 6 | ATL | 46-36 | Playoffs |
-| 7 | PHI | 45-37 | Play-In |
-| 8 | ORL | 45-37 | Play-In |
-| 9 | CHA | 44-38 | Play-In |
-| 10 | MIA | 43-39 | Play-In |
+| 7 | PHI | 45-37 | Playoffs (7-seed) |
+| 8 | ORL | 45-37 | Playoffs (8-seed) |
+| 9 | CHA | 44-38 | Eliminated |
+| 10 | MIA | 43-39 | Eliminated |
 
 **WESTERN CONFERENCE**
 
@@ -133,31 +133,31 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 | 4 | LAL | 53-29 | Playoffs |
 | 5 | HOU | 52-30 | Playoffs |
 | 6 | MIN | 49-33 | Playoffs |
-| 7 | PHX | 45-37 | Play-In |
-| 8 | POR | 42-40 | Play-In |
-| 9 | LAC | 42-40 | Play-In |
-| 10 | GSW | 37-45 | Play-In |
+| 7 | POR | 42-40 | Playoffs (7-seed) |
+| 8 | PHX | 45-37 | Playoffs (8-seed) |
+| 9 | LAC | 42-40 | Eliminated |
+| 10 | GSW | 37-45 | Eliminated |
 
-**ELIMINATED:** BKN, CHI, DAL, IND, LAC, MEM, MIA, MIL, NOP, SAC, UTA, WAS
+**ELIMINATED:** BKN, CHA, CHI, DAL, GSW, IND, LAC, MEM, MIA, MIL, NOP, SAC, UTA, WAS
 
-**R1 MATCHUPS (confirmed; 1v8 seeds determined Apr 17 play-in finals)**
+**R1 MATCHUPS (confirmed)**
 
 | East | West |
 |------|------|
-| (1) DET vs (8) TBD (ORL or CHA, Apr 17) | (1) OKC vs (8) TBD (PHX or GSW, Apr 17) |
+| (1) DET vs (8) ORL | (1) OKC vs (8) PHX |
 | (2) BOS vs (7) PHI | (2) SAS vs (7) POR |
 | (3) NYK vs (6) ATL | (3) DEN vs (6) MIN |
 | (4) CLE vs (5) TOR | (4) LAL vs (5) HOU |
 
-**PLAY-IN RESULTS**
-- Apr 14: CHA (9) def. MIA (10) East — MIA eliminated | POR (8) def. PHX (7) West — POR → 7-seed, PHX to final
+**PLAY-IN RESULTS (complete)**
+- Apr 14: CHA (9) def. MIA (10) East 127-126 OT — MIA eliminated | POR (8) def. PHX (7) West — POR → 7-seed, PHX to final
 - Apr 15: PHI (7) def. ORL (8) East 109-97 — PHI → 7-seed, ORL to final | GSW (10) def. LAC (9) West — LAC eliminated
-- Apr 17: ORL vs CHA (East 8-seed final) | PHX vs GSW (West 8-seed final)
+- Apr 17: ORL (8) def. CHA (9) East 121-90 — ORL → 8-seed, CHA eliminated | PHX def. GSW West 111-96 — PHX → 8-seed, GSW eliminated
 
 ---
 
 ### PLAYOFF INJURY LANDSCAPE
-*Last updated: 2026-04-16. Update this section as statuses change — the analyst reads it before every pick.*
+*Last updated: 2026-04-18. Update this section as statuses change — the analyst reads it before every pick.*
 
 **CONFIRMED OUT FOR R1:**
 
@@ -173,7 +173,7 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 - **Cade Cunningham (DET)** — Collapsed left lung (pneumothorax, mild) from collision Mar 17. Missed 11 games. Returned Apr 9. On a minutes ramp-up: L5 avg 23.6 min vs 33.4 season avg. AST production held immediately (10 AST in 26 min in return game). PTS will lag until minutes normalize (~Game 3+).
 - **Victor Wembanyama (SAS)** — Left rib contusion (collision with Paul George, Apr 6). MRI clean. Sat 3 of final 4 regular season games. Expected available for R1 (Apr 18, 6 days rest). Also managing right ankle pain. Rib contusions cause pain on contact — may limit aggressiveness early.
 - **Stephon Castle (SAS)** — Knee soreness. Was OUT Apr 9 alongside Wemby. Monitor status for R1.
-- **Stephen Curry (GSW)** — Right knee ("runner's knee"). Missed 27 games. Returned Apr 7 on ~25 min restriction. Only 3 games since return. Still ramping for play-in. Per-minute production solid but conditioning uncertain.
+- **Stephen Curry (GSW)** — SEASON OVER. Right knee ("runner's knee") cost him 27 games. Returned Apr 7. Played 36 min in play-in final vs PHX but shot 4-16 FG (3-10 3PT, 17 pts). GSW eliminated. Kerr expressed uncertainty about his coaching future after the loss.
 - **Aaron Gordon (DEN)** — Calf/hamstring strains recurring over past two seasons. Missed 40 games this season. DEN's key defensive anchor. If he misses games vs MIN, DEN defense suffers significantly.
 
 **R1 MATCHUP INJURY CONTEXT:**
@@ -181,6 +181,8 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 - **(4) LAL vs (5) HOU:** Catastrophic injury mismatch. LAL without Doncic AND Reaves. LeBron (41) as sole offensive engine vs full-strength HOU. Both teams are confirmed H15 suppressors. Most challenging pick environment in R1.
 - **(3) DEN vs (6) MIN:** Both teams have injury concerns. Edwards' knee and McDaniels' ramp-up vs Gordon's durability. If Edwards is <100%, series tips to DEN. Jokic healthy and having best season.
 - **(4) CLE vs (5) TOR:** Quickley's hamstring is the key variable. CLE appears healthy with Harden integrated.
+- **(1) DET vs (8) ORL:** Cunningham returning from collapsed lung (11 games missed), on minutes ramp-up (23.6 avg L5 vs 33.4 season avg). Wagner back from 48-game absence, Suggs back from 25-game absence — both played play-in. ORL dominated CHA 121-90 in play-in final. DET AST suppressor active (watch, n=8, −37.2pp — below formal gate but extreme magnitude).
+- **(1) OKC vs (8) PHX:** Mark Williams (left foot stress reaction) OUT, missed play-in final. Grayson Allen (left hamstring) managed — cleared but held out of play-in final. OKC fully healthy at full strength for first time in months (SGA, Williams, Holmgren, Hartenstein, Caruso all available). PHX CLOSED as H15 suppressor — treat as normal opponent.
 - **(2) BOS vs (7) PHI:** Embiid OUT (appendectomy Apr 10, ~23-day recovery — unlikely before R1 G4 at earliest). PHI won play-in 109-97 behind Maxey (31 pts) and Edgecombe (19/11/1). PHI is a confirmed system-wide suppressor (65.0% hit rate, −22.1pp) — apply suppressor treatment to ALL BOS player props in this series. BOS fully healthy with Tatum back since Mar 6.
 
 ---
@@ -213,8 +215,20 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 - First playoff trip for TOR's young core (Barnes, Barrett, Ingram, Quickley) — experience gap is real. CLE has Mitchell's 50-point playoff games + Harden's deep postseason history.
 - ⚠ Quickley hamstring (Apr 12 exit): if he misses games, TOR loses secondary creator and screening action. Barrett + Shead absorb minutes but offensive ceiling drops.
 
-##### (1) DET vs (8) TBD
-*(8-seed determined Apr 17: ORL vs CHA. Game 1: Apr 19.)*
+##### (1) DET vs (8) ORL
+*(Game 1: Apr 19, 6:30 PM ET at Detroit. Season series 2-2, each team won once on other's floor.)*
+
+**Pre-Series Intel (sources: NBA.com, DraftKings Network, Detroit Free Press, Yahoo Sports, SI — Apr 18):**
+- DET's historic rise: worst team in NBA (14 wins) just 2 seasons ago, now 1-seed with 60 wins. First East 1-seed since 2007. Led by league's 2nd-ranked defense. Dominated the restricted area — outscored opponents by 13.9 PPG inside (3rd-best differential in 15 years). 36% of shots came at the rim (league-leading). However, DET ranked 29th in 3-point rate — perimeter shooting is a weakness.
+- Cunningham: first-team All-NBA, MVP candidate. Returning from collapsed lung (pneumothorax, Mar 17), missed 11 games. Had full week of practice after playing final 3 regular-season games. In 3-game return: 11.3 PPG / 10.3 APG / 5.0 RPG — AST production held immediately but PTS lagging during minutes ramp-up (23.6 min avg vs 33.4 season). Expect PTS to normalize by Game 2-3 as minutes increase. AST volume is safe even on restricted minutes.
+- Duren: breakout All-Star season. Averaged 22.6 PPG / 10.7 RPG on 67.8% shooting over final 26 games. Carried DET through Cunningham absence (15-4 in last 19). Will dominate Wendell Carter Jr. inside — massive size/athleticism advantage.
+- ORL: disappointing regular season (preseason top-4 East projection → 8-seed play-in). But dominated CHA 121-90 in play-in final — 31-pt halftime lead (play-in tournament record). All 5 starters in double figures: Banchero 25/5/6, Wagner 18/7/6, Carter 16 (6-7 FG), Bane 13, Suggs 12. Defense looked elite — held CHA to 34% shooting in first half.
+- Wagner and Suggs: back from extended absences (Wagner 48 games, Suggs 25 games). Wagner on minutes restriction in play-in loss to PHI (12 pts) but looked sharper in CHA rout. Getting both back transforms ORL's defensive identity and ball-handling depth.
+- Key question: Banchero consistency. Shot 7-22 with 6 TO and 4 AST vs PHI in play-in opener, then bounced back with 25/5/6 vs CHA. His efficiency swings define ORL's ceiling. Season avg vs DET: 26.3 PPG on 64.8% TS — his 5th-best mark vs any opponent.
+- ORL defensive regression: dropped from top-3 defensive rating to 11th this season, driven by turnover generation decline (2nd in opponent TO rate last year → 14th). But play-in showed flashes of old form.
+- DET defense has multiple wings for Banchero/Wagner: Ausar Thompson (elite perimeter defender), Stewart (interior anchor). ORL doesn't shoot enough 3s to punish DET's perimeter weakness (24th in 3PM).
+- DET -425 series favorites. Consensus: Pistons in 5. Neither franchise has won a playoff series in 15+ years — one drought ends here.
+- ⚠ DET AST suppressor (watch, n=8, −37.2pp): extreme magnitude but below formal ≥15 gate. Concentrated on secondary creators, not primary playmakers. ORL's Banchero/Wagner AST picks should be treated with extra scrutiny. Monitor — 4 more AST picks vs DET would cross the formal gate.
 
 ##### (2) BOS vs (7) PHI
 *(Game 1: Apr 19, 1 PM ET at TD Garden. BOS won season series 2-2 but Tatum missed all 4 games — PHI has never faced this version of BOS.)*
@@ -256,8 +270,23 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 - Both teams are H15 confirmed system-wide suppressors (HOU: -21.9pp, LAL: -10.7pp). This is the ONLY R1 series where both teams suppress opponent picks. Extremely challenging pick environment in both directions.
 - Betting lines: HOU massive favorite (-600 series ML). Expert consensus: Rockets in 5. LAL's best hope is stealing 1-2 home games, surviving to R2 where Doncic/Reaves could return (~May 3-4 timeline).
 
-##### (1) OKC vs (8) TBD
-*(8-seed determined Apr 17: PHX vs GSW. Game 1: Apr 19.)*
+##### (1) OKC vs (8) PHX
+*(Game 1: Apr 19, 3:30 PM ET at OKC. OKC won season series 3-1 (plus 1 NBA Cup game). Booker missed 2 games (both blowout losses), Green missed all 5.)*
+
+**Pre-Series Intel (sources: NBA.com, SI, DraftKings Network, vsin, Yahoo Sports — Apr 18):**
+- OKC defending title, seeking first repeat since 2017-18 Warriors. 64-18 despite massive injury absences (Jalen Williams 49 games, Hartenstein 35, Caruso 26, SGA 14, Holmgren 13). Machine never slipped — worst stretch was 3-5 in Jan/Feb. Now at full strength for first time in months. Rested starters final 2 games.
+- SGA: back-to-back MVP. Averaged 30.0 PPG and 7.3 APG vs PHX this season on 50.9% FG and 50.0% 3PT. OKC outscored PHX by 19.9 pts/100 possessions in SGA's minutes. Consecutive 20-point games record still intact.
+- Jalen Williams: All-NBA third team, All-Defensive second team last season. One of only 30 players to score 40 in an NBA Finals game. OKC's second-best player — missed 49 games this season but fully healthy for playoffs.
+- PHX's rebuild story: traded Kevin Durant for Green, Brooks, and picks. Waived-and-stretched Beal. Rebuilt around Booker as lone star — overachieved to 45-37 and playoffs. First playoff appearance since Durant era.
+- Booker: All-Star season (26-4-6 on 46/33/87 splits). Career matchup with Dort is the marquee individual battle — Dort has guarded Booker the 4th-most of any player since 2019, but Booker has historically bested him (22.8 PPG per 75 poss guarded, 71.9% TS). However, he'll face the league's #1 defense with limited supporting cast.
+- Jalen Green: X-factor. Explosive in play-in week (35 vs POR, 36 on 14-20/8-14 3PT vs GSW). Didn't face OKC at all this season (only 32 games played due to injuries). Streaky but when hot, unguardable. Cason Wallace will be his primary defender — Wallace led NBA in steals.
+- Mark Williams: OUT with left foot stress reaction (missed play-in final). Oso Ighodaro started vs GSW (10 pts, 6 reb in 26 min). If Williams misses R1, PHX loses interior presence — OKC's Holmgren/Hartenstein will dominate the glass.
+- Grayson Allen: left hamstring managed. Cleared for play-in final but coach Ott kept him on bench — Goodwin started and went 19/9/6stl. Allen's availability and effectiveness are question marks for R1.
+- PHX strength: 3rd in forcing turnovers (16.3 per game for opponents). Allow fewest opponent 3-pointers (12.2/game, 4th-best). Set franchise record 1,210 made 3s (36.1%, 12th). PHX scored 30 off 21 GSW turnovers in play-in — this is their formula for competitiveness.
+- OKC vulnerability: 25th in 3-point defense. PHX's volume 3-point shooting could exploit this. Opponents shot 55.6% inside the arc vs PHX (19th) — OKC's elite interior offense should feast.
+- Key matchup: Brooks vs SGA. Fellow Canadian national team stars. Brooks defended SGA for 50 possessions this season — "held" him to 10 pts on 4-8 FG with 3 TO. But OKC scored 142.3 pts/100 poss in those matchups. Brooks will compete but is too foul-prone to consistently contain SGA.
+- OKC -3000 series favorites (most lopsided R1 odds). Consensus: Thunder in 4-5. PHX's best path is stealing a home game in Games 3-4 via Green eruption + forced turnovers.
+- ⚠ PHX CLOSED as H15 suppressor (82.4% at full season, −4.8pp — within normal variance). Treat PHX as a normal opponent. No extra scrutiny needed for OKC player props in this series.
 
 ##### (2) SAS vs (7) POR
 *(Game 1: Apr 19, 9 PM ET at Frost Bank Center. SAS won season series 2-1, but Wemby missed all 3 games.)*
