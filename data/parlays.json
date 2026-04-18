@@ -4477,9 +4477,26 @@
         "rationale": "POSITIVE-edge White PTS anchors; Curry 3PM vs soft PHX defense adds clean independent value.",
         "date": "2026-04-17",
         "id": "parlay_2026-04-17_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 2
+        "result": "MISS",
+        "legs_hit": 1,
+        "legs_total": 2,
+        "leg_results": [
+          {
+            "player_name": "Coby White",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "MISS",
+            "actual_value": 4.0
+          },
+          {
+            "player_name": "Stephen Curry",
+            "prop_type": "3PM",
+            "pick_value": 3,
+            "result": "HIT",
+            "actual_value": 3.0
+          }
+        ],
+        "cannibalization_flags": null
       },
       {
         "label": "Friday Night Fireworks",
@@ -4533,9 +4550,40 @@
         "rationale": "High-pace CHA-ORL volume game fuels Bridges and Knueppel PTS plus Bane 3PM; Booker AST vs soft GSW defense extends reward.",
         "date": "2026-04-17",
         "id": "parlay_2026-04-17_02",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 4
+        "result": "MISS",
+        "legs_hit": 3,
+        "legs_total": 4,
+        "leg_results": [
+          {
+            "player_name": "Miles Bridges",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 15.0
+          },
+          {
+            "player_name": "Kon Knueppel",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 11.0
+          },
+          {
+            "player_name": "Desmond Bane",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "result": "MISS",
+            "actual_value": 0.0
+          },
+          {
+            "player_name": "Devin Booker",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 8.0
+          }
+        ],
+        "cannibalization_flags": null
       }
     ]
   }

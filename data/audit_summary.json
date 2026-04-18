@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-04-16",
-  "entries_included": 41,
+  "generated_at": "2026-04-18",
+  "entries_included": 42,
   "overall": {
-    "total_picks": 881,
+    "total_picks": 896,
     "voided": 59,
-    "hits": 752,
-    "misses": 113,
-    "injury_exclusions": 3,
-    "hit_rate_pct": 87.2
+    "hits": 763,
+    "misses": 117,
+    "injury_exclusions": 4,
+    "hit_rate_pct": 87.1
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 321,
-      "hits": 270,
+      "picks": 330,
+      "hits": 278,
       "injury_exclusions": 2,
-      "hit_rate_pct": 84.6
+      "hit_rate_pct": 84.8
     },
     "REB": {
       "picks": 125,
@@ -23,41 +23,41 @@
       "hit_rate_pct": 87.2
     },
     "AST": {
-      "picks": 276,
-      "hits": 235,
-      "injury_exclusions": 1,
-      "hit_rate_pct": 85.5
+      "picks": 279,
+      "hits": 237,
+      "injury_exclusions": 2,
+      "hit_rate_pct": 85.6
     },
     "3PM": {
-      "picks": 135,
-      "hits": 113,
+      "picks": 138,
+      "hits": 114,
       "injury_exclusions": 0,
-      "hit_rate_pct": 83.7
+      "hit_rate_pct": 82.6
     }
   },
   "miss_classification_totals": {
-    "variance": 48,
+    "variance": 49,
     "selection_error": 5,
     "model_gap_signal": 6,
-    "model_gap_rule": 34,
+    "model_gap_rule": 36,
     "workflow_gap": 6,
-    "injury_event": 3
+    "injury_event": 4
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 387,
-      "hits": 329,
-      "hit_rate_pct": 85.0
+      "picks": 395,
+      "hits": 336,
+      "hit_rate_pct": 85.1
     },
     "76-80": {
-      "picks": 373,
-      "hits": 325,
-      "hit_rate_pct": 87.1
+      "picks": 379,
+      "hits": 328,
+      "hit_rate_pct": 86.5
     },
     "81-85": {
-      "picks": 63,
-      "hits": 56,
-      "hit_rate_pct": 88.9
+      "picks": 64,
+      "hits": 57,
+      "hit_rate_pct": 89.1
     },
     "86+": {
       "picks": 18,
@@ -66,70 +66,63 @@
     }
   },
   "parlay_summary": {
-    "total": 80,
+    "total": 82,
     "hits": 50,
-    "misses": 25,
+    "misses": 27,
     "partial": 5
   },
   "recent_lessons": [
-    "Secondary scorer PTS T10 passes the floor exception but does not escape the underlying risk: Quickley (4 actual vs T10), Bane PTS (8 actual vs T10), and Bridges (7 actual vs T10) all missed as secondary scorers in games with large spreads or minute-management contexts. The T10 floor exception prevents the hard skip from firing but does not raise the underlying probability \u2014 when multiple structural risks compound (secondary scorer + season finale + blowout spread), the system's 74% cap may still be too permissive.",
-    "The VOLATILE tag combined with post-season load management produced the Cunningham miss: played only 22 minutes in an 81-63 halftime blowout. The VOLATILE deduction and blowout-resilient offset landed at 72%, which was sound analytically, but the season-finale playoff-rest dynamic (DET leading by 18+ at half, explicitly managing Cade for playoff health) was a structural miss factor. When a team has clinched seeding and faces a weaker opponent with a large pre-game spread on the final day of the regular season, an additional minutes-management risk flag should fire for star starters.",
-    "Desmond Bane's PTS T10 miss repeated the exact pattern documented in prior audit history \u2014 secondary scorer in an ORL blowout-risk game, pulled early with limited minutes (18 minutes in a game ORL lost 113-108, which was actually closer than expected). The human verdict was manual_skip, confirming the Analyst already identified this risk. This is the second consecutive documented Bane blowout PTS miss. The system should now hard-skip Bane PTS at any spread \u2265 10 when ORL is favored, not just at the T25+ volatile_weak_combo threshold \u2014 the Bane secondary scorer blowout pattern is confirmed across multiple instances.",
     "Knueppel PTS T10 miss (actual: 6 PTS, FG 2/12): The FG_COLD:-15% flag at exactly the threshold level is NOT just informational for a secondary scorer whose output is efficiency-dependent. The system rules prohibit a confidence penalty at T10 for FG_COLD, but the human_verdict trim correctly overrode this for good reason. This miss argues for a rule amendment: FG_COLD at \u226515% on secondary-creator PTS props should mandate at least a 5% confidence deduction even below T15, or trigger a soft skip recommendation when the player lacks an iron_floor PTS designation.",
     "Knueppel AST T2 miss (actual: 1 AST): This was a 8/10 overall, iron_floor-adjacent pick with trend=up and soft defense \u2014 classified as variance given the sound construction. However, the key lesson is that in a game where Knueppel was shooting 0-for-6 from three and struggling with FG_COLD, his role in the offense was depressed \u2014 cold-shooting nights naturally reduce ball movement through that player. This is a model_gap_signal: the system does not currently model how a FG_COLD flag on the same player's PTS prop correlates with suppressed AST output on the same night. Same-player cross-prop FG efficiency correlation should be flagged when both PTS and AST are picked for a FG_COLD player on the same slate.",
     "The parlay pairing Knueppel AST with Adebayo REB introduced layered fragility: one leg (Knueppel AST) carried the FG_COLD risk already documented above, and the anchor leg (Adebayo REB) was lost entirely to an injury exit in Q2. Parlays should not include a leg from a player carrying an active negative efficiency flag (FG_COLD) even when the overall hit rate is high \u2014 the flag signals a structurally elevated same-game miss probability that compounds unfavorably in multi-leg constructions.",
     "VJ Edgecombe AST T2 (iron_floor, 80% confidence) missed with 1 assist in 42 minutes in a COMPETITIVE game (PHI won by 12). The iron_floor tag did not protect against a game where Edgecombe's role was purely scorer/rebounder with no playmaking opportunity generated. The post-game web recap confirms no external factor \u2014 he simply did not create assist opportunities despite full minutes. Iron_floor on AST props for non-primary-playmakers (secondary scorers and wings) is structurally fragile: minutes guarantee does not translate to assist accumulation when a player's game-to-game role concentrates on scoring rather than creation. The 8/10 historical hit rate reflects games where Edgecombe happened to contribute playmaking; in a play-in game with elevated scoring focus and specific matchup roles, the playmaking floor was absent even at T2.",
     "AST iron_floor props on secondary scorers and wing players warrant a role-purity check before application: the iron_floor tag is most durable for primary playmakers (PGs with raw_avgs AST \u2265 5.0). For wings and secondary scorers, a game where the player's usage concentrates on scoring can produce 0-1 assists regardless of minutes. The system should flag AST iron_floor picks where the player's primary role is scoring (PTS raw_avg >> AST raw_avg) as carrying structural miss risk even at T2.",
     "The 76-80% confidence band produced only 1 hit in 2 picks (50.0% actual vs 78.0% expected), entirely driven by the Edgecombe AST miss at 80%. Sample size is too small (n=2) to draw firm conclusions, but the AST-specific risk at this band \u2014 specifically iron_floor AST on non-primary-playmakers \u2014 warrants monitoring across future sessions.",
-    "Play-in single-elimination context dramatically elevated actual scoring outputs relative to conservative tier-walked picks: Bane scored 34 on a T10 pick, Garland scored 21 on a T10 pick, Curry scored 35 on a T15 pick, Maxey scored 31 on a T20 pick. This confirms that min_floor and VOLATILE step-downs are correctly applied as conservative floors but the system may be systematically underconfident in high-leverage single-elimination games where players maximize effort and minutes. A play-in minutes override rule (relaxing min_floor caps by one step) deserves formal codification given the consistent pattern."
+    "Play-in single-elimination context dramatically elevated actual scoring outputs relative to conservative tier-walked picks: Bane scored 34 on a T10 pick, Garland scored 21 on a T10 pick, Curry scored 35 on a T15 pick, Maxey scored 31 on a T20 pick. This confirms that min_floor and VOLATILE step-downs are correctly applied as conservative floors but the system may be systematically underconfident in high-leverage single-elimination games where players maximize effort and minutes. A play-in minutes override rule (relaxing min_floor caps by one step) deserves formal codification given the consistent pattern.",
+    "Low-minute rotation players (proj_min \u2264 22, min_floor < 16) must not be included in PTS picks even under elimination-game override logic: Coby White's 17 actual minutes in the blowout confirm that the elimination override does not protect players whose role is inherently volume-contingent \u2014 the 4 actual PTS on 1-5 FG was a product of both cold shooting AND a game script that compressed his opportunity to zero in the second half. The override is designed for starters and primary rotation players with proj_min \u2265 30, not for fringe bench contributors.",
+    "Non-iron-floor 3PM props on secondary/fringe rotation players in blowout-risk games should not be selected, regardless of 10/10 historical hit rate: Coby White's 3PM T1 miss (0 threes in 17 min) is directly explained by the same minute compression that killed his PTS pick \u2014 a 10/10 hit rate on a 3PM T1 is only realizable if the player gets meaningful run, and a proj_min of 22 in an elimination road game for the underdog carries structural blowout-exit risk that voids the sample base. The 3PM prop should have been skipped when the PTS prop already flagged minutes risk.",
+    "3PM props on players in blowout games are the highest-variance prop type on the slate: the session produced 1/3 on 3PM (33.3%), with both misses (White 3PM, Bane 3PM) occurring in games where the player either lost minutes (White, blowout loser) or simply went cold across a full 35-minute sample (Bane). 3PM props require both opportunity and execution; a 9/10 historical rate (Bane) does not immunize against cold-shooting nights, and the non-iron-floor 80% cap correctly bounded confidence \u2014 but the prop type itself is systematically volatile in high-stakes game contexts and should require iron_floor or a 9+/10 at the exact tier (not overall) before selection."
   ],
   "recent_reinforcements": [
-    "Play-in max-minutes context was the single most reliable amplifier on the slate: LaMelo Ball (40 min, 30 PTS), Miles Bridges (43 min, 28 PTS), Tyler Herro (34 min, 23 PTS), and Brandon Miller (37 min, 23 PTS) all cleared their thresholds comfortably \u2014 the play-in minutes elevation thesis was correct and should be applied confidently in future play-in games.",
-    "Iron-floor AST picks held even against a tough opponent: Brandon Miller AST T2 (iron_floor) hit 5 assists in 37 minutes, and Devin Booker AST T4 (iron_floor) hit exactly 4 assists at the threshold \u2014 confirming that iron_floor designation on AST props is a structurally reliable anchor, particularly when the player is a primary playmaker in a high-stakes game.",
-    "The FG_COLD flag on Knueppel PTS T10 was correctly identified as a meaningful structural risk by the human_verdict trim review, and the flag proved predictive: Knueppel went 2-for-12 FG, 0-for-6 3PT \u2014 a severe cold-shooting outcome. The system should treat FG_COLD as a stronger negative signal on secondary-scorer PTS props even at T10, not merely informational.",
-    "Coby White 3PM T1 at 80% cap (9/10 hit rate, trend=up) was the cleanest low-risk pick on the card \u2014 White hit 5 threes in 26 minutes, validating that T1 3PM picks with [consistent] tags and trend=up hold even with thin average minutes when play-in context expands usage.",
-    "Brandon Miller AST T2 with iron_floor and trend=down on AST still hit 5 assists \u2014 demonstrating that the system correctly did not apply a trend penalty to AST (rules prohibit sequential trend deductions on AST), and the iron_floor protection was well-calibrated here.",
     "Iron_floor PTS at T20+ in play-in contexts with soft defense delivered emphatically: Tyrese Maxey's 9/10 iron_floor pick at T20 vs ORL soft defense produced 31 points on 42 minutes \u2014 the 88% confidence was justified and the reasoning (iron_floor + play-in max minutes + Embiid OUT) correctly identified a structurally locked floor.",
     "Conservative tier-walking under multiple simultaneous flags (FG_COLD + VOLATILE + min_floor<24) still produced hits: both Garland PTS T10 (21 pts) and Bane PTS T10 (34 pts) cleared their walked-down thresholds by enormous margins, validating that the step-down cascade produces durable picks even when the resulting tier feels overly conservative.",
     "Iron_floor AST T2 picks in play-in max-minutes contexts were reliable: Kawhi Leonard AST T2 (3 AST, HIT) and Desmond Bane AST T2 (3 AST, HIT) both cleared with margin \u2014 the iron_floor protection on low-threshold AST props held under competitive game conditions as expected.",
     "VOLATILE_weak_combo skip at T25 correctly redirected to T20 for Kawhi PTS: the hard skip at T25 (VOLATILE + 7/10 + T25) fired appropriately, and the stepped-down T20 pick at 75% confidence still hit (21 pts). The rule served its function \u2014 avoiding an overconfident tier while preserving the pick at a sound level.",
-    "Stephen Curry 3PM T3 at 75% with the iron_floor+VOLATILE incompatibility override correctly applied: treating the pick as non-iron-floor and landing at 75% floor still produced a hit (7 threes on 36 minutes). The conservative override was validated \u2014 the pick held even though the iron_floor protection was stripped, confirming the incompatibility rule is sound rather than overly punitive."
+    "Stephen Curry 3PM T3 at 75% with the iron_floor+VOLATILE incompatibility override correctly applied: treating the pick as non-iron-floor and landing at 75% floor still produced a hit (7 threes on 36 minutes). The conservative override was validated \u2014 the pick held even though the iron_floor protection was stripped, confirming the incompatibility rule is sound rather than overly punitive.",
+    "Elimination-game PTS props on primary scorers with 9/10 hit rates and confirmed rotation roles delivered cleanly: LaMelo Ball (23 PTS vs T15), Miles Bridges (15 PTS vs T10), and Kon Knueppel (11 PTS vs T10) all hit comfortably despite the 31-point blowout loss \u2014 the elimination-game max-minutes override correctly prevented minute-fragility downgrades for these players, and the T10 conservative tier landing absorbed shooting variance without issue.",
+    "Iron-floor AST on the primary PG in an elimination game is highly reliable when role-purity is genuinely present: LaMelo Ball's AST T4 iron-floor pick hit 5 assists in 25 minutes despite the blowout, confirming that primary-PG iron-floor AST protection holds even under garbage-time minute compression.",
+    "Stepped-down PTS tiers using FG_MARGIN flags proved structurally sound: Desmond Bane (T15\u2192T10 via FG_MARGIN_THIN) and Stephen Curry (T20\u2192T15 via FG_MARGIN_THIN) both hit their walked tiers, validating the mandatory step-down as a value-preserving protection rather than a miss-driver.",
+    "Soft-defense play-in game context successfully anchored low-confidence picks: Devin Booker PTS T20 (70% confidence, hit exactly at threshold with 20 PTS) and Jalen Green PTS T15 (70% confidence, exploded for 36 PTS) both validated the eliminated-roster GSW as a genuine soft defense \u2014 opp=soft with a depleted opponent is a real edge even at modest confidence.",
+    "The 76-80% confidence band severely underperformed at 50% (3/6 hits vs 78% expected), driven by two blowout-related misses and one injury exit \u2014 this band is structurally vulnerable when it contains picks on lower-usage players in games with wide actual margins. The band's failure was contextual, not a signal that 76-80% calibration is permanently broken."
   ],
   "recent_recommendations": [
-    "Add a FG_COLD cross-prop correlation rule: when a player has FG_COLD:-15% active on their PTS prop and the system also generates an AST or 3PM pick for the same player on the same slate, apply a correlated-risk flag to both picks. The FG_COLD state suppresses counting stats across PTS, AST, and 3PM simultaneously \u2014 treat these as a correlated bundle, not independent props.",
-    "Upgrade FG_COLD treatment for secondary-scorer PTS at T10: the current rule treats FG_COLD as informational below T15+. Amend to apply a mandatory 5% confidence deduction (or soft skip recommendation) to any secondary-scorer PTS prop at T10 when FG_COLD \u226515% is active, regardless of tier. The Knueppel T10 miss at 6 PTS on 2/12 FG is the empirical basis \u2014 at T10, the cushion is too thin to absorb a full cold-shooting night.",
-    "In parlay construction, do not combine a FG_COLD-flagged leg with any other leg for the same player on the same night. If Knueppel PTS carries FG_COLD, the Knueppel AST leg should be ineligible as a parlay companion \u2014 the efficiency depression is structurally correlated across all counting stats and represents a single-game systemic risk, not two independent outcomes.",
-    "For play-in and playoff games, the min_floor cap at 84% for players with floor_minutes < 24 should be reconsidered when the play-in context explicitly projects a significant minutes increase (e.g., Coby White avg 18.7 min but played 26 in a high-stakes game). Consider a play-in minutes override rule that relaxes the min_floor cap by one step (to ~87% ceiling) when the scout confirms expanded projected minutes and the game is a play-in or elimination game \u2014 the min_floor is backward-looking regular-season data that may significantly understate playoff-context exposure.",
-    "Devin Booker AST T4 with iron_floor hit exactly at threshold (4 actual vs 4 pick_value) \u2014 a reminder that exact-threshold results are HITs per grading rules. The system correctly emitted this at 80-84% confidence, and the iron_floor held. Continue prioritizing iron_floor AST picks for primary playmakers in high-stakes games where max minutes are guaranteed \u2014 the combination of iron_floor + play-in context was the most reliable structural anchor on this slate.",
     "Codify a play-in / single-elimination minutes override rule: When the game context is confirmed play-in or playoff Game 7 (single-elimination equivalent), relax the min_floor<24 PTS confidence cap from 84% to 87% and do not apply the mandatory min_floor step-down when proj_min \u2265 34. Evidence: Bane (min_floor 17.9, played 40), Garland (min_floor 23.4, played 31), Curry (min_floor 25.0, played 36), Maxey (min_floor n/a, played 42) \u2014 all played well above their regular-season floors in elimination contexts. The current rule systematically over-penalizes min_floor in games where benching is structurally unavailable.",
     "Add a role-purity gatecheck for AST iron_floor picks on non-primary-playmakers: Before applying iron_floor to an AST prop, check whether the player's raw_avgs PTS is materially higher than raw_avgs AST (e.g. PTS > 3\u00d7 AST). If so, the iron_floor tag should be downgraded to 'soft_floor' and the pick confidence capped 5pp lower (e.g. 80% \u2192 75%). Apply this specifically to wings, forwards, and secondary scorers. Primary playmakers (PG with raw_avgs AST \u2265 5.0) retain full iron_floor protection. This targets the Edgecombe AST T2 miss pattern directly.",
     "Apply PHI suppressor treatment to opponent props more consistently in play-in/playoff contexts: The PHI system-wide suppressor (65.0% hit rate, \u221222.1pp) was noted in the Season Context but did not appear to reduce confidence on ORL player props in this session. Bane and Edgecombe props vs PHI should have had PHI suppressor treatment applied (prefer one tier lower or require 9+/10 hit rate). Bane hit big and Edgecombe's AST missed \u2014 the suppressor was directionally correct on the AST miss. Add a rule: when opp = PHI, apply suppressor treatment to ALL prop types including AST, capping confidence at 75% unless hit_rate_display = 9/10.",
     "For VOLATILE AST props at T4 (non-iron-floor), require a positive or stable trend before selection: Both Garland AST T4 (trend=down, hit) and Maxey AST T4 (trend=down, hit) cleared, but the Edgecombe AST miss reinforces that VOLATILE AST props with trend=down carry genuine miss risk that the current \u22125% VOLATILE deduction alone may not fully price. Add a soft rule: VOLATILE AST at T4+ with trend=down and no iron_floor \u2192 require hit_rate_display \u2265 8/10 to proceed; at exactly 7/10 with trend=down, skip regardless of iron_floor status.",
-    "Validate the iron_floor+VOLATILE incompatibility override for 3PM more thoroughly in playoffs: Curry's 3PM T3 hit (7 threes) with the iron_floor stripped by VOLATILE incompatibility was a clean validation. However, in future sessions where a player has confirmed minutes restrictions (avg_minutes \u2264 28) AND VOLATILE AND iron_floor+VOLATILE incompatibility fires, add a secondary check: if avg_minutes \u2264 28, step down one additional tier (T3 \u2192 T2) before evaluating, since per-minute volume is compressed. Do not apply this in play-in/elimination contexts where the override rule from recommendation #1 already elevates projected minutes."
+    "Validate the iron_floor+VOLATILE incompatibility override for 3PM more thoroughly in playoffs: Curry's 3PM T3 hit (7 threes) with the iron_floor stripped by VOLATILE incompatibility was a clean validation. However, in future sessions where a player has confirmed minutes restrictions (avg_minutes \u2264 28) AND VOLATILE AND iron_floor+VOLATILE incompatibility fires, add a secondary check: if avg_minutes \u2264 28, step down one additional tier (T3 \u2192 T2) before evaluating, since per-minute volume is compressed. Do not apply this in play-in/elimination contexts where the override rule from recommendation #1 already elevates projected minutes.",
+    "Institute a hard proj_min \u2265 28 floor for any PTS or 3PM pick on non-iron-floor players, even under elimination-game override: Coby White (proj_min=22, min_floor=15.8) should have been skipped on both props \u2014 the elimination override only suspends the step-down rule, it does not eliminate the underlying minutes-volume risk for players with thin average minutes. Add a rule: if proj_min < 28 AND iron_floor = false AND prop_type IN (PTS, 3PM) \u2192 mandatory skip regardless of override context.",
+    "When two picks on the same player (White PTS + White 3PM) share the same structural minutes fragility warning, skip both picks and do not use either as a parlay anchor: the cannibalization of the same risk factor across two props compounds the miss probability and adds no diversification. Add a rule: if any pick triggers a proj_min fragility flag \u2192 suppress all other props for the same player on that slate.",
+    "Apply a blowout_spread_gate to non-iron-floor secondary/tertiary scorer props when the pre-game spread exceeds 5.5 points AND the player's proj_min is below 28: CHA was a +3.5 underdog (spread below the formal blowout_risk gate of 8), so no flag fired \u2014 but the actual margin was 31 points. Consider lowering the blowout_risk activation threshold from spread_abs \u2265 8 to spread_abs \u2265 5 for secondary scorers with min_floor < 20, or require a minimum blowout_games resilience rate of \u2265 70% before selecting these players on the road as underdogs.",
+    "Non-iron-floor 3PM props with a consistent tag but no pace-context confirmation should be capped at 75% confidence (not 80%) when the player's prop is in a game where the team is an underdog and the opponent is at home in an elimination game: Bane's 3PM pick was capped at 80% (non-iron-floor ceiling), but the home elimination game for ORL \u2014 where pace compression and defensive intensity typically suppress three-point attempt volume for visiting-team shooters \u2014 warranted an extra -5% deduction. Add a rule: non-iron-floor 3PM in away elimination game OR blowout-risk spread context \u2192 cap at 75%.",
+    "Classify the injury-exit miss (Brandon Miller AST) cleanly in the workflow and do not attempt to retroactively apply a model rule: the post-game event confirms Miller exited at 29 minutes with a head injury and underwent season-ending surgery. The 1 actual assist vs T2 is entirely explained by the injury exit, not by the soft_floor or tough-defense adjustments. No rule change is warranted; confirm the injury_event classification is logged so the Miller AST pick does not pollute the vs-ORL tough-defense signal analysis."
   ],
   "skip_validation": {
     "merit_below_floor": {
-      "total": 6,
-      "false_skips": 3,
-      "correct_skips": 3,
+      "total": 7,
+      "false_skips": 2,
+      "correct_skips": 5,
       "no_data": 0,
-      "false_skip_rate": 50.0
+      "false_skip_rate": 28.6
     },
-    "ast_hard_gate": {
+    "no_market": {
       "total": 1,
       "false_skips": 1,
       "correct_skips": 0,
       "no_data": 0,
       "false_skip_rate": 100.0
     },
-    "volatile_weak_combo": {
-      "total": 1,
-      "false_skips": 0,
-      "correct_skips": 1,
-      "no_data": 0,
-      "false_skip_rate": 0.0
-    },
-    "volatile_ast_t6": {
+    "ast_hard_gate": {
       "total": 1,
       "false_skips": 1,
       "correct_skips": 0,
@@ -142,44 +135,37 @@
       "correct_skips": 0,
       "no_data": 0,
       "false_skip_rate": 100.0
-    },
-    "fg_margin_thin_tier_step": {
-      "total": 1,
-      "false_skips": 1,
-      "correct_skips": 0,
-      "no_data": 0,
-      "false_skip_rate": 100.0
     }
   },
   "human_flag_precision": {
     "trim": {
-      "hits": 130,
-      "misses": 12,
-      "total": 142,
-      "hit_rate_pct": 91.5
+      "hits": 135,
+      "misses": 13,
+      "total": 148,
+      "hit_rate_pct": 91.2
     },
     "keep": {
-      "hits": 187,
-      "misses": 25,
-      "total": 212,
-      "hit_rate_pct": 88.2
+      "hits": 190,
+      "misses": 26,
+      "total": 216,
+      "hit_rate_pct": 88.0
     },
     "manual_skip": {
       "hits": 16,
-      "misses": 2,
-      "total": 18,
-      "hit_rate_pct": 88.9
+      "misses": 3,
+      "total": 19,
+      "hit_rate_pct": 84.2
     }
   },
   "clv_summary": {
-    "total_with_clv": 78,
-    "beat_close": 21,
-    "lost_close": 10,
-    "no_movement": 47,
-    "avg_clv_pp": 0.27,
-    "beat_close_pct": 26.9,
-    "beat_close_hit_rate_pct": 81.0,
-    "lost_close_hit_rate_pct": 80.0,
-    "no_move_hit_rate_pct": 87.2
+    "total_with_clv": 93,
+    "beat_close": 24,
+    "lost_close": 14,
+    "no_movement": 55,
+    "avg_clv_pp": 0.24,
+    "beat_close_pct": 25.8,
+    "beat_close_hit_rate_pct": 79.2,
+    "lost_close_hit_rate_pct": 78.6,
+    "no_move_hit_rate_pct": 85.5
   }
 }
