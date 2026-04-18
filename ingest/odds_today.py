@@ -1033,11 +1033,18 @@ def prefetch_all_markets() -> None:
         print("[odds] Prefetch: no player data parsed — odds_available.json not written")
         sys.exit(0)
 
-    # Sort each player's tiers ascending for readability
+    # Sort each player's tiers ascending and deduplicate by tier
     for norm, pdata in players.items():
         for prop_type in ["PTS", "REB", "AST", "3PM"]:
             if prop_type in pdata:
                 pdata[prop_type].sort(key=lambda x: x["tier"])
+                seen_tiers: set[int] = set()
+                deduped: list[dict] = []
+                for entry in pdata[prop_type]:
+                    if entry["tier"] not in seen_tiers:
+                        seen_tiers.add(entry["tier"])
+                        deduped.append(entry)
+                pdata[prop_type] = deduped
 
     # Write odds_available.json
     output = {

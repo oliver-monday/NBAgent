@@ -929,9 +929,15 @@ def enrich_alt_tiers(today_picks: list[dict]) -> None:
                 "hit_pct": hit_pct,
             })
 
-        # Sort by tier ascending
+        # Sort by tier ascending and deduplicate
         alt_tiers.sort(key=lambda a: a["tier"])
-        pick["alt_tiers"] = alt_tiers
+        seen: set = set()
+        deduped = []
+        for at in alt_tiers:
+            if at["tier"] not in seen:
+                seen.add(at["tier"])
+                deduped.append(at)
+        pick["alt_tiers"] = deduped
 
 
 CANNIBALIZATION_JSON = DATA / "backtest_teammate_cannibalization.json"
