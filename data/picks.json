@@ -17,10 +17,10 @@
     "actual_value": 26.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     }
   },
   {
@@ -519,7 +519,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "Dominant rebounding stretch with 7-21 reb in recent games; NY lacks elite frontcourt rim presence.",
     "result": "HIT",
-    "actual_value": 8.0
+    "actual_value": 8.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Williams absence removes PHX's top rebounder; Chet dominates weaker Ighodaro on boards, VOLATILE tag tempers full revision."
+    }
   },
   {
     "date": "2026-03-04",
@@ -538,13 +545,11 @@
     "result": "HIT",
     "actual_value": 28.0,
     "lineup_update": {
-      "triggered_by": [
-        "Jalen Williams (OKC) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-03-18T16:01:41.462039-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Williams OUT redistributes usage to Holmgren; soft BKN defense and iron_floor support modest confidence bump."
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
     }
   },
   {
@@ -1077,7 +1082,16 @@
     "opp_defense_rating": "soft",
     "reasoning": "Iron floor designation; CHI high pace soft defense allows clean playmaking lanes for Booker.",
     "result": "MISS",
-    "actual_value": 2.0
+    "actual_value": 2.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-03-05",
@@ -2505,7 +2519,16 @@
     "opp_defense_rating": "mid",
     "reasoning": "Iron floor at T4 AST; primary PHX ball handler with B2B 86% maintaining playmaking duties.",
     "result": "HIT",
-    "actual_value": 4.0
+    "actual_value": 4.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-03-06",
@@ -2675,10 +2698,10 @@
     "actual_value": 27.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     }
   },
   {
@@ -4128,7 +4151,16 @@
     "iron_floor": true,
     "reasoning": "Iron-floor T4 at 8/10; soft CHA AST defense and Booker's playmaking role sustain assists floor.",
     "result": "HIT",
-    "actual_value": 10.0
+    "actual_value": 10.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-03-08",
@@ -4393,10 +4425,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     }
   },
   {
@@ -4720,13 +4752,11 @@
     "void_reason": "player OUT per injury report",
     "lineup_risk": "high",
     "lineup_update": {
-      "triggered_by": [
-        "Jalen Williams (OKC) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-03-18T16:01:41.462039-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Williams OUT redistributes usage to Holmgren; soft BKN defense and iron_floor support modest confidence bump."
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
     }
   },
   {
@@ -4751,7 +4781,14 @@
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 73,
+      "revised_reasoning": "Williams out reduces PHX rim deterrence; modest upside but VOLATILE tag and poor vs_tough split limit confidence gain."
+    }
   },
   {
     "date": "2026-03-10",
@@ -5677,7 +5714,16 @@
     "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-03-10",
@@ -7296,13 +7342,11 @@
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Jalen Williams (OKC) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-03-18T16:01:41.462039-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Williams OUT redistributes usage to Holmgren; soft BKN defense and iron_floor support modest confidence bump."
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
     }
   },
   {
@@ -7577,7 +7621,16 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-03-12",
@@ -8322,10 +8375,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     }
   },
   {
@@ -10257,10 +10310,10 @@
     "void_reason": "manual_void: PTS pick generated in error (over-constrained rule cascade produced egregiously low T10 tier; voided pre-result to exclude from hit rate calculations)",
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     }
   },
   {
@@ -10346,13 +10399,11 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Jalen Williams (OKC) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-03-18T16:01:41.462039-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Williams OUT redistributes usage to Holmgren; soft BKN defense and iron_floor support modest confidence bump."
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
     }
   },
   {
@@ -12266,13 +12317,11 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Jalen Williams (OKC) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-03-18T16:01:41.462039-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Williams OUT redistributes usage to Holmgren; soft BKN defense and iron_floor support modest confidence bump."
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
     }
   },
   {
@@ -12349,7 +12398,16 @@
     "actual_value": 3.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-03-17",
@@ -13291,13 +13349,11 @@
     "injury_check_time": "2026-03-18T22:03:43.101704-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Jalen Williams (OKC) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-03-18T16:01:41.462039-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Williams OUT redistributes usage to Holmgren; soft BKN defense and iron_floor support modest confidence bump."
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
     },
     "human_verdict": "keep",
     "trim_reasons": [
@@ -13984,10 +14040,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     },
     "human_verdict": "manual_skip",
     "trim_reasons": [
@@ -15237,7 +15293,14 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "The -20.5 spread is extreme and the min_floor of 25.6 is below 27 \u2014 if OKC blows WSH out early (the most likely game script given this spread), Holmgren sits in Q4, putting a single low-minutes game squarely within normal variance that would threaten a T10 floor that already required a Without-SGA baseline adjustment to pass."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
+    }
   },
   {
     "date": "2026-03-21",
@@ -16123,7 +16186,14 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "Spread of -15.5 is a legitimate blowout risk for a non-elite scorer: Holmgren's min_floor=25.6 is close to the 24-minute fragility threshold, meaning a comfortable OKC lead in the third quarter regularly puts him on the bench earlier than his average suggests, compressing counting stats. Pick already received a blowout penalty but the structural rest risk for a secondary scorer in a double-digit blowout remains."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
+    }
   },
   {
     "date": "2026-03-23",
@@ -17453,10 +17523,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     }
   },
   {
@@ -18896,10 +18966,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     }
   },
   {
@@ -19360,10 +19430,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -23985,13 +24055,11 @@
     "injury_check_time": "2026-04-08T21:59:15.092650-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Darius Garland (LAC) removed from projected starters"
-      ],
-      "updated_at": "2026-04-08T17:53:17.009781-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Garland out weakens LAC backcourt defense; SGA faces easier scoring environment, amplifying iron_floor."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -28812,7 +28880,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -0.53
+    "clv_pp": -0.53,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-04-15",
@@ -29876,7 +29953,16 @@
     "trim_reasons": [
       "Per historical lessons, iron_floor AST props on non-primary-playmakers (even with high raw_avg_AST=5.7) carry structural miss risk when the player's game concentrates on scoring \u2014 Booker is primarily a scorer, and in a competitive game where PHX may rely on him for buckets, assist accumulation to reach T4 (a relatively high AST threshold) is role-dependent rather than guaranteed even with iron_floor protection."
     ],
-    "clv_pp": -0.76
+    "clv_pp": -0.76,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-04-17",
@@ -31630,7 +31716,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T11:23:52.111732-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
+    }
   },
   {
     "date": "2026-04-19",
@@ -31950,7 +32045,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T11:23:52.111732-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 86,
+      "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
+    }
   },
   {
     "date": "2026-04-19",
@@ -31990,7 +32094,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T11:23:52.111732-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Williams absence removes PHX's top rebounder; Chet dominates weaker Ighodaro on boards, VOLATILE tag tempers full revision."
+    }
   },
   {
     "date": "2026-04-19",
@@ -32030,7 +32143,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T11:23:52.111732-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 73,
+      "revised_reasoning": "Williams out reduces PHX rim deterrence; modest upside but VOLATILE tag and poor vs_tough split limit confidence gain."
+    }
   },
   {
     "date": "2026-04-19",
@@ -32070,7 +32192,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T11:23:52.111732-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Mark Williams (PHX) removed from projected starters"
+      ],
+      "updated_at": "2026-04-19T11:23:54.285166-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
+    }
   },
   {
     "date": "2026-04-19",
