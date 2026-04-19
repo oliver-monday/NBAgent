@@ -1,0 +1,222 @@
+[
+  {
+    "date": "2026-04-19",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -13.5 is the largest blowout risk on the slate \u2014 even with BLOWOUT penalty applied, SGA is the primary star on the favored team and faces genuine Q4 rest/garbage-time removal risk in a potential rout. The VOLATILE tag means his distribution is wide, and a blowout scenario can compress his counting stats well below his 29.0 raw average even at T20."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BOS is favored by -12.5 with BLOWOUT_RISK, and Brown's FG_MARGIN_THIN of 4% (near-zero cushion) means even modest defensive resistance or a blowout-induced minutes reduction could push him below T15. The mandatory step-down from T20 was already required by the thin margin, meaning this pick lives on a structurally fragile floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The PHI 3PM suppressor is extreme (-45.6pp per scout), and while quant override was applied, historical audit lessons confirm 3PM props are the highest-variance prop type \u2014 iron_floor is absent here. Blowout risk (-12.5) can further compress late-game three-point attempt volume if BOS pulls starters early."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with iron_floor=false at T15 and a -12.5 blowout game creates a structurally soft floor \u2014 Tatum is the primary star on the favored team most likely to be rested in Q4 of a decisive game, and his raw_avg of 22.4 is lower than Brown's, leaving less cushion against blowout-induced minute compression."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The pick_reasoning explicitly flags a calibration note to AVOID 3PM (-11pp drop in playoffs) yet the pick is included at 80% confidence \u2014 this internal tension is the sharpest bear case. The PHI suppressor is extreme (-45.6pp) and iron_floor is absent; a blowout could reduce Tatum's three-point attempts in Q4 precisely when he needs them to clear T2."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Pritchard's min_floor of 23.4 with avg_minutes of 28.1 means a blowout-induced early bench in a -12.5 game could easily push him below the minutes needed to attempt enough threes for T2; the PHI 3PM suppressor (40% hit rate, -45.6pp per scout) represents genuine structural drag even with the quant override."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 21.6 on a secondary scorer in a -13.5 blowout game is structurally fragile \u2014 Holmgren is the most likely OKC rotation player to see compressed Q4 minutes in a rout, and a single low-minutes game (entirely within normal variance) is sufficient to produce a miss at T10 with iron_floor only barely providing a floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE REB pick with iron_floor=false, post_miss_hr of only 83% (lift barely above 1.0), and a min_floor of just 21.6 minutes in a -13.5 blowout game \u2014 blowout-induced minute reduction directly compresses rebounding opportunities for a big man. The combination of VOLATILE tag, no iron_floor, and extreme blowout risk on the favored side creates a structurally fragile REB floor that the 78% confidence does not adequately capture."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Williams has the lowest min_floor on the slate at 19.4 minutes, and at 70% confidence with VOLATILE tag and a post_miss_hr of only 67% (lift=0.92, below 1.0 \u2014 no bounce-back effect), this pick sits at minimum confidence with structurally compressed minute protection in a -13.5 blowout game."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with iron_floor=false and post_miss_hr of only 71% (lift=0.80 \u2014 the only sub-1.0 bounce-back lift on the slate) means Wembanyama has a confirmed pattern of sequential misses, not a bounce-back effect. At T15 in a -10.5 blowout game with a -opp defense that is trending tougher over L5, the floor is genuinely fragile."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Ausar Thompson",
+    "team": "DET",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
