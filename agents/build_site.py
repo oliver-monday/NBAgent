@@ -26,6 +26,7 @@ SITE = ROOT / "site"
 
 PT = ZoneInfo("America/Los_Angeles")
 TODAY_STR = dt.datetime.now(PT).strftime("%Y-%m-%d")
+PLAYOFFS_R1_DATE = "2026-04-18"
 
 PICKS_JSON              = DATA / "picks.json"
 PARLAYS_JSON            = DATA / "parlays.json"
@@ -1064,6 +1065,17 @@ def build_site():
     tp_total  = len(past_top_picks)
     tp_pct    = round(100 * tp_hits / tp_total, 1) if tp_total else 0
 
+    # Playoff stats — all graded picks from R1 onwards
+    playoff_graded = [p for p in past_picks if p.get("date", "") >= PLAYOFFS_R1_DATE]
+    playoff_hits   = sum(1 for p in playoff_graded if p["result"] == "HIT")
+    playoff_total  = len(playoff_graded)
+    playoff_pct    = round(100 * playoff_hits / playoff_total, 1) if playoff_total else 0
+    playoff_voided = sum(
+        1 for p in picks
+        if p.get("date", "") >= PLAYOFFS_R1_DATE
+        and p.get("voided", False)
+    )
+
     # Attach game time and review verdict to today's picks
     for p in today_picks:
         p["game_time"] = game_times.get(str(p.get("team", "")).upper(), "")
@@ -1144,6 +1156,12 @@ def build_site():
             "pct": tp_pct,
             "picks": sorted(past_top_picks, key=lambda p: p.get("date", ""), reverse=True)[:40],
         },
+        "playoff_stats": {
+            "hits": playoff_hits,
+            "total": playoff_total,
+            "pct": playoff_pct,
+            "voided": playoff_voided,
+        },
         "built_at": dt.datetime.now(PT).strftime("%B %d, %Y at %-I:%M %p PT"),
     }
 
@@ -1170,6 +1188,7 @@ def generate_html(d: dict) -> str:
     top_picks_json          = json.dumps(d.get("top_picks", []))
     best_bets_json          = json.dumps(d.get("best_bets", []))
     top_picks_history_json  = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
+    playoff_stats_json      = json.dumps(d.get("playoff_stats", {"hits": 0, "total": 0, "pct": 0, "voided": 0}))
     yesterday_summary_json  = json.dumps(d.get("yesterday_summary", {}))
     opportunity_flags_json  = json.dumps(d.get("opportunity_flags", []))
     explorer_json           = json.dumps(d.get("explorer", {}))
@@ -1454,7 +1473,7 @@ def generate_html(d: dict) -> str:
     .overall-banner .sub {{ font-size: 12px; color: var(--muted); margin-top: 3px; }}
 
     /* Results tab — stat cards */
-    .results-cards-row {{ display: grid; grid-template-columns: repeat(3, 1fr);
+    .results-cards-row {{ display: grid; grid-template-columns: repeat(4, 1fr);
                           gap: 12px; margin-bottom: 16px; }}
     .results-card {{ background: var(--surface); border: 1px solid var(--border);
                      border-radius: 12px; padding: 16px 18px; }}
@@ -1713,6 +1732,11 @@ def generate_html(d: dict) -> str:
       <div class="results-hero-num" id="tp-pct">—</div>
       <div class="results-hero-sub" id="tp-sub">need 3+ graded</div>
     </div>
+    <div class="results-card">
+      <div class="results-card-header">🏆 Playoffs</div>
+      <div class="results-hero-num" id="playoff-pct">—</div>
+      <div class="results-hero-sub" id="playoff-sub">no playoff picks yet</div>
+    </div>
     <div class="results-card results-card-wide">
       <div class="results-card-header">Props</div>
       <div id="prop-streak-grid" class="prop-streak-grid"></div>
@@ -1769,6 +1793,7 @@ const DATA = {{
   top_picks:         {top_picks_json},
   best_bets:         {best_bets_json},
   top_picks_history: {top_picks_history_json},
+  playoff_stats:     {playoff_stats_json},
   yesterday_summary: {yesterday_summary_json},
   opportunity_flags: {opportunity_flags_json},
   explorer:          {explorer_json},
@@ -2272,6 +2297,15 @@ function renderResults() {{
   if (tph && tph.total >= 3) {{
     document.getElementById('tp-pct').textContent = tph.pct + '%';
     document.getElementById('tp-sub').textContent = `${{tph.hits}}/${{tph.total}} top picks`;
+  }}
+
+  // ── Playoffs card ──
+  const ps2 = DATA.playoff_stats;
+  if (ps2 && ps2.total > 0) {{
+    document.getElementById('playoff-pct').textContent = ps2.pct + '%';
+    const voidedStr = ps2.voided > 0 ? ` · ${{ps2.voided}} voided` : '';
+    document.getElementById('playoff-sub').textContent =
+      `${{ps2.hits}} hits / ${{ps2.total}} valid picks${{voidedStr}}`;
   }}
 
   // ── Props card ──
