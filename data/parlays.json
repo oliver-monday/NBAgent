@@ -4622,9 +4622,26 @@
         "rationale": "Two elite rebounders at conservative tiers with 8-9/10 hit rates across independent high-pace playoff games.",
         "date": "2026-04-18",
         "id": "parlay_2026-04-18_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 2
+        "result": "MISS",
+        "legs_hit": 1,
+        "legs_total": 2,
+        "leg_results": [
+          {
+            "player_name": "Scottie Barnes",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "result": "MISS",
+            "actual_value": 1.0
+          },
+          {
+            "player_name": "Nikola Jokic",
+            "prop_type": "REB",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 13.0
+          }
+        ],
+        "cannibalization_flags": null
       },
       {
         "label": "Saturday Volume Sweep",
@@ -4668,9 +4685,33 @@
         "rationale": "Three-game spread with high-floor scorers and rebounders; Mobley AST T2 carries a positive cal_edge of +1.77pp.",
         "date": "2026-04-18",
         "id": "parlay_2026-04-18_02",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 3
+        "result": "HIT",
+        "legs_hit": 3,
+        "legs_total": 3,
+        "leg_results": [
+          {
+            "player_name": "Julius Randle",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "result": "HIT",
+            "actual_value": 16.0
+          },
+          {
+            "player_name": "Amen Thompson",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 7.0
+          },
+          {
+            "player_name": "Evan Mobley",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 4.0
+          }
+        ],
+        "cannibalization_flags": null
       }
     ]
   }
