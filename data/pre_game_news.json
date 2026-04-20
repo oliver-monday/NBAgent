@@ -1,65 +1,77 @@
 {
-  "date": "2026-04-19",
-  "generated_at": "2026-04-19T07:00:36.877762-07:00",
+  "date": "2026-04-20",
+  "generated_at": "2026-04-20T07:48:02.395724-07:00",
   "player_notes": {
-    "luka doncic": "Out for Lakers vs. Rockets series (injury). Major usage shift to LeBron James.",
-    "austin reaves": "Out for Lakers vs. Rockets series (injury). Elevates LeBron and Kennard roles significantly.",
-    "kevin durant": "Out for Game 1 vs. Lakers with right knee injury; status for Game 2 unclear. Rockets' offense severely compromised without him.",
-    "lebron james": "With Doncic and Reaves out, LeBron operating as primary playmaker/scorer \u2014 posted 19 pts, 13 ast, 8 reb in Game 1. Elevated assist ceiling while Doncic/Reaves remain sidelined.",
-    "luke kennard": "Career playoff-high 27 pts in Game 1 vs. Rockets; benefiting from Doncic/Reaves absences with expanded role and shot volume.",
-    "immanuel quickley": "Missed Game 1 vs. Cavaliers with hamstring injury. Status for Game 2 uncertain; monitor availability.",
-    "jamal murray": "30 pts in Game 1 vs. Timberwolves, going 16-for-16 from the line. High-usage game; note free-throw volume inflated points total.",
-    "deandre ayton": "Starting and elevated role with Lakers shorthanded (Doncic/Reaves out); credited as key contributor in Game 1 win. Monitor minutes/role in Game 2."
+    "luka doncic": "Doncic is sidelined (did not play Game 1 vs. Rockets). Monitor availability for Game 2; his absence significantly elevates LeBron's usage and assists ceiling.",
+    "austin reaves": "Reaves did not play Game 1 vs. Rockets due to injury. Monitor status for Game 2; absence boosts Kennard and LeBron roles.",
+    "kevin durant": "Durant missed Game 1 for Houston due to injury. Monitor status for Game 2; his absence hurt Rockets' offense and may continue to affect Houston player props.",
+    "lebron james": "With Doncic and Reaves out, LeBron played a triple-threat role (19 pts, 13 ast, 8 reb in Game 1). Assists prop ceiling elevated while both remain sidelined.",
+    "luke kennard": "Scored a career playoff-high 27 points in Game 1 with Doncic and Reaves absent. Role and shot volume elevated while key Lakers are out.",
+    "jamal murray": "Went 16-for-16 from the free throw line in Game 1 vs. Timberwolves; high-volume, high-efficiency performance. Note Jokic and Gordon were quiet in the first half, suggesting Murray absorbed usage.",
+    "jayson tatum": "Returned from Achilles rupture for Game 1 playoff debut, posting 25 pts, 11 reb, 7 ast vs. 76ers. Cleared and playing full role; strong prop baseline confirmed."
   },
   "game_notes": {
-    "HOU vs LAL": "Kevin Durant (knee) out; Luka Doncic and Austin Reaves also out for Lakers. Massive rotation shifts on both sides \u2014 LeBron James and Luke Kennard seeing inflated usage for LAL; Rockets missing their primary scorer.",
-    "TOR vs CLE": "Immanuel Quickley (hamstring) missed Game 1; his availability for Game 2 is uncertain and affects Toronto's guard rotation and assist/scoring distribution."
+    "HOU vs LAL": "Luka Doncic, Austin Reaves (LAL) and Kevin Durant (HOU) all missed Game 1. Monitor all three for Game 2 availability \u2014 their statuses drastically shift usage and prop values across both rosters."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 49,
+  "filtered_item_count": 50,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
       "player_or_team": "Kevin Durant (HOU)",
-      "current_context_fact": "HOU enters on 8-game win streak, Durant averaging 26 PPG on 52-40-87 splits. Team has found its groove with Durant as offensive anchor + young core (Sengun, Amen Thompson, Jabari Smith Jr.).",
-      "conflict": "Today's news confirms Kevin Durant missed Game 1 vs. LAL with a right knee injury sustained at practice this week. LAL won 107-98. Durant's absence was the key factor in the upset \u2014 context doc has no mention of this injury.",
+      "current_context_fact": "HOU enters on 8-game win streak, Durant averaging 26 PPG on 52-40-87 splits. Team has found its groove with Durant as offensive anchor + young core.",
+      "conflict": "Today's news reports LAL defeated HOU 107-98 in Game 1, and the game summary states 'the short-handed Los Angeles Lakers capitalized on Kevin Durant's injury absence.' Durant did not play in Game 1 due to injury. This is a new, untracked injury absence not mentioned anywhere in the context document.",
       "urgency": "critical",
-      "suggested_action": "Add Kevin Durant (HOU) to the Playoff Injury Landscape as CONFIRMED OUT for at least Game 2, with right knee injury (sustained in practice week of Apr 14). Flag return timeline as unknown. Update LAL vs HOU series diary to note Durant missed G1, LAL won 107-98 behind LeBron (19 pts, 13 AST) and Kennard (27 pts career playoff-high). This fundamentally changes the series dynamic \u2014 HOU is no longer full-strength and the catastrophic injury mismatch now runs in both directions."
+      "suggested_action": "Add Kevin Durant (HOU) to the Playoff Injury Landscape section as OUT for at least Game 1 with an unspecified injury. Note that LAL won Game 1 107-98 despite being without Doncic and Reaves. Update the LAL vs HOU series diary to reflect LAL's 1-0 series lead and Durant's absence. Investigate Durant's injury status and timeline before making any HOU player props for Game 2."
     },
     {
-      "player_or_team": "Immanuel Quickley (TOR)",
-      "current_context_fact": "Quickley hamstring (Apr 12 exit): if he misses games, TOR loses secondary creator and screening action. Barrett + Shead absorb minutes but offensive ceiling drops. Availability for CLE R1 (Apr 18) uncertain.",
-      "conflict": "Today's news confirms Quickley missed Game 1 of the CLE-TOR series. CLE won 126-113. The uncertainty has resolved \u2014 he was OUT for G1.",
+      "player_or_team": "DET vs ORL \u2014 Series Result",
+      "current_context_fact": "Game 1: Apr 19, 6:30 PM ET at Detroit. DET -425 series favorites. Consensus: Pistons in 5.",
+      "conflict": "Today's news confirms ORL defeated DET 112-101 in Game 1. Paolo Banchero scored 23 points with 9 rebounds and 4 assists. ORL leads the series 1-0. The context doc had DET as heavy favorites.",
       "urgency": "critical",
-      "suggested_action": "Update Quickley's status to CONFIRMED OUT Game 1 (played). Note he missed G1 of R1 vs CLE (CLE won 126-113, Mitchell 32 pts, Strus 24 off bench). Reassess G2 availability \u2014 hamstring tightness with prior plantar fasciitis history on same leg suggests continued day-to-day status. Update CLE-TOR series diary with G1 result."
+      "suggested_action": "Update the DET vs ORL series diary to reflect ORL's 1-0 series lead after a 112-101 Game 1 win. Note Banchero's 23/9/4 line. Add context that DET's offense struggled (per Stephen A. Smith commentary). Update pre-series framing \u2014 the upset has occurred and DET's home-court advantage is gone for Game 1. Cade Cunningham's minutes ramp-up may be a factor in DET's offensive struggles."
     },
     {
-      "player_or_team": "NYK vs ATL \u2014 Game 1 result",
-      "current_context_fact": "Game 1: Apr 18, 6 PM ET at MSG. NYK won season series 2-1, outscored by 6 total pts \u2014 razor thin.",
-      "conflict": "Game 1 has been played. NYK won 113-102. Brunson scored 28 pts (22 in first half), Towns had 25 pts (19 in second half). Series is now 1-0 NYK.",
-      "urgency": "critical",
-      "suggested_action": "Update NYK vs ATL series diary with G1 result (NYK 113-102). Add: Brunson 28 pts (22 first half), Towns 25 pts (19 second half). Series 1-0 NYK. Update the pre-series header to reflect NYK leads 1-0. Note Towns' second-half dominance as a pattern to watch in G2."
+      "player_or_team": "OKC vs PHX \u2014 Series Result / SGA Game 1 Score",
+      "current_context_fact": "TIER-WALK DIRECTIVE: PTS T20 is pre-qualified for SGA. The streak extended through the full 2025-26 regular season. Begin tier-walk evaluation at T25.",
+      "conflict": "SGA scored 25 points in OKC's 119-84 Game 1 win over PHX. This confirms the streak is still active (25 \u2265 20). No conflict with the streak itself, but Game 1 result and SGA's 25-point output are new data points for the series diary that need to be logged.",
+      "urgency": "monitor",
+      "suggested_action": "Update OKC vs PHX series diary to reflect OKC's dominant 119-84 Game 1 win. Log SGA's 25 points \u2014 streak intact, T25 hit in Game 1. Note OKC rout context for Game 2 blowout-risk evaluation at higher tiers."
     },
     {
-      "player_or_team": "DEN vs MIN \u2014 Game 1 result",
-      "current_context_fact": "Game 1: Apr 18, 3:30 PM ET at Denver. DEN won season series 3-1.",
-      "conflict": "Game 1 has been played. DEN won 116-105. Murray scored 30 pts going 16-of-16 from the free throw line. Jokic had a triple-double. Gordon had a quiet first half per reporting. Series is now 1-0 DEN.",
-      "urgency": "critical",
-      "suggested_action": "Update DEN vs MIN series diary with G1 result (DEN 116-105). Add: Murray 30 pts (16-16 FT), Jokic triple-double (quiet first half for both Jokic and Gordon noted). Series 1-0 DEN. Monitor Gordon's activity level \u2014 'quiet first half' may indicate early-game calf/hamstring management. Update series header."
+      "player_or_team": "SAS vs POR \u2014 Series Result / Wembanyama Game 1",
+      "current_context_fact": "Game 1: Apr 19, 9 PM ET at Frost Bank Center. Expected available after 8 days rest from rib contusion. Monitor Game 1 aggressiveness \u2014 rib pain may limit contact plays initially.",
+      "conflict": "Wembanyama scored 35 points in his playoff debut (most by a Spurs player making their postseason debut) in a 111-98 SAS Game 1 win. Rib contusion did not limit him significantly. SAS leads 1-0.",
+      "urgency": "monitor",
+      "suggested_action": "Update SAS vs POR series diary to reflect SAS's 111-98 Game 1 win with Wembanyama scoring 35. Remove or downgrade the rib contusion caution for Game 2 \u2014 his Game 1 performance indicates the rib is not meaningfully limiting his aggressiveness. Wemby's 35-point debut is a strong floor signal for Game 2 tier evaluation."
     },
     {
-      "player_or_team": "CLE vs TOR \u2014 Game 1 result",
-      "current_context_fact": "Game 1: Apr 18, 1 PM ET at Cleveland. TOR swept season series 3-0, but all before Dec \u2014 pre-Harden CLE.",
-      "conflict": "Game 1 has been played. CLE won 126-113. Mitchell scored 32 pts, Strus had 24 off the bench. Series is now 1-0 CLE.",
-      "urgency": "critical",
-      "suggested_action": "Update CLE vs TOR series diary with G1 result (CLE 126-113). Add: Mitchell 32 pts, Strus 24 off bench. Quickley confirmed OUT. Series 1-0 CLE. Update series header to reflect CLE leads 1-0."
+      "player_or_team": "BOS vs PHI \u2014 Series Result",
+      "current_context_fact": "Game 1: Apr 19, 1 PM ET at TD Garden. BOS opened as 10.5-point Game 1 favorites. Consensus: Celtics in 5.",
+      "conflict": "BOS defeated PHI 123-91 in Game 1. Jayson Tatum had 25 points, 11 rebounds, and 7 assists in his playoff return. BOS leads 1-0.",
+      "urgency": "monitor",
+      "suggested_action": "Update BOS vs PHI series diary to reflect BOS's 123-91 Game 1 rout. Log Tatum's 25/11/7 line \u2014 his playoff return was strong, which is relevant for PHI suppressor calibration (suppressor held: 25 pts is roughly in line with his tier but not an outlier blow-up). Note PHI's offense collapsed without Embiid \u2014 91 points in a blowout confirms suppressor dynamics remain active for this series."
     },
     {
-      "player_or_team": "LAL vs HOU \u2014 Game 1 result",
-      "current_context_fact": "Both teams are H15 confirmed system-wide suppressors. Betting lines: HOU massive favorite (-600 series ML). Expert consensus: Rockets in 5.",
-      "conflict": "Game 1 has been played. LAL upset HOU 107-98 with Durant OUT (knee). LeBron: 19 pts, 13 AST, 8 REB, 2 STL. Kennard: career playoff-high 27 pts. Ayton credited as key contributor. Series is now 1-0 LAL.",
-      "urgency": "critical",
-      "suggested_action": "Update LAL vs HOU series diary with G1 result (LAL 107-98). Add: Durant OUT (right knee injury from practice), LeBron 19/13/8/2, Kennard 27 pts (career playoff-high), Ayton key factor per Inside the NBA. Series 1-0 LAL \u2014 the 'catastrophic injury mismatch' note must be revised: HOU is now also severely undermanned. Update injury landscape to reflect Durant's knee injury. Revisit HOU suppressor relevance with Durant absent \u2014 his rim presence (cited as mechanism) is no longer active."
+      "player_or_team": "NYK vs ATL \u2014 Series Result",
+      "current_context_fact": "Game 1: Apr 18, 6 PM ET at MSG. NYK won season series 2-1.",
+      "conflict": "Jalen Brunson scored 28 points (22 in the first half) and NYK defeated ATL 113-102 in Game 1. NYK leads 1-0.",
+      "urgency": "monitor",
+      "suggested_action": "Update NYK vs ATL series diary to reflect NYK's 113-102 Game 1 win with Brunson's 28-point performance. Log Brunson's first-half dominance (22 of 28 in H1) as relevant context for Game 2 defensive adjustments by ATL."
+    },
+    {
+      "player_or_team": "DEN vs MIN \u2014 Series Result / Aaron Gordon",
+      "current_context_fact": "Aaron Gordon \u2014 Calf/hamstring strains recurring over past two seasons. Missed 40 games this season. DEN's key defensive anchor. If he misses games vs MIN, DEN defense suffers significantly.",
+      "conflict": "News reports that Jamal Murray went 16-for-16 from the free throw line to lift DEN past MIN in Game 1, and that 'Nikola Jokic and Aaron Gordon had a quiet first half.' This confirms Gordon played Game 1 (no absence conflict), but his quiet first half is a new data point. DEN leads 1-0.",
+      "urgency": "monitor",
+      "suggested_action": "Update DEN vs MIN series diary to reflect DEN's Game 1 win carried by Murray's 16-for-16 FT performance. Note Gordon had a quiet first half \u2014 monitor whether his calf/hamstring is limiting him or if it was a matchup-specific quiet game. Log Jokic's quiet first half as well \u2014 relevant for MIN AST suppressor tracking and Jokic prop evaluation in Game 2."
+    },
+    {
+      "player_or_team": "CLE vs TOR \u2014 Series Lead",
+      "current_context_fact": "Game 1: Apr 18, 1 PM ET at Cleveland. CLE appears healthy with Harden integrated.",
+      "conflict": "Today's news headline states 'Cleveland takes 1-0 lead into game 2 against Toronto,' confirming CLE won Game 1. No detailed box score in the news items, but the series result is confirmed.",
+      "urgency": "monitor",
+      "suggested_action": "Update CLE vs TOR series diary to reflect CLE's Game 1 win and 1-0 series lead. Add any available box score details if obtainable. Note that Game 2 is today (Apr 20) per the scheduling headline."
     }
   ],
   "staleness_flags": []
