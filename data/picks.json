@@ -31697,8 +31697,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Elite scorer iron_floor at T20 after FG_MARGIN_NEG step-down; 3/3 H2H at T25 vs PHX.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 25.0,
     "market_line": 19.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -31725,7 +31725,12 @@
       "direction": "up",
       "revised_confidence_pct": 78,
       "revised_reasoning": "Williams out removes PHX rim anchor; SGA gets easier paint access, iron_floor already protected, minor upside boost."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Spread of -13.5 is the largest blowout risk on the slate \u2014 even with BLOWOUT penalty applied, SGA is the primary star on the favored team and faces genuine Q4 rest/garbage-time removal risk in a potential rout. The VOLATILE tag means his distribution is wide, and a blowout scenario can compress his counting stats well below his 29.0 raw average even at T20."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -31746,8 +31751,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor consistent PTS at T20; 95% overall, 4/4 H2H vs BOS, 41 projected minutes with Embiid OUT.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "market_line": 19.5,
     "market_implied_prob": 83.87,
     "market_book": "fanduel",
@@ -31765,7 +31770,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -31786,8 +31794,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor PTS stepped from T20 to T15 via FG_MARGIN_THIN; 4/4 H2H vs PHI, iron_floor neutralizes blowout penalty.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 26.0,
     "market_line": 14.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -31805,7 +31813,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "BOS is favored by -12.5 with BLOWOUT_RISK, and Brown's FG_MARGIN_THIN of 4% (near-zero cushion) means even modest defensive resistance or a blowout-induced minutes reduction could push him below T15. The mandatory step-down from T20 was already required by the thin margin, meaning this pick lives on a structurally fragile floor."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -31826,8 +31839,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall at T1, trend=up, 4/4 H2H vs PHI; capped at 80% by playoff spread threshold.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 0.5,
     "market_implied_prob": 84.62,
     "market_book": "fanduel",
@@ -31845,7 +31858,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "The PHI 3PM suppressor is extreme (-45.6pp per scout), and while quant override was applied, historical audit lessons confirm 3PM props are the highest-variance prop type \u2014 iron_floor is absent here. Blowout risk (-12.5) can further compress late-game three-point attempt volume if BOS pulls starters early."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -31866,8 +31884,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG step-down T20\u2192T15; VOLATILE and playoff suppression capped at 80% by spread threshold.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 25.0,
     "market_line": 14.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -31885,7 +31903,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with iron_floor=false at T15 and a -12.5 blowout game creates a structurally soft floor \u2014 Tatum is the primary star on the favored team most likely to be rested in Q4 of a decisive game, and his raw_avg of 22.4 is lower than Brown's, leaving less cushion against blowout-induced minute compression."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -31906,8 +31929,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% hit rate all contexts at T2 with consistent tag; playoff 3PM caution absorbed by spread cap at 80%.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 1.5,
     "market_implied_prob": 84.13,
     "market_book": "fanduel",
@@ -31925,7 +31948,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "The pick_reasoning explicitly flags a calibration note to AVOID 3PM (-11pp drop in playoffs) yet the pick is included at 80% confidence \u2014 this internal tension is the sharpest bear case. The PHI suppressor is extreme (-45.6pp) and iron_floor is absent; a blowout could reduce Tatum's three-point attempts in Q4 precisely when he needs them to clear T2."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -31946,8 +31974,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor 3PM T2 for BOS primary bench scorer; 80% overall with 7d rest in home playoff game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 1.5,
     "market_implied_prob": 65.99,
     "market_book": "fanduel",
@@ -31965,7 +31993,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Pritchard's min_floor of 23.4 with avg_minutes of 28.1 means a blowout-induced early bench in a -12.5 game could easily push him below the minutes needed to attempt enough threes for T2; the PHI 3PM suppressor (40% hit rate, -45.6pp per scout) represents genuine structural drag even with the quant override."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -31986,8 +32019,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall T10 for PHI's second engine with Embiid OUT; proj 40 min in playoff underdog context.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "market_line": 9.5,
     "market_implied_prob": 85.51,
     "market_book": "fanduel",
@@ -32005,7 +32038,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -32026,8 +32062,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor T10 PTS with 90% overall; FG hot, 4/4 H2H vs PHX, blowout penalty neutralized by iron_floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 16.0,
     "market_line": 9.5,
     "market_implied_prob": 92.31,
     "market_book": "fanduel",
@@ -32054,7 +32090,12 @@
       "direction": "up",
       "revised_confidence_pct": 86,
       "revised_reasoning": "Williams out weakens PHX frontcourt; Chet faces softer big in Ighodaro, vs_soft=100% amplifies paint scoring upside."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 21.6 on a secondary scorer in a -13.5 blowout game is structurally fragile \u2014 Holmgren is the most likely OKC rotation player to see compressed Q4 minutes in a rout, and a single low-minutes game (entirely within normal variance) is sufficient to produce a miss at T10 with iron_floor only barely providing a floor."
+    ],
+    "clv_pp": 3.42
   },
   {
     "date": "2026-04-19",
@@ -32075,8 +32116,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Stepped from T8 to T6 via 25th-pct gate; VOLATILE offset by strong vs_tough split and blowout resilience.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 5.5,
     "market_implied_prob": 90.0,
     "market_book": "fanduel",
@@ -32103,7 +32144,12 @@
       "direction": "up",
       "revised_confidence_pct": 83,
       "revised_reasoning": "Williams absence removes PHX's top rebounder; Chet dominates weaker Ighodaro on boards, VOLATILE tag tempers full revision."
-    }
+    },
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE REB pick with iron_floor=false, post_miss_hr of only 83% (lift barely above 1.0), and a min_floor of just 21.6 minutes in a -13.5 blowout game \u2014 blowout-induced minute reduction directly compresses rebounding opportunities for a big man. The combination of VOLATILE tag, no iron_floor, and extreme blowout risk on the favored side creates a structurally fragile REB floor that the 78% confidence does not adequately capture."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -32124,8 +32170,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step-down T15\u2192T10; capped at 70% given low competitive split and tough defense.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "market_line": 9.5,
     "market_implied_prob": 97.22,
     "market_book": "fanduel",
@@ -32152,7 +32198,12 @@
       "direction": "up",
       "revised_confidence_pct": 73,
       "revised_reasoning": "Williams out reduces PHX rim deterrence; modest upside but VOLATILE tag and poor vs_tough split limit confidence gain."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Williams has the lowest min_floor on the slate at 19.4 minutes, and at 70% confidence with VOLATILE tag and a post_miss_hr of only 67% (lift=0.92, below 1.0 \u2014 no bounce-back effect), this pick sits at minimum confidence with structurally compressed minute protection in a -13.5 blowout game."
+    ],
+    "clv_pp": 1.57
   },
   {
     "date": "2026-04-19",
@@ -32173,8 +32224,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor AST T4 for PHX sole playmaker; 90% overall, 2/2 H2H vs OKC, proj 39 min.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 2.0,
     "market_line": 3.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -32201,7 +32252,10 @@
       "direction": "unchanged",
       "revised_confidence_pct": 78,
       "revised_reasoning": "Williams rarely a primary Booker assist target; iron_floor protects AST floor, playmaker role unaffected by big man absence."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -3.81
   },
   {
     "date": "2026-04-19",
@@ -32222,8 +32276,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN step-down T20\u2192T15; VOLATILE and tough defense offset by FG hot and trend=up.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 35.0,
     "market_line": 14.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -32241,7 +32295,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with iron_floor=false and post_miss_hr of only 71% (lift=0.80 \u2014 the only sub-1.0 bounce-back lift on the slate) means Wembanyama has a confirmed pattern of sequential misses, not a bounce-back effect. At T15 in a -10.5 blowout game with a -opp defense that is trending tougher over L5, the floor is genuinely fragile."
+    ],
+    "clv_pp": -0.76
   },
   {
     "date": "2026-04-19",
@@ -32262,8 +32321,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall at T1, trend=stable; capped at 80% by non-iron-floor 3PM rule after blowout deduction.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 0.5,
     "market_implied_prob": 93.55,
     "market_book": "fanduel",
@@ -32281,7 +32340,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -1.19
   },
   {
     "date": "2026-04-19",
@@ -32302,8 +32364,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "95% overall T10, consistent tag, 3/3 H2H vs POR; co-primary scorer with elite floor regardless of blowout context.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 9.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -32321,7 +32383,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.62
   },
   {
     "date": "2026-04-19",
@@ -32342,8 +32407,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall AST T4, 3/3 H2H vs POR, vs_tough=87%; primary ball handler with elite assist consistency.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 3.5,
     "market_implied_prob": 86.11,
     "market_book": "fanduel",
@@ -32361,7 +32426,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -2.78
   },
   {
     "date": "2026-04-19",
@@ -32382,8 +32450,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor consistent 3PM T1 at 90% overall; blowout penalty fully neutralized, 2/2 H2H vs POR.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 0.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -32401,7 +32469,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -32422,8 +32493,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG step-down T15\u2192T10; VOLATILE, tough defense, and blowout penalties net to 72%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 9.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -32441,7 +32512,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-19",
@@ -32462,8 +32536,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "9/10 at T1 preserves floor despite trend=down; capped at 80% by non-iron-floor 3PM rule.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "market_line": 0.5,
     "market_implied_prob": 89.47,
     "market_book": "fanduel",
@@ -32481,7 +32555,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.53
   },
   {
     "date": "2026-04-19",
@@ -32502,8 +32579,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall T2 AST, 4/4 H2H vs ORL, vs_tough=91%; clean AST floor regardless of blowout context.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 1.5,
     "market_implied_prob": 82.76,
     "market_book": "fanduel",
@@ -32521,6 +32598,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.57
   }
 ]

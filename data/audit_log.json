@@ -5197,5 +5197,125 @@
         "Low-tier AST legs (T2, T4) from primary facilitators make ideal parlay anchors: Mobley T2 AST, Harden T4 AST, Barnes T4 AST, Thompson T4 AST, and Edwards T2 AST all hit in this session. When a player is a confirmed primary or secondary ball-handler at T2 AST, the structural floor is extremely reliable even in playoff contexts \u2014 the Parlay Agent should actively seek T2 AST legs from PG/SG primary creators as parlay anchors, particularly when H2H confirmation is 2/2 or better."
       ]
     }
+  },
+  {
+    "date": "2026-04-19",
+    "total_picks": 20,
+    "voided_picks": 0,
+    "hits": 17,
+    "misses": 3,
+    "no_data": 0,
+    "hit_rate_pct": 85.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 10,
+        "hits": 10,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 3,
+        "hits": 1,
+        "hit_rate_pct": 33.3
+      },
+      "3PM": {
+        "picks": 6,
+        "hits": 5,
+        "hit_rate_pct": 83.3
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 9,
+        "hits": 9,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 11,
+        "hits": 8,
+        "hit_rate_pct": 72.7,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "PTS iron_floor picks at T10-T15 were perfect 10/10 on the session \u2014 the mandatory FG_MARGIN step-down cascade (T20\u2192T15 for Wemby, T15\u2192T10 for Fox, Castle, Williams) correctly anchored picks to structurally sound floors, and every stepped-down pick hit with margin. The step-down logic is working as designed and should continue to be applied without hesitation.",
+      "SAS home picks (Fox PTS+AST, Vassell 3PM, Castle PTS, Wemby PTS+3PM) went 6/6 in a competitive 13-point win, validating the 95% consistent tag and strong vs_tough splits for the SAS rotation. The SAS floor compression pattern applies to opponents, not SAS players \u2014 correctly not applied here.",
+      "3PM iron_floor picks (Vassell T1) and non-iron-floor picks with 9/10+ overall hit rates (Bane T1, Wemby T1, Brown T1) held through game variance, including a blowout context. The 9/10 exception rule for trend=down 3PM correctly preserved Bane's T1 pick in a DET blowout scenario where Bane was on the losing underdog side and still hit.",
+      "Underdog PTS picks in blowout losses (Maxey T20, Edgecombe T10) both hit comfortably \u2014 the no-blowout-cap rule for underdog players on the losing side is correctly calibrated. Maxey scored 21 in 37 minutes and Edgecombe scored 13 in 34 minutes despite PHI losing by 32, confirming that losing-side starters play nearly full minutes chasing the game.",
+      "The lineup amendment correctly flagged upside on SGA (revised to 78%), Holmgren PTS (revised to 86%), Holmgren REB (revised to 83%), and Williams (revised to 73%) following Mark Williams' PHX absence \u2014 all picked players benefited from softer PHX interior opposition. Amendment feature performance is validating on the upside direction."
+    ],
+    "lessons": [
+      "AST props are the session's single failure point: 1/3 (33.3%) on the day, with both misses coming from AST picks \u2014 Booker AST T4 (actual 2) and Thompson AST T2 (actual 1). The blowout game-script was a primary causal factor in both: Booker's game ended in a 35-point OKC rout where PHX's half-court offense was dysfunctional (34.9% FG per news), collapsing Booker's playmaking opportunities regardless of iron_floor protection; Thompson's miss occurred in a competitive 11-point DET win where a quiet offensive night produced only 1 AST in 25 minutes. AST props are structurally the most fragile pick type in blowout environments for the losing side \u2014 the iron_floor on Booker AST T4 failed to protect against a game-script-driven playmaking collapse, not a statistical floor breakdown.",
+      "The PHX blowout (OKC won by 35) should have triggered a hard re-evaluation of all PHX AST props before pick confirmation. Booker's iron_floor AST T4 had a 9/10 overall hit rate, but the pre-game spread of +13.5 and the context of PHX as a heavy underdog in a series they were expected to lose badly were strong indicators that a lopsided game-script would suppress assist opportunities. The rule framework does not currently apply blowout AST-specific penalties for the losing side's playmakers \u2014 this is a model gap. A rule should exist: in blowout contexts where spread_abs \u2265 12 for the underdog, apply an additional -8pp caution to AST props for the losing team's playmakers, even those with iron_floor tags.",
+      "Tatum 3PM T2 missed (actual 1) in a game where BOS won by 32. The calibration note explicitly flagged AVOID 3PM (-11pp drop in playoffs) for Tatum, and the PHI suppressor on 3PM is extreme (-45.6pp, 40% hit rate). The tier_walk acknowledged both risks but still advanced the pick at 80% after applying the spread cap. The root issue: the AVOID calibration tag on Tatum 3PM in playoffs is a strong enough signal to trigger a mandatory skip or step to T1, not merely a confidence reduction. A rule should be added: if a player's playoff calibration note contains explicit AVOID language for a specific prop type, treat as a hard skip at the flagged tier regardless of overall hit rate."
+    ],
+    "recommendations": [
+      "Add a blowout AST penalty rule for losing-side playmakers: when spread_abs \u2265 12 and the player is on the underdog team, apply an additional -8pp confidence deduction to all AST props regardless of iron_floor status. Booker AST T4 (pick 78%) in a +13.5 underdog context is the clearest example \u2014 iron_floor does not protect assist generation when the entire offensive system collapses in a blowout loss. This rule should trigger a mandatory tier step-down (T4\u2192T3, T3\u2192T2) or skip if the stepped tier is below the qualifying threshold.",
+      "Treat explicit AVOID language in playoff calibration notes as a mandatory skip at the flagged tier, not a confidence reduction. Tatum 3PM T2 carried a calibration note stating 'AVOID 3PM (-11pp drop in playoffs)' yet was picked at 80%. The correct outcome is a hard skip at T2 and a re-evaluation at T1. Implement this as: if playoff_calibration_note contains 'AVOID' for the specific prop_type, the system must step down one full tier and re-evaluate rather than absorbing the penalty arithmetically.",
+      "For AST picks where the player is on a team projected to lose by 12+ points, require a minimum 7/10 H2H at the specific AST tier (not just overall hit rate) before selecting. Booker had 2/2 H2H at T6 and 9/10 overall, but the H2H sample at T4 vs OKC was insufficient to confirm the structural AST floor. Small H2H samples (n=2) should not be treated as confirmation for road underdog AST picks in blowout-risk games.",
+      "Thompson AST T2 (actual 1, DET won by 11) missed in a competitive game with no injury or blowout excuse. The quant showed 85% overall and 4/4 H2H, but the DET\u00d7AST suppressor watch signal (50% hit rate at n=8, -37.2pp magnitude) was present and growing. With only 4 more picks needed to cross the formal \u226515 gate, the DET\u00d7AST suppressor should now be treated as confirmed for practical pick purposes. Apply suppressor-level treatment (one tier lower or 9+/10 minimum hit rate) to all AST picks vs DET effective immediately \u2014 do not wait for the formal gate to cross.",
+      "Review the calibration band performance: the 76-80% band hit only 72.7% (8/11) against an expected 78%. Both AST misses fell in this band. Consider requiring higher minimum thresholds for AST picks specifically in this confidence band \u2014 AST is structurally the most vulnerable prop type to game-script and defensive scheme, and the 76-80% band may be overconfident for AST picks in playoff contexts. A practical rule: AST picks in playoffs require minimum 80% confidence or iron_floor + 9+/10 hit rate to qualify in the 76-80% band."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jayson Tatum",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: BOS @ PHI, BOS won 123-91 (BLOWOUT, margin 32). STEP 1 \u2014 Tatum played 32 minutes and scored 25 points (active, non-zero output). He attempted 3 three-pointers and made 1, falling short of the T2 threshold. STEP 2 \u2014 No injury exit. Miss classification: model_gap_rule. The tier_walk explicitly acknowledged the calibration note to AVOID 3PM (-11pp drop in playoffs) yet the pick was retained at 80% by absorbing the deduction arithmetically rather than treating it as a skip signal. The PHI 3PM suppressor (-45.6pp, 40% hit rate per scout) was also present and noted but not operationalized as a tier-step trigger. STEP 3 \u2014 Original reasoning correctly identified the 100% overall hit rate at T2 (10/10) and consistent tag, but failed to weight the AVOID playoff calibration note and PHI suppressor as mandatory skip conditions rather than arithmetic penalties. A 100% regular-season T2 rate on a shooting prop is fragile in playoff contexts where a primary scorer shifts to mid-range and paint attacks against elite defense. STEP 4 \u2014 Hit rate was 10/10 at T2 overall, but the strong historical rate reflects regular-season games. Post-game news confirms Tatum made only 1 of 3 attempts (33% on 3PA) in his 17th game back from Achilles surgery, relying on mid-range rather than catch-and-shoot threes. STEP 5 \u2014 Tier walk shows T2 selected at 80% after spread cap; no lower T1 re-evaluation was documented. The correct resolution under a tighter rule was a mandatory step to T1 when the AVOID calibration tag fires. STEP 6 \u2014 No lineup_update present. The rule gap: AVOID language in playoff calibration notes must function as a mandatory tier step-down, not a confidence deduction."
+      },
+      {
+        "player_name": "Devin Booker",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 2.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: PHX @ OKC, OKC won 119-84 (BLOWOUT, margin 35). STEP 1 \u2014 Booker played 33 minutes and scored points (active, non-zero output across categories). He recorded only 2 assists, well below the T4 threshold. Post-game news confirms: 'Suns' offense was largely dysfunctional (34.9% FG), limiting Booker's playmaking opportunities as OKC's defense neutralized Phoenix's half-court sets.' STEP 2 \u2014 No injury exit. Miss classification: model_gap_rule. The existing blowout framework applies spread caps and confidence penalties to the favored team's players, but does not apply a structural AST penalty to the losing side's playmakers in extreme blowout contexts. Booker's iron_floor on AST protected against statistical regression but could not protect against a game-script collapse where PHX's entire offensive system failed at 34.9% FG. STEP 3 \u2014 Original reasoning cited 90% overall T4, iron_floor, and 2/2 H2H vs OKC at T6. The thesis was sound for a competitive game but failed to account for the extreme blowout risk on the underdog side compressing playmaking sequences. The tier_walk applied playoff AST caution (-5pp) and blowout penalty for the favored team, but no rule existed to apply an AST-specific penalty for the losing playmaker in a projected blowout. STEP 4 \u2014 Hit rate was 9/10 overall at T4, strongly supporting the pick in isolation. The miss is not attributable to a weak statistical foundation but to a missing structural rule. STEP 5 \u2014 Tier walk confirmed T4 as the best qualifying tier with iron_floor; no lower tier evaluated because T4 was iron_floor protected. Under a corrected rule, spread_abs \u2265 12 for underdog playmakers should trigger mandatory T4\u2192T3 step-down on AST. STEP 6 \u2014 Lineup_update direction = 'unchanged' (Williams absence did not affect Booker's AST profile). The gap: the system needs a losing-side blowout AST suppression rule at spread_abs \u2265 12, even for iron_floor picks."
+      },
+      {
+        "player_name": "Ausar Thompson",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: ORL @ DET, DET won 112-101 (COMPETITIVE, margin 11). Game script is neutral \u2014 not a blowout, not a close game. STEP 1 \u2014 Thompson played 25 minutes and recorded only 1 assist. Post-game news confirms: 'Thompson finished with only 1 assist against Orlando, falling short of the over-2 mark. No game-specific injury exit is indicated; the low assist total reflects a quiet offensive night in a losing effort.' STEP 2 \u2014 No injury exit confirmed. Competitive game with no blowout excuse. Miss classification: variance, with a notable systemic flag. The pick had an 85% overall hit rate and 4/4 H2H at T2 \u2014 a sound statistical foundation. Thompson simply had a quiet offensive night. However, the DET\u00d7AST suppressor watch signal (50% hit rate, n=8, -37.2pp magnitude) was active and growing. With this miss, the DET\u00d7AST watch signal now has at least 9 data points, moving meaningfully toward the \u226515 formal gate. STEP 3 \u2014 Original reasoning correctly identified strong overall hit rate (85%), exceptional vs_tough split (91%), and trend=up. The DET\u00d7AST watch signal was acknowledged in the tier_walk but treated as a minor blowout penalty rather than a structural suppressor. The reasoning did not apply suppressor-level scrutiny because the formal \u226515 gate had not been crossed. STEP 4 \u2014 Hit rate was 8.5/10 at T2 overall. This is strong enough that a single miss is within expected variance for an 85% pick (15% miss rate implies roughly 1-in-7 misses). STEP 5 \u2014 Tier walk showed T2 selected at 80% after a -5% blowout penalty, reaching the 80% level; the tier was the only reasonable choice given T2 floor for a secondary creator. STEP 6 \u2014 No lineup_update present. Classification note: while this is variance in isolation, the DET\u00d7AST signal now has sufficient magnitude and sample direction to warrant a practical rule upgrade before the formal gate is crossed. This miss should count as a data point toward that upgrade."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 0,
+      "misses": 1,
+      "partial": 0,
+      "parlay_summary": "0/1 \u2014 the Ausar Thompson AST T2 leg failed with only 1 assist in a competitive DET win, killing what would have been a clean Fox AST sweep.",
+      "parlay_lessons": [
+        "AST-only parlays are structurally exposed to the same systemic risk that makes individual AST picks the session's weakest prop type (1/3, 33.3%). Combining two AST legs \u2014 regardless of how independent they are by game \u2014 doubles the exposure to assist suppression events like the DET\u00d7AST watch signal and blowout game-scripts. Until the AST prop type stabilizes above 85% on the season, the Parlay Agent should avoid AST-only constructions and instead pair one AST leg with a higher-certainty iron_floor PTS or 3PM leg to provide structural ballast.",
+        "The DET\u00d7AST suppressor watch signal (50% hit rate, -37.2pp, n=8 at pick time) was the most prominent known risk on the Thompson leg and was identified in the pre-series intel. A parlay that includes a pick against a documented suppressor watch signal \u2014 even below the formal gate \u2014 is structurally fragile. The Parlay Agent should treat any pick flagged by a suppressor watch signal as a disqualified anchor leg and require confirmed-suppressor-free legs for parlay construction."
+      ],
+      "parlay_reinforcements": [
+        "The Fox AST T4 leg hit with margin (8 actual vs 4 threshold) in SAS's home playoff win, confirming that primary ball-handler AST picks at conservative tiers (T4 for a 6.3 APG player) are a reliable parlay anchor when the player is a co-primary creator in a home playoff game with 7 days rest and strong vs_tough AST splits. Pairing this type of leg \u2014 primary facilitator, conservative tier, home playoff, strong H2H \u2014 with a similarly conservative iron_floor 3PM or low-tier PTS leg would create a structurally sound two-leg combination with high floor probability."
+      ]
+    }
   }
 ]

@@ -4776,5 +4776,143 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "PHX",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "no FanDuel market available"
+    },
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "PHX",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "no FanDuel market available"
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "opponent": "BOS",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "volatile_ast_t6",
+    "rule_context": {
+      "volatile_tag": true,
+      "ast_tier": 6,
+      "rule": "VOLATILE + AST tier >= T6 = unconditional skip"
+    },
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "volatile_ast_t6",
+    "rule_context": {
+      "volatile_tag": true,
+      "ast_tier": 6,
+      "rule": "VOLATILE + AST tier >= T6 = unconditional skip"
+    },
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 6"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "tier_considered": 1,
+      "iron_floor": false,
+      "hit_rate_at_t1": "8.5/10",
+      "rule": "trend=down step-down from T1 with no iron_floor or 9+/10 hit rate \u2014 cannot step below minimum tier"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "opponent": "DET",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Paolo Banchero",
+      "prop_type": "REB",
+      "tier_considered": 4,
+      "reason": "no FanDuel market available \u2014 market starts at T6"
+    },
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-19",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "reb_floor_skip",
+    "rule_context": {
+      "pick_value": 8,
+      "estimated_25th_pct_floor": 7,
+      "reason": "25th-pct gate fires (pick_value >= floor); step-down to T6 has no FanDuel market"
+    },
+    "actual_value": 7.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 7.0 < tier 8"
   }
 ]

@@ -4750,9 +4750,26 @@
         "rationale": "Two primary facilitators at low AST tiers against tough defenses; T2/T4 AST anchors historically reliable per audit.",
         "date": "2026-04-19",
         "id": "parlay_2026-04-19_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 2
+        "result": "MISS",
+        "legs_hit": 1,
+        "legs_total": 2,
+        "leg_results": [
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 8.0
+          },
+          {
+            "player_name": "Ausar Thompson",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "MISS",
+            "actual_value": 1.0
+          }
+        ],
+        "cannibalization_flags": null
       }
     ]
   }

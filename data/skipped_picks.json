@@ -14,10 +14,10 @@
       "tier_considered": 4,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-19",
@@ -34,10 +34,10 @@
       "tier_considered": 1,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-19",
@@ -53,10 +53,10 @@
       "ast_tier": 6,
       "rule": "VOLATILE + AST tier >= T6 = unconditional skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-19",
@@ -72,10 +72,10 @@
       "ast_tier": 6,
       "rule": "VOLATILE + AST tier >= T6 = unconditional skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 6"
   },
   {
     "date": "2026-04-19",
@@ -93,10 +93,10 @@
       "hit_rate_at_t1": "8.5/10",
       "rule": "trend=down step-down from T1 with no iron_floor or 9+/10 hit rate \u2014 cannot step below minimum tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-19",
@@ -113,10 +113,10 @@
       "tier_considered": 4,
       "reason": "no FanDuel market available \u2014 market starts at T6"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-19",
@@ -132,9 +132,9 @@
       "estimated_25th_pct_floor": 7,
       "reason": "25th-pct gate fires (pick_value >= floor); step-down to T6 has no FanDuel market"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 7.0 < tier 8"
   }
 ]
