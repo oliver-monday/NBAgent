@@ -157,7 +157,7 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 ---
 
 ### PLAYOFF INJURY LANDSCAPE
-*Last updated: 2026-04-20. Update this section as statuses change — the analyst reads it before every pick.*
+*Last updated: 2026-04-21. Update this section as statuses change — the analyst reads it before every pick.*
 
 **CONFIRMED OUT FOR R1:**
 
@@ -167,9 +167,9 @@ Regular season concluded April 12, 2026. Play-In Tournament: April 14-17. Playof
 
 **ACTIVE WITH DOCUMENTED CONCERNS:**
 
-- **Anthony Edwards (MIN)** — Right knee patellofemoral pain ("runner's knee"). Missed 11 of final 14 regular season games. Expected to play through it in playoffs. Same condition that sidelined Curry for 27 games. May not be at full capacity — conservative tiers recommended until Game 1 production confirms health.
+- **Anthony Edwards (MIN)** — Right knee patellofemoral pain ("runner's knee"). Missed 11 of final 14 regular season games. Playing through it in playoffs. G1: 22 pts in 38 min. G2: 30 pts, 10 reb in 40 min — knee is not limiting his production. Scoring output confirmed healthy. Note: AST compressed in G2 (2 AST in 40 min) despite 10/10 regular season hit rate at T2 — scoring-mode carry in close road win suppressed distribution. Conservative tiers still recommended for AST props.
 - **Jaden McDaniels (MIN)** — Left knee patella tendinopathy + bone bruise. Missed 6 of final 9 games. Returned Apr 8. Only ~4 games since injury. Key two-way player for MIN — monitor minutes in early games.
-- **Immanuel Quickley (TOR)** — Right hamstring tightness (exited Q2 on Apr 12, did not return). Did not play in G1 vs CLE (Apr 18). Same right leg as 8-game plantar fasciitis absence earlier in April. Day-to-day — availability for G2 (Apr 20) uncertain. TOR guard rotation without Quickley relies on Barrett + Shead as primary ball-handlers.
+- **Immanuel Quickley (TOR)** — Right hamstring tightness (exited Q2 on Apr 12, did not return). OUT for G1 and G2 vs CLE. Same right leg as 8-game plantar fasciitis absence earlier in April. Day-to-day — monitor for G3 (Apr 23 at Toronto). TOR guard rotation without Quickley relies on Barrett + Shead. Ingram's half-court creation role elevated but G2 shooting was catastrophic (3-15 FG, 7 pts).
 - **Cade Cunningham (DET)** — Collapsed left lung (pneumothorax, mild) from collision Mar 17. Missed 11 games. Returned Apr 9. Minutes ramp-up appears complete: played full game in G1 vs ORL (Apr 19) — 30 pts on 11-21 FG, 3-7 3PT, 5-6 FT. PTS production has normalized. No longer on a minutes restriction as of G1.
 - **Victor Wembanyama (SAS)** — Left rib contusion (collision with Paul George, Apr 6). MRI clean. Sat 3 of final 4 regular season games. Returned for R1 G1 (Apr 19): 35 points in playoff debut — SAS franchise record. 21 points in the first half (highest scoring output in a player's first career playoff opening half in the play-by-play era). Third player in NBA history with 30+ points and 5+ three-pointers in a postseason debut. No visible rib limitation. Also managing right ankle pain — monitor.
 - **Stephon Castle (SAS)** — Knee soreness. Was OUT Apr 9 alongside Wemby. Monitor status for R1.
@@ -206,6 +206,9 @@ After each playoff game, add 3-4 lines under the relevant series header: key sta
 **Game 1 (Apr 18) — NYK 113, ATL 102 | NYK leads 1-0**
 Brunson 28 (22 in the first half), Towns 25 (19 in the second half). NYK used a dominant second half to pull away. ATL couldn't contain Brunson-Towns PnR as predicted. Brunson's early aggression set the tone — he attacked ATL's lack of elite perimeter defenders. Towns hit a clutch 3 and forced a late turnover. ATL will need significant defensive adjustments in G2. Watch: NYK's second-half separation pattern — can ATL keep it competitive deep into Q4?
 
+**Game 2 (Apr 20) — ATL 107, NYK 106 | Series tied 1-1 — ATL STEALS ONE AT MSG**
+ATL answered the G2 adjustment question emphatically — won by 1 at Madison Square Garden. Johnson 17/8reb/3ast (consistent production but AST still suppressed — 3 AST for second straight game vs NYK). Brunson 29/7ast in the loss (consistent with G1 production). ATL's crunch-time execution was the difference — they prioritized high-percentage interior looks over perimeter shooting (Johnson had 0 3PA in 36 min). NYK's second-half separation pattern from G1 did not repeat. Series shifts to Atlanta for G3-G4 with momentum. G3 key: NYK must reclaim home-court advantage they lost. ATL's defensive adjustments on Brunson-Towns PnR were enough to keep it close. Watch: Johnson AST remaining suppressed (3 AST in both G1 and G2 vs NYK) — this is now a pattern, not variance.
+
 ##### (4) CLE vs (5) TOR
 *(Game 1: Apr 18, 1 PM ET at Cleveland. TOR swept season series 3-0, but all before Dec — pre-Harden CLE.)*
 
@@ -220,6 +223,9 @@ Brunson 28 (22 in the first half), Towns 25 (19 in the second half). NYK used a 
 **Game 1 (Apr 18) — CLE 126, TOR 113 | CLE leads 1-0**
 Mitchell 32 (11-20 FG) — scored 30+ in an NBA-record nine straight series openers. Harden 22/10ast (8-18 FG) — first playoff game together validated immediately. Strus 24 off bench (8-10 FG, 4-6 3PT). Mobley 17/7reb, Allen 10/7reb. CLE led 61-54 at half, then a dominant 36-22 Q3 blew it open (lead grew to 24). TOR's poor third quarter was decisive — they could not match CLE's half-court execution once pace slowed. Quickley OUT (hamstring). Mitchell-Harden backcourt proved the season-series data (3-0 TOR, pre-Harden) is irrelevant. G2 key: TOR must solve the Q3 avalanche — CLE's depth (Strus, Wade) overwhelmed TOR's bench.
 - ⚠ Quickley hamstring (Apr 12 exit): if he misses games, TOR loses secondary creator and screening action. Barrett + Shead absorb minutes but offensive ceiling drops.
+
+**Game 2 (Apr 20) — CLE 115, TOR 105 | CLE leads 2-0**
+CLE takes commanding 2-0 lead heading to Toronto. Mitchell 30 (back-to-back 30-pt games — NBA-record 10 straight series openers now extends into G2s). Harden 28/5stl (explosive scoring + elite defense). Mobley 25/8reb — breakout playoff performance. Barnes led TOR with 26 in 40 min. Barrett 22/9reb in 38 min — both TOR wings competed. Ingram 7 pts on 3-15 FG in 36 min — catastrophic shooting collapse, the Achilles heel of TOR's offense without Quickley as secondary creator. CLE's margin was 10 — competitive game, not a blowout. Quickley still OUT. G3 key: TOR must find offensive production beyond Barnes/Barrett. Ingram's 3-15 shooting is unsustainable but his VOLATILE tag + FG_COLD signals suggest this isn't purely random. CLE's depth (Harden, Strus, Mobley all 20+ contributors) overwhelms TOR's 2-man attack. Series likely requires TOR winning all home games to have a chance.
 
 ##### (1) DET vs (8) ORL
 *(Game 1: Apr 19, 6:30 PM ET at Detroit. Season series 2-2, each team won once on other's floor.)*
@@ -272,6 +278,9 @@ Tatum 25 in first playoff start since Achilles surgery — dominant return. Brow
 
 **Game 1 (Apr 18) — DEN 116, MIN 105 | DEN leads 1-0**
 Murray 30 (16-16 FT, 0-8 3PT — scoring via FTs and paint, zero 3PM). Jokic triple-double (25/10+/10+, slow first half but imposed will in second). Edwards 22 — kept MIN in it but not enough. DEN's 12-game win streak momentum carried into playoffs. Murray's 3PT shooting was ice-cold (0-for-8) but he compensated through free throws (perfect 16-16) and driving — this is an important data point for his 3PM props going forward. Jokic AST volume held despite MIN×AST suppressor (7+ AST in triple-double). G2 key: MIN must solve DEN's FT advantage (Murray alone was +16 from the line) and find bench scoring. DEN's perimeter defense on Edwards was solid but not lockdown — Edwards' knee health looked functional.
+
+**Game 2 (Apr 20) — MIN 119, DEN 114 | Series tied 1-1 — MIN STEALS ONE IN DENVER**
+MIN evens the series with a road win — the result DEN tried to prevent. Edwards 30/10reb (scoring-mode carry, but only 2 AST in 40 min — AST compressed by isolation-heavy comeback role). Randle 24/9reb/6ast — dominant all-around game. McDaniels 14 in 37 min (steady contributor). Murray 30 in 43 min for DEN in the loss — matched Edwards' output but it wasn't enough. Jokic 24/15reb/8ast in 40 min (dominated boards but couldn't close). Close game throughout (5-pt final margin). MIN's bench and secondary scoring made the difference. Edwards' knee confirmed not limiting — 30 pts in 40 full minutes. G3 key: Series shifts to Minnesota. DEN's home-court advantage is gone. Jokic's AST volume (8) held through MIN×AST suppressor in a competitive loss — the suppressor may be less effective when DEN is playing from behind. Edwards AST self-suppression pattern (2 AST in scoring-carry mode) is a real signal — do not trust regular-season AST rates for Edwards in close playoff games where he's the primary offensive option.
 
 ##### (4) LAL vs (5) HOU
 *(Game 1: Apr 18, 8:30 PM ET at LA. LAL won season series 2-1, but Doncic was difference-maker in both wins.)*

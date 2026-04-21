@@ -86,7 +86,7 @@ Swept against ROADMAP_resolved.md — all items shipped through 2026-04-16 verif
 - Update PLAYOFF INJURY LANDSCAPE in `nba_season_context.md` as injury statuses change
 - Review analyst reasoning quality after first playoff week — are H27-H32 adjustments improving picks?
 - W13 skip rule refinements — monitor FSR over next 20–30 picks (review ~4/21)
-- Season context update — Apr 20 G2 results (CLE-TOR, NYK-ATL, DEN-MIN) needed after games complete
+- Season context update — Apr 21 G2 results (BOS-PHI, OKC-PHX, DET-ORL, SAS-POR, LAL-HOU) needed after games complete
 
 **Known playoff transfer risks:**
 - H15 suppressors (HOU, PHI, LAL): measured against full-season schedule. Fixed matchups in playoffs may concentrate or invert signal.
