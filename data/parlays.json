@@ -4808,9 +4808,26 @@
         "rationale": "STRONG-edge Randle REB anchors alongside Mobley T2 AST iron-floor from separate games, zero correlated failure risk.",
         "date": "2026-04-20",
         "id": "parlay_2026-04-20_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 2
+        "result": "HIT",
+        "legs_hit": 2,
+        "legs_total": 2,
+        "leg_results": [
+          {
+            "player_name": "Julius Randle",
+            "prop_type": "REB",
+            "pick_value": 6,
+            "result": "HIT",
+            "actual_value": 9.0
+          },
+          {
+            "player_name": "Evan Mobley",
+            "prop_type": "AST",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 2.0
+          }
+        ],
+        "cannibalization_flags": null
       }
     ]
   }

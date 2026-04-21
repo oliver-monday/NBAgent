@@ -1,63 +1,63 @@
 {
-  "generated_at": "2026-04-20",
-  "entries_included": 44,
+  "generated_at": "2026-04-21",
+  "entries_included": 45,
   "overall": {
-    "total_picks": 950,
+    "total_picks": 979,
     "voided": 60,
-    "hits": 810,
-    "misses": 124,
+    "hits": 835,
+    "misses": 128,
     "injury_exclusions": 4,
     "hit_rate_pct": 87.1
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 354,
-      "hits": 302,
+      "picks": 367,
+      "hits": 314,
       "injury_exclusions": 2,
-      "hit_rate_pct": 85.8
+      "hit_rate_pct": 86.0
     },
     "REB": {
-      "picks": 131,
-      "hits": 114,
+      "picks": 137,
+      "hits": 120,
       "injury_exclusions": 0,
-      "hit_rate_pct": 87.0
+      "hit_rate_pct": 87.6
     },
     "AST": {
-      "picks": 294,
-      "hits": 248,
+      "picks": 302,
+      "hits": 254,
       "injury_exclusions": 2,
-      "hit_rate_pct": 84.9
+      "hit_rate_pct": 84.7
     },
     "3PM": {
-      "picks": 147,
-      "hits": 121,
+      "picks": 149,
+      "hits": 122,
       "injury_exclusions": 0,
-      "hit_rate_pct": 82.3
+      "hit_rate_pct": 81.9
     }
   },
   "miss_classification_totals": {
-    "variance": 53,
+    "variance": 54,
     "selection_error": 5,
-    "model_gap_signal": 6,
-    "model_gap_rule": 39,
+    "model_gap_signal": 7,
+    "model_gap_rule": 41,
     "workflow_gap": 6,
     "injury_event": 4
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 425,
-      "hits": 364,
-      "hit_rate_pct": 85.6
+      "picks": 442,
+      "hits": 378,
+      "hit_rate_pct": 85.5
     },
     "76-80": {
-      "picks": 401,
-      "hits": 346,
-      "hit_rate_pct": 86.3
+      "picks": 411,
+      "hits": 355,
+      "hit_rate_pct": 86.4
     },
     "81-85": {
-      "picks": 66,
-      "hits": 58,
-      "hit_rate_pct": 87.9
+      "picks": 68,
+      "hits": 60,
+      "hit_rate_pct": 88.2
     },
     "86+": {
       "picks": 18,
@@ -66,129 +66,100 @@
     }
   },
   "parlay_summary": {
-    "total": 85,
-    "hits": 51,
+    "total": 86,
+    "hits": 52,
     "misses": 29,
     "partial": 5
   },
   "recent_lessons": [
-    "Low-minute rotation players (proj_min \u2264 22, min_floor < 16) must not be included in PTS picks even under elimination-game override logic: Coby White's 17 actual minutes in the blowout confirm that the elimination override does not protect players whose role is inherently volume-contingent \u2014 the 4 actual PTS on 1-5 FG was a product of both cold shooting AND a game script that compressed his opportunity to zero in the second half. The override is designed for starters and primary rotation players with proj_min \u2265 30, not for fringe bench contributors.",
-    "Non-iron-floor 3PM props on secondary/fringe rotation players in blowout-risk games should not be selected, regardless of 10/10 historical hit rate: Coby White's 3PM T1 miss (0 threes in 17 min) is directly explained by the same minute compression that killed his PTS pick \u2014 a 10/10 hit rate on a 3PM T1 is only realizable if the player gets meaningful run, and a proj_min of 22 in an elimination road game for the underdog carries structural blowout-exit risk that voids the sample base. The 3PM prop should have been skipped when the PTS prop already flagged minutes risk.",
-    "3PM props on players in blowout games are the highest-variance prop type on the slate: the session produced 1/3 on 3PM (33.3%), with both misses (White 3PM, Bane 3PM) occurring in games where the player either lost minutes (White, blowout loser) or simply went cold across a full 35-minute sample (Bane). 3PM props require both opportunity and execution; a 9/10 historical rate (Bane) does not immunize against cold-shooting nights, and the non-iron-floor 80% cap correctly bounded confidence \u2014 but the prop type itself is systematically volatile in high-stakes game contexts and should require iron_floor or a 9+/10 at the exact tier (not overall) before selection.",
-    "Scottie Barnes REB T6 (84% confidence, top_pick=true) missed catastrophically with only 1 rebound in 32 minutes \u2014 the pick had no iron_floor on REB despite being labeled top_pick, and a single anomalous rebounding game (1 REB vs a T6 line of 6) exposed the absence of structural floor protection. The 84% tier was predicated on H2H 3/3 and iron_floor language in the reasoning, but the pick object shows iron_floor=false. When top_pick=true is assigned to a REB prop, iron_floor must be confirmed true in the pick object \u2014 H2H sample of 3 games is insufficient to anchor a top_pick designation on a non-iron-floor REB pick.",
     "Jamal Murray 3PM T2 (75% confidence) missed with 0-for-8 from three in 39 minutes \u2014 the VOLATILE tag on 3PM, post_miss_hr of only 62%, and the confirmed web recap showing a complete shooting freeze from deep were all pre-available risk signals. The trend=up tag was the only positive counterbalance and was insufficient to offset a VOLATILE 3PM pick. For volatile 3PM props, even at T2, a cold-shooting night against a competent defense can produce a zero \u2014 the pick was made at 75% but the structural risk of a VOLATILE 3PM in a playoff G1 environment warranted either skipping or treating as a trim-only.",
     "Jalen Johnson AST T4 (78% confidence) missed with 3 assists in 39 full minutes \u2014 no injury, no blowout, just insufficient playmaking opportunities in a road Game 1 loss. The web recap confirms it was a statistical variance event: he was active, played full minutes, scored 23 points, but only generated 3 assists. The hit_rate_display of 8/10 and H2H 3/3 at T4 both supported the pick. However, ATL @ NYK was COMPETITIVE (NYK won by 11) and the DET AST suppressor watch context (magnitude \u221237.2pp) does not apply to NYK, but NYK's overall defensive identity in a home playoff opener likely compressed ATL's offensive flow. The trend=down signal on AST was present and should have further reduced confidence below 78% \u2014 this is a variance miss on a borderline-confidence AST pick against a motivated home defense.",
     "Julius Randle AST T4 (70% confidence) missed with only 2 assists in 31 minutes \u2014 the web recap cites physical playoff intensity and a technical foul limiting his playmaking. The DEN vs MIN game was COMPETITIVE (DEN won by 11). At T4 with overall=75% and VOLATILE tag bringing confidence to the minimum floor, this was already the system's lowest-conviction AST pick. The market_implied_prob of 74.68% was nearly even with the system's 70% confidence, and the bet_recommendation was STRONG (cal_edge +12.82pp from per_player calibration) \u2014 a notable divergence between the model's pick-level confidence and the calibration engine's output. The VOLATILE T6+ skip was correctly applied, but T4 on a VOLATILE AST prop in a playoff game against a known defensive team (DEN ranked 3rd NETRTG) represents the floor of what should be picked. No additional lesson beyond confirming that VOLATILE AST T4 in playoff road games should not be included in the system's highest-confidence tier recommendations.",
     "AST props are the session's single failure point: 1/3 (33.3%) on the day, with both misses coming from AST picks \u2014 Booker AST T4 (actual 2) and Thompson AST T2 (actual 1). The blowout game-script was a primary causal factor in both: Booker's game ended in a 35-point OKC rout where PHX's half-court offense was dysfunctional (34.9% FG per news), collapsing Booker's playmaking opportunities regardless of iron_floor protection; Thompson's miss occurred in a competitive 11-point DET win where a quiet offensive night produced only 1 AST in 25 minutes. AST props are structurally the most fragile pick type in blowout environments for the losing side \u2014 the iron_floor on Booker AST T4 failed to protect against a game-script-driven playmaking collapse, not a statistical floor breakdown.",
     "The PHX blowout (OKC won by 35) should have triggered a hard re-evaluation of all PHX AST props before pick confirmation. Booker's iron_floor AST T4 had a 9/10 overall hit rate, but the pre-game spread of +13.5 and the context of PHX as a heavy underdog in a series they were expected to lose badly were strong indicators that a lopsided game-script would suppress assist opportunities. The rule framework does not currently apply blowout AST-specific penalties for the losing side's playmakers \u2014 this is a model gap. A rule should exist: in blowout contexts where spread_abs \u2265 12 for the underdog, apply an additional -8pp caution to AST props for the losing team's playmakers, even those with iron_floor tags.",
-    "Tatum 3PM T2 missed (actual 1) in a game where BOS won by 32. The calibration note explicitly flagged AVOID 3PM (-11pp drop in playoffs) for Tatum, and the PHI suppressor on 3PM is extreme (-45.6pp, 40% hit rate). The tier_walk acknowledged both risks but still advanced the pick at 80% after applying the spread cap. The root issue: the AVOID calibration tag on Tatum 3PM in playoffs is a strong enough signal to trigger a mandatory skip or step to T1, not merely a confidence reduction. A rule should be added: if a player's playoff calibration note contains explicit AVOID language for a specific prop type, treat as a hard skip at the flagged tier regardless of overall hit rate."
+    "Tatum 3PM T2 missed (actual 1) in a game where BOS won by 32. The calibration note explicitly flagged AVOID 3PM (-11pp drop in playoffs) for Tatum, and the PHI suppressor on 3PM is extreme (-45.6pp, 40% hit rate). The tier_walk acknowledged both risks but still advanced the pick at 80% after applying the spread cap. The root issue: the AVOID calibration tag on Tatum 3PM in playoffs is a strong enough signal to trigger a mandatory skip or step to T1, not merely a confidence reduction. A rule should be added: if a player's playoff calibration note contains explicit AVOID language for a specific prop type, treat as a hard skip at the flagged tier regardless of overall hit rate.",
+    "Brandon Ingram PTS T10 miss (7 actual on 3-15 FG in 36 full minutes) confirms that VOLATILE + FG_MARGIN_THIN step-down to T10 is insufficient protection when a player's entire shooting foundation collapses \u2014 the pick cleared T10 in 70%+ of games but the 30% failure case is a cold-shooting game, which is precisely what FG_COLD:-19% and FG_MARGIN_THIN:6% were signaling pre-game. The system stepped from T15 to T10 but the correct action when FG_COLD X\u226515 is present alongside FG_MARGIN_THIN was to evaluate whether T10 itself was structurally fragile given the underlying shooting concerns, not merely accept T10 as a safe floor.",
+    "Edwards AST T4 miss (2 actual in 40 minutes of a CLOSE MIN win) exposes a gap in AST suppression modeling for high-usage wings in close playoff games: when a player's scoring role intensifies in a comeback win (30pts in 40min), assist volume compresses organically as they shift to isolation scoring rather than distribution. The system's AST STRONG_ELEVATOR +23pp playoff signal and 95% T2 overall rate were both derived from regular-season context \u2014 the playoff competitive-game scenario where MIN was trailing and Edwards became the primary offensive option systematically suppresses assists in ways the current quant fields do not capture. The MIN\u00d7AST suppressor was not applied (it targets opposing team AST, not MIN's own players), and no signal existed in the pick object for this self-suppression pattern.",
+    "Jalen Johnson 3PM T1 miss (0 actual with 0 3PM attempted in 36 full minutes) reveals that perfect H2H 3PM history (4/4 vs NYK at T1) can be structurally invalidated when game script discourages 3-point attempts entirely \u2014 in a 1-point ATL road win that was contested throughout, Johnson's 36 minutes did not include a single 3PM attempt, suggesting the tight defensive game caused ATL to prioritize high-percentage looks rather than perimeter shooting. The vs_tough=62% at T1 signal was present in the tier_walk and was discounted as 'DvP is noise for 3PM' \u2014 this session reinforces that vs_tough suppression on 3PM in away playoff games against top defenses (NYK is a tough opp) is a real risk factor that should not be dismissed as noise, particularly when the game is expected to be physically contested.",
+    "Both AST misses (Edwards T4, Johnson T4) share a common pattern: the pick was made at the system's minimum viable confidence (70-78%) with no iron_floor, against a confirmed tough or suppressing defensive context, in a CLOSE game where the player's scoring/usage intensified at the expense of distribution. At minimum confidence with no iron_floor, AST props in CLOSE playoff games against tough opponents should be treated as structurally borderline \u2014 the system should require a higher confidence threshold (\u226580%) or iron_floor presence before emitting minimum-floor AST picks in this context."
   ],
   "recent_reinforcements": [
-    "PTS props went 14/14 (100%) across all confidence bands \u2014 the tier-walk discipline of applying FG_MARGIN_THIN mandatory step-downs (Murray T20\u2192T15, Brunson T20\u2192T15, Mitchell T20\u2192T15, Ingram T15\u2192T10, Randle staying at T10 with large cushion) proved consistently effective in finding durable scoring floors even in playoff Game 1 environments.",
-    "The Durant OUT lineup update correctly amplified HOU props: Thompson PTS (revised up to 78%), Thompson AST (revised up to 82%), and Sengun PTS (revised up to 87%) all hit comfortably, validating the intra-game usage redistribution logic when a primary scorer is ruled out pre-game.",
-    "VOLATILE AST T6+ hard-skip rule fired correctly on Murray (T6 skipped \u2192 T4 hit 7 AST), Harden (T6 skipped \u2192 T4 hit 10 AST), and Randle (T6 skipped \u2192 T4, though Randle AST missed at T4 \u2014 the skip correctly avoided a higher-tier exposure). The rule is preventing upward overreach on volatile AST props.",
-    "Low-tier AST anchors (T2 and T4) were extremely reliable: Barrett T2 AST hit, Ingram T2 AST hit, Mobley T2 AST hit, Barnes T4 AST hit, Edwards T2 AST hit, Thompson T4 AST hit, Sengun T4 AST hit \u2014 7/7 AST picks at T2-T4 hit, confirming these conservative floors are structurally sound in playoff contexts.",
-    "The MIN AST suppressor was correctly applied as a moderating signal (not a full skip) on Murray AST T4, which hit easily at 7 assists \u2014 appropriate calibration: the suppressor appropriately reduced confidence but did not generate a false skip on a primary ball-handler at T4.",
     "PTS iron_floor picks at T10-T15 were perfect 10/10 on the session \u2014 the mandatory FG_MARGIN step-down cascade (T20\u2192T15 for Wemby, T15\u2192T10 for Fox, Castle, Williams) correctly anchored picks to structurally sound floors, and every stepped-down pick hit with margin. The step-down logic is working as designed and should continue to be applied without hesitation.",
     "SAS home picks (Fox PTS+AST, Vassell 3PM, Castle PTS, Wemby PTS+3PM) went 6/6 in a competitive 13-point win, validating the 95% consistent tag and strong vs_tough splits for the SAS rotation. The SAS floor compression pattern applies to opponents, not SAS players \u2014 correctly not applied here.",
     "3PM iron_floor picks (Vassell T1) and non-iron-floor picks with 9/10+ overall hit rates (Bane T1, Wemby T1, Brown T1) held through game variance, including a blowout context. The 9/10 exception rule for trend=down 3PM correctly preserved Bane's T1 pick in a DET blowout scenario where Bane was on the losing underdog side and still hit.",
     "Underdog PTS picks in blowout losses (Maxey T20, Edgecombe T10) both hit comfortably \u2014 the no-blowout-cap rule for underdog players on the losing side is correctly calibrated. Maxey scored 21 in 37 minutes and Edgecombe scored 13 in 34 minutes despite PHI losing by 32, confirming that losing-side starters play nearly full minutes chasing the game.",
-    "The lineup amendment correctly flagged upside on SGA (revised to 78%), Holmgren PTS (revised to 86%), Holmgren REB (revised to 83%), and Williams (revised to 73%) following Mark Williams' PHX absence \u2014 all picked players benefited from softer PHX interior opposition. Amendment feature performance is validating on the upside direction."
+    "The lineup amendment correctly flagged upside on SGA (revised to 78%), Holmgren PTS (revised to 86%), Holmgren REB (revised to 83%), and Williams (revised to 73%) following Mark Williams' PHX absence \u2014 all picked players benefited from softer PHX interior opposition. Amendment feature performance is validating on the upside direction.",
+    "FG_MARGIN_THIN step-downs to conservative tiers (T15\u2192T10, T20\u2192T15) proved highly effective across PTS props: Brunson T15 hit 29pts, Mitchell T15 hit 30pts, Murray T15 hit 30pts, Barnes T10 hit 26pts, Barrett T10 hit 22pts, Harden T10 hit 28pts \u2014 every FG_MARGIN-stepped tier cleared with substantial margin, validating the mandatory step-down rule as a net positive for floor security even at the cost of theoretical upside.",
+    "Iron-floor REB picks at conservative tiers were the session's most reliable anchor: Jokic REB T10 (15 actual), Barnes REB T4 (4 actual \u2014 exact threshold, graded HIT per rules), Randle REB T6 (9 actual), Mobley REB T6 (8 actual), Johnson REB T6 (8 actual) \u2014 6/6 REB picks hit, reinforcing that iron-floor or near-iron-floor REB selections at structurally qualified tiers represent the system's strongest prop category.",
+    "VOLATILE AST T6+ hard blocks correctly prevented overreach: blocking Murray, Mitchell, Harden, and Johnson at T6 and routing to T4 protected the system from higher-risk AST exposures. All four T4 AST picks that hit (Murray 7ast, Mitchell 5ast, Harden 4ast, Barrett 5ast) confirmed the floor was real \u2014 the VOLATILE block did not cost the system value, it preserved accuracy.",
+    "The MIN\u00d7AST suppressor's moderate effect was visible in the Edwards AST miss (2 actual vs T4 pick), and the DEN vs MIN game being CLOSE (5-point MIN win) provides partial mitigating context \u2014 Edwards was 30pts/10reb focused in a comeback win, confirming that in competitive games where a star's scoring role intensifies, AST production can compress even when the player is healthy and full-minutes active.",
+    "Playoff series context (G1 production as confirming signal) proved directionally reliable: picks anchored by G1 output confirmation (Mitchell 32 in G1 \u2192 T15 hit; Murray 30 in G1 \u2192 T15 hit; Brunson 28 in G1 \u2192 T15 hit) all cleared comfortably, validating the playoff boost rationale when G1 performance is used as a live sample point rather than a standalone stat."
   ],
   "recent_recommendations": [
-    "Enforce iron_floor=true as a hard prerequisite before assigning top_pick=true to any REB prop. Barnes REB T6 was labeled top_pick despite iron_floor=false \u2014 the top_pick designation implies structural certainty that a non-iron-floor REB pick cannot provide. Add a validation gate: if prop_type=REB AND top_pick=true AND iron_floor=false, downgrade to standard pick or require T4 minimum with explicit 25th-pct gate confirmation.",
-    "Add a hard skip for VOLATILE 3PM props in playoff Game 1 contexts when post_miss_hr < 65% and trend is not 'up' with confirmed H2H dominance (4/4 or 3/3). Murray 3PM missed entirely (0-for-8) despite 75% confidence \u2014 the 62% post_miss_hr was the critical warning signal that was noted in trim_reasons but not escalated to a skip. For playoff 3PM props: require post_miss_hr \u2265 70% OR iron_floor=true to proceed past the trim filter.",
-    "When a player's trend=down flag is present on an AST prop AND the game context is a road playoff opener, apply an additional \u22125% confidence reduction beyond what the tier walk already computes. Johnson AST had trend=down at 78% confidence in a road Game 1 \u2014 the trend=down signal was acknowledged in the tier_walk but only contributed to a minor reduction. Road playoff G1 debuts suppress offensive creation roles more than regular-season road games; the system should recognize this context modifier explicitly.",
-    "For VOLATILE AST T4 picks (the minimum tier after T6+ skip), require vs_tough \u2265 75% when opponent is rated 'mid' or better, and require overall quant rate \u2265 75% before VOLATILE deduction. Randle AST T4 had overall=75% pre-VOLATILE, meaning post-deduction it sat at 72% \u2014 only barely above the 70% floor. Picks sitting within 3pp of the floor after all deductions should be flagged as 'minimum viable' and excluded from parlay legs.",
-    "The 81-85% confidence band is 50% (1/2) this session against an 83% expectation \u2014 both picks in this band were the Randle PTS T10 (hit, 82%) and Barnes REB T6 (miss, 84%). With only 2 picks in this band, the sample is too small to draw structural conclusions, but the Barnes miss confirms that the 81-85% band should only contain picks with iron_floor=true on REB props or consistent (non-VOLATILE) tags on PTS/AST props. Review every pick assigned 82-84% confidence to confirm it meets these structural requirements before the next session.",
     "Add a blowout AST penalty rule for losing-side playmakers: when spread_abs \u2265 12 and the player is on the underdog team, apply an additional -8pp confidence deduction to all AST props regardless of iron_floor status. Booker AST T4 (pick 78%) in a +13.5 underdog context is the clearest example \u2014 iron_floor does not protect assist generation when the entire offensive system collapses in a blowout loss. This rule should trigger a mandatory tier step-down (T4\u2192T3, T3\u2192T2) or skip if the stepped tier is below the qualifying threshold.",
     "Treat explicit AVOID language in playoff calibration notes as a mandatory skip at the flagged tier, not a confidence reduction. Tatum 3PM T2 carried a calibration note stating 'AVOID 3PM (-11pp drop in playoffs)' yet was picked at 80%. The correct outcome is a hard skip at T2 and a re-evaluation at T1. Implement this as: if playoff_calibration_note contains 'AVOID' for the specific prop_type, the system must step down one full tier and re-evaluate rather than absorbing the penalty arithmetically.",
     "For AST picks where the player is on a team projected to lose by 12+ points, require a minimum 7/10 H2H at the specific AST tier (not just overall hit rate) before selecting. Booker had 2/2 H2H at T6 and 9/10 overall, but the H2H sample at T4 vs OKC was insufficient to confirm the structural AST floor. Small H2H samples (n=2) should not be treated as confirmation for road underdog AST picks in blowout-risk games.",
     "Thompson AST T2 (actual 1, DET won by 11) missed in a competitive game with no injury or blowout excuse. The quant showed 85% overall and 4/4 H2H, but the DET\u00d7AST suppressor watch signal (50% hit rate at n=8, -37.2pp magnitude) was present and growing. With only 4 more picks needed to cross the formal \u226515 gate, the DET\u00d7AST suppressor should now be treated as confirmed for practical pick purposes. Apply suppressor-level treatment (one tier lower or 9+/10 minimum hit rate) to all AST picks vs DET effective immediately \u2014 do not wait for the formal gate to cross.",
-    "Review the calibration band performance: the 76-80% band hit only 72.7% (8/11) against an expected 78%. Both AST misses fell in this band. Consider requiring higher minimum thresholds for AST picks specifically in this confidence band \u2014 AST is structurally the most vulnerable prop type to game-script and defensive scheme, and the 76-80% band may be overconfident for AST picks in playoff contexts. A practical rule: AST picks in playoffs require minimum 80% confidence or iron_floor + 9+/10 hit rate to qualify in the 76-80% band."
+    "Review the calibration band performance: the 76-80% band hit only 72.7% (8/11) against an expected 78%. Both AST misses fell in this band. Consider requiring higher minimum thresholds for AST picks specifically in this confidence band \u2014 AST is structurally the most vulnerable prop type to game-script and defensive scheme, and the 76-80% band may be overconfident for AST picks in playoff contexts. A practical rule: AST picks in playoffs require minimum 80% confidence or iron_floor + 9+/10 hit rate to qualify in the 76-80% band.",
+    "Add a hard skip condition for AST props when ALL of the following are true simultaneously: (a) confidence_pct \u2264 72, (b) iron_floor = false, (c) opp_defense_rating = tough or vs_tough < 70%, (d) game context is playoff. Both AST misses this session (Edwards T4 at 78%, Johnson T4 at 70%) would have been caught or flagged earlier by this gate. The minimum viable AST pick in playoff conditions needs a higher floor \u2014 require \u226575% confidence + iron_floor or \u226580% confidence standalone before emitting T4 AST in playoff tough-defense matchups.",
+    "Strengthen the Ingram PTS selection logic: when a player carries BOTH FG_COLD (X\u226515 OR X\u226510 near-threshold) AND FG_MARGIN_THIN flags on PTS simultaneously, the step-down to T10 should be treated as a preliminary floor check only \u2014 require an additional confirmation signal (iron_floor = true, H2H at the stepped tier \u2265 80%, or vs_tough \u2265 85%) before emitting. Ingram had FG_HOT:+17% (positive) which partially masked the concern, but FG_COLD and FG_MARGIN together on a VOLATILE player signal genuine shooting floor fragility that a single tier step does not fully resolve.",
+    "For 3PM T1 picks in away playoff games against opp_defense_rating = tough, require at least one of: (a) H2H 3PM T1 rate \u2265 90% (not just 80%), (b) trend = up or stable AND vs_tough \u2265 75% at the 3PM tier, or (c) iron_floor present. Johnson's 4/4 H2H at T1 looked strong but vs_tough=62% was the real predictive signal for a contested road playoff game \u2014 when H2H and vs_tough diverge significantly (>20pp gap), prefer vs_tough as the contextually relevant signal in playoff away matchups.",
+    "The Edwards AST T4 pick was the one pick where the calibrated_prob (81.8%) substantially exceeded the analyst's confidence_pct (78%), and the bet_recommendation was POSITIVE \u2014 yet the pick missed. For VOLATILE-tagged players in CLOSE playoff games (spread < 8), the playoff AST elevator signal should be weighted against actual G1 AST output rather than season averages: Edwards had 7 AST in G1 which anchored the pick, but G2 MIN was a road win driven by his scoring (30pts). Going forward, when a VOLATILE player's G1 playoff AST was achieved in a large-spread game (DEN -6.5 in G1 was a competitive game), treat the G1 AST as potentially context-dependent before projecting forward to G2.",
+    "Reinforce that the DET\u00d7AST suppressor (practical confirmed, \u221237.2pp) and MIN\u00d7AST suppressor (confirmed, \u221212.2pp) should both be explicitly checked before emitting any opposing team's AST pick in those series. In the DEN vs MIN series specifically: Jokic AST T8 was correctly avoided given MIN\u00d7AST; this discipline held. For the NYK vs ATL series: Johnson AST T4 missed (3 actual), partially consistent with the DET\u00d7AST analog \u2014 ATL is not a DET suppressor, but in tight playoff games against physically imposing home defenses, secondary creator AST consistently underperforms. Consider adding a 'tight playoff home defense' contextual flag for AST picks on visiting secondary creators when the spread is within 6 points."
   ],
-  "skip_validation": {
-    "no_market": {
-      "total": 3,
-      "false_skips": 2,
-      "correct_skips": 1,
-      "no_data": 0,
-      "false_skip_rate": 66.7
-    },
-    "volatile_ast_t6": {
-      "total": 2,
-      "false_skips": 1,
-      "correct_skips": 1,
-      "no_data": 0,
-      "false_skip_rate": 50.0
-    },
-    "3pm_blowout_trend_down": {
-      "total": 1,
-      "false_skips": 1,
-      "correct_skips": 0,
-      "no_data": 0,
-      "false_skip_rate": 100.0
-    },
-    "reb_floor_skip": {
-      "total": 1,
-      "false_skips": 0,
-      "correct_skips": 1,
-      "no_data": 0,
-      "false_skip_rate": 0.0
-    }
-  },
+  "skip_validation": {},
   "human_flag_precision": {
     "trim": {
-      "hits": 155,
-      "misses": 16,
-      "total": 171,
-      "hit_rate_pct": 90.6
+      "hits": 168,
+      "misses": 18,
+      "total": 186,
+      "hit_rate_pct": 90.3
     },
     "keep": {
-      "hits": 215,
-      "misses": 30,
-      "total": 245,
-      "hit_rate_pct": 87.8
+      "hits": 225,
+      "misses": 32,
+      "total": 257,
+      "hit_rate_pct": 87.5
     },
     "manual_skip": {
-      "hits": 18,
+      "hits": 20,
       "misses": 3,
-      "total": 21,
-      "hit_rate_pct": 85.7
+      "total": 23,
+      "hit_rate_pct": 87.0
     }
   },
   "clv_summary": {
-    "total_with_clv": 147,
-    "beat_close": 30,
-    "lost_close": 25,
-    "no_movement": 92,
+    "total_with_clv": 176,
+    "beat_close": 38,
+    "lost_close": 31,
+    "no_movement": 107,
     "avg_clv_pp": 0.18,
-    "beat_close_pct": 20.4,
-    "beat_close_hit_rate_pct": 83.3,
-    "lost_close_hit_rate_pct": 76.0,
-    "no_move_hit_rate_pct": 87.0
+    "beat_close_pct": 21.6,
+    "beat_close_hit_rate_pct": 84.2,
+    "lost_close_hit_rate_pct": 74.2,
+    "no_move_hit_rate_pct": 87.9
   },
   "playoff_calibration": {
     "70-75": {
-      "picks": 30,
-      "hits": 28,
-      "hit_rate_pct": 93.3,
-      "regular_season_pct": 85.6,
-      "divergence_pp": 7.7
+      "picks": 47,
+      "hits": 42,
+      "hit_rate_pct": 89.4,
+      "regular_season_pct": 85.5,
+      "divergence_pp": 3.9
     },
     "76-80": {
-      "picks": 22,
-      "hits": 18,
-      "hit_rate_pct": 81.8,
-      "regular_season_pct": 86.3,
-      "divergence_pp": -4.5
+      "picks": 32,
+      "hits": 27,
+      "hit_rate_pct": 84.4,
+      "regular_season_pct": 86.4,
+      "divergence_pp": -2.0
     },
     "81-85": {
-      "picks": 2,
-      "hits": 1,
-      "hit_rate_pct": 50.0,
-      "regular_season_pct": 87.9,
-      "divergence_pp": -37.9
+      "picks": 4,
+      "hits": 3,
+      "hit_rate_pct": 75.0,
+      "regular_season_pct": 88.2,
+      "divergence_pp": -13.2
     },
     "86+": {
       "picks": 0,
@@ -198,12 +169,12 @@
       "divergence_pp": null
     },
     "_overall": {
-      "picks": 54,
-      "hits": 47,
-      "hit_rate_pct": 87.0,
+      "picks": 83,
+      "hits": 72,
+      "hit_rate_pct": 86.7,
       "date_range": {
         "start": "2026-04-18",
-        "end": "2026-04-19"
+        "end": "2026-04-20"
       }
     }
   }

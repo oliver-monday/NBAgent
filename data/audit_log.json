@@ -5317,5 +5317,136 @@
         "The Fox AST T4 leg hit with margin (8 actual vs 4 threshold) in SAS's home playoff win, confirming that primary ball-handler AST picks at conservative tiers (T4 for a 6.3 APG player) are a reliable parlay anchor when the player is a co-primary creator in a home playoff game with 7 days rest and strong vs_tough AST splits. Pairing this type of leg \u2014 primary facilitator, conservative tier, home playoff, strong H2H \u2014 with a similarly conservative iron_floor 3PM or low-tier PTS leg would create a structurally sound two-leg combination with high floor probability."
       ]
     }
+  },
+  {
+    "date": "2026-04-20",
+    "total_picks": 29,
+    "voided_picks": 0,
+    "hits": 25,
+    "misses": 4,
+    "no_data": 0,
+    "hit_rate_pct": 86.2,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 13,
+        "hits": 12,
+        "hit_rate_pct": 92.3
+      },
+      "REB": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 8,
+        "hits": 6,
+        "hit_rate_pct": 75.0
+      },
+      "3PM": {
+        "picks": 2,
+        "hits": 1,
+        "hit_rate_pct": 50.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 17,
+        "hits": 14,
+        "hit_rate_pct": 82.4,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 10,
+        "hits": 9,
+        "hit_rate_pct": 90.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "FG_MARGIN_THIN step-downs to conservative tiers (T15\u2192T10, T20\u2192T15) proved highly effective across PTS props: Brunson T15 hit 29pts, Mitchell T15 hit 30pts, Murray T15 hit 30pts, Barnes T10 hit 26pts, Barrett T10 hit 22pts, Harden T10 hit 28pts \u2014 every FG_MARGIN-stepped tier cleared with substantial margin, validating the mandatory step-down rule as a net positive for floor security even at the cost of theoretical upside.",
+      "Iron-floor REB picks at conservative tiers were the session's most reliable anchor: Jokic REB T10 (15 actual), Barnes REB T4 (4 actual \u2014 exact threshold, graded HIT per rules), Randle REB T6 (9 actual), Mobley REB T6 (8 actual), Johnson REB T6 (8 actual) \u2014 6/6 REB picks hit, reinforcing that iron-floor or near-iron-floor REB selections at structurally qualified tiers represent the system's strongest prop category.",
+      "VOLATILE AST T6+ hard blocks correctly prevented overreach: blocking Murray, Mitchell, Harden, and Johnson at T6 and routing to T4 protected the system from higher-risk AST exposures. All four T4 AST picks that hit (Murray 7ast, Mitchell 5ast, Harden 4ast, Barrett 5ast) confirmed the floor was real \u2014 the VOLATILE block did not cost the system value, it preserved accuracy.",
+      "The MIN\u00d7AST suppressor's moderate effect was visible in the Edwards AST miss (2 actual vs T4 pick), and the DEN vs MIN game being CLOSE (5-point MIN win) provides partial mitigating context \u2014 Edwards was 30pts/10reb focused in a comeback win, confirming that in competitive games where a star's scoring role intensifies, AST production can compress even when the player is healthy and full-minutes active.",
+      "Playoff series context (G1 production as confirming signal) proved directionally reliable: picks anchored by G1 output confirmation (Mitchell 32 in G1 \u2192 T15 hit; Murray 30 in G1 \u2192 T15 hit; Brunson 28 in G1 \u2192 T15 hit) all cleared comfortably, validating the playoff boost rationale when G1 performance is used as a live sample point rather than a standalone stat."
+    ],
+    "lessons": [
+      "Brandon Ingram PTS T10 miss (7 actual on 3-15 FG in 36 full minutes) confirms that VOLATILE + FG_MARGIN_THIN step-down to T10 is insufficient protection when a player's entire shooting foundation collapses \u2014 the pick cleared T10 in 70%+ of games but the 30% failure case is a cold-shooting game, which is precisely what FG_COLD:-19% and FG_MARGIN_THIN:6% were signaling pre-game. The system stepped from T15 to T10 but the correct action when FG_COLD X\u226515 is present alongside FG_MARGIN_THIN was to evaluate whether T10 itself was structurally fragile given the underlying shooting concerns, not merely accept T10 as a safe floor.",
+      "Edwards AST T4 miss (2 actual in 40 minutes of a CLOSE MIN win) exposes a gap in AST suppression modeling for high-usage wings in close playoff games: when a player's scoring role intensifies in a comeback win (30pts in 40min), assist volume compresses organically as they shift to isolation scoring rather than distribution. The system's AST STRONG_ELEVATOR +23pp playoff signal and 95% T2 overall rate were both derived from regular-season context \u2014 the playoff competitive-game scenario where MIN was trailing and Edwards became the primary offensive option systematically suppresses assists in ways the current quant fields do not capture. The MIN\u00d7AST suppressor was not applied (it targets opposing team AST, not MIN's own players), and no signal existed in the pick object for this self-suppression pattern.",
+      "Jalen Johnson 3PM T1 miss (0 actual with 0 3PM attempted in 36 full minutes) reveals that perfect H2H 3PM history (4/4 vs NYK at T1) can be structurally invalidated when game script discourages 3-point attempts entirely \u2014 in a 1-point ATL road win that was contested throughout, Johnson's 36 minutes did not include a single 3PM attempt, suggesting the tight defensive game caused ATL to prioritize high-percentage looks rather than perimeter shooting. The vs_tough=62% at T1 signal was present in the tier_walk and was discounted as 'DvP is noise for 3PM' \u2014 this session reinforces that vs_tough suppression on 3PM in away playoff games against top defenses (NYK is a tough opp) is a real risk factor that should not be dismissed as noise, particularly when the game is expected to be physically contested.",
+      "Both AST misses (Edwards T4, Johnson T4) share a common pattern: the pick was made at the system's minimum viable confidence (70-78%) with no iron_floor, against a confirmed tough or suppressing defensive context, in a CLOSE game where the player's scoring/usage intensified at the expense of distribution. At minimum confidence with no iron_floor, AST props in CLOSE playoff games against tough opponents should be treated as structurally borderline \u2014 the system should require a higher confidence threshold (\u226580%) or iron_floor presence before emitting minimum-floor AST picks in this context."
+    ],
+    "recommendations": [
+      "Add a hard skip condition for AST props when ALL of the following are true simultaneously: (a) confidence_pct \u2264 72, (b) iron_floor = false, (c) opp_defense_rating = tough or vs_tough < 70%, (d) game context is playoff. Both AST misses this session (Edwards T4 at 78%, Johnson T4 at 70%) would have been caught or flagged earlier by this gate. The minimum viable AST pick in playoff conditions needs a higher floor \u2014 require \u226575% confidence + iron_floor or \u226580% confidence standalone before emitting T4 AST in playoff tough-defense matchups.",
+      "Strengthen the Ingram PTS selection logic: when a player carries BOTH FG_COLD (X\u226515 OR X\u226510 near-threshold) AND FG_MARGIN_THIN flags on PTS simultaneously, the step-down to T10 should be treated as a preliminary floor check only \u2014 require an additional confirmation signal (iron_floor = true, H2H at the stepped tier \u2265 80%, or vs_tough \u2265 85%) before emitting. Ingram had FG_HOT:+17% (positive) which partially masked the concern, but FG_COLD and FG_MARGIN together on a VOLATILE player signal genuine shooting floor fragility that a single tier step does not fully resolve.",
+      "For 3PM T1 picks in away playoff games against opp_defense_rating = tough, require at least one of: (a) H2H 3PM T1 rate \u2265 90% (not just 80%), (b) trend = up or stable AND vs_tough \u2265 75% at the 3PM tier, or (c) iron_floor present. Johnson's 4/4 H2H at T1 looked strong but vs_tough=62% was the real predictive signal for a contested road playoff game \u2014 when H2H and vs_tough diverge significantly (>20pp gap), prefer vs_tough as the contextually relevant signal in playoff away matchups.",
+      "The Edwards AST T4 pick was the one pick where the calibrated_prob (81.8%) substantially exceeded the analyst's confidence_pct (78%), and the bet_recommendation was POSITIVE \u2014 yet the pick missed. For VOLATILE-tagged players in CLOSE playoff games (spread < 8), the playoff AST elevator signal should be weighted against actual G1 AST output rather than season averages: Edwards had 7 AST in G1 which anchored the pick, but G2 MIN was a road win driven by his scoring (30pts). Going forward, when a VOLATILE player's G1 playoff AST was achieved in a large-spread game (DEN -6.5 in G1 was a competitive game), treat the G1 AST as potentially context-dependent before projecting forward to G2.",
+      "Reinforce that the DET\u00d7AST suppressor (practical confirmed, \u221237.2pp) and MIN\u00d7AST suppressor (confirmed, \u221212.2pp) should both be explicitly checked before emitting any opposing team's AST pick in those series. In the DEN vs MIN series specifically: Jokic AST T8 was correctly avoided given MIN\u00d7AST; this discipline held. For the NYK vs ATL series: Johnson AST T4 missed (3 actual), partially consistent with the DET\u00d7AST analog \u2014 ATL is not a DET suppressor, but in tight playoff games against physically imposing home defenses, secondary creator AST consistently underperforms. Consider adding a 'tight playoff home defense' contextual flag for AST picks on visiting secondary creators when the spread is within 6 points."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jalen Johnson",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: ATL @ NYK final 107-106 ATL won by 1 \u2014 CLOSE game. Game script was tightly contested throughout, neutral for AST compression analysis. STEP 1: Johnson played 36 full minutes, scored 17pts, 8reb \u2014 fully active, 3 AST recorded. STEP 2/3: Post-game news confirms no injury, no early exit \u2014 miss reflects normal game flow. Hit rate was 8/10 (80% overall) at T4, stepped down from T6 due to VOLATILE block. Trend=down was applied as a -5% penalty bringing confidence to 70%. The tier_walk correctly identified the G1 miss at T4 (3 AST) and prior bounce_back hr of 58% \u2014 the pick was emitted at the minimum viable confidence threshold acknowledging these risks. The actual value of 3 AST (1 short of T4) in a 1-point road win where ATL executed crunch-time offense conservatively (no structured playmaking sequences late) is within the normal distribution of a 70% confidence pick. STEP 4: 8/10 hit rate at T4 means roughly 2-in-10 games produce this outcome by definition. STEP 5: Tier walk was sound \u2014 T6 hard-blocked by VOLATILE, T4 was the only viable option. No tier_skip_error. STEP 6: No lineup_update present. At minimum confidence with no iron_floor and a confirmed G1 miss at this exact tier vs this exact opponent, the 30% failure case materialized \u2014 this is variance within a legitimately sound but low-margin pick. The trim flag correctly identified this as fragile."
+      },
+      {
+        "player_name": "Jalen Johnson",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: ATL @ NYK final 107-106 ATL won by 1 \u2014 CLOSE game. A 1-point road win in a tightly contested defensive playoff environment is precisely the game script where perimeter attempts are suppressed in favor of high-percentage interior looks. STEP 1: Johnson played 36 full minutes with 17pts, 8reb, 3ast \u2014 fully active, but posted 0 3PM attempts (0 makes). STEP 2/3: The tier_walk correctly noted vs_tough=62% at T1 for Johnson vs NYK but explicitly discounted it: 'I won't apply this' citing the DvP-is-noise-for-3PM rule. This was the analytical error \u2014 in a contested 1-point road playoff game against a confirmed tough home defense (NYK), the vs_tough=62% was not noise, it was a direct predictor of attempt suppression. The system's rule that '3PM DvP is noise' is a regular-season generalization that does not hold in low-pace, high-intensity playoff games where coaching prioritizes shot quality over volume. Johnson took 0 attempts from three, meaning the miss was not a shooting cold spell but a complete absence of attempts \u2014 a game-script-driven selection outcome. STEP 4: 8/10 overall hit rate (80%) at T1, but vs_tough=62% was a 18pp gap versus the overall rate. STEP 5: The tier_walk considered T2 (H2H 1/4=25%, skipped correctly) and proceeded to T1. The T1 selection was analytically sound given the rules in place, but the vs_tough divergence signal should have triggered a stricter gate. STEP 6: No lineup_update. The model_gap_rule classification reflects that the signal (vs_tough=62% vs overall=80% \u2014 an 18pp gap) existed in the quant data but the analyst rule explicitly neutralized it for 3PM. A tighter rule requiring vs_tough \u2265 70% for 3PM T1 picks in away playoff games would have correctly flagged this as borderline or skippable."
+      },
+      {
+        "player_name": "Brandon Ingram",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 7.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: TOR @ CLE final 105-115 CLE won by 10 \u2014 COMPETITIVE game. No blowout exemption applies; game was competitive throughout with CLE winning by 10. STEP 1: Ingram played 36 full minutes, shot 3-15 FG for 7pts \u2014 fully active, no injury or early exit. STEP 2/3: Post-game news confirms 'cold shooting rather than any injury or early exit.' The tier_walk correctly identified FG_MARGIN_THIN:6% (stepped T15\u2192T10) and noted FG_HOT:+17% as a positive signal, while flagging FG_COLD as informational below the 15% mandatory threshold. However, the pick had two co-present shooting distress signals: FG_COLD (exact value not confirmed at \u226515 but near-threshold) and FG_MARGIN_THIN \u2014 which individually each triggered partial responses but together constitute a compound shooting-floor warning that the rules handle separately rather than cumulatively. A player with both FG_COLD and FG_MARGIN_THIN active simultaneously has a structurally compromised shooting floor that a single tier step-down from T15 to T10 may not fully resolve. The 7-pt actual (3 below T10) on 3-15 FG (20% shooting) is consistent with the compound cold-shooting scenario both flags were signaling. STEP 4: Hit rate was 7/10 (70%) \u2014 the minimum qualifying rate \u2014 meaning the pick was always borderline. STEP 5: The tier_walk walked T15\u2192T10 via FG_MARGIN step, which was correct per rules. But at T10 with compound shooting flags and a VOLATILE tag, no additional confirmation signal (iron_floor, H2H \u2265 80% at T10, or vs_tough \u2265 85%) was present to validate the floor. The rule gap is that compound FG flags (both COLD and MARGIN present) should require a confirming floor signal that was absent here. STEP 6: lineup_update direction=up (revised to 74%, Quickley out boosts Ingram usage) \u2014 amendment flagged upside but pick missed. The Quickley absence did not compensate for Ingram's cold shooting; the amendment missed the real risk. This represents a model_gap_rule: the system steps down for each flag individually but has no compound-flag escalation rule requiring additional confirmation when multiple shooting distress signals co-exist on a VOLATILE player."
+      },
+      {
+        "player_name": "Anthony Edwards",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 2.0,
+        "miss_classification": "model_gap_signal",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: MIN @ DEN final 119-114 MIN won by 5 \u2014 CLOSE game. MIN came back to win a competitive road game; game script was tight throughout with Edwards likely operating in an elevated scoring/carry role. STEP 1: Post-game news confirms Edwards played 40 full minutes, scored 30pts, 10reb \u2014 fully active but posted only 2 AST, well short of T4. STEP 2/3: The pick was anchored by a 95% AST hit rate at T2 overall, consistent tag, AST STRONG_ELEVATOR +23pp playoff signal, and G1 7 AST as confirming evidence. All these signals pointed confidently to T4. The fundamental miss is that in CLOSE comeback playoff games where a star wing becomes the primary offensive isolation option (30pts on carry-mode scoring), assist production compresses organically \u2014 not due to injury, defense, or any measurable quant signal, but because the player is ball-stopping and creating their own offense rather than facilitating. Edwards' 30-point output in a 5-point road win is the canonical 'scoring-mode game' where AST volume collapses, and no current quant field captures this self-suppression dynamic. The MIN\u00d7AST suppressor only applies to opposing team's assist picks (the switching scheme suppresses opponents' ball-handlers), not MIN's own players. The playoff AST elevator (+23pp) appears to be derived from games where MIN wins comfortably \u2014 in tight road games, the directional pattern may reverse. STEP 4: 10/10 hit rate display at the base T2 tier \u2014 but this measure is at T2, not T4. The 78% confidence at T4 was already an interpolation below the confirmed tier. STEP 5: Tier walk correctly identified T6 as risky (overall window uncertain) and landed at T4 with H2H 4/4 (100%) as confirmation. The tier walk was procedurally sound. STEP 6: No lineup_update. This is model_gap_signal: no quant field currently exists for 'star scoring-mode compression' in close road playoff games \u2014 the condition where a player's scoring role intensifies at the direct expense of assist volume in a tight-margin game that requires them to carry the offense. The system would need a new signal \u2014 perhaps competitive_game_isolation_rate or road_close_game_AST_delta \u2014 to capture this structural pattern."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 2/2 sweep \u2014 Randle REB T6 hit 9 actual (STRONG-edge leg delivered) and Mobley AST T2 hit exactly at threshold (2 actual = 2 pick, graded HIT per exact-threshold rule), validating the independent multi-game anchor structure.",
+      "parlay_lessons": [
+        "The Mobley AST T2 leg hit exactly at threshold (2 actual = 2 pick) \u2014 a legitimate HIT per grading rules, but this exact-threshold result reveals that the leg had essentially zero cushion. When building parlays anchored by a conservative 'floor' leg like Mobley AST T2, the structural risk is that any single possession change (one missed feed, one early bench-rest minute) flips a HIT to a MISS with no buffer. Future parlays should prefer legs with projected actual values \u2265 1.5x the pick_value when the leg's confidence is \u2264 78% and iron_floor is absent \u2014 a true 'anchor' leg needs cushion, not just a qualified floor.",
+        "The STRONG-edge Randle REB T6 leg (19.25pp edge, kelly_quarter=0.1034) functioned exactly as designed: it carried genuine positive expected value and delivered 9 actual vs 6 pick. Using a STRONG-rated single leg as the parlay anchor \u2014 a leg that independently justifies action on its own merit \u2014 is the correct construction pattern. Parlays built around legs with positive edge (calibrated_prob > market_implied_prob) are structurally superior to parlays built around high-hit-rate low-edge legs, because positive edge compounds rather than erodes the parlay's expected return."
+      ],
+      "parlay_reinforcements": [
+        "Independent multi-game parlay construction (legs from DEN vs MIN and CLE vs TOR with zero correlated failure risk) worked cleanly \u2014 when a CLE blowout scenario could have compressed Mobley's late-game touches (and partially did), the Randle leg from a separate game was unaffected. Multi-game parlay independence is the strongest structural protection against correlated failure; this session validates the design principle.",
+        "Anchoring a parlay with a STRONG-edge REB leg (Randle T6, 19.25pp positive edge) alongside a conservative independent AST leg (Mobley T2, near-floor) produced a +113 implied odds combination that captured genuine value without overreaching on tier selection. The combination pattern \u2014 one positive-edge value leg + one conservative floor leg from a different game \u2014 is the optimal core parlay template: the value leg drives the payout, the floor leg provides structural certainty."
+      ]
+    }
   }
 ]
