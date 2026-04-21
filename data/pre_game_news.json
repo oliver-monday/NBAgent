@@ -1,77 +1,67 @@
 {
-  "date": "2026-04-20",
-  "generated_at": "2026-04-20T07:48:02.395724-07:00",
+  "date": "2026-04-21",
+  "generated_at": "2026-04-21T07:48:57.603958-07:00",
   "player_notes": {
-    "luka doncic": "Doncic is sidelined (did not play Game 1 vs. Rockets). Monitor availability for Game 2; his absence significantly elevates LeBron's usage and assists ceiling.",
-    "austin reaves": "Reaves did not play Game 1 vs. Rockets due to injury. Monitor status for Game 2; absence boosts Kennard and LeBron roles.",
-    "kevin durant": "Durant missed Game 1 for Houston due to injury. Monitor status for Game 2; his absence hurt Rockets' offense and may continue to affect Houston player props.",
-    "lebron james": "With Doncic and Reaves out, LeBron played a triple-threat role (19 pts, 13 ast, 8 reb in Game 1). Assists prop ceiling elevated while both remain sidelined.",
-    "luke kennard": "Scored a career playoff-high 27 points in Game 1 with Doncic and Reaves absent. Role and shot volume elevated while key Lakers are out.",
-    "jamal murray": "Went 16-for-16 from the free throw line in Game 1 vs. Timberwolves; high-volume, high-efficiency performance. Note Jokic and Gordon were quiet in the first half, suggesting Murray absorbed usage.",
-    "jayson tatum": "Returned from Achilles rupture for Game 1 playoff debut, posting 25 pts, 11 reb, 7 ast vs. 76ers. Cleared and playing full role; strong prop baseline confirmed."
+    "kevin durant": "GTD for Rockets Game 2 vs. Lakers with an apparent injury; only participated in about half of practice Monday. If he misses or is limited, massive negative impact on HOU scoring props and positive ripple for supporting cast.",
+    "immanuel quickley": "Ruled out for Raptors Game 2 vs. Cavs with a right hamstring strain. Absence boosts usage for remaining Toronto guards.",
+    "nikola jokic": "Held to 1-of-8 shooting by Gobert in Game 2; series now tied 1-1. Monitor defensive matchup impact on points/rebounds props in Game 3."
   },
   "game_notes": {
-    "HOU vs LAL": "Luka Doncic, Austin Reaves (LAL) and Kevin Durant (HOU) all missed Game 1. Monitor all three for Game 2 availability \u2014 their statuses drastically shift usage and prop values across both rosters."
+    "HOU vs LAL": "Kevin Durant is GTD; if he misses, Houston's offensive structure changes significantly \u2014 monitor closer to tip for confirmation.",
+    "TOR vs CLE": "Immanuel Quickley (hamstring) ruled out for Raptors, increasing minutes/usage for other Toronto guards in Game 2."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 50,
+  "filtered_item_count": 48,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
       "player_or_team": "Kevin Durant (HOU)",
-      "current_context_fact": "HOU enters on 8-game win streak, Durant averaging 26 PPG on 52-40-87 splits. Team has found its groove with Durant as offensive anchor + young core.",
-      "conflict": "Today's news reports LAL defeated HOU 107-98 in Game 1, and the game summary states 'the short-handed Los Angeles Lakers capitalized on Kevin Durant's injury absence.' Durant did not play in Game 1 due to injury. This is a new, untracked injury absence not mentioned anywhere in the context document.",
+      "current_context_fact": "HOU without Durant (right knee contusion from practice Apr 16) for G1 \u2014 missed G1, availability for G2 (Apr 21) uncertain.",
+      "conflict": "Today's news confirms Durant went through about half of Houston's practice Monday and will be a game-time decision for Game 2 (Apr 21). This is a concrete update \u2014 he is not confirmed out, and his participation in practice is a positive sign.",
       "urgency": "critical",
-      "suggested_action": "Add Kevin Durant (HOU) to the Playoff Injury Landscape section as OUT for at least Game 1 with an unspecified injury. Note that LAL won Game 1 107-98 despite being without Doncic and Reaves. Update the LAL vs HOU series diary to reflect LAL's 1-0 series lead and Durant's absence. Investigate Durant's injury status and timeline before making any HOU player props for Game 2."
+      "suggested_action": "Update Durant's status to 'game-time decision for G2 (Apr 21)' \u2014 he practiced (partially) on Apr 20. Remove 'availability uncertain' language and replace with GTD designation. If G2 result is available, confirm whether he played."
     },
     {
-      "player_or_team": "DET vs ORL \u2014 Series Result",
-      "current_context_fact": "Game 1: Apr 19, 6:30 PM ET at Detroit. DET -425 series favorites. Consensus: Pistons in 5.",
-      "conflict": "Today's news confirms ORL defeated DET 112-101 in Game 1. Paolo Banchero scored 23 points with 9 rebounds and 4 assists. ORL leads the series 1-0. The context doc had DET as heavy favorites.",
+      "player_or_team": "DEN vs MIN \u2014 Series Status",
+      "current_context_fact": "Game 1 (Apr 18) \u2014 DEN 116, MIN 105 | DEN leads 1-0. Murray 30 (16-16 FT, 0-8 3PT). Jokic triple-double (25/10+/10+).",
+      "conflict": "Today's news reports MIN won Game 2 119-114 to tie the series 1-1. Edwards and Randle led the rally. Gobert held Jokic to 1-of-8 shooting in G2. The series is now tied, not DEN leading 1-0.",
       "urgency": "critical",
-      "suggested_action": "Update the DET vs ORL series diary to reflect ORL's 1-0 series lead after a 112-101 Game 1 win. Note Banchero's 23/9/4 line. Add context that DET's offense struggled (per Stephen A. Smith commentary). Update pre-series framing \u2014 the upset has occurred and DET's home-court advantage is gone for Game 1. Cade Cunningham's minutes ramp-up may be a factor in DET's offensive struggles."
+      "suggested_action": "Add Game 2 diary entry under DEN vs MIN: MIN 119, DEN 114 \u2014 series tied 1-1. Jokic 1-of-8 shooting (historic suppression by Gobert). Edwards and Randle led MIN comeback from 20 down. Update series header to reflect 1-1 tie. Flag Jokic shooting efficiency concern for G3 prop evaluation \u2014 Gobert matchup is clearly impactful."
     },
     {
-      "player_or_team": "OKC vs PHX \u2014 Series Result / SGA Game 1 Score",
-      "current_context_fact": "TIER-WALK DIRECTIVE: PTS T20 is pre-qualified for SGA. The streak extended through the full 2025-26 regular season. Begin tier-walk evaluation at T25.",
-      "conflict": "SGA scored 25 points in OKC's 119-84 Game 1 win over PHX. This confirms the streak is still active (25 \u2265 20). No conflict with the streak itself, but Game 1 result and SGA's 25-point output are new data points for the series diary that need to be logged.",
-      "urgency": "monitor",
-      "suggested_action": "Update OKC vs PHX series diary to reflect OKC's dominant 119-84 Game 1 win. Log SGA's 25 points \u2014 streak intact, T25 hit in Game 1. Note OKC rout context for Game 2 blowout-risk evaluation at higher tiers."
+      "player_or_team": "NYK vs ATL \u2014 Series Status",
+      "current_context_fact": "Game 1 (Apr 18) \u2014 NYK 113, ATL 102 | NYK leads 1-0. Brunson 28, Towns 25.",
+      "conflict": "Today's news reports ATL won Game 2 107-106 to tie the series 1-1. CJ McCollum scored 32 points and led a fourth-quarter rally. The series is now tied, not NYK leading 1-0.",
+      "urgency": "critical",
+      "suggested_action": "Add Game 2 diary entry under NYK vs ATL: ATL 107, NYK 106 \u2014 series tied 1-1. CJ McCollum 32 pts, led late rally. NYK blew a lead late. Update series header to 1-1. Note McCollum as an ATL offensive weapon and monitor NYK's late-game execution issues for G3."
     },
     {
-      "player_or_team": "SAS vs POR \u2014 Series Result / Wembanyama Game 1",
-      "current_context_fact": "Game 1: Apr 19, 9 PM ET at Frost Bank Center. Expected available after 8 days rest from rib contusion. Monitor Game 1 aggressiveness \u2014 rib pain may limit contact plays initially.",
-      "conflict": "Wembanyama scored 35 points in his playoff debut (most by a Spurs player making their postseason debut) in a 111-98 SAS Game 1 win. Rib contusion did not limit him significantly. SAS leads 1-0.",
-      "urgency": "monitor",
-      "suggested_action": "Update SAS vs POR series diary to reflect SAS's 111-98 Game 1 win with Wembanyama scoring 35. Remove or downgrade the rib contusion caution for Game 2 \u2014 his Game 1 performance indicates the rib is not meaningfully limiting his aggressiveness. Wemby's 35-point debut is a strong floor signal for Game 2 tier evaluation."
+      "player_or_team": "CLE vs TOR \u2014 Series Status",
+      "current_context_fact": "Game 1 (Apr 18) \u2014 CLE 126, TOR 113 | CLE leads 1-0. Mitchell 32, Harden 22/10ast, Strus 24.",
+      "conflict": "Today's news reports CLE won Game 2 115-105 for a 2-0 series lead. Mitchell scored 30, Harden added 28, Mobley scored 25. Series is now 2-0 CLE, not 1-0.",
+      "urgency": "critical",
+      "suggested_action": "Add Game 2 diary entry under CLE vs TOR: CLE 115, TOR 105 \u2014 CLE leads 2-0. Mitchell 30, Harden 28, Mobley 25. Quickley confirmed OUT for G2 (hamstring). Update series header. Note Harden's elevated scoring role in G2 (28 pts) alongside Mitchell \u2014 both averaging 30+ through two games."
     },
     {
-      "player_or_team": "BOS vs PHI \u2014 Series Result",
-      "current_context_fact": "Game 1: Apr 19, 1 PM ET at TD Garden. BOS opened as 10.5-point Game 1 favorites. Consensus: Celtics in 5.",
-      "conflict": "BOS defeated PHI 123-91 in Game 1. Jayson Tatum had 25 points, 11 rebounds, and 7 assists in his playoff return. BOS leads 1-0.",
+      "player_or_team": "Immanuel Quickley (TOR)",
+      "current_context_fact": "Immanuel Quickley (TOR) \u2014 Right hamstring tightness (exited Q2 on Apr 12, did not return). Did not play in G1 vs CLE (Apr 18). Same right leg as 8-game plantar fasciitis absence earlier in April. Day-to-day \u2014 availability for G2 (Apr 20) uncertain.",
+      "conflict": "Today's news confirms Quickley missed Game 2 vs CLE (Apr 20) with right hamstring strain. His status for G3 remains unknown from available news.",
       "urgency": "monitor",
-      "suggested_action": "Update BOS vs PHI series diary to reflect BOS's 123-91 Game 1 rout. Log Tatum's 25/11/7 line \u2014 his playoff return was strong, which is relevant for PHI suppressor calibration (suppressor held: 25 pts is roughly in line with his tier but not an outlier blow-up). Note PHI's offense collapsed without Embiid \u2014 91 points in a blowout confirms suppressor dynamics remain active for this series."
+      "suggested_action": "Update Quickley's status: confirmed OUT for both G1 and G2 vs CLE. Remove 'availability for G2 uncertain' \u2014 G2 is resolved. Relabel as 'status for G3 (Apr 22) unknown \u2014 monitor injury report.' Series now 2-0 CLE without Quickley in either game."
     },
     {
-      "player_or_team": "NYK vs ATL \u2014 Series Result",
-      "current_context_fact": "Game 1: Apr 18, 6 PM ET at MSG. NYK won season series 2-1.",
-      "conflict": "Jalen Brunson scored 28 points (22 in the first half) and NYK defeated ATL 113-102 in Game 1. NYK leads 1-0.",
+      "player_or_team": "Billy Donovan (CHI)",
+      "current_context_fact": "CHI | Billy Donovan | (head coach)",
+      "conflict": "Today's news reports Billy Donovan has stepped down as Bulls head coach after six seasons. He is no longer the CHI head coach.",
       "urgency": "monitor",
-      "suggested_action": "Update NYK vs ATL series diary to reflect NYK's 113-102 Game 1 win with Brunson's 28-point performance. Log Brunson's first-half dominance (22 of 28 in H1) as relevant context for Game 2 defensive adjustments by ATL."
+      "suggested_action": "Update CHI head coach entry: Billy Donovan stepped down Apr 21, 2026. CHI head coach is currently vacant. Note: CHI is eliminated and this has no direct playoff prop impact, but the coach table should be corrected."
     },
     {
-      "player_or_team": "DEN vs MIN \u2014 Series Result / Aaron Gordon",
-      "current_context_fact": "Aaron Gordon \u2014 Calf/hamstring strains recurring over past two seasons. Missed 40 games this season. DEN's key defensive anchor. If he misses games vs MIN, DEN defense suffers significantly.",
-      "conflict": "News reports that Jamal Murray went 16-for-16 from the free throw line to lift DEN past MIN in Game 1, and that 'Nikola Jokic and Aaron Gordon had a quiet first half.' This confirms Gordon played Game 1 (no absence conflict), but his quiet first half is a new data point. DEN leads 1-0.",
+      "player_or_team": "Victor Wembanyama (SAS)",
+      "current_context_fact": "Victor Wembanyama is the primary scorer, rebounder, and shot-blocker on SAS. [No mention of DPOY award in the player notes section, though rib contusion and playoff debut are noted.]",
+      "conflict": "Today's news confirms Wembanyama won the Defensive Player of the Year award unanimously \u2014 the first unanimous DPOY winner and youngest ever at age 22. This is a confirmed new development not reflected in the context doc.",
       "urgency": "monitor",
-      "suggested_action": "Update DEN vs MIN series diary to reflect DEN's Game 1 win carried by Murray's 16-for-16 FT performance. Note Gordon had a quiet first half \u2014 monitor whether his calf/hamstring is limiting him or if it was a matchup-specific quiet game. Log Jokic's quiet first half as well \u2014 relevant for MIN AST suppressor tracking and Jokic prop evaluation in Game 2."
-    },
-    {
-      "player_or_team": "CLE vs TOR \u2014 Series Lead",
-      "current_context_fact": "Game 1: Apr 18, 1 PM ET at Cleveland. CLE appears healthy with Harden integrated.",
-      "conflict": "Today's news headline states 'Cleveland takes 1-0 lead into game 2 against Toronto,' confirming CLE won Game 1. No detailed box score in the news items, but the series result is confirmed.",
-      "urgency": "monitor",
-      "suggested_action": "Update CLE vs TOR series diary to reflect CLE's Game 1 win and 1-0 series lead. Add any available box score details if obtainable. Note that Game 2 is today (Apr 20) per the scheduling headline."
+      "suggested_action": "Add to Wembanyama player note: 'Won 2025-26 DPOY unanimously \u2014 first unanimous winner in NBA history and youngest ever (age 22).' This reinforces his defensive dominance narrative and is relevant context for opponent floor compression picks."
     }
   ],
   "staleness_flags": []

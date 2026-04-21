@@ -1,0 +1,244 @@
+[
+  {
+    "date": "2026-04-21",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "PHI is a +14.5 underdog \u2014 a large deficit game script means Maxey may face extended garbage-time or lineup changes in Q4 if the game is out of hand early, even with proj_min=40. The blowout risk on the road underdog side suppresses the floor more than the spread adjustment alone captures."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Volatile AST with no iron_floor, min confidence (74%), in a large-spread game where PHI trails by double digits \u2014 per historical miss pattern, AST T6+ in CLOSE or blowout scenarios against tough opponents at minimum confidence with no iron_floor is structurally borderline. The PHI blowout underdog script compresses assist opportunities as Maxey shifts to hero-ball isolation scoring, exactly the mechanism that caused the Edwards AST miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "SAS is an 11.5-point favorite with BLOWOUT_RISK \u2014 a blowout win triggers Q4 rest for rotation starters including Vassell, and his min_floor of 26.7 (vs avg 30.6) creates a real minutes-compression scenario in a runaway game. Even after the blowout penalty, the structural rest risk for a secondary perimeter player in a lopsided game remains."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 22.8 against an avg of 29.5 is a wide range for a BLOWOUT_RISK game \u2014 if SAS blows out POR early, Fox's minutes could land at the low end of his distribution, and T10 at the floor requires he stay active into the fourth. The spread-adjusted confidence already prices this in, but the structural minutes fragility in a blowout scenario is real given the min_floor gap."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile 3PM shooter with a min_floor of 22.8 in a blowout game \u2014 Fox's 3PM relies on him playing full minutes and taking perimeter shots, both of which compress in a lopsided SAS win. The H2H sample is only n=4, and the BLOWOUT game script could eliminate Fox's late-game shot volume entirely."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE scorer with a min_floor of only 25.0 (avg 28.5) in a -11.5 BLOWOUT_RISK game \u2014 Wembanyama is the most likely SAS star to be rested in Q4 of a blowout, and his post_miss_hr of only 71% (lift=0.80) is the weakest bounce-back signal on the slate, meaning this tier is not buttressed by a strong recovery pattern."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE secondary scorer in a -11.5 BLOWOUT_RISK game with FG_MARGIN_NEG already applied \u2014 Castle is precisely the BLOWOUT_SECONDARY_SCORER archetype the historical miss pattern flagged, and his min_floor of 25.7 vs avg 31.2 means a blowout-shortened appearance (normal variance in a runaway game) puts T10 at genuine risk. Per audit history, step-downs for BLOWOUT_SECONDARY_SCORER with FG_MARGIN_NEG are necessary but may still be insufficient when the game script is extreme."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE with FG_MARGIN_NEG:-9% and iron_floor at T20 in a -14.5 BLOWOUT_RISK game \u2014 Brown is a secondary scorer who may see reduced Q4 usage if BOS cruises, and his iron_floor classification only protects the floor tier structurally, not against blowout-driven minutes compression. The typical_miss of 10 pts below floor signals wide downside distribution."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Pritchard is explicitly a BLOWOUT_SECONDARY_SCORER in a -14.5 game \u2014 his min_floor of 23.4 means a single early-benching in a runaway BOS win puts T10 at risk, and his trend=down signals recent scoring compression. The blowout penalty was applied but secondary scorers in lopsided games face structural fourth-quarter irrelevance."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD:-21% triggered a mandatory step-down and the def_recency flag='tough' shows LAL has tightened dramatically (L5 avg 100.8 vs L15 avg 111.9, -9.9%). Sengun's post_miss_hr of 74% with lift=0.99 is essentially neutral \u2014 no reliable bounce-back signal supports recovery from cold-shooting form against a defense that has hardened over the past five games."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-21",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE 3PM shooter with post_miss_hr=70% (lift=0.80) \u2014 the weakest bounce-back signal on a volatile prop, and the def_recency flag='tough' confirms LAL has been a hardened defense over the last 5 games. Raw avg of 2.6 means T2 is close to the mean, and VOLATILE distribution makes a 0-1 3PM outcome structurally plausible against a tightened defense."
+    ],
+    "source": "auto"
+  }
+]

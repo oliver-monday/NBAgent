@@ -4830,5 +4830,46 @@
         "cannibalization_flags": null
       }
     ]
+  },
+  {
+    "date": "2026-04-21",
+    "parlays": [
+      {
+        "label": "Spurs-Rockets Floor Lock",
+        "card_type": "core",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Victor Wembanyama",
+            "team": "SAS",
+            "opponent": "POR",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "team": "HOU",
+            "opponent": "LAL",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+117",
+        "confidence_product": 0.6,
+        "correlation": "independent",
+        "rationale": "Two-game floor lock: Wemby stable 9/10 3PM trend paired with Smith STRONG-edge 3PM (20.22pp cal_edge, 8/10).",
+        "date": "2026-04-21",
+        "id": "parlay_2026-04-21_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 2
+      }
+    ]
   }
 ]
