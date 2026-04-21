@@ -47,12 +47,15 @@ jobs:
       - name: Run Auditor agent
         run: python agents/auditor.py
 
+      - name: Update season context (playoff diary)
+        run: python agents/season_context_updater.py
+
       - name: Commit audit results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          FILES="data/picks.json data/parlays.json data/audit_log.json data/audit_summary.json data/skipped_picks.json data/skipped_picks_archive.json data/post_game_news.json"
+          FILES="data/picks.json data/parlays.json data/audit_log.json data/audit_summary.json data/skipped_picks.json data/skipped_picks_archive.json data/post_game_news.json context/nba_season_context.md"
           for f in $FILES; do
             [ -f "$f" ] && cp "$f" "$f.local"
           done

@@ -99,10 +99,11 @@ NBAgent/
 ## Workflow Chain
 
 ```
-ingest.yml → auditor.yml → analyst.yml (rotowire refresh → quant → playoff_matchup → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy)
+ingest.yml → auditor.yml (post_game_reporter → auditor → season_context_updater) → analyst.yml (rotowire refresh → quant → playoff_matchup → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy)
 injuries.yml runs independently on :15/:45 schedule (rotowire → lineup_watch → lineup_update → site rebuild)
 odds_pretip.yml runs independently every 30 min 3–7:30 PM PT (pre-tip odds sweep → picks.json update → CLV baseline)
 post_game_reporter.py runs as first step of auditor.yml (fetches ESPN recaps + Rotowire news for yesterday's missed picks)
+season_context_updater.py runs after auditor.py (date-gated to PLAYOFFS_R1_DATE — appends series diary entries + injury-bullet updates to nba_season_context.md)
 ```
 
 - All workflows: `TZ: America/Los_Angeles`
@@ -127,6 +128,7 @@ post_game_reporter.py runs as first step of auditor.yml (fetches ESPN recaps + R
 | injury_profiles.py | — (pure Python) | — | player_game_log.csv, nba_master.csv, player_whitelist.csv, injuries_today.json | injury_profiles.json |
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |
 | lineup_update.py | claude-sonnet-4-6 | 2048 | lineups_today.json (snapshot), injuries_today.json, picks.json, nba_master.csv | picks.json (lineup_update sub-object on affected picks) |
+| season_context_updater.py | claude-sonnet-4-6 | 4096 | nba_master.csv, player_game_log.csv, post_game_news.json, injuries_today.json, nba_season_context.md (as ground truth + patch target) | nba_season_context.md (in-place patch: series diary entries + injury bullet updates + timestamp); date-gated to PLAYOFFS_R1_DATE |
 
 Full agent details → **@docs/AGENTS.md**
 

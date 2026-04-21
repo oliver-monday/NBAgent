@@ -119,6 +119,8 @@ team_defense_narratives.json  (per-team last-15g PPG allowed + rank, auto-genera
     ↓ auditor.py (next morning)
 picks.json + parlays.json  (result fields filled; human_verdict + trim_reasons tagged from review file)
 audit_log.json + audit_summary.json  (written; human_flag_precision block in audit_summary)
+    ↓ season_context_updater.py (date-gated to PLAYOFFS_R1_DATE — playoff-only)
+nba_season_context.md  (in-place patch: new series diary entries, injury-bullet updates, timestamp bump)
     ↓ build_site.py
 site/index.html  (deployed to GitHub Pages)
 ```
@@ -587,6 +589,23 @@ Original `confidence_pct`, `reasoning`, `pick_value`, `tier_walk` fields are NEV
 - `confidence`: `"confirmed"` or `"inferred"` from Claude classification; `null` for non-missed picks
 - **Graceful degradation:** ESPN recap failure → Claude classifies without recap. Rotowire failure → Claude classifies without Rotowire. Claude failure → fallback deterministic DNP detection from box scores. All failures logged, never crash.
 - **`BRAVE_API_KEY` no longer required** by this agent (removed as a dependency).
+
+### `season_context_updater.py` (runs in auditor.yml after auditor.py — NEW 2026-04-21)
+- Model: `claude-sonnet-4-6` | MAX_TOKENS: 4096
+- Date-gated: no-op before `PLAYOFFS_R1_DATE = "2026-04-18"`
+- Key inputs: `data/nba_master.csv` (yesterday's completed postseason games with season_type==3), `data/player_game_log.csv` (stat lines for whitelisted players + any non-whitelisted 25+ pt performers), `data/post_game_news.json` (narratives from post_game_reporter.py), `data/injuries_today.json` (current team-keyed injury status), `context/nba_season_context.md` (read + patched in place)
+- Key output: `context/nba_season_context.md` (in-place patch — appends series diary entries, patches injury bullets, bumps timestamp)
+- Core flow:
+  1. `load_yesterday_playoff_games()` — filters to completed postseason games
+  2. `find_series_sections()` — regex on `##### (N) TEAM vs (N) TEAM` headers; returns per-section dicts with `header_start`, `section_end`, `last_game_entry_end` (insertion point), and `game_count`
+  3. `match_game_to_series()` — symmetric home/away match against `team1`/`team2`
+  4. `load_player_stat_lines()` — per-game stats, sorted by pts desc
+  5. Single Claude call with full document in `<season_context>` tags as ground truth (combats stale training priors), structured game data, post-game narratives, relevant injuries
+  6. `parse_llm_response()` — 4-strategy parse: direct → strip fences → `json_repair` → brace extraction
+  7. `apply_diary_entries()` — bottom-up insertion to preserve offsets; inserts after last existing `**Game N**` paragraph
+  8. `apply_injury_updates()` — substring-match bullets by `search_line`, replace with `full_replacement`; graceful skip on missing
+  9. `update_timestamp()` — regex replace `*Last updated: YYYY-MM-DD.*`
+  10. Safety net: refuses to write if updated content shorter than original
 
 ### `playoff_matchup.py` (runs between quant and pre_game_reporter — NEW 2026-04-07)
 - Pure Python, no LLM call. Reads `data/playoff_bracket.json` (manually created by Oliver when bracket confirmed), `nba_master.csv`, `player_game_log.csv`, `player_whitelist.csv`

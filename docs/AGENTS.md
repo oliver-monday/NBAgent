@@ -403,6 +403,68 @@ Also updates `picks.json` and `parlays.json` in-place with graded results. Calls
 
 ---
 
+## season_context_updater.py — Playoff Series Diary Automation
+
+**Model:** `claude-sonnet-4-6`
+**MAX_TOKENS:** `4096`
+**Runs:** in `auditor.yml` directly after `auditor.py`, before the commit step
+
+**Purpose:** Automates daily playoff-diary updates to `context/nba_season_context.md` during R1 and beyond. The season context document is read by both the Analyst and Auditor on every run — its series diary entries, injury bullets, and suppressor notes drive contextual reasoning. This agent closes the last-mile automation gap: all the required data (scores, stat lines, post-game narratives, current injuries) already flows through the pipeline by the time auditor.py completes; this agent assembles them into new diary entries via a single Claude call.
+
+**Date gate:** No-op before `PLAYOFFS_R1_DATE = "2026-04-18"`. Safe to leave in the workflow year-round — exits cleanly with a log message during regular season and off-season.
+
+**Inputs consumed:**
+- `data/nba_master.csv` — yesterday's completed games (postseason only, `season_type == 3`); key fields: `home_team_abbrev`, `away_team_abbrev`, `home_score`, `away_score`, `home_spread`, `game_date`, `season_type`
+- `data/player_game_log.csv` — per-player box scores; filters to whitelisted players + any non-whitelisted 25+ pt performer on either team
+- `data/post_game_news.json` — narratives written by `post_game_reporter.py` earlier in the same workflow run
+- `data/injuries_today.json` — current injury statuses, keyed by team abbrev
+- `context/nba_season_context.md` — read as ground-truth context AND patched in place
+
+**Output written to:** `context/nba_season_context.md` (in-place patch)
+
+**Processing flow:**
+1. Date-gate check (`YESTERDAY_STR >= PLAYOFFS_R1_DATE`)
+2. Read season context; early-exit if missing or empty
+3. `load_yesterday_playoff_games()` — completed postseason games only
+4. `find_series_sections()` — regex over `##### (N) TEAM vs (N) TEAM` headers; returns per-section dicts with `header_start`, `section_end`, `last_game_entry_end` (= insertion point right after the last existing `**Game N**` paragraph), and `game_count`
+5. `match_game_to_series()` — symmetric team-pair match; sets `game_number = existing_count + 1`
+6. `load_player_stat_lines()` — per-game stats sorted by pts desc
+7. Build prompt with the FULL season context inside `<season_context>` tags (authoritative, combats stale training priors), game blocks, post-game narratives for mapped players, and injury bullets for teams that played yesterday
+8. Single Claude call; response parsed with four fallback strategies (raw JSON → markdown-fence strip → `json_repair` → brace extraction)
+9. `apply_diary_entries()` — inserts each new entry at its section's `last_game_entry_end`; applies bottom-up to preserve character offsets
+10. `apply_injury_updates()` — for each update, finds the existing bullet by substring match on `search_line`, replaces the entire bullet with `full_replacement`; graceful skip + warning if not found
+11. `update_timestamp()` — replaces `*Last updated: YYYY-MM-DD.*` with today's date
+12. Safety net: refuses to write if updated content is shorter than the original
+
+**Output schema (strict JSON from Claude):**
+```json
+{
+  "diary_entries": [
+    {
+      "team1": "ATL",
+      "team2": "NYK",
+      "game_number": 2,
+      "entry_text": "**Game 2 (Apr 20) — ATL 107, NYK 106 | Series tied 1-1**\n..."
+    }
+  ],
+  "injury_updates": [
+    {
+      "search_line": "**Anthony Edwards (MIN)** — Right knee",
+      "full_replacement": "- **Anthony Edwards (MIN)** — Right knee..."
+    }
+  ]
+}
+```
+
+**Failure modes:**
+- No playoff games yesterday → graceful exit with log message
+- No series sections found in document → graceful exit (handles pre-playoff state or empty doc)
+- LLM response JSON unparseable → error log, does NOT write the file
+- Injury `search_line` not found → warning, skip that update, continue
+- Updated content shorter than original → error log, does NOT write the file
+
+---
+
 ## lineup_update.py — Afternoon Lineup Amendment Agent
 
 **Model:** `claude-sonnet-4-6`
