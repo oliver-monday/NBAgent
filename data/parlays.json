@@ -4888,5 +4888,46 @@
         "cannibalization_flags": null
       }
     ]
+  },
+  {
+    "date": "2026-04-22",
+    "parlays": [
+      {
+        "label": "ORL-PHX Anchor",
+        "card_type": "core",
+        "type": "multi_game",
+        "legs": [
+          {
+            "player_name": "Paolo Banchero",
+            "team": "ORL",
+            "opponent": "DET",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 84,
+            "correlation_role": "rebounder"
+          },
+          {
+            "player_name": "Devin Booker",
+            "team": "PHX",
+            "opponent": "OKC",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "correlation_role": "independent"
+          }
+        ],
+        "implied_odds": "+101",
+        "confidence_product": 0.672,
+        "correlation": "independent",
+        "rationale": "Two STRONG-anchored REB legs from separate games; Booker +15.95pp STRONG edge drives value.",
+        "date": "2026-04-22",
+        "id": "parlay_2026-04-22_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 2
+      }
+    ]
   }
 ]

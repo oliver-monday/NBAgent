@@ -1,0 +1,172 @@
+[
+  {
+    "date": "2026-04-22",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Spread of -17.5 creates genuine Q4 rest risk for SGA even after the blowout penalty was applied \u2014 OKC leads by 20+ deep into games and stars get pulled early in Q4. At a volatile scoring profile, a single short-minutes blowout night can push him below 20 even with elite underlying rate."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "In a -17.5 blowout scenario, SGA's assist opportunities compress in Q4 when backups handle garbage time \u2014 no iron_floor here, and the historical lesson flags AST props at minimum confidence without iron_floor in dominant game scripts as structurally borderline."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 21.6 on a secondary scorer in a -17.5 blowout game means a single short-minutes night \u2014 very plausible if OKC leads by 25 in Q3 \u2014 puts him right at or below the threshold. Blowout rest risk for a rotation big is not fully offset by the penalty adjustment at this tier."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Pick's own reasoning flags the BLOWOUT_SECONDARY_SCORER check at spread_abs=17.5 \u2265 16.5 playoff threshold \u2014 Williams is a volatile secondary scorer with min_floor=20.0 and no iron_floor in an extreme blowout game. Even at the stepped-down T10 tier, the combination of volatility, Q4 rest risk, and post_miss_hr of only 67% makes this structurally fragile beyond what the penalty captures."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile tag with FG_MARGIN_THIN already forcing a step-down means Banchero is one cold shooting night away from falling short \u2014 the step-down bought margin but the underlying fragility (thin FG margin) remains. Post-miss bounce rate of 69% with a 4-point typical miss gap adds additional downside."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 17.9 is extremely low for a PTS prop even at T10, meaning a single low-usage or foul-trouble night produces a miss well within normal variance. FG_MARGIN_NEG already flagged a step-down; the volatile tag and 70% confidence with no iron_floor make the floor genuinely contingent on both minutes and shooting."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "raw_avg_REB of 3.8 is below the T6 threshold of 4 \u2014 this is a below-average rebounding prop being supported almost entirely by a small H2H sample (3/3) and a playoff boost adjuster, with no iron_floor. A single off-rebounding game returns Booker to his season average which misses the line."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "post_miss_hr of 62% with a lift below 1.0 (0.80) is the lowest bounce-back signal on the slate for a 3PM prop \u2014 combined with min_floor=0.0 (indicating minutes variance risk in the data) and the historical lesson that 3PM T1 props in playoff road games against tough defenses can go 0-for on cold nights, this carry meaningful cold-shooting exposure."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Ausar Thompson",
+    "team": "DET",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "def_recency flag is 'tough' with a steep -10.96% L5 delta \u2014 Orlando's defense has tightened sharply in recent games, and Thompson is a volatile wing AST prop at minimum confidence (70%) with no iron_floor, matching the historical miss pattern of minimum-confidence AST picks against confirmed tough/suppressing defensive contexts in competitive playoff games."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Isaiah Hartenstein",
+    "team": "OKC",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 18.1 on a center in a -17.5 blowout game is genuinely fragile \u2014 if OKC blows PHX out by Q3, Hartenstein's minutes compress sharply and his assist opportunities in garbage time are negligible. No iron_floor and minimum confidence leaves no statistical buffer."
+    ],
+    "source": "auto"
+  }
+]

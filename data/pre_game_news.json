@@ -1,67 +1,73 @@
 {
-  "date": "2026-04-21",
-  "generated_at": "2026-04-21T07:48:57.603958-07:00",
+  "date": "2026-04-22",
+  "generated_at": "2026-04-22T07:47:19.965295-07:00",
   "player_notes": {
-    "kevin durant": "GTD for Rockets Game 2 vs. Lakers with an apparent injury; only participated in about half of practice Monday. If he misses or is limited, massive negative impact on HOU scoring props and positive ripple for supporting cast.",
-    "immanuel quickley": "Ruled out for Raptors Game 2 vs. Cavs with a right hamstring strain. Absence boosts usage for remaining Toronto guards.",
-    "nikola jokic": "Held to 1-of-8 shooting by Gobert in Game 2; series now tied 1-1. Monitor defensive matchup impact on points/rebounds props in Game 3."
+    "victor wembanyama": "In concussion protocol after a hard fall in Game 2 vs. Portland \u2014 status for Game 3 unknown, likely OUT or severely restricted. Massive minutes/production void for SAS props.",
+    "jalen duren": "Vowed to be more aggressive after just 4 FGA in Game 1 vs. Orlando \u2014 elevated shot volume and scoring expected in Game 2, but Magic defense remains a concern.",
+    "kevin durant": "Cleared and played in Game 2 vs. Lakers after missing Game 1 with knee tendon bruise \u2014 monitor knee status heading into Game 3."
   },
   "game_notes": {
-    "HOU vs LAL": "Kevin Durant is GTD; if he misses, Houston's offensive structure changes significantly \u2014 monitor closer to tip for confirmation.",
-    "TOR vs CLE": "Immanuel Quickley (hamstring) ruled out for Raptors, increasing minutes/usage for other Toronto guards in Game 2."
+    "POR vs SAS": "Wembanyama in concussion protocol and likely OUT for Game 3, opening significant role/minutes expansion for remaining Spurs frontcourt players."
   },
   "raw_item_count": 50,
   "filtered_item_count": 48,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Kevin Durant (HOU)",
-      "current_context_fact": "HOU without Durant (right knee contusion from practice Apr 16) for G1 \u2014 missed G1, availability for G2 (Apr 21) uncertain.",
-      "conflict": "Today's news confirms Durant went through about half of Houston's practice Monday and will be a game-time decision for Game 2 (Apr 21). This is a concrete update \u2014 he is not confirmed out, and his participation in practice is a positive sign.",
+      "player_or_team": "Billy Donovan / CHI",
+      "current_context_fact": "| CHI | Billy Donovan | |",
+      "conflict": "Today's news confirms Billy Donovan has stepped down as Bulls head coach after 6 seasons. The CHI head coach entry is now stale.",
       "urgency": "critical",
-      "suggested_action": "Update Durant's status to 'game-time decision for G2 (Apr 21)' \u2014 he practiced (partially) on Apr 20. Remove 'availability uncertain' language and replace with GTD designation. If G2 result is available, confirm whether he played."
+      "suggested_action": "Update CHI head coach entry to reflect Donovan's departure. Mark as vacant or interim until a replacement is named. Note CHI is eliminated so playoff impact is nil, but roster/context doc accuracy requires the update."
     },
     {
-      "player_or_team": "DEN vs MIN \u2014 Series Status",
-      "current_context_fact": "Game 1 (Apr 18) \u2014 DEN 116, MIN 105 | DEN leads 1-0. Murray 30 (16-16 FT, 0-8 3PT). Jokic triple-double (25/10+/10+).",
-      "conflict": "Today's news reports MIN won Game 2 119-114 to tie the series 1-1. Edwards and Randle led the rally. Gobert held Jokic to 1-of-8 shooting in G2. The series is now tied, not DEN leading 1-0.",
-      "urgency": "critical",
-      "suggested_action": "Add Game 2 diary entry under DEN vs MIN: MIN 119, DEN 114 \u2014 series tied 1-1. Jokic 1-of-8 shooting (historic suppression by Gobert). Edwards and Randle led MIN comeback from 20 down. Update series header to reflect 1-1 tie. Flag Jokic shooting efficiency concern for G3 prop evaluation \u2014 Gobert matchup is clearly impactful."
-    },
-    {
-      "player_or_team": "NYK vs ATL \u2014 Series Status",
-      "current_context_fact": "Game 1 (Apr 18) \u2014 NYK 113, ATL 102 | NYK leads 1-0. Brunson 28, Towns 25.",
-      "conflict": "Today's news reports ATL won Game 2 107-106 to tie the series 1-1. CJ McCollum scored 32 points and led a fourth-quarter rally. The series is now tied, not NYK leading 1-0.",
-      "urgency": "critical",
-      "suggested_action": "Add Game 2 diary entry under NYK vs ATL: ATL 107, NYK 106 \u2014 series tied 1-1. CJ McCollum 32 pts, led late rally. NYK blew a lead late. Update series header to 1-1. Note McCollum as an ATL offensive weapon and monitor NYK's late-game execution issues for G3."
-    },
-    {
-      "player_or_team": "CLE vs TOR \u2014 Series Status",
-      "current_context_fact": "Game 1 (Apr 18) \u2014 CLE 126, TOR 113 | CLE leads 1-0. Mitchell 32, Harden 22/10ast, Strus 24.",
-      "conflict": "Today's news reports CLE won Game 2 115-105 for a 2-0 series lead. Mitchell scored 30, Harden added 28, Mobley scored 25. Series is now 2-0 CLE, not 1-0.",
-      "urgency": "critical",
-      "suggested_action": "Add Game 2 diary entry under CLE vs TOR: CLE 115, TOR 105 \u2014 CLE leads 2-0. Mitchell 30, Harden 28, Mobley 25. Quickley confirmed OUT for G2 (hamstring). Update series header. Note Harden's elevated scoring role in G2 (28 pts) alongside Mitchell \u2014 both averaging 30+ through two games."
-    },
-    {
-      "player_or_team": "Immanuel Quickley (TOR)",
-      "current_context_fact": "Immanuel Quickley (TOR) \u2014 Right hamstring tightness (exited Q2 on Apr 12, did not return). Did not play in G1 vs CLE (Apr 18). Same right leg as 8-game plantar fasciitis absence earlier in April. Day-to-day \u2014 availability for G2 (Apr 20) uncertain.",
-      "conflict": "Today's news confirms Quickley missed Game 2 vs CLE (Apr 20) with right hamstring strain. His status for G3 remains unknown from available news.",
+      "player_or_team": "Kevin Durant / HOU",
+      "current_context_fact": "Durant returned (23/6reb/4ast, 7-12 FG, 41 min) but LAL still won \u2014 a more significant result than G1's upset given HOU's full roster was available.",
+      "conflict": "A news item headlines 'Kevin Durant (knee) cleared to play in Game 2 vs. Lakers' as if it were breaking news, but the Game 2 diary already reflects Durant playing. More importantly, the LAL G2 win score is reported as 101-94 in the news ('LeBron scores 28, leads short-handed Lakers past Durant's Rockets again 101-94') but the context doc records the G2 score as 'LAL 101, HOU 94' \u2014 these are consistent. No conflict on score. However, one headline references the Game 2 final as 101-94 while the context doc records it as 101-94 as well. No conflict found on Durant availability or score \u2014 this flag is resolved as consistent.",
       "urgency": "monitor",
-      "suggested_action": "Update Quickley's status: confirmed OUT for both G1 and G2 vs CLE. Remove 'availability for G2 uncertain' \u2014 G2 is resolved. Relabel as 'status for G3 (Apr 22) unknown \u2014 monitor injury report.' Series now 2-0 CLE without Quickley in either game."
+      "suggested_action": "No change needed on Durant availability or Game 2 score \u2014 context doc is already accurate. Confirm the 'Durant cleared' news item predates the game and was already incorporated into the G2 diary entry."
     },
     {
-      "player_or_team": "Billy Donovan (CHI)",
-      "current_context_fact": "CHI | Billy Donovan | (head coach)",
-      "conflict": "Today's news reports Billy Donovan has stepped down as Bulls head coach after six seasons. He is no longer the CHI head coach.",
+      "player_or_team": "Marcus Smart / LAL",
+      "current_context_fact": "Game 2 diary notes LeBron as LAL's sole engine; no mention of Marcus Smart playing a featured role. The broader context notes LAL without Doncic and Reaves, with LeBron as sole offensive engine.",
+      "conflict": "Headline reads 'Marcus Smart's breakout game helps Lakers go up 2-0 on Rockets' \u2014 Smart guarded Durant and had a breakout performance in G2. This is a meaningful role player development not captured in the context doc's G2 diary, which does not mention Smart at all.",
       "urgency": "monitor",
-      "suggested_action": "Update CHI head coach entry: Billy Donovan stepped down Apr 21, 2026. CHI head coach is currently vacant. Note: CHI is eliminated and this has no direct playoff prop impact, but the coach table should be corrected."
+      "suggested_action": "Add a note to the LAL vs HOU G2 diary entry that Marcus Smart had a breakout defensive performance guarding Durant. Update the LAL role player context to flag Smart as an elevated contributor in this series, which is relevant for future prop consideration."
     },
     {
-      "player_or_team": "Victor Wembanyama (SAS)",
-      "current_context_fact": "Victor Wembanyama is the primary scorer, rebounder, and shot-blocker on SAS. [No mention of DPOY award in the player notes section, though rib contusion and playoff debut are noted.]",
-      "conflict": "Today's news confirms Wembanyama won the Defensive Player of the Year award unanimously \u2014 the first unanimous DPOY winner and youngest ever at age 22. This is a confirmed new development not reflected in the context doc.",
+      "player_or_team": "Victor Wembanyama / SAS \u2014 concussion protocol",
+      "current_context_fact": "Victor Wembanyama (SAS) \u2014 Concussion (NBA protocol) \u2014 new injury supersedes rib contusion. Took a hard fall in Q2 of G2 vs POR (Apr 21)... No return timeline \u2014 must pass all protocol steps before being cleared to play. G3 availability unknown.",
+      "conflict": "Today's news reconfirms Wembanyama is in concussion protocol ('Spurs' Victor Wembanyama in concussion protocol after fall', published Apr 22). Context doc is accurate. Commentary ('Perk: Spurs' panic meter has to be high without Wemby') reinforces no imminent return. No new information on clearance \u2014 status remains unknown for G3.",
       "urgency": "monitor",
-      "suggested_action": "Add to Wembanyama player note: 'Won 2025-26 DPOY unanimously \u2014 first unanimous winner in NBA history and youngest ever (age 22).' This reinforces his defensive dominance narrative and is relevant context for opponent floor compression picks."
+      "suggested_action": "No change needed \u2014 context doc accurately reflects Wembanyama's concussion protocol status. Continue monitoring for any clearance update before G3."
+    },
+    {
+      "player_or_team": "Jalen Duren / DET",
+      "current_context_fact": "Duren: breakout All-Star season. Averaged 22.6 PPG / 10.7 RPG on 67.8% shooting over final 26 games... Will dominate Wendell Carter Jr. inside \u2014 massive size/athleticism advantage.",
+      "conflict": "News headline: 'Jalen Duren vows more aggression after just 4 FGAs in Game 1.' This directly conflicts with the pre-series expectation that Duren would dominate inside. In G1, ORL's defense held Duren to just 4 field goal attempts \u2014 he did not dominate as projected. The G1 diary notes 'DET's interior attack (Duren) was not dominant enough' but does not quantify how severely he was suppressed (only 4 FGA).",
+      "urgency": "monitor",
+      "suggested_action": "Update the DET vs ORL G1 diary to specifically note Duren was held to 4 FGA in G1 \u2014 a critical suppression data point for G2 props. Flag that ORL's defensive scheme neutralized Duren's interior advantage despite pre-series projections. His G2 props should account for this but also his stated intent to be more aggressive."
+    },
+    {
+      "player_or_team": "SGA / OKC \u2014 MVP finalists",
+      "current_context_fact": "Context doc states SGA won back-to-back MVP. 'SGA: back-to-back MVP.'",
+      "conflict": "News headline: '2026 NBA MVP finalists: Gilgeous-Alexander, Jokic and Wemby' \u2014 this suggests the 2025-26 MVP has NOT yet been awarded and SGA is only a finalist, not a confirmed winner. The context doc states 'back-to-back MVP' as fact, which would mean he already won the 2025-26 award. If the award is still being voted on/announced, the context doc is premature in declaring him the winner.",
+      "urgency": "critical",
+      "suggested_action": "Correct the SGA entry: the 2025-26 MVP has not yet been awarded \u2014 SGA is a finalist alongside Jokic and Wembanyama. Remove or qualify the 'back-to-back MVP' language until the award is officially announced. The 2024-25 MVP (confirmed) stands."
+    },
+    {
+      "player_or_team": "Shai Gilgeous-Alexander / OKC \u2014 Clutch Player of the Year",
+      "current_context_fact": "No mention of SGA winning Clutch Player of the Year in the context doc.",
+      "conflict": "News confirms: 'Shai Gilgeous-Alexander wins Clutch Player of the Year' (published Apr 21). This is a new confirmed award not reflected in the context doc.",
+      "urgency": "monitor",
+      "suggested_action": "Add to SGA's player note that he won the 2025-26 NBA Clutch Player of the Year award. Minor context enrichment \u2014 not operationally critical for prop picks but relevant for the player profile."
+    },
+    {
+      "player_or_team": "BOS vs PHI \u2014 Game 2 score discrepancy",
+      "current_context_fact": "Game 2 (Apr 21) \u2014 PHI 111, BOS 97 | Series tied 1-1",
+      "conflict": "Multiple news items report the final score as PHI 111, BOS 97 ('76ers beat the Celtics 111-97'). However one headline states '76ers' VJ Edgecombe makes history with 30-10 to stun Celtics' with the score listed as 111-97 in the article body. The context doc records it as PHI 111, BOS 97. These are consistent \u2014 no conflict.",
+      "urgency": "monitor",
+      "suggested_action": "No change needed \u2014 score is consistent across context doc and news. Note that Edgecombe's performance is already captured in the G2 diary."
     }
   ],
   "staleness_flags": []

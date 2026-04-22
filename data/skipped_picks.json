@@ -1,259 +1,322 @@
 [
   {
-    "date": "2026-04-21",
-    "player_name": "Stephon Castle",
-    "team": "SAS",
-    "opponent": "POR",
-    "prop_type": "REB",
-    "tier_considered": 4,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "confidence_after_penalties": 72,
-      "minimum_floor": 78,
-      "penalties_applied": [
-        "VOLATILE -3%",
-        "BLOWOUT -5%"
-      ],
-      "note": "REB T4 confidence 72% fails 78% REB minimum confidence floor"
-    },
-    "actual_value": 7.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
-  },
-  {
-    "date": "2026-04-21",
-    "player_name": "Jayson Tatum",
-    "team": "BOS",
-    "opponent": "PHI",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "note": "H27 playoff calibration note contains AVOID for 3PM (-11pp drop) and PHI 3PM suppressor -45.6pp; per auditor feedback treat AVOID + severe suppressor as mandatory skip at T2; step to T1 required",
-      "tier_stepped_to": 1,
-      "T1_confidence": "80% base after step \u2192 PHI suppressor -15pp = 65% < 75% 3PM floor \u2192 skip T1 also"
-    },
-    "actual_value": 2.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
-  },
-  {
-    "date": "2026-04-21",
-    "player_name": "Payton Pritchard",
-    "team": "BOS",
-    "opponent": "PHI",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "note": "PHI 3PM suppressor -45.6pp; H2H at T2 vs PHI = 0/4 (0%); confidence drops below 75% 3PM minimum after suppressor applied despite iron_floor at T2 overall",
-      "confidence_after_suppressor": 65,
-      "minimum_3pm_floor": 75
-    },
-    "actual_value": 0.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 0.0 < tier 2"
-  },
-  {
-    "date": "2026-04-21",
-    "player_name": "Derrick White",
-    "team": "BOS",
-    "opponent": "PHI",
+    "date": "2026-04-22",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "PHX",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
-    "skip_reason": "merit_below_floor",
+    "skip_reason": "no_market",
     "rule_context": {
-      "confidence_after_penalties": 67,
-      "minimum_floor": 75,
-      "penalties_applied": [
-        "VOLATILE -3%",
-        "BLOWOUT -5%"
-      ],
-      "note": "Non-iron-floor 3PM T1 drops to 67% after penalties; below 75% 3PM minimum floor"
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "no FanDuel market available"
     },
-    "actual_value": 2.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-21",
-    "player_name": "Neemias Queta",
-    "team": "BOS",
-    "opponent": "PHI",
-    "prop_type": "REB",
-    "tier_considered": 4,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "confidence_after_penalties": 65,
-      "minimum_floor": 78,
-      "penalties_applied": [
-        "min_floor=0.0 concern -5%",
-        "REB slump-persistent G1 miss -5%",
-        "BLOWOUT -5%"
-      ],
-      "note": "Extreme min_floor volatility and G1 miss compound to drop confidence below 78% REB minimum"
-    },
-    "actual_value": 6.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
-  },
-  {
-    "date": "2026-04-21",
-    "player_name": "Paul George",
-    "team": "PHI",
-    "opponent": "BOS",
-    "prop_type": "REB",
-    "tier_considered": 4,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "overall_hit_rate": "7/10 (70%)",
-      "minimum_reb_floor": 78,
-      "note": "70% overall at T4 is below 78% REB minimum confidence floor; H27 +3.0 playoff boost is directional annotation only and cannot override the quantitative minimum"
-    },
-    "actual_value": 4.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
-  },
-  {
-    "date": "2026-04-21",
-    "player_name": "LeBron James",
-    "team": "LAL",
-    "opponent": "HOU",
+    "date": "2026-04-22",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "PHX",
     "prop_type": "AST",
     "tier_considered": 6,
     "direction": "OVER",
-    "skip_reason": "volatile_ast_t6",
+    "skip_reason": "volatile_weak_combo",
     "rule_context": {
-      "volatile_tag": true,
-      "ast_tier": 6,
-      "rule": "VOLATILE + AST tier >= T6 = hard skip, no exceptions",
-      "note": "T4 has no FanDuel market; T8+ also blocked by same rule"
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "VOLATILE tag + AST tier T6 = VOLATILE AST T6+ hard skip"
     },
-    "actual_value": 7.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 7.0 \u2265 tier 6"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-21",
-    "player_name": "Alperen Sengun",
-    "team": "HOU",
-    "opponent": "LAL",
+    "date": "2026-04-22",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "PHX",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "blowout_secondary_scorer",
+    "rule_context": {
+      "player_name": "Jalen Williams",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "spread_abs=17.5 >= 16.5 playoff threshold; Williams is secondary scorer; T15 hard-skipped (T10 floor exception used instead)"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "PHX",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Jalen Williams",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "70% base \u2192 VOLATILE -3% \u2192 67%; below 70% confidence floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "PHX",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "player_name": "Jalen Williams",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "VOLATILE tag + AST tier T6 = VOLATILE AST T6+ hard skip"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "opponent": "PHX",
     "prop_type": "REB",
     "tier_considered": 6,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "confidence_after_penalties": 72,
-      "minimum_reb_floor": 78,
-      "penalties_applied": [
-        "VOLATILE -3%"
-      ],
-      "note": "VOLATILE deduction alone drops REB T6 to 72%, below 78% REB minimum"
+      "player_name": "Chet Holmgren",
+      "prop_type": "REB",
+      "tier_considered": 6,
+      "reason": "After VOLATILE -3% and trend-down -5% penalties, confidence falls to ~74%, below 78% REB minimum floor"
     },
-    "actual_value": 11.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 11.0 \u2265 tier 6"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-21",
-    "player_name": "Alperen Sengun",
-    "team": "HOU",
-    "opponent": "LAL",
+    "date": "2026-04-22",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "opponent": "DET",
     "prop_type": "AST",
     "tier_considered": 4,
     "direction": "OVER",
-    "skip_reason": "ast_hard_gate",
+    "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_position": "C",
-      "raw_avgs_ast": 4.7,
-      "opp_defense_rating": "mid",
-      "rule": "AST T4+ hard gate: position C, opp must be soft to proceed; opp=mid \u2192 SKIP",
-      "note": "Gate fires on position C regardless of raw_avgs; opp=mid is not soft"
+      "player_name": "Paolo Banchero",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "vs_tough=62% (-18pp drop) + VOLATILE -3% + blowout underdog context drops confidence below 70% floor; season H2H T4 only 1/3=33%"
     },
-    "actual_value": 5.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-21",
-    "player_name": "Kevin Durant",
-    "team": "HOU",
-    "opponent": "LAL",
+    "date": "2026-04-22",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Cade Cunningham",
+      "prop_type": "PTS",
+      "tier_considered": 20,
+      "reason": "Overall T20 estimated below 70% (tier=15 at 70% implies T20 < 70%); VOLATILE -3% further reduces; no qualifying tier with available market"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "player_name": "Cade Cunningham",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "VOLATILE tag + AST tier T6 = VOLATILE AST T6+ hard skip; all available market tiers (T6, T8, T10, T12) blocked"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "player_name": "Cade Cunningham",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "trend=down mandatory step-down from T1; no iron_floor and no 9+/10 hit rate exception available; step below T1 minimum = skip"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "opponent": "OKC",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Devin Booker",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "Blowout underdog -8pp + soft_floor PTS/AST ratio -5pp drops confidence to ~67%, below 70% floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_tough_dvp",
+    "rule_context": {
+      "player_name": "Devin Booker",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "trend=down AND OKC tough DvP 3PM; hard skip fires; no 9+/10 at T1 exception (8/10)"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "opponent": "ORL",
     "prop_type": "PTS",
     "tier_considered": 15,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "confidence_after_penalties": 69,
-      "minimum_floor": 70,
-      "penalties_applied": [
-        "FG_MARGIN_THIN step T20\u2192T15",
-        "VOLATILE -3%",
-        "knee_penalty -5%",
-        "LAL suppressor -3%"
-      ],
-      "note": "At T15 confidence = 69% after penalties; T10 has no FanDuel market (PTS: T15 T20 T25 T30 only)"
+      "player_name": "Jalen Duren",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "FG_MARGIN_NEG step from T20\u2192T15; VOLATILE -3% + blowout -5% drops confidence to ~62%, well below 70% floor"
     },
-    "actual_value": 23.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 23.0 \u2265 tier 15"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-21",
-    "player_name": "Kevin Durant",
-    "team": "HOU",
-    "opponent": "LAL",
+    "date": "2026-04-22",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Jalen Duren",
+      "prop_type": "REB",
+      "tier_considered": 6,
+      "reason": "Post-miss slump -5% + VOLATILE -3% + trend-down -5% drops T6 confidence to ~72%, below 78% REB minimum floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-22",
+    "player_name": "Ausar Thompson",
+    "team": "DET",
+    "opponent": "ORL",
     "prop_type": "REB",
     "tier_considered": 4,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "confidence_after_penalties": 77,
-      "minimum_reb_floor": 78,
-      "note": "LAL suppressor reduces T4 REB confidence to 77%, 1pp below 78% REB minimum floor"
+      "player_name": "Ausar Thompson",
+      "prop_type": "REB",
+      "tier_considered": 4,
+      "reason": "VOLATILE -3% drops T4 REB to 77%, below 78% REB minimum floor"
     },
-    "actual_value": 6.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-21",
-    "player_name": "Jayson Tatum",
-    "team": "BOS",
-    "opponent": "PHI",
-    "prop_type": "AST",
-    "tier_considered": 4,
+    "date": "2026-04-22",
+    "player_name": "Isaiah Hartenstein",
+    "team": "OKC",
+    "opponent": "PHX",
+    "prop_type": "REB",
+    "tier_considered": 6,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "confidence_after_penalties": 65,
-      "minimum_floor": 70,
-      "penalties_applied": [
-        "VOLATILE -3%",
-        "BLOWOUT -5%"
-      ],
-      "note": "T6 blocked by VOLATILE_AST_T6 hard skip; T4 penalty cascade lands at 65% < 70% floor"
+      "player_name": "Isaiah Hartenstein",
+      "prop_type": "REB",
+      "tier_considered": 6,
+      "reason": "VOLATILE -3% drops 70% base to 67%, below both 70% general floor and 78% REB minimum floor"
     },
-    "actual_value": 9.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]
