@@ -570,6 +570,150 @@ def grade_picks(picks: list[dict], game_log: pd.DataFrame) -> list[dict]:
     return graded
 
 
+def promote_injury_event_voids(
+    graded_picks: list[dict],
+    audit_entry: dict,
+) -> int:
+    """Promote picks classified as injury_event by the auditor LLM to voided
+    status. This ensures picks.json, the daily audit entry, and the frontend
+    all exclude mid-game injury exits from hit-rate calculations.
+
+    Returns the number of picks promoted.
+    """
+    miss_details = audit_entry.get("miss_details", [])
+    if not miss_details:
+        return 0
+
+    # Build a set of (player_name_lower, prop_type, pick_value) for injury_event misses
+    injury_keys: set[tuple] = set()
+    for miss in miss_details:
+        if miss.get("miss_classification") != "injury_event":
+            continue
+        name = (miss.get("player_name") or "").strip().lower()
+        prop = (miss.get("prop_type") or "").strip()
+        val  = miss.get("pick_value")
+        if name and prop and val is not None:
+            injury_keys.add((name, prop, val))
+
+    if not injury_keys:
+        return 0
+
+    promoted = 0
+    for p in graded_picks:
+        if p.get("voided") or p.get("result") != "MISS":
+            continue
+        name = (p.get("player_name") or "").strip().lower()
+        prop = (p.get("prop_type") or "").strip()
+        val  = p.get("pick_value")
+        if (name, prop, val) in injury_keys:
+            p["voided"] = True
+            p["result"] = None
+            p["void_reason"] = "injury_exit_mid_game"
+            promoted += 1
+            print(f"[auditor] INJURY_EVENT_VOID: {p.get('player_name')} "
+                  f"{prop} {val} — mid-game injury exit → voided=True, result=null")
+
+    # Recompute daily audit entry counts to reflect the exclusions
+    if promoted > 0:
+        active = [p for p in graded_picks if not p.get("voided", False)]
+        hits   = sum(1 for p in active if p.get("result") == "HIT")
+        misses = sum(1 for p in active if p.get("result") == "MISS")
+        total  = hits + misses
+        voided = sum(1 for p in graded_picks if p.get("voided", False))
+
+        audit_entry["total_picks"]  = total
+        audit_entry["voided_picks"] = voided
+        audit_entry["hits"]         = hits
+        audit_entry["misses"]       = misses
+        audit_entry["hit_rate_pct"] = round(100 * hits / total, 1) if total > 0 else 0.0
+
+        # Recompute prop_type_breakdown
+        ptb = audit_entry.get("prop_type_breakdown", {})
+        if ptb:
+            for pt_key, pt_data in ptb.items():
+                pt_active = [p for p in active
+                             if p.get("prop_type") == pt_key
+                             and p.get("result") in ("HIT", "MISS")]
+                pt_hits = sum(1 for p in pt_active if p["result"] == "HIT")
+                pt_data["picks"] = len(pt_active)
+                pt_data["hits"]  = pt_hits
+                pt_data["hit_rate_pct"] = round(100 * pt_hits / len(pt_active), 1) if pt_active else 0.0
+
+        # Recompute confidence_calibration
+        ccb = audit_entry.get("confidence_calibration", {})
+        if ccb:
+            bands = {"70-75": (70, 75), "76-80": (76, 80), "81-85": (81, 85), "86+": (86, 100)}
+            for band, (lo, hi) in bands.items():
+                if band not in ccb:
+                    continue
+                subset = [p for p in active
+                          if lo <= p.get("confidence_pct", 0) <= hi
+                          and p.get("result") in ("HIT", "MISS")]
+                h = sum(1 for p in subset if p["result"] == "HIT")
+                ccb[band]["picks"] = len(subset)
+                ccb[band]["hits"]  = h
+                ccb[band]["hit_rate_pct"] = round(100 * h / len(subset), 1) if subset else 0.0
+
+        print(f"[auditor] Recomputed daily counts after {promoted} injury_event void(s): "
+              f"{hits}/{total} = {audit_entry['hit_rate_pct']}%")
+
+    return promoted
+
+
+def _retroactive_injury_void_patch() -> int:
+    """One-time patch for injury_event picks graded before the auto-void logic.
+
+    Safe to run repeatedly — only patches picks that match ALL criteria:
+    date=2026-04-21, player=Victor Wembanyama, result=MISS, voided!=True.
+    Remove this function after it has run once in production (or leave — it's idempotent).
+    """
+    if not PICKS_JSON.exists():
+        return 0
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+    except Exception:
+        return 0
+
+    patched = 0
+    for p in all_picks:
+        if (p.get("date") == "2026-04-21"
+                and (p.get("player_name") or "").strip().lower() == "victor wembanyama"
+                and p.get("result") == "MISS"
+                and not p.get("voided")):
+            p["voided"] = True
+            p["result"] = None
+            p["void_reason"] = "injury_exit_mid_game"
+            patched += 1
+
+    if patched:
+        with open(PICKS_JSON, "w") as f:
+            json.dump(all_picks, f, indent=2)
+
+        # Also patch the audit_log entry for 2026-04-21
+        if AUDIT_LOG_JSON.exists():
+            try:
+                with open(AUDIT_LOG_JSON) as f:
+                    audit_log = json.load(f)
+                for entry in audit_log:
+                    if entry.get("date") != "2026-04-21":
+                        continue
+                    # Subtract the injury_event misses from the daily counts
+                    entry["voided_picks"] = entry.get("voided_picks", 0) + patched
+                    entry["total_picks"]  = entry.get("total_picks", 0) - patched
+                    entry["misses"]       = entry.get("misses", 0) - patched
+                    total = entry.get("total_picks", 0)
+                    hits  = entry.get("hits", 0)
+                    entry["hit_rate_pct"] = round(100 * hits / total, 1) if total > 0 else 0.0
+                    break
+                with open(AUDIT_LOG_JSON, "w") as f:
+                    json.dump(audit_log, f, indent=2)
+            except Exception as e:
+                print(f"[auditor] WARNING: could not patch audit_log for retro fix: {e}")
+
+    return patched
+
+
 # ── H33 cannibalization data for parlay grading ──────────────────────
 
 _cannib_cache: dict | None = None
@@ -1926,6 +2070,13 @@ def print_summary(graded_picks: list[dict], graded_parlays: list[dict], audit_en
 def main():
     print(f"[auditor] Running for {YESTERDAY_STR}")
 
+    # ── One-time retroactive fix: Wemby 2026-04-21 injury_event picks ──
+    # These were graded as MISS before the injury_event auto-void logic existed.
+    # Patch them to voided=True, result=null to correct historical hit rates.
+    _retro_patched = _retroactive_injury_void_patch()
+    if _retro_patched:
+        print(f"[auditor] Retroactive injury void patch applied: {_retro_patched} pick(s)")
+
     picks = load_yesterdays_picks()
     if not picks:
         sys.exit(0)
@@ -1966,6 +2117,11 @@ def main():
         game_results_block=game_results_block,
     )
     audit_entry = call_auditor(prompt)
+
+    # Promote injury_event misses to voided status before saving
+    n_injury_voids = promote_injury_event_voids(graded_picks, audit_entry)
+    if n_injury_voids:
+        print(f"[auditor] Promoted {n_injury_voids} injury_event pick(s) to voided")
 
     save_audit(audit_entry, graded_picks, graded_parlays)
     print_summary(graded_picks, graded_parlays, audit_entry)

@@ -34370,7 +34370,7 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "35 PTS in G1, 80% overall at T20, no rib limitation confirmed, SAS home.",
-    "result": "MISS",
+    "result": null,
     "actual_value": 5.0,
     "market_line": 19.5,
     "market_implied_prob": 86.67,
@@ -34389,14 +34389,15 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-21T22:14:12.460587-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "VOLATILE scorer with a min_floor of only 25.0 (avg 28.5) in a -11.5 BLOWOUT_RISK game \u2014 Wembanyama is the most likely SAS star to be rested in Q4 of a blowout, and his post_miss_hr of only 71% (lift=0.80) is the weakest bounce-back signal on the slate, meaning this tier is not buttressed by a strong recovery pattern."
     ],
     "post_game_event": "injury_exit",
     "post_game_detail": "Diagnosed with a concussion after taking a hard fall in the second quarter; did not return and entered NBA concussion protocol",
-    "clv_pp": -3.33
+    "clv_pp": -3.33,
+    "void_reason": "injury_exit_mid_game"
   },
   {
     "date": "2026-04-21",
@@ -34417,7 +34418,7 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "95% overall at T1, consistent, 5 3PM in G1 playoff debut, SAS home.",
-    "result": "MISS",
+    "result": null,
     "actual_value": 0.0,
     "market_line": 0.5,
     "market_implied_prob": 93.55,
@@ -34436,12 +34437,13 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-21T22:14:12.460587-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "keep",
     "trim_reasons": [],
     "post_game_event": "injury_exit",
     "post_game_detail": "Diagnosed with a concussion after taking a hard fall in the second quarter; did not return and entered NBA concussion protocol",
-    "clv_pp": 0.22
+    "clv_pp": 0.22,
+    "void_reason": "injury_exit_mid_game"
   },
   {
     "date": "2026-04-21",

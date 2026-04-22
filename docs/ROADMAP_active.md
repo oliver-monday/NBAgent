@@ -88,6 +88,7 @@ Swept against ROADMAP_resolved.md — all items shipped through 2026-04-16 verif
 - W13 skip rule refinements — monitor FSR over next 20–30 picks (review ~4/21)
 - Season context update — Apr 21 G2 results (BOS-PHI, OKC-PHX, DET-ORL, SAS-POR, LAL-HOU) needed after games complete
 - Season context auto-updater — monitor diary entry quality through R1. If entries are consistently thin or miss pattern observations, consider switching to Opus or adding a review step.
+- Monitor injury_event auto-void — confirm next in-game injury exit is correctly voided in picks.json + frontend (auditor.py promote_injury_event_voids).
 
 **Known playoff transfer risks:**
 - H15 suppressors (HOU, PHI, LAL): measured against full-season schedule. Fixed matchups in playoffs may concentrate or invert signal.
