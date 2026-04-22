@@ -4866,9 +4866,26 @@
         "rationale": "Two-game floor lock: Wemby stable 9/10 3PM trend paired with Smith STRONG-edge 3PM (20.22pp cal_edge, 8/10).",
         "date": "2026-04-21",
         "id": "parlay_2026-04-21_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 2
+        "result": "MISS",
+        "legs_hit": 1,
+        "legs_total": 2,
+        "leg_results": [
+          {
+            "player_name": "Victor Wembanyama",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "result": "MISS",
+            "actual_value": 0.0
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "result": "HIT",
+            "actual_value": 3.0
+          }
+        ],
+        "cannibalization_flags": null
       }
     ]
   }

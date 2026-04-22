@@ -17,10 +17,10 @@
       ],
       "note": "REB T4 confidence 72% fails 78% REB minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-21",
@@ -36,10 +36,10 @@
       "tier_stepped_to": 1,
       "T1_confidence": "80% base after step \u2192 PHI suppressor -15pp = 65% < 75% 3PM floor \u2192 skip T1 also"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-21",
@@ -55,10 +55,10 @@
       "confidence_after_suppressor": 65,
       "minimum_3pm_floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-04-21",
@@ -78,10 +78,10 @@
       ],
       "note": "Non-iron-floor 3PM T1 drops to 67% after penalties; below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-21",
@@ -102,10 +102,10 @@
       ],
       "note": "Extreme min_floor volatility and G1 miss compound to drop confidence below 78% REB minimum"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-21",
@@ -121,10 +121,10 @@
       "minimum_reb_floor": 78,
       "note": "70% overall at T4 is below 78% REB minimum confidence floor; H27 +3.0 playoff boost is directional annotation only and cannot override the quantitative minimum"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-21",
@@ -141,10 +141,10 @@
       "rule": "VOLATILE + AST tier >= T6 = hard skip, no exceptions",
       "note": "T4 has no FanDuel market; T8+ also blocked by same rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-21",
@@ -163,10 +163,10 @@
       ],
       "note": "VOLATILE deduction alone drops REB T6 to 72%, below 78% REB minimum"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-21",
@@ -184,10 +184,10 @@
       "rule": "AST T4+ hard gate: position C, opp must be soft to proceed; opp=mid \u2192 SKIP",
       "note": "Gate fires on position C regardless of raw_avgs; opp=mid is not soft"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-21",
@@ -209,10 +209,10 @@
       ],
       "note": "At T15 confidence = 69% after penalties; T10 has no FanDuel market (PTS: T15 T20 T25 T30 only)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 23.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 23.0 \u2265 tier 15"
   },
   {
     "date": "2026-04-21",
@@ -228,10 +228,10 @@
       "minimum_reb_floor": 78,
       "note": "LAL suppressor reduces T4 REB confidence to 77%, 1pp below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-21",
@@ -251,9 +251,9 @@
       ],
       "note": "T6 blocked by VOLATILE_AST_T6 hard skip; T4 penalty cascade lands at 65% < 70% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
   }
 ]

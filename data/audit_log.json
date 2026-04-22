@@ -5448,5 +5448,136 @@
         "Anchoring a parlay with a STRONG-edge REB leg (Randle T6, 19.25pp positive edge) alongside a conservative independent AST leg (Mobley T2, near-floor) produced a +113 implied odds combination that captured genuine value without overreaching on tier selection. The combination pattern \u2014 one positive-edge value leg + one conservative floor leg from a different game \u2014 is the optimal core parlay template: the value leg drives the payout, the floor leg provides structural certainty."
       ]
     }
+  },
+  {
+    "date": "2026-04-21",
+    "total_picks": 22,
+    "voided_picks": 0,
+    "hits": 18,
+    "misses": 4,
+    "no_data": 0,
+    "hit_rate_pct": 81.8,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 10,
+        "hits": 8,
+        "hit_rate_pct": 80.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 4,
+        "hits": 2,
+        "hit_rate_pct": 50.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 13,
+        "hits": 11,
+        "hit_rate_pct": 84.6,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 9,
+        "hits": 7,
+        "hit_rate_pct": 77.8,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "AST props across all contexts went 6/6 \u2014 the floor-lock strategy at T2/T4 with confirmed H2H patterns (Maxey 5/5, White 5/5, Pritchard 5/5, Edgecombe 5/5, Fox 3/4, Thompson 4/4) continues to be the system's most reliable prop type in playoff series; the series-sample H2H confirmation adds meaningful signal beyond season-wide rates.",
+      "REB picks went 2/2 (Jabari Smith 100%, Thompson 85%) \u2014 consistent-tagged rebounders at conservative tiers (T4) with confirmed minutes projection (proj_min=42) hit cleanly even against a LAL suppressor environment; the cautious tier selection below the tested H2H ceiling (T6 available, T4 selected) provided the safety margin.",
+      "Underdog scorer logic worked: Maxey PTS T15 (actual 29) and Edgecombe PTS T10 (actual 30) both hit comfortably despite BOS being a -14.5 favorite \u2014 the correct application of blowout caps exclusively to the favored team's players, not the underdog, preserved two strong picks that lesser logic might have suppressed.",
+      "Tier stepping on FG_COLD and FG_MARGIN_NEG was vindicated across multiple hits: Fox PTS stepped T15\u2192T10 (actual 17, hit), Sengun PTS stepped T15\u2192T10 (actual 20, hit), Thompson PTS stepped T15\u2192T10 (actual 16, hit) \u2014 mandatory step-down rules consistently protected the system from overreach on shooting-cold or thin-margin scorers.",
+      "Fox AST T4 (actual 4, exact threshold) confirms the grading rule \u2014 exact-threshold results are HITs \u2014 and validates conservative tier selection for a primary PG (8 AST in G1, 9/10 overall) in a blowout-risk home game where the 80% spread cap was applied."
+    ],
+    "lessons": [
+      "3PM props are the clear weak link at 50% (2/4): both misses \u2014 Vassell and Wembanyama \u2014 went 0-for from three in a game that POR won by 3 (CLOSE). The close game script eliminated the primary risk factor the tier-walk cited (blowout Q4 rest), meaning the misses were pure cold-shooting variance, but the broader lesson is that 3PM T1 OVER picks at market-implied probabilities of 93-94% represent a systematic edge mismatch: the system's 80%-capped confidence is materially below market, and the market's pricing implies these are near-certain outcomes that occasionally fail on off-nights.",
+      "Wembanyama's injury exit (concussion, Q2, 12 minutes played) caused both his PTS T20 miss and his 3PM T1 miss \u2014 confirmed post_game_event = injury_exit. Both picks were sound at selection time with no pre-game injury flag (NOT_LISTED at check). The lesson is not analytical; it is operational: any pick on a player with documented physical vulnerability (Wemby was managing right ankle pain and had played only 4 games in the prior month after a rib contusion) should receive a pre-game injury-flag check that elevates a recent-return/multi-injury-concern player to a softer scrutiny tier, even when officially not listed.",
+      "Pritchard PTS T10 missed (actual 4, shot 2-8 / 0-4 3PT in 27 minutes) in a COMPETITIVE game (PHI won by 14) \u2014 the season H2H signal of 2/4 at T10 against PHI was a legitimate divergence from the 90% overall rate, and the tier-walk noted this concern but proceeded at 74%. The miss validates the principle: when season H2H hit rate vs. a specific opponent is \u226450% and the game is confirmed COMPETITIVE (not a blowout that compresses minutes), that divergence is a stronger signal than overall hit rate. A 50% H2H should trigger a skip or step-down to T5, not just a -3pp confidence penalty."
+    ],
+    "recommendations": [
+      "Implement a hard ceiling on 3PM T1 OVER picks when market-implied probability exceeds 90%: if the market prices 1+ three-pointers at 93%+, the system's 80%-capped confidence creates a structural FADE, not a selection. Do not select 3PM T1 OVER when market_implied_prob > 90% unless the pick has a positive calibrated edge \u2014 use the bet_recommendation tier as a gate, not just confidence_pct.",
+      "Introduce a multi-injury-concern flag for players returning from injury within 10 games AND managing a concurrent physical issue: Wembanyama qualified (rib contusion April 6, right ankle soreness, only 4 games since return) but was NOT_LISTED at check. For such players, apply a structural -10pp confidence penalty on all props regardless of injury_status_at_check, and do not include them as anchor legs in parlays.",
+      "When season H2H hit rate vs. a specific series opponent is \u226450% at the selected tier (as with Pritchard PTS T10, 2/4 vs PHI), require the H2H rate to be \u226570% OR the series G1 result to show the tier cleared by \u22655 points before proceeding \u2014 a single series game hit does not override a consistent season-long H2H pattern of underperformance against that opponent.",
+      "For Wembanyama PTS props specifically: the vs_tough=64% at T20 was a material warning signal that the tier-walk noted but absorbed with only a -5pp deduction. In future games, when vs_tough drops >15pp below overall hit rate at the selected tier, treat this as a mandatory one-tier step-down (not just a confidence penalty), yielding T15 at higher confidence rather than T20 at reduced confidence.",
+      "Strengthen the 3PM parlay construction rule: two 3PM legs from different games (Wemby 3PM + Jabari Smith 3PM) both had market-implied probabilities >70% individually, but combined into a parlay with implied odds of +117 \u2014 this represents a low-juice combination where individual cold-shooting nights (especially from a player with a recent injury concern) can collapse the parlay. Require at least one non-3PM leg in any two-leg parlay, or require at least one iron_floor-tagged leg when both legs are 3PM props."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "PTS",
+        "pick_value": 20,
+        "actual_value": 5.0,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": "null",
+        "root_cause": "In-game injury exit confirmed by post-game news and pick object post_game_event field \u2014 Wembanyama suffered a concussion after slamming his jaw into the hardwood following a Jrue Holiday foul in Q2, played only 12 minutes, and entered the NBA concussion protocol. Player was NOT_LISTED at injury check (active at pick time); miss is entirely attributable to an unforeseeable in-game injury, not to pick selection logic. No amendment was triggered pre-game. The 9/10 hit rate display and tier walk to T20 were sound; the outcome was determined by an acute injury event."
+      },
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": "null",
+        "root_cause": "In-game injury exit confirmed by post-game news and pick object post_game_event field \u2014 same concussion event as PTS miss above (12 minutes played, Q2 exit). The 3PM T1 pick had a 9/10 hit rate display and 95% overall rate; under normal game conditions (34+ minutes) this tier clears in the overwhelming majority of outcomes. The zero 3PM result is entirely explained by the early exit, not by cold shooting or analytical error. No amendment was triggered pre-game. Both Wembanyama misses share the same injury_event root cause and are structurally independent of pick selection quality."
+      },
+      {
+        "player_name": "Devin Vassell",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "Game context (STEP 0): POR @ SAS \u2014 POR won 106-103, a CLOSE game (3-point margin). No blowout game-script effects apply; Vassell played 34 full minutes confirming no restriction. Post-game news confirms cold shooting from deep (0-for on 3-pointers) with 16 points and 12 rebounds \u2014 a full, unrestricted game. The 9/10 hit rate display and iron_floor at T1 with a 90% overall rate represented a sound, well-supported pick. The tier walk correctly identified T1 at 90% overall (consistent tag), stepped down from T2 appropriately due to small H2H sample, and applied the spread cap (80% ceiling). The CLOSE game script is the key observation: the human_verdict trim rationale (Q4 rest in a blowout) was precisely wrong \u2014 SAS did not blow out POR, meaning Vassell played full minutes but simply went cold from three. This is a low-frequency cold-shooting event on a 9/10 pick; the quant signal was valid, the pick construction was sound, and the outcome falls within normal variance. No amendment was triggered."
+      },
+      {
+        "player_name": "Payton Pritchard",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 4.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "Game context (STEP 0): PHI @ BOS \u2014 PHI won 111-97, a COMPETITIVE game (14-point margin). Game script is a relevant partial factor: PHI won outright, meaning BOS trailed in periods and the 'BOS cruises, Pritchard gets garbage time' scenario did not materialize \u2014 instead the reverse occurred, with BOS trailing and Pritchard's minutes (27) being compressed by lineup adjustments to chase the deficit. Post-game news confirms he shot 2-8 / 0-4 from three (4 points in 27 minutes) with no injury \u2014 pure cold shooting and reduced opportunity in a game where BOS was losing. The tier-walk noted the season H2H concern explicitly (2/4 at T10 vs PHI, 50%), flagged it as 'concerning,' and applied a -3pp penalty \u2014 but did not step down from T10 or skip. This is a model_gap_rule miss: the signal was present (50% season H2H at the selected tier is a disqualifying rate by the system's own 70% standard), the rule existed (H2H divergence from overall rate warrants step-down or skip), but the rule's implementation allowed a -3pp penalty to substitute for the more appropriate mandatory step-down. The 9/10 overall hit rate display masked the specific matchup weakness. The PHI COMPETITIVE win (outright upset) compounded the issue: Pritchard's minutes were compressed not by BOS blowout-resting him, but by BOS needing to chase the deficit with its primary rotation. No amendment was triggered. Tier-walk noted the H2H concern correctly but the rule response was insufficient."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 0,
+      "misses": 1,
+      "partial": 0,
+      "parlay_summary": "0/1 \u2014 the Wembanyama 3PM leg failed due to a Q2 concussion injury exit (12 minutes played), collapsing the parlay despite the Jabari Smith 3PM leg hitting cleanly (3 made threes).",
+      "parlay_lessons": [
+        "Do not anchor a parlay on a player with documented multi-injury vulnerability (Wembanyama: rib contusion April 6, right ankle soreness, recent-return status) even when officially NOT_LISTED at injury check \u2014 an acute in-game injury on a player already managing multiple physical concerns is a structurally elevated risk that no pre-game injury status captures, and using such a player as a parlay leg exposes the entire card to a single-point-of-failure that is correlated with known physical fragility, not independent variance.",
+        "Two-leg parlays built entirely on 3PM props (Wembanyama 3PM T1 + Jabari Smith 3PM T2) represent a low-juice construction (+117 implied) where cold-shooting variance on either leg collapses the card \u2014 require at least one iron_floor non-3PM leg in any two-leg parlay, or require that both legs have positive calibrated edge (bet_recommendation = STRONG or POSITIVE) before combining; in this parlay, Wembanyama 3PM had a NEUTRAL bet recommendation (calibrated_edge = -1.85%) and should not have been used as a parlay anchor.",
+        "When the cannibalization_flags field is null on a missed parlay (as here), the failure was not a structural H33 cannibalization error but rather a single-leg injury_event \u2014 reinforce that parlay construction should still treat any leg with FADE or NEUTRAL bet_recommendation tier as ineligible for multi-leg combination, regardless of the analytical confidence_pct assigned."
+      ],
+      "parlay_reinforcements": [
+        "The Jabari Smith 3PM T2 leg (STRONG bet recommendation, +14.91pp calibrated edge) performed exactly as the selection logic intended \u2014 trend=up, 4/4 H2H vs LAL, actual 3 threes \u2014 confirming that STRONG-edge legs with confirmed H2H patterns and positive trend are the correct structural anchors for multi-leg parlays; the failure of this parlay was entirely due to the co-leg, not this leg's construction.",
+        "Cross-game multi-leg parlays (SAS game + HOU/LAL game) with genuinely independent correlation structures remain the correct parlay construction philosophy \u2014 the two legs had zero game-script correlation, meaning the LAL defensive performance had no bearing on SAS's 3PM output; the independence assumption was valid, and this structure should be preserved in future parlay construction while improving leg-quality gates."
+      ]
+    }
   }
 ]
