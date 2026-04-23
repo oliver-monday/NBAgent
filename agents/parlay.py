@@ -63,7 +63,6 @@ MAX_COMBO_POOL   = 25    # cap legs before combo generation (performance)
 MIN_LEGS         = 2     # minimum legs per card
 MIN_CONFIDENCE   = 70    # individual leg confidence floor (matches analyst's PTS/AST grace zone)
 MAX_CANDIDATES   = 50    # early-termination threshold per bucket
-MAX_PLAYER_CARDS = 2     # no player appears in more than this many cards
 
 
 # ── Injury exclusion helpers ──────────────────────────────────────────
@@ -283,30 +282,6 @@ def rank_score(card: dict) -> float:
     )
 
 
-def enforce_player_cap(cards: list[dict], max_appearances: int) -> list[dict]:
-    """Drop lower-ranked cards that would push any single player above
-    `max_appearances` total cards in the menu. Cards are processed in
-    rank order (highest first) — if an incoming card would put any of its
-    players over the cap, it's dropped.
-    """
-    appearances: dict[str, int] = {}
-    kept: list[dict] = []
-    for card in cards:
-        names = [leg["player_name"] for leg in card["legs"]]
-        # Would adding this card push any player over the cap?
-        violates = any(appearances.get(n, 0) + 1 > max_appearances for n in names)
-        if violates:
-            continue
-        for n in names:
-            appearances[n] = appearances.get(n, 0) + 1
-        kept.append(card)
-    dropped = len(cards) - len(kept)
-    if dropped:
-        print(f"[parlay] enforce_player_cap: dropped {dropped} card(s) "
-              f"to keep max {max_appearances} appearances per player")
-    return kept
-
-
 # ── Output ────────────────────────────────────────────────────────────
 
 def save_parlays(parlays: list[dict]):
@@ -473,28 +448,9 @@ def main():
         print("[parlay] No valid parlay cards generated. Exiting.")
         return
 
-    # Final pass: cap each player's appearances across the whole menu
-    # (cards are already in rank order within buckets; sort all_cards by
-    # rank_score globally so the cap drops the weakest duplicates first)
-    all_cards.sort(key=lambda c: c["rank_score"], reverse=True)
-    all_cards = enforce_player_cap(all_cards, max_appearances=MAX_PLAYER_CARDS)
-
-    # Re-label after cap (so labels stay sequential within their bucket)
-    by_bucket: dict[str, list[dict]] = {}
-    for card in all_cards:
-        by_bucket.setdefault(card["bucket"], []).append(card)
-    for label, cards in by_bucket.items():
-        cards.sort(key=lambda c: c["rank_score"], reverse=True)
-        for i, card in enumerate(cards):
-            card["label"] = f"{label} #{i + 1}"
-    # Reassemble in bucket order (Value → Standard → Reach)
-    all_cards = []
-    for bucket_label, *_ in ODDS_BUCKETS:
-        all_cards.extend(by_bucket.get(bucket_label, []))
-
     save_parlays(all_cards)
-    print(f"[parlay] Total: {len(all_cards)} cards across "
-          f"{sum(1 for k in by_bucket if by_bucket[k])} bucket(s)")
+    buckets_used = len({c["bucket"] for c in all_cards})
+    print(f"[parlay] Total: {len(all_cards)} cards across {buckets_used} bucket(s)")
 
 
 if __name__ == "__main__":

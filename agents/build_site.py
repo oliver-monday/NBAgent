@@ -2937,35 +2937,60 @@ function renderBuilder() {{
     </div>`;
   }} else {{
     // Compute combined probability
-    let combinedProb = 1;
-    let totalEdge = 0;
-    let edgeCount = 0;
+    // Combined MARKET probability (FanDuel) — drives COMBINED PROB, ODDS, PAYOUT
+    let combinedMarketProb = 1;
+    let anyMarketMissing = false;
     legs.forEach(leg => {{
-      const br = leg.bet_recommendation || {{}};
-      const prob = br.calibrated_prob != null ? br.calibrated_prob / 100 : leg.confidence_pct / 100;
-      combinedProb *= prob;
-      if (br.calibrated_edge_pct != null) {{
-        totalEdge += br.calibrated_edge_pct;
-        edgeCount++;
-      }}
+      const p = leg.market_implied_prob;
+      if (p == null) {{ anyMarketMissing = true; }}
+      else {{ combinedMarketProb *= p / 100; }}
     }});
 
-    // American odds
+    // Combined CALIBRATED probability (system's internal prediction) — drives NET EDGE
+    let combinedCalibratedProb = 1;
+    let anyCalibratedMissing = false;
+    legs.forEach(leg => {{
+      const p = (leg.bet_recommendation || {{}}).calibrated_prob;
+      if (p == null) {{ anyCalibratedMissing = true; }}
+      else {{ combinedCalibratedProb *= p / 100; }}
+    }});
+
+    // American odds — derived from MARKET prob (actual payout at book)
     let oddsInt = 0;
-    if (combinedProb > 0 && combinedProb < 1) {{
-      oddsInt = combinedProb < 0.5
-        ? Math.round(((1 / combinedProb) - 1) * 100)
-        : Math.round(-100 / ((1 / combinedProb) - 1));
+    if (!anyMarketMissing && combinedMarketProb > 0 && combinedMarketProb < 1) {{
+      oddsInt = combinedMarketProb < 0.5
+        ? Math.round(((1 / combinedMarketProb) - 1) * 100)
+        : Math.round(-100 / ((1 / combinedMarketProb) - 1));
     }}
-    const oddsStr = oddsInt >= 0 ? '+' + oddsInt : '' + oddsInt;
+    const oddsStr = anyMarketMissing ? '—' : (oddsInt >= 0 ? '+' + oddsInt : '' + oddsInt);
 
-    // Payout for $10 bet
-    const decimalOdds = oddsInt >= 0 ? (oddsInt / 100) + 1 : (100 / Math.abs(oddsInt)) + 1;
-    const payout = (10 * decimalOdds).toFixed(2);
+    // Payout for $10 bet — market odds
+    let payout = '—';
+    if (!anyMarketMissing) {{
+      let payout10;
+      if (oddsInt >= 100) {{
+        payout10 = (10 * oddsInt / 100) + 10;
+      }} else if (oddsInt <= -100) {{
+        payout10 = (10 * 100 / Math.abs(oddsInt)) + 10;
+      }} else {{
+        payout10 = 10;
+      }}
+      payout = payout10.toFixed(2);
+    }}
 
-    // Edge display
-    const edgeCls = totalEdge > 0 ? 'builder-edge-pos' : totalEdge < 0 ? 'builder-edge-neg' : 'builder-edge-neutral';
-    const edgeSign = totalEdge > 0 ? '+' : '';
+    // Combined prob display
+    const combinedProbStr = anyMarketMissing ? '—' : (combinedMarketProb * 100).toFixed(1) + '%';
+
+    // Net edge — combined calibrated prob minus combined market prob (pp)
+    let netEdgePp = null;
+    if (!anyMarketMissing && !anyCalibratedMissing) {{
+      netEdgePp = (combinedCalibratedProb * 100) - (combinedMarketProb * 100);
+    }}
+    const edgeCls = netEdgePp == null ? 'builder-edge-neutral'
+      : netEdgePp > 0 ? 'builder-edge-pos'
+      : netEdgePp < 0 ? 'builder-edge-neg' : 'builder-edge-neutral';
+    const edgeSign = netEdgePp != null && netEdgePp > 0 ? '+' : '';
+    const edgeStr = netEdgePp == null ? '—' : edgeSign + netEdgePp.toFixed(1) + 'pp';
 
     // Render legs
     let legsHtml = '';
@@ -2975,8 +3000,8 @@ function renderBuilder() {{
     legs.forEach((leg, i) => {{
       const pt = leg.prop_type || '';
       const propCls = {{'PTS':'prop-PTS','REB':'prop-REB','AST':'prop-AST','3PM':'prop-3PM'}}[pt] || '';
-      const br = leg.bet_recommendation || {{}};
-      const prob = br.calibrated_prob != null ? br.calibrated_prob.toFixed(1) + '%' : leg.confidence_pct + '%';
+      const mp = leg.market_implied_prob;
+      const prob = mp != null ? mp.toFixed(1) + '%' : '—';
       const idx = [...selected][i];
 
       legsHtml += `<div class="builder-leg-row">
@@ -3042,7 +3067,7 @@ function renderBuilder() {{
       ${{legsHtml}}
       <div class="builder-stats-row">
         <div class="builder-stat">
-          <div class="val">${{(combinedProb * 100).toFixed(1)}}%</div>
+          <div class="val">${{combinedProbStr}}</div>
           <div class="lbl">combined prob</div>
         </div>
         <div class="builder-stat">
@@ -3050,13 +3075,13 @@ function renderBuilder() {{
           <div class="lbl">odds</div>
         </div>
         <div class="builder-stat">
-          <div class="val">$${{payout}}</div>
+          <div class="val">${{payout === '—' ? '—' : '$' + payout}}</div>
           <div class="lbl">$10 payout</div>
         </div>
-        ${{edgeCount > 0 ? `<div class="builder-stat">
-          <div class="val ${{edgeCls}}">${{edgeSign}}${{totalEdge.toFixed(1)}}pp</div>
+        <div class="builder-stat">
+          <div class="val ${{edgeCls}}">${{edgeStr}}</div>
           <div class="lbl">net edge</div>
-        </div>` : ''}}
+        </div>
       </div>
       ${{warningsHtml ? `<div class="builder-warnings">${{warningsHtml}}</div>` : ''}}
       <div class="builder-actions">
@@ -3097,30 +3122,36 @@ function copyBuilder() {{
   const legs = [...(window._builderState || [])].map(i => allPicks[i]).filter(Boolean);
   if (!legs.length) return;
 
-  let combinedProb = 1;
-  const lines = legs.map(leg => {{
-    const br = leg.bet_recommendation || {{}};
-    const prob = br.calibrated_prob != null ? br.calibrated_prob / 100 : leg.confidence_pct / 100;
-    combinedProb *= prob;
-    const edgeStr = br.calibrated_edge_pct != null
-      ? ' (edge ' + (br.calibrated_edge_pct > 0 ? '+' : '') + br.calibrated_edge_pct.toFixed(1) + 'pp)'
-      : '';
-    return leg.player_name + ' ' + leg.pick_value + ' ' + leg.prop_type;
+  // Combined MARKET probability (FanDuel) — drives odds and payout
+  let combinedMarketProb = 1;
+  let anyMarketMissing = false;
+  legs.forEach(leg => {{
+    const p = leg.market_implied_prob;
+    if (p == null) {{ anyMarketMissing = true; }}
+    else {{ combinedMarketProb *= p / 100; }}
   }});
 
-  let oddsInt = 0;
-  if (combinedProb > 0 && combinedProb < 1) {{
-    oddsInt = combinedProb < 0.5
-      ? Math.round(((1 / combinedProb) - 1) * 100)
-      : Math.round(-100 / ((1 / combinedProb) - 1));
+  const lines = legs.map(leg => leg.player_name + ' ' + leg.pick_value + ' ' + leg.prop_type);
+
+  let oddsStr = '—';
+  let payoutStr = '—';
+  let combinedStr = '—';
+  if (!anyMarketMissing && combinedMarketProb > 0 && combinedMarketProb < 1) {{
+    const oddsInt = combinedMarketProb < 0.5
+      ? Math.round(((1 / combinedMarketProb) - 1) * 100)
+      : Math.round(-100 / ((1 / combinedMarketProb) - 1));
+    oddsStr = oddsInt >= 0 ? '+' + oddsInt : '' + oddsInt;
+    let payout10;
+    if (oddsInt >= 100) payout10 = (10 * oddsInt / 100) + 10;
+    else if (oddsInt <= -100) payout10 = (10 * 100 / Math.abs(oddsInt)) + 10;
+    else payout10 = 10;
+    payoutStr = '$' + payout10.toFixed(2);
+    combinedStr = (combinedMarketProb * 100).toFixed(1) + '%';
   }}
-  const oddsStr = oddsInt >= 0 ? '+' + oddsInt : '' + oddsInt;
-  const decimalOdds = oddsInt >= 0 ? (oddsInt / 100) + 1 : (100 / Math.abs(oddsInt)) + 1;
-  const payout = (10 * decimalOdds).toFixed(2);
 
   const text = 'NBAgent Custom Parlay — ' + DATA.today_str + '\\n'
     + lines.join('\\n')
-    + '\\nCombined: ' + (combinedProb * 100).toFixed(1) + '% | ' + oddsStr + ' | $10 → $' + payout;
+    + '\\nCombined: ' + combinedStr + ' | ' + oddsStr + ' | $10 → ' + payoutStr;
 
   navigator.clipboard.writeText(text).then(() => {{
     const msg = document.getElementById('builder-copied-msg');
