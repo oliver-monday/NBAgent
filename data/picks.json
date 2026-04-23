@@ -1162,7 +1162,16 @@
     "opp_defense_rating": "mid",
     "reasoning": "Explosive recent form with 45 and 39 pt games; well-rested with 3 days off and home advantage.",
     "result": "HIT",
-    "actual_value": 28.0
+    "actual_value": 28.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1232,13 +1241,11 @@
     "result": "HIT",
     "actual_value": 17.0,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -1256,7 +1263,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "Rock-solid rebounder; TOR switching scheme reduces post opportunities but boards remain accessible.",
     "result": "HIT",
-    "actual_value": 8.0
+    "actual_value": 8.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1538,11 +1552,13 @@
     "result": "HIT",
     "actual_value": 28.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -1560,7 +1576,18 @@
     "opp_defense_rating": "soft",
     "reasoning": "All-time playmaking big; LAL mid pace with no elite rim protector enables Jokic's elite passing floor.",
     "result": "HIT",
-    "actual_value": 13.0
+    "actual_value": 13.0,
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-05",
@@ -2221,11 +2248,13 @@
     "result": "HIT",
     "actual_value": 38.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -2243,7 +2272,16 @@
     "opp_defense_rating": "tough",
     "reasoning": "80% T20 overall; competitive close game vs NYK keeps him high-usage; bb_lift 1.21 signals post-miss bounce.",
     "result": "MISS",
-    "actual_value": 12.0
+    "actual_value": 12.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-03-06",
@@ -3152,13 +3190,11 @@
     "result": "MISS",
     "actual_value": 14.0,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -3177,7 +3213,14 @@
     "tier_walk": "REB: 8\u21924/10 6\u21925/10 4\u21929/10\u2713",
     "reasoning": "9/10 at T4; 25th-pctl gate: 3rd-lowest L10 is 3 reb so T4 is tight \u2014 but 9/10 clears 78% minimum.",
     "result": "HIT",
-    "actual_value": 9.0
+    "actual_value": 9.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-03-08",
@@ -4392,11 +4435,13 @@
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -4419,7 +4464,17 @@
     "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-09",
@@ -4716,7 +4771,16 @@
     "actual_value": 21.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-03-09",
@@ -5367,13 +5431,11 @@
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -5396,7 +5458,14 @@
     "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-03-10",
@@ -6516,13 +6585,11 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -6545,7 +6612,14 @@
     "actual_value": 6.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-03-11",
@@ -6967,11 +7041,13 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -6994,7 +7070,17 @@
     "actual_value": 13.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-11",
@@ -7775,7 +7861,16 @@
     "actual_value": 39.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-03-12",
@@ -8219,11 +8314,13 @@
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -8246,7 +8343,17 @@
     "actual_value": 12.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-12",
@@ -8998,13 +9105,11 @@
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -9710,7 +9815,16 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-03-14",
@@ -10100,11 +10214,13 @@
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -10128,7 +10244,17 @@
     "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-14",
@@ -10263,13 +10389,11 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -10293,7 +10417,14 @@
     "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-03-15",
@@ -12950,13 +13081,11 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -13142,11 +13271,13 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -13170,7 +13301,17 @@
     "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-17",
@@ -13693,13 +13834,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -13955,11 +14094,13 @@
       "keep as standalone only with awareness it is the system's highest-risk pick today"
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -14961,13 +15102,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -15221,11 +15360,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -15249,9 +15390,19 @@
     "actual_value": 9.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": null,
-    "trim_reasons": []
+    "trim_reasons": [],
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-20",
@@ -15758,11 +15909,13 @@
       "BLOWOUT_RISK is real even after the confidence cap: DEN is an 8.5-point home favorite, and Jokic \u2014 the team's primary star \u2014 is the classic Q4 rest candidate when games are decided early. The floor_minutes of 29.5 vs avg 35.8 shows meaningful minutes variance, meaning a single early-decision game compresses his counting stats window despite a strong historical hit rate."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -15786,11 +15939,21 @@
     "actual_value": 14.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "VOLATILE tag on AST plus BLOWOUT_RISK creates the exact correlated downside flagged in the historical miss lessons: blowout game scripts compress structured half-court creation opportunities, and Jokic's AST distribution is wide (volatile). Per audit history, two or more of {volatile AST, road-underdog/blowout spread, blowout risk} co-occurring on AST T6+ warrants heightened scrutiny \u2014 here blowout risk and volatile AST co-occur at exactly T6."
-    ]
+    ],
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-03-22",
@@ -15819,13 +15982,11 @@
       "MIN is a 10.5-point road underdog at BOS, creating a severe losing-side blowout-loss risk. Historical lessons explicitly flag that losing-side blowout scripts reduce the primary forward's scoring volume, and Randle's post_miss_hr of only 64% (lift=0.80) signals meaningful downside persistence. The Without-Edwards baseline elevates confidence, but a blowout loss context would structurally suppress his volume regardless."
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -15853,7 +16014,14 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "REB is confirmed slump-persistent per audit rules, and the post_miss_hr of 88% is solid but the T4 exact-match exemption (no lower valid tier) means this is the floor \u2014 one bad game produces a miss with no cushion. The 10.5-point spread on the losing side creates a blowout-loss scenario that historically compresses possession counts and rebounding opportunities for the trailing team's primary forward."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-03-22",
@@ -17726,13 +17894,11 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     }
   },
   {
@@ -18189,12 +18355,12 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Elijah Harkless (UTA) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters"
       ],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless absence doesn't materially shift Utah's frontcourt rebounding; Jokic's volatile REB pick stays at floor."
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
     }
   },
   {
@@ -18782,13 +18948,11 @@
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Ayo Dosunmu (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-03-28T14:02:10.880875-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Dosunmu is a low-usage role player; no meaningful impact on Randle's already-elevated usage or scoring."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -19137,12 +19301,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Gui Santos (GSW) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters"
       ],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -20543,12 +20707,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Elijah Harkless (UTA) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters"
       ],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless is a role player; his absence has no meaningful impact on Jokic's scoring floor vs soft Utah defense."
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
     }
   },
   {
@@ -20581,12 +20745,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Elijah Harkless (UTA) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters"
       ],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Harkless absence doesn't materially shift Utah's frontcourt rebounding; Jokic's volatile REB pick stays at floor."
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
     }
   },
   {
@@ -21978,7 +22142,16 @@
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+    }
   },
   {
     "date": "2026-04-04",
@@ -22011,7 +22184,16 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "vs_tough=59% and competitive=67% both sit materially below Jokic's overall REB rate, and SA's defense has been trending tighter over the L5 (delta_pct=-5.9%). REB is confirmed slump-persistent per audit history \u2014 if Jokic had a sub-par board game recently, the combined tough-matchup and split suppression creates a structurally softer floor than iron_floor status would imply (notably, iron_floor=False here)."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+    }
   },
   {
     "date": "2026-04-04",
@@ -22040,9 +22222,19 @@
     "odds_fetched_at": "2026-04-04T06:57:59.957095-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-04-04",
@@ -22075,7 +22267,16 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "VOLATILE tag combined with opp_defense=tough and a typical_miss of 7 pts below threshold means a bad shooting night easily undershoots T15 \u2014 the distribution is wide enough that the structural floor is genuinely fragile, and the FG_MARGIN_NEG penalty already forced a step-down indicating thin scoring margin above the line."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-04-04",
@@ -22671,7 +22872,14 @@
     "injury_check_time": "2026-04-05T22:34:17.483923-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+    }
   },
   {
     "date": "2026-04-05",
@@ -22885,7 +23093,16 @@
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+    }
   },
   {
     "date": "2026-04-06",
@@ -22914,11 +23131,21 @@
     "odds_fetched_at": "2026-04-06T07:20:09.941971-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-06T22:20:32.028853-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "An -8.5 blowout spread creates genuine Q4 rest risk for Jokic's counting stats; assists require sustained offensive possessions in a competitive game, and a Portland team that falls apart early shrinks Jokic's 4th-quarter distribution opportunities precisely when he needs them to clear 8."
-    ]
+    ],
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-04-06",
@@ -22951,7 +23178,16 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "VOLATILE tag combined with an -8.5 blowout spread is a compounding risk: if DEN builds a large lead early, Jokic sits in Q4 and REB accumulation halts; the VOLATILE distribution means he can miss badly even in a full-minutes game, and blowout rest is an additional minutes ceiling the iron_floor doesn't protect against."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+    }
   },
   {
     "date": "2026-04-06",
@@ -23391,7 +23627,14 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "Spread of -12.5 creates genuine blowout game-script risk: even after Pick's blowout penalty, MIN as a heavy favorite means Randle \u2014 a secondary scorer with moderate volatility and a post-miss hit rate of only 69% \u2014 could see Q4 minutes compressed if the game is decided early. The min_floor of 28.8 vs a 33.4 average leaves meaningful downside if rest/garbage-time pulls him before he reaches the threshold."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+    }
   },
   {
     "date": "2026-04-07",
@@ -24414,7 +24657,16 @@
     "injury_check_time": "2026-04-08T21:59:15.092650-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+    }
   },
   {
     "date": "2026-04-08",
@@ -25897,7 +26149,16 @@
     "human_verdict": "manual_skip",
     "trim_reasons": [
       "This is an exact replay of the audited Jokic PTS T15 miss: VOLATILE scorer, blowout-risk spread (12.5), DEN as heavy favorite, 74% confidence cap \u2014 the prior session confirmed Jokic was pulled in Q4 under nearly identical conditions and missed by 1 point. The audit explicitly notes the iron_floor tag at T20 did not protect T15 from garbage-time minute reduction on a large spread, and the structural risk is not fully captured by the existing blowout cap."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+    }
   },
   {
     "date": "2026-04-10",
@@ -25983,7 +26244,16 @@
     "void_reason": "player OUT per injury report",
     "lineup_risk": "high",
     "human_verdict": null,
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-04-10",
@@ -30272,7 +30542,16 @@
     "trim_reasons": [
       "Jokic carries a volatile REB tag and the T10 pick sits just below his raw_avg of 13.4, but non-iron-floor REB on a volatile player means single-game variance (foul trouble, pace, MIN rotations) can push him under 10 on any given night. The post_miss_hr bounce-back framing also implies he misses more than twice a season at this tier."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+    }
   },
   {
     "date": "2026-04-18",
@@ -30315,7 +30594,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-04-18",
@@ -31289,7 +31577,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+    }
   },
   {
     "date": "2026-04-18",
@@ -31332,7 +31629,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-04-18",
@@ -32868,7 +33174,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.76
+    "clv_pp": 0.76,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+    }
   },
   {
     "date": "2026-04-20",
@@ -32913,7 +33228,16 @@
     "trim_reasons": [
       "REB is confirmed slump-persistent and iron_floor is absent here; with a VOLATILE tag and overall only 75% at this tier (borderline qualification), a single low-rebound game is well within Jokic's wide distribution. The typical_miss of only 2.0 pts below the line means even a modest off-rebounding night produces a loss."
     ],
-    "clv_pp": -2.42
+    "clv_pp": -2.42,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+    }
   },
   {
     "date": "2026-04-20",
@@ -32956,7 +33280,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -0.34
+    "clv_pp": -0.34,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-04-20",
@@ -33993,7 +34326,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.62
+    "clv_pp": 0.62,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+    }
   },
   {
     "date": "2026-04-20",
@@ -34038,7 +34380,16 @@
     "trim_reasons": [
       "Randle's raw_avg_REB of only 6.5 sits barely above the T6 line, and with a VOLATILE tag his distribution is wide enough that the typical_miss of 1.0 below the line means he misses by a single rebound in roughly 25% of games. The step-down from T8 (H2H 1/5 vs DEN) signals genuine DEN-specific suppression of his rebounding that the overall hit rate may not fully capture."
     ],
-    "clv_pp": 3.96
+    "clv_pp": 3.96,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-04-20",
@@ -34214,7 +34565,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -1.84
+    "clv_pp": -1.84,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon's defensive presence gone; McDaniels gets easier looks, amplifying already strong trend-up and H2H record."
+    }
   },
   {
     "date": "2026-04-21",
@@ -37016,7 +37376,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37056,7 +37425,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37096,7 +37474,17 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 67,
+      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37136,7 +37524,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37176,7 +37573,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37216,7 +37622,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37256,7 +37671,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Gordon's defensive presence gone; McDaniels gets easier looks, amplifying already strong trend-up and H2H record."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37338,6 +37762,15 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T15:00:41.054605-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Aaron Gordon (DEN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Gordon absence doesn't directly affect Johnson's 3PM opportunities; role and minutes largely unchanged at 32min."
+    }
   }
 ]
