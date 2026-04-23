@@ -2713,5 +2713,228 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T15:27:27.398225-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "teammate",
+    "player_name": "Cameron Johnson",
+    "team": "DEN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 68.25,
+        "market_odds": -215
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T10 80% [down] (mkt 68%, edge +12pp); H33: PTS was cannibalized -20.6pp by Nikola Jokic \u2192 freed ceiling",
+    "best_edge_pp": 11.8,
+    "best_edge_prop": "PTS",
+    "priority": "high",
+    "cannib_freed": true,
+    "cannib_idx": -20.6,
+    "cannib_detail": "PTS was cannibalized -20.6pp by Nikola Jokic \u2192 freed ceiling"
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T15:27:27.398225-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Anthony Edwards",
+    "team": "MIN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 90.91,
+        "market_odds": -1000
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 95,
+        "trend": "stable",
+        "volatility": "consistent",
+        "market_implied_pct": 97.22,
+        "market_odds": -3500
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 86.11,
+        "market_odds": -620
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (reb_floor_skip)",
+    "reasoning": "PTS T20 75% [down] (mkt 91%, edge -16pp); AST T2 95% [stable] (mkt 97%, edge -2pp); 3PM T2 85% [down] (mkt 86%, edge -1pp); skipped this morning (reb_floor_skip)",
+    "best_edge_pp": -1.1,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T15:27:27.398225-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Jaden McDaniels",
+    "team": "MIN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 78.72,
+        "market_odds": -370
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T2 80% [down] (mkt 79%, edge +1pp)",
+    "best_edge_pp": 1.3,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T15:27:27.398225-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "teammate",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 73.68,
+        "market_odds": -280
+      },
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 69.23,
+        "market_odds": -225
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 86.11,
+        "market_odds": -620
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T4 70% [stable] (mkt 74%, edge -4pp); AST T6 70% [stable] (mkt 69%, edge +1pp); 3PM T2 75% [stable] (mkt 86%, edge -11pp)",
+    "best_edge_pp": 0.8,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T15:27:27.398225-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 72.6,
+        "market_odds": -265
+      }
+    },
+    "upgrade_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 68.25,
+        "market_odds": -215,
+        "morning_tier": 4,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T4 70% [stable] (mkt 73%, edge -3pp); REB T6 75% [stable] (mkt 68%, edge +7pp)",
+    "best_edge_pp": 6.8,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T15:27:27.398225-07:00",
+    "triggered_by": "Nikola Jokic",
+    "triggered_by_team": "DEN",
+    "side": "opponent",
+    "player_name": "Rudy Gobert",
+    "team": "MIN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 10,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 64.03,
+        "market_odds": -178
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "REB T10 70% [stable] (mkt 64%, edge +6pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 6.0,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
