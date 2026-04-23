@@ -1,86 +1,69 @@
 #!/usr/bin/env python3
 """
-NBAgent — Parlay Agent
+NBAgent — Parlay Agent (Combinatorial Menu Builder)
 
-Runs after Analyst. Reads today's picks from data/picks.json and
-pre-computed correlation/pace data from data/player_stats.json.
+Runs after Analyst. Pure-Python — no LLM call, zero API cost.
 
-Logic:
-  1. Build all valid 2–6 leg combinations from today's picks
-  2. Filter to combinations whose confidence product implies ≥ +100 American odds
-  3. Score combinations on: confidence product, floor confidence (weakest leg),
-     correlation quality, and game spread
-  4. Pass top scored combinations to Claude for final selection + rationale
-  5. Write 3–5 curated parlays to data/parlays.json
+Reads today's picks from data/picks.json and constructs a ranked menu of
+parlay cards across three odds buckets (Value / Standard / Reach). Uses
+market_implied_prob (FanDuel) for odds construction — that's what determines
+the actual payout — and confidence_pct (system's stated confidence) for
+ranking — that's the system's prediction of which card is most likely to hit.
 
-Implied odds formula (assuming independent legs):
-  combined_prob = product of (confidence_pct / 100) for each leg
-  american_odds = ((1 / combined_prob) - 1) * 100  [if prob < 0.5]
-               = -100 / ((1 / combined_prob) - 1)  [if prob >= 0.5, i.e. favorite]
-  Target: american_odds >= +100  →  combined_prob <= 0.50
+The two are intentionally separated:
+  - market_implied_prob → odds bucket placement + advertised payout
+  - confidence_pct      → ranking score (highest combined confidence wins)
+
+Why no LLM:
+  The previous LLM-based selection hit 59.8% (52/87) despite individual picks
+  hitting at 85.7%. Random 2-leg construction would have hit ~73%. The LLM
+  destroyed value by selecting legs that correlate on failure modes and
+  over-indexing on narrative coherence. Combinatorial enumeration with
+  game-independence as the structural guard is strictly better.
+
+Output: 5-10 cards per day, written to data/parlays.json in the existing
+[{date, parlays: [...]}] bundle format. Card schema is compatible with
+auditor grading and frontend rendering.
 """
 
 from __future__ import annotations
 
 import datetime as dt
 import json
-import os
 import sys
 from itertools import combinations
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-import anthropic
 
 # ── Paths ─────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
 PICKS_JSON        = DATA / "picks.json"
-PLAYER_STATS_JSON = DATA / "player_stats.json"
 PARLAYS_JSON      = DATA / "parlays.json"
-AUDIT_LOG_JSON    = DATA / "audit_log.json"
 INJURIES_JSON     = DATA / "injuries_today.json"
 PICKS_REVIEW_DIR  = DATA  # daily files: data/picks_review_YYYY-MM-DD.json
-CANNIBALIZATION_JSON = DATA / "backtest_teammate_cannibalization.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
 TODAY_STR = TODAY.strftime("%Y-%m-%d")
 
+
 # ── Config ────────────────────────────────────────────────────────────
-MODEL      = "claude-sonnet-4-6"
-MAX_TOKENS = 4096
+# Odds buckets: (label, min_american_odds, max_american_odds, target_cards)
+ODDS_BUCKETS = [
+    ("Value",    100,  200, 4),
+    ("Standard", 200,  350, 3),
+    ("Reach",    350,  600, 2),
+]
 
-MIN_LEGS = 2
-MAX_LEGS = 6
-TARGET_MIN_ODDS = 100   # +100 American
-TARGET_MAX_ODDS = 900   # soft ceiling — opens 4-5 leg ambitious plays while staying sub-lottery
-MIN_CONFIDENCE  = 70    # individual leg floor
-TOP_N_TO_CLAUDE = 25    # how many pre-scored combos to send Claude
-MAX_COMBO_PICKS = 25    # cap picks before combination building — C(57,6)=34M blows up the runner
-AUDIT_CONTEXT_ENTRIES = 3  # keep lean — parlay prompt is already large
-
-# Correlation scoring weights
-CORR_BONUS = {
-    "feeder_target":           +0.10,
-    "volume_game":             +0.05,
-    "pace_beneficiary":        +0.05,
-    "positively_correlated":   +0.05,
-    "cannibalization_synergy": +0.08,   # H33 synergy pair
-    "independent":              0.00,
-    "insufficient_data":        0.00,
-    "cannibalization_moderate":-0.06,   # H33 moderate cannibalization
-    "board_rivals":            -0.05,
-    "scoring_rivals":          -0.10,
-    "negatively_correlated":   -0.08,
-    "cannibalization_strong":  -0.12,   # H33 strong cannibalization
-}
-
-# P2.3 — Same-game concentration penalty (probability scale, ×10 in composite)
-# Applied per leg beyond 2 from any single game. Discourages correlated downside
-# from game-script concentration without blocking same-game stacks.
-GAME_CONCENTRATION_PENALTY = -0.05   # per excess leg beyond 2 from same game
+MAX_LEGS         = 8     # absolute ceiling per card
+MAX_COMBO_POOL   = 25    # cap legs before combo generation (performance)
+MIN_LEGS         = 2     # minimum legs per card
+MIN_CONFIDENCE   = 70    # individual leg confidence floor (matches analyst's PTS/AST grace zone)
+MAX_CANDIDATES   = 50    # early-termination threshold per bucket
+MAX_PLAYER_CARDS = 2     # no player appears in more than this many cards
 
 
 # ── Injury exclusion helpers ──────────────────────────────────────────
@@ -94,6 +77,7 @@ def _norm_team(abbr: str) -> str:
     a = str(abbr).upper().strip()
     return _ABBR_NORM.get(a, a)
 
+
 def _extract_last(raw_name: str) -> str:
     """Return lowercased last name from either 'F. LastName' or 'FirstName LastName'."""
     n = str(raw_name).strip()
@@ -101,6 +85,7 @@ def _extract_last(raw_name: str) -> str:
         return n[3:].lower()
     parts = n.split()
     return parts[-1].lower() if parts else n.lower()
+
 
 def _load_out_players() -> set[tuple[str, str]]:
     """Return (last_name_lower, norm_team_upper) tuples for OUT/DOUBTFUL players."""
@@ -127,7 +112,7 @@ def _load_out_players() -> set[tuple[str, str]]:
     return excluded
 
 
-# ── Helpers ───────────────────────────────────────────────────────────
+# ── Odds math ─────────────────────────────────────────────────────────
 
 def american_odds(combined_prob: float) -> int:
     """Convert combined probability to American odds integer."""
@@ -139,65 +124,11 @@ def american_odds(combined_prob: float) -> int:
         return round(-100 / ((1 / combined_prob) - 1))
 
 
-def odds_in_target(odds: int) -> bool:
-    return TARGET_MIN_ODDS <= odds <= TARGET_MAX_ODDS
-
-
 def format_odds(odds: int) -> str:
     return f"+{odds}" if odds >= 0 else str(odds)
 
 
 # ── Loaders ───────────────────────────────────────────────────────────
-
-def load_todays_picks() -> list[dict]:
-    if not PICKS_JSON.exists():
-        return []
-    with open(PICKS_JSON) as f:
-        all_picks = json.load(f)
-
-    out_players  = _load_out_players()
-    picks_review = load_todays_picks_review()
-
-    picks = []
-    for p in all_picks:
-        if p.get("date") != TODAY_STR:
-            continue
-        if p.get("confidence_pct", 0) < MIN_CONFIDENCE:
-            continue
-        if p.get("result") is not None:  # already graded
-            continue
-        if p.get("voided", False):
-            continue
-        # Hard exclude OUT/DOUBTFUL even if not yet voided by lineup_watch
-        if out_players:
-            last   = _extract_last(p.get("player_name") or "")
-            norm_t = _norm_team(p.get("team") or "")
-            if (last, norm_t) in out_players:
-                print(f"[parlay] EXCLUDED (OUT/DOUBTFUL): {p.get('player_name')} ({p.get('team')})")
-                continue
-        # Apply human review verdict
-        review_key = (
-            (p.get("player_name") or "").strip().lower(),
-            p.get("prop_type", ""),
-            p.get("pick_value"),
-        )
-        verdict = picks_review.get(review_key)
-        if verdict == "manual_skip":
-            print(f"[parlay] EXCLUDED (manual_skip): {p.get('player_name')} {p.get('prop_type')} T{p.get('pick_value')}")
-            continue
-        # Carry verdict through for use in build_candidates()
-        p = p.copy()
-        p["_human_verdict"] = verdict  # "trim", "keep", or None
-        picks.append(p)
-    return picks
-
-
-def load_player_stats() -> dict:
-    if not PLAYER_STATS_JSON.exists():
-        return {}
-    with open(PLAYER_STATS_JSON) as f:
-        return json.load(f)
-
 
 def load_todays_picks_review() -> dict[tuple, str]:
     """
@@ -227,727 +158,159 @@ def load_todays_picks_review() -> dict[tuple, str]:
         return {}
 
 
-def load_parlay_audit_feedback() -> str:
-    """
-    Load the most recent parlay audit feedback from audit_log.json.
-    Returns a formatted string summarising parlay hits/misses and lessons
-    from the last AUDIT_CONTEXT_ENTRIES days, most-recent first.
-    Returns empty string gracefully if file is missing or no parlay data exists.
-    """
-    if not AUDIT_LOG_JSON.exists():
-        return ""
-    try:
-        with open(AUDIT_LOG_JSON) as f:
-            entries = json.load(f)
-        if not isinstance(entries, list) or not entries:
-            return ""
-        recent = entries[-AUDIT_CONTEXT_ENTRIES:]
-    except Exception:
-        return ""
+def load_todays_picks() -> list[dict]:
+    """Load today's eligible picks for parlay construction.
 
-    lines = ["Recent parlay audit feedback (use to improve combination selection):"]
-    for e in reversed(recent):
-        date = e.get("date", "?")
-        pr = e.get("parlay_results", {})
-        if not pr:
+    Filters applied:
+      - date == TODAY_STR
+      - confidence_pct >= MIN_CONFIDENCE
+      - result is None (not already graded)
+      - voided != True
+      - player not OUT/DOUBTFUL in injuries_today.json
+      - human_verdict != "manual_skip" (from picks_review_YYYY-MM-DD.json)
+      - market_implied_prob is not None (required for odds construction)
+
+    Each returned pick carries `_human_verdict` ("trim", "keep", or None).
+    """
+    if not PICKS_JSON.exists():
+        return []
+    with open(PICKS_JSON) as f:
+        all_picks = json.load(f)
+
+    out_players  = _load_out_players()
+    picks_review = load_todays_picks_review()
+
+    picks: list[dict] = []
+    n_no_market = 0
+    for p in all_picks:
+        if p.get("date") != TODAY_STR:
             continue
-        lines.append(
-            f"\n[{date}] Parlays: {pr.get('hits', 0)} hit / "
-            f"{pr.get('misses', 0)} missed of {pr.get('total', 0)}"
+        if p.get("confidence_pct", 0) < MIN_CONFIDENCE:
+            continue
+        if p.get("result") is not None:  # already graded
+            continue
+        if p.get("voided", False):
+            continue
+        # Hard exclude OUT/DOUBTFUL even if not yet voided by lineup_watch
+        if out_players:
+            last   = _extract_last(p.get("player_name") or "")
+            norm_t = _norm_team(p.get("team") or "")
+            if (last, norm_t) in out_players:
+                print(f"[parlay] EXCLUDED (OUT/DOUBTFUL): {p.get('player_name')} ({p.get('team')})")
+                continue
+        # Apply human review verdict
+        review_key = (
+            (p.get("player_name") or "").strip().lower(),
+            p.get("prop_type", ""),
+            p.get("pick_value"),
         )
-        for r in pr.get("parlay_reinforcements", [])[:2]:
-            lines.append(f"  ✓ {r}")
-        for l in pr.get("parlay_lessons", [])[:2]:
-            lines.append(f"  ✗ {l}")
-
-    return "\n".join(lines)
-
-
-# ── H33 Cannibalization data ─────────────────────────────────────────
-
-# Module-level cache for cannibalization data — loaded once per run
-_cannib_cache: dict | None = None
-
-
-def load_cannibalization_data() -> dict:
-    """
-    Load H33 cannibalization backtest results.
-    Returns a dict keyed by (player_a_lower, player_b_lower, stat) -> {
-        cannib_idx, label, a_tier, b_tier, n_coplay
-    }
-    Returns empty dict if file is missing or unreadable.
-    Cached at module level — safe to call repeatedly.
-    """
-    global _cannib_cache
-    if _cannib_cache is not None:
-        return _cannib_cache
-
-    _cannib_cache = {}
-    if not CANNIBALIZATION_JSON.exists():
-        print("[parlay] cannibalization data not found — skipping H33 integration")
-        return _cannib_cache
-
-    try:
-        with open(CANNIBALIZATION_JSON) as f:
-            data = json.load(f)
-
-        for team, tr in data.get("team_results", {}).items():
-            for pair in tr.get("pair_results", []):
-                key = (
-                    pair["player_a"].strip().lower(),
-                    pair["player_b"].strip().lower(),
-                    pair["stat"],
-                )
-                _cannib_cache[key] = {
-                    "cannib_idx": pair["cannib_idx"],
-                    "label": pair["label"],
-                    "a_tier": pair["a_tier"],
-                    "b_tier": pair["b_tier"],
-                    "n_coplay": pair["n_coplay"],
-                    "a_rate_when_b_hits": pair["a_rate_when_b_hits"],
-                    "a_rate_when_b_misses": pair["a_rate_when_b_misses"],
-                }
-
-        print(f"[parlay] loaded H33 cannibalization data: {len(_cannib_cache)} pair entries")
-    except Exception as e:
-        print(f"[parlay] WARNING: could not load cannibalization data: {e}")
-
-    return _cannib_cache
-
-
-def build_cannibalization_context(picks: list[dict]) -> str:
-    """
-    Build a concise prompt block showing cannibalization/synergy pairs
-    relevant to today's picks. Only includes pairs where BOTH players
-    are in today's pick pool.
-
-    Returns empty string if no cannibalization data or no relevant pairs.
-    """
-    cannib = load_cannibalization_data()
-    if not cannib:
-        return ""
-
-    # Build set of today's players (lowered name → {prop_types picked})
-    today_players: dict[str, set[str]] = {}
-    for p in picks:
-        name = p["player_name"].strip().lower()
-        today_players.setdefault(name, set()).add(p["prop_type"])
-
-    # Find relevant pairs: both players in today's pool, stat matches a picked prop
-    relevant: list[dict] = []
-    seen_keys: set[tuple] = set()
-
-    for (pa, pb, stat), entry in cannib.items():
-        if pa not in today_players or pb not in today_players:
+        verdict = picks_review.get(review_key)
+        if verdict == "manual_skip":
+            print(f"[parlay] EXCLUDED (manual_skip): {p.get('player_name')} {p.get('prop_type')} T{p.get('pick_value')}")
             continue
-        if stat not in today_players[pa] or stat not in today_players[pb]:
+        # Require market_implied_prob — without it we can't construct odds
+        if p.get("market_implied_prob") is None:
+            n_no_market += 1
             continue
+        # Carry verdict through
+        p = p.copy()
+        p["_human_verdict"] = verdict  # "trim", "keep", or None
+        picks.append(p)
 
-        # Dedup: show each pair once (use sorted names)
-        dedup = tuple(sorted([pa, pb])) + (stat,)
-        if dedup in seen_keys:
-            continue
-        seen_keys.add(dedup)
-
-        relevant.append({
-            "player_a": pa,
-            "player_b": pb,
-            "stat": stat,
-            "cannib_idx": entry["cannib_idx"],
-            "label": entry["label"],
-            "a_tier": entry["a_tier"],
-            "b_tier": entry["b_tier"],
-        })
-
-    if not relevant:
-        return ""
-
-    # Sort: strongest cannibalization first, then synergy
-    relevant.sort(key=lambda x: x["cannib_idx"])
-
-    lines = [
-        "## SAME-TEAM SCORING CANNIBALIZATION (H33 backtest, season-wide data)",
-        "When two same-team players are in the same parlay, their tier hit rates",
-        "interact. Negative index = one player's big night suppresses the other.",
-        "STRONG cannibalization pairs have been pre-filtered from candidates above.",
-        "Use MODERATE pairs and SYNERGY pairs to inform your selection reasoning.",
-        "",
-    ]
-
-    for r in relevant:
-        idx = r["cannib_idx"]
-        sign = "+" if idx >= 0 else ""
-        label = r["label"]
-
-        if "CANNIBALIZATION" in label:
-            icon = "⊖ NEVER CO-PICK" if "STRONG" in label else "⊖ CAUTION"
-        elif "SYNERGY" in label:
-            icon = "⊕ SYNERGY"
-        else:
-            icon = "— INDEPENDENT"
-
-        # Capitalize names for readability
-        a_display = r["player_a"].title()
-        b_display = r["player_b"].title()
-        lines.append(
-            f"{icon}: {a_display} {r['stat']} T{r['a_tier']} ↔ "
-            f"{b_display} {r['stat']} T{r['b_tier']} "
-            f"(idx={sign}{idx:.1f}pp)"
-        )
-
-    lines.append("")
-    lines.append(
-        "Prefer ⊕ SYNERGY pairs as parlay legs — they co-hit more often "
-        "than independent odds suggest. Avoid ⊖ pairs even at MODERATE level "
-        "unless the other legs strongly compensate."
-    )
-
-    return "\n".join(lines)
+    if n_no_market:
+        print(f"[parlay] EXCLUDED ({n_no_market} picks): no market_implied_prob")
+    return picks
 
 
-# ── Correlation lookup ────────────────────────────────────────────────
+# ── Card construction helpers ────────────────────────────────────────
 
-def get_correlation_tag(p1: dict, p2: dict, player_stats: dict) -> str:
+def _game_key(pick: dict) -> str:
+    """Return a canonical game key for independence checking."""
+    team = (pick.get("team") or "").upper()
+    opp  = (pick.get("opponent") or "").upper()
+    return "_".join(sorted([team, opp]))
+
+
+def find_min_legs_for_bucket(legs_sorted: list[dict], target_max_prob: float) -> int:
+    """Find the minimum number of legs needed to push combined market prob
+    below target_max_prob. Uses the highest-probability legs (safest picks)
+    as the optimistic bound — this is the FEWEST legs that could possibly
+    place a card in this bucket.
+
+    `legs_sorted` must be sorted by market_implied_prob DESCENDING.
+
+    Returns the leg count, or -1 if even the full pool can't reach the target.
     """
-    Look up the correlation tag between two picks.
-    Returns a tag string from CORR_BONUS keys.
-    """
-    name1 = p1["player_name"]
-    name2 = p2["player_name"]
-    stat1 = p1["prop_type"]
-    stat2 = p2["prop_type"]
-
-    # Cross-game legs: check if they share a pace context
-    if p1.get("team") != p2.get("team") and p1.get("opponent") != p2.get("team"):
-        # Different games entirely — check pace
-        s1 = player_stats.get(name1, {})
-        pace = (s1.get("game_pace") or {}).get("pace_tag", "mid")
-        if pace == "high" and stat1 == "PTS" and stat2 == "PTS":
-            return "volume_game"
-        return "independent"
-
-    # Same-game, different teams (e.g. both teams score in a shootout)
-    if p1.get("team") != p2.get("team"):
-        s1 = player_stats.get(name1, {})
-        pace = (s1.get("game_pace") or {}).get("pace_tag", "mid")
-        if pace == "high":
-            return "volume_game"
-        return "independent"
-
-    # Same team — look up precomputed correlation
-    s1 = player_stats.get(name1, {})
-    teammate_corrs = s1.get("teammate_correlations", {})
-    pair_data = teammate_corrs.get(name2, {})
-    corrs = pair_data.get("correlations", {})
-
-    # Find the most relevant correlation key for these two prop types
-    key = f"{stat1}_{stat2}"
-    alt_key = f"{stat2}_{stat1}"
-    entry = corrs.get(key) or corrs.get(alt_key)
-
-    if entry:
-        pearson_tag = entry.get("tag", "independent")
-    else:
-        pearson_tag = "independent"
-
-    # H33 cannibalization override for same-team pairs
-    # Check if these two players have a cannibalization signal at their prop types
-    cannib = load_cannibalization_data()
-    if cannib:
-        # Cannibalization is stat-specific: only override when both picks are the
-        # same stat type AND that stat matches the backtest data
-        if stat1 == stat2 and stat1 in ("PTS", "AST"):
-            key_ab = (name1.strip().lower(), name2.strip().lower(), stat1)
-            key_ba = (name2.strip().lower(), name1.strip().lower(), stat1)
-            entry_c = cannib.get(key_ab) or cannib.get(key_ba)
-            if entry_c:
-                label = entry_c["label"]
-                if "CANNIBALIZATION_STRONG" in label:
-                    return "cannibalization_strong"
-                elif "CANNIBALIZATION_MODERATE" in label:
-                    return "cannibalization_moderate"
-                elif "SYNERGY_STRONG" in label or "SYNERGY_MODERATE" in label:
-                    return "cannibalization_synergy"
-
-    return pearson_tag
+    prob = 1.0
+    for i, leg in enumerate(legs_sorted):
+        prob *= leg["market_implied_prob"] / 100
+        if prob <= target_max_prob:
+            return i + 1
+    return -1
 
 
-# ── Combination scoring ───────────────────────────────────────────────
-
-def score_combination(legs: list[dict], player_stats: dict) -> dict:
-    """
-    Score a parlay combination. Returns a scored dict with all metadata
-    needed for Claude's prompt and the final output schema.
-    """
-    probs      = [p["confidence_pct"] / 100 for p in legs]
-    combined_p = 1.0
-    for p in probs:
-        combined_p *= p
-    odds = american_odds(combined_p)
-
-    floor_conf  = min(p["confidence_pct"] for p in legs)
-    avg_conf    = sum(p["confidence_pct"] for p in legs) / len(legs)
-
-    # Games represented
-    games_set = set()
-    game_leg_counts: dict[str, int] = {}
-    for p in legs:
-        home = p["team"] if p.get("home_away") == "H" else p.get("opponent", "")
-        away = p["team"] if p.get("home_away") == "A" else p.get("opponent", "")
-        gkey = f"{away}@{home}"
-        games_set.add(gkey)
-        game_leg_counts[gkey] = game_leg_counts.get(gkey, 0) + 1
-    n_games = len(games_set)
-
-    # Game concentration penalty: penalize excess legs beyond 2 from any single game
-    concentration_penalty = sum(
-        max(0, count - 2) * GAME_CONCENTRATION_PENALTY
-        for count in game_leg_counts.values()
-    )
-
-    # Correlation scoring across all pairs
-    corr_score  = 0.0
-    corr_tags   = []
-    for p1, p2 in combinations(legs, 2):
-        tag = get_correlation_tag(p1, p2, player_stats)
-        corr_tags.append(tag)
-        corr_score += CORR_BONUS.get(tag, 0.0)
-
-    # Determine dominant correlation type
-    if any(t in ("feeder_target", "volume_game", "pace_beneficiary",
-                 "positively_correlated", "cannibalization_synergy") for t in corr_tags):
-        correlation = "positive"
-    elif any(t in ("scoring_rivals", "board_rivals",
-                   "negatively_correlated", "cannibalization_strong",
-                   "cannibalization_moderate") for t in corr_tags):
-        correlation = "negative"
-    else:
-        correlation = "independent"
-
-    # Parlay type
-    same_game_legs = [l for l in legs if any(
-        l["team"] == other["opponent"] or l["opponent"] == other["team"]
-        for other in legs if other is not l
-    )]
-    if n_games == 1:
-        parlay_type = "same_game_stack"
-    elif n_games == len(legs):
-        parlay_type = "multi_game"
-    else:
-        parlay_type = "mixed"
-
-    # Composite score: higher = better
-    # Weights: confidence product (main driver) + floor bonus + corr bonus + spread bonus + concentration
-    composite = (
-        combined_p * 100          # base: confidence product scaled
-        + floor_conf * 0.3        # reward high floor
-        + avg_conf * 0.2          # reward high average
-        + corr_score * 10         # correlation quality
-        + (n_games - 1) * 2       # reward game spread
-        + concentration_penalty * 10  # penalize same-game concentration (P2.3)
-    )
-
+def build_leg_dict(pick: dict) -> dict:
+    """Extract the per-leg fields needed in the parlay output schema."""
     return {
-        "legs": legs,
-        "n_legs": len(legs),
-        "combined_prob": round(combined_p, 4),
-        "implied_odds": format_odds(odds),
-        "implied_odds_int": odds,
-        "floor_confidence": floor_conf,
-        "avg_confidence": round(avg_conf, 1),
-        "correlation": correlation,
-        "corr_tags": corr_tags,
-        "parlay_type": parlay_type,
-        "n_games": n_games,
-        "concentration_penalty": round(concentration_penalty, 3),
-        "composite_score": round(composite, 2),
+        "player_name":         pick["player_name"],
+        "prop_type":           pick["prop_type"],
+        "pick_value":          pick["pick_value"],
+        "direction":           pick.get("direction", "OVER"),
+        "confidence_pct":      pick.get("confidence_pct"),
+        "market_implied_prob": pick.get("market_implied_prob"),
+        "iron_floor":          pick.get("iron_floor", False),
     }
 
 
-def build_candidates(picks: list[dict], player_stats: dict) -> list[dict]:
+def rank_score(card: dict) -> float:
+    """Composite ranking score. Higher = better.
+
+    Primary signal is the system's combined confidence product (× 1000 to
+    dominate the bonuses). Game independence and iron_floor add structural
+    certainty bonuses. Slight preference for fewer legs at the same odds
+    (each leg multiplies failure risk).
     """
-    Generate all valid 2–6 leg combinations, filter to target odds window,
-    sort by composite score, return top N.
+    return (
+        card["combined_confidence"] * 1000   # primary: system confidence product
+        + card["n_games"]            * 5     # bonus: game independence
+        + card["iron_floor_count"]   * 3     # bonus: structural certainty
+        - card["n_legs"]             * 1     # slight preference for fewer legs
+    )
+
+
+def enforce_player_cap(cards: list[dict], max_appearances: int) -> list[dict]:
+    """Drop lower-ranked cards that would push any single player above
+    `max_appearances` total cards in the menu. Cards are processed in
+    rank order (highest first) — if an incoming card would put any of its
+    players over the cap, it's dropped.
     """
-    candidates = []
-
-    for n in range(MIN_LEGS, MAX_LEGS + 1):
-        for combo in combinations(picks, n):
-            legs = list(combo)
-
-            # Skip: duplicate player in same combo
-            names = [l["player_name"] for l in legs]
-            if len(names) != len(set(names)):
-                continue
-
-            probs = [l["confidence_pct"] / 100 for l in legs]
-            combined_p = 1.0
-            for p in probs:
-                combined_p *= p
-            odds = american_odds(combined_p)
-
-            if not odds_in_target(odds):
-                continue
-
-            # Skip combos with known negative correlations between same-team players
-            has_negative = False
-            for p1, p2 in combinations(legs, 2):
-                if p1.get("team") == p2.get("team"):
-                    tag = get_correlation_tag(p1, p2, player_stats)
-                    if tag in ("scoring_rivals", "board_rivals", "cannibalization_strong"):
-                        has_negative = True
-                        break
-            if has_negative:
-                continue
-
-            # Human review: exclude combos with >1 trim pick,
-            # or trim picks without ≥2 clean anchors
-            trim_legs  = [l for l in legs if l.get("_human_verdict") == "trim"]
-            clean_legs = [l for l in legs if l.get("_human_verdict") != "trim"]
-            if len(trim_legs) > 1:
-                continue  # max 1 trim pick per card
-            if trim_legs and len(clean_legs) < 2:
-                continue  # trim picks require ≥2 clean anchors
-
-            # Skip combos with 2+ FADE legs — enforces the edge quality
-            # constraint in Python so Claude only sees pre-qualified candidates.
-            # Gracefully skipped when bet_recommendation is absent (pre-odds-enrichment).
-            fade_count = sum(
-                1 for l in legs
-                if (l.get("bet_recommendation") or {}).get("recommendation_tier") == "FADE"
-            )
-            if fade_count >= 2:
-                continue
-
-            scored = score_combination(legs, player_stats)
-            candidates.append(scored)
-
-    # Sort by composite score descending
-    candidates.sort(key=lambda c: c["composite_score"], reverse=True)
-
-    if len(candidates) <= TOP_N_TO_CLAUDE:
-        return candidates
-
-    top = candidates[:TOP_N_TO_CLAUDE]
-
-    # Diversity check 1: if any single player appears in >80% of top candidates,
-    # replace the bottom third with the best candidates that exclude that player.
-    # This prevents a high-confidence player from monopolizing the candidate pool
-    # and leaving Claude with no alternatives.
-    from collections import Counter
-    player_counts: Counter = Counter()
-    for c in top:
-        for leg in c["legs"]:
-            player_counts[leg["player_name"]] += 1
-
-    dominant_player = player_counts.most_common(1)[0] if player_counts else None
-    if dominant_player and dominant_player[1] > TOP_N_TO_CLAUDE * 0.8:
-        dom_name = dominant_player[0]
-        dom_count = dominant_player[1]
-        n_replace = TOP_N_TO_CLAUDE // 3  # replace bottom third
-
-        # Find best candidates that exclude the dominant player
-        alternatives = [
-            c for c in candidates[TOP_N_TO_CLAUDE:]
-            if not any(leg["player_name"] == dom_name for leg in c["legs"])
-        ][:n_replace]
-
-        if alternatives:
-            top = top[:TOP_N_TO_CLAUDE - len(alternatives)] + alternatives
-            print(f"[parlay] Diversity fix: {dom_name} appeared in {dom_count}/{TOP_N_TO_CLAUDE} "
-                  f"top candidates — replaced bottom {len(alternatives)} with alternatives")
-
-    # Diversity check 2: leg-count variety enforcement.
-    # Ensure the candidate pool includes a spread of leg counts so Claude can
-    # construct varied parlays instead of fifteen 3-leggers.
-    # Targets: ≥3 candidates with 4+ legs, ≥2 candidates with exactly 2 legs.
-    # Backfill from remaining candidates (beyond top N) if needed,
-    # replacing from the bottom of the current top list.
-    top_ids = {id(c) for c in top}
-    remaining = [c for c in candidates if id(c) not in top_ids]
-
-    def _leg_count_backfill(top_list, remaining_pool, target_legs_fn, target_count, label):
-        """Backfill candidates matching target_legs_fn until target_count is met."""
-        current = sum(1 for c in top_list if target_legs_fn(c["n_legs"]))
-        if current >= target_count:
-            return top_list
-        needed = target_count - current
-        backfill = [c for c in remaining_pool if target_legs_fn(c["n_legs"])][:needed]
-        if not backfill:
-            return top_list
-        # Replace from the bottom of the current list
-        top_list = top_list[:len(top_list) - len(backfill)] + backfill
-        print(f"[parlay] Leg-count diversity: backfilled {len(backfill)} {label} "
-              f"candidates (had {current}, target {target_count})")
-        return top_list
-
-    top = _leg_count_backfill(top, remaining, lambda n: n >= 4, 3, "4+ leg")
-    top = _leg_count_backfill(top, remaining, lambda n: n == 2, 2, "2-leg")
-
-    return top
-
-
-# ── Prompt builder ────────────────────────────────────────────────────
-
-def build_parlay_prompt(candidates: list[dict], audit_feedback: str = "", cannibalization_context: str = "") -> str:
-    # Slim down legs for prompt — Claude doesn't need full pick objects
-    slim = []
-    for i, c in enumerate(candidates):
-        slim_legs = [
-            {
-                "player": l["player_name"],
-                "team": l["team"],
-                "opp": l.get("opponent", ""),
-                "prop": l["prop_type"],
-                "over": l["pick_value"],
-                "conf": l["confidence_pct"],
-                "hit_rate": l.get("hit_rate_display", ""),
-                "trend": l.get("trend", ""),
-                "opp_def": l.get("opp_defense_rating", ""),
-                "edge_tier": (l.get("bet_recommendation") or {}).get("recommendation_tier"),
-                "cal_edge": (l.get("bet_recommendation") or {}).get("calibrated_edge_pct"),
-            }
-            for l in c["legs"]
-        ]
-        slim.append({
-            "rank": i + 1,
-            "n_legs": c["n_legs"],
-            "implied_odds": c["implied_odds"],
-            "floor_conf": c["floor_confidence"],
-            "avg_conf": c["avg_confidence"],
-            "correlation": c["correlation"],
-            "corr_tags": list(set(c["corr_tags"])),
-            "type": c["parlay_type"],
-            "n_games": c["n_games"],
-            "composite_score": c["composite_score"],
-            "legs": slim_legs,
-        })
-
-    candidates_block = json.dumps(slim, indent=2)
-
-    return f"""You are the Parlay Agent for NBAgent, an NBA player props prediction system.
-
-Today is {TODAY_STR}.
-
-## YOUR TASK
-Select 3–5 parlay combinations from the pre-scored candidates below.
-Each candidate has already passed:
-  - Implied odds filter: +100 to +900 American
-  - Minimum 70% confidence per leg
-  - No known negative teammate correlations (scoring_rivals, board_rivals)
-
-**MANDATORY VARIETY RULE — non-negotiable:**
-You MUST include at least one 2-leg parlay (tight, high-confidence, +100 to +200 range) AND at least one 4+ leg parlay (ambitious, correlation-driven). The remaining 1–3 parlays are your choice of leg count.
-
-**BOLD CARD — exactly one per day:**
-Designate exactly one of your 3–5 parlays as the "bold card" by setting `"card_type": "bold"`. All others get `"card_type": "core"`. The bold card is the audience's higher-risk, higher-reward play:
-  - Target range: +400 to +800
-  - 4–5 legs
-  - Allowed to include one speculative leg (70–74% confidence with STRONG edge and soft matchup)
-  - Should still have a coherent rationale — not random legs stapled together
-  - The bold card MAY be the same parlay that satisfies the 4+ leg mandate, or a separate one
-
-## SELECTION CRITERIA — in priority order
-1. **Implied odds target**: for core cards, prefer +100 to +350. For the bold card, target +400 to +800.
-2. **Floor confidence**: the weakest leg matters most. For core cards, prefer combos where even the weakest leg is ≥75%. The bold card may include one leg at 70–74% if the edge is STRONG or POSITIVE.
-3. **Positive correlation**: "feeder_target" and "volume_game" tags mean legs tend to win together — prefer these. The bold card especially benefits from positive correlation to offset its higher leg count.
-4. **Game spread**: multi-game parlays are more robust than same-game stacks (same-game stacks are fine if correlation is genuinely positive).
-5. **Variety**: your 3–5 selections MUST span at least two different leg counts. A set of three 3-leggers is a violation of the variety rule. Aim for a spread — e.g. one 2-leg, two 3-leg, one 4-leg bold card.
-6. **Edge quality**: Each leg includes `edge_tier` (STRONG / POSITIVE / NEUTRAL / FADE / NO_MARKET) and `cal_edge` (calibrated edge in percentage points vs FanDuel market). A +250 parlay with 4 POSITIVE-edge legs is more valuable than a +120 parlay with 3 NEUTRAL-edge legs because edge compounds across legs. Prefer parlays where `edge_tier` is POSITIVE or STRONG on at least half the legs. FADE legs mean the market is more confident than our calibrated read. Candidates with 2+ FADE legs have already been filtered out. When a candidate has exactly 1 FADE leg, prefer combos where the other legs are POSITIVE or STRONG to compensate.
-
-## AVOID
-- Any single player appearing in more than 1 of today's parlays, regardless of prop type.
-  A player DNP or underperformance cascades across every parlay they appear in — one parlay
-  per player is the hard limit. If a player looks like a lock, they go in your best parlay
-  only. This applies at the player level regardless of prop type (e.g. LeBron in parlay 1
-  and parlay 2 is a violation even if one is PTS and the other is AST).
-- Any single player-prop combination (same player + same prop_type) appearing in more than
-  1 of today's parlays. Since the player-level cap already enforces one parlay per player,
-  this rule is redundant but kept as an explicit secondary guardrail.
-- Two parlays that share 3+ identical legs (provide variety)
-- Combos where the rationale would be "all soft matchups" with no deeper logic
-- Overly cautious 2-leggers at +100 when a 3-legger with better correlation exists at +120
-- Parlays where the single allowed FADE leg is the weakest leg by confidence AND the other legs are all NEUTRAL — prefer combos where at least one non-FADE leg is POSITIVE or STRONG
-- Making all parlays the same leg count — the variety rule is mandatory, not a suggestion
-- A bold card that is just a slightly worse version of a core card — the bold card should be structurally different (more legs, wider odds, different game coverage)
-
-## PARLAY AUDIT FEEDBACK FROM PREVIOUS DAYS
-{audit_feedback if audit_feedback else "No prior parlay audit data available."}
-
-{cannibalization_context}
-
-## PRE-SCORED CANDIDATES
-{candidates_block}
-
-## OUTPUT FORMAT
-Respond ONLY with a valid JSON array. No preamble, no explanation outside the JSON.
-
-If no valid parlays can be constructed from the candidates (e.g. too many FADE legs, insufficient POSITIVE/STRONG legs to anchor a parlay, all combos violate the edge quality rules), return an empty JSON array: `[]`
-
-Returning `[]` is explicitly acceptable and preferred over reasoning about why parlays can't be built. NEVER output prose analysis — always output a JSON array, even if it's empty.
-
-[
-  {{
-    "label": "short evocative name, 2-4 words, e.g. 'NYK Feeder Stack' or 'Wednesday Sweeper'",
-    "card_type": "core | bold (exactly one parlay must be 'bold', all others 'core')",
-    "type": "same_game_stack | multi_game | mixed",
-    "legs": [
-      {{
-        "player_name": "string",
-        "team": "abbrev",
-        "opponent": "abbrev",
-        "prop_type": "PTS | REB | AST | 3PM",
-        "pick_value": number,
-        "direction": "OVER",
-        "confidence_pct": number,
-        "correlation_role": "feeder | target | scorer | rebounder | independent | pace_play"
-      }}
-    ],
-    "implied_odds": "+NNN",
-    "confidence_product": number (0–1, 4 decimal places),
-    "correlation": "positive | independent | mixed",
-    "rationale": "One tight sentence: WHY these legs belong together. Reference matchup, role, or correlation. Max 20 words."
-  }}
-]
-"""
-
-
-# ── Claude call ───────────────────────────────────────────────────────
-
-def call_parlay_agent(prompt: str) -> list[dict]:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        print("[parlay] ERROR: ANTHROPIC_API_KEY not set.")
-        sys.exit(1)
-
-    client = anthropic.Anthropic(api_key=api_key, timeout=90.0)
-    print(f"[parlay] Calling Claude ({MODEL})...")
-
-    try:
-        message = client.messages.create(
-            model=MODEL,
-            max_tokens=MAX_TOKENS,
-            messages=[{"role": "user", "content": prompt}],
-        )
-    except Exception as e:
-        print(f"[parlay] WARNING: Claude API call failed: {e} — returning 0 parlays")
-        return []
-
-    raw = message.content[0].text.strip()
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-    raw = raw.strip()
-
-    # Check for explicit empty array (Claude correctly determined no valid parlays)
-    if raw.strip() in ("[]", "[ ]"):
-        print("[parlay] Claude returned empty array — no valid parlays for today's slate")
-        return []
-
-    try:
-        parlays = json.loads(raw)
-        if not isinstance(parlays, list):
-            raise ValueError("Response is not a JSON array")
-        return parlays
-    except Exception:
-        pass
-
-    # Fallback 1: Claude may have prefixed reasoning before the JSON array
-    bracket_idx = raw.find("[")
-    if bracket_idx >= 0:
-        # Find the matching closing bracket (last ']' in the string)
-        last_bracket = raw.rfind("]")
-        if last_bracket > bracket_idx:
-            candidate = raw[bracket_idx:last_bracket + 1]
-            try:
-                parlays = json.loads(candidate)
-                if isinstance(parlays, list):
-                    print(f"[parlay] WARNING: extracted JSON array from offset {bracket_idx} "
-                          f"(Claude prefixed reasoning)")
-                    return parlays
-            except Exception:
-                pass
-
-    # Fallback 2: try json_repair if available
-    try:
-        from json_repair import repair_json
-        repaired = repair_json(raw, return_objects=True)
-        if isinstance(repaired, list):
-            print(f"[parlay] WARNING: JSON repair succeeded — extracted {len(repaired)} parlays")
-            return repaired
-    except ImportError:
-        pass
-    except Exception:
-        pass
-
-    # All parsing attempts failed — return empty list instead of crashing
-    print(f"[parlay] WARNING: Could not parse Claude response — returning 0 parlays")
-    print(f"[parlay] Raw response (first 500 chars):\n{raw[:500]}")
-    return []
-
-
-# ── Concentration cap enforcement ─────────────────────────────────────
-
-def enforce_concentration_cap(parlays: list[dict]) -> list[dict]:
-    """
-    Greedy-sequential post-selection enforcement of two concentration caps:
-    1. No player_name across more than 1 parlay (regardless of prop type).
-    2. No (player_name, prop_type) pair across more than 1 parlay.
-    Iterates in order; accepts a parlay only if it satisfies both caps.
-    """
-    player_counts:      dict[str, int]   = {}
-    player_prop_counts: dict[tuple, int] = {}
-    accepted: list[dict] = []
-
-    for parlay in parlays:
-        legs = parlay.get("legs", [])
-
-        # Tally what this parlay would add
-        pp_delta: dict[tuple, int] = {}
-        p_delta:  dict[str, int]   = {}
-        for leg in legs:
-            p_key  = leg["player_name"].lower()
-            pp_key = (p_key, leg["prop_type"])
-            p_delta[p_key]   = p_delta.get(p_key, 0) + 1
-            pp_delta[pp_key] = pp_delta.get(pp_key, 0) + 1
-
-        # Check player-level cap
-        violates = False
-        for p_key, delta in p_delta.items():
-            if player_counts.get(p_key, 0) + delta > 1:
-                print(f"[parlay] Concentration cap (player): dropping '{parlay.get('label')}' "
-                      f"— {p_key} would appear in "
-                      f"{player_counts.get(p_key, 0) + delta} parlays (max 1)")
-                violates = True
-                break
-
-        # Check player-prop-level cap
-        if not violates:
-            for pp_key, delta in pp_delta.items():
-                if player_prop_counts.get(pp_key, 0) + delta > 1:
-                    print(f"[parlay] Concentration cap (player-prop): dropping '{parlay.get('label')}' "
-                          f"— ({pp_key[0]}, {pp_key[1]}) would appear in "
-                          f"{player_prop_counts.get(pp_key, 0) + delta} parlays (max 1)")
-                    violates = True
-                    break
-
-        if not violates:
-            for p_key, delta in p_delta.items():
-                player_counts[p_key] = player_counts.get(p_key, 0) + delta
-            for pp_key, delta in pp_delta.items():
-                player_prop_counts[pp_key] = player_prop_counts.get(pp_key, 0) + delta
-            accepted.append(parlay)
-
-    skipped = len(parlays) - len(accepted)
-    if skipped:
-        print(f"[parlay] Concentration cap removed {skipped} parlay(s). Keeping {len(accepted)}.")
-    return accepted
+    appearances: dict[str, int] = {}
+    kept: list[dict] = []
+    for card in cards:
+        names = [leg["player_name"] for leg in card["legs"]]
+        # Would adding this card push any player over the cap?
+        violates = any(appearances.get(n, 0) + 1 > max_appearances for n in names)
+        if violates:
+            continue
+        for n in names:
+            appearances[n] = appearances.get(n, 0) + 1
+        kept.append(card)
+    dropped = len(cards) - len(kept)
+    if dropped:
+        print(f"[parlay] enforce_player_cap: dropped {dropped} card(s) "
+              f"to keep max {max_appearances} appearances per player")
+    return kept
 
 
 # ── Output ────────────────────────────────────────────────────────────
 
 def save_parlays(parlays: list[dict]):
+    """Append today's parlay bundle to data/parlays.json (idempotent re-run).
+
+    Schema preserved exactly: list of {date, parlays: [...]} bundles. Each
+    parlay gains date, id, result=null, legs_hit=null, legs_total at save time.
+    The auditor and frontend depend on this structure.
+    """
     existing = []
     if PARLAYS_JSON.exists():
         try:
@@ -958,24 +321,22 @@ def save_parlays(parlays: list[dict]):
         except Exception:
             existing = []
 
-    # Remove today's parlays (idempotent re-run)
-    existing = [p for p in existing if p.get("date") != TODAY_STR]
+    # Remove today's bundle (idempotent re-run)
+    existing = [b for b in existing if b.get("date") != TODAY_STR]
 
-    # Add metadata
+    # Add metadata required by the auditor + frontend
     for i, p in enumerate(parlays):
-        p["date"]      = TODAY_STR
-        p["id"]        = f"parlay_{TODAY_STR}_{i+1:02d}"
-        p["result"]    = None
-        p["legs_hit"]  = None
+        p["date"]       = TODAY_STR
+        p["id"]         = f"parlay_{TODAY_STR}_{i+1:02d}"
+        p["result"]     = None
+        p["legs_hit"]   = None
         p["legs_total"] = len(p.get("legs", []))
 
     updated = existing + [{
-        "date": TODAY_STR,
-        "parlays": parlays
+        "date":    TODAY_STR,
+        "parlays": parlays,
     }]
 
-    # Actually store as flat list of dated bundles
-    # Re-structure: keep a list of daily bundles
     with open(PARLAYS_JSON, "w") as f:
         json.dump(updated, f, indent=2)
 
@@ -985,51 +346,155 @@ def save_parlays(parlays: list[dict]):
             f"{l['player_name']} {l['prop_type']} OVER {l['pick_value']}"
             for l in p.get("legs", [])
         )
-        print(f"  [{p['implied_odds']}] {p['label']}: {legs_str}")
+        print(f"  [{p['implied_odds']}] {p['label']}  "
+              f"(conf={p['combined_confidence']:.3f}, "
+              f"games={p['n_games']}, iron={p['iron_floor_count']}): "
+              f"{legs_str}")
 
 
 # ── Main ─────────────────────────────────────────────────────────────
 
 def main():
-    print(f"[parlay] Running for {TODAY_STR}")
+    print(f"[parlay] Running combinatorial builder for {TODAY_STR}")
 
     picks = load_todays_picks()
-    print(f"[parlay] Loaded {len(picks)} eligible picks for today")
+    print(f"[parlay] Loaded {len(picks)} eligible picks (with market odds)")
 
-    if len(picks) < MIN_LEGS:
-        print(f"[parlay] Not enough picks ({len(picks)}) to build parlays. Exiting.")
-        sys.exit(0)
+    if len(picks) < 3:
+        print(f"[parlay] Not enough picks with market odds ({len(picks)}). Exiting.")
+        return
 
-    player_stats = load_player_stats()
-    print(f"[parlay] Loaded player stats for {len(player_stats)} players")
+    # Cap pool for performance — C(25, 8) ≈ 1.1M is workable; larger blows up
+    if len(picks) > MAX_COMBO_POOL:
+        picks = sorted(picks, key=lambda p: p["confidence_pct"], reverse=True)[:MAX_COMBO_POOL]
+        print(f"[parlay] Capped to top {MAX_COMBO_POOL} by confidence")
 
-    # Cap picks before combination building to prevent O(n^6) explosion.
-    # C(57,6) = 34M iterations; cap at 25 → C(25,6) = 177K (safe).
-    # Sort descending by confidence so the best legs are always retained.
-    if len(picks) > MAX_COMBO_PICKS:
-        picks = sorted(picks, key=lambda p: p["confidence_pct"], reverse=True)[:MAX_COMBO_PICKS]
-        print(f"[parlay] Capped to top {MAX_COMBO_PICKS} picks by confidence for combination building")
+    # Sort by market_implied_prob descending — used for the min_legs computation
+    # (the safest legs first give the optimistic bound on how few legs are needed)
+    picks_by_prob = sorted(picks, key=lambda p: p["market_implied_prob"], reverse=True)
 
-    candidates = build_candidates(picks, player_stats)
-    print(f"[parlay] Built {len(candidates)} scored candidates (top {TOP_N_TO_CLAUDE} sent to Claude)")
+    all_cards: list[dict] = []
+    for bucket_label, min_odds, max_odds, target_n in ODDS_BUCKETS:
+        # American odds → probability bounds
+        # +100 → 0.50, +200 → 0.333, +350 → 0.222, +600 → 0.143
+        max_prob = 100 / (min_odds + 100)   # lower odds = higher prob = upper bound
+        min_prob = 100 / (max_odds + 100)   # higher odds = lower prob = lower bound
 
-    if not candidates:
-        print("[parlay] No valid combinations found in target odds range. Exiting.")
-        sys.exit(0)
+        min_legs = find_min_legs_for_bucket(picks_by_prob, max_prob)
+        if min_legs < 0 or min_legs > MAX_LEGS:
+            print(f"[parlay] {bucket_label}: cannot reach +{min_odds} within "
+                  f"{MAX_LEGS} legs — skipping bucket")
+            continue
+        if min_legs < MIN_LEGS:
+            min_legs = MIN_LEGS
 
-    audit_feedback = load_parlay_audit_feedback()
-    cannib_ctx = build_cannibalization_context(picks)
-    prompt  = build_parlay_prompt(candidates, audit_feedback, cannib_ctx)
-    parlays = call_parlay_agent(prompt)
-    print(f"[parlay] Claude returned {len(parlays)} parlays")
+        print(f"[parlay] {bucket_label} (+{min_odds} to +{max_odds}): "
+              f"min {min_legs} legs needed")
 
-    if not parlays:
-        print("[parlay] No parlays to save — skipping save step")
-        sys.exit(0)
+        candidates: list[dict] = []
+        upper_n = min(min_legs + 4, MAX_LEGS + 1)
+        for n in range(min_legs, upper_n):
+            if len(candidates) >= MAX_CANDIDATES:
+                break
+            for combo in combinations(picks, n):
+                # No duplicate players
+                names = set()
+                dupe = False
+                for leg in combo:
+                    name = leg["player_name"]
+                    if name in names:
+                        dupe = True
+                        break
+                    names.add(name)
+                if dupe:
+                    continue
 
-    parlays = enforce_concentration_cap(parlays)
-    save_parlays(parlays)
+                # Compute combined market probability
+                combined_market = 1.0
+                for leg in combo:
+                    combined_market *= leg["market_implied_prob"] / 100
+                if combined_market > max_prob or combined_market < min_prob:
+                    continue
+
+                # Confirm odds bucket placement
+                odds = american_odds(combined_market)
+                if odds < min_odds or odds > max_odds:
+                    continue
+
+                # System confidence product (used for ranking)
+                combined_conf = 1.0
+                for leg in combo:
+                    combined_conf *= leg["confidence_pct"] / 100
+
+                # Game independence
+                game_keys = set(_game_key(leg) for leg in combo)
+                n_games = len(game_keys)
+
+                # Iron floor count
+                iron_count = sum(1 for leg in combo if leg.get("iron_floor"))
+
+                card = {
+                    "legs":                 [build_leg_dict(leg) for leg in combo],
+                    "n_legs":               len(combo),
+                    "combined_market_prob": round(combined_market, 4),
+                    "combined_confidence":  round(combined_conf, 4),
+                    "implied_odds":         format_odds(odds),
+                    "implied_odds_int":     odds,
+                    "n_games":              n_games,
+                    "iron_floor_count":     iron_count,
+                    "bucket":               bucket_label,
+                }
+                card["rank_score"] = round(rank_score(card), 2)
+
+                # Correlation label (frontend badge)
+                if n_games == len(combo):
+                    card["correlation"] = "independent"
+                elif n_games == 1:
+                    card["correlation"] = "positive"
+                else:
+                    card["correlation"] = "mixed"
+
+                candidates.append(card)
+
+        # Rank within bucket and select top N
+        candidates.sort(key=lambda c: c["rank_score"], reverse=True)
+        selected = candidates[:target_n]
+
+        # Label cards in rank order
+        for i, card in enumerate(selected):
+            card["label"] = f"{bucket_label} #{i + 1}"
+
+        all_cards.extend(selected)
+        print(f"[parlay] {bucket_label}: {len(candidates)} candidates → "
+              f"selected {len(selected)}")
+
+    if not all_cards:
+        print("[parlay] No valid parlay cards generated. Exiting.")
+        return
+
+    # Final pass: cap each player's appearances across the whole menu
+    # (cards are already in rank order within buckets; sort all_cards by
+    # rank_score globally so the cap drops the weakest duplicates first)
+    all_cards.sort(key=lambda c: c["rank_score"], reverse=True)
+    all_cards = enforce_player_cap(all_cards, max_appearances=MAX_PLAYER_CARDS)
+
+    # Re-label after cap (so labels stay sequential within their bucket)
+    by_bucket: dict[str, list[dict]] = {}
+    for card in all_cards:
+        by_bucket.setdefault(card["bucket"], []).append(card)
+    for label, cards in by_bucket.items():
+        cards.sort(key=lambda c: c["rank_score"], reverse=True)
+        for i, card in enumerate(cards):
+            card["label"] = f"{label} #{i + 1}"
+    # Reassemble in bucket order (Value → Standard → Reach)
+    all_cards = []
+    for bucket_label, *_ in ODDS_BUCKETS:
+        all_cards.extend(by_bucket.get(bucket_label, []))
+
+    save_parlays(all_cards)
+    print(f"[parlay] Total: {len(all_cards)} cards across "
+          f"{sum(1 for k in by_bucket if by_bucket[k])} bucket(s)")
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main() or 0)

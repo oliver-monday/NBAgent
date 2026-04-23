@@ -1030,11 +1030,9 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
 {parlays_block}
 
 ## PARLAY ANALYSIS TASK
-4. Parlay hit rate this session: {p_hits}/{len(graded_parlays)}. Write a one-line summary of the parlay card result — e.g. "Clean 5/5 sweep anchored by iron-floor PTS legs" or "2/5 — the Jokic AST leg was the consistent failure point."
-5. For each PARLAY HIT: identify in one sentence what made the combination work — correlation logic, matchup stack, or game script alignment.
-6. For each PARLAY MISS: identify in one sentence which leg failed and the root cause. Was the correlation assumption wrong? Was a leg too aggressive given known risks? CHECK the `cannibalization_flags` field on each missed parlay — if present, two failed legs are a known H33 cannibalization pair whose correlated failure was structurally predictable. Reference the specific cannibalization index and pair names in your parlay_lessons so the Parlay Agent learns to avoid this construction. A cannibalization miss is NOT independent variance — it is a parlay construction error that the system should not repeat.
-7. parlay_reinforcements: write at least 1 item (max 3). Focus on combination patterns and leg types that succeeded — not individual pick quality, which is covered above. At least one item must reference a specific leg structure or correlation type.
-8. parlay_lessons: write at least 1 item (max 3) when any parlay missed. If all parlays hit, write 1 item noting what structural risk existed that could have caused a miss (e.g. correlated legs, anchor player concentration, aggressive tier on a secondary leg). The Parlay Agent must always receive at least one constructive note per session.
+4. Parlay hit rate this session: {p_hits}/{len(graded_parlays)}. Write a one-line summary of the parlay card result — e.g. "Clean 3/4 — Value cards swept, Reach card missed on Vassell 3PM cold shooting."
+5. For each missed parlay, note which leg(s) failed in the parlay_summary line. No detailed analysis needed — the Parlay Agent is now a deterministic combinatorial builder and does not consume narrative feedback.
+6. Set parlay_lessons and parlay_reinforcements to empty arrays []. These fields are retained for schema compatibility but are no longer generated.
 """
 
     return f"""You are the Auditor for NBAgent, an NBA player props selection system.
@@ -1343,9 +1341,9 @@ Respond ONLY with valid JSON. No preamble.
     "hits": {p_hits},
     "misses": {p_misses},
     "partial": {p_partial},
-    "parlay_summary": "string: one-line summary of the parlay card result",
-    "parlay_lessons": ["string — min 1 item always required. What the Parlay Agent should do differently, or what structural risk existed even on a winning card."],
-    "parlay_reinforcements": ["string — min 1 item always required. What combination logic or leg structure worked well."]
+    "parlay_summary": "string: one-line summary of the parlay card result (which cards hit, which leg failed on misses)",
+    "parlay_lessons": [],
+    "parlay_reinforcements": []
   }}
 }}
 """

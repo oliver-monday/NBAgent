@@ -1,7 +1,7 @@
 # NBAgent — Roadmap - Active
 
-Updated: 2026-04-16
-Swept against ROADMAP_resolved.md — all items shipped through 2026-04-16 verified.
+Updated: 2026-04-22
+Swept against ROADMAP_resolved.md — all items shipped through 2026-04-22 verified.
 
 ---
 
@@ -90,6 +90,7 @@ Swept against ROADMAP_resolved.md — all items shipped through 2026-04-16 verif
 - Season context auto-updater — monitor diary entry quality through R1. If entries are consistently thin or miss pattern observations, consider switching to Opus or adding a review step.
 - Monitor injury_event auto-void — confirm next in-game injury exit is correctly voided in picks.json + frontend (auditor.py promote_injury_event_voids).
 - Skip recalibration monitoring — track false skip rate through R1 G3-G4. Target: FSR below 60% (down from 91.7%). If FSR remains above 70%, consider further floor reductions. If actual hit rate on newly-admitted picks drops below 80%, revert.
+- **Parlay menu builder monitoring (shipped 2026-04-22)** — monitor hit rates per bucket (Value / Standard / Reach) through R1. Compare to pre-rewrite LLM-era 59.8% baseline. Targets: Value bucket >65%, Standard >45%, Reach >25%. A randomly-constructed 2-leg parlay from the pick pool hits ~73%, so Value should converge upward as the combinatorial builder has no narrative bias. If any bucket underperforms its target after 15+ graded cards, investigate whether game-independence ranking bonus is weighted correctly or if the combined_market_prob range for that bucket needs adjustment.
 
 **Known playoff transfer risks:**
 - H15 suppressors (HOU, PHI, LAL): measured against full-season schedule. Fixed matchups in playoffs may concentrate or invert signal.

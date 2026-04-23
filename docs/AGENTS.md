@@ -275,80 +275,111 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 
 ---
 
-## parlay.py — Parlay Builder
+## parlay.py — Parlay Builder (Combinatorial Menu)
 
-**Model:** `claude-sonnet-4-6`
-**MAX_TOKENS:** `4096`
+**Model:** — (pure Python, no LLM call, zero API cost)
+**MAX_TOKENS:** —
+
+**Architecture (rewritten 2026-04-22):** Replaced prior LLM-based selection (59.8% hit rate) with a deterministic combinatorial enumerator. Generates 5–10 ranked cards across three odds buckets. The system's `confidence_pct` product is used only for ranking within a bucket; `market_implied_prob` (FanDuel) determines the odds bucket placement and the card's advertised payout. This two-signal separation is intentional — the market prices the payout, and the system ranks which card in that bucket is most likely to hit.
+
+**Odds buckets:**
+
+| Bucket   | American Odds | Implied Prob   | Target Cards |
+|----------|---------------|----------------|--------------|
+| Value    | +100 to +200  | 33.3% – 50.0%  | 4            |
+| Standard | +200 to +350  | 22.2% – 33.3%  | 3            |
+| Reach    | +350 to +600  | 14.3% – 22.2%  | 2            |
+
+Total: **5-10 cards** per day depending on leg pool size.
+
+**Config constants:**
+```python
+ODDS_BUCKETS     = [("Value", 100, 200, 4), ("Standard", 200, 350, 3), ("Reach", 350, 600, 2)]
+MAX_LEGS         = 8
+MAX_COMBO_POOL   = 25   # cap legs before combo generation (performance)
+MIN_LEGS         = 2
+MIN_CONFIDENCE   = 70   # individual leg confidence floor
+MAX_CANDIDATES   = 50   # early-termination per bucket
+MAX_PLAYER_CARDS = 2    # max cards any one player appears in
+```
 
 **Logic flow:**
-1. Load today's picks with `confidence_pct ≥ 70` and `result == null`
-1a. Load `picks_review_TODAY.json`; exclude any pick with `verdict == "manual_skip"` from candidate pool; tag remaining picks with `_human_verdict` ("trim"/"keep"/null)
-2. Build all 2–6 leg combinations (no duplicate players)
-3. Filter: implied odds must be +100 to +900 American
-4. Filter: skip combos with `scoring_rivals` or `board_rivals` or `cannibalization_strong` between same-team players
-4a. Filter: skip combos with >1 trim-verdict pick; trim picks require ≥2 clean-verdict anchors (non-trim legs)
-5. Score each combo on: confidence product, floor confidence, correlation quality, game spread
-6. Send top 25 scored combos to Claude (with leg-count diversity enforcement: ≥3 with 4+ legs, ≥2 with 2 legs) → returns 3–5 curated parlays with `card_type` ("core" or "bold")
+1. `load_todays_picks()` — filter picks to `date == TODAY_STR`, `confidence_pct ≥ 70`, `result is None`, `voided != True`, not OUT/DOUBTFUL in `injuries_today.json`, not `manual_skip` in `picks_review_YYYY-MM-DD.json`, **and `market_implied_prob is not None`** (no market odds → can't price the parlay). Carry `_human_verdict` on each pick.
+2. Cap the pool at `MAX_COMBO_POOL` (25) by `confidence_pct` descending for performance.
+3. Sort the pool by `market_implied_prob` descending (safest legs first) for the min-legs computation.
+4. **Per bucket:** compute `max_prob` (upper probability bound from the bucket's lower American odds) and `min_prob` (lower bound from upper odds). Call `find_min_legs_for_bucket(sorted_pool, max_prob)` — walks the highest-probability legs multiplying cumulatively until combined prob drops below `max_prob`; this is the optimistic fewest-legs answer. Skip the bucket if it cannot be reached within `MAX_LEGS`.
+5. Enumerate `combinations(pool, n)` from `max(min_legs, MIN_LEGS)` to `min(min_legs + 4, MAX_LEGS + 1)`. For each combo:
+    - Skip duplicate player names (hard constraint).
+    - Compute `combined_market_prob = ∏(market_implied_prob/100)`; skip if out of bucket range.
+    - Confirm American odds fall within the bucket (`american_odds()` converts prob → odds).
+    - Compute `combined_confidence = ∏(confidence_pct/100)` (ranking signal).
+    - Compute `n_games` (distinct `_game_key(leg)` count) and `iron_floor_count`.
+    - Tag `correlation`: `independent` if n_games == n_legs, `positive` if n_games == 1, `mixed` otherwise.
+    - Compute `rank_score` (see formula below) and push to candidates.
+    - **Early-terminate at `MAX_CANDIDATES` (50) per bucket.**
+6. Sort candidates by `rank_score` descending, take top N for the bucket, label as `"{bucket} #{rank}"`.
+7. `enforce_player_cap(cards, max_appearances=MAX_PLAYER_CARDS)` — across the full menu in rank order, drop any card that would push any player over 2 appearances. Prevents menu concentration on a small subset of players.
+8. Re-label within bucket after the cap (so labels remain sequential 1..N), reassemble in bucket order (Value → Standard → Reach), and write via `save_parlays()`.
 
-**Implied odds formula:**
-```
-combined_prob = product of (confidence_pct / 100)
-american_odds = ((1 / combined_prob) - 1) * 100   # if prob < 0.5
-```
-
-**Correlation scoring weights:**
+**Ranking formula:**
 ```python
-CORR_BONUS = {
-    "feeder_target":          +0.10,
-    "volume_game":            +0.05,
-    "pace_beneficiary":       +0.05,
-    "positively_correlated":  +0.05,
-    "independent":             0.00,
-    "insufficient_data":       0.00,
-    "board_rivals":           -0.05,
-    "scoring_rivals":         -0.10,
-    "negatively_correlated":  -0.08,
-}
+rank_score = (
+    combined_confidence * 1000  # primary: system confidence product
+  + n_games            * 5      # bonus: game independence (less correlated failure)
+  + iron_floor_count   * 3      # bonus: structural certainty
+  - n_legs             * 1      # slight preference for fewer legs at same odds
+)
 ```
 
-**Claude selection criteria (in priority order):**
-1. Implied odds: core cards +100–350, bold card +400–800
-2. Floor confidence — weakest leg matters most; core ≥75%, bold may allow one 70–74% leg with STRONG edge
-3. Positive correlation tags — bold card especially benefits from correlation to offset leg count
-4. Game spread — multi-game more robust than same-game stacks
-5. Variety — MANDATORY: ≥1 2-leg + ≥1 4+ leg, ≥2 different leg counts. Exactly one `card_type: "bold"` per day.
-6. Edge quality — prefer STRONG/POSITIVE `edge_tier` legs (calibrated system confidence exceeds FanDuel market); avoid FADE legs; max 1 FADE per parlay, requires all other legs POSITIVE/STRONG
+**Odds math:**
+```python
+combined_market_prob = ∏(leg.market_implied_prob / 100)       # FanDuel odds product
+combined_confidence  = ∏(leg.confidence_pct / 100)            # system confidence product
+american_odds        = round(((1 / combined_market_prob) - 1) * 100)   # for prob < 0.5
+```
+
+**Exclusions / no-LLM design:**
+- No `load_parlay_audit_feedback()` or `parlay_lessons` injection — no LLM to consume them. Auditor's own parlay analysis (in `build_audit_prompt()` PARLAY ANALYSIS TASK) still runs and still writes `parlay_lessons` for audit-trail purposes, but those lessons no longer flow back into pick selection.
+- No `build_cannibalization_context()` / H33 scoring — cannibalization was an LLM reasoning prompt input. Game-independence (via `n_games` in rank_score) is the new structural guard; lowly-ranked same-game stacks lose to higher-ranked multi-game cards without needing the H33 dictionary.
+- No `CORR_BONUS` / Pearson correlation scoring — was an LLM input, not used here. `correlation` field preserved on the output card purely for the frontend badge.
+- No `edge_tier` preference rule — FADE legs are not pre-filtered. The market-priced bucket construction inherently favors legs FanDuel has priced near the ceiling; if a FADE leg happens to fit a bucket it competes on rank_score like any other.
 
 **Output schema (appended as bundle to `parlays.json`):**
 ```json
-// parlays.json structure: list of daily bundles
+// parlays.json structure: list of daily bundles (preserved byte-compatible)
 [{
   "date": "YYYY-MM-DD",
   "parlays": [{
     "id": "parlay_YYYY-MM-DD_01",
-    "label": "short evocative name",
-    "type": "same_game_stack|multi_game|mixed",
+    "label": "Value #1",                    // {bucket} #{rank} — auto-generated
+    "bucket": "Value",                       // new: which odds tier
     "legs": [{
-      "player_name": "string",
-      "team": "abbrev",
-      "opponent": "abbrev",
-      "prop_type": "PTS|REB|AST|3PM",
-      "pick_value": number,
-      "direction": "OVER",
-      "confidence_pct": number,
-      "correlation_role": "feeder|target|scorer|rebounder|independent|pace_play"
+      "player_name":         "De'Aaron Fox",
+      "prop_type":           "PTS",
+      "pick_value":          10,
+      "direction":           "OVER",
+      "confidence_pct":      74,
+      "market_implied_prob": 91.67,
+      "iron_floor":          false
     }],
-    "implied_odds": "+NNN",
-    "confidence_product": number,
-    "correlation": "positive|independent|mixed",
-    "rationale": "string (max 20 words)",
-    "result": "HIT|MISS|PARTIAL|NO_DATA|null",
-    "legs_hit": number|null,
-    "legs_total": number,
-    "leg_results": [...]   // filled by auditor
+    "n_legs":               4,
+    "combined_market_prob": 0.4512,          // ∏(market_implied_prob/100) — drives odds
+    "combined_confidence":  0.2894,          // ∏(confidence_pct/100) — drives ranking
+    "implied_odds":         "+145",
+    "implied_odds_int":     145,
+    "n_games":              3,               // distinct games represented
+    "iron_floor_count":     2,
+    "rank_score":           294.5,           // composite ranking score
+    "correlation":          "independent",   // independent | mixed | positive (frontend badge)
+    "result":               null,            // HIT|MISS|PARTIAL|NO_DATA|null — filled by auditor
+    "legs_hit":             null,
+    "legs_total":           4,
+    "leg_results":          []               // filled by auditor
   }]
 }]
 ```
+
+Fields `date`, `id`, `result`, `legs_hit`, `legs_total` are added by `save_parlays()` at write time. The auditor (`grade_parlays()`) reads this bundle unchanged.
 
 ---
 
