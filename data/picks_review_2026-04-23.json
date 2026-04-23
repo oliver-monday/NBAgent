@@ -1,0 +1,380 @@
+[
+  {
+    "date": "2026-04-23",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus FG_MARGIN_THIN:1% means a single cold shooting night drops him below threshold with almost no cushion; the step-down to T20 leaves only a thin buffer above the line given how tight the margin already is."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Overall hit rate of 85% drops materially to 60% vs tough defenses, and ATL is rated tough today; at 70% confidence this is a genuine structural gap where the opponent-specific split nearly halves reliability."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 19.8 against an avg of 27.8 means a single foul-trouble or tactical adjustment game sits well within normal variance and produces a miss; the minutes floor is structurally fragile for a PTS T15 pick."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Mikal Bridges",
+    "team": "NYK",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a player whose raw_avg_3PM is only 1.4 \u2014 the distribution is wide enough that he routinely goes 0-of-3 from deep; tough opponent defense compounds the variance on a thin margin at T1."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post-miss hit rate of only 55% (lift 0.76 \u2014 actually suppressed) signals confirmed slump persistence for this AST prop; the series data showing 3.0 AST in both prior games against NYK is a within-series suppressor that mirrors the Ausar Thompson pattern from audit history."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "CJ McCollum",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "CJ McCollum",
+    "team": "ATL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag combined with a trend=down reading and a post-miss hit rate of only 71% (lift 0.86 \u2014 suppressed) makes this structurally fragile; overall=70% barely clears the T3 ceiling rule and any single cold game collapses the threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus min_floor of 22.0 against an avg of 29.4 means a foul-trouble or tactical-rest game (well within normal variance) drops him below T15; the FG_MARGIN_THIN step-down already consumed the safety buffer."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post-miss hit rate of only 60% (lift 0.70 \u2014 strongly suppressed) combined with trend=down signals confirmed slump persistence; vs_tough=77% adds an opponent-specific drag on a prop whose floor depends on secondary playmaking in a structured half-court defense."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "raw_avg_AST of only 2.9 leaves almost no cushion above the T2 threshold, and the post-miss hit rate of 67% (lift 0.75 \u2014 materially suppressed) signals slump persistence; a secondary creator role on a team that is home underdog with neutral momentum makes this floor genuinely thin."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Immanuel Quickley",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "QUES hamstring status with min_floor of 17.9 against an avg of 28.3 means any minutes restriction from the soft-tissue concern \u2014 even a precautionary load-management reduction \u2014 produces a structural miss; the post-miss lift of 0.76 also confirms suppressed bounce-back."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "REB",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 8,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus FG_MARGIN_THIN:1% and FG_COLD:-9% means Murray's shooting floor is genuinely fragile; post-miss typical miss of 6.0 pts below and a post-miss hit rate of 84% suggests the downside when he misses is large, and the cold-shooting flag signals active regression risk."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Jaden McDaniels",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 18.7 against an avg of 31.3 is a severe gap \u2014 a single low-usage or foul-trouble game (entirely normal for a wing in a playoff matchup) drops him far below the T10 threshold; post-miss hit rate of 69% (lift 0.87 suppressed) adds no safety net."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Aaron Gordon",
+    "team": "DEN",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "PROB calf/hamstring status on a VOLATILE player whose raw_avg_REB is only 4.8 \u2014 barely above the T4 threshold \u2014 means any minutes restriction from the soft-tissue concern or a poor matchup game produces a miss with almost no cushion."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-23",
+    "player_name": "Cameron Johnson",
+    "team": "DEN",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 17.1 against an avg of 27.6 is the largest minutes gap on the slate for a shooting prop; a tough opponent defense combined with trend=down and a post-miss lift of only 0.79 means a low-volume game \u2014 well within normal variance \u2014 collapses the floor entirely."
+    ],
+    "source": "auto"
+  }
+]
