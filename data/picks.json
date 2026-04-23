@@ -896,11 +896,13 @@
     "result": "HIT",
     "actual_value": 2.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:52:56.784560-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
     }
   },
   {
@@ -1165,12 +1167,13 @@
     "actual_value": 28.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -1241,11 +1244,13 @@
     "result": "HIT",
     "actual_value": 17.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -1265,11 +1270,13 @@
     "result": "HIT",
     "actual_value": 8.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -1553,12 +1560,13 @@
     "actual_value": 28.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -1650,10 +1658,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -1676,10 +1684,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     }
   },
   {
@@ -1743,10 +1751,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -1769,10 +1777,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -1795,10 +1803,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     }
   },
   {
@@ -2249,12 +2257,13 @@
     "actual_value": 38.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -2275,12 +2284,13 @@
     "actual_value": 12.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -3191,10 +3201,10 @@
     "actual_value": 14.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -3216,10 +3226,10 @@
     "actual_value": 9.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -3503,10 +3513,10 @@
     "actual_value": 30.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     }
   },
   {
@@ -3529,10 +3539,10 @@
     "actual_value": 5.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -3583,10 +3593,10 @@
     "actual_value": 8.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley is a guard; his absence has no meaningful impact on Mobley's rebounding."
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Quickley is a guard; his absence doesn't affect Mobley's rebounding matchup vs TOR frontcourt."
     }
   },
   {
@@ -3968,10 +3978,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -4436,12 +4446,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -4586,10 +4597,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     }
   },
   {
@@ -4615,10 +4626,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -4675,10 +4686,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley is a guard; his absence has no meaningful impact on Mobley's rebounding."
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Quickley is a guard; his absence doesn't affect Mobley's rebounding matchup vs TOR frontcourt."
     }
   },
   {
@@ -4774,12 +4785,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -5372,10 +5384,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -5403,10 +5415,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     }
   },
   {
@@ -5432,10 +5444,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -5461,10 +5473,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -5968,10 +5980,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -6027,11 +6039,13 @@
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:52:56.784560-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
     }
   },
   {
@@ -6355,10 +6369,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     }
   },
   {
@@ -6406,10 +6420,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -6526,10 +6540,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -6554,13 +6568,11 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     }
   },
   {
@@ -6586,10 +6598,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -6615,10 +6627,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -7042,12 +7054,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -7158,10 +7171,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -7218,10 +7231,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -7864,12 +7877,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -8315,12 +8329,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -8788,11 +8803,13 @@
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:52:56.784560-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
     }
   },
   {
@@ -8897,10 +8914,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -9044,10 +9061,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -9073,13 +9090,11 @@
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     }
   },
   {
@@ -9106,10 +9121,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -9257,10 +9272,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -9319,10 +9334,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -9351,10 +9366,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     }
   },
   {
@@ -9818,12 +9833,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -10215,12 +10231,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -10390,10 +10407,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -10420,10 +10437,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -10628,10 +10645,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -10692,10 +10709,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -10724,10 +10741,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -10848,11 +10865,13 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:52:56.784560-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
     }
   },
   {
@@ -10942,10 +10961,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -10971,13 +10990,11 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     }
   },
   {
@@ -11005,10 +11022,10 @@
     "void_reason": "manual_void: PTS pick generated in error (over-constrained rule cascade produced egregiously low T10 tier; voided pre-result to exclude from hit rate calculations)",
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     }
   },
   {
@@ -11035,10 +11052,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -11065,10 +11082,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-03-17T16:04:49.003590-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Giannis OUT removes MIL's rim anchor; Mobley gains easier paint access with trend=up and bb_lift amplifying effect."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Quickley absence doesn't directly alter Mobley's paint scoring; CLE interior dynamic unchanged."
     }
   },
   {
@@ -11095,10 +11112,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley is a guard; his absence has no meaningful impact on Mobley's rebounding."
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Quickley is a guard; his absence doesn't affect Mobley's rebounding matchup vs TOR frontcourt."
     }
   },
   {
@@ -12649,10 +12666,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     }
   },
   {
@@ -12679,10 +12696,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -12740,13 +12757,11 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Giannis Antetokounmpo (MIL) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-03-17T16:04:49.003590-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Giannis OUT removes MIL's rim anchor; Mobley gains easier paint access with trend=up and bb_lift amplifying effect."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Quickley absence doesn't directly alter Mobley's paint scoring; CLE interior dynamic unchanged."
     }
   },
   {
@@ -13020,10 +13035,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -13049,13 +13064,11 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     }
   },
   {
@@ -13082,10 +13095,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -13272,12 +13285,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -13835,10 +13849,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -14095,12 +14109,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -14131,10 +14146,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -14190,10 +14205,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -14224,10 +14239,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -14822,10 +14837,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -14920,10 +14935,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley is a guard; his absence has no meaningful impact on Mobley's rebounding."
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Quickley is a guard; his absence doesn't affect Mobley's rebounding matchup vs TOR frontcourt."
     }
   },
   {
@@ -15103,10 +15118,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -15293,12 +15308,14 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -15327,12 +15344,14 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -15361,12 +15380,14 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters",
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -15910,12 +15931,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -15983,10 +16005,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -16017,10 +16039,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -16112,10 +16134,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -16146,10 +16168,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -16180,10 +16202,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -16214,10 +16236,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     }
   },
   {
@@ -16270,11 +16292,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-12T13:52:56.784560-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
     }
   },
   {
@@ -16621,10 +16645,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -16655,10 +16679,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -17097,10 +17121,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -17128,13 +17152,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     }
   },
   {
@@ -17163,10 +17185,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -17229,10 +17251,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley is a guard; his absence has no meaningful impact on Mobley's rebounding."
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Quickley is a guard; his absence doesn't affect Mobley's rebounding matchup vs TOR frontcourt."
     }
   },
   {
@@ -17297,10 +17319,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -17329,13 +17351,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     }
   },
   {
@@ -17456,10 +17476,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -17491,10 +17511,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -17526,10 +17546,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     }
   },
   {
@@ -17895,10 +17915,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -18355,12 +18375,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. DNP renders all scoring/rebounding props moot."
     }
   },
   {
@@ -18532,10 +18553,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -18564,13 +18585,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     }
   },
   {
@@ -18600,10 +18619,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -18637,10 +18656,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -18949,10 +18968,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -19054,10 +19073,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -19089,10 +19108,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -19301,12 +19320,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -19986,10 +20006,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -20021,10 +20041,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -20282,10 +20302,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -20358,10 +20378,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -20391,10 +20411,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     },
     "market_line": 5.5,
     "market_implied_prob": 85.29,
@@ -20471,14 +20491,11 @@
     "injury_check_time": "2026-03-31T22:32:31.894447-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Sam Merrill (CLE) removed from projected starters",
-        "Marcus Smart (LAL) removed from projected starters"
-      ],
-      "updated_at": "2026-03-31T18:09:07.898085-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Smart OUT reduces LAL perimeter closeout pressure; Harden's near-certain T1 3PM floor gains marginal upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -20707,12 +20724,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -20745,12 +20763,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. DNP renders all scoring/rebounding props moot."
     }
   },
   {
@@ -21816,10 +21835,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -21853,10 +21872,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     }
   },
   {
@@ -21893,10 +21912,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     }
   },
   {
@@ -22145,12 +22164,13 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -22187,12 +22207,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. DNP renders all scoring/rebounding props moot."
     }
   },
   {
@@ -22270,12 +22291,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -22875,10 +22897,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -23096,12 +23118,13 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -23181,12 +23204,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. DNP renders all scoring/rebounding props moot."
     }
   },
   {
@@ -23350,10 +23374,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -23387,7 +23411,14 @@
     "void_reason": "player OUT per injury report",
     "lineup_risk": "high",
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
+    }
   },
   {
     "date": "2026-04-06",
@@ -23425,10 +23456,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     }
   },
   {
@@ -23630,10 +23661,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -23833,10 +23864,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     }
   },
   {
@@ -23873,10 +23904,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     }
   },
   {
@@ -23944,10 +23975,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -23984,10 +24015,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -24024,10 +24055,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     }
   },
   {
@@ -24235,7 +24266,14 @@
     "human_verdict": "trim",
     "trim_reasons": [
       "ATL's defense is rated tough and their l5 defensive rating (106.2) is notably stronger than their l15 (109.5), meaning they are tightening up recently \u2014 a real headwind for a volume-dependent 3PM prop. Historical lesson confirms 3PM is the system's weakest prop type with meaningful per-game variance, and a tough, improving defense compounds that risk."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
+    }
   },
   {
     "date": "2026-04-08",
@@ -24660,12 +24698,13 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -25223,10 +25262,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -25271,10 +25310,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -25319,10 +25358,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     }
   },
   {
@@ -25472,10 +25511,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     },
     "voided": false,
     "human_verdict": "keep",
@@ -25523,10 +25562,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     },
     "voided": false,
     "human_verdict": "keep",
@@ -25577,10 +25616,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -25631,10 +25670,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -25733,12 +25772,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Landry Shamet (NYK) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:52:56.784560-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
     }
   },
   {
@@ -26152,12 +26191,13 @@
     ],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -26247,12 +26287,13 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -27161,10 +27202,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -27213,10 +27254,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -27265,10 +27306,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -27371,12 +27412,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jalen Wilson (BKN) removed from projected starters"
+        "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-12T13:52:56.784560-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wilson absence doesn't directly affect AST distribution; DNP risk remains primary variable."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
     },
     "human_verdict": "manual_skip",
     "trim_reasons": [
@@ -30545,12 +30586,13 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. DNP renders all scoring/rebounding props moot."
     }
   },
   {
@@ -30597,12 +30639,13 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -30962,10 +31005,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     }
   },
   {
@@ -31014,10 +31057,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     }
   },
   {
@@ -31066,10 +31109,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     }
   },
   {
@@ -31167,7 +31210,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
+    }
   },
   {
     "date": "2026-04-18",
@@ -31215,10 +31267,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     }
   },
   {
@@ -31269,10 +31321,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     }
   },
   {
@@ -31323,10 +31375,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     }
   },
   {
@@ -31372,7 +31424,16 @@
     "trim_reasons": [
       "Mobley has a min_floor of only 22.0 in a BLOWOUT_RISK game (-8.5 CLE favored) \u2014 if CLE runs away with it early, Mobley is the first big rotation player to see reduced fourth-quarter minutes. Combined with a volatile tag, FG_COLD flag, and concerning H2H at T15 (1/3) and T10 (1/3), this pick's floor is contingent on both adequate minutes AND adequate shooting, with structural risk on both dimensions."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Quickley absence doesn't directly alter Mobley's paint scoring; CLE interior dynamic unchanged."
+    }
   },
   {
     "date": "2026-04-18",
@@ -31422,10 +31483,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't affect Mobley's assist floor against TOR frontcourt."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Quickley out doesn't structurally change Mobley's pass-out opportunities; H2H floor intact."
     }
   },
   {
@@ -31530,10 +31591,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     }
   },
   {
@@ -31580,12 +31641,13 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -31632,12 +31694,13 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -33177,12 +33240,13 @@
     "clv_pp": 0.76,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -33231,12 +33295,13 @@
     "clv_pp": -2.42,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. DNP renders all scoring/rebounding props moot."
     }
   },
   {
@@ -33283,12 +33348,13 @@
     "clv_pp": -0.34,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -33422,10 +33488,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley absence is a TOR offensive loss; Mitchell scoring vs TOR defense unaffected."
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -33476,10 +33542,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't meaningfully alter Mitchell's assist opportunities against TOR."
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
     },
     "human_verdict": "manual_skip",
     "trim_reasons": [
@@ -33796,10 +33862,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 83,
-      "revised_reasoning": "Quickley out; Barnes absorbs usage, already trending up with elite vs_soft and min_floor solid."
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -33848,10 +33914,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Iron floor REB prop; Quickley absence doesn't impact Barnes rebounding duties."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -33900,10 +33966,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Quickley confirmed out; Barnes becomes primary creator, directly elevating assist volume."
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -33954,10 +34020,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley out redistributes offensive load; Barrett's usage rises, trend-down offset by vacancy."
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -34006,10 +34072,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 81,
-      "revised_reasoning": "Quickley absent; Barrett gains secondary creation role, boosting assist opportunities meaningfully."
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -34166,10 +34232,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 74,
-      "revised_reasoning": "Quickley's absence doesn't alter Harden's assist opportunities on CLE side."
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
     },
     "human_verdict": "manual_skip",
     "trim_reasons": [
@@ -34220,10 +34286,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Quickley is a guard; his absence has no meaningful impact on Mobley's rebounding."
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Quickley is a guard; his absence doesn't affect Mobley's rebounding matchup vs TOR frontcourt."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -34274,10 +34340,10 @@
       "triggered_by": [
         "Immanuel Quickley (TOR) removed from projected starters"
       ],
-      "updated_at": "2026-04-20T15:29:35.923552-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Quickley out doesn't affect Mobley's assist floor against TOR frontcourt."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Quickley out doesn't structurally change Mobley's pass-out opportunities; H2H floor intact."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -34329,12 +34395,13 @@
     "clv_pp": 0.62,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -34383,12 +34450,13 @@
     "clv_pp": 3.96,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -34568,12 +34636,13 @@
     "clv_pp": -1.84,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon's defensive presence gone; McDaniels gets easier looks, amplifying already strong trend-up and H2H record."
+      "revised_reasoning": "Jokic OUT removes defensive anchor; McDaniels benefits from less help-side paint deterrence and more open looks."
     }
   },
   {
@@ -36816,7 +36885,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "TOR Quickley absence has no direct connection to Mitchell scoring; CLE matchup dynamics unchanged."
+    }
   },
   {
     "date": "2026-04-23",
@@ -36856,7 +36934,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Quickley out doesn't materially affect Mitchell's assist opportunities; already VOLATILE with trend=down."
+    }
   },
   {
     "date": "2026-04-23",
@@ -36896,7 +36983,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Quickley absence doesn't directly alter Mobley's paint scoring; CLE interior dynamic unchanged."
+    }
   },
   {
     "date": "2026-04-23",
@@ -36936,7 +37032,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Quickley is a guard; his absence doesn't affect Mobley's rebounding matchup vs TOR frontcourt."
+    }
   },
   {
     "date": "2026-04-23",
@@ -36976,7 +37081,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Quickley out doesn't structurally change Mobley's pass-out opportunities; H2H floor intact."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37016,7 +37130,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Quickley absence doesn't reduce viable receivers for Harden; TOR defense restructures but AST floor holds."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37056,7 +37179,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley not a primary 3PM defender for Harden; strong base rate and trend=up unchanged."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37096,7 +37228,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Quickley out redistributes primary creation to Barnes; home G3 desperate context amplifies usage boost."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37136,7 +37277,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Quickley absence doesn't affect Barnes rebounding; iron_floor intact at easy T4 tier."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37176,7 +37326,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley out elevates Barnes to primary creator role; more ball-handling time directly lifts assist volume."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37216,7 +37375,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Quickley starter absence redistributes offensive volume to Barrett; vs_soft=91% with more usage at home."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37256,7 +37424,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 81,
+      "revised_reasoning": "Quickley out means Barrett absorbs more ball-handling creation duties; H2H 4/4 floor further reinforced."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37296,7 +37473,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-23T16:07:48.915039-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Immanuel Quickley (TOR) removed from projected starters"
+      ],
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 77,
+      "revised_reasoning": "Quickley absence boosts Ingram's secondary creation role; trend=up plus H2H 5/5 floor reinforced."
+    }
   },
   {
     "date": "2026-04-23",
@@ -37381,12 +37567,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Gordon absence redistributes usage to Jokic; iron_floor protected, ceiling elevated with added offensive load."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. Confidence floor only reflects DNP uncertainty risk."
     }
   },
   {
@@ -37430,12 +37617,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon was key DEN rebounder; Jokic absorbs additional board opportunities, directly boosting REB prop."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Jokic is OUT; pick is effectively voided. DNP renders all scoring/rebounding props moot."
     }
   },
   {
@@ -37529,12 +37717,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon out redistributes offensive usage; Murray projects 41min with added scoring burden, modest upside boost."
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Jokic OUT gives Murray primary creator role at 41min; usage surges, VOLATILE offset by massive opportunity."
     }
   },
   {
@@ -37578,12 +37767,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 77,
-      "revised_reasoning": "Gordon was DEN's top forward defender; absence gives Randle easier paint access and higher volume opportunities."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes DEN defensive anchor; Randle gets easier paint access, higher FG% and volume vs soft DEN D."
     }
   },
   {
@@ -37627,12 +37817,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Gordon was DEN's primary rebounding forward; Randle competes against weakened frontcourt, boosting rebound upside."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Jokic OUT removes elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
     }
   },
   {
@@ -37676,12 +37867,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
       "direction": "up",
       "revised_confidence_pct": 79,
-      "revised_reasoning": "Gordon's defensive presence gone; McDaniels gets easier looks, amplifying already strong trend-up and H2H record."
+      "revised_reasoning": "Jokic OUT removes defensive anchor; McDaniels benefits from less help-side paint deterrence and more open looks."
     }
   },
   {
@@ -37767,12 +37959,13 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Aaron Gordon (DEN) removed from projected starters",
+        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Gordon absence doesn't directly affect Johnson's 3PM opportunities; role and minutes largely unchanged at 32min."
+      "updated_at": "2026-04-23T16:07:51.185931-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Jokic OUT collapses DEN offensive spacing and creation; Johnson sees fewer kick-out opportunities from broken possessions."
     }
   }
 ]
