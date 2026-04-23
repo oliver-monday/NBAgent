@@ -55,10 +55,11 @@ TODAY_STR = TODAY.strftime("%Y-%m-%d")
 ODDS_BUCKETS = [
     ("Safe",  100,  200, 4),
     ("Reach", 200,  350, 3),
-    ("Degen", 350,  600, 2),
+    ("Degen", 350, 1000, 2),
 ]
 
-MAX_LEGS         = 8     # absolute ceiling per card
+MAX_LEGS         = 10    # absolute ceiling per card (was 8 — raised to support Degen
+                         # 9-10 leg combos on floor-pick-heavy slates)
 MAX_COMBO_POOL   = 25    # cap legs before combo generation (performance)
 MIN_LEGS         = 2     # minimum legs per card
 MIN_CONFIDENCE   = 70    # individual leg confidence floor (matches analyst's PTS/AST grace zone)
@@ -332,6 +333,34 @@ def save_parlays(parlays: list[dict]):
               f"{legs_str}")
 
 
+# ── Per-bucket pool selection ────────────────────────────────────────
+
+def build_pool_for_bucket(picks: list[dict], bucket_label: str) -> list[dict]:
+    """Select the top MAX_COMBO_POOL picks for a bucket's combo generation.
+
+    Safe/Reach pools are QUALITY-first — sorted by confidence_pct descending.
+    These buckets build conservative cards; anchoring on our most reliable picks
+    keeps card-level combined_confidence high.
+
+    Degen pool is ODDS-first — sorted by market_implied_prob ascending.
+    Degen's framing is speculative high-return, so each leg should contribute
+    a meaningful odds boost. The 70%+ confidence floor (applied upstream in
+    load_todays_picks) still filters out trash picks — these aren't lottery
+    legs, they're picks where we have system conviction AND the market prices
+    generously (typically STRONG/POSITIVE edge picks).
+
+    Returns the top MAX_COMBO_POOL picks per the relevant ordering. If `picks`
+    is smaller than MAX_COMBO_POOL, returns all picks (sorted).
+    """
+    if bucket_label == "Degen":
+        # Odds-first: lowest market_implied_prob first
+        sorted_picks = sorted(picks, key=lambda p: p["market_implied_prob"])
+    else:
+        # Quality-first: highest confidence_pct first
+        sorted_picks = sorted(picks, key=lambda p: p["confidence_pct"], reverse=True)
+    return sorted_picks[:MAX_COMBO_POOL]
+
+
 # ── Main ─────────────────────────────────────────────────────────────
 
 def main():
@@ -344,19 +373,24 @@ def main():
         print(f"[parlay] Not enough picks with market odds ({len(picks)}). Exiting.")
         return
 
-    # Cap pool for performance — C(25, 8) ≈ 1.1M is workable; larger blows up
-    if len(picks) > MAX_COMBO_POOL:
-        picks = sorted(picks, key=lambda p: p["confidence_pct"], reverse=True)[:MAX_COMBO_POOL]
-        print(f"[parlay] Capped to top {MAX_COMBO_POOL} by confidence")
+    # No global pool cap — each bucket builds its own pool fitted to its purpose
+    # (Safe/Reach: top-N by confidence; Degen: top-N by lowest market_implied_prob).
+    # See build_pool_for_bucket() for rationale.
+    print(f"[parlay] {len(picks)} total eligible picks — per-bucket pool selection active")
 
     all_cards: list[dict] = []
     for bucket_label, min_odds, max_odds, target_n in ODDS_BUCKETS:
+        # Per-bucket pool selection — each bucket gets picks fitted to its purpose
+        pool = build_pool_for_bucket(picks, bucket_label)
+        pool_criterion = "odds-first (lowest market prob)" if bucket_label == "Degen" else "quality-first (top confidence)"
+        print(f"[parlay] {bucket_label}: pool = {len(pool)} picks, {pool_criterion}")
+
         # American odds → probability bounds
-        # +100 → 0.50, +200 → 0.333, +350 → 0.222, +600 → 0.143
+        # +100 → 0.50, +200 → 0.333, +350 → 0.222, +1000 → 0.091
         max_prob = 100 / (min_odds + 100)   # lower odds = higher prob = upper bound
         min_prob = 100 / (max_odds + 100)   # higher odds = lower prob = lower bound
 
-        min_legs = find_min_legs_for_bucket(picks, max_prob)
+        min_legs = find_min_legs_for_bucket(pool, max_prob)
         if min_legs < 0 or min_legs > MAX_LEGS:
             print(f"[parlay] {bucket_label}: cannot reach +{min_odds} within "
                   f"{MAX_LEGS} legs — skipping bucket")
@@ -372,7 +406,7 @@ def main():
         for n in range(min_legs, upper_n):
             if len(candidates) >= MAX_CANDIDATES:
                 break
-            for combo in combinations(picks, n):
+            for combo in combinations(pool, n):
                 # No duplicate players
                 names = set()
                 dupe = False
