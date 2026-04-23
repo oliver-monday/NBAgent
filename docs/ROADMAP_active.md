@@ -89,6 +89,7 @@ Swept against ROADMAP_resolved.md — all items shipped through 2026-04-16 verif
 - Season context update — Apr 21 G2 results (BOS-PHI, OKC-PHX, DET-ORL, SAS-POR, LAL-HOU) needed after games complete
 - Season context auto-updater — monitor diary entry quality through R1. If entries are consistently thin or miss pattern observations, consider switching to Opus or adding a review step.
 - Monitor injury_event auto-void — confirm next in-game injury exit is correctly voided in picks.json + frontend (auditor.py promote_injury_event_voids).
+- Skip recalibration monitoring — track false skip rate through R1 G3-G4. Target: FSR below 60% (down from 91.7%). If FSR remains above 70%, consider further floor reductions. If actual hit rate on newly-admitted picks drops below 80%, revert.
 
 **Known playoff transfer risks:**
 - H15 suppressors (HOU, PHI, LAL): measured against full-season schedule. Fixed matchups in playoffs may concentrate or invert signal.

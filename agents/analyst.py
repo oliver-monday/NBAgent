@@ -2213,10 +2213,10 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
   This floor applies after all penalties and caps — if confidence after VOLATILE deduction,
   blowout cap, and trend step-down lands below 75%, skip the 3PM pick.
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
-- REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
+- REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 72%. REB was historically the system's highest-variance category but has stabilized to 87.6% season hit rate — comparable to PTS. The previous 78% floor was over-rejecting (5 REB picks skipped at 70-77% on Apr 21 all hit). A REB pick at 72%+ confidence with a qualifying tier hit rate meets the bar.
 - REB props — pick value gate: The pick value must be strictly below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. The pick tier must be strictly less than this floor value — an exact match is not sufficient. Rationale: when the 3rd-lowest L10 value equals the pick threshold exactly, there is zero variance buffer. A single outlier game (even for a player with a 10/10 hit rate) breaks the streak with no protective cushion. If the intended tier equals or exceeds this floor, move down one tier. If no valid tier exists strictly below the floor, skip the REB prop entirely.
   Exception — T4 minimum tier: This exact-match gate does NOT apply when pick_value = 4 (the minimum valid REB tier). At T4, there is no lower valid tier to step to, so the zero-buffer logic does not apply in the same way — validate T4 picks on hit rate merit alone. The gate still fires normally for pick_value ≥ 6.
-- REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 78% confidence minimum AND the floor gate must pass before any REB pick is output.
+- REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 72% confidence minimum AND the floor gate must pass before any REB pick is output.
 - Tier walk-down discipline: Always evaluate tiers from highest to lowest for the stat.
   Never select a tier if the tier immediately above it also qualifies (≥70% hit rate in
   recent window). The tier_walk field must document every tier evaluated — if you skipped
@@ -2302,8 +2302,13 @@ The rules below can conflict. When they do, use this priority order:
 
   3. CONFIDENCE PENALTIES — apply cumulatively after tier is set.
      VOLATILE -5%, BLOWOUT -10%, B2B rate substitution, DENSE -5–10%.
-     Floor is 70%: if cumulative penalties push below 70%, the pick fails on merit —
-     skip it. Do not round up to 70% to force a qualifying pick.
+     Floor is 68% for PTS and AST: if cumulative penalties push below 68%, the pick fails
+     on merit — skip it. (Lowered from 70% based on playoff data: the 70-75% band hits at
+     89.4%, and picks at 68-69% were systematically over-skipped — e.g. Durant PTS at 69%
+     scored 23.) For 3PM the floor remains 75%. For REB the floor remains 72%.
+     If a PTS or AST pick lands at exactly 68% or 69%, emit it at that stated confidence —
+     do not round up. The grace zone is about not rejecting near-qualifying picks, not about
+     inflating confidence.
 
   4. CONFIDENCE CAPS — applied last, after all penalties.
      spread_abs > 8 → 80% ceiling. spread_abs ≥ 12 → 74% ceiling.
@@ -2366,10 +2371,10 @@ regardless of what your training data suggests about their historical status. Th
 BLOWOUT EXEMPTION (raw_avgs PTS ≥ 27.0) is most reliably applied when you have verified the
 player's current season ranking in the leaderboard block.
 
-CONFIDENCE THRESHOLD IS A FLOOR, NOT A TARGET: 70% is the minimum threshold for emitting a
-pick, not a number to land on. If your honest assessment after all adjustments is 65%, skip
-the pick — do not adjust your stated confidence upward to clear the threshold. A pick stated
-at exactly 70% must genuinely reflect 70% conviction. Rounding up from 65% is a skip
+CONFIDENCE THRESHOLD IS A FLOOR, NOT A TARGET: 68% is the minimum threshold for PTS and AST
+picks (75% for 3PM, 72% for REB). If your honest assessment after all adjustments is 63%,
+skip the pick — do not adjust your stated confidence upward to clear the threshold. A pick
+stated at exactly 68% must genuinely reflect 68% conviction. Rounding up from 63% is a skip
 masquerading as a pick, and the auditor will find it.
 
 KEY RULES — MATCHUP QUALITY:
@@ -2407,13 +2412,16 @@ Stat-specific rules:
     the gate because of low raw_avgs AST below 4.0, the ≥8.0 threshold is irrelevant.)
 
   VOLATILE + HIGH AST TIER BLOCK: When a player carries the VOLATILE tag (shown as [volatile]
-    in their volatility field) AND the selected AST tier is T6 or higher, do NOT pick the AST
-    prop regardless of elite playmaker exemption status. The elite playmaker exemption
-    (raw_avgs AST >= 8.0) protects against the minimum floor gate — it does not protect against
-    floor instability. A VOLATILE tag means the player's AST floor is genuinely unpredictable,
-    and T6+ AST picks on volatile playmakers have confirmed miss history even at high
-    season-level hit rates. Apply this as a hard SKIP: VOLATILE + AST tier >= T6 = SKIP,
-    no exceptions.
+    in their volatility field) AND the selected AST tier is T6 or higher:
+    — If the player's raw_avgs AST is ≥ 6.0 per game (primary playmaker): apply a -8%
+      confidence penalty instead of a hard skip. These players have a structural AST floor
+      that makes T6 viable even with VOLATILE — LeBron, Maxey, Harden, Jokic, etc. regularly
+      clear T6 despite volatility. After the -8% penalty, if confidence remains ≥ 70%, the
+      pick may proceed. If it drops below 70%, skip via merit_below_floor.
+    — If the player's raw_avgs AST is < 6.0 per game (secondary creator): apply as a hard
+      SKIP. VOLATILE + AST T6+ on secondary creators has confirmed miss history. No exceptions.
+    The elite playmaker exemption (raw_avgs AST >= 8.0) still applies to the AST T4+ hard gate
+    separately — this rule governs only the VOLATILE + T6+ interaction.
 
   REB: opp_defense does NOT make REB a valid defense signal. Do not use REB rating as
     justification for a REB over. Rebounds are driven by pace, opponent FG%, and frontcourt
@@ -2876,7 +2884,7 @@ KEY RULES — VOLATILITY:
   7/10 or 8/10 hit rates are evaluated normally under standard VOLATILE treatment (-5%
   confidence deduction). This rule applies to PTS props only. Do NOT apply this skip to
   AST picks below T6 — the VOLATILE AST skip rule governs those cases. VOLATILE + 7/10
-  at T15–T24 for REB is handled by the existing 78% REB minimum floor rule.
+  at T15–T24 for REB is handled by the existing 72% REB minimum floor rule.
   Exceptions — this skip does NOT apply when any of the following are true:
     (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
         floor reliability above the 7/10 baseline.
@@ -3007,7 +3015,7 @@ skip reason briefly and move on — but you must have visited it.
 
 Work through each player in this fixed order:
   1. PTS — walk tiers top-down; apply all PTS rules (FG_MARGIN, BLOWOUT, min_floor cap, etc.)
-  2. REB — walk tiers top-down; apply REB-specific rules (78% floor, 25th-pct gate, etc.)
+  2. REB — walk tiers top-down; apply REB-specific rules (72% floor, 25th-pct gate, etc.)
   3. AST — walk tiers top-down; apply AST-specific rules (T4+ hard gate, etc.)
   4. 3PM — walk tiers top-down; apply 3PM-specific rules (trend=down step-down, hard skips, etc.)
 
@@ -3106,7 +3114,7 @@ JSON schema:
       "direction": "OVER",
       "skip_reason": "no_market | min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
       // no_market: the player+prop+tier combination has no FanDuel alternate market in ## FANDUEL MARKET AVAILABILITY. rule_context: {{"player_name": str, "prop_type": str, "tier_considered": number, "reason": "no FanDuel market available"}}.
-      // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 78% REB, 70% general); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
+      // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 72% REB, 68% general PTS/AST); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
       "rule_context": {{
         ... fields specific to this skip_reason as defined in the rules above ...
       }}
@@ -3492,10 +3500,10 @@ A player who averages 21 pts but only reaches 20 half the time is a 15-tier pick
   This floor applies after all penalties and caps — if confidence after VOLATILE deduction,
   blowout cap, and trend step-down lands below 75%, skip the 3PM pick.
 - Where a player's stats card shows bb_lift > 1.15 for a stat at their qualifying tier, treat a post-miss pick as a neutral-to-positive signal rather than a negative one. Where [iron_floor] is shown, a single prior miss carries no negative weight.
-- REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 78%. REB is the system's highest-variance category (season hit rate 66.7% vs 85.7% for PTS). A REB pick that would otherwise qualify at 72% or 75% confidence does not meet the bar — skip it entirely.
+- REB props — minimum confidence floor: Do not output any REB pick with confidence_pct below 72%. REB was historically the system's highest-variance category but has stabilized to 87.6% season hit rate — comparable to PTS. The previous 78% floor was over-rejecting (5 REB picks skipped at 70-77% on Apr 21 all hit). A REB pick at 72%+ confidence with a qualifying tier hit rate meets the bar.
 - REB props — pick value gate: The pick value must be strictly below the player's L10 25th-percentile REB output. Compute this as the 3rd-lowest REB value across their last 10 games. The pick tier must be strictly less than this floor value — an exact match is not sufficient. Rationale: when the 3rd-lowest L10 value equals the pick threshold exactly, there is zero variance buffer. A single outlier game (even for a player with a 10/10 hit rate) breaks the streak with no protective cushion. If the intended tier equals or exceeds this floor, move down one tier. If no valid tier exists strictly below the floor, skip the REB prop entirely.
   Exception — T4 minimum tier: This exact-match gate does NOT apply when pick_value = 4 (the minimum valid REB tier). At T4, there is no lower valid tier to step to, so the zero-buffer logic does not apply in the same way — validate T4 picks on hit rate merit alone. The gate still fires normally for pick_value ≥ 6.
-- REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 78% confidence minimum AND the floor gate must pass before any REB pick is output.
+- REB props for offensive-first players: For players whose primary role is scoring or playmaking (PTS avg > 20, or AST avg > 6 across their recent games), the 25th-percentile gate above applies with extra strictness — if the player's REB floor (lowest value in their last 10 games) is within 2 of your intended pick value, skip the REB prop and pick their scoring or assists prop instead. A thin floor at high volume is a trap. Both the 72% confidence minimum AND the floor gate must pass before any REB pick is output.
 - Tier walk-down discipline: Always evaluate tiers from highest to lowest for the stat.
   Never select a tier if the tier immediately above it also qualifies (≥70% hit rate in
   recent window). The tier_walk field must document every tier evaluated — if you skipped
@@ -3576,13 +3584,16 @@ Stat-specific rules:
     the gate because of low raw_avgs AST below 4.0, the ≥8.0 threshold is irrelevant.)
 
   VOLATILE + HIGH AST TIER BLOCK: When a player carries the VOLATILE tag (shown as [volatile]
-    in their volatility field) AND the selected AST tier is T6 or higher, do NOT pick the AST
-    prop regardless of elite playmaker exemption status. The elite playmaker exemption
-    (raw_avgs AST >= 8.0) protects against the minimum floor gate — it does not protect against
-    floor instability. A VOLATILE tag means the player's AST floor is genuinely unpredictable,
-    and T6+ AST picks on volatile playmakers have confirmed miss history even at high
-    season-level hit rates. Apply this as a hard SKIP: VOLATILE + AST tier >= T6 = SKIP,
-    no exceptions.
+    in their volatility field) AND the selected AST tier is T6 or higher:
+    — If the player's raw_avgs AST is ≥ 6.0 per game (primary playmaker): apply a -8%
+      confidence penalty instead of a hard skip. These players have a structural AST floor
+      that makes T6 viable even with VOLATILE — LeBron, Maxey, Harden, Jokic, etc. regularly
+      clear T6 despite volatility. After the -8% penalty, if confidence remains ≥ 70%, the
+      pick may proceed. If it drops below 70%, skip via merit_below_floor.
+    — If the player's raw_avgs AST is < 6.0 per game (secondary creator): apply as a hard
+      SKIP. VOLATILE + AST T6+ on secondary creators has confirmed miss history. No exceptions.
+    The elite playmaker exemption (raw_avgs AST >= 8.0) still applies to the AST T4+ hard gate
+    separately — this rule governs only the VOLATILE + T6+ interaction.
 
   REB: opp_defense does NOT make REB a valid defense signal. Do not use REB rating as
     justification for a REB over. Rebounds are driven by pace, opponent FG%, and frontcourt
@@ -4020,7 +4031,7 @@ KEY RULES — VOLATILITY:
   7/10 or 8/10 hit rates are evaluated normally under standard VOLATILE treatment (-5%
   confidence deduction). This rule applies to PTS props only. Do NOT apply this skip to
   AST picks below T6 — the VOLATILE AST skip rule governs those cases. VOLATILE + 7/10
-  at T15–T24 for REB is handled by the existing 78% REB minimum floor rule.
+  at T15–T24 for REB is handled by the existing 72% REB minimum floor rule.
   Exceptions — this skip does NOT apply when any of the following are true:
     (a) The player has [iron_floor] on this stat AND trend=up — iron_floor elevates the
         floor reliability above the 7/10 baseline.
@@ -4163,8 +4174,13 @@ The rules below can conflict. When they do, use this priority order:
 
   3. CONFIDENCE PENALTIES — apply cumulatively after tier is set.
      VOLATILE -5%, BLOWOUT -10%, B2B rate substitution, DENSE -5–10%.
-     Floor is 70%: if cumulative penalties push below 70%, the pick fails on merit —
-     skip it. Do not round up to 70% to force a qualifying pick.
+     Floor is 68% for PTS and AST: if cumulative penalties push below 68%, the pick fails
+     on merit — skip it. (Lowered from 70% based on playoff data: the 70-75% band hits at
+     89.4%, and picks at 68-69% were systematically over-skipped — e.g. Durant PTS at 69%
+     scored 23.) For 3PM the floor remains 75%. For REB the floor remains 72%.
+     If a PTS or AST pick lands at exactly 68% or 69%, emit it at that stated confidence —
+     do not round up. The grace zone is about not rejecting near-qualifying picks, not about
+     inflating confidence.
 
   4. CONFIDENCE CAPS — applied last, after all penalties.
      spread_abs > 8 → 80% ceiling. spread_abs ≥ 12 → 74% ceiling.
@@ -4227,10 +4243,10 @@ regardless of what your training data suggests about their historical status. Th
 BLOWOUT EXEMPTION (raw_avgs PTS ≥ 27.0) is most reliably applied when you have verified the
 player's current season ranking in the leaderboard block.
 
-CONFIDENCE THRESHOLD IS A FLOOR, NOT A TARGET: 70% is the minimum threshold for emitting a
-pick, not a number to land on. If your honest assessment after all adjustments is 65%, skip
-the pick — do not adjust your stated confidence upward to clear the threshold. A pick stated
-at exactly 70% must genuinely reflect 70% conviction. Rounding up from 65% is a skip
+CONFIDENCE THRESHOLD IS A FLOOR, NOT A TARGET: 68% is the minimum threshold for PTS and AST
+picks (75% for 3PM, 72% for REB). If your honest assessment after all adjustments is 63%,
+skip the pick — do not adjust your stated confidence upward to clear the threshold. A pick
+stated at exactly 68% must genuinely reflect 68% conviction. Rounding up from 63% is a skip
 masquerading as a pick, and the auditor will find it.
 
 {quant_context if quant_context else "No quant stats available."}
@@ -4238,7 +4254,7 @@ masquerading as a pick, and the auditor will find it.
 {f"{available_markets}{chr(10)}{chr(10)}" if available_markets else ""}## ANALYSIS APPROACH
 For every player in the SCOUT SHORTLIST, evaluate the prop types flagged by Scout (plus any others you identify signal for in the quant data) against the full rulebook above. Work through each player in this fixed order:
   1. PTS — walk tiers top-down; apply all PTS rules (FG_MARGIN, BLOWOUT, min_floor, etc.)
-  2. REB — walk tiers top-down; apply REB-specific rules (78% floor, 25th-pct gate, etc.)
+  2. REB — walk tiers top-down; apply REB-specific rules (72% floor, 25th-pct gate, etc.)
   3. AST — walk tiers top-down; apply AST-specific rules (T4+ hard gate, etc.)
   4. 3PM — walk tiers top-down; apply 3PM-specific rules (trend=down step-down, hard skips, etc.)
 
@@ -4334,7 +4350,7 @@ JSON schema:
       "direction": "OVER",
       "skip_reason": "no_market | min_floor_tier_step | volatile_weak_combo | blowout_secondary_scorer | 3pm_trend_down_tough_dvp | 3pm_trend_down_low_minutes | 3pm_blowout_trend_down | ast_hard_gate | fg_margin_thin_tier_step | reb_floor_skip | merit_below_floor | fg_cold_tier_step | blowout_t25_skip",
       // no_market: the player+prop+tier combination has no FanDuel alternate market in ## FANDUEL MARKET AVAILABILITY. rule_context: {{"player_name": str, "prop_type": str, "tier_considered": number, "reason": "no FanDuel market available"}}.
-      // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 78% REB, 70% general); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
+      // IMPORTANT: Use merit_below_floor when confidence after all penalties falls below the prop-type minimum floor (75% 3PM, 72% REB, 68% general PTS/AST); NOT a named hard-rule fire. Use 3pm_blowout_trend_down ONLY when the spread_abs ≥ 19 unconditional 3PM hard skip fires. Do NOT use 3pm_blowout_trend_down for penalty-driven confidence floor failures.
       "rule_context": {{{{
         ... fields specific to this skip_reason as defined in the rules above ...
       }}}}
