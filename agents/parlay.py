@@ -231,18 +231,23 @@ def _game_key(pick: dict) -> str:
     return "_".join(sorted([team, opp]))
 
 
-def find_min_legs_for_bucket(legs_sorted: list[dict], target_max_prob: float) -> int:
+def find_min_legs_for_bucket(picks: list[dict], target_max_prob: float) -> int:
     """Find the minimum number of legs needed to push combined market prob
-    below target_max_prob. Uses the highest-probability legs (safest picks)
-    as the optimistic bound — this is the FEWEST legs that could possibly
-    place a card in this bucket.
+    at or below target_max_prob.
 
-    `legs_sorted` must be sorted by market_implied_prob DESCENDING.
+    To minimize legs required, we must use the LOWEST-probability picks first —
+    each leg multiplies the combined probability downward by its own prob, and
+    lower-prob legs multiply faster than high-prob legs. Starting with the
+    safest (highest-prob) picks overestimates the minimum and falsely concludes
+    buckets are unreachable when the pool is dominated by floor picks.
+
+    Sorts internally (ascending by market_implied_prob) — safe to pass any order.
 
     Returns the leg count, or -1 if even the full pool can't reach the target.
     """
+    sorted_asc = sorted(picks, key=lambda p: p["market_implied_prob"])
     prob = 1.0
-    for i, leg in enumerate(legs_sorted):
+    for i, leg in enumerate(sorted_asc):
         prob *= leg["market_implied_prob"] / 100
         if prob <= target_max_prob:
             return i + 1
@@ -369,10 +374,6 @@ def main():
         picks = sorted(picks, key=lambda p: p["confidence_pct"], reverse=True)[:MAX_COMBO_POOL]
         print(f"[parlay] Capped to top {MAX_COMBO_POOL} by confidence")
 
-    # Sort by market_implied_prob descending — used for the min_legs computation
-    # (the safest legs first give the optimistic bound on how few legs are needed)
-    picks_by_prob = sorted(picks, key=lambda p: p["market_implied_prob"], reverse=True)
-
     all_cards: list[dict] = []
     for bucket_label, min_odds, max_odds, target_n in ODDS_BUCKETS:
         # American odds → probability bounds
@@ -380,7 +381,7 @@ def main():
         max_prob = 100 / (min_odds + 100)   # lower odds = higher prob = upper bound
         min_prob = 100 / (max_odds + 100)   # higher odds = lower prob = lower bound
 
-        min_legs = find_min_legs_for_bucket(picks_by_prob, max_prob)
+        min_legs = find_min_legs_for_bucket(picks, max_prob)
         if min_legs < 0 or min_legs > MAX_LEGS:
             print(f"[parlay] {bucket_label}: cannot reach +{min_odds} within "
                   f"{MAX_LEGS} legs — skipping bucket")
