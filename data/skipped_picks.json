@@ -14,10 +14,10 @@
       "tier_considered": 1,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-22",
@@ -34,10 +34,10 @@
       "tier_considered": 6,
       "reason": "VOLATILE tag + AST tier T6 = VOLATILE AST T6+ hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-22",
@@ -54,10 +54,10 @@
       "tier_considered": 15,
       "reason": "spread_abs=17.5 >= 16.5 playoff threshold; Williams is secondary scorer; T15 hard-skipped (T10 floor exception used instead)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 19.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 19.0 \u2265 tier 15"
   },
   {
     "date": "2026-04-22",
@@ -74,10 +74,10 @@
       "tier_considered": 4,
       "reason": "70% base \u2192 VOLATILE -3% \u2192 67%; below 70% confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-22",
@@ -94,10 +94,10 @@
       "tier_considered": 6,
       "reason": "VOLATILE tag + AST tier T6 = VOLATILE AST T6+ hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 6"
   },
   {
     "date": "2026-04-22",
@@ -114,10 +114,10 @@
       "tier_considered": 6,
       "reason": "After VOLATILE -3% and trend-down -5% penalties, confidence falls to ~74%, below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-22",
@@ -134,10 +134,10 @@
       "tier_considered": 4,
       "reason": "vs_tough=62% (-18pp drop) + VOLATILE -3% + blowout underdog context drops confidence below 70% floor; season H2H T4 only 1/3=33%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-22",
@@ -154,10 +154,10 @@
       "tier_considered": 20,
       "reason": "Overall T20 estimated below 70% (tier=15 at 70% implies T20 < 70%); VOLATILE -3% further reduces; no qualifying tier with available market"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 27.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 27.0 \u2265 tier 20"
   },
   {
     "date": "2026-04-22",
@@ -174,10 +174,10 @@
       "tier_considered": 6,
       "reason": "VOLATILE tag + AST tier T6 = VOLATILE AST T6+ hard skip; all available market tiers (T6, T8, T10, T12) blocked"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-22",
@@ -194,10 +194,10 @@
       "tier_considered": 1,
       "reason": "trend=down mandatory step-down from T1; no iron_floor and no 9+/10 hit rate exception available; step below T1 minimum = skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-22",
@@ -214,10 +214,10 @@
       "tier_considered": 4,
       "reason": "Blowout underdog -8pp + soft_floor PTS/AST ratio -5pp drops confidence to ~67%, below 70% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-22",
@@ -234,10 +234,10 @@
       "tier_considered": 1,
       "reason": "trend=down AND OKC tough DvP 3PM; hard skip fires; no 9+/10 at T1 exception (8/10)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-04-22",
@@ -254,10 +254,10 @@
       "tier_considered": 15,
       "reason": "FG_MARGIN_NEG step from T20\u2192T15; VOLATILE -3% + blowout -5% drops confidence to ~62%, well below 70% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 11.0 < tier 15"
   },
   {
     "date": "2026-04-22",
@@ -274,10 +274,10 @@
       "tier_considered": 6,
       "reason": "Post-miss slump -5% + VOLATILE -3% + trend-down -5% drops T6 confidence to ~72%, below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-22",
@@ -294,10 +294,10 @@
       "tier_considered": 4,
       "reason": "VOLATILE -3% drops T4 REB to 77%, below 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-22",
@@ -314,9 +314,9 @@
       "tier_considered": 6,
       "reason": "VOLATILE -3% drops 70% base to 67%, below both 70% general floor and 78% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 6"
   }
 ]

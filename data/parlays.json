@@ -4924,9 +4924,26 @@
         "rationale": "Two STRONG-anchored REB legs from separate games; Booker +15.95pp STRONG edge drives value.",
         "date": "2026-04-22",
         "id": "parlay_2026-04-22_01",
-        "result": null,
-        "legs_hit": null,
-        "legs_total": 2
+        "result": "HIT",
+        "legs_hit": 2,
+        "legs_total": 2,
+        "leg_results": [
+          {
+            "player_name": "Paolo Banchero",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 6.0
+          },
+          {
+            "player_name": "Devin Booker",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "result": "HIT",
+            "actual_value": 7.0
+          }
+        ],
+        "cannibalization_flags": null
       }
     ]
   }

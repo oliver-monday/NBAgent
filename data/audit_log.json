@@ -5579,5 +5579,102 @@
         "Cross-game multi-leg parlays (SAS game + HOU/LAL game) with genuinely independent correlation structures remain the correct parlay construction philosophy \u2014 the two legs had zero game-script correlation, meaning the LAL defensive performance had no bearing on SAS's 3PM output; the independence assumption was valid, and this structure should be preserved in future parlay construction while improving leg-quality gates."
       ]
     }
+  },
+  {
+    "date": "2026-04-22",
+    "total_picks": 15,
+    "voided_picks": 0,
+    "hits": 14,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 93.3,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 7,
+        "hits": 7,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0
+      },
+      "3PM": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 12,
+        "hits": 11,
+        "hit_rate_pct": 91.7,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "SGA PTS T20 iron-floor directive validated again: despite a 5-18 FG shooting night in G1, SGA dropped 37 points in G2 \u2014 the structural streak floor is functioning exactly as designed. The FG_MARGIN_NEG step-down from T25 to T20 was the correct conservative move and produced a massive hit (37 actual vs 20 threshold). Continue treating T20 as a pre-qualified lock requiring zero evaluation tokens.",
+      "Blowout-resilient PHX underdog picks (Green PTS T15, Booker PTS T15) both hit decisively in a 13-point OKC win. Designating underdog players as exempt from blowout caps is correct \u2014 losing-side starters play full minutes in competitive/close games and PHX's scorers (Green 21, Booker 22) performed well. The blowout_games split in the quant context was the key supporting signal and it held.",
+      "The DET\u00d7AST suppressor correctly identified risk on Ausar Thompson AST T2 \u2014 Thompson posted only 1 AST in 28 minutes in G2, identical to his G1 result. The pattern of serial misses (G1: 1 AST, G2: 1 AST) against ORL constitutes a within-series suppressor signal that validates the pre-existing DET\u00d7AST suppressor. The suppressor framework is functioning correctly for wing/secondary playmakers.",
+      "Banchero REB T4 as a 'consistent'-tagged prop with proj_min=37 and a playoff REB boost hit cleanly (6 actual vs 4 threshold). The 95% per-player calibration rate for Banchero combined with the conservative T4 tier selection (stepping back from T6 due to offensive-first strictness rule) reflects sound tier discipline. High-consistency REB props for playoff starters with confirmed minutes are a reliable pick category.",
+      "The FG_MARGIN step-down cascade (T20\u2192T15 for Banchero PTS, T20\u2192T15 for Booker PTS, T25\u2192T20 for SGA PTS) produced three correct hits with meaningful cushion \u2014 all three players cleared their stepped-down tiers by large margins (Banchero 18 vs 15, Booker 22 vs 15, SGA 37 vs 20). The mandatory step-down rule is functioning as a conservative safety net without sacrificing hit rate."
+    ],
+    "lessons": [
+      "Ausar Thompson AST T2 missed for the second consecutive game (G1: 1 AST, G2: 1 AST). The pick reasoning correctly identified that the DET\u00d7AST suppressor targets ORL opponents, not DET players \u2014 but failed to account for a separate mechanism: Thompson is a wing/secondary playmaker whose AST production in half-court playoff basketball against a defense that clamps his creation (ORL is a confirmed tough defensive opponent) is structurally low. The 8/10 historical hit rate may be inflated by regular-season games against weaker defenses. In playoff series against ORL specifically, Thompson's AST role is compressed regardless of which direction the suppressor points. The series now shows 2 consecutive 1-AST games \u2014 this is a within-series signal, not variance.",
+      "The DET\u00d7AST suppressor directional framing needs clarification: the suppressor describes DET's defensive scheme suppressing opponents' AST, but the data now suggests DET's offensive system may also compress secondary-creator AST for DET players themselves in playoff half-court environments. Thompson's 8/10 regular-season rate is not predictive of playoff series performance against disciplined defenses. Future AST picks for DET secondary creators (non-Cunningham) in playoff series should carry an additional -5pp caution.",
+      "Jalen Williams PTS T10 hit (19 actual) but the pick deserved the manual_skip human verdict it received. The post_game_event confirms he exited with a left hamstring injury in Q3 \u2014 had the threshold been higher (T15 pre-step) or had he exited earlier, this would have been a miss. The system correctly stepped down via blowout_secondary_scorer logic, but the human auditor correctly identified the structural fragility. A secondary scorer with a volatile profile, no iron_floor, and a blowout spread \u226516.5 should be skipped entirely at T10 as well as T15 when historical blowout rest patterns for non-primary scorers are in play."
+    ],
+    "recommendations": [
+      "Implement a within-series AST suppression rule: if a player has missed the AST threshold in the immediately preceding game(s) of the same playoff series, apply an additional -7pp confidence penalty to their next AST pick regardless of season hit rate. Thompson's two consecutive 1-AST games vs ORL in this series would have triggered this rule in G2 \u2014 the regular-season 8/10 rate is not series-specific and overestimates reliability in a settled defensive matchup.",
+      "Add a 'DET secondary creator AST caution' flag mirroring the suppressor logic for ORL opponents: for any DET non-primary playmaker (raw_avgs AST < 4.0) in playoff games, apply -5pp to AST confidence and require a minimum 9/10 hit rate before selecting T2. Thompson's series data (0-for-2 at T2 in this series) demonstrates the half-court playoff environment compresses his creation regardless of opponent identity.",
+      "For secondary scorers on the favored team in games with spread_abs \u2265 15 and no iron_floor, enforce a hard skip at ALL PTS tiers above T10 AND skip T10 as well when the player has a VOLATILE tag OR post_miss_hr < 70%. Jalen Williams at T10 hit this time but exited injured \u2014 the structural risk (blowout rest + minutes compression + hamstring history) was real and the system was fortunate. The human manual_skip verdict was correct; codify it as an automatic rule.",
+      "When a player's raw_avg for a prop is at or below the pick_value (e.g. Booker raw_avg REB 3.8 at T4 REB), require either an iron_floor tag OR a minimum 9/10 H2H hit rate AND a minimum 9/10 overall hit rate before selecting. Booker REB T4 hit this session but the trim_reason correctly flagged that season-average performance misses the line. This pick is structurally dependent on small H2H sample and playoff boost adjuster \u2014 not a sustainable selection without additional structural support.",
+      "Revisit the 70% minimum confidence floor for AST picks in playoff games: with 4 AST picks this session at 70-74% confidence producing only 3/4 (75%), and the lone miss being the minimum-confidence Thompson pick, consider raising the minimum floor for playoff AST props to 74% (eliminating 70-73% AST picks entirely). The Thompson miss followed an identical G1 miss \u2014 both at minimum confidence. The 70% floor appears too permissive for the reduced-possession, half-court playoff environment where assist generation is inherently less predictable."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Ausar Thompson",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 GAME CONTEXT: ORL @ DET final 83-98, DET won by 15. COMPETITIVE game script \u2014 margin 10-19 points. Game script is not a causal blowout factor. STEP 1 \u2014 ACTIVITY: Thompson played 28 confirmed minutes (post-game news confirmed), scored 11 points but recorded only 1 assist. Player was fully active; miss is stat-specific. STEP 2 \u2014 CLASSIFICATION: No injury exit noted. No workflow gap. Player hit rate was 8/10 (80%) at T2. The miss is classified as variance \u2014 the 8/10 hit rate implies roughly a 20% miss probability and this outcome falls within that range. However, this is the second consecutive game (G1: 1 AST, G2: 1 AST) that Thompson has posted only 1 assist vs ORL in this series, creating a within-series signal that warrants a rule adjustment going forward. STEP 3 \u2014 REASONING CRITIQUE: The reasoning correctly identified that the DET\u00d7AST suppressor targets ORL opponents' assist generation, not DET players' assists. This framing was technically accurate but missed a separate mechanism: Thompson as a wing secondary creator (raw_avgs AST ~2-3) faces compressed playmaking opportunities in playoff half-court basketball where defenses prioritize eliminating secondary creation. The pick relied on the 8/10 regular-season rate without accounting for the playoff context degrading that rate. STEP 4 \u2014 HIT RATE: 8/10 overall is a legitimate sample supporting the pick. The miss is the 2-in-10 outcome. However, the within-series pattern (0-for-2 in this specific matchup) suggests opponent-specific suppression beyond what the regular-season sample captured. STEP 5 \u2014 TIER WALK: T4 was correctly hard-gated (raw_avgs AST < 4.0 + tough opponent). T2 was the only viable tier. Single-tier evaluation was structurally forced, not an analytical error \u2014 flagged as null. STEP 6 \u2014 AMENDMENT: No lineup_update sub-object present for this pick. The afternoon amendment agent found no lineup change to trigger a revision. The human_verdict was 'trim' with correct reasoning citing ORL's tightened defense (def_recency tough, -10.96% L5 delta) \u2014 the trim signal was prescient but the pick ran. This is the second consecutive miss on Thompson AST T2 in this series \u2014 a within-series pattern that should trigger a suppression rule for subsequent games."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 1,
+      "hits": 1,
+      "misses": 0,
+      "partial": 0,
+      "parlay_summary": "Clean 1/1 \u2014 ORL-PHX Anchor parlay swept both REB legs with margin (Banchero 6 REB vs 4 threshold, Booker 7 REB vs 4 threshold), validating the two-game independent REB construction at +101 implied odds.",
+      "parlay_lessons": [],
+      "parlay_reinforcements": []
+    }
   }
 ]
