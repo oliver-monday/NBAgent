@@ -1520,23 +1520,30 @@ def generate_html(d: dict) -> str:
     .empty-icon {{ font-size: 36px; margin-bottom: 12px; }}
 
     /* Parlays */
-    .parlay-stats-banner {{ background: linear-gradient(135deg,rgba(232,112,58,0.10),rgba(234,179,8,0.08));
-                            border: 1px solid var(--border); border-radius: 12px;
-                            padding: 16px 20px; display: flex; gap: 24px; flex-wrap: wrap;
-                            margin-bottom: 20px; align-items: center; }}
-    .parlay-stats-banner .big {{ font-size: 34px; font-weight: 800; color: var(--3pm); line-height: 1; }}
-    .parlay-stats-banner .sub {{ font-size: 11px; color: var(--muted); margin-top: 2px; }}
-    .parlay-stat-item {{ text-align: center; }}
-    .parlay-stat-item .val {{ font-size: 20px; font-weight: 700; }}
-    .parlay-stat-item .lbl {{ font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }}
+    .parlay-tier-drawer {{ margin-bottom: 10px; }}
+    .parlay-tier-drawer .drawer-header {{
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px;
+      cursor: pointer; user-select: none; font-size: 14px;
+    }}
+    .parlay-tier-drawer .drawer-header:hover {{ border-color: var(--accent); }}
+    .parlay-tier-drawer .drawer-body {{ padding-top: 8px; }}
+    .tier-header-label {{ font-weight: 700; }}
+    .tier-range {{ font-size: 11px; color: var(--muted); font-weight: 500; margin-left: 4px; }}
+    .tier-count {{ font-size: 11px; color: var(--muted); font-weight: 500; }}
+
     .parlay-card {{ background: var(--surface); border: 1px solid var(--border);
                     border-radius: 12px; padding: 16px; margin-bottom: 12px;
                     transition: border-color 0.15s; }}
     .parlay-card:hover {{ border-color: var(--accent); }}
-    .parlay-card-header {{ display: flex; align-items: flex-start;
-                           justify-content: space-between; gap: 12px; margin-bottom: 12px; }}
-    .parlay-label {{ font-size: 15px; font-weight: 700; }}
-    .parlay-meta {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; align-items: center; }}
+    .parlay-card-header-lean {{
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px; min-height: 20px;
+    }}
+    .parlay-header-spacer {{ flex: 1; }}
+    .parlay-header-right {{ font-size: 15px; font-weight: 700; }}
+    .parlay-odds {{ font-size: 15px; font-weight: 700; color: var(--accent); }}
     .parlay-result-hit  {{ font-size: 11px; font-weight: 700; color: var(--hit);
                            background: rgba(34,197,94,0.12); padding: 2px 8px;
                            border-radius: 99px; white-space: nowrap; }}
@@ -1546,12 +1553,6 @@ def generate_html(d: dict) -> str:
     .parlay-result-partial {{ font-size: 11px; font-weight: 700; color: var(--3pm);
                               background: rgba(234,179,8,0.12); padding: 2px 8px;
                               border-radius: 99px; white-space: nowrap; }}
-    .corr-badge {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; }}
-    .corr-positive  {{ background: rgba(34,197,94,0.12);  color: var(--hit); }}
-    .corr-mixed     {{ background: rgba(234,179,8,0.12);  color: var(--3pm); }}
-    .corr-independent {{ background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }}
-    .type-badge {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px;
-                   background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }}
     .parlay-legs {{ border-top: 1px solid var(--border); padding-top: 10px; display: flex; flex-direction: column; gap: 7px; }}
     .parlay-leg {{ display: flex; align-items: center; justify-content: space-between; gap: 10px; }}
     .leg-main {{ flex: 1; min-width: 0; }}
@@ -2737,6 +2738,97 @@ renderResults();
 renderAudit();
 
 // ── PARLAYS ──
+function renderParlayCard(p, voidedPlayerNames) {{
+  const legs = p.legs || [];
+  const odds = p.implied_odds || '';
+
+  // Voided legs risk banner (preserved)
+  const voidedLegs = legs.filter(leg =>
+    voidedPlayerNames.has((leg.player_name || '').toLowerCase())
+  );
+  const riskBanner = voidedLegs.length > 0
+    ? `<div class="parlay-risk-banner">⚠ ${{voidedLegs.map(l => l.player_name).join(', ')}} listed OUT — parlay affected</div>`
+    : '';
+
+  // Header-right indicator: result badge after grading, else odds
+  let headerRight = '';
+  if (p.result === 'HIT') {{
+    headerRight = `<span class="parlay-result-hit">✓ HIT</span>`;
+  }} else if (p.result === 'MISS') {{
+    headerRight = `<span class="parlay-result-miss">✗ MISS</span>`;
+  }} else if (p.result === 'PARTIAL') {{
+    headerRight = `<span class="parlay-result-partial">~ PARTIAL</span>`;
+  }} else {{
+    headerRight = `<span class="parlay-odds">${{odds}}</span>`;
+  }}
+
+  let html = `
+    <div class="parlay-card">
+      ${{riskBanner}}
+      <div class="parlay-card-header-lean">
+        <div class="parlay-header-spacer"></div>
+        <div class="parlay-header-right">${{headerRight}}</div>
+      </div>
+      <div class="parlay-legs">`;
+
+  legs.forEach((leg, legIdx) => {{
+    const pt   = leg.prop_type || leg.prop || '';
+    const team = leg.team || '';
+    const opp  = leg.opponent || '';
+    const ha   = leg.home_away === 'H' ? 'vs' : '@';
+    const conf = leg.confidence_pct ? `${{leg.confidence_pct}}%` : '';
+
+    let legResultIcon = '';
+    const lr = leg.result;
+    if (lr === 'HIT')  legResultIcon = `<span class="leg-result-hit">✓</span>`;
+    else if (lr === 'MISS') legResultIcon = `<span class="leg-result-miss">✗</span>`;
+
+    // Cannibalization badge — preserved (H33 pair signal between consecutive same-team same-stat legs)
+    if (legIdx > 0) {{
+      const prev = legs[legIdx - 1];
+      const prevPt = prev.prop_type || prev.prop || '';
+      if (pt === prevPt && (leg.team || '') === (prev.team || '')) {{
+        const pair = [
+          (prev.player_name || '').toLowerCase(),
+          (leg.player_name || '').toLowerCase()
+        ].sort();
+        const cKey = pair[0] + '|' + pair[1] + '|' + pt;
+        const ce = (DATA.cannib_lookup || {{}})[cKey];
+        if (ce) {{
+          const isNeg = ce.idx < 0;
+          const icon = isNeg ? '⊖' : '⊕';
+          const cls  = isNeg ? 'cannib-neg' : 'cannib-pos';
+          const word = isNeg ? 'cannibalization' : 'synergy';
+          html += `<div class="cannib-badge ${{cls}}" title="${{pt}} pair: ${{ce.idx > 0 ? '+' : ''}}${{ce.idx}}pp">${{icon}} ${{word}}</div>`;
+        }}
+      }}
+    }}
+
+    html += `
+      <div class="parlay-leg">
+        <div class="leg-main">
+          <div class="leg-player">${{leg.player_name || ''}}</div>
+          <div class="leg-team">${{team}} ${{ha}} ${{opp}}</div>
+        </div>
+        <div class="leg-stat">
+          <span class="leg-stat-value">${{leg.pick_value}}</span>
+          <span class="leg-stat-type prop-${{pt}}">${{pt}}</span>
+          <span class="leg-conf">${{conf}}</span>
+          ${{legResultIcon}}
+        </div>
+      </div>`;
+  }});
+
+  html += `</div>`;
+
+  if (p.rationale) {{
+    html += `<div class="parlay-rationale">${{escapeHtml(p.rationale)}}</div>`;
+  }}
+
+  html += `</div>`;
+  return html;
+}}
+
 function renderParlays() {{
   const c = document.getElementById('parlays-container');
   const pd = DATA.parlays;
@@ -2744,27 +2836,11 @@ function renderParlays() {{
 
   let html = '';
 
-  // Stats banner (only if historical data exists)
-  if (pd && pd.total > 0) {{
-    html += `
-      <div class="parlay-stats-banner">
-        <div>
-          <div class="big">${{pd.hit_rate_pct}}%</div>
-          <div class="sub">parlay hit rate</div>
-        </div>
-        <div class="parlay-stat-item"><div class="val" style="color:var(--hit)">${{pd.hits}}</div><div class="lbl">hits</div></div>
-        <div class="parlay-stat-item"><div class="val" style="color:var(--miss)">${{pd.misses}}</div><div class="lbl">misses</div></div>
-        <div class="parlay-stat-item"><div class="val">${{pd.total}}</div><div class="lbl">graded</div></div>
-      </div>`;
-  }}
-
   if (!today.length) {{
     html += `<div class="empty"><div class="empty-icon">🎰</div>No parlays yet for ${{DATA.today_str}}.<br>Check back after picks are generated.</div>`;
     c.innerHTML = html;
     return;
   }}
-
-  html += `<div class="section-header">${{today.length}} parlay${{today.length !== 1 ? 's' : ''}} — ${{DATA.today_str}}</div>`;
 
   // Build set of voided player names from today's picks for leg-risk detection
   const voidedPlayerNames = new Set(
@@ -2773,98 +2849,47 @@ function renderParlays() {{
       .map(pk => (pk.player_name || '').toLowerCase())
   );
 
+  // Group today's cards by bucket (Safe / Reach / Degen)
+  const byBucket = {{
+    'Safe':  [],
+    'Reach': [],
+    'Degen': [],
+  }};
   today.forEach(p => {{
-    const legs  = p.legs || [];
-    const corr  = p.correlation || 'independent';
-    const corrCls = corr === 'positive' ? 'corr-positive' : corr === 'mixed' ? 'corr-mixed' : 'corr-independent';
-    const corrLabel = corr === 'positive' ? '⚡ positive' : corr === 'mixed' ? '~ mixed' : '· independent';
-    const typeLabel = (p.type || '').replace(/_/g, ' ');
+    const b = p.bucket || 'Safe';  // defensive default
+    if (byBucket[b]) byBucket[b].push(p);
+    else byBucket['Safe'].push(p);  // any unknown bucket lumps into Safe
+  }});
 
-    // Result badge
-    let resultBadge = '';
-    if (p.result === 'HIT')     resultBadge = `<span class="parlay-result-hit">✓ HIT</span>`;
-    else if (p.result === 'MISS') resultBadge = `<span class="parlay-result-miss">✗ MISS</span>`;
-    else if (p.result === 'PARTIAL') resultBadge = `<span class="parlay-result-partial">~ PARTIAL</span>`;
+  const TIER_CONFIG = [
+    {{ key: 'Safe',  label: 'Safe',  range: '+100 to +200', defaultOpen: true  }},
+    {{ key: 'Reach', label: 'Reach', range: '+200 to +350', defaultOpen: false }},
+    {{ key: 'Degen', label: 'Degen', range: '+350 to +600', defaultOpen: false }},
+  ];
 
-    const voidedLegs = legs.filter(leg =>
-      voidedPlayerNames.has((leg.player_name || '').toLowerCase())
-    );
-    const riskBanner = voidedLegs.length > 0
-      ? `<div class="parlay-risk-banner">⚠ ${{voidedLegs.map(l => l.player_name).join(', ')}} listed OUT — parlay affected</div>`
-      : '';
+  TIER_CONFIG.forEach(tier => {{
+    const cards = byBucket[tier.key];
+    if (!cards || !cards.length) return;  // skip empty tiers entirely
+
+    const drawerId = `parlay-tier-${{tier.key.toLowerCase()}}`;
+    const display  = tier.defaultOpen ? 'block' : 'none';
+    const chevClass = tier.defaultOpen ? 'drawer-chevron open' : 'drawer-chevron';
 
     html += `
-      <div class="parlay-card">
-        <div class="parlay-card-header">
-          <div>
-            <div class="parlay-label">${{p.label || 'Parlay'}}</div>
-            <div class="parlay-meta">
-              <span class="corr-badge ${{corrCls}}">${{corrLabel}}</span>
-              <span class="type-badge">${{typeLabel}}</span>
-              <span class="type-badge">${{legs.length}} legs</span>
-              ${{resultBadge}}
-            </div>
-            ${{riskBanner}}
-          </div>
+      <div class="parlay-tier-drawer">
+        <div class="drawer-header" onclick="toggleDrawer('${{drawerId}}')">
+          <span class="tier-header-label">${{tier.label}} <span class="tier-range">${{tier.range}}</span> <span class="tier-count">· ${{cards.length}}</span></span>
+          <span class="${{chevClass}}" id="${{drawerId}}-chevron">▼</span>
         </div>
-        <div class="parlay-legs">`;
+        <div class="drawer-body" id="${{drawerId}}" style="display:${{display}}">`;
 
-    legs.forEach((leg, legIdx) => {{
-      const pt   = leg.prop_type || leg.prop || '';
-      const team = leg.team || '';
-      const opp  = leg.opponent || '';
-      const ha   = leg.home_away === 'H' ? 'vs' : '@';
-      const conf = leg.confidence_pct ? `${{leg.confidence_pct}}%` : '';
-
-      // Leg result icon (after grading)
-      let legResultIcon = '';
-      const lr = leg.result;
-      if (lr === 'HIT')  legResultIcon = `<span class="leg-result-hit">✓</span>`;
-      else if (lr === 'MISS') legResultIcon = `<span class="leg-result-miss">✗</span>`;
-
-      // Spec 3: cannibalization badge — check previous leg for H33 pair
-      if (legIdx > 0) {{
-        const prev = legs[legIdx - 1];
-        const prevPt = prev.prop_type || prev.prop || '';
-        if (pt === prevPt && (leg.team || '') === (prev.team || '')) {{
-          const pair = [
-            (prev.player_name || '').toLowerCase(),
-            (leg.player_name || '').toLowerCase()
-          ].sort();
-          const cKey = pair[0] + '|' + pair[1] + '|' + pt;
-          const ce = (DATA.cannib_lookup || {{}})[cKey];
-          if (ce) {{
-            const isNeg = ce.idx < 0;
-            const icon = isNeg ? '⊖' : '⊕';
-            const cls  = isNeg ? 'cannib-neg' : 'cannib-pos';
-            const word = isNeg ? 'cannibalization' : 'synergy';
-            html += `<div class="cannib-badge ${{cls}}" title="${{pt}} pair: ${{ce.idx > 0 ? '+' : ''}}${{ce.idx}}pp">${{icon}} ${{word}}</div>`;
-          }}
-        }}
-      }}
-
-      html += `
-        <div class="parlay-leg">
-          <div class="leg-main">
-            <div class="leg-player">${{leg.player_name || ''}}</div>
-            <div class="leg-team">${{team}} ${{ha}} ${{opp}}</div>
-          </div>
-          <div class="leg-stat">
-            <span class="leg-stat-value">${{leg.pick_value}}</span>
-            <span class="leg-stat-type prop-${{pt}}">${{pt}}</span>
-            <span class="leg-conf">${{conf}}</span>
-            ${{legResultIcon}}
-          </div>
-        </div>`;
+    cards.forEach(p => {{
+      html += renderParlayCard(p, voidedPlayerNames);
     }});
 
-    html += `</div>`;
-
-    if (p.rationale) {{
-      html += `<div class="parlay-rationale">${{escapeHtml(p.rationale)}}</div>`;
-    }}
-
-    html += `</div>`;
+    html += `
+        </div>
+      </div>`;
   }});
 
   c.innerHTML = html;

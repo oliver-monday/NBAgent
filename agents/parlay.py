@@ -53,9 +53,9 @@ TODAY_STR = TODAY.strftime("%Y-%m-%d")
 # ── Config ────────────────────────────────────────────────────────────
 # Odds buckets: (label, min_american_odds, max_american_odds, target_cards)
 ODDS_BUCKETS = [
-    ("Value",    100,  200, 4),
-    ("Standard", 200,  350, 3),
-    ("Reach",    350,  600, 2),
+    ("Safe",  100,  200, 4),
+    ("Reach", 200,  350, 3),
+    ("Degen", 350,  600, 2),
 ]
 
 MAX_LEGS         = 8     # absolute ceiling per card
