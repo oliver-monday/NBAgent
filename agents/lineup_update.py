@@ -1305,8 +1305,22 @@ def compute_lineup_diff(lineups: dict, injuries: dict, today_picks: list[dict] |
                         current_status = inj_data if isinstance(inj_data, str) else None
                         break
 
-            # Also accept voided picks (lineup_watch already confirmed OUT)
-            if pick.get("voided") and pick.get("void_reason"):
+            # Only infer OUT from a void when the void_reason indicates an actual
+            # injury/absence — NOT when the void was an amendment auto-skip
+            # (confidence-based skip; player is healthy and playing).
+            #
+            # Known injury-style void_reason strings:
+            #   - "player OUT per injury report"  (lineup_watch.py)
+            #   - "injury_exit_mid_game"          (auditor.py retroactive)
+            # Known NON-injury void_reason strings:
+            #   - "Amendment auto-skip: revised_confidence..."  (lineup_update.py Gate 1)
+            void_reason = (pick.get("void_reason") or "").lower()
+            is_injury_void = (
+                "player out" in void_reason
+                or "injury_exit" in void_reason
+                or "injury report" in void_reason
+            )
+            if pick.get("voided") and is_injury_void:
                 inferred_status = "OUT"
             else:
                 inferred_status = current_status
@@ -1661,7 +1675,62 @@ def apply_amendments(
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
+def _retroactive_amendment_skip_patch() -> int:
+    """One-time patch: un-void picks that were voided by amendment auto-skip
+    (Gate 1 at revised_conf < 70). These voids have void_reason starting with
+    'Amendment auto-skip:' — they're confidence-based skips, not injury voids.
+
+    The lineup_update sub-object is preserved so the amendment history remains
+    visible on the frontend. Only voided=True and void_reason are cleared.
+
+    Safe to run repeatedly — idempotent. Remove this function at the next
+    architectural refactor (when Gate 1 is rewritten to use a non-voided
+    amendment_skip field).
+    """
+    if not PICKS_JSON.exists():
+        return 0
+    try:
+        with open(PICKS_JSON) as f:
+            all_picks = json.load(f)
+    except Exception as e:
+        print(f"[lineup_update] WARNING: retroactive patch could not read picks.json: {e}")
+        return 0
+
+    patched = 0
+    for p in all_picks:
+        if p.get("date") != TODAY_STR:
+            continue
+        if not p.get("voided"):
+            continue
+        vr = (p.get("void_reason") or "").lower()
+        if vr.startswith("amendment auto-skip"):
+            p["voided"] = False
+            p["void_reason"] = ""
+            patched += 1
+            print(
+                f"[lineup_update] RETRO UN-VOID: {p.get('player_name')} "
+                f"{p.get('prop_type')} {p.get('pick_value')} — "
+                f"was voided by amendment auto-skip (not an injury)"
+            )
+
+    if patched:
+        try:
+            with open(PICKS_JSON, "w") as f:
+                json.dump(all_picks, f, indent=2)
+        except Exception as e:
+            print(f"[lineup_update] ERROR: retroactive patch write failed: {e}")
+            return 0
+
+    return patched
+
+
 def main() -> None:
+    # One-time retroactive patch — un-void amendment auto-skip picks that were
+    # incorrectly carrying injury-void semantics. Idempotent; safe to run every cycle.
+    _n_retro = _retroactive_amendment_skip_patch()
+    if _n_retro:
+        print(f"[lineup_update] Retroactive patch applied: un-voided {_n_retro} amendment auto-skip pick(s)")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true",
                         help="Diagnostic mode — prints full state, no LLM call, no file writes")

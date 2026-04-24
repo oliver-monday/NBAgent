@@ -32,6 +32,8 @@ Swept against ROADMAP_resolved.md — all items shipped through 2026-04-22 verif
 ### Technical Debt
 - **Prompt caching** — system prompt and player context in `analyst.py` are strong candidates for Anthropic's prompt caching feature. Will meaningfully reduce cost once daily volume grows.
 - **`quant.py` runs twice** — once in `ingest.yml` and once in `analyst.yml`. Intentional (ensures freshness) but adds ~10s to runtime. Low priority.
+- **Gate 1 auto-skip architectural refactor** — `lineup_update.py` line ~1601 currently uses `voided=True` for confidence-based skips, colliding with injury-void semantics (see 2026-04-23 Jokic incident in `ROADMAP_resolved.md`). The retroactive un-void patch + injury_void whitelist are bandaids. Needs a new field (`amendment_skip=True`) with independent frontend treatment ("AMENDMENT SKIP" badge, strikethrough or distinct color, clearly separated from "VOIDED — Player OUT"). `build_site.py` would need to render both states distinctly; `auditor.py` would need to handle `amendment_skip` picks (grade normally against actual outcome; don't count as void). Offseason scope.
+- **Rotowire ingest data bleed** — on 2026-04-23, `injuries_today.json` showed J. Clark and T. Shannon listed under BOTH DEN and MIN rosters (both are MIN-only players). Low operational impact since neither is a pick target, but suggests a name-matching bug in `rotowire_injuries_only.py` (possibly the Rotowire HTML rendering duplicates cross-team names on matchup pages, or the parser walks too far from the team-logo anchor). Offseason investigation.
 
 ### Frontend
 - ✅ **Layer 3 — Line movement indicators** (shipped 2026-04-11).
