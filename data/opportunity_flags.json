@@ -3129,5 +3129,193 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-04-24",
+    "generated_at": "2026-04-24T15:59:01.699255-07:00",
+    "triggered_by": "Kevin Durant",
+    "triggered_by_team": "HOU",
+    "side": "teammate",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "consistent",
+        "market_implied_pct": 98.36,
+        "market_odds": -6000
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 87.8,
+        "market_odds": -720
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 3.0pts smaller since morning (was 8.5, now 5.5)",
+    "morning_context": "skipped this morning (ast_hard_gate)",
+    "reasoning": "PTS T10 90% [down] (mkt 98%, edge -8pp); AST T4 75% [stable] (mkt 88%, edge -13pp); spread moved 3.0pts smaller since morning (was 8.5, now 5.5); skipped this morning (ast_hard_gate); H33: AST was cannibalized -11.2pp by Kevin Durant \u2192 freed ceiling",
+    "best_edge_pp": -8.4,
+    "best_edge_prop": "PTS",
+    "priority": "high",
+    "cannib_freed": true,
+    "cannib_idx": -11.2,
+    "cannib_detail": "AST was cannibalized -11.2pp by Kevin Durant \u2192 freed ceiling"
+  },
+  {
+    "date": "2026-04-24",
+    "generated_at": "2026-04-24T15:59:01.699255-07:00",
+    "triggered_by": "Kevin Durant",
+    "triggered_by_team": "HOU",
+    "side": "teammate",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "card_type": "upgrade",
+    "qualifying_tiers": {},
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 71.43,
+        "market_odds": -250,
+        "morning_tier": 10,
+        "morning_confidence_pct": 72
+      }
+    },
+    "spread_delta": "spread moved 3.0pts smaller since morning (was 8.5, now 5.5)",
+    "morning_context": null,
+    "reasoning": "PTS T15 80% [stable] (mkt 71%, edge +9pp); spread moved 3.0pts smaller since morning (was 8.5, now 5.5); H33: PTS was cannibalized -10.9pp by Kevin Durant \u2192 freed ceiling",
+    "best_edge_pp": 8.6,
+    "best_edge_prop": "PTS",
+    "priority": "high",
+    "cannib_freed": true,
+    "cannib_idx": -10.9,
+    "cannib_detail": "PTS was cannibalized -10.9pp by Kevin Durant \u2192 freed ceiling"
+  },
+  {
+    "date": "2026-04-24",
+    "generated_at": "2026-04-24T15:59:01.699255-07:00",
+    "triggered_by": "Kevin Durant",
+    "triggered_by_team": "HOU",
+    "side": "teammate",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "card_type": "upgrade",
+    "qualifying_tiers": {},
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 60.32,
+        "market_odds": -152,
+        "morning_tier": 10,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": "spread moved 3.0pts smaller since morning (was 8.5, now 5.5)",
+    "morning_context": null,
+    "reasoning": "PTS T15 80% [stable] (mkt 60%, edge +20pp); spread moved 3.0pts smaller since morning (was 8.5, now 5.5); H33: PTS was cannibalized -15.8pp by Kevin Durant \u2192 freed ceiling",
+    "best_edge_pp": 19.7,
+    "best_edge_prop": "PTS",
+    "priority": "high",
+    "cannib_freed": true,
+    "cannib_idx": -15.8,
+    "cannib_detail": "PTS was cannibalized -15.8pp by Kevin Durant \u2192 freed ceiling"
+  },
+  {
+    "date": "2026-04-24",
+    "generated_at": "2026-04-24T15:59:01.699255-07:00",
+    "triggered_by": "Kevin Durant",
+    "triggered_by_team": "HOU",
+    "side": "opponent",
+    "player_name": "Austin Reaves",
+    "team": "LAL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate"
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile"
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile"
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 3.0pts smaller since morning (was 8.5, now 5.5)",
+    "morning_context": null,
+    "reasoning": "PTS T15 85% [stable]; AST T4 80% [stable]; 3PM T2 75% [stable]; spread moved 3.0pts smaller since morning (was 8.5, now 5.5)",
+    "best_edge_pp": null,
+    "best_edge_prop": null,
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-24",
+    "generated_at": "2026-04-24T15:59:01.699255-07:00",
+    "triggered_by": "Kevin Durant",
+    "triggered_by_team": "HOU",
+    "side": "opponent",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 94.12,
+        "market_odds": -1600
+      },
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 73.33,
+        "market_odds": -275
+      },
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 88.51,
+        "market_odds": -770
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": "spread moved 3.0pts smaller since morning (was 8.5, now 5.5)",
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "PTS T15 75% [up] (mkt 94%, edge -19pp); REB T6 75% [stable] (mkt 73%, edge +2pp); AST T6 75% [up] (mkt 89%, edge -14pp); spread moved 3.0pts smaller since morning (was 8.5, now 5.5); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 1.7,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
