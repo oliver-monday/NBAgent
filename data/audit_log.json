@@ -5676,5 +5676,177 @@
       "parlay_lessons": [],
       "parlay_reinforcements": []
     }
+  },
+  {
+    "date": "2026-04-23",
+    "total_picks": 33,
+    "voided_picks": 2,
+    "hits": 24,
+    "misses": 9,
+    "no_data": 0,
+    "hit_rate_pct": 72.7,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 12,
+        "hits": 9,
+        "hit_rate_pct": 75.0
+      },
+      "REB": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 10,
+        "hits": 6,
+        "hit_rate_pct": 60.0
+      },
+      "3PM": {
+        "picks": 5,
+        "hits": 3,
+        "hit_rate_pct": 60.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 26,
+        "hits": 18,
+        "hit_rate_pct": 69.2,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 7,
+        "hits": 6,
+        "hit_rate_pct": 85.7,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "REB props went 6/6 (100%) \u2014 the tier-walking discipline of applying 25th-pct gates, stepping from T6\u2192T4 when the gate fires, and respecting iron_floor tags produced a clean sweep across Mobley, Barnes, Randle, Johnson, and Anunoby. Continue applying this structured floor logic on all REB picks.",
+      "76-80% confidence band outperformed at 85.7% actual vs 78.0% expected \u2014 the higher-conviction picks (Harden 3PM T2, Barnes PTS/REB/AST, Jokic PTS/REB) were well-calibrated and delivered. This band is performing above expectation; continue prioritizing well-supported picks in the 76-80% range.",
+      "The desperate home context read for TOR was validated: Barnes 33 PTS/5 REB/11 AST and Barrett 33 PTS/5 AST both significantly exceeded their pick tiers. The 'home underdog desperate context maximizes usage' heuristic was correct and earned large cushions on T10 and T15 PTS picks.",
+      "Jokic PTS T20 iron_floor held despite the DEN blowout loss (27 PTS actual vs 20 pick) and despite a lineup_update flagging downside. The iron_floor tier protection rule correctly prevented a step-down that would have been overcautious. Amendment was overcautious: revised down to 70% but pick hit at 80%.",
+      "CJ McCollum 3PM iron_floor T1 (top pick) hit 2/2 threes in a close 1-point ATL win \u2014 the iron_floor designation on a trend=up shooter at T1 with H2H 3/3 was structurally sound and delivered even in a game where his AST prop missed badly (1 AST). Iron_floor on 3PM correctly decoupled the shooting prop from assist-role compression."
+    ],
+    "lessons": [
+      "AST props went 6/10 (60%) \u2014 the weakest prop type on the card. Three of four AST misses occurred in games where game-script (MIN blowout win, TOR home close game) either compressed or disrupted passing sequences. The system's AST evaluation over-relied on H2H and series rates without adequately weighting within-game role compression in blowout environments. Tighten AST selection to require iron_floor or 9/10 hit rate in any game with spread_abs \u2265 8.",
+      "Jokic AST T8 missed badly (3 actual vs 8 pick) in a blowout loss (DEN lost by 17). The DEN@MIN game was COMPETITIVE (17-point margin, classified borderline blowout). The VOLATILE penalty and MIN\u00d7AST suppressor were both active, and the lineup_update correctly flagged downside (Gordon OUT, revised to 67%). The pick ran at 70% despite the amendment signal. Rule fix: when lineup_update direction=down revises confidence below the prop-type floor (68% for AST), the pick should be voided or stepped down further \u2014 do not run AST picks when the amendment drops confidence below the floor.",
+      "Donovan Mitchell PTS T20 missed (15 actual vs 20 pick) in a TOR blowout win (TOR won by 22 \u2014 BLOWOUT). Mitchell had a pre-game ankle concern (listed questionable) and the game went to a 22-point TOR margin. The blowout game-script suppressed his scoring in the second half as CLE trailed badly. The VOLATILE tag and FG_MARGIN_THIN:4% step-down from T25 to T20 were correctly applied, but the blowout risk from CLE being a road underdog in a must-win TOR home game was not sufficiently penalized. Rule fix: when a road team is in a desperate must-win road context (down 0-2 in series) against a home team with home-crowd energy, apply an additional blowout-risk adjustment to PTS props for the road team's star scorer.",
+      "Jamal Murray PTS T20 missed (16 actual vs 20 pick) in the same DEN blowout loss (DEN lost 96-113, COMPETITIVE/borderline blowout). FG_COLD:-9% was noted but classified as 'below 15% threshold' and not actioned. Murray scored 16 in 35 minutes \u2014 the blowout script (DEN lost by 17) compressed his second-half production. The amendment correctly flagged upside (Jokic OUT \u2192 revised to 85%) but the pick still missed because the blowout suppressed Murray's floor despite elevated usage. The lesson: usage redistribution from a star's absence does not override game-script blowout suppression \u2014 if the team loses badly, the secondary star's counting stats are still compressed by garbage-time. Do not upgrade PTS confidence on absence-driven redistribution when the game is already trending toward a blowout.",
+      "Mikal Bridges 3PM T1 missed (0 actual, 21 minutes played). The human verdict was 'trim' citing VOLATILE and raw_avg_3PM of only 1.4. The post-game news confirms he played only 21 minutes with 0-for-2 from three \u2014 reduced role via coach's decision in a close game. With raw_avg_3PM of 1.4 and no iron_floor, a non-iron-floor 3PM T1 pick for a player with documented VOLATILE tag and only 21 projected/actual minutes is structurally too thin. Rule fix: for non-iron-floor 3PM T1 picks where raw_avg_3PM < 1.5, require iron_floor or skip entirely \u2014 the distribution is too wide to reliably clear T1.",
+      "CJ McCollum AST T2 missed (1 actual vs 2 pick) despite 9/10 overall hit rate and consistent tag. He played 35 full minutes and scored 23 points as the hero of a 1-point ATL win \u2014 a scoring-mode hero game where he did not distribute. The tier_walk correctly identified T2 as a structural near-certain floor, but in a close game where McCollum was the go-to scorer (23 PTS, hero role), his assist generation was suppressed by isolation usage. Model gap: the system does not currently flag hero-scorer role compression risk on AST props for non-primary playmakers in close-game crunch-time contexts. This is a model_gap_signal \u2014 no quant field captures 'player will enter hero-scorer isolation mode in a 1-point game.'"
+    ],
+    "recommendations": [
+      "Implement a blowout-road-underdog PTS cap: when a player's team is (a) on the road, (b) down 2-0 or 0-2 in a playoff series (desperate context for the HOME team, not the road team), and (c) the road team is a confirmed underdog by \u22654 points, apply a mandatory -5pp confidence penalty to all PTS picks for the road team's primary scorers and do not select T20+ PTS picks without iron_floor. This would have prevented or flagged the Mitchell PTS T20 miss.",
+      "Add a lineup_update veto rule for AST props: when the afternoon lineup agent issues a direction=down amendment that revises AST confidence below the prop-type floor (68%), automatically void the AST pick rather than running it at the floor. The Jokic AST T8 pick ran at 70% despite the amendment dropping it to 67% \u2014 this is an execution gap. The amendment agent is a downstream check; its below-floor revisions must trigger auto-void.",
+      "For non-iron-floor 3PM T1 picks: require raw_avg_3PM \u2265 2.0 OR iron_floor = true before selection. Players with raw_avg_3PM between 1.0\u20131.9 and no iron_floor should be skipped at T1 regardless of overall hit rate, because a single 0-for-2 or 0-for-3 shooting night (entirely within normal variance for a 1.4 avg player) collapses the prop. Mikal Bridges (1.4 raw avg, VOLATILE, 21 minutes) is the prototype case.",
+      "Do not boost PTS confidence for absence-driven usage redistribution when pre-game signals include FG_COLD or VOLATILE and the opponent is a top-6 defensive team. The Jamal Murray amendment flagged 'upside revised to 85%' due to Jokic OUT, but Murray's FG_COLD:-9% + VOLATILE + DEN losing by 17 produced a 16-point output. Absence-driven upside revisions should be capped at +5pp maximum for VOLATILE PTS props and should not override FG_COLD signals already present at pick time.",
+      "Flag hero-scorer AST compression risk for non-primary playmakers (raw_avg_AST < 5.0) in close-game contexts: when a player has a PTS/AST ratio > 5:1 in their recent L5 games AND the game spread is < 4 points (close game likely), apply a mandatory -5pp penalty to their AST props and do not select AST T2+ without iron_floor. CJ McCollum (23 PTS, 1 AST in a 1-point game) and Jalen Brunson (26 PTS, 4 AST in a 1-point game) both exhibited this pattern on the same slate \u2014 two independent data points suggesting the signal is real."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jalen Brunson",
+        "prop_type": "AST",
+        "pick_value": 6,
+        "actual_value": 4.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: NYK@ATL \u2014 ATL won by 1 (CLOSE game). No blowout effect. STEP 1: Brunson played 40 minutes and scored 26 PTS \u2014 active, full performance, not a DNP or injury event. STEP 2: injury_status_at_check = NOT_LISTED; post-game news confirms full minutes, no injury. STEP 3: The analyst's reasoning cited 'series 2/2 at T6 and road ATL split 9 APG.' The series data was sound, but in a 1-point game Brunson entered scoring-carry mode (26 PTS) which suppressed his distribution \u2014 this is a known trade-off between PTS and AST in close games not captured by the split data. STEP 4: hit_rate_display 8/10 overall but vs_tough dropped to 60% \u2014 analyst correctly identified this as a downgrade risk and reduced confidence to 70%. STEP 5: Tier walk showed vs_tough=60% as a severe drop; the analyst applied the penalty. STEP 6: No lineup_update present. The pick was structurally sound at 70% with the vs_tough penalty already absorbed; Brunson's 26-PTS/4-AST output in a 1-point game reflects hero-scorer isolation mode suppressing passing in crunch time \u2014 within the expected variance distribution for a 70% pick."
+      },
+      {
+        "player_name": "Mikal Bridges",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: NYK@ATL \u2014 ATL won by 1 (CLOSE game). No blowout effect on NYK starters, but close game context means reduced predictable shot distribution. STEP 1: Bridges played only 21 minutes (confirmed post-game news), went 0-for-2 from three. Reduced minutes reflect a coach's decision in a close game, not an injury. STEP 2: NOT_LISTED at pick time; no injury exit. The reduced role (21 min vs ~32+ projected) was a coaching decision in a close game. STEP 3: The analyst's reasoning cited 'T1 3PM floor with 8/10 overall and stable trend; ATL lacks elite perimeter defenders.' This missed the key risk that Brunson's scoring dominance in a close road game compresses secondary-scorer minutes and shot opportunities for complementary players like Bridges. STEP 4: hit_rate_display 8/10 (80% base) was sound, but the VOLATILE tag on a player with raw_avg_3PM ~1.4 means the distribution is wide enough that 0-for-2 (0 makes) is a normal outcome. Human verdict correctly flagged 'trim.' STEP 5: Tier walk correctly identified T1 as the only viable tier. STEP 6: No lineup_update. The model gap: no rule exists to penalize non-iron-floor 3PM T1 picks when raw_avg_3PM < 1.5 and VOLATILE is tagged \u2014 the rule should require iron_floor or skip for thin-average 3PM shooters. With 21 actual minutes (vs ~32 projected), minutes suppression was also a factor not predicted by the tier walk."
+      },
+      {
+        "player_name": "CJ McCollum",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1.0,
+        "miss_classification": "model_gap_signal",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: NYK@ATL \u2014 ATL won by 1 (CLOSE game). No blowout. STEP 1: McCollum played 35 full minutes, scored 23 PTS \u2014 the hero of the win. Active and healthy. STEP 2: NOT_LISTED at pick time; post-game confirms full minutes with no injury. STEP 3: The analyst's reasoning cited '95% overall AST with consistent tag; series-new but structural floor is near-certain at T2.' This was correct on the historical data but missed the contextual risk: in a 1-point game where McCollum was ATL's go-to scorer (23 PTS, hero role), his usage shifted entirely to isolation scoring and he simply did not generate assist opportunities. The T2 near-certainty assumption broke down under hero-scorer crunch-time isolation mode. STEP 4: hit_rate_display 9/10 (95% overall, consistent tag) \u2014 this is a genuine high-quality miss on an ordinarily reliable prop. STEP 5: Tier walk correctly identified T2 as near-certain based on structural data. The miss was not predictable from any available quant field. STEP 6: No lineup_update. Classification: model_gap_signal \u2014 the system has no quant field that captures hero-scorer role compression in close-game crunch-time contexts for non-primary playmakers. McCollum's PTS/AST ratio in L5 games and the game's close spread were available at pick time but no rule connects them to AST suppression risk. This is a genuine missing signal."
+      },
+      {
+        "player_name": "Nickeil Alexander-Walker",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 14.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: NYK@ATL \u2014 ATL won by 1 (CLOSE game). No blowout. STEP 1: Alexander-Walker played 38 minutes and scored 14 PTS \u2014 active, full game, near-threshold output. STEP 2: NOT_LISTED at pick time; post-game confirms no injury exit, full minutes. The miss was by 1 point (14 actual vs 15 pick). STEP 3: The analyst's reasoning cited 'consistent 90% tag at T15; home G3 returns familiar environment after away G2 miss.' The home game context was correct (he played 38 minutes in a competitive close win), but the within-series suppression signal (G2 miss: 9 pts) was real and the analyst appropriately noted it. STEP 4: hit_rate_display 9/10 overall (90%), but series showed a G2 miss at 9 pts and analyst correctly applied within-series penalty to reduce confidence to 74%. vs_tough=82% meant NYK's tough defense was a 8pp drag. STEP 5: Tier walk showed T15 as the starting tier with no step-down needed (no FG_MARGIN flag). The tier was correct. STEP 6: No lineup_update. With a 14-point actual output against a 15-point pick (a 1-point miss) and the analyst already applying within-series and tough-defense penalties to reach 74%, this is within normal variance for a 74% confidence pick. The NYK defense held Alexander-Walker 1 point under threshold in a 1-point game \u2014 no structural failure."
+      },
+      {
+        "player_name": "Donovan Mitchell",
+        "prop_type": "PTS",
+        "pick_value": 20,
+        "actual_value": 15.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: CLE@TOR \u2014 TOR won by 22 (BLOWOUT). TOR won at home by 22 points. Mitchell was on the LOSING side of a blowout road game. STEP 1: Mitchell played 33 minutes (confirmed post-game news), scored 15 PTS \u2014 active but limited by blowout game script. STEP 2: Post-game news notes Mitchell was listed questionable pre-game with a right ankle injury but played 33 minutes. Not an injury exit. STEP 3: The analyst's reasoning cited 'FG_MARGIN step from T25 to T20; playoff +3pp boost and series 2/2 at T25 support the floor.' The reasoning did not account for the TOR home desperate context \u2014 TOR was down 0-2 and playing at home, which maximized their intensity and elevated the blowout risk for CLE. STEP 4: hit_rate_display 8/10 overall. The VOLATILE tag and FG_MARGIN_THIN:4% step were correctly applied. Mitchell profile carries 'CAUTION PTS' designation. STEP 5: Tier walk correctly stepped T25\u2192T20 on FG_MARGIN. At T20 the hit rate was 80%, but the blowout game-script (TOR won by 22) suppressed Mitchell's second-half production. STEP 6: lineup_update direction=unchanged (Quickley OUT had no noted impact on Mitchell PTS). Model gap rule: the system applied the CAUTION PTS flag but lacked a specific rule to add blowout-risk penalty when the road team star is facing a desperate home team that is down 0-2 in a series. The 22-point blowout was predictable from the TOR home must-win desperation context but no rule enforced a spread-expansion penalty for this scenario. Amendment correctly found no revision warranted \u2014 the gap was in pre-pick rule logic."
+      },
+      {
+        "player_name": "Donovan Mitchell",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: CLE@TOR \u2014 TOR won by 22 (BLOWOUT). Mitchell on the losing side. STEP 1: Mitchell played 33 minutes, scored 15 PTS, recorded 3 AST \u2014 active. STEP 2: NOT_LISTED at pick time; no injury event. STEP 3: The analyst's reasoning cited 'H2H 4/4 at T4 vs TOR; early-series AST safe per playoff profile.' The playoff profile 'AST safe early-series' guidance did not account for blowout game-script suppressing distribution in a road loss. With CLE down by a large margin, Mitchell shifted to pure scoring-try mode and his assist generation was limited to 3 (miss by 1). STEP 4: hit_rate_display 8/10, VOLATILE tag, trend=down, vs_tough=77%. Analyst correctly reduced to 70%. STEP 5: Tier walk showed T4 as the target after VOLATILE+T6 block. At 70% this was at the minimum floor \u2014 a marginal pick. STEP 6: lineup_update direction=unchanged. The model gap rule: the analyst applied the VOLATILE penalty and trend=down caution but did not apply a blowout-game-script AST suppression rule. When the game turns into a 22-point road blowout loss, the losing team's primary scorer enters isolation-rescue mode and AST volume drops predictably. Rule fix: apply a mandatory blowout_losing_side AST cap (max T2, confidence cap at 70%) when pre-game spread suggests possible blowout and the road team is a meaningful underdog."
+      },
+      {
+        "player_name": "Nikola Jokic",
+        "prop_type": "AST",
+        "pick_value": 8,
+        "actual_value": 3.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: DEN@MIN \u2014 MIN won by 17 (COMPETITIVE, borderline blowout). Jokic on the losing side. STEP 1: Post-game news confirms Jokic played 35 minutes, recorded 3 AST \u2014 active, no injury. STEP 2: NOT_LISTED at pick time; no injury event. Earlier lineup_update (Gordon OUT) revised down to 67%; later lineup_update (Jokic OUT \u2014 incorrect, he played) also fired. The 'Jokic OUT' lineup trigger appears to have been a false alarm since he played 35 minutes. STEP 3: The analyst's reasoning cited 'H2H 6/6 perfect at T8 vs MIN; VOLATILE penalty absorbed by elite playmaker qualifier; mid opp helps.' The H2H perfect record (6/6) was compelling but represented regular-season data; in a playoff blowout loss (DEN lost by 17), Jokic's assist opportunities were compressed as the game got away from DEN and MIN's switching defense disrupted his playmaking sequences. STEP 4: hit_rate_display 8/10. The MIN\u00d7AST suppressor was noted and the VOLATILE+T8 penalty (-8pp for raw_avgs AST \u2265 6) was applied. Despite all penalties, the pick ran at 70% \u2014 the minimum floor. STEP 5: Tier walk correctly evaluated T10 (below floor), then T8 with all penalties applied, landing at exactly 70% grace zone. The pick was at minimum confidence. STEP 6: lineup_update direction=down (Gordon OUT, revised to 67%) \u2014 Amendment correctly flagged downside risk and revised below the prop-type floor. The pick ran despite the amendment dropping confidence below 68%. Amendment correctly flagged: Gordon OUT reduced dump-off targets, revised down to 67% \u2014 pick still ran and missed. Rule fix: when lineup_update direction=down revises AST confidence below the 68% floor, auto-void the AST pick. This is the clearest actionable fix from this miss."
+      },
+      {
+        "player_name": "Jamal Murray",
+        "prop_type": "PTS",
+        "pick_value": 20,
+        "actual_value": 16.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: DEN@MIN \u2014 MIN won by 17 (COMPETITIVE, borderline blowout). Murray on the losing side. STEP 1: Murray played 35 minutes, scored 16 PTS \u2014 active, no injury (confirmed post-game news). STEP 2: NOT_LISTED at pick time; no injury event. STEP 3: The analyst's reasoning cited 'FG_MARGIN step from T25; series 2/2 at T30 and H2H 4/4 at T20 validate floor; road advantage applies.' The road advantage note was a positive signal but was overwhelmed by DEN losing badly (17 points). Post-game confirms the blowout script limited his second-half production. STEP 4: hit_rate_display 8/10 overall. FG_COLD:-9% and FG_MARGIN_THIN:1% were both flagged \u2014 these were active risk signals at pick time. STEP 5: Tier walk started at T25, stepped to T20 on FG_MARGIN. FG_COLD was noted but classified as 'below 15% threshold' for a second step-down \u2014 this threshold may be too permissive. STEP 6: lineup_update direction=up (Jokic OUT \u2192 revised to 85%). Amendment flagged upside (revised to 85%) but pick missed. The amendment's upside projection was incorrect because it did not account for the game becoming a 17-point loss where Murray's second-half usage was garbage-time compressed. Model gap rule: the system should not upgrade PTS confidence for absence-driven redistribution when FG_COLD is already active \u2014 the FG_COLD signal is a player-level shooting risk that is not offset by increased usage when the team is losing badly. Rule fix: when FG_COLD is flagged AND the team is on the road as an underdog, cap PTS confidence at original pre-amendment level regardless of absence-driven upside revisions."
+      },
+      {
+        "player_name": "Cameron Johnson",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: DEN@MIN \u2014 MIN won by 17 (COMPETITIVE, borderline blowout). Johnson on the losing side. STEP 1: Johnson played 24 minutes (confirmed post-game news), went 0-for-3 from three. Active but limited minutes. STEP 2: NOT_LISTED at pick time; no injury event. Post-game confirms 24 minutes played \u2014 lower than projected 32 minutes. STEP 3: The analyst's reasoning cited '9/10 triggers trend=down T1 exception; MIN 3PM amplifier confirmed and vs_tough=90% support floor.' The reasoning correctly applied the 9/10 exception for trend=down and noted the MIN\u00d73PM amplifier. However, Johnson played only 24 minutes (vs. projected 32) in a blowout loss \u2014 reduced minutes for bench players in a losing blowout compressed his 3PA attempts. He went 0-for-3 (3 attempts in 24 minutes) \u2014 the attempts were there but the makes were not. STEP 4: hit_rate_display 9/10 (90% overall) \u2014 this is a genuine high-rate miss. The trend=down signal had the exception correctly applied. STEP 5: Tier walk held at T1 via 9/10 exception. STEP 6: lineup_update direction=up (Jokic OUT \u2192 revised to 82%). Amendment flagged upside (revised to 82%) but pick missed. In a 17-point blowout loss, Johnson's shot creation was limited and the 3PM output was 0 despite 3 attempts. Model gap rule: for non-iron-floor 3PM T1 picks when trend=down is active (even with 9/10 exception), the game being a blowout loss for the player's team should apply a mandatory confidence cap reduction. Blowout losses compress catch-and-shoot 3PM opportunities for role players as the team stops executing its normal half-court sets in the second half. Human verdict correctly flagged 'trim' for this reason."
+      }
+    ],
+    "no_data_details": [],
+    "parlay_results": {
+      "total": 9,
+      "hits": 0,
+      "misses": 9,
+      "partial": 0,
+      "parlay_summary": "0/9 parlays \u2014 all nine cards missed; the three recurring killers were Nickeil Alexander-Walker PTS T15 (missed by 1 point, appeared in 7 of 9 parlays), Mikal Bridges 3PM T1 (0 threes in 21 minutes, appeared in 6 parlays), and Jamal Murray PTS T20 (16 pts in blowout loss, appeared in 5 parlays); the two Degen parlays were additionally sunk by Donovan Mitchell AST T4 and Jokic AST T8 misses; Degen #1 and #2 also included the Immanuel Quickley PTS leg which returned null (DNP) and was graded as a miss leg contributing to parlay failure.",
+      "parlay_lessons": [],
+      "parlay_reinforcements": []
+    }
   }
 ]
