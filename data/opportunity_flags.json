@@ -2936,5 +2936,198 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T17:00:01.175031-07:00",
+    "triggered_by": "Immanuel Quickley",
+    "triggered_by_team": "TOR",
+    "side": "teammate",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 84.62,
+        "market_odds": -550
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 78.26,
+        "market_odds": -360
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 85.51,
+        "market_odds": -590
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "PTS T15 70% [up] (mkt 85%, edge -15pp); REB T4 70% [up] (mkt 78%, edge -8pp); 3PM T1 70% [down] (mkt 86%, edge -16pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -8.3,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T17:00:01.175031-07:00",
+    "triggered_by": "Immanuel Quickley",
+    "triggered_by_team": "TOR",
+    "side": "opponent",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 97.56,
+        "market_odds": -4000
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "3PM T1 80% [up] (mkt 98%, edge -18pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -17.6,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T17:00:01.175031-07:00",
+    "triggered_by": "Immanuel Quickley",
+    "triggered_by_team": "TOR",
+    "side": "opponent",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 90,
+        "trend": "up",
+        "volatility": "moderate",
+        "market_implied_pct": 83.33,
+        "market_odds": -500
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 67.21,
+        "market_odds": -205
+      }
+    },
+    "upgrade_tiers": {
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 72.97,
+        "market_odds": -270,
+        "morning_tier": 4,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "PTS T15 90% [up] (mkt 83%, edge +7pp); REB T4 75% [down] (mkt 67%, edge +8pp); AST T6 70% [down] (mkt 73%, edge -3pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 7.8,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T17:00:01.175031-07:00",
+    "triggered_by": "Immanuel Quickley",
+    "triggered_by_team": "TOR",
+    "side": "opponent",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 37.31,
+        "market_odds": 168
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 58.33,
+        "market_odds": -140
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 70% [down] (mkt 37%, edge +33pp); REB T8 75% [down] (mkt 58%, edge +17pp)",
+    "best_edge_pp": 32.7,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-04-23",
+    "generated_at": "2026-04-23T17:00:01.175031-07:00",
+    "triggered_by": "Immanuel Quickley",
+    "triggered_by_team": "TOR",
+    "side": "teammate",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 84.85,
+        "market_odds": -560
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "3PM T1 75% [down] (mkt 85%, edge -10pp)",
+    "best_edge_pp": -9.8,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
