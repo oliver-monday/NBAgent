@@ -1,59 +1,55 @@
 {
-  "date": "2026-04-23",
-  "generated_at": "2026-04-23T08:13:25.505631-07:00",
+  "date": "2026-04-24",
+  "generated_at": "2026-04-24T07:34:55.039854-07:00",
   "player_notes": {
-    "jalen williams": "Left Game 2 vs. Suns in the third quarter grabbing his left hamstring \u2014 injury status uncertain heading into Game 3. If unavailable or limited, significant boost to SGA usage and minutes for OKC bench players.",
-    "victor wembanyama": "In concussion protocol ahead of Spurs' Game 3 vs. Trail Blazers on Thursday \u2014 status being monitored per Shams. If out, massive negative impact on all Spurs props and positive impact for POR frontcourt/usage."
+    "joel embiid": "Upgraded to doubtful for Game 3 vs. Celtics after emergency appendectomy two weeks ago; participated in parts of practice but remains highly unlikely to play. Fade all Embiid props; monitor for any further upgrade closer to tip.",
+    "victor wembanyama": "Still in concussion protocol ahead of Game 3 vs. Trail Blazers; traveling with team but must complete protocol steps before being cleared. Significant availability risk \u2014 treat as questionable-to-doubtful until officially cleared.",
+    "mikal bridges": "Sat most of the second half in Game 3 loss vs. Hawks; coach Mike Brown moving toward reduced role but not yet a full bench. Minutes restriction risk is real \u2014 lower confidence on Bridges volume props (points, 3PM).",
+    "aaron gordon": "Ruled out for Game 3 vs. Timberwolves (calf tightness) after being listed as probable pregame. Monitor for Game 4 availability; his absence expands minutes/usage for other Nuggets frontcourt players."
   },
   "game_notes": {
-    "OKC vs PHX": "Jalen Williams (hamstring) status uncertain for Game 3 \u2014 monitor availability; if out, SGA workload and bench minutes increase significantly.",
-    "SAS vs POR": "Wembanyama in concussion protocol; Game 3 availability uncertain \u2014 if ruled out, Spurs rotation shifts heavily, boosting usage for remaining starters."
+    "DEN vs MIN": "Aaron Gordon (calf) ruled out for Game 3, creating additional frontcourt minutes for Denver's bench. Jokic shot 7-of-26 in Game 3 blowout loss \u2014 no structural role change but matchup/efficiency note for Game 4.",
+    "OKC vs PHX": "Jalen Williams is out week-to-week with a Grade 1 hamstring strain, significantly altering OKC's offensive structure. Expect redistributed usage among remaining Thunder wings and SGA in Game 3.",
+    "SA vs POR": "Wembanyama still in concussion protocol and not yet cleared for Game 3; his absence would dramatically reshape Spurs prop landscape across the board."
   },
   "raw_item_count": 50,
   "filtered_item_count": 46,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Detroit Pistons G2 score",
-      "current_context_fact": "Game 2 (Apr 22) \u2014 DET 98, ORL 83 | Series tied 1-1",
-      "conflict": "Multiple news items report the final score as Pistons 98-83 Magic \u2014 consistent. No score conflict. However, one headline reads 'Pistons beat Magic 98-83 in Game 2' confirming the context doc score is correct.",
-      "urgency": "monitor",
-      "suggested_action": "No change needed \u2014 score confirmed correct."
-    },
-    {
-      "player_or_team": "Keldon Johnson (SAS)",
-      "current_context_fact": "No mention of Keldon Johnson winning Sixth Man of the Year in the season context document.",
-      "conflict": "Two news items confirm Keldon Johnson (SAS) won the NBA Sixth Man of the Year award on Apr 22, 2026. This is a new confirmed development not reflected in the context doc.",
-      "urgency": "monitor",
-      "suggested_action": "Add a player note for Keldon Johnson (SAS): Won 2025-26 NBA Sixth Man of the Year. This may affect his role/minutes perception and prop context going forward."
-    },
-    {
       "player_or_team": "Jalen Williams (OKC)",
-      "current_context_fact": "Game 2 (Apr 22): 'J. Williams 19/1/4 (7-11 FG) before exiting in Q3 with a left hamstring injury \u2014 Williams did not return and is now listed questionable, which is the most significant development of the game and potentially the series.'",
-      "conflict": "Today's news confirms the hamstring injury occurred ('Thunder's Jalen Williams leaves Game 2 with third-quarter injury') and Stephen A. Smith segment is headlined 'Why Stephen A. is very concerned by Jalen Williams' injury' \u2014 suggesting his status may be more serious than 'questionable' and warrants elevated concern. No new official status update (out vs. questionable) is confirmed in the headlines, but commentary suggests significant concern.",
-      "urgency": "monitor",
-      "suggested_action": "Elevate Jalen Williams injury concern language from 'listed questionable' to reflect that credible media figures are expressing serious concern about his availability for G3. Monitor for official OKC injury report update \u2014 if downgraded to doubtful or out, this becomes critical."
+      "current_context_fact": "Jalen Williams 19/1/4 (7-11 FG) before exiting in Q3 with a left hamstring injury \u2014 Williams did not return and is now listed questionable",
+      "conflict": "Today's news confirms Williams sustained a Grade 1 left hamstring strain and will be reevaluated on a weekly basis. 'Week-to-week' designation is more severe than 'questionable' \u2014 he is likely OUT for multiple games, not just day-to-day.",
+      "urgency": "critical",
+      "suggested_action": "Update Williams' status from 'questionable' to 'week-to-week / likely OUT for G3 and potentially beyond' in both the OKC vs PHX series diary and the Playoff Injury Landscape section. This significantly elevates Holmgren and Hartenstein's roles and changes OKC's ceiling analysis for upcoming games."
     },
     {
-      "player_or_team": "OKC vs PHX G2 score",
-      "current_context_fact": "Game 2 (Apr 22) \u2014 OKC 120, PHX 107 | OKC leads 2-0",
-      "conflict": "News headline confirms 'Gilgeous-Alexander scores 37 as the Thunder beat the Suns to go up 2-0' and score reported as 120-107 \u2014 consistent with context doc. SGA 37 points and 9 assists confirmed. No conflict on score or stat line.",
-      "urgency": "monitor",
-      "suggested_action": "No change needed \u2014 G2 stats and score confirmed correct by news."
+      "player_or_team": "Joel Embiid (PHI)",
+      "current_context_fact": "Joel Embiid OUT (appendectomy Apr 10). No return timeline. Typical recovery ~23 days. Almost certainly out for play-in AND early R1.",
+      "conflict": "Today's news reports Embiid has been upgraded to 'doubtful' ahead of Game 3 vs. Celtics, and that he participated in parts of the 76ers' practice Thursday. He now has a return designation ('doubtful') where previously there was 'no return timeline.'",
+      "urgency": "critical",
+      "suggested_action": "Update Embiid's status from 'no return timeline / almost certainly out for early R1' to 'doubtful for G3 vs BOS \u2014 participated in practice, upgraded from out. Monitor for G3 and G4 availability. If he plays, PHI's interior presence returns and BOS offensive rebounding advantage is dramatically reduced. PHI suppressor effect may intensify further with Embiid active.'"
     },
     {
-      "player_or_team": "LAL vs HOU G2",
-      "current_context_fact": "Game 2 (Apr 21) \u2014 LAL 101, HOU 94 | LAL leads 2-0. Durant returned (23/6reb/4ast, 7-12 FG, 41 min).",
-      "conflict": "News headline 'Marcus Smart's breakout game helps Lakers go up 2-0 on Rockets' and 'LAL 101, HOU 94' confirm the series lead and score. However, the context doc does not mention Marcus Smart as a notable contributor in G2 \u2014 this headline suggests Smart had a breakout performance guarding Durant that was significant enough to be the primary storyline, implying his role/impact may be understated in the current G2 diary entry.",
-      "urgency": "monitor",
-      "suggested_action": "Update G2 diary for LAL vs HOU to note Marcus Smart's defensive performance on Durant as a key factor in the win \u2014 this is relevant for future role/minutes context and prop evaluation for Smart in G3+."
+      "player_or_team": "Aaron Gordon (DEN)",
+      "current_context_fact": "Aaron Gordon (QUES pre-game) status requires monitoring \u2014 if he was unavailable or limited, DEN's defensive anchor was compromised in a game that got away from them.",
+      "conflict": "Today's news confirms Gordon was ruled OUT for Game 3 vs. MIN with a calf injury (tightness in his calf), initially listed as probable but ruled out two hours before tip-off. His absence in G3 is now confirmed, not speculative.",
+      "urgency": "critical",
+      "suggested_action": "Update Gordon's status to confirmed OUT for G3 (calf tightness). Note that he was ruled out despite being listed as probable, suggesting the calf injury is more acute than the injury report implied. Monitor for G4 availability. DEN's defensive anchor was definitively absent in the G3 blowout loss \u2014 this is now a confirmed variable, not a hypothetical."
     },
     {
-      "player_or_team": "LAL vs HOU G2 score",
-      "current_context_fact": "Game 2 (Apr 21) \u2014 LAL 101, HOU 94",
-      "conflict": "One news headline description states 'LAL 101-94 win' confirming the score. However, the G2 diary body text states 'Thompson (16/5reb/9ast) and Sengun (20/11reb, 9-20 FG)' as HOU contributors \u2014 the headline about Marcus Smart guarding Durant suggests Durant's scoring was more limited than 23 pts on 7-12 might indicate given Smart's assignment, but no direct stat conflict is established from headlines alone.",
+      "player_or_team": "Victor Wembanyama (SAS)",
+      "current_context_fact": "Victor Wembanyama (SAS) \u2014 Concussion (NBA protocol) \u2014 new injury supersedes rib contusion. No return timeline \u2014 must pass all protocol steps before being cleared to play. G3 availability unknown.",
+      "conflict": "Today's news reports Wembanyama will travel with the Spurs to Portland for games this weekend, even while continuing to complete concussion protocol steps. This confirms he remains in protocol (consistent with context) but adds that he is traveling with the team, suggesting active progression through protocol steps \u2014 though still not cleared to play.",
       "urgency": "monitor",
-      "suggested_action": "No score change needed. Confirm Durant's full stat line via box score and add Marcus Smart's stat contribution to the G2 diary entry."
+      "suggested_action": "Update Wembanyama's note to reflect that he is traveling with the team to Portland, indicating active protocol progression, but he remains uncleared to play. G3 status is still unknown \u2014 traveling is a positive sign but does not confirm clearance. Continue treating as 'no return timeline confirmed' until official clearance is announced."
+    },
+    {
+      "player_or_team": "MIL \u2014 Head Coach",
+      "current_context_fact": "MIL | Doc Rivers |",
+      "conflict": "Today's news reports the Milwaukee Bucks are finalizing a deal to hire Taylor Jenkins as the franchise's new head coach. This suggests Doc Rivers is no longer (or imminently will not be) the Bucks' head coach.",
+      "urgency": "critical",
+      "suggested_action": "Update MIL head coach from Doc Rivers to Taylor Jenkins (hire being finalized). Note: MIL is eliminated from 2025-26 playoffs so this has no immediate prop impact, but the coaching table entry is factually stale and should be corrected."
     }
   ],
   "staleness_flags": []

@@ -5830,5 +5830,577 @@
         "cannibalization_flags": null
       }
     ]
+  },
+  {
+    "date": "2026-04-24",
+    "parlays": [
+      {
+        "legs": [
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 86.11,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 80.77,
+            "iron_floor": false
+          }
+        ],
+        "n_legs": 3,
+        "combined_market_prob": 0.4968,
+        "combined_confidence": 0.4387,
+        "implied_odds": "+101",
+        "implied_odds_int": 101,
+        "n_games": 3,
+        "iron_floor_count": 0,
+        "bucket": "Safe",
+        "rank_score": 450.7,
+        "correlation": "independent",
+        "label": "Safe #1",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_01",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "legs": [
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "AST",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 85.29,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Paul George",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 81.48,
+            "iron_floor": false
+          }
+        ],
+        "n_legs": 3,
+        "combined_market_prob": 0.4964,
+        "combined_confidence": 0.4212,
+        "implied_odds": "+101",
+        "implied_odds_int": 101,
+        "n_games": 3,
+        "iron_floor_count": 0,
+        "bucket": "Safe",
+        "rank_score": 433.2,
+        "correlation": "independent",
+        "label": "Safe #2",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_02",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "legs": [
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 80.77,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "market_implied_prob": 85.71,
+            "iron_floor": true
+          }
+        ],
+        "n_legs": 3,
+        "combined_market_prob": 0.4945,
+        "combined_confidence": 0.4163,
+        "implied_odds": "+102",
+        "implied_odds_int": 102,
+        "n_games": 3,
+        "iron_floor_count": 1,
+        "bucket": "Safe",
+        "rank_score": 431.3,
+        "correlation": "independent",
+        "label": "Safe #3",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_03",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "legs": [
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 86.11,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Kevin Durant",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 80.0,
+            "iron_floor": false
+          }
+        ],
+        "n_legs": 3,
+        "combined_market_prob": 0.4921,
+        "combined_confidence": 0.4212,
+        "implied_odds": "+103",
+        "implied_odds_int": 103,
+        "n_games": 2,
+        "iron_floor_count": 0,
+        "bucket": "Safe",
+        "rank_score": 428.2,
+        "correlation": "mixed",
+        "label": "Safe #4",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_04",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 3
+      },
+      {
+        "legs": [
+          {
+            "player_name": "VJ Edgecombe",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 88.24,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 80.77,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Paul George",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 81.48,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Kevin Durant",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 80.0,
+            "iron_floor": false
+          }
+        ],
+        "n_legs": 5,
+        "combined_market_prob": 0.3318,
+        "combined_confidence": 0.2274,
+        "implied_odds": "+201",
+        "implied_odds_int": 201,
+        "n_games": 3,
+        "iron_floor_count": 0,
+        "bucket": "Reach",
+        "rank_score": 237.4,
+        "correlation": "mixed",
+        "label": "Reach #1",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_05",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 5
+      },
+      {
+        "legs": [
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 86.11,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 80.77,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Paul George",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 81.48,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Kevin Durant",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 80.0,
+            "iron_floor": false
+          }
+        ],
+        "n_legs": 5,
+        "combined_market_prob": 0.3238,
+        "combined_confidence": 0.2274,
+        "implied_odds": "+209",
+        "implied_odds_int": 209,
+        "n_games": 3,
+        "iron_floor_count": 0,
+        "bucket": "Reach",
+        "rank_score": 237.4,
+        "correlation": "mixed",
+        "label": "Reach #2",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_06",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 5
+      },
+      {
+        "legs": [
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 86.11,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 80.77,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jayson Tatum",
+            "prop_type": "REB",
+            "pick_value": 8,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 83.33,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Kevin Durant",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 80.0,
+            "iron_floor": false
+          }
+        ],
+        "n_legs": 5,
+        "combined_market_prob": 0.3312,
+        "combined_confidence": 0.2274,
+        "implied_odds": "+202",
+        "implied_odds_int": 202,
+        "n_games": 3,
+        "iron_floor_count": 0,
+        "bucket": "Reach",
+        "rank_score": 237.4,
+        "correlation": "mixed",
+        "label": "Reach #3",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_07",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 5
+      },
+      {
+        "legs": [
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Kevin Durant",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 80.0,
+            "iron_floor": false
+          },
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 80.77,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Paul George",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 81.48,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jayson Tatum",
+            "prop_type": "REB",
+            "pick_value": 8,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 83.33,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "PTS",
+            "pick_value": 20,
+            "direction": "OVER",
+            "confidence_pct": 74,
+            "market_implied_prob": 85.71,
+            "iron_floor": true
+          },
+          {
+            "player_name": "VJ Edgecombe",
+            "prop_type": "PTS",
+            "pick_value": 10,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 88.24,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Devin Vassell",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "market_implied_prob": 93.33,
+            "iron_floor": true
+          }
+        ],
+        "n_legs": 8,
+        "combined_market_prob": 0.2212,
+        "combined_confidence": 0.0969,
+        "implied_odds": "+352",
+        "implied_odds_int": 352,
+        "n_games": 3,
+        "iron_floor_count": 2,
+        "bucket": "Degen",
+        "rank_score": 109.9,
+        "correlation": "mixed",
+        "label": "Degen #1",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_08",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 8
+      },
+      {
+        "legs": [
+          {
+            "player_name": "Jabari Smith Jr.",
+            "prop_type": "3PM",
+            "pick_value": 2,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 71.43,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Kevin Durant",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 80.0,
+            "iron_floor": false
+          },
+          {
+            "player_name": "De'Aaron Fox",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 75,
+            "market_implied_prob": 80.77,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Paul George",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 81.48,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jayson Tatum",
+            "prop_type": "REB",
+            "pick_value": 8,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 83.33,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Stephon Castle",
+            "prop_type": "REB",
+            "pick_value": 4,
+            "direction": "OVER",
+            "confidence_pct": 72,
+            "market_implied_prob": 85.29,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Jaylen Brown",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 78,
+            "market_implied_prob": 86.11,
+            "iron_floor": false
+          },
+          {
+            "player_name": "Devin Vassell",
+            "prop_type": "3PM",
+            "pick_value": 1,
+            "direction": "OVER",
+            "confidence_pct": 80,
+            "market_implied_prob": 93.33,
+            "iron_floor": true
+          }
+        ],
+        "n_legs": 8,
+        "combined_market_prob": 0.2148,
+        "combined_confidence": 0.0943,
+        "implied_odds": "+366",
+        "implied_odds_int": 366,
+        "n_games": 3,
+        "iron_floor_count": 1,
+        "bucket": "Degen",
+        "rank_score": 104.3,
+        "correlation": "mixed",
+        "label": "Degen #2",
+        "date": "2026-04-24",
+        "id": "parlay_2026-04-24_09",
+        "result": null,
+        "legs_hit": null,
+        "legs_total": 8
+      }
+    ]
   }
 ]

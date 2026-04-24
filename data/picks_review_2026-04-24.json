@@ -1,0 +1,298 @@
+[
+  {
+    "date": "2026-04-24",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "PHI is a +7.5 underdog facing a tough BOS defense with a def_recency flag showing BOS has tightened significantly (l5_avg 108.0 vs l15_avg 107.3 is mild, but opp_defense=tough is confirmed). Edgecombe is volatile-moderate with no iron_floor and a raw_avg of 18.4 \u2014 the typical_miss of only 3 pts below means a modest BOS defensive clamp or a cold-shooting night (moderate volatility) can easily strand him under T10 in a game where PHI may trail and lean on Maxey."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Paul George",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 23.7 is structurally fragile \u2014 a single coach's-decision low-minutes game (George has a documented history of rest/load management concerns) easily produces a miss at T10 even if healthy. The bounce_back post_miss lift is actually negative (0.90), meaning George historically underperforms after a miss, further weakening the floor in a blowout-adjacent spot where PHI trails BOS by 7.5."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Paul George",
+    "team": "PHI",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "raw_avg_REB of 3.8 is below the T4 threshold \u2014 George is picking T4 from below his average, meaning the distribution is already thin. The post_miss_hr for REB is only 50% with a negative lift (0.67), confirming slump-persistence risk on REB props. A single low-effort defensive game or blowout script where PHI trails and George is managed could easily land at 3 REB."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Brown is tagged VOLATILE with a def_recency flag showing PHI's defense has tightened dramatically over the last 5 games (l5_avg 103.4 vs l15_avg 113.6, delta -8.98%) \u2014 the single sharpest defensive recency flag on the entire slate. Despite the iron_floor designation protecting at T20, a volatile scorer against a suddenly elite defensive unit is structurally softer than the 74% confidence implies; the typical_miss of 10 pts below T20 means a cold game produces a significant shortfall."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "REB",
+    "pick_value": 8,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Tatum is tagged VOLATILE on REB, and PHI's def_recency shows their last 5 games at 103.4 (vs 113.6 l15) \u2014 a team trending toward significantly tighter defense, which tends to compress possessions and rebounding opportunities. No iron_floor on a volatile REB pick at T8 with a BOS blowout-favored game script means Tatum could rest in Q4 if the game is decided early, cutting into his rebounding volume."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Neemias Queta",
+    "team": "BOS",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 0.0 with avg_minutes of only 20.1 makes this pick entirely minutes-contingent \u2014 Queta is a rotation big whose playing time is directly dictated by foul trouble, matchup, and game script. In a BOS blowout-favored road game, his minutes could be compressed if BOS goes small or the game is decided early, and post_miss_hr of only 65% with a sub-1.0 lift confirms his REB floor is not structurally reliable."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a BLOWOUT_RISK game (-8.5 spread) is a compounding structural concern: if HOU runs away with the game, Sengun's minutes in Q4 are at risk, and the LAL def_recency shows a dramatically tightened defense (l5_avg 95.0 vs l15_avg 110.5, -14%). VOLATILE + blowout script + a defense trending significantly tougher creates genuine floor fragility even at the stepped-down T6 tier."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_MARGIN_THIN step-down was already applied (T15\u2192T10), but the residual structural risk remains: BLOWOUT_RISK at -8.5 combined with opp_defense=tough and a def_recency flag showing LAL tightened sharply (l5 95.0 vs l15 110.5) means Thompson faces a suppressive defensive environment in a game where HOU may limit his usage late if they build a lead."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag + opp_defense=tough + LAL def_recency at -14% (l5 95.0 vs l15 110.5) + BLOWOUT_RISK (-8.5) + FG_MARGIN_THIN:0% step-down already applied \u2014 this is the maximum accumulation of suppressive structural factors on the slate. A volatile scorer facing the sharpest defensive recency improvement on the board, in a blowout-risk game where his counting stats get compressed if HOU goes up big, with zero FG margin safety, is a structurally fragile pick that the 70% confidence floor does not adequately cover."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK at -8.5 combined with opp_defense=tough and the sharpest def_recency tightening on the slate (LAL l5 95.0 vs l15 110.5) creates real suppression risk on a volume-dependent 3PM prop at T2. Smith needs consistent catch-and-shoot volume; blowout game scripts and elite defensive recency compress exactly these opportunities, and no iron_floor protects the floor here."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Durant's raw_avg_REB of 5.2 provides thin cushion at T4, and a BLOWOUT_RISK game where LAL is the road underdog (-8.5) risks Durant playing reduced minutes if the game gets away early. The post_miss lift of 0.87 (below 1.0) signals that REB misses for Durant tend to cluster rather than bounce back, compounding the blowout-suppression structural concern."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Fox is tagged VOLATILE on 3PM with a raw_avg of only 1.5 and no iron_floor \u2014 this sits at the Mikal Bridges prototype threshold (raw_avg_3PM < 2.0, VOLATILE, no iron_floor). A single 0-for-3 three-point night is entirely within normal variance for a 1.5-average shooter and collapses the prop; opp_defense=tough against POR further compresses his shot creation."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Castle is tagged VOLATILE with FG_COLD:-14% (just under the 15% step-down threshold, left unactioned) against opp_defense=tough POR. A volatile scorer with a near-threshold cold-shooting signal facing a tough defense in a tight game (spread only -2.5) is one cold-FG half away from missing T10, and the typical_miss of 5 pts below means misses are not trivial shortfalls."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]

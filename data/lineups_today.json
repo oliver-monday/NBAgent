@@ -1,414 +1,526 @@
 {
-  "asof_date": "2026-04-23",
-  "built_at_utc": "2026-04-23T23:59:57Z",
+  "asof_date": "2026-04-24",
+  "built_at_utc": "2026-04-24T14:34:45Z",
   "source": "rotowire",
-  "DEN": {
+  "BOS": {
     "starters": [
       {
         "position": "PG",
-        "name": "Jamal Murray",
+        "name": "Derrick White",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "Christian Braun",
+        "name": "Jaylen Brown",
         "injury_status": null
       },
       {
         "position": "SF",
-        "name": "Cameron Johnson",
+        "name": "Sam Hauser",
         "injury_status": null
       },
       {
         "position": "PF",
-        "name": "Spencer Jones",
+        "name": "Jayson Tatum",
         "injury_status": null
       },
       {
         "position": "C",
-        "name": "Nikola Jokic",
+        "name": "Neemias Queta",
         "injury_status": null
       }
     ],
     "confirmed": false,
     "projected_minutes": [
       {
-        "name": "Jamal Murray",
-        "minutes": 41,
+        "name": "Jaylen Brown",
+        "minutes": 38,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Nikola Jokic",
-        "minutes": 40,
+        "name": "Jayson Tatum",
+        "minutes": 38,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Christian Braun",
+        "name": "Derrick White",
         "minutes": 36,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Cameron Johnson",
+        "name": "Neemias Queta",
+        "minutes": 27,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Sam Hauser",
+        "minutes": 27,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Payton Pritchard",
         "minutes": 32,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Spencer Jones",
-        "minutes": 28,
+        "name": "Nikola Vucevic",
+        "minutes": 19,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Tim Hardaway",
-        "minutes": 30,
+        "name": "Baylor Scheierman",
+        "minutes": 13,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Bruce Brown",
-        "minutes": 18,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Julian Strawther",
+        "name": "Jordan Walsh",
         "minutes": 10,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Jonas Valanciunas",
-        "minutes": 5,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Tyus Jones",
+        "name": "Luka Garza",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Zeke Nnaji",
+        "name": "Dalano Banton",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Jalen Pickett",
+        "name": "Ron Harper",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "DaRon Holmes",
+        "name": "Hugo Gonzalez",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Aaron Gordon",
+        "name": "Amari Williams",
         "minutes": 0,
         "section": "STARTERS",
-        "injury_status": "OUT"
+        "injury_status": null
       },
       {
-        "name": "Peyton Watson",
+        "name": "Max Shulga",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      }
+    ]
+  },
+  "PHI": {
+    "starters": [
+      {
+        "position": "PG",
+        "name": "Tyrese Maxey",
+        "injury_status": null
+      },
+      {
+        "position": "SG",
+        "name": "VJ Edgecombe",
+        "injury_status": null
+      },
+      {
+        "position": "SF",
+        "name": "Kelly Oubre",
+        "injury_status": null
+      },
+      {
+        "position": "PF",
+        "name": "Paul George",
+        "injury_status": null
+      },
+      {
+        "position": "C",
+        "name": "Adem Bona",
+        "injury_status": null
+      }
+    ],
+    "confirmed": false
+  },
+  "LAL": {
+    "starters": [
+      {
+        "position": "PG",
+        "name": "Austin Reaves",
+        "injury_status": "QUES"
+      },
+      {
+        "position": "SG",
+        "name": "Marcus Smart",
+        "injury_status": null
+      },
+      {
+        "position": "SF",
+        "name": "Rui Hachimura",
+        "injury_status": null
+      },
+      {
+        "position": "PF",
+        "name": "LeBron James",
+        "injury_status": null
+      },
+      {
+        "position": "C",
+        "name": "Deandre Ayton",
+        "injury_status": null
+      }
+    ],
+    "confirmed": false,
+    "projected_minutes": [
+      {
+        "name": "Rui Hachimura",
+        "minutes": 40,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "LeBron James",
+        "minutes": 38,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Marcus Smart",
+        "minutes": 34,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Deandre Ayton",
+        "minutes": 30,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Austin Reaves",
+        "minutes": 20,
+        "section": "STARTERS",
+        "injury_status": "QUES"
+      },
+      {
+        "name": "Luke Kennard",
+        "minutes": 20,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Jake LaRavia",
+        "minutes": 19,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Jaxson Hayes",
+        "minutes": 18,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Jarred Vanderbilt",
+        "minutes": 17,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Bronny James",
+        "minutes": 4,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Maxi Kleber",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Nick Smith",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Dalton Knecht",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Adou Thiero",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Luka Doncic",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": "OUT"
       }
     ]
   },
-  "MIN": {
+  "HOU": {
     "starters": [
       {
         "position": "PG",
-        "name": "Donte DiVincenzo",
+        "name": "Amen Thompson",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "Anthony Edwards",
-        "injury_status": "QUES"
-      },
-      {
-        "position": "SF",
-        "name": "Jaden McDaniels",
+        "name": "Josh Okogie",
         "injury_status": null
       },
       {
+        "position": "SF",
+        "name": "Kevin Durant",
+        "injury_status": "QUES"
+      },
+      {
         "position": "PF",
-        "name": "Julius Randle",
+        "name": "Jabari Smith",
         "injury_status": null
       },
       {
         "position": "C",
-        "name": "Rudy Gobert",
+        "name": "Alperen Sengun",
+        "injury_status": null
+      }
+    ],
+    "confirmed": false
+  },
+  "SAS": {
+    "starters": [
+      {
+        "position": "PG",
+        "name": "De'Aaron Fox",
+        "injury_status": null
+      },
+      {
+        "position": "SG",
+        "name": "Stephon Castle",
+        "injury_status": null
+      },
+      {
+        "position": "SF",
+        "name": "Devin Vassell",
+        "injury_status": null
+      },
+      {
+        "position": "PF",
+        "name": "Julian Champagnie",
+        "injury_status": null
+      },
+      {
+        "position": "C",
+        "name": "Victor Wembanyama",
+        "injury_status": "QUES"
+      }
+    ],
+    "confirmed": false,
+    "projected_minutes": [
+      {
+        "name": "Stephon Castle",
+        "minutes": 35,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "De'Aaron Fox",
+        "minutes": 34,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Devin Vassell",
+        "minutes": 33,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "V. Wembanyama",
+        "minutes": 33,
+        "section": "STARTERS",
+        "injury_status": "QUES"
+      },
+      {
+        "name": "Julian Champagnie",
+        "minutes": 27,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Dylan Harper",
+        "minutes": 23,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Keldon Johnson",
+        "minutes": 19,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Harrison Barnes",
+        "minutes": 15,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Luke Kornet",
+        "minutes": 15,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Carter Bryant",
+        "minutes": 6,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Bismack Biyombo",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Mason Plumlee",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Kelly Olynyk",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Lindy Waters",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "J. McLaughlin",
+        "minutes": 0,
+        "section": "STARTERS",
+        "injury_status": "OUT"
+      }
+    ]
+  },
+  "POR": {
+    "starters": [
+      {
+        "position": "PG",
+        "name": "Scoot Henderson",
+        "injury_status": null
+      },
+      {
+        "position": "SG",
+        "name": "Jrue Holiday",
+        "injury_status": null
+      },
+      {
+        "position": "SF",
+        "name": "Toumani Camara",
+        "injury_status": null
+      },
+      {
+        "position": "PF",
+        "name": "Deni Avdija",
+        "injury_status": null
+      },
+      {
+        "position": "C",
+        "name": "Donovan Clingan",
         "injury_status": null
       }
     ],
     "confirmed": false
   },
   "snapshot_at_analyst_run": {
-    "written_at": "2026-04-23T08:14:01.866178-07:00",
+    "written_at": "2026-04-24T07:35:33.605183-07:00",
     "teams": {
-      "NYK": {
+      "BOS": {
         "starters": [
-          "Jalen Brunson",
-          "Josh Hart",
-          "Mikal Bridges",
-          "OG Anunoby",
-          "Karl-Anthony Towns"
+          "Derrick White",
+          "Jaylen Brown",
+          "Sam Hauser",
+          "Jayson Tatum",
+          "Neemias Queta"
         ],
         "confirmed": false
       },
-      "ATL": {
+      "PHI": {
         "starters": [
-          "CJ McCollum",
-          "Nickeil Alexander-Walker",
-          "Dyson Daniels",
-          "Jalen Johnson",
-          "Onyeka Okongwu"
+          "Tyrese Maxey",
+          "VJ Edgecombe",
+          "Kelly Oubre",
+          "Paul George",
+          "Adem Bona"
         ],
         "confirmed": false
       },
-      "CLE": {
+      "LAL": {
         "starters": [
-          "James Harden",
-          "Donovan Mitchell",
-          "Dean Wade",
-          "Evan Mobley",
-          "Jarrett Allen"
+          "Austin Reaves",
+          "Marcus Smart",
+          "Rui Hachimura",
+          "LeBron James",
+          "Deandre Ayton"
         ],
         "confirmed": false
       },
-      "TOR": {
+      "HOU": {
         "starters": [
-          "Immanuel Quickley",
-          "Brandon Ingram",
-          "RJ Barrett",
-          "Scottie Barnes",
-          "Jakob Poeltl"
+          "Amen Thompson",
+          "Josh Okogie",
+          "Kevin Durant",
+          "Jabari Smith",
+          "Alperen Sengun"
         ],
         "confirmed": false
       },
-      "DEN": {
+      "SAS": {
         "starters": [
-          "Jamal Murray",
-          "Christian Braun",
-          "Cameron Johnson",
-          "Aaron Gordon",
-          "Nikola Jokic"
+          "De'Aaron Fox",
+          "Stephon Castle",
+          "Devin Vassell",
+          "Julian Champagnie",
+          "Victor Wembanyama"
         ],
         "confirmed": false
       },
-      "MIN": {
+      "POR": {
         "starters": [
-          "Donte DiVincenzo",
-          "Anthony Edwards",
-          "Jaden McDaniels",
-          "Julius Randle",
-          "Rudy Gobert"
+          "Scoot Henderson",
+          "Jrue Holiday",
+          "Toumani Camara",
+          "Deni Avdija",
+          "Donovan Clingan"
         ],
         "confirmed": false
       }
     }
-  },
-  "CLE": {
-    "starters": [],
-    "confirmed": false,
-    "projected_minutes": [
-      {
-        "name": "James Harden",
-        "minutes": 35,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Donovan Mitchell",
-        "minutes": 35,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Evan Mobley",
-        "minutes": 33,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jarrett Allen",
-        "minutes": 27,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Dean Wade",
-        "minutes": 24,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Max Strus",
-        "minutes": 25,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Sam Merrill",
-        "minutes": 22,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Dennis Schroder",
-        "minutes": 14,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jaylon Tyson",
-        "minutes": 13,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Keon Ellis",
-        "minutes": 12,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Larry Nance",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Thomas Bryant",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Craig Porter",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Nae'Qwan Tomlin",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Tyrese Proctor",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      }
-    ]
-  },
-  "NYK": {
-    "starters": [],
-    "confirmed": false,
-    "projected_minutes": [
-      {
-        "name": "OG Anunoby",
-        "minutes": 37,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jalen Brunson",
-        "minutes": 37,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Josh Hart",
-        "minutes": 35,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Mikal Bridges",
-        "minutes": 34,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Karl-Anthony Towns",
-        "minutes": 33,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Mitchell Robinson",
-        "minutes": 17,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Landry Shamet",
-        "minutes": 15,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Miles McBride",
-        "minutes": 15,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jordan Clarkson",
-        "minutes": 12,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jose Alvarado",
-        "minutes": 5,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jeremy Sochan",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Ariel Hukporti",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Tyler Kolek",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Pacome Dadiet",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Mohamed Diawara",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
-      }
-    ]
   }
 }
