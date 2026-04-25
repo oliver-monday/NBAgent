@@ -1,0 +1,282 @@
+[
+  {
+    "date": "2026-04-25",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK at -9.5 spread is the structural concern: even with the elite scorer exemption applied, a decisive fourth quarter leads to reduced crunch-time usage and early benching for a star. The VOLATILE tag means the distribution is wide enough that a garbage-time scenario materially shifts the floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "REB",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Murray is VOLATILE with a FG_COLD flag and overall rate that only barely cleared the T15 bar at 70% \u2014 the typical_miss is 5.5 pts below threshold, meaning a cold shooting night drops him well under. The bounce_back lift of +1.12 is positive but post_miss_hr of 84% still means roughly 1-in-6 games he misses again, and the VOLATILE tag makes the distribution wide."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag with a post_miss_hr of only 69% (lift=0.83, sub-1.0) signals that Banchero is in a slump-persistent pattern for PTS \u2014 missing last game makes a miss today meaningfully more likely than the base rate. The FG_MARGIN_THIN fire already stepped the tier down, but the sub-1.0 lift means the bounce-back effect does not help here."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "The def_recency flag is 'tough' with a dramatic -10.3% delta (l5 avg 102.2 vs l15 avg 113.9), meaning ORL's defense has tightened sharply in recent games \u2014 this is the most severe recency tightening on the slate. VOLATILE + AST T6+ at 72% confidence against a defense trending hard toward tough creates real fragility for a pass-first metric."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Anthony Edwards",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "raw_avg_REB of 5.7 is BELOW the T6 pick threshold \u2014 per audit lessons, picking REB from below the player's average places the pick already in the tail of the distribution. Combined with VOLATILE tag and only 72% confidence at the minimum floor, this is structurally the same configuration that produced the Paul George REB T4 miss (raw_avg below pick_value, VOLATILE applied)."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Post_miss_hr of only 55% with a sub-1.0 lift (0.64) is the worst bounce-back profile on the slate \u2014 Duren is confirmed slump-persistent on REB, meaning a prior miss dramatically increases miss probability today. Series hit rate of only 1/2 at T8 compounds the concern alongside VOLATILE and a def_recency 'tough' flag."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 17.9 against an avg of 30.8 is extreme minutes fragility \u2014 a single low-minutes game is well within normal variance and would likely produce a miss at T10. VOLATILE tag with post_miss_hr of only 70% (lift=0.93, sub-1.0) adds slump-persistence risk; this is not an elimination game context where min fragility is waived."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK at -9.5 is extreme, and Holmgren's min_floor of 21.6 against avg 26.9 means Q4 garbage-time benching \u2014 a routine outcome in a blowout \u2014 directly threatens the minutes needed to accumulate 10 points. The iron_floor and blowout penalty were applied, but the structural rest/garbage-time risk for a non-exempt secondary scorer remains."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Devin Booker",
+    "team": "PHX",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jalen Green",
+    "team": "PHX",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 0.0 is a severe minutes fragility flag \u2014 the 25th percentile of Jalen Green's minutes distribution includes near-zero outliers, meaning a low-minutes game is a realistic scenario. Against a tough OKC defense with post_miss_hr of only 78% and typical_miss of 6 pts below threshold, the floor is genuinely contingent on minutes being delivered."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Nickeil Alexander-Walker",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jaden McDaniels",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-25",
+    "player_name": "Jaden McDaniels",
+    "team": "MIN",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "raw_avg_AST of only 2.3 against a pick threshold of 2 leaves essentially zero margin \u2014 VOLATILE tag with post_miss_hr of 67% (lift=0.83, sub-1.0) confirms slump persistence, and a typical miss lands 1 pt below threshold meaning any off night fails. This is the thinnest AST margin on the slate for a volatile player."
+    ],
+    "source": "auto"
+  }
+]
