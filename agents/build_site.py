@@ -133,6 +133,50 @@ def load_game_ml_odds() -> dict:
         return {}
 
 
+def build_team_to_game_today() -> dict:
+    """
+    Build {team_abbrev: {"home": <canonical_abbrev>, "away": <canonical_abbrev>}}
+    for today's games from nba_master.csv. Both home and away team abbrevs map
+    to the same {home, away} dict so any pick's `team` field can resolve to
+    canonical orientation regardless of which side the player is on.
+
+    Both raw (e.g. "SA", "GS") and canonical (e.g. "SAS", "GSW") abbrevs are
+    inserted as keys, mirroring the load_game_ml_odds() pattern.
+
+    Used by the frontend renderPicks() to group picks by canonical game rather
+    than by per-pick LLM-written home_away/opponent fields, which can
+    disagree across picks for the same game and split a single game into two
+    drawers on the Today's Picks tab.
+
+    Graceful no-op on missing file or any read error — JS falls back to the
+    legacy per-pick inference when the lookup is empty.
+    """
+    if not MASTER_CSV.exists():
+        return {}
+    try:
+        import pandas as pd
+        df = pd.read_csv(MASTER_CSV, dtype=str)
+        df["game_date"] = df["game_date"].astype(str).str[:10]
+        today = df[df["game_date"] == TODAY_STR]
+        out: dict = {}
+        for _, row in today.iterrows():
+            home_raw = str(row.get("home_team_abbrev", "") or "").strip().upper()
+            away_raw = str(row.get("away_team_abbrev", "") or "").strip().upper()
+            if not home_raw or not away_raw or home_raw == "NAN" or away_raw == "NAN":
+                continue
+            home_can = _ABBR_NORM.get(home_raw, home_raw)
+            away_can = _ABBR_NORM.get(away_raw, away_raw)
+            entry = {"home": home_can, "away": away_can}
+            # Insert under both raw and canonical keys for both sides
+            out[home_raw] = entry
+            out[home_can] = entry
+            out[away_raw] = entry
+            out[away_can] = entry
+        return out
+    except Exception:
+        return {}
+
+
 def compute_streak(picks: list, prop_type: str) -> dict:
     """
     Compute current consecutive hit/miss streak and last-10 record
@@ -1067,6 +1111,7 @@ def build_site():
     game_times = load_game_times()
     injuries_display = load_injuries_display()
     ml_odds = load_game_ml_odds()
+    team_to_game_today = build_team_to_game_today()
     parlay_guidance_html = load_parlay_guidance_html()
     yesterday_summary = load_yesterday_summary()
     opportunity_flags = load_opportunity_flags()
@@ -1193,6 +1238,7 @@ def build_site():
                                   reverse=True)[:40],
         "injuries":  injuries_display,
         "ml_odds":          ml_odds,
+        "team_to_game_today": team_to_game_today,
         "parlay_guidance_html": parlay_guidance_html,
         "yesterday_summary":  yesterday_summary,
         "opportunity_flags":  opportunity_flags,
@@ -1236,6 +1282,7 @@ def generate_html(d: dict) -> str:
     trend_json      = json.dumps(d["daily_trend"])
     injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "games": []}))
     ml_odds_json    = json.dumps(d.get("ml_odds", {}))
+    team_to_game_today_json = json.dumps(d.get("team_to_game_today", {}))
     top_picks_json          = json.dumps(d.get("top_picks", []))
     best_bets_json          = json.dumps(d.get("best_bets", []))
     top_picks_history_json  = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
@@ -1907,6 +1954,7 @@ const DATA = {{
   recent_results:   {results_json},
   injuries:         {injuries_json},
   ml_odds:          {ml_odds_json},
+  team_to_game_today: {team_to_game_today_json},
   top_picks:         {top_picks_json},
   best_bets:         {best_bets_json},
   top_picks_history: {top_picks_history_json},
@@ -2224,14 +2272,29 @@ function renderPicks() {{
     return;
   }}
 
-  // Build a game key → metadata map, preserving tip-off sort order
+  // Build a game key → metadata map, preserving tip-off sort order.
+  // Game grouping uses DATA.team_to_game_today (sourced from nba_master.csv)
+  // as the canonical orientation lookup, NOT per-pick home_away/opponent
+  // fields — the analyst LLM has been observed to disagree with itself
+  // across picks for the same game (2026-04-25 DET-ORL bug), which splits
+  // one game into two drawers when grouping by per-pick fields.
+  const t2g = DATA.team_to_game_today || {{}};
   const gameMap = {{}};
   picks.forEach(p => {{
-    const ha = p.home_away === 'H' ? 'H' : 'A';
-    // Normalize: always store as "AWAY @ HOME"
-    const home = ha === 'H' ? p.team : p.opponent;
-    const away = ha === 'A' ? p.team : p.opponent;
-    const key  = `${{away}}@${{home}}`;
+    const teamRaw = String(p.team || '').toUpperCase();
+    const slate   = t2g[teamRaw];
+    let home, away;
+    if (slate && slate.home && slate.away) {{
+      home = slate.home;
+      away = slate.away;
+    }} else {{
+      // Fallback when team is not in today's slate (defensive — should not
+      // happen for picks.date === TODAY_STR but covers edge cases).
+      const ha = p.home_away === 'H' ? 'H' : 'A';
+      home = ha === 'H' ? p.team : p.opponent;
+      away = ha === 'A' ? p.team : p.opponent;
+    }}
+    const key = `${{away}}@${{home}}`;
     if (!gameMap[key]) {{
       gameMap[key] = {{
         key, home, away,
@@ -2287,7 +2350,11 @@ function renderPicks() {{
       b.confidence_pct - a.confidence_pct
     ).forEach(p => {{
       const pt         = p.prop_type;
-      const ha         = p.home_away === 'H' ? 'vs' : '@';
+      // Derive vs/@ from canonical group orientation rather than per-pick
+      // home_away (same recurring LLM-inconsistency bug as the grouping fix
+      // above). normAbbr is required for short→canonical comparison
+      // (e.g. p.team="SA" against g.home="SAS").
+      const ha         = (normAbbr(String(p.team || '').toUpperCase()) === g.home) ? 'vs' : '@';
       const voidedCls  = p.voided ? ' voided' : '';
       const reviewVerdict = p.human_verdict || '';
       const isAutoReview  = p.auto_reviewed === true;
