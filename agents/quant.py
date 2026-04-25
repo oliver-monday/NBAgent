@@ -2307,6 +2307,7 @@ def build_player_stats(
 
     team_to_opp = {}
     team_to_game_key = {}
+    team_is_home_today: dict[str, bool] = {}
     for g in todays_games:
         h = g["home"].upper()
         a = g["away"].upper()
@@ -2315,6 +2316,8 @@ def build_player_stats(
         key = f"{a}_{h}"
         team_to_game_key[h] = key
         team_to_game_key[a] = key
+        team_is_home_today[h] = True
+        team_is_home_today[a] = False
 
     teams_today = set(team_to_opp.keys())
 
@@ -2400,6 +2403,7 @@ def build_player_stats(
 
         team     = games_10["team_abbrev"].iloc[0].upper()
         opponent = team_to_opp.get(team, "")
+        today_is_home = team_is_home_today.get(team)  # bool or None
 
         tier_hit_rates = {stat: compute_tier_hit_rates(games_10, stat) for stat in TIERS}
         best_tiers     = {stat: best_tier(tier_hit_rates[stat]) for stat in TIERS}
@@ -2580,6 +2584,7 @@ def build_player_stats(
             "dense_schedule": dense_schedule,
             "b2b_hit_rates": b2b_hit_rates,
             "today_spread": today_spread,
+            "today_is_home": today_is_home,
             "spread_abs": spread_abs,
             "blowout_risk": blowout_risk,
             "tier_hit_rates": tier_hit_rates,

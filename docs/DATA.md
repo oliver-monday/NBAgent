@@ -126,6 +126,7 @@ Quant output. One entry per whitelisted player playing today.
       "3PM": null
     },
     "today_spread": -6.5,         // signed for this team (neg = favored); null if unavailable
+    "today_is_home": true,        // bool or null — true if player's team is host tonight, false if road, null if team not on today's slate (added 2026-04-25)
     "spread_abs": 6.5,            // absolute value; null if unavailable
     "blowout_risk": false,        // true when is_favorite AND spread_abs > 8.0
     "tier_hit_rates": {

@@ -86,6 +86,7 @@ TPM_TIERS = [1, 2, 3, 4]
 - `dense_schedule` — bool; True when team played 4+ games in the last 5 days
 - `b2b_hit_rates` — per stat: `{"hit_rates": {tier: float}, "n": int}` computed from historical B2B second-night games; null per stat when fewer than 5 B2B games exist (Analyst falls back to one-tier-down)
 - `today_spread` — this team's signed spread for today's game (negative = favored); null if unavailable
+- `today_is_home` — bool or null. True when player's team is home for tonight's game, False when on the road, null when team not on today's slate. Computed in `build_player_stats()` from the `team_is_home_today` lookup built in the same single-pass loop as `team_to_opp` from `todays_games`. Surfaced in the analyst's prompt as ` [H]`/` [A]` tag in the per-player header (added 2026-04-25, structural fix for home/away inversion)
 - `spread_abs` — absolute value of today's spread; null if unavailable
 - `blowout_risk` — bool; True when team is favored AND spread_abs > 8.0
 - `opp_defense` — opponent's allowed avg + rank + rating (soft/mid/tough) per stat, based on last 15 games
@@ -229,9 +230,9 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 8b. `## PLAYOFF CONTEXT — POSTSEASON MODE` (conditional — on/after 2026-04-14; annotation-only behavioral framing)
 8c. `## WHITELISTED PLAYER RANKINGS — SEASON vs L20` — top 15 per stat, season avg + L20 avg with ↑/↓/→ arrows; built from already-loaded game log; anchors elite scorer recognition
 9. `## TEAM DEFENSIVE PROFILES` — auto-generated from `team_defense_narratives.json` (last 15g, updates daily)
-9a. `## SERIES CONTEXT — PLAYOFFS` (conditional — from `playoff_matchup.json`; per-series performance + season H2H)
+9a. `## SERIES CONTEXT — PLAYOFFS` (conditional — from `playoff_matchup.json`; per-series performance + season H2H). For series with `game_today=True` the series block now opens with a `TONIGHT: Game N at <host>. <other> on the road.` line directly under the section header (added 2026-04-25 via `playoff_matchup.py:load_today_host()` + `format_series_block()` — explicit per-game venue anchor that removes the LLM's inference burden).
 10. `## PLAYER RECENT GAME LOGS`
-11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` — includes: KEY FRAMEWORK (5-level rule conflict priority order, PENALTY STACK LIMIT, TIER_WALK FORMAT, SANITY CHECK, CONFIDENCE THRESHOLD IS A FLOOR), KEY RULES — MATCHUP QUALITY, OPPONENT DEFENSE — POSITIONAL DvP, SELECTION RULES, KEY RULES — REST & FATIGUE (including RETURN FROM INJURY — SHORT SAMPLE INSTABILITY for `[SHORT_SAMPLE:Ng]` players), KEY RULES — SEQUENTIAL GAME CONTEXT, KEY RULES — SPREAD / BLOWOUT RISK, KEY RULES — VOLATILITY, KEY RULES — HIGH CONFIDENCE GATE, INJURY EXCLUSION
+11. `## QUANT STATS — PRE-COMPUTED TIER ANALYSIS` — includes: KEY FRAMEWORK (5-level rule conflict priority order, PENALTY STACK LIMIT, TIER_WALK FORMAT, SANITY CHECK, CONFIDENCE THRESHOLD IS A FLOOR), KEY RULES — MATCHUP QUALITY, OPPONENT DEFENSE — POSITIONAL DvP, SELECTION RULES, KEY RULES — REST & FATIGUE (including RETURN FROM INJURY — SHORT SAMPLE INSTABILITY for `[SHORT_SAMPLE:Ng]` players), KEY RULES — SEQUENTIAL GAME CONTEXT, KEY RULES — SPREAD / BLOWOUT RISK, KEY RULES — VOLATILITY, KEY RULES — HIGH CONFIDENCE GATE, INJURY EXCLUSION. Per-player headers carry a ` [H]`/` [A]` venue tag derived from `today_is_home` in `player_stats.json` (added 2026-04-25); the section header explanation instructs the analyst to copy this tag directly into the JSON output's `home_away` field rather than inferring venue from prose context. The `save_picks()` post-processor chain ends with `reconcile_game_attribution()` (added 2026-04-25) which overwrites `home_away` and `opponent` from `nba_master.csv` truth before write — defense-in-depth on the structured fields.
 12. `## PLAYER PROFILES — LIVE STATISTICAL PORTRAITS`
 13. `## AUDITOR FEEDBACK FROM PREVIOUS DAYS`
 14. `## ROLLING PERFORMANCE SUMMARY`

@@ -135,6 +135,39 @@ def load_today_teams() -> set[str]:
     return teams
 
 
+def load_today_host(home_team: str, away_team: str) -> str | None:
+    """
+    For today's slate, find the game between home_team and away_team and
+    return the canonical abbreviation of the team hosting tonight.
+
+    Returns None when the matchup is not on today's slate (i.e.
+    game_today=False) or when nba_master.csv is unavailable.
+
+    The returned host is whichever team is in nba_master's
+    `home_team_abbrev` column for the matching row — the canonical
+    source of truth for per-game venue, not the bracket-seeding
+    `home_team` field on the playoff_bracket.json series object
+    (which reflects which team has the higher seed, not which team
+    hosts a specific game).
+    """
+    if not MASTER_CSV.exists():
+        return None
+    try:
+        with open(MASTER_CSV, newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if (row.get("game_date") or "")[:10] != TODAY_STR:
+                    continue
+                h = _norm((row.get("home_team_abbrev") or "").strip())
+                a = _norm((row.get("away_team_abbrev") or "").strip())
+                if {h, a} == {home_team, away_team}:
+                    return h
+    except Exception as e:
+        print(f"[playoff_matchup] WARNING: could not resolve today's host for "
+              f"{home_team}/{away_team}: {e}")
+    return None
+
+
 def load_series_game_results(
     home_team: str,
     away_team: str,
@@ -417,9 +450,26 @@ def format_series_block(series_data: dict) -> str:
     phase    = series_data.get("series_phase", "early")
     lines: list[str] = [
         f"=== {home} vs {away}{conf_str} | {series_record} | GAME {game_num} ({phase.upper()}) ===",
+    ]
+
+    # TONIGHT line — the explicit per-game host anchor for the analyst.
+    # Only emitted when game_today=True AND today_host resolves cleanly.
+    # Without this anchor the LLM must extrapolate venue from format
+    # patterns + game log (the structural weakness that produced the
+    # 2026-04-25 MIN-DEN uniform inversion).
+    today_host = series_data.get("today_host")
+    if series_data.get("game_today") and today_host:
+        next_game_n = total_played + 1
+        road_team = away if today_host == home else home
+        lines.append(
+            f"TONIGHT: Game {next_game_n} at {today_host}. "
+            f"{road_team} on the road."
+        )
+
+    lines.extend([
         f"State: {home} [{state['home_state'].upper()}] / {away} [{state['away_state'].upper()}]",
         f"Note: {state['note']}",
-    ]
+    ])
 
     # Game log
     game_log = series_data.get("game_log", [])
@@ -589,6 +639,8 @@ def main() -> None:
                     "season_h2h": stats.get("season_h2h"),
                 }
 
+        today_host = load_today_host(home, away) if game_today else None
+
         series_entry = {
             "series_id":    series_id,
             "conference":   conf,
@@ -600,6 +652,7 @@ def main() -> None:
             "game_in_series": game_in_series,
             "series_phase":   series_phase,
             "game_today":   game_today,
+            "today_host":   today_host,
             "series_state": series_state,
             "game_log":     game_results,
             "players":      players_out,

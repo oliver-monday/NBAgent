@@ -1549,6 +1549,13 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
         blowout_risk     = s.get("blowout_risk", False)
         spread_abs       = s.get("spread_abs")
         today_spread     = s.get("today_spread")        # signed: neg = this team favored
+        today_is_home    = s.get("today_is_home")       # bool or None
+        if today_is_home is True:
+            ha_tag = " [H]"
+        elif today_is_home is False:
+            ha_tag = " [A]"
+        else:
+            ha_tag = ""
         spread_splits    = s.get("spread_split_hit_rates") or {}
         on_b2b           = s.get("on_back_to_back", False)
         rest_days        = s.get("rest_days")
@@ -1897,7 +1904,7 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             ga_flag    = f" [SHORT_SAMPLE:{games_available}g]" if games_available < 8 else ""
             lines.append(
-                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{desperate_host_str}{ga_flag}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
+                f"{player_name} (vs {opp} | {spread_info}{ha_tag}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{desperate_host_str}{ga_flag}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
                 + (momentum_line   + "\n" if momentum_line   else "")
                 + (teammates_line  + "\n" if teammates_line  else "")
                 + (kta_line        + "\n" if kta_line        else "")
@@ -2292,6 +2299,7 @@ selection signals.
 These numbers are computed from the full season game log — larger sample than the L10 above.
 "overall" = hit rate at this tier across last 10 games.
 "vs_soft" / "vs_tough" = hit rate at this tier across the full season, split by opponent defensive quality.
+"[H]" / "[A]" in each player header is the canonical venue for tonight's game (derived deterministically from today's slate in nba_master.csv). Use this tag directly for the `home_away` field in your JSON output — do not infer venue from training data, season context prose, series intel, or historical game logs. When the tag is absent on a player, fall back to the games_block above.
 
 KEY FRAMEWORK — HOW TO REASON WHEN RULES CONFLICT:
 
@@ -4168,6 +4176,7 @@ Condition C — Confirming signals: At least two independent signals must suppor
 These numbers are computed from the full season game log — larger sample than the L10 above.
 "overall" = hit rate at this tier across last 10 games.
 "vs_soft" / "vs_tough" = hit rate at this tier across the full season, split by opponent defensive quality.
+"[H]" / "[A]" in each player header is the canonical venue for tonight's game (derived deterministically from today's slate in nba_master.csv). Use this tag directly for the `home_away` field in your JSON output — do not infer venue from training data, season context prose, series intel, or historical game logs. When the tag is absent on a player, fall back to the games_block above.
 
 KEY FRAMEWORK — HOW TO REASON WHEN RULES CONFLICT:
 
@@ -5458,12 +5467,109 @@ def enforce_market_gate(picks: list[dict]) -> list[dict]:
     return kept
 
 
+def reconcile_game_attribution(picks: list[dict]) -> list[dict]:
+    """
+    Post-process picks to ensure home_away and opponent match the
+    canonical truth in nba_master.csv. The analyst LLM has been
+    observed to produce inconsistent or inverted home_away values
+    despite correct input context (root cause documented in
+    data/home_away_root_cause_investigation.md, 2026-04-25).
+
+    For each pick:
+      1. Look up the player's team in today's slate from nba_master.csv
+      2. Determine the correct home_away ("H" if player's team is the
+         home team for their game, "A" otherwise) and opponent abbrev
+      3. Overwrite pick["home_away"] and pick["opponent"] from this
+         lookup
+
+    Picks for teams not on today's slate (should not occur for
+    today-dated picks but defensive against edge cases) are left
+    unchanged. Picks where MASTER_CSV is unavailable are left
+    unchanged.
+
+    Run AFTER reconcile_pick_values() and enforce_market_gate() in
+    save_picks(). Order doesn't strictly matter — these post-processors
+    don't interact — but conventional ordering is data-correctness
+    first, market gate last.
+    """
+    if not MASTER_CSV.exists():
+        return picks
+
+    # Build {team_abbrev_canonical: (home_canonical, away_canonical)} for today
+    team_to_orientation: dict[str, tuple[str, str]] = {}
+    try:
+        df = pd.read_csv(MASTER_CSV, dtype=str)
+        today_games = df[df["game_date"] == TODAY_STR]
+        for _, row in today_games.iterrows():
+            home_raw = str(row.get("home_team_abbrev", "") or "").strip().upper()
+            away_raw = str(row.get("away_team_abbrev", "") or "").strip().upper()
+            if not home_raw or not away_raw:
+                continue
+            home_can = _norm_team(home_raw)
+            away_can = _norm_team(away_raw)
+            entry = (home_can, away_can)
+            # Both raw and canonical keys for both sides
+            team_to_orientation[home_raw] = entry
+            team_to_orientation[home_can] = entry
+            team_to_orientation[away_raw] = entry
+            team_to_orientation[away_can] = entry
+    except Exception as e:
+        print(f"[analyst] reconcile_game_attribution: could not read master CSV: {e}")
+        return picks
+
+    if not team_to_orientation:
+        return picks  # no games today (shouldn't happen for today-dated picks)
+
+    fixed_count = 0
+    for pick in picks:
+        team_raw = str(pick.get("team", "") or "").strip().upper()
+        if not team_raw:
+            continue
+        orientation = team_to_orientation.get(team_raw)
+        if orientation is None:
+            # Team not on today's slate — leave pick alone
+            continue
+        home_can, away_can = orientation
+        team_can = _norm_team(team_raw)
+
+        if team_can == home_can:
+            correct_ha = "H"
+            correct_opp = away_can
+        elif team_can == away_can:
+            correct_ha = "A"
+            correct_opp = home_can
+        else:
+            # Should not occur given dual-key insertion above
+            continue
+
+        old_ha = pick.get("home_away")
+        old_opp = pick.get("opponent")
+        if old_ha != correct_ha or _norm_team(str(old_opp or "")) != correct_opp:
+            print(
+                f"[analyst] RECONCILE_GAME_ATTRIBUTION: "
+                f"{pick.get('player_name', '?')} {pick.get('prop_type', '?')} "
+                f"home_away {old_ha!r}→{correct_ha!r}, "
+                f"opponent {old_opp!r}→{correct_opp!r}"
+            )
+            pick["home_away"] = correct_ha
+            pick["opponent"] = correct_opp
+            fixed_count += 1
+
+    if fixed_count > 0:
+        print(f"[analyst] reconcile_game_attribution: corrected {fixed_count} pick(s)")
+    return picks
+
+
 def save_picks(picks: list[dict]):
     # Filter out picks where analyst's own tier_walk reasoning concluded skip
     picks = filter_self_skip_picks(picks)
 
     # Reconcile pick_value against tier_walk step-down documentation
     picks = reconcile_pick_values(picks)
+
+    # Reconcile home_away/opponent against nba_master.csv — defends against
+    # LLM home/away inversion (root cause documented 2026-04-25)
+    picks = reconcile_game_attribution(picks)
 
     # Enforce FanDuel market existence — reject picks with no market
     picks = enforce_market_gate(picks)
