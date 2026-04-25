@@ -1864,6 +1864,20 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
         def_recency = s.get("def_recency")
         def_rec_str = " DEF↑" if def_recency == "soft" else " DEF↓" if def_recency == "tough" else ""
 
+        # Playoff series state — desperate-host opponent annotation (player's
+        # team is on the road, opponent is the home team trailing by 2+ in the
+        # series). Annotation only — no directive rule attached.
+        # Format: [DESPERATE_HOST_OPP:opp_wins-team_wins] (mirrors how a
+        # sportsbook phrases the home team's series record).
+        playoff_state = s.get("playoff_series_state")
+        if playoff_state and playoff_state.get("is_desperate_host_opp"):
+            desperate_host_str = (
+                f" [DESPERATE_HOST_OPP:{playoff_state['opp_wins']}-"
+                f"{playoff_state['team_wins']}]"
+            )
+        else:
+            desperate_host_str = ""
+
         if stat_parts:
             if spread_abs is not None and today_spread is not None:
                 spread_info = f"spread={today_spread:+.1f}(abs={spread_abs:.1f})"
@@ -1883,7 +1897,7 @@ def build_quant_context(player_stats: dict, lineup_context: dict | None = None, 
             l7_field   = f" L7:{games_last_7}g" if games_last_7 > 0 else ""
             ga_flag    = f" [SHORT_SAMPLE:{games_available}g]" if games_available < 8 else ""
             lines.append(
-                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{ga_flag}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
+                f"{player_name} (vs {opp} | {spread_info}{blowout_flag}{rest_flag}{dense_flag}{l7_field}{desperate_host_str}{ga_flag}{min_floor_str}{proj_min_str}{usg_spike_str}{def_rec_str}):\n"
                 + (momentum_line   + "\n" if momentum_line   else "")
                 + (teammates_line  + "\n" if teammates_line  else "")
                 + (kta_line        + "\n" if kta_line        else "")

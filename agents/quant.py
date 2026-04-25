@@ -42,6 +42,7 @@ PLAYER_STATS_JSON             = DATA / "player_stats.json"
 TEAM_DEFENSE_NARRATIVES_JSON  = DATA / "team_defense_narratives.json"
 PLAYOFF_CAREER_LOG            = DATA / "playoff_career_log.csv"
 CANNIBALIZATION_JSON          = DATA / "backtest_teammate_cannibalization.json"
+PLAYOFF_BRACKET_JSON          = DATA / "playoff_bracket.json"
 
 ET = ZoneInfo("America/Los_Angeles")
 TODAY = dt.datetime.now(ET).date()
@@ -1683,6 +1684,148 @@ def compute_rest_context(team_abbrev: str, master_df: pd.DataFrame) -> dict:
     }
 
 
+def load_playoff_bracket() -> dict | None:
+    """Load data/playoff_bracket.json. Returns None if absent or malformed.
+
+    Schema (current — verified on disk):
+      {
+        "season": "...",
+        "round": int,
+        "playoff_start_date": "YYYY-MM-DD",
+        "series": [
+          {"series_id": str, "conference": "East"|"West",
+           "home_team": str (higher seed), "away_team": str (lower seed),
+           "best_of": int},
+          ...
+        ],
+        ...
+      }
+
+    NOTE: `home_team` / `away_team` in each series object encode SERIES seeding
+    (higher seed = `home_team`), NOT today's hosting assignment. Today's
+    home/away must be derived from `nba_master.csv`. Per-game results are
+    NOT stored in the bracket file — `compute_playoff_series_state()` counts
+    wins from `nba_master.csv` directly.
+    """
+    if not PLAYOFF_BRACKET_JSON.exists():
+        return None
+    try:
+        with open(PLAYOFF_BRACKET_JSON) as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def compute_playoff_series_state(
+    team_abbr: str,
+    opp_abbr: str,
+    is_road_game: bool,
+    bracket_data: dict | None,
+    master_df: "pd.DataFrame | None" = None,
+) -> dict | None:
+    """
+    Compute current playoff series state for a player's team vs today's opponent.
+
+    Args:
+      team_abbr:    Player's team (3-letter, uppercase).
+      opp_abbr:     Today's opponent.
+      is_road_game: True if player's team is on the road today (caller computes
+                    from nba_master.csv home/away — do NOT infer from bracket).
+      bracket_data: Loaded playoff_bracket.json contents, or None.
+      master_df:    nba_master.csv DataFrame (used to count completed playoff
+                    games in the matchup). May be None.
+
+    Returns dict with keys:
+      - team_wins, opp_wins, series_game_number, is_road_game,
+        opp_trailing_by, is_desperate_host_opp.
+
+    Returns None when:
+      - bracket_data is None / missing / malformed
+      - The matchup (team_abbr vs opp_abbr) is not found in any series
+      - Any sub-lookup raises an exception
+
+    Defensive: catches all exceptions, returns None silently.
+    """
+    if not bracket_data:
+        return None
+    try:
+        team = (team_abbr or "").upper().strip()
+        opp  = (opp_abbr  or "").upper().strip()
+        if not team or not opp:
+            return None
+
+        # 1. Find the series containing both teams (order-agnostic — the player's
+        #    team may be in either the 'home_team' or 'away_team' slot, since
+        #    those fields encode series seeding, not today's host).
+        series_list = bracket_data.get("series") or []
+        match = None
+        for s in series_list:
+            h = str(s.get("home_team") or "").upper().strip()
+            a = str(s.get("away_team") or "").upper().strip()
+            if {h, a} == {team, opp}:
+                match = s
+                break
+        if match is None:
+            return None
+
+        # 2. Count completed playoff games between team and opp from master_df.
+        team_wins = 0
+        opp_wins  = 0
+        if master_df is not None and not master_df.empty:
+            playoff_start = str(bracket_data.get("playoff_start_date") or "")
+            df = master_df.copy()
+
+            # Postseason filter (season_type column may be "3" or "3.0" string)
+            if "season_type" in df.columns:
+                st = df["season_type"].astype(str).str.strip()
+                df = df[st.isin(["3", "3.0"])]
+
+            # Date filter — only games on/after series start
+            if playoff_start:
+                df = df[df["game_date"].astype(str) >= playoff_start]
+
+            # Matchup filter — both teams in the game (in either slot)
+            h_col = df["home_team_abbrev"].astype(str).str.upper().str.strip()
+            a_col = df["away_team_abbrev"].astype(str).str.upper().str.strip()
+            df = df[
+                ((h_col == team) & (a_col == opp))
+                | ((h_col == opp)  & (a_col == team))
+            ]
+
+            for _, row in df.iterrows():
+                try:
+                    home_score = int(float(row.get("home_score") or 0))
+                    away_score = int(float(row.get("away_score") or 0))
+                except Exception:
+                    continue
+                if home_score == 0 and away_score == 0:
+                    continue  # not yet played
+                if home_score == away_score:
+                    continue  # tie / invalid
+                home_team = str(row.get("home_team_abbrev") or "").upper().strip()
+                away_team = str(row.get("away_team_abbrev") or "").upper().strip()
+                winner = home_team if home_score > away_score else away_team
+                if winner == team:
+                    team_wins += 1
+                elif winner == opp:
+                    opp_wins += 1
+
+        series_game_number    = team_wins + opp_wins + 1
+        opp_trailing_by       = max(0, team_wins - opp_wins)
+        is_desperate_host_opp = bool(is_road_game) and opp_trailing_by >= 2
+
+        return {
+            "team_wins":             team_wins,
+            "opp_wins":              opp_wins,
+            "series_game_number":    series_game_number,
+            "is_road_game":          bool(is_road_game),
+            "opp_trailing_by":       opp_trailing_by,
+            "is_desperate_host_opp": is_desperate_host_opp,
+        }
+    except Exception:
+        return None
+
+
 def best_tier(hit_rates: dict) -> dict | None:
     tiers_sorted = sorted(hit_rates.keys(), key=lambda x: int(x), reverse=True)
     for t in tiers_sorted:
@@ -2181,6 +2324,23 @@ def build_player_stats(
         for _team in teams_today:
             _rest_cache[_team] = compute_rest_context(_team, master_df)
 
+    # Per-team road-game flag for today (player team is on the road if their
+    # team appears as the away_team in today's games). Source-of-truth for
+    # is_road_game in compute_playoff_series_state — bracket fields encode
+    # series seeding, not today's hosting.
+    _is_road_today: dict[str, bool] = {}
+    for _g in todays_games:
+        _h = (_g.get("home") or "").upper()
+        _a = (_g.get("away") or "").upper()
+        if _h:
+            _is_road_today[_h] = False
+        if _a:
+            _is_road_today[_a] = True
+
+    # Load playoff bracket once — None during regular season (graceful no-op
+    # in compute_playoff_series_state).
+    _playoff_bracket = load_playoff_bracket()
+
     # Pre-compute team leading scorers for star-absence lift (H26)
     # Uses full player_log (not whitelist-filtered) to find the actual team leader.
     # Returns tuple of (star_name, star_ppg, set_of_game_ids_where_star_was_absent)
@@ -2323,6 +2483,18 @@ def build_player_stats(
         spread_abs   = spread_ctx.get("spread_abs")
         blowout_risk = spread_ctx.get("blowout_risk", False)
 
+        # Playoff series state (annotation-only — surfaces [DESPERATE_HOST_OPP]
+        # tag in analyst's quant context). None during regular season or when
+        # bracket file is absent / matchup not found.
+        _is_road_game = _is_road_today.get(team, False)
+        playoff_series_state = compute_playoff_series_state(
+            team_abbr=team,
+            opp_abbr=opponent,
+            is_road_game=_is_road_game,
+            bracket_data=_playoff_bracket,
+            master_df=master_df,
+        )
+
         # Team momentum context for this player's team and opponent
         momentum_team = (team_momentum or {}).get(team)
         momentum_opp  = (team_momentum or {}).get(opponent) if opponent else None
@@ -2403,6 +2575,7 @@ def build_player_stats(
             "last_updated": TODAY_STR,
             "on_back_to_back": on_b2b,
             "rest_days": rest_days,
+            "playoff_series_state":  playoff_series_state,
             "games_last_7": games_last_7,
             "dense_schedule": dense_schedule,
             "b2b_hit_rates": b2b_hit_rates,
