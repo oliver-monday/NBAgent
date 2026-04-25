@@ -559,9 +559,46 @@ Return ONLY valid JSON with this exact shape. No markdown fencing, no preamble.
 - Reference prior game entries in the same series for pattern observations
   (e.g., "Johnson AST suppressed for second straight game — 3 AST in both G1 and G2")
 - Note tactical / scheme observations relevant to future prop picks
-- End with "GN key:" observation for the next game
+  (DO NOT include venue assumptions — see VENUE CLAIMS rule below)
+- End with "GN key:" observation for the next game — focus on VARIABLES
+  (player health, minutes management, rotation decisions, recoveries),
+  TACTICAL keys (defensive coverages, offensive matchups, scheme
+  adjustments), or PATTERN observations (trends across games in this
+  series). MUST NOT make claims about WHERE the next game will be played
+  (see VENUE CLAIMS rule below).
 - Keep entries to 3-5 substantial lines
-- Match the tone and depth of existing diary entries
+- Match the tone and depth of existing diary entries (this applies to
+  writing voice and structure, NOT to venue claims — prior diary entries
+  inside <season_context> may contain venue language from earlier
+  uncorrected bot runs, but that is not a license to imitate it)
+- VENUE CLAIMS — STRICT RULE
+  - Do NOT make any claim about where games are played beyond what is
+    explicitly stated in the YESTERDAY'S GAMES block above (which uses
+    the "{{away_team}} @ {{home_team}}" header format). That block tells you
+    who hosted yesterday's game; you may restate that. Beyond that, do
+    not infer.
+  - Forbidden phrases for FUTURE games: "must-win road game", "at home
+    in G<N>", "back to <venue>", "series shifts to <city>", "<team>
+    hosts G<N>", "G<N> at <city>", "in <city>" when referring to a
+    future game, "on the road" when referring to a future game,
+    "must-win at home", "with home court advantage in G<N>",
+    "<team> will close out the series at home", or any equivalent
+    phrasing that asserts where game N+1, N+2, ... will be played.
+  - Forbidden phrases for PAST games beyond yesterday's block: do not
+    describe earlier series games using venue framings ("the road loss
+    in G2", "at home in G3", "<team>'s home court advantage in G1") UNLESS
+    the YESTERDAY'S GAMES block explicitly confirms the framing for that
+    specific game. When in doubt, describe completed games via score
+    margin and game number ("the 12-point margin in G3", "the Game 2
+    blowout") with NO venue framing.
+  - WHY THIS RULE EXISTS: venue is determined deterministically by
+    bracket seeding and the 2-2-1-1-1 format. Downstream agents derive
+    it from authoritative sources (data/nba_master.csv,
+    data/playoff_bracket.json). Inferring venue from training data
+    introduces wrong claims that downstream agents propagate. The
+    investigation report at data/season_context_updater_investigation.md
+    documented a 27% wrong-or-ambiguous venue-claim rate across the
+    first 11 auto-generated diary entries — this rule prevents recurrence.
 
 ## INJURY UPDATE GUIDELINES
 
@@ -578,6 +615,11 @@ Return ONLY valid JSON with this exact shape. No markdown fencing, no preamble.
 - The document inside <season_context> is AUTHORITATIVE. Your training data may
   be stale — do NOT correct rosters, coaches, or team facts against your priors.
 - Do not invent stats. Only use stat lines provided in the game data above.
+- Do not invent venue. Do NOT claim where future games will be played, and
+  do NOT describe past games from venue framings beyond what the
+  YESTERDAY'S GAMES block specifies. See the VENUE CLAIMS rule in DIARY
+  ENTRY GUIDELINES for the full list of forbidden phrases and the
+  authoritative-source rationale.
 - Return ONLY valid JSON. No markdown fencing, no explanation, no preamble.
 """
 
