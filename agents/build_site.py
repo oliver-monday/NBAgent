@@ -28,6 +28,13 @@ PT = ZoneInfo("America/Los_Angeles")
 TODAY_STR = dt.datetime.now(PT).strftime("%Y-%m-%d")
 PLAYOFFS_R1_DATE = "2026-04-18"
 
+# High-conviction subset: picks where the FanDuel market itself is heavily
+# confident (market_implied_prob >= 85.0). Same threshold as agents/auditor.py
+# HIGH_CONVICTION_THRESHOLD. Used by the Today's Picks toggle filter and the
+# per-card "HIGH CONV" badge. Empirically motivated by data/single_leg_edge_report.md
+# (cliff at delta ≈ -0.10 / market_implied_prob ≈ 0.85).
+HIGH_CONVICTION_THRESHOLD = 85.0
+
 PICKS_JSON              = DATA / "picks.json"
 AUDIT_LOG_JSON          = DATA / "audit_log.json"
 AUDIT_SUMMARY_JSON      = DATA / "audit_summary.json"
@@ -1128,12 +1135,19 @@ def build_site():
 
     top_picks = get_top_picks(today_picks)
 
-    # Best Bets: picks with POSITIVE or STRONG calibrated edge, ranked by edge
+    # Best Bets: picks where the system's calibrated edge ≥ +5pp (RARE SETUP
+    # in the new tier vocabulary — system says it's more confident than market
+    # by ≥5pp). Ranked by edge desc. Reads calibrated_edge_pct directly so the
+    # filter is independent of the legacy recommendation_tier field, which
+    # uses different ±3/±8pp boundaries.
+    def _edge(p):
+        return (p.get("bet_recommendation") or {}).get("calibrated_edge_pct")
     best_bets = [
         p for p in today_picks
         if not p.get("voided", False)
         and p.get("result") is None
-        and p.get("bet_recommendation", {}).get("recommendation_tier") in ("POSITIVE", "STRONG")
+        and _edge(p) is not None
+        and _edge(p) >= 5.0
     ]
     best_bets.sort(
         key=lambda p: p.get("bet_recommendation", {}).get("calibrated_edge_pct", 0),
@@ -1160,6 +1174,11 @@ def build_site():
     daily_trend = compute_daily_trend(past_picks)
     last_audit  = audit_log[-1] if audit_log else None
 
+    # High-conviction rolling summary — sliced from yesterday_summary so the
+    # Audit Log tab can render the season-level high-conviction stats panel
+    # without re-loading audit_summary.json on the JS side.
+    high_conviction_summary = (yesterday_summary or {}).get("high_conviction_summary") or {}
+
     page_data = {
         "today_str":      TODAY_STR,
         "today_picks":    today_picks,
@@ -1168,6 +1187,7 @@ def build_site():
         "prop_stats":     prop_stats,
         "daily_trend":    daily_trend,
         "last_audit":     last_audit,
+        "high_conviction_summary": high_conviction_summary,
         "recent_results": sorted(past_picks,
                                   key=lambda p: p.get("date", ""),
                                   reverse=True)[:40],
@@ -1221,6 +1241,7 @@ def generate_html(d: dict) -> str:
     top_picks_history_json  = json.dumps(d.get("top_picks_history", {"hits": 0, "total": 0, "pct": 0, "picks": []}))
     playoff_stats_json      = json.dumps(d.get("playoff_stats", {"hits": 0, "total": 0, "pct": 0, "voided": 0}))
     yesterday_summary_json  = json.dumps(d.get("yesterday_summary", {}))
+    high_conv_summary_json  = json.dumps(d.get("high_conviction_summary", {}))
     opportunity_flags_json  = json.dumps(d.get("opportunity_flags", []))
     explorer_json           = json.dumps(d.get("explorer", {}))
     playoff_json            = json.dumps(d.get("playoff", {}))
@@ -1319,6 +1340,48 @@ def generate_html(d: dict) -> str:
                           padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;
                           background: rgba(239,68,68,0.10); color: #ef4444;
                           border: 1px solid rgba(239,68,68,0.25); margin-right: 4px; }}
+
+    /* High-conviction badge — market_implied_prob >= 85.0 */
+    .high-conv-badge {{ display: inline-block; font-size: 10px; font-weight: 600;
+                        padding: 2px 7px; border-radius: 3px; letter-spacing: 0.5px;
+                        background: rgba(80,200,120,0.15); color: #50c878;
+                        border: 1px solid rgba(80,200,120,0.4); margin-left: 6px; }}
+
+    /* High-conviction toggle — Today's Picks tab */
+    .high-conv-toggle-wrap {{ display: flex; align-items: center; gap: 10px;
+                              padding: 10px 14px; background: var(--surface);
+                              border: 1px solid var(--border); border-radius: 6px;
+                              margin-bottom: 12px; }}
+    .toggle-switch {{ position: relative; display: inline-block;
+                      width: 36px; height: 18px; flex-shrink: 0; }}
+    .toggle-switch input {{ opacity: 0; width: 0; height: 0; }}
+    .toggle-switch .slider {{ position: absolute; cursor: pointer;
+                              top: 0; left: 0; right: 0; bottom: 0;
+                              background-color: #444; border-radius: 18px;
+                              transition: 0.2s; }}
+    .toggle-switch .slider::before {{ content: ""; position: absolute;
+                                      height: 12px; width: 12px;
+                                      left: 3px; bottom: 3px;
+                                      background-color: #ddd; border-radius: 50%;
+                                      transition: 0.2s; }}
+    .toggle-switch input:checked + .slider {{ background-color: #50c878; }}
+    .toggle-switch input:checked + .slider::before {{ transform: translateX(18px); }}
+    .hc-toggle-label {{ color: var(--text); font-size: 14px; }}
+    .hc-toggle-counter {{ color: var(--muted); font-size: 13px; margin-left: auto; }}
+
+    /* New tier vocabulary (renamed 2026-04-25 from FADE/NEUTRAL/POSITIVE/STRONG)
+       Bands derived from calibrated_edge_pct at render time:
+         edge < -10pp        → MARKET LOCKED
+         -10pp ≤ edge < -5pp → MARKET CONFIDENT
+         -5pp  ≤ edge < +5pp → JUDGMENT CALL
+         edge ≥ +5pp         → RARE SETUP
+       Empirically MARKET LOCKED is the safest band (~89% hit rate per
+       data/single_leg_edge_report.md). */
+    .edge-line.market-locked    {{ color: var(--accent2); font-weight: 600; }}
+    .edge-line.market-confident {{ color: var(--accent2); }}
+    .edge-line.judgment-call    {{ color: var(--muted); }}
+    .edge-line.rare-setup       {{ color: #22c55e; font-weight: 600; }}
+
     .parlay-risk-banner {{ font-size: 11px; font-weight: 600; color: #f97316;
                            padding: 5px 8px; margin-top: 6px;
                            background: rgba(249,115,22,0.08);
@@ -1756,6 +1819,14 @@ def generate_html(d: dict) -> str:
 <button id="back-to-top" onclick="window.scrollTo({{top:0,behavior:'smooth'}})" aria-label="Back to top">↑</button>
 
 <div id="tab-picks" class="page active">
+  <div class="high-conv-toggle-wrap">
+    <label class="toggle-switch">
+      <input type="checkbox" id="hc-toggle" />
+      <span class="slider"></span>
+    </label>
+    <span class="hc-toggle-label">High-conviction only (market ≥ 85%)</span>
+    <span class="hc-toggle-counter" id="hc-counter"></span>
+  </div>
   <div id="injury-container"></div>
   <div id="top-picks-container"></div>
   <div id="best-bets-container"></div>
@@ -1841,6 +1912,7 @@ const DATA = {{
   top_picks_history: {top_picks_history_json},
   playoff_stats:     {playoff_stats_json},
   yesterday_summary: {yesterday_summary_json},
+  high_conviction_summary: {high_conv_summary_json},
   opportunity_flags: {opportunity_flags_json},
   explorer:          {explorer_json},
   playoff:           {playoff_json},
@@ -2016,14 +2088,31 @@ function buildMicroStats(p) {{
   return `<div class="micro-stats">${{pills.join('')}}</div>`;
 }}
 
+// Tier vocabulary renamed 2026-04-25 from FADE/NEUTRAL/POSITIVE/STRONG.
+// New labels reflect MARKET POSITION RELATIVE TO SYSTEM, not betting recommendation.
+// Boundaries are derived directly from calibrated_edge_pct (system − market in pp),
+// so this is independent of the legacy recommendation_tier field which uses
+// different ±3/±8pp boundaries.
+//   edge < -10pp        → MARKET LOCKED   (market heavily confident; safest band ~89% hit rate)
+//   -10pp ≤ edge < -5pp → MARKET CONFIDENT (market moderately confident)
+//   -5pp  ≤ edge < +5pp → JUDGMENT CALL   (system and market agree)
+//   edge ≥ +5pp         → RARE SETUP      (system more confident; uncommon)
+function tierLabelFromEdge(edgePct) {{
+  if (edgePct == null) return null;
+  if (edgePct < -10) return {{ label: 'MARKET LOCKED',    cls: 'market-locked' }};
+  if (edgePct < -5)  return {{ label: 'MARKET CONFIDENT', cls: 'market-confident' }};
+  if (edgePct < 5)   return {{ label: 'JUDGMENT CALL',    cls: 'judgment-call' }};
+  return                 {{ label: 'RARE SETUP',          cls: 'rare-setup' }};
+}}
+
 function buildEdgeLine(p) {{
   const br = p.bet_recommendation;
   if (!br || !br.recommendation_tier || br.recommendation_tier === 'NO_MARKET') return '';
-  const tier = br.recommendation_tier;
-  const cls = tier.toLowerCase();
   const edge = br.calibrated_edge_pct;
+  const tl = tierLabelFromEdge(edge);
+  if (!tl) return '';
   const edgeStr = edge != null ? ` (${{edge > 0 ? '+' : ''}}${{edge.toFixed(1)}}pp)` : '';
-  return `<div class="edge-line ${{cls}}">${{tier}}${{edgeStr}}</div>`;
+  return `<div class="edge-line ${{tl.cls}}">${{tl.label}}${{edgeStr}}</div>`;
 }}
 
 function buildMovementLine(p) {{
@@ -2218,10 +2307,13 @@ function renderPicks() {{
           : p.lineup_risk === 'moderate'
             ? `<div style="margin-top:4px"><span class="risk-badge-moderate">QUESTIONABLE</span></div>`
             : '';
+      const isHC = (p.market_implied_prob != null) && (p.market_implied_prob >= 85.0);
+      const hcAttr = isHC ? 'true' : 'false';
+      const hcBadge = isHC ? `<span class="high-conv-badge">HIGH CONV</span>` : '';
       html += `
-        <div class="pick-card${{voidedCls}}">
+        <div class="pick-card${{voidedCls}}" data-hc="${{hcAttr}}">
           <div class="pick-main">
-            <div class="player">${{p.player_name}}</div>
+            <div class="player">${{p.player_name}}${{hcBadge}}</div>
             ${{statusBadge}}
             ${{reviewHtml}}
             ${{buildMicroStats(p)}}
@@ -2601,6 +2693,35 @@ function renderAudit() {{
         </div>`;
       }})()}}
     </div>`;
+
+  // ── High-Conviction panels (per-day + rolling) ────────────────
+  // Per-day comes from a.high_conviction_breakdown (set by auditor 2026-04-25+).
+  // Rolling comes from DATA.high_conviction_summary (sliced from audit_summary.json).
+  // Both render gracefully when missing/empty (legacy audit entries pre-shipping).
+  const renderHCPanel = (label, hc) => {{
+    if (!hc || (hc.n_picks ?? 0) === 0) {{
+      return `<div class="audit-card"><h3>${{label}}</h3>
+        <div style="font-size:13px;color:var(--muted)">No high-conviction picks (market_implied_prob ≥ 85%) in this window.</div>
+      </div>`;
+    }}
+    const hr = hc.hit_rate_pct != null ? `${{hc.hit_rate_pct}}%` : '—';
+    const dp = hc.delta_vs_overall_pp;
+    const dpStr = dp != null ? `${{dp >= 0 ? '+' : ''}}${{dp.toFixed(1)}}pp` : '—';
+    const dpColor = dp == null ? 'var(--muted)' : (dp >= 0 ? '#50c878' : '#ef4444');
+    const days = hc.n_days_included != null ? `${{hc.n_days_included}} days · ` : '';
+    return `<div class="audit-card"><h3>${{label}}</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div><div style="font-size:11px;color:var(--muted)">Hit Rate</div><div style="font-size:24px;font-weight:700;color:#50c878">${{hr}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Picks</div><div style="font-size:24px;font-weight:700">${{days}}${{hc.n_picks}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Hits</div><div style="font-size:24px;font-weight:700;color:var(--hit)">${{hc.hits}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Misses</div><div style="font-size:24px;font-weight:700;color:var(--miss)">${{hc.misses}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">vs Overall</div><div style="font-size:24px;font-weight:700;color:${{dpColor}}">${{dpStr}}</div></div>
+      </div>
+    </div>`;
+  }};
+  html += renderHCPanel('High-Conviction (yesterday) — market ≥ 85%', a.high_conviction_breakdown);
+  html += renderHCPanel('High-Conviction (rolling) — market ≥ 85%', DATA.high_conviction_summary);
+
   if (a.reinforcements?.length) {{
     html += `<div class="audit-card"><h3>✓ What Worked</h3><ul class="audit-list">`;
     a.reinforcements.forEach(r => html += `<li>${{r}}</li>`);
@@ -2701,10 +2822,13 @@ function renderTopPicks() {{
         `Morning (${{p.confidence_pct}}%): ${{escapeHtml(p.reasoning)}}</div>`;
     }})();
 
+    const isHC = (p.market_implied_prob != null) && (p.market_implied_prob >= 85.0);
+    const hcAttr = isHC ? 'true' : 'false';
+    const hcBadge = isHC ? `<span class="high-conv-badge">HIGH CONV</span>` : '';
     html += `
-      <div class="top-pick-card" style="border-left-color:${{color}}">
+      <div class="top-pick-card pick-card" data-hc="${{hcAttr}}" style="border-left-color:${{color}}">
         <div class="tp-left">
-          <div class="tp-player">${{p.player_name}}</div>
+          <div class="tp-player">${{p.player_name}}${{hcBadge}}</div>
           <div class="tp-meta">${{p.team}}${{gameTime}}</div>
           ${{ironBadge}}
           ${{reasoning}}
@@ -2743,20 +2867,24 @@ function renderBestBets() {{
     const pt       = p.prop_type || '';
     const br       = p.bet_recommendation || {{}};
     const edgePct  = br.calibrated_edge_pct;
-    const tier     = br.recommendation_tier || '';
+    // Best Bets are surfaced when calibrated_edge_pct >= +5pp (RARE SETUP band
+    // in the new vocabulary; ≥+8pp gets the bolder accent green border).
     const edgeStr  = edgePct != null ? `+${{edgePct.toFixed(1)}}pp edge` : '';
-    const edgeCls  = tier === 'STRONG' ? 'strong' : '';
-    const borderColor = tier === 'STRONG' ? '#22c55e' : '#2dd4bf';
+    const edgeCls  = (edgePct != null && edgePct >= 8.0) ? 'strong' : '';
+    const borderColor = (edgePct != null && edgePct >= 8.0) ? '#22c55e' : '#2dd4bf';
     const gameTime = p.game_time ? ` · ${{p.game_time}}` : '';
     const reasoning = p.reasoning
       ? `<div class="tp-reasoning">${{escapeHtml(p.reasoning)}}</div>` : '';
     const tierWalk = p.tier_walk
       ? `<button class="tier-walk-toggle" onclick="toggleTierWalk(this)">&#9656; show reasoning</button><div class="tier-walk tier-walk-body">${{escapeHtml(p.tier_walk)}}</div>` : '';
+    const isHC = (p.market_implied_prob != null) && (p.market_implied_prob >= 85.0);
+    const hcAttr = isHC ? 'true' : 'false';
+    const hcBadge = isHC ? `<span class="high-conv-badge">HIGH CONV</span>` : '';
 
     html += `
-      <div class="best-bet-card" style="border-left-color:${{borderColor}}">
+      <div class="best-bet-card pick-card" data-hc="${{hcAttr}}" style="border-left-color:${{borderColor}}">
         <div class="tp-left">
-          <div class="tp-player">${{p.player_name}}</div>
+          <div class="tp-player">${{p.player_name}}${{hcBadge}}</div>
           <div class="tp-meta">${{p.team}}${{gameTime}}</div>
           ${{reasoning}}
           ${{buildOddsSizing(p)}}
@@ -2782,6 +2910,70 @@ renderBestBets();
 renderPicks();
 renderResults();
 renderAudit();
+
+// ── HIGH-CONVICTION TOGGLE ──
+// In-memory only — toggle resets to OFF on page reload (no localStorage).
+// Filters all pick cards across Today's Picks tab (regular cards inside
+// game-group drawers + Top Picks cards + Best Bets cards) to those carrying
+// data-hc="true" (market_implied_prob >= 85.0). When ON, hides game-group
+// containers with zero passing cards. Counter shows "Showing X of Y picks"
+// only while the filter is active.
+(function() {{
+  const toggle = document.getElementById('hc-toggle');
+  const counter = document.getElementById('hc-counter');
+  if (!toggle) return;
+
+  function applyHCFilter() {{
+    const on = toggle.checked;
+    const cards = document.querySelectorAll('.pick-card');
+    let shown = 0, total = 0;
+    cards.forEach(card => {{
+      // Skip opportunity cards — they don't carry data-hc
+      if (!card.hasAttribute('data-hc')) return;
+      total++;
+      const isHC = card.dataset.hc === 'true';
+      if (!on || isHC) {{
+        card.style.display = '';
+        shown++;
+      }} else {{
+        card.style.display = 'none';
+      }}
+    }});
+    // Hide game-group containers with zero visible pick cards
+    document.querySelectorAll('.game-group').forEach(g => {{
+      const visible = Array.from(g.querySelectorAll('.pick-card[data-hc]'))
+        .filter(c => c.style.display !== 'none');
+      g.style.display = visible.length === 0 ? 'none' : '';
+    }});
+    // Hide Top Picks header + grid if no top picks pass
+    const topGrid = document.querySelector('#top-picks-container .top-picks-grid');
+    const topHeader = document.querySelector('#top-picks-container .top-picks-header');
+    const topDivider = document.querySelector('#top-picks-container .top-picks-divider');
+    if (topGrid) {{
+      const visTops = Array.from(topGrid.querySelectorAll('.pick-card[data-hc]'))
+        .filter(c => c.style.display !== 'none');
+      const hide = on && visTops.length === 0;
+      [topGrid, topHeader, topDivider].forEach(el => {{
+        if (el) el.style.display = hide ? 'none' : '';
+      }});
+    }}
+    // Same for Best Bets
+    const bbGrid = document.querySelector('#best-bets-container .best-bets-grid');
+    const bbHeader = document.querySelector('#best-bets-container .best-bets-header');
+    const bbDivider = document.querySelector('#best-bets-container .best-bets-divider');
+    if (bbGrid) {{
+      const visBets = Array.from(bbGrid.querySelectorAll('.pick-card[data-hc]'))
+        .filter(c => c.style.display !== 'none');
+      const hide = on && visBets.length === 0;
+      [bbGrid, bbHeader, bbDivider].forEach(el => {{
+        if (el) el.style.display = hide ? 'none' : '';
+      }});
+    }}
+    counter.textContent = on ? `Showing ${{shown}} of ${{total}} picks` : '';
+  }}
+  toggle.addEventListener('change', applyHCFilter);
+  applyHCFilter();
+}})();
 
 // ── PARLAY GUIDANCE (static) ──
 // Auto-generated parlay menu deprecated 2026-04-24. The Parlays tab now shows a

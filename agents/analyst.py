@@ -3059,12 +3059,16 @@ Criteria for a top pick (must meet most of these):
 
 Do not force exactly 4 if fewer genuinely qualify. 2 strong top picks beats 4 weak ones.
 
-EDGE TIEBREAKER: When choosing between candidates of similar prediction quality, prefer picks
-with POSITIVE or STRONG edge (from the bet_recommendation context) over NEUTRAL or FADE picks.
-This is a tiebreaker only — a high-confidence FADE pick still beats a marginal POSITIVE pick
-on prediction merit. But when two picks are equally strong on hit rate, confidence, and context,
-the one with positive market edge is the better top pick because it represents both a reliable
-prediction AND a profitable bet.
+MARKET POSITION CONTEXT: bet_recommendation.calibrated_edge_pct is system_prob − market_prob in pp.
+Negative values (system below market) are the SAFEST picks empirically — when the market is heavily
+confident (market_implied_prob ≥ 85%, edge ≤ −10pp = MARKET LOCKED band), historical hit rate is
+~89%, well above the system's overall 87% average. Positive-edge picks (RARE SETUP, edge ≥ +5pp)
+are uncommon in this dataset and have insufficient sample to validate any "edge" lift over baseline.
+
+Use this as a tiebreaker BACKWARDS from the old framing: when two picks have similar prediction
+quality, prefer the one whose market is heavily confident (deepest negative edge / highest
+market_implied_prob) over the one where the market is uncertain. NBAgent surfaces accurate picks,
+not edge-seeking bets. Do not boost top_pick for positive-edge candidates.
 
 3PM TOP-PICK RESTRICTION: Do not designate a 3PM pick as top_pick=true unless iron_floor=true
 is confirmed for that prop. A 9/10 or 10/10 hit rate on 3PM at T1 or T2 does NOT qualify for
@@ -4295,12 +4299,16 @@ Criteria for a top pick (must meet most of these):
 
 Do not force exactly 4 if fewer genuinely qualify. 2 strong top picks beats 4 weak ones.
 
-EDGE TIEBREAKER: When choosing between candidates of similar prediction quality, prefer picks
-with POSITIVE or STRONG edge (from the bet_recommendation context) over NEUTRAL or FADE picks.
-This is a tiebreaker only — a high-confidence FADE pick still beats a marginal POSITIVE pick
-on prediction merit. But when two picks are equally strong on hit rate, confidence, and context,
-the one with positive market edge is the better top pick because it represents both a reliable
-prediction AND a profitable bet.
+MARKET POSITION CONTEXT: bet_recommendation.calibrated_edge_pct is system_prob − market_prob in pp.
+Negative values (system below market) are the SAFEST picks empirically — when the market is heavily
+confident (market_implied_prob ≥ 85%, edge ≤ −10pp = MARKET LOCKED band), historical hit rate is
+~89%, well above the system's overall 87% average. Positive-edge picks (RARE SETUP, edge ≥ +5pp)
+are uncommon in this dataset and have insufficient sample to validate any "edge" lift over baseline.
+
+Use this as a tiebreaker BACKWARDS from the old framing: when two picks have similar prediction
+quality, prefer the one whose market is heavily confident (deepest negative edge / highest
+market_implied_prob) over the one where the market is uncertain. NBAgent surfaces accurate picks,
+not edge-seeking bets. Do not boost top_pick for positive-edge candidates.
 
 3PM TOP-PICK RESTRICTION: Do not designate a 3PM pick as top_pick=true unless iron_floor=true
 is confirmed for that prop. A 9/10 or 10/10 hit rate on 3PM at T1 or T2 does NOT qualify for

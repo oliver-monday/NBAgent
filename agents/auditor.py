@@ -58,6 +58,13 @@ PLAYOFF_CAL_DIVERGE_PP = 10  # pp divergence threshold for warning
 MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 8192
 
+# High-conviction subset: picks where the FanDuel market itself is heavily
+# confident (market_implied_prob >= 85.0). Empirically the safest band per
+# data/single_leg_edge_report.md (2026-04-25). Used for both the auditor
+# secondary calc and the frontend Today's Picks toggle. picks.json stores
+# market_implied_prob as a 0-100 percentage, so the comparison is on that scale.
+HIGH_CONVICTION_THRESHOLD = 85.0
+
 
 # ── Data loaders ─────────────────────────────────────────────────────
 
@@ -644,6 +651,51 @@ def promote_injury_event_voids(
               f"{hits}/{total} = {audit_entry['hit_rate_pct']}%")
 
     return promoted
+
+
+def compute_high_conviction_breakdown(
+    graded_picks: list[dict],
+    audit_entry: dict,
+) -> dict:
+    """Compute the high-conviction subset stats (market_implied_prob ≥ 85.0)
+    and write them to audit_entry["high_conviction_breakdown"].
+
+    Deterministic — no LLM call. Mirrors the shape of prop_type_breakdown so
+    the frontend and audit_summary aggregator can render it the same way.
+
+    Returns the breakdown dict (also assigned in-place on audit_entry).
+    Must run AFTER promote_injury_event_voids() so HC totals reflect the
+    final voided set.
+    """
+    high_conv = [
+        p for p in graded_picks
+        if not p.get("voided")
+        and p.get("market_implied_prob") is not None
+        and float(p["market_implied_prob"]) >= HIGH_CONVICTION_THRESHOLD
+        and p.get("result") in ("HIT", "MISS")
+    ]
+    n_hc = len(high_conv)
+    hits_hc = sum(1 for p in high_conv if p["result"] == "HIT")
+    misses_hc = n_hc - hits_hc
+    hit_rate_hc = round(100.0 * hits_hc / n_hc, 1) if n_hc else None
+
+    overall_hr = audit_entry.get("hit_rate_pct")
+    delta_pp = (
+        round(hit_rate_hc - overall_hr, 1)
+        if hit_rate_hc is not None and overall_hr is not None
+        else None
+    )
+
+    breakdown = {
+        "threshold_market_implied_prob": HIGH_CONVICTION_THRESHOLD,
+        "n_picks": n_hc,
+        "hits": hits_hc,
+        "misses": misses_hc,
+        "hit_rate_pct": hit_rate_hc,
+        "delta_vs_overall_pp": delta_pp,
+    }
+    audit_entry["high_conviction_breakdown"] = breakdown
+    return breakdown
 
 
 def _retroactive_injury_void_patch() -> int:
@@ -1580,6 +1632,42 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         print(f"[auditor] WARNING: could not compute clv_summary: {e}")
         clv_summary = {}
 
+    # ── High-conviction subset rollup ──────────────────────────────────
+    # Aggregates the per-day high_conviction_breakdown blocks across all
+    # audit entries that carry the field. Historical entries (pre-2026-04-25)
+    # lack the field — they're skipped via .get() and do not count toward
+    # n_days_included. The threshold is fixed at module level
+    # (HIGH_CONVICTION_THRESHOLD = 85.0).
+    hc_total = 0
+    hc_hits = 0
+    hc_misses = 0
+    n_days_with_hc = 0
+    for entry in audit_log:
+        hcb = entry.get("high_conviction_breakdown")
+        if not hcb or hcb.get("n_picks", 0) == 0:
+            continue
+        hc_total += hcb["n_picks"]
+        hc_hits += hcb["hits"]
+        hc_misses += hcb["misses"]
+        n_days_with_hc += 1
+
+    hc_hit_rate = round(100.0 * hc_hits / hc_total, 1) if hc_total else None
+    hc_delta_pp = (
+        round(hc_hit_rate - overall_hr, 1)
+        if hc_hit_rate is not None and overall_hr is not None
+        else None
+    )
+
+    high_conviction_summary = {
+        "threshold_market_implied_prob": HIGH_CONVICTION_THRESHOLD,
+        "n_days_included":               n_days_with_hc,
+        "n_picks":                       hc_total,
+        "hits":                          hc_hits,
+        "misses":                        hc_misses,
+        "hit_rate_pct":                  hc_hit_rate,
+        "delta_vs_overall_pp":           hc_delta_pp,
+    }
+
     summary = {
         "generated_at":    TODAY.strftime("%Y-%m-%d"),
         "entries_included": len(audit_log),
@@ -1592,6 +1680,7 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
             "hit_rate_pct":      overall_hr,
         },
         "prop_type_summary":             prop_summary,
+        "high_conviction_summary":       high_conviction_summary,
         "miss_classification_totals":    dict(miss_classes),
         "confidence_calibration_totals": conf_summary,
         "recent_lessons":          recent_lessons[-10:],
@@ -1664,6 +1753,31 @@ def save_audit_report(audit_entry: dict, graded_picks: list[dict], skips: list[d
                 md_lines.append(f"| {prop} | {p} | {h} | {hr}% |")
         else:
             md_lines.append("_No prop breakdown available._")
+        md_lines.append("")
+
+        # ── High-Conviction Subset ────────────────────────────────────
+        hcb = audit_entry.get("high_conviction_breakdown") or {}
+        threshold = hcb.get("threshold_market_implied_prob", HIGH_CONVICTION_THRESHOLD)
+        md_lines.append(f"## High-Conviction Subset (market_implied_prob ≥ {threshold})")
+        if not hcb or hcb.get("n_picks", 0) == 0:
+            md_lines.append(
+                f"No high-conviction picks today (no picks with market_implied_prob ≥ {threshold})."
+            )
+        else:
+            n_hc      = hcb.get("n_picks", 0)
+            hits_hc   = hcb.get("hits", 0)
+            misses_hc = hcb.get("misses", 0)
+            hr_hc     = hcb.get("hit_rate_pct")
+            delta_pp  = hcb.get("delta_vs_overall_pp")
+            hr_str    = f"{hr_hc}%" if hr_hc is not None else "—"
+            delta_str = f"{delta_pp:+.1f}pp" if delta_pp is not None else "—"
+            md_lines.append("| metric | value |")
+            md_lines.append("| --- | --- |")
+            md_lines.append(f"| n_picks | {n_hc} |")
+            md_lines.append(f"| hits | {hits_hc} |")
+            md_lines.append(f"| misses | {misses_hc} |")
+            md_lines.append(f"| hit_rate | {hr_str} |")
+            md_lines.append(f"| delta_vs_overall | {delta_str} |")
         md_lines.append("")
 
         # ── Confidence Calibration ────────────────────────────────────
@@ -1849,6 +1963,15 @@ def main():
     n_injury_voids = promote_injury_event_voids(graded_picks, audit_entry)
     if n_injury_voids:
         print(f"[auditor] Promoted {n_injury_voids} injury_event pick(s) to voided")
+
+    # Compute high-conviction subset stats (deterministic, runs after voids
+    # are finalized so HC totals reflect the same denominator).
+    hc = compute_high_conviction_breakdown(graded_picks, audit_entry)
+    if hc["n_picks"]:
+        print(f"[auditor] High-conviction subset: {hc['hits']}/{hc['n_picks']} = "
+              f"{hc['hit_rate_pct']}% (Δ vs overall {hc['delta_vs_overall_pp']:+.1f}pp)")
+    else:
+        print("[auditor] High-conviction subset: no picks today with market_implied_prob ≥ 85.0")
 
     save_audit(audit_entry, graded_picks)
     print_summary(graded_picks, audit_entry)
