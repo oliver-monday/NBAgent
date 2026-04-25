@@ -5671,5 +5671,172 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "opponent": "BOS",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "VOLATILE+T6 special -8pp rule applied; 70% base - 8% = 62%, below 68% AST floor.",
+      "base_confidence": 70,
+      "volatile_penalty": -8,
+      "final_confidence": 62,
+      "floor": 68
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "opponent": "BOS",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "VOLATILE -3pp (playoff) drops 75% to 72%, below 75% 3PM minimum floor.",
+      "base_confidence": 75,
+      "volatile_penalty": -3,
+      "final_confidence": 72,
+      "floor": 75
+    },
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "opponent": "PHI",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "VOLATILE -3pp (playoff) drops 75% to 72%, below 75% 3PM minimum floor.",
+      "base_confidence": 75,
+      "volatile_penalty": -3,
+      "final_confidence": 72,
+      "floor": 75
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "opponent": "LAL",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "C",
+      "raw_avgs_ast": 5.5,
+      "opp_today_rating": "mid",
+      "required_rating": "soft",
+      "reason": "Sengun is C position; AST T4+ hard gate requires soft opp_today when position is C. opp_today=mid fails the gate unconditionally."
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "opponent": "HOU",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "VOLATILE+T6 -8pp rule then vs_tough=53% -5pp: 75% - 8% - 5% = 62%, below 68% floor.",
+      "base_confidence": 75,
+      "volatile_t6_penalty": -8,
+      "vs_tough_penalty": -5,
+      "final_confidence": 62,
+      "floor": 68
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "opponent": "POR",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "min_floor_tier_step",
+    "rule_context": {
+      "min_floor": 19.8,
+      "threshold": 20,
+      "proj_min": 23,
+      "override_1_applies": false,
+      "reason": "min_floor=19.8 < 20 triggers mandatory AST step-down; T2 is minimum valid AST tier, cannot step lower \u2014 skip."
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "PHI",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_tier_step",
+    "rule_context": {
+      "fg_margin_flag": "FG_MARGIN_NEG:-9%",
+      "original_tier": 25,
+      "stepped_tier": 20,
+      "reason": "FG_MARGIN_NEG mandates step-down from T25 to T20; pick emitted at T20 instead."
+    },
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 25"
+  },
+  {
+    "date": "2026-04-24",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "opponent": "POR",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_tier_step",
+    "rule_context": {
+      "fg_margin_flag": "FG_MARGIN_NEG:-8%",
+      "original_tier": 15,
+      "stepped_tier": 10,
+      "reason": "FG_MARGIN_NEG mandates step-down from T15 to T10; pick emitted at T10 instead."
+    },
+    "actual_value": 33.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 33.0 \u2265 tier 15"
   }
 ]

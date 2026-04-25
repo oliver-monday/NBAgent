@@ -15,10 +15,10 @@
       "final_confidence": 62,
       "floor": 68
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-24",
@@ -36,10 +36,10 @@
       "final_confidence": 72,
       "floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-24",
@@ -57,10 +57,10 @@
       "final_confidence": 72,
       "floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-24",
@@ -78,10 +78,10 @@
       "required_rating": "soft",
       "reason": "Sengun is C position; AST T4+ hard gate requires soft opp_today when position is C. opp_today=mid fails the gate unconditionally."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-24",
@@ -100,10 +100,10 @@
       "final_confidence": 62,
       "floor": 68
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-24",
@@ -121,10 +121,10 @@
       "override_1_applies": false,
       "reason": "min_floor=19.8 < 20 triggers mandatory AST step-down; T2 is minimum valid AST tier, cannot step lower \u2014 skip."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
   },
   {
     "date": "2026-04-24",
@@ -141,10 +141,10 @@
       "stepped_tier": 20,
       "reason": "FG_MARGIN_NEG mandates step-down from T25 to T20; pick emitted at T20 instead."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 25"
   },
   {
     "date": "2026-04-24",
@@ -161,9 +161,9 @@
       "stepped_tier": 10,
       "reason": "FG_MARGIN_NEG mandates step-down from T15 to T10; pick emitted at T10 instead."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 33.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 33.0 \u2265 tier 15"
   }
 ]

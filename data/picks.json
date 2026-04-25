@@ -38219,8 +38219,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor PTS, 6/6 H2H at T20, sole PHI engine with Embiid out at home.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 31.0,
     "market_line": 14.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -38238,7 +38238,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-24",
@@ -38259,8 +38262,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall at T10, 5/6 H2H vs BOS, full role as PHI's #2 scorer at home.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "market_line": 9.5,
     "market_implied_prob": 89.47,
     "market_book": "fanduel",
@@ -38278,7 +38281,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "PHI is a +7.5 underdog facing a tough BOS defense with a def_recency flag showing BOS has tightened significantly (l5_avg 108.0 vs l15_avg 107.3 is mild, but opp_defense=tough is confirmed). Edgecombe is volatile-moderate with no iron_floor and a raw_avg of 18.4 \u2014 the typical_miss of only 3 pts below means a modest BOS defensive clamp or a cold-shooting night (moderate volatility) can easily strand him under T10 in a game where PHI may trail and lean on Maxey."
+    ],
+    "clv_pp": 1.23
   },
   {
     "date": "2026-04-24",
@@ -38299,8 +38307,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor AST, 6/6 H2H vs BOS, soft_floor adjusted for high PTS/AST ratio.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 1.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -38318,7 +38326,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -3.57
   },
   {
     "date": "2026-04-24",
@@ -38339,8 +38350,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "70% at T10, 2/2 series H2H, home court #3 scorer role without Embiid.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "market_line": 9.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -38358,7 +38369,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 23.7 is structurally fragile \u2014 a single coach's-decision low-minutes game (George has a documented history of rest/load management concerns) easily produces a miss at T10 even if healthy. The bounce_back post_miss lift is actually negative (0.90), meaning George historically underperforms after a miss, further weakening the floor in a blowout-adjacent spot where PHI trails BOS by 7.5."
+    ],
+    "clv_pp": -1.53
   },
   {
     "date": "2026-04-24",
@@ -38379,8 +38395,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Consistent tag, playoff REB +2.8 lift, 2/2 series H2H, strong stretch role.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "market_line": 3.5,
     "market_implied_prob": 80.77,
     "market_book": "fanduel",
@@ -38398,7 +38414,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "raw_avg_REB of 3.8 is below the T4 threshold \u2014 George is picking T4 from below his average, meaning the distribution is already thin. The post_miss_hr for REB is only 50% with a negative lift (0.67), confirming slump-persistence risk on REB props. A single low-effort defensive game or blowout script where PHI trails and George is managed could easily land at 3 REB."
+    ],
+    "clv_pp": -0.71
   },
   {
     "date": "2026-04-24",
@@ -38419,8 +38440,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG steps T25\u2192T20; iron_floor + BOOST + 2/2 series at T20 support floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 25.0,
     "market_line": 19.5,
     "market_implied_prob": 88.24,
     "market_book": "fanduel",
@@ -38438,7 +38459,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Brown is tagged VOLATILE with a def_recency flag showing PHI's defense has tightened dramatically over the last 5 games (l5_avg 103.4 vs l15_avg 113.6, delta -8.98%) \u2014 the single sharpest defensive recency flag on the entire slate. Despite the iron_floor designation protecting at T20, a volatile scorer against a suddenly elite defensive unit is structurally softer than the 74% confidence implies; the typical_miss of 10 pts below T20 means a cold game produces a significant shortfall."
+    ],
+    "clv_pp": 2.53
   },
   {
     "date": "2026-04-24",
@@ -38459,8 +38485,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall, 9/10 implied, trend=up, Brown averaging 3.5 3PM this series.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "market_line": 0.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -38478,7 +38504,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.56
   },
   {
     "date": "2026-04-24",
@@ -38499,8 +38528,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "75% overall, 2/2 series at T8, 12.5 REB series avg, facilitator role maximizes boards.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 5.0,
     "market_line": 7.5,
     "market_implied_prob": 83.33,
     "market_book": "fanduel",
@@ -38518,7 +38547,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Tatum is tagged VOLATILE on REB, and PHI's def_recency shows their last 5 games at 103.4 (vs 113.6 l15) \u2014 a team trending toward significantly tighter defense, which tends to compress possessions and rebounding opportunities. No iron_floor on a volatile REB pick at T8 with a BOS blowout-favored game script means Tatum could rest in Q4 if the game is decided early, cutting into his rebounding volume."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-24",
@@ -38539,8 +38573,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "75% overall, facilitator mode, 8.0 AST series avg, vs_tough=100% at T4.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 3.5,
     "market_implied_prob": 87.01,
     "market_book": "fanduel",
@@ -38558,7 +38592,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -4.66
   },
   {
     "date": "2026-04-24",
@@ -38579,8 +38616,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Trend=down steps T2\u2192T1; 94% base, 2/2 series at T1, 9+/10 exception holds floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 0.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -38598,7 +38635,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.27
   },
   {
     "date": "2026-04-24",
@@ -38619,8 +38659,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall at T2, 2/2 series, opp=mid, competitive=92%, reliable secondary PG floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 1.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -38638,7 +38678,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.34
   },
   {
     "date": "2026-04-24",
@@ -38659,8 +38702,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall T4, 5/6 H2H, Embiid out softens interior; capped at 72% per min-tier rule.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 3.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -38678,7 +38721,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 0.0 with avg_minutes of only 20.1 makes this pick entirely minutes-contingent \u2014 Queta is a rotation big whose playing time is directly dictated by foul trouble, matchup, and game script. In a BOS blowout-favored road game, his minutes could be compressed if BOS goes small or the game is decided early, and post_miss_hr of only 65% with a sub-1.0 lift confirms his REB floor is not structurally reliable."
+    ],
+    "clv_pp": -0.5
   },
   {
     "date": "2026-04-24",
@@ -38699,8 +38747,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "75% overall, 4/4 H2H at T8, Adams out = sole center, 9.5 series REB avg.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 16.0,
     "market_line": 5.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -38728,7 +38776,12 @@
       "direction": "up",
       "revised_confidence_pct": 76,
       "revised_reasoning": "KD out increases HOU possessions through Sengun; more touches amplify rebounding opportunities despite VOLATILE tag."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on a BLOWOUT_RISK game (-8.5 spread) is a compounding structural concern: if HOU runs away with the game, Sengun's minutes in Q4 are at risk, and the LAL def_recency shows a dramatically tightened defense (l5_avg 95.0 vs l15_avg 110.5, -14%). VOLATILE + blowout script + a defense trending significantly tougher creates genuine floor fragility even at the stepped-down T6 tier."
+    ],
+    "clv_pp": 1.67
   },
   {
     "date": "2026-04-24",
@@ -38749,8 +38802,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps T15\u2192T10; 5/5 H2H, 42+ min primary PG role at home G3.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 26.0,
     "market_line": 9.5,
     "market_implied_prob": 97.22,
     "market_book": "fanduel",
@@ -38778,7 +38831,12 @@
       "direction": "up",
       "revised_confidence_pct": 78,
       "revised_reasoning": "KD out redistributes 24+ pts of usage; Thompson becomes primary scorer, lifting volume significantly in must-win G3."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "FG_MARGIN_THIN step-down was already applied (T15\u2192T10), but the residual structural risk remains: BLOWOUT_RISK at -8.5 combined with opp_defense=tough and a def_recency flag showing LAL tightened sharply (l5 95.0 vs l15 110.5) means Thompson faces a suppressive defensive environment in a game where HOU may limit his usage late if they build a lead."
+    ],
+    "clv_pp": 2.48
   },
   {
     "date": "2026-04-24",
@@ -38799,8 +38857,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall, 97% competitive rate, 42+ min guarantee, T4 well below series floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 11.0,
     "market_line": 3.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -38828,7 +38886,10 @@
       "direction": "unchanged",
       "revised_confidence_pct": 76,
       "revised_reasoning": "KD not a rim-anchor; REB prop unaffected by his absence. Trend-down concern offsets any marginal possession gains."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.06
   },
   {
     "date": "2026-04-24",
@@ -38849,8 +38910,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall, 5/5 H2H, series 2/2, primary PG role; blowout caution applied.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 3.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -38878,7 +38939,10 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "KD was primary creator; Thompson inherits full primary PG/creator role, directly boosting AST volume in G3."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 4.24
   },
   {
     "date": "2026-04-24",
@@ -38899,8 +38963,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps T15\u2192T10; 5/5 H2H, 41-min series floor, home G3 desperation.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "market_line": 9.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -38928,7 +38992,12 @@
       "direction": "up",
       "revised_confidence_pct": 74,
       "revised_reasoning": "KD out pushes usage to Smith; VOLATILE tag limits revision magnitude despite clear scoring opportunity increase."
-    }
+    },
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "VOLATILE tag + opp_defense=tough + LAL def_recency at -14% (l5 95.0 vs l15 110.5) + BLOWOUT_RISK (-8.5) + FG_MARGIN_THIN:0% step-down already applied \u2014 this is the maximum accumulation of suppressive structural factors on the slate. A volatile scorer facing the sharpest defensive recency improvement on the board, in a blowout-risk game where his counting stats get compressed if HOU goes up big, with zero FG margin safety, is a structurally fragile pick that the 70% confidence floor does not adequately cover."
+    ],
+    "clv_pp": 6.76
   },
   {
     "date": "2026-04-24",
@@ -38949,8 +39018,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% overall, consistent tag, Adams out amplifies REB opportunities, 41-min floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -38978,7 +39047,10 @@
       "direction": "unchanged",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Already 100% overall with consistent tag; KD not a rim-anchor, no meaningful rebounding impact from his absence."
-    }
+    },
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 4.23
   },
   {
     "date": "2026-04-24",
@@ -38999,8 +39071,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall, 5/5 H2H at T2, 3.0 series avg 3PM; 80% cap then blowout -5%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 1.5,
     "market_implied_prob": 75.61,
     "market_book": "fanduel",
@@ -39028,7 +39100,12 @@
       "direction": "up",
       "revised_confidence_pct": 78,
       "revised_reasoning": "KD out means more offensive possessions and shot creation flow to Smith; higher 3PM attempt volume expected in G3."
-    }
+    },
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK at -8.5 combined with opp_defense=tough and the sharpest def_recency tightening on the slate (LAL l5 95.0 vs l15 110.5) creates real suppression risk on a volume-dependent 3PM prop at T2. Smith needs consistent catch-and-shoot volume; blowout game scripts and elite defensive recency compress exactly these opportunities, and no iron_floor protects the floor here."
+    ],
+    "clv_pp": 4.18
   },
   {
     "date": "2026-04-24",
@@ -39070,7 +39147,11 @@
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
     "voided": true,
     "void_reason": "player OUT per injury report",
-    "lineup_risk": "high"
+    "lineup_risk": "high",
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Durant's raw_avg_REB of 5.2 provides thin cushion at T4, and a BLOWOUT_RISK game where LAL is the road underdog (-8.5) risks Durant playing reduced minutes if the game gets away early. The post_miss lift of 0.87 (below 1.0) signals that REB misses for Durant tend to cluster rather than bounce back, compounding the blowout-suppression structural concern."
+    ]
   },
   {
     "date": "2026-04-24",
@@ -39091,8 +39172,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "95% overall, consistent tag, 5/5 H2H, 9-hit streak, vs_tough=88% at T10.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "market_line": 9.5,
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
@@ -39110,7 +39191,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.41
   },
   {
     "date": "2026-04-24",
@@ -39131,8 +39215,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "95% overall, consistent tag, 5/5 H2H, primary PG floor holds regardless of Wemby status.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 87.01,
     "market_book": "fanduel",
@@ -39150,7 +39234,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.72
   },
   {
     "date": "2026-04-24",
@@ -39171,8 +39258,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall, trend=up, playoff +1.1, series 2/2 at T1; VOLATILE reduces to 75%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "market_line": 0.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -39190,7 +39277,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Fox is tagged VOLATILE on 3PM with a raw_avg of only 1.5 and no iron_floor \u2014 this sits at the Mikal Bridges prototype threshold (raw_avg_3PM < 2.0, VOLATILE, no iron_floor). A single 0-for-3 three-point night is entirely within normal variance for a 1.5-average shooter and collapses the prop; opp_defense=tough against POR further compresses his shot creation."
+    ],
+    "clv_pp": 5.9
   },
   {
     "date": "2026-04-24",
@@ -39211,8 +39303,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor 3PM, 85% overall, trend=stable, holds regardless of Wembanyama status.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 0.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -39230,7 +39322,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.91
   },
   {
     "date": "2026-04-24",
@@ -39251,8 +39346,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG steps T15\u2192T10; 80% overall, 3/3 H2H, 17.5 series avg well above T10.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 33.0,
     "market_line": 9.5,
     "market_implied_prob": 92.31,
     "market_book": "fanduel",
@@ -39270,7 +39365,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Castle is tagged VOLATILE with FG_COLD:-14% (just under the 15% step-down threshold, left unactioned) against opp_defense=tough POR. A volatile scorer with a near-threshold cold-shooting signal facing a tough defense in a tight game (spread only -2.5) is one cold-FG half away from missing T10, and the typical_miss of 5 pts below means misses are not trivial shortfalls."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-24",
@@ -39291,8 +39391,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall, 3/3 H2H, VOLATILE -3% applied; Wemby absence amplifies role.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 2.0,
     "market_line": 3.5,
     "market_implied_prob": 85.71,
     "market_book": "fanduel",
@@ -39310,7 +39410,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.42
   },
   {
     "date": "2026-04-24",
@@ -39331,8 +39434,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "T8 blocked by vs_tough=38%; T4 confirmed 3/3 H2H, 6.0 series AST avg, primary initiator.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 3.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -39350,6 +39453,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.79
   }
 ]
