@@ -379,7 +379,7 @@ american_odds        = round(((1 / combined_market_prob) - 1) * 100)   # for pro
 }]
 ```
 
-Fields `date`, `id`, `result`, `legs_hit`, `legs_total` are added by `save_parlays()` at write time. The auditor (`grade_parlays()`) reads this bundle unchanged.
+Fields `date`, `id`, `result`, `legs_hit`, `legs_total` are added by `save_parlays()` at write time. **Parlay grading was removed on 2026-04-24** — the auditor no longer reads or grades `parlays.json`. New parlays write `result: null` and per-leg outcome fields stay null with no consumer. Historical entries with `result` set retain their values as dead-data.
 
 ---
 
@@ -389,15 +389,15 @@ Fields `date`, `id`, `result`, `legs_hit`, `legs_total` are added by `save_parla
 **MAX_TOKENS:** `2048`
 **Runs for:** yesterday's date
 
-**Inputs consumed (in addition to picks.json / parlays.json):**
+**Inputs consumed (in addition to picks.json):**
 - `data/standings_today.json` — auditor receives the same playoff picture snapshot as the analyst, since it grades picks made with that information available
 - `data/picks_review_YYYY-MM-DD.json` — optional human-produced daily review file; read by `load_picks_review()` to tag `human_verdict` + `trim_reasons` on graded picks; graceful no-op when absent
 
 **Grading logic:**
 - Matches picks to `player_game_log.csv` by `(player_name.lower(), team_abbrev)` for yesterday's date
 - Pick result: `HIT` if actual > pick_value, `MISS` if actual ≤ pick_value, `NO_DATA` if player not found
-- Parlay result: `HIT` (all legs hit), `MISS` (any leg missed), `PARTIAL` (no miss but some NO_DATA), `NO_DATA` (all legs NO_DATA)
 - Skips run if zero gradeable picks (box scores not yet ingested)
+- **Parlay grading removed 2026-04-24** — the parlay agent shifted to a deterministic combinatorial menu builder, so per-card grading is a category error. `data/parlays.json` is no longer read; new parlays carry `result: null` indefinitely.
 
 **Output written to `audit_log.json`:**
 ```json
@@ -418,19 +418,13 @@ Fields `date`, `id`, `result`, `legs_hit`, `legs_total` are added by `save_parla
     "actual_value": number,
     "root_cause": "string",
     "miss_classification": "selection_error|model_gap_signal|model_gap_rule|variance|injury_event|workflow_gap"
-  }],
-  "parlay_results": {
-    "total": number,
-    "hits": number,
-    "misses": number,
-    "partial": number,
-    "parlay_lessons": ["string"],
-    "parlay_reinforcements": ["string"]
-  }
+  }]
 }
 ```
 
-Also updates `picks.json` and `parlays.json` in-place with graded results. Calls `load_picks_review(YESTERDAY_STR)` + `apply_human_verdicts()` to tag `human_verdict` ("keep"/"trim"/"manual_skip"/null) and `trim_reasons` (list/[]) on each graded pick from the daily review file (no-op when file absent). `save_audit_summary()` produces a `human_flag_precision` block in `audit_summary.json` — reads all picks from `picks.json`, groups by `human_verdict`, computes `{hits, misses, total, hit_rate_pct}` per verdict type over full season history.
+Note: pre-2026-04-24 audit entries also include a `parlay_results` block (`{total, hits, misses, partial, parlay_lessons, parlay_reinforcements}`) — left as dead-data per spec; new entries omit the key entirely. `audit_summary.json` similarly drops its `parlay_summary` aggregator on regeneration.
+
+Also updates `picks.json` in-place with graded results. Calls `load_picks_review(YESTERDAY_STR)` + `apply_human_verdicts()` to tag `human_verdict` ("keep"/"trim"/"manual_skip"/null) and `trim_reasons` (list/[]) on each graded pick from the daily review file (no-op when file absent). `save_audit_summary()` produces a `human_flag_precision` block in `audit_summary.json` — reads all picks from `picks.json`, groups by `human_verdict`, computes `{hits, misses, total, hit_rate_pct}` per verdict type over full season history.
 
 **injury_event auto-void (added 2026-04-22):** Between `call_auditor()` and `save_audit()`, `promote_injury_event_voids(graded_picks, audit_entry)` scans `audit_entry["miss_details"]` for `miss_classification == "injury_event"` entries and promotes the matching graded picks to `voided=True, result=null, void_reason="injury_exit_mid_game"`. This catches mid-game injury exits where `actual_value > 0` (so the existing late-DNP void at line ~554 doesn't fire). After promotion, the daily audit entry is recomputed: `total_picks`, `voided_picks`, `hits`, `misses`, `hit_rate_pct`, `prop_type_breakdown`, and `confidence_calibration` band totals are all updated so the saved entry is internally consistent with the voided picks. The miss still appears in `miss_details` for audit-trail purposes — the LLM's classification is preserved. Frontend `build_site.py` filters on `result in ("HIT","MISS")`, so voided picks are automatically excluded from Overall, Yesterday, and Playoffs stat cards. A companion one-time `_retroactive_injury_void_patch()` runs at the start of `main()` to idempotently patch the two Wemby 2026-04-21 picks (concussion exit) to voided status, recomputing audit_log[2026-04-21] accordingly.
 

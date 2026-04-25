@@ -5,12 +5,15 @@ NBAgent — Auditor
 Cross-references yesterday's picks from data/picks.json against
 actual box scores in data/player_game_log.csv.
 
-Also grades yesterday's parlays from data/parlays.json — a parlay
-is a HIT only if every leg hits.
+Scores each pick as HIT/MISS/NO_DATA, performs root cause analysis,
+and writes structured feedback to data/audit_log.json for the Analyst
+to read on its next run.
 
-Scores each pick as HIT/MISS/NO_DATA, scores each parlay as HIT/MISS/PARTIAL/NO_DATA,
-performs root cause analysis, and writes structured feedback to
-data/audit_log.json for the Analyst to read on its next run.
+Parlay grading was removed on 2026-04-24 — the parlay agent shifted
+to a deterministic combinatorial menu builder, so per-card grading is
+a category error (the cards are configurable options, not predictions).
+data/parlays.json continues to be written daily by agents/parlay.py;
+its `result` and per-leg outcome fields stay null with no consumer.
 """
 
 from __future__ import annotations
@@ -32,7 +35,6 @@ DATA = ROOT / "data"
 
 GAME_LOG_CSV      = DATA / "player_game_log.csv"
 PICKS_JSON        = DATA / "picks.json"
-PARLAYS_JSON      = DATA / "parlays.json"
 AUDIT_LOG_JSON    = DATA / "audit_log.json"
 CONTEXT_MD         = ROOT / "context" / "nba_season_context.md"
 AUDIT_SUMMARY_JSON  = DATA / "audit_summary.json"
@@ -42,7 +44,6 @@ STANDINGS_JSON       = DATA / "standings_today.json"
 SKIPPED_PICKS_JSON   = DATA / "skipped_picks.json"
 SKIP_ARCHIVE_JSON    = DATA / "skipped_picks_archive.json"
 MASTER_CSV           = DATA / "nba_master.csv"
-CANNIBALIZATION_JSON = DATA / "backtest_teammate_cannibalization.json"
 PICKS_REVIEW_DIR     = DATA  # daily files: data/picks_review_YYYY-MM-DD.json
 
 ET = ZoneInfo("America/Los_Angeles")
@@ -70,21 +71,6 @@ def load_yesterdays_picks() -> list[dict]:
     if not yesterday_picks:
         print(f"[auditor] No picks found for {YESTERDAY_STR}.")
     return yesterday_picks
-
-
-def load_yesterdays_parlays() -> list[dict]:
-    """Load yesterday's parlay bundle from parlays.json."""
-    if not PARLAYS_JSON.exists():
-        return []
-    try:
-        with open(PARLAYS_JSON) as f:
-            all_bundles = json.load(f)
-        for bundle in all_bundles:
-            if bundle.get("date") == YESTERDAY_STR:
-                return bundle.get("parlays", [])
-    except Exception as e:
-        print(f"[auditor] WARNING: could not load parlays.json: {e}")
-    return []
 
 
 def load_game_log() -> pd.DataFrame:
@@ -714,140 +700,6 @@ def _retroactive_injury_void_patch() -> int:
     return patched
 
 
-# ── H33 cannibalization data for parlay grading ──────────────────────
-
-_cannib_cache: dict | None = None
-
-
-def _load_cannib_data() -> dict:
-    """
-    Load H33 cannibalization data for parlay grading enrichment.
-    Returns {(player_a_lower, player_b_lower, stat): {cannib_idx, label}}
-    Cached at module level. Returns empty dict if file missing.
-    """
-    global _cannib_cache
-    if _cannib_cache is not None:
-        return _cannib_cache
-    _cannib_cache = {}
-    if not CANNIBALIZATION_JSON.exists():
-        return _cannib_cache
-    try:
-        with open(CANNIBALIZATION_JSON) as f:
-            data = json.load(f)
-        for _team, tr in data.get("team_results", {}).items():
-            for pair in tr.get("pair_results", []):
-                key = (
-                    pair["player_a"].strip().lower(),
-                    pair["player_b"].strip().lower(),
-                    pair["stat"],
-                )
-                _cannib_cache[key] = {
-                    "cannib_idx": pair["cannib_idx"],
-                    "label": pair["label"],
-                }
-    except Exception as e:
-        print(f"[auditor] WARNING: could not load H33 cannibalization data: {e}")
-    return _cannib_cache
-
-
-def grade_parlays(parlays: list[dict], graded_picks: list[dict]) -> list[dict]:
-    """
-    Grade each parlay using the already-graded picks as source of truth.
-    Parlay result:
-      HIT     — all legs hit
-      MISS    — at least one leg missed
-      PARTIAL — some legs hit, at least one NO_DATA (can't fully grade)
-      NO_DATA — all legs are NO_DATA
-    """
-    # Build a lookup: (player_name.lower, prop_type, pick_value) → result + actual
-    pick_lookup: dict[tuple, dict] = {}
-    for p in graded_picks:
-        key = (p["player_name"].lower(), p["prop_type"], float(p["pick_value"]))
-        pick_lookup[key] = {"result": p.get("result"), "actual_value": p.get("actual_value")}
-
-    graded_parlays = []
-    for parlay in parlays:
-        p = parlay.copy()
-        legs = p.get("legs", [])
-        leg_results = []
-
-        for leg in legs:
-            key = (leg["player_name"].lower(), leg["prop_type"], float(leg["pick_value"]))
-            leg_data = pick_lookup.get(key, {})
-            leg_result = leg_data.get("result", "NO_DATA")
-            actual = leg_data.get("actual_value")
-            leg_results.append({
-                "player_name": leg["player_name"],
-                "prop_type": leg["prop_type"],
-                "pick_value": leg["pick_value"],
-                "result": leg_result,
-                "actual_value": actual,
-            })
-
-        hits     = sum(1 for r in leg_results if r["result"] == "HIT")
-        misses   = sum(1 for r in leg_results if r["result"] == "MISS")
-        no_data  = sum(1 for r in leg_results if r["result"] == "NO_DATA")
-        total    = len(leg_results)
-
-        if misses > 0:
-            parlay_result = "MISS"
-        elif no_data == total:
-            parlay_result = "NO_DATA"
-        elif no_data > 0:
-            parlay_result = "PARTIAL"
-        else:
-            parlay_result = "HIT"
-
-        p["result"]      = parlay_result
-        p["legs_hit"]    = hits
-        p["legs_total"]  = total
-        p["leg_results"] = leg_results
-
-        # H33 cannibalization pair detection on missed parlays
-        cannib_flags = []
-        if parlay_result == "MISS":
-            cannib = _load_cannib_data()
-            if cannib:
-                missed_legs = [r for r in leg_results if r["result"] == "MISS"]
-                for i, l1 in enumerate(missed_legs):
-                    for l2 in missed_legs[i + 1:]:
-                        # Same-team check via graded_picks lookup
-                        t1 = None
-                        t2 = None
-                        for gp in graded_picks:
-                            if gp["player_name"].lower() == l1["player_name"].lower():
-                                t1 = gp.get("team", "").upper()
-                            if gp["player_name"].lower() == l2["player_name"].lower():
-                                t2 = gp.get("team", "").upper()
-                        if not t1 or not t2 or t1 != t2:
-                            continue
-                        # Same stat check
-                        if l1["prop_type"] != l2["prop_type"]:
-                            continue
-                        stat = l1["prop_type"]
-                        key_ab = (l1["player_name"].lower(), l2["player_name"].lower(), stat)
-                        key_ba = (l2["player_name"].lower(), l1["player_name"].lower(), stat)
-                        entry = cannib.get(key_ab) or cannib.get(key_ba)
-                        if entry and entry["cannib_idx"] < -8.0:
-                            cannib_flags.append({
-                                "player_a": l1["player_name"],
-                                "player_b": l2["player_name"],
-                                "stat": stat,
-                                "cannib_idx": entry["cannib_idx"],
-                                "label": entry["label"],
-                                "note": (
-                                    f"{l1['player_name']} and {l2['player_name']} are an H33 "
-                                    f"cannibalization pair ({entry['cannib_idx']:+.1f}pp) — "
-                                    f"correlated failure, not independent variance"
-                                ),
-                            })
-
-        p["cannibalization_flags"] = cannib_flags if cannib_flags else None
-        graded_parlays.append(p)
-
-    return graded_parlays
-
-
 # ── Prompt builder ───────────────────────────────────────────────────
 
 def build_absence_context(graded_picks: list[dict]) -> str:
@@ -885,7 +737,7 @@ def build_absence_context(graded_picks: list[dict]) -> str:
     )
 
 
-def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], season_context: str = "", post_game_news: dict | None = None, playoff_picture: str = "", game_results_block: str = "") -> str:
+def build_audit_prompt(graded_picks: list[dict], season_context: str = "", post_game_news: dict | None = None, playoff_picture: str = "", game_results_block: str = "") -> str:
     # Split voided (confirmed OUT pre-game) from active picks.
     # Voided picks are excluded from all counting and statistical breakdowns —
     # the system should not be docked for picks that were correctly voided.
@@ -968,11 +820,6 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
         }
     conf_schema_str = json.dumps(conf_schema, indent=2)
 
-    # Parlay summary
-    p_hits    = sum(1 for p in graded_parlays if p["result"] == "HIT")
-    p_misses  = sum(1 for p in graded_parlays if p["result"] == "MISS")
-    p_partial = sum(1 for p in graded_parlays if p["result"] == "PARTIAL")
-
     hits_and_misses = [p for p in active_picks if p["result"] in ("HIT", "MISS")]
 
     # Annotate picks where post_game_news indicates injury_exit — gives Claude
@@ -987,7 +834,6 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
 
     picks_block   = json.dumps(hits_and_misses, indent=2)
     no_data_block_str = json.dumps(no_data, indent=2) if no_data else "[]"
-    parlays_block = json.dumps(graded_parlays, indent=2) if graded_parlays else "[]"
 
     # ── Absence context block — uses all graded_picks (voided players ARE the absences)
     absence_block = build_absence_context(graded_picks)
@@ -1016,24 +862,6 @@ def build_audit_prompt(graded_picks: list[dict], graded_parlays: list[dict], sea
             + "\n\nPlayers NOT listed above: no notable post-game event detected."
               " Standard box score analysis applies.\n"
         )
-
-    parlay_section = ""
-    if graded_parlays:
-        parlay_section = f"""
-## PARLAY GRADED RESULTS
-- Total parlays: {len(graded_parlays)}
-- Hits (all legs): {p_hits}
-- Misses (any leg missed): {p_misses}
-- Partial (no miss but some NO_DATA): {p_partial}
-
-## FULL GRADED PARLAYS
-{parlays_block}
-
-## PARLAY ANALYSIS TASK
-4. Parlay hit rate this session: {p_hits}/{len(graded_parlays)}. Write a one-line summary of the parlay card result — e.g. "Clean 3/4 — Value cards swept, Reach card missed on Vassell 3PM cold shooting."
-5. For each missed parlay, note which leg(s) failed in the parlay_summary line. No detailed analysis needed — the Parlay Agent is now a deterministic combinatorial builder and does not consume narrative feedback.
-6. Set parlay_lessons and parlay_reinforcements to empty arrays []. These fields are retained for schema compatibility but are no longer generated.
-"""
 
     return f"""You are the Auditor for NBAgent, an NBA player props selection system.
 
@@ -1111,7 +939,7 @@ selection_error, model_gap_signal, model_gap_rule, or variance. Handle them excl
 in the NO_DATA ANALYSIS TASK below.
 
 {no_data_block_str}
-{parlay_section}
+
 ## QUANT CONTEXT — READ FROM PICK OBJECTS
 Each pick object in FULL GRADED PICKS contains the quant data that was live at pick time:
 - "reasoning": the analyst's original thesis — read this for every miss
@@ -1335,16 +1163,7 @@ Respond ONLY with valid JSON. No preamble.
       "no_data_classification": "dnp | injury_exit | minutes_restriction | workflow_gap | dnp_unconfirmed | data_gap",
       "no_data_explanation": "string — one sentence, sourced from post_game_news or pick object fields"
     }}
-  ],
-  "parlay_results": {{
-    "total": {len(graded_parlays)},
-    "hits": {p_hits},
-    "misses": {p_misses},
-    "partial": {p_partial},
-    "parlay_summary": "string: one-line summary of the parlay card result (which cards hit, which leg failed on misses)",
-    "parlay_lessons": [],
-    "parlay_reinforcements": []
-  }}
+  ]
 }}
 """
 
@@ -1408,7 +1227,7 @@ def save_skip_archive(graded_skips: list[dict]) -> None:
     print(f"[auditor] Archived {len(graded_skips)} graded skips → {SKIP_ARCHIVE_JSON}")
 
 
-def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list[dict]):
+def save_audit(audit_entry: dict, graded_picks: list[dict]):
     # Update picks.json with graded results
     all_picks = []
     if PICKS_JSON.exists():
@@ -1432,19 +1251,6 @@ def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list
     with open(PICKS_JSON, "w") as f:
         json.dump(updated_picks, f, indent=2)
     print(f"[auditor] Updated picks.json with graded results")
-
-    # Update parlays.json with graded results
-    if graded_parlays and PARLAYS_JSON.exists():
-        try:
-            with open(PARLAYS_JSON) as f:
-                all_bundles = json.load(f)
-            updated_bundles = [b for b in all_bundles if b.get("date") != YESTERDAY_STR]
-            updated_bundles.append({"date": YESTERDAY_STR, "parlays": graded_parlays})
-            with open(PARLAYS_JSON, "w") as f:
-                json.dump(updated_bundles, f, indent=2)
-            print(f"[auditor] Updated parlays.json with graded results")
-        except Exception as e:
-            print(f"[auditor] WARNING: could not update parlays.json: {e}")
 
     # Append to audit_log.json
     existing_log = []
@@ -1477,7 +1283,7 @@ def save_audit(audit_entry: dict, graded_picks: list[dict], graded_parlays: list
         save_skip_archive(skips)
 
     save_audit_summary(existing_log, all_skips=skips if skips else None)
-    save_audit_report(audit_entry, graded_picks, graded_parlays, skips=skips)
+    save_audit_report(audit_entry, graded_picks, skips=skips)
 
 
 def _compute_playoff_calibration(
@@ -1678,12 +1484,6 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
     gradeable_adjusted      = gradeable - total_injury_exclusions
     overall_hr              = round(total_hits / gradeable_adjusted * 100, 1) if gradeable_adjusted > 0 else 0.0
 
-    # ── Parlay totals ──────────────────────────────────────────────────
-    p_total   = sum(e.get("parlay_results", {}).get("total",   0) for e in audit_log)
-    p_hits    = sum(e.get("parlay_results", {}).get("hits",    0) for e in audit_log)
-    p_misses  = sum(e.get("parlay_results", {}).get("misses",  0) for e in audit_log)
-    p_partial = sum(e.get("parlay_results", {}).get("partial", 0) for e in audit_log)
-
     # ── Skip validation rollup ─────────────────────────────────────────
     skip_validation: dict = {}
     if all_skips:
@@ -1794,12 +1594,6 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
         "prop_type_summary":             prop_summary,
         "miss_classification_totals":    dict(miss_classes),
         "confidence_calibration_totals": conf_summary,
-        "parlay_summary": {
-            "total":   p_total,
-            "hits":    p_hits,
-            "misses":  p_misses,
-            "partial": p_partial,
-        },
         "recent_lessons":          recent_lessons[-10:],
         "recent_reinforcements":   recent_reinforcements[-10:],
         "recent_recommendations":  recent_recommendations[-10:],
@@ -1822,7 +1616,7 @@ def save_audit_summary(audit_log: list[dict], all_skips: list[dict] | None = Non
     print(f"[auditor] Saved rolling audit summary ({len(audit_log)} entries) → {AUDIT_SUMMARY_JSON}")
 
 
-def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlays: list[dict], skips: list[dict] | None = None) -> None:
+def save_audit_report(audit_entry: dict, graded_picks: list[dict], skips: list[dict] | None = None) -> None:
     """
     Write a human-readable markdown audit report to data/audit_reports/YYYY-MM-DD.md.
     One file per day, generated at end of auditor run. Permanent archive — never overwritten
@@ -1841,9 +1635,6 @@ def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlay
         hits           = audit_entry.get("hits", 0)
         misses         = audit_entry.get("misses", 0)
         hit_rate_pct   = audit_entry.get("hit_rate_pct", 0)
-        parlay_results = audit_entry.get("parlay_results", {})
-        p_hits         = parlay_results.get("hits", 0)
-        p_total        = parlay_results.get("total", 0)
 
         md_lines: list[str] = []
 
@@ -1857,7 +1648,6 @@ def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlay
             f"- Total picks: {total_picks} | Hits: {hits} | Misses: {misses}"
             f" | Hit rate: {hit_rate_pct}%"
         )
-        md_lines.append(f"- Parlays: {p_hits}/{p_total} hit")
         md_lines.append("")
 
         # ── Prop Type Breakdown ───────────────────────────────────────
@@ -1936,42 +1726,6 @@ def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlay
             md_lines.append("_None._")
         md_lines.append("")
 
-        # ── Parlay Results ────────────────────────────────────────────
-        md_lines.append("## Parlay Results")
-        md_lines.append(f"- Result: {p_hits}/{p_total} hit")
-        parlay_summary_line = parlay_results.get("parlay_summary", "")
-        if parlay_summary_line:
-            md_lines.append(f"- {parlay_summary_line}")
-        md_lines.append("")
-        for parlay in graded_parlays:
-            label  = parlay.get("label", "Parlay")
-            result = parlay.get("result", "?")
-            odds   = parlay.get("implied_odds", "n/a")
-            md_lines.append(f"### {label} — {result}")
-            md_lines.append(f"- Implied odds: {odds}")
-            leg_parts = []
-            for leg in parlay.get("leg_results", []):
-                pname   = leg.get("player_name", "?")
-                ptype   = leg.get("prop_type", "?")
-                pval    = leg.get("pick_value", "?")
-                lresult = leg.get("result", "?")
-                leg_parts.append(f"{pname} {ptype} OVER {pval} ({lresult})")
-            md_lines.append(f"- Legs: {', '.join(leg_parts)}")
-            md_lines.append("")
-
-        parlay_lessons        = parlay_results.get("parlay_lessons", [])
-        parlay_reinforcements = parlay_results.get("parlay_reinforcements", [])
-        if parlay_lessons:
-            md_lines.append("**Parlay lessons:**")
-            for item in parlay_lessons:
-                md_lines.append(f"- {item}")
-            md_lines.append("")
-        if parlay_reinforcements:
-            md_lines.append("**Parlay reinforcements:**")
-            for item in parlay_reinforcements:
-                md_lines.append(f"- {item}")
-            md_lines.append("")
-
         # ── Skip Validation ───────────────────────────────────────────
         if skips:
             graded_skips  = [s for s in skips if s.get("skip_verdict") not in (None, "no_data")]
@@ -2017,7 +1771,7 @@ def save_audit_report(audit_entry: dict, graded_picks: list[dict], graded_parlay
         print(f"[auditor] WARNING: could not save audit report: {e}")
 
 
-def print_summary(graded_picks: list[dict], graded_parlays: list[dict], audit_entry: dict):
+def print_summary(graded_picks: list[dict], audit_entry: dict):
     hits   = [p for p in graded_picks if p["result"] == "HIT"]
     misses = [p for p in graded_picks if p["result"] == "MISS"]
 
@@ -2039,27 +1793,9 @@ def print_summary(graded_picks: list[dict], graded_parlays: list[dict], audit_en
             print(f"  {p['player_name']} {p['prop_type']} OVER {p['pick_value']} "
                   f"→ actual {p['actual_value']}")
 
-    if graded_parlays:
-        p_hits   = sum(1 for p in graded_parlays if p["result"] == "HIT")
-        p_misses = sum(1 for p in graded_parlays if p["result"] == "MISS")
-        print(f"\n🎰 PARLAYS: {p_hits} hit, {p_misses} missed of {len(graded_parlays)}")
-        for p in graded_parlays:
-            icon = "✓" if p["result"] == "HIT" else ("✗" if p["result"] == "MISS" else "~")
-            legs_str = ", ".join(
-                f"{l['player_name']} {l['prop_type']} ({l.get('result','?')})"
-                for l in p.get("leg_results", [])
-            )
-            print(f"  {icon} [{p.get('implied_odds','')}] {p.get('label','')}: {legs_str}")
-
     print(f"\nRecommendations for Analyst:")
     for r in audit_entry.get("recommendations", []):
         print(f"  → {r}")
-
-    pr = audit_entry.get("parlay_results", {})
-    if pr.get("parlay_lessons"):
-        print(f"\nParlay Agent notes:")
-        for r in pr["parlay_lessons"]:
-            print(f"  → {r}")
     print()
 
 
@@ -2097,20 +1833,13 @@ def main():
         print("[auditor] No gradeable picks — box scores may not be ingested yet.")
         sys.exit(0)
 
-    # Grade parlays using already-graded picks as source of truth
-    parlays = load_yesterdays_parlays()
-    graded_parlays = grade_parlays(parlays, graded_picks) if parlays else []
-    if graded_parlays:
-        p_hits = sum(1 for p in graded_parlays if p["result"] == "HIT")
-        print(f"[auditor] Parlays graded: {p_hits}/{len(graded_parlays)} hit")
-
     season_context     = load_season_context()
     playoff_picture    = render_playoff_picture()
     post_game_news     = load_post_game_news()
     game_results       = load_game_results()
     game_results_block = build_game_results_block(game_results)
     prompt = build_audit_prompt(
-        graded_picks, graded_parlays, season_context, post_game_news,
+        graded_picks, season_context, post_game_news,
         playoff_picture=playoff_picture,
         game_results_block=game_results_block,
     )
@@ -2121,8 +1850,8 @@ def main():
     if n_injury_voids:
         print(f"[auditor] Promoted {n_injury_voids} injury_event pick(s) to voided")
 
-    save_audit(audit_entry, graded_picks, graded_parlays)
-    print_summary(graded_picks, graded_parlays, audit_entry)
+    save_audit(audit_entry, graded_picks)
+    print_summary(graded_picks, audit_entry)
 
 
 if __name__ == "__main__":

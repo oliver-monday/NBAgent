@@ -1564,8 +1564,6 @@ def generate_html(d: dict) -> str:
     .leg-stat-type {{ font-size: 10px; font-weight: 700; padding: 2px 5px;
                       border-radius: 4px; line-height: 1; }}
     .leg-conf {{ font-size: 10px; color: var(--muted); margin-left: 4px; white-space: nowrap; }}
-    .leg-result-hit  {{ font-size: 13px; color: var(--hit);  margin-left: 6px; flex-shrink: 0; }}
-    .leg-result-miss {{ font-size: 13px; color: var(--miss); margin-left: 6px; flex-shrink: 0; }}
     .parlay-rationale {{ font-size: 12px; color: var(--muted); font-style: italic;
                          border-top: 1px solid var(--border); padding-top: 10px;
                          margin-top: 10px; line-height: 1.5; }}
@@ -2750,17 +2748,10 @@ function renderParlayCard(p, voidedPlayerNames) {{
     ? `<div class="parlay-risk-banner">⚠ ${{voidedLegs.map(l => l.player_name).join(', ')}} listed OUT — parlay affected</div>`
     : '';
 
-  // Header-right indicator: result badge after grading, else odds
-  let headerRight = '';
-  if (p.result === 'HIT') {{
-    headerRight = `<span class="parlay-result-hit">✓ HIT</span>`;
-  }} else if (p.result === 'MISS') {{
-    headerRight = `<span class="parlay-result-miss">✗ MISS</span>`;
-  }} else if (p.result === 'PARTIAL') {{
-    headerRight = `<span class="parlay-result-partial">~ PARTIAL</span>`;
-  }} else {{
-    headerRight = `<span class="parlay-odds">${{odds}}</span>`;
-  }}
+  // Header-right indicator: implied odds (parlay grading was removed 2026-04-24
+  // — the menu builder produces options, not predictions, so per-card outcomes
+  // are no longer rendered).
+  const headerRight = `<span class="parlay-odds">${{odds}}</span>`;
 
   let html = `
     <div class="parlay-card">
@@ -2777,11 +2768,6 @@ function renderParlayCard(p, voidedPlayerNames) {{
     const opp  = leg.opponent || '';
     const ha   = leg.home_away === 'H' ? 'vs' : '@';
     const conf = leg.confidence_pct ? `${{leg.confidence_pct}}%` : '';
-
-    let legResultIcon = '';
-    const lr = leg.result;
-    if (lr === 'HIT')  legResultIcon = `<span class="leg-result-hit">✓</span>`;
-    else if (lr === 'MISS') legResultIcon = `<span class="leg-result-miss">✗</span>`;
 
     // Cannibalization badge — preserved (H33 pair signal between consecutive same-team same-stat legs)
     if (legIdx > 0) {{
@@ -2814,7 +2800,6 @@ function renderParlayCard(p, voidedPlayerNames) {{
           <span class="leg-stat-value">${{leg.pick_value}}</span>
           <span class="leg-stat-type prop-${{pt}}">${{pt}}</span>
           <span class="leg-conf">${{conf}}</span>
-          ${{legResultIcon}}
         </div>
       </div>`;
   }});
