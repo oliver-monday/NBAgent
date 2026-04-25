@@ -29,7 +29,6 @@ TODAY_STR = dt.datetime.now(PT).strftime("%Y-%m-%d")
 PLAYOFFS_R1_DATE = "2026-04-18"
 
 PICKS_JSON              = DATA / "picks.json"
-PARLAYS_JSON            = DATA / "parlays.json"
 AUDIT_LOG_JSON          = DATA / "audit_log.json"
 AUDIT_SUMMARY_JSON      = DATA / "audit_summary.json"
 MASTER_CSV              = DATA / "nba_master.csv"
@@ -39,6 +38,7 @@ PICKS_REVIEW_JSON       = DATA / f"picks_review_{TODAY_STR}.json"
 ODDS_AVAILABLE_JSON     = DATA / "odds_available.json"
 PLAYER_STATS_JSON       = DATA / "player_stats.json"
 WHITELIST_CSV           = ROOT / "playerprops" / "player_whitelist.csv"
+PARLAY_GUIDANCE_MD      = DATA / "parlay_builder_guidance.md"
 
 # Team abbreviation normalization — nba_master.csv sometimes uses legacy short forms
 _ABBR_NORM = {
@@ -385,56 +385,88 @@ def load_injuries_display() -> dict:
     return {"fetched_at": fetched_at, "games": games}
 
 
-def load_todays_parlays() -> dict:
-    """
-    Load today's parlay bundle and compute historical parlay stats.
-    Returns {
-      "today": [...],          # today's parlays (ungraded)
-      "hits": N, "misses": N, "total": N, "hit_rate_pct": X
-    }
-    """
-    raw = load_json(PARLAYS_JSON, [])
-    if not isinstance(raw, list):
-        return {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}
+def load_parlay_guidance_html() -> str:
+    """Load and convert the parlay guidance markdown to HTML.
 
-    today_parlays = []
-    hits = misses = 0
-    past_parlays: list = []
+    Returns empty string if data/parlay_builder_guidance.md is missing or
+    empty (Parlay Builder still works — guidance just doesn't render).
 
-    for bundle in raw:
-        parlays = bundle.get("parlays", [])
-        bundle_date = bundle.get("date", "")
-        if bundle_date == TODAY_STR:
-            today_parlays = parlays
+    Implements minimal markdown -> HTML conversion inline so the build does
+    not pick up a markdown library dependency. Supports:
+      - # H1, ## H2, ### H3
+      - **bold** (inline)
+      - - bullet lists (consecutive `- ` lines collapse into a single <ul>)
+      - blank-line paragraph breaks
+    Anything else passes through as a paragraph (HTML-escaped).
+    """
+    if not PARLAY_GUIDANCE_MD.exists():
+        return ""
+    text = PARLAY_GUIDANCE_MD.read_text().strip()
+    if not text:
+        return ""
+
+    def _esc(s: str) -> str:
+        return (
+            s.replace("&", "&amp;")
+             .replace("<", "&lt;")
+             .replace(">", "&gt;")
+        )
+
+    def _inline(s: str) -> str:
+        s = _esc(s)
+        # **bold** — non-greedy, no nested support
+        out = []
+        i = 0
+        while i < len(s):
+            if s[i:i+2] == "**":
+                end = s.find("**", i + 2)
+                if end == -1:
+                    out.append(s[i:])
+                    break
+                out.append("<strong>" + s[i+2:end] + "</strong>")
+                i = end + 2
+            else:
+                out.append(s[i])
+                i += 1
+        return "".join(out)
+
+    lines = text.split("\n")
+    html_parts: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i].rstrip()
+        if not line:
+            i += 1
+            continue
+        if line.startswith("### "):
+            html_parts.append(f"<h3>{_inline(line[4:].strip())}</h3>")
+            i += 1
+        elif line.startswith("## "):
+            html_parts.append(f"<h2>{_inline(line[3:].strip())}</h2>")
+            i += 1
+        elif line.startswith("# "):
+            html_parts.append(f"<h1>{_inline(line[2:].strip())}</h1>")
+            i += 1
+        elif line.startswith("- "):
+            items = []
+            while i < len(lines) and lines[i].startswith("- "):
+                items.append(f"<li>{_inline(lines[i][2:].strip())}</li>")
+                i += 1
+            html_parts.append("<ul>" + "".join(items) + "</ul>")
         else:
-            for p in parlays:
-                r = p.get("result")
-                if r == "HIT":
-                    hits += 1
-                elif r == "MISS":
-                    misses += 1
-                if r in ("HIT", "MISS", "PARTIAL"):
-                    past_parlays.append({
-                        "date": bundle_date,
-                        "label": p.get("label"),
-                        "result": r,
-                        "implied_odds": p.get("implied_odds"),
-                        "legs": p.get("legs", []),
-                        "leg_results": p.get("leg_results", []),
-                    })
+            # paragraph — accumulate until next blank/header/list
+            para = [line]
+            i += 1
+            while (
+                i < len(lines)
+                and lines[i].strip()
+                and not lines[i].startswith(("# ", "## ", "### ", "- "))
+            ):
+                para.append(lines[i].rstrip())
+                i += 1
+            html_parts.append("<p>" + _inline(" ".join(para)) + "</p>")
 
-    total = hits + misses
-    hit_rate = round(100 * hits / total, 1) if total else 0
-    past_parlays_sorted = sorted(past_parlays, key=lambda x: x.get("date", ""), reverse=True)
-
-    return {
-        "today": today_parlays,
-        "hits": hits,
-        "misses": misses,
-        "total": total,
-        "hit_rate_pct": hit_rate,
-        "history": past_parlays_sorted[:60],
-    }
+    return "".join(html_parts)
 
 
 def load_yesterday_summary() -> dict:
@@ -1028,7 +1060,7 @@ def build_site():
     game_times = load_game_times()
     injuries_display = load_injuries_display()
     ml_odds = load_game_ml_odds()
-    parlays_data      = load_todays_parlays()
+    parlay_guidance_html = load_parlay_guidance_html()
     yesterday_summary = load_yesterday_summary()
     opportunity_flags = load_opportunity_flags()
     explorer_data     = build_explorer_data()
@@ -1140,8 +1172,8 @@ def build_site():
                                   key=lambda p: p.get("date", ""),
                                   reverse=True)[:40],
         "injuries":  injuries_display,
-        "parlays":   parlays_data,
         "ml_odds":          ml_odds,
+        "parlay_guidance_html": parlay_guidance_html,
         "yesterday_summary":  yesterday_summary,
         "opportunity_flags":  opportunity_flags,
         "explorer":           explorer_data,
@@ -1183,7 +1215,6 @@ def generate_html(d: dict) -> str:
     last_audit_json = json.dumps(d["last_audit"])
     trend_json      = json.dumps(d["daily_trend"])
     injuries_json   = json.dumps(d.get("injuries", {"fetched_at": None, "games": []}))
-    parlays_json    = json.dumps(d.get("parlays", {"today": [], "hits": 0, "misses": 0, "total": 0, "hit_rate_pct": 0}))
     ml_odds_json    = json.dumps(d.get("ml_odds", {}))
     top_picks_json          = json.dumps(d.get("top_picks", []))
     best_bets_json          = json.dumps(d.get("best_bets", []))
@@ -1575,6 +1606,23 @@ def generate_html(d: dict) -> str:
     .cannib-badge.cannib-neg {{ color: #f59e0b; }}
     .cannib-badge.cannib-pos {{ color: var(--accent2); }}
 
+    /* Parlay Guidance — static, manually authored block on Parlays tab */
+    .parlay-guidance {{ background: var(--surface); border: 1px solid var(--border);
+                        border-radius: 10px; padding: 18px 22px; margin-bottom: 24px;
+                        color: var(--text); line-height: 1.55; }}
+    .parlay-guidance h1 {{ font-size: 18px; font-weight: 700; color: var(--accent);
+                           margin: 0 0 12px 0; letter-spacing: 0.3px; }}
+    .parlay-guidance h2 {{ font-size: 15px; font-weight: 700; color: var(--text);
+                           margin: 18px 0 8px 0; }}
+    .parlay-guidance h3 {{ font-size: 13px; font-weight: 600; color: var(--muted);
+                           margin: 14px 0 6px 0; text-transform: uppercase;
+                           letter-spacing: 1px; }}
+    .parlay-guidance p {{ margin: 0 0 10px 0; font-size: 13px; color: var(--text); }}
+    .parlay-guidance ul {{ margin: 4px 0 12px 0; padding-left: 22px;
+                           color: var(--text); font-size: 13px; }}
+    .parlay-guidance li {{ margin-bottom: 4px; }}
+    .parlay-guidance strong {{ color: var(--text); font-weight: 600; }}
+
     /* Parlay Builder */
     .builder-section {{ margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; }}
     .builder-header {{ font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -1713,7 +1761,7 @@ def generate_html(d: dict) -> str:
   <div id="best-bets-container"></div>
   <div id="picks-container"></div>
 </div>
-<div id="tab-parlays" class="page"><div id="parlays-container"></div><div id="parlay-builder-container"></div></div>
+<div id="tab-parlays" class="page"><div id="parlay-guidance-container"></div><div id="parlay-builder-container"></div></div>
 <div id="tab-results" class="page">
   <div class="results-cards-row">
     <div class="results-card">
@@ -1787,7 +1835,6 @@ const DATA = {{
   last_audit:       {last_audit_json},
   recent_results:   {results_json},
   injuries:         {injuries_json},
-  parlays:          {parlays_json},
   ml_odds:          {ml_odds_json},
   top_picks:         {top_picks_json},
   best_bets:         {best_bets_json},
@@ -1799,6 +1846,7 @@ const DATA = {{
   playoff:           {playoff_json},
   cannib_lookup:     {cannib_json},
   corr_lookup:       {corr_json},
+  parlay_guidance_html: {json.dumps(d.get("parlay_guidance_html", ""))},
 }};
 
 function showTab(name) {{
@@ -2735,152 +2783,21 @@ renderPicks();
 renderResults();
 renderAudit();
 
-// ── PARLAYS ──
-function renderParlayCard(p, voidedPlayerNames) {{
-  const legs = p.legs || [];
-  const odds = p.implied_odds || '';
-
-  // Voided legs risk banner (preserved)
-  const voidedLegs = legs.filter(leg =>
-    voidedPlayerNames.has((leg.player_name || '').toLowerCase())
-  );
-  const riskBanner = voidedLegs.length > 0
-    ? `<div class="parlay-risk-banner">⚠ ${{voidedLegs.map(l => l.player_name).join(', ')}} listed OUT — parlay affected</div>`
-    : '';
-
-  // Header-right indicator: implied odds (parlay grading was removed 2026-04-24
-  // — the menu builder produces options, not predictions, so per-card outcomes
-  // are no longer rendered).
-  const headerRight = `<span class="parlay-odds">${{odds}}</span>`;
-
-  let html = `
-    <div class="parlay-card">
-      ${{riskBanner}}
-      <div class="parlay-card-header-lean">
-        <div class="parlay-header-spacer"></div>
-        <div class="parlay-header-right">${{headerRight}}</div>
-      </div>
-      <div class="parlay-legs">`;
-
-  legs.forEach((leg, legIdx) => {{
-    const pt   = leg.prop_type || leg.prop || '';
-    const team = leg.team || '';
-    const opp  = leg.opponent || '';
-    const ha   = leg.home_away === 'H' ? 'vs' : '@';
-    const conf = leg.confidence_pct ? `${{leg.confidence_pct}}%` : '';
-
-    // Cannibalization badge — preserved (H33 pair signal between consecutive same-team same-stat legs)
-    if (legIdx > 0) {{
-      const prev = legs[legIdx - 1];
-      const prevPt = prev.prop_type || prev.prop || '';
-      if (pt === prevPt && (leg.team || '') === (prev.team || '')) {{
-        const pair = [
-          (prev.player_name || '').toLowerCase(),
-          (leg.player_name || '').toLowerCase()
-        ].sort();
-        const cKey = pair[0] + '|' + pair[1] + '|' + pt;
-        const ce = (DATA.cannib_lookup || {{}})[cKey];
-        if (ce) {{
-          const isNeg = ce.idx < 0;
-          const icon = isNeg ? '⊖' : '⊕';
-          const cls  = isNeg ? 'cannib-neg' : 'cannib-pos';
-          const word = isNeg ? 'cannibalization' : 'synergy';
-          html += `<div class="cannib-badge ${{cls}}" title="${{pt}} pair: ${{ce.idx > 0 ? '+' : ''}}${{ce.idx}}pp">${{icon}} ${{word}}</div>`;
-        }}
-      }}
-    }}
-
-    html += `
-      <div class="parlay-leg">
-        <div class="leg-main">
-          <div class="leg-player">${{leg.player_name || ''}}</div>
-          <div class="leg-team">${{team}} ${{ha}} ${{opp}}</div>
-        </div>
-        <div class="leg-stat">
-          <span class="leg-stat-value">${{leg.pick_value}}</span>
-          <span class="leg-stat-type prop-${{pt}}">${{pt}}</span>
-          <span class="leg-conf">${{conf}}</span>
-        </div>
-      </div>`;
-  }});
-
-  html += `</div>`;
-
-  if (p.rationale) {{
-    html += `<div class="parlay-rationale">${{escapeHtml(p.rationale)}}</div>`;
-  }}
-
-  html += `</div>`;
-  return html;
-}}
-
-function renderParlays() {{
-  const c = document.getElementById('parlays-container');
-  const pd = DATA.parlays;
-  const today = pd?.today || [];
-
-  let html = '';
-
-  if (!today.length) {{
-    html += `<div class="empty"><div class="empty-icon">🎰</div>No parlays yet for ${{DATA.today_str}}.<br>Check back after picks are generated.</div>`;
-    c.innerHTML = html;
+// ── PARLAY GUIDANCE (static) ──
+// Auto-generated parlay menu deprecated 2026-04-24. The Parlays tab now shows a
+// static, manually-authored guidance block + the Interactive Parlay Builder
+// widget below.
+function renderParlayGuidance() {{
+  const c = document.getElementById('parlay-guidance-container');
+  if (!c) return;
+  const html = DATA.parlay_guidance_html || '';
+  if (!html.trim()) {{
+    c.innerHTML = '';
     return;
   }}
-
-  // Build set of voided player names from today's picks for leg-risk detection
-  const voidedPlayerNames = new Set(
-    (DATA.today_picks || [])
-      .filter(pk => pk.voided)
-      .map(pk => (pk.player_name || '').toLowerCase())
-  );
-
-  // Group today's cards by bucket (Safe / Reach / Degen)
-  const byBucket = {{
-    'Safe':  [],
-    'Reach': [],
-    'Degen': [],
-  }};
-  today.forEach(p => {{
-    const b = p.bucket || 'Safe';  // defensive default
-    if (byBucket[b]) byBucket[b].push(p);
-    else byBucket['Safe'].push(p);  // any unknown bucket lumps into Safe
-  }});
-
-  const TIER_CONFIG = [
-    {{ key: 'Safe',  label: 'Safe',  range: '+100 to +200', defaultOpen: true  }},
-    {{ key: 'Reach', label: 'Reach', range: '+200 to +350', defaultOpen: false }},
-    {{ key: 'Degen', label: 'Degen', range: '+350 to +600', defaultOpen: false }},
-  ];
-
-  TIER_CONFIG.forEach(tier => {{
-    const cards = byBucket[tier.key];
-    if (!cards || !cards.length) return;  // skip empty tiers entirely
-
-    const drawerId = `parlay-tier-${{tier.key.toLowerCase()}}`;
-    const display  = tier.defaultOpen ? 'block' : 'none';
-    const chevClass = tier.defaultOpen ? 'drawer-chevron open' : 'drawer-chevron';
-
-    html += `
-      <div class="parlay-tier-drawer">
-        <div class="drawer-header" onclick="toggleDrawer('${{drawerId}}')">
-          <span class="tier-header-label">${{tier.label}} <span class="tier-range">${{tier.range}}</span> <span class="tier-count">· ${{cards.length}}</span></span>
-          <span class="${{chevClass}}" id="${{drawerId}}-chevron">▼</span>
-        </div>
-        <div class="drawer-body" id="${{drawerId}}" style="display:${{display}}">`;
-
-    cards.forEach(p => {{
-      html += renderParlayCard(p, voidedPlayerNames);
-    }});
-
-    html += `
-        </div>
-      </div>`;
-  }});
-
-  c.innerHTML = html;
+  c.innerHTML = `<div class="parlay-guidance">${{html}}</div>`;
 }}
-
-renderParlays();
+renderParlayGuidance();
 
 // ── CUSTOM PARLAY BUILDER ──
 

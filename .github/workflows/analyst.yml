@@ -71,15 +71,12 @@ jobs:
       - name: Enrich picks with odds
         run: python ingest/odds_today.py
 
-      - name: Run Parlay agent
-        run: python agents/parlay.py
-
-      - name: Commit picks and parlays
+      - name: Commit picks
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          FILES="data/picks.json data/parlays.json data/player_stats.json data/lineups_today.json data/skipped_picks.json data/standings_today.json data/opportunity_flags.json data/pre_game_news.json data/team_defense_narratives.json data/injuries_today.json data/odds_available.json data/odds_today.json data/playoff_matchup.json data/injury_profiles.json"
+          FILES="data/picks.json data/player_stats.json data/lineups_today.json data/skipped_picks.json data/standings_today.json data/opportunity_flags.json data/pre_game_news.json data/team_defense_narratives.json data/injuries_today.json data/odds_available.json data/odds_today.json data/playoff_matchup.json data/injury_profiles.json"
           for f in $FILES; do
             [ -f "$f" ] && cp "$f" "$f.local"
           done
@@ -109,7 +106,7 @@ jobs:
           if [ "$CHANGED" -eq 0 ]; then
             echo "No changes to commit."
           else
-            git commit -m "Analyst + Parlay picks $(TZ=America/Los_Angeles date +%Y-%m-%d) [skip ci]"
+            git commit -m "Analyst picks $(TZ=America/Los_Angeles date +%Y-%m-%d) [skip ci]"
             git push origin HEAD:main
           fi
 

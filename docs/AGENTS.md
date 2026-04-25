@@ -11,7 +11,7 @@ ingest.yml (8 AM ET)
   └─ quant.py                → player_stats.json, team_defense_narratives.json
 
 auditor.yml (chains off ingest)
-  └─ auditor.py              → audit_log.json, updates picks.json + parlays.json
+  └─ auditor.py              → audit_log.json, updates picks.json (parlay grading removed 2026-04-24)
 
 analyst.yml (chains off auditor)
   └─ rotowire_injuries_only.py → injuries_today.json + lineups_today.json (fresh refresh before picks)
@@ -21,7 +21,7 @@ analyst.yml (chains off auditor)
   └─ pre_game_reporter.py    → pre_game_news.json, context/context_flags.md
   └─ analyst.py              → picks.json (today's picks appended; OUT/DOUBTFUL pre-filtered)
   └─ odds_today.py           → picks.json (odds annotation + calibrated edge), odds_today.json
-  └─ parlay.py               → parlays.json (today's parlays appended; OUT/DOUBTFUL excluded)
+  # parlay.py step removed 2026-04-24 — auto-generated parlay menu deprecated; Parlays tab is now Builder-only
   └─ build_site.py           → site/index.html (deployed to GitHub Pages)
 
 odds_pretip.yml (independent, every 30 min 3–7:30 PM PT)
@@ -275,7 +275,19 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 
 ---
 
-## parlay.py — Parlay Builder (Combinatorial Menu)
+## parlay.py — DEPRECATED 2026-04-24
+
+**Status:** Removed. The pure-Python combinatorial menu builder (rewritten 2026-04-22 from the prior LLM agent) was deleted entirely on 2026-04-24 after the parlay research pipeline (`tools/parlay_research_enumerate.py` + `tools/parlay_research_analyze.py`) demonstrated that NO archetype across any of the 4 buckets (Stable / Safe / Reach / Degen) produces positive `delta_vs_market`. Every bucket and every hypothesis (H1–H7) underperforms the FanDuel market-implied probability. The +1.7pp Reach `one_player_3plus_legs` finding was the only positive signal and the H7 drilldown (`data/parlay_h7_drilldown.md`) traced 67% of those cards to a single player×date — small-sample artifact, not structural.
+
+**What replaced it:** Nothing auto-generated. The Parlays tab on the frontend now shows (1) a static, manually-authored guidance block sourced from `data/parlay_builder_guidance.md` (loaded by `load_parlay_guidance_html()` in `agents/build_site.py` — graceful no-op when missing) and (2) the preserved Interactive Parlay Builder widget where the user manually composes a parlay and the page computes combined probability, American odds, payout, net edge, H33 cannibalization warnings, and Pearson correlation badges in real time.
+
+**Removed from production:** `agents/parlay.py`, the `Run Parlay agent` step in `analyst.yml`, `data/parlays.json` from `analyst.yml` commit FILES, `parlays_json` / `renderParlayCard()` / `renderParlays()` / `<div id="parlays-container">` references in `agents/build_site.py`. **Untouched:** `data/parlays.json` historical content (left as dead data; no consumer reads it). **Preserved:** Interactive Parlay Builder widget, `build_cannib_lookup()` / `build_corr_lookup()` Python helpers, `cannib_lookup` / `corr_lookup` keys on the JS DATA object — Builder warnings panel still consumes them.
+
+The historical architecture description below is preserved for reference. None of it runs in production.
+
+---
+
+### Historical reference — parlay.py (2026-04-22 to 2026-04-24)
 
 **Model:** — (pure Python, no LLM call, zero API cost)
 **MAX_TOKENS:** —
@@ -597,7 +609,7 @@ Pure Python, no JS dependencies in output. Reads all data files, writes `site/in
 
 **Five tabs:**
 1. **Today's Picks** — injury report dropdown, pick cards grouped by game (collapsible), sorted by prop type then confidence. Each card: player, micro-stat pills (trend + opp defense), reasoning, hit rate bar, confidence. Voided picks show VOIDED badge. DOUBTFUL/QUESTIONABLE picks show risk pills. Lineup Update shows ↑/↓ badge with expandable amendment detail. Review badges: ⚠ Caution (amber) for `trim` verdict, ⚠ Flagged (red) for `manual_skip` verdict — shown below status badge when picks_review file present; includes inline trim_reasons. **Best Bets section** below Top Picks: shows POSITIVE and STRONG edge picks ranked by calibrated edge descending; teal border (POSITIVE) or green border (STRONG); includes Odds + Sizing drawer; hidden when no qualifying picks.
-2. **Parlays** — historical stats banner (hidden until data exists), parlay cards with leg rows showing player/team, stat value + colored prop badge, confidence, result icon post-grading. Correlation badge + rationale on each card. H33 cannibalization badges (⊖/⊕) inline between consecutive same-team same-stat legs. Custom Parlay Builder below system parlays: click-to-add picks, live odds/payout/edge, H33+correlation warnings, copy to clipboard. Opportunity flags shown as per-player cards with `qualifying_tiers` (amber "OPPORTUNITY" rows) and `upgrade_tiers` (blue "UPGRADE" rows showing T{morning}→T{new}); `card_type` label ("OPPORTUNITY"/"UPGRADE"/"MIXED"); opponent-side cards show "(opp)" suffix.
+2. **Parlays** — Builder-only as of 2026-04-24. The auto-generated parlay menu (Stable/Safe/Reach/Degen tier drawers) was deprecated after the parlay research pipeline showed no archetype beats the FanDuel market. The tab now shows: (a) a static, manually-authored guidance block sourced from `data/parlay_builder_guidance.md` (loaded by `load_parlay_guidance_html()`; renders empty when file absent) covering when/how to construct parlays in the Builder; (b) the Interactive Parlay Builder widget — click-to-add picks from today's slate grouped by game, live combined probability + American odds + $10 payout + net calibrated edge, H33 cannibalization warnings + Pearson correlation badges between selected legs, Clear and Copy-to-clipboard actions. Opportunity flags shown as per-player cards with `qualifying_tiers` (amber "OPPORTUNITY" rows) and `upgrade_tiers` (blue "UPGRADE" rows showing T{morning}→T{new}); `card_type` label ("OPPORTUNITY"/"UPGRADE"/"MIXED"); opponent-side cards show "(opp)" suffix.
 3. **Results** — overall hit rate banner, named stat cards (Overall/Yesterday/Props/Top Picks/Daily Hit Rate), 30-day hit rate trend chart (vanilla canvas), collapsible full pick history drawer.
 4. **Audit Log** — latest auditor entry: hit rate stats, what worked, what to avoid, analyst instructions. Skip validation table.
 5. **Research** — player game log explorer; filter by player, stat, home/away, rest days, spread bucket, game result, opponent; renders tier hit rate table with bar charts, distribution stats, and full game log. Static — no LLM calls, fully client-side.

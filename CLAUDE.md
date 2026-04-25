@@ -10,18 +10,19 @@ A self-improving multi-agent system that runs entirely via GitHub Actions. Every
 
 1. Ingests fresh ESPN box scores and game data (`espn_daily_ingest.py`, `espn_player_ingest.py`)
 2. Scrapes Rotowire for injury updates hourly (`rotowire_injuries_only.py`)
-3. **Auditor** grades yesterday's picks + parlays, writes structured feedback to `audit_log.json` + rolls up `audit_summary.json`
+3. **Auditor** grades yesterday's picks, writes structured feedback to `audit_log.json` + rolls up `audit_summary.json` (parlay grading removed 2026-04-24)
 4. **Quant** computes deterministic per-player stats cards from raw game logs — tier hit rates, best qualifying tier per stat, trend (L5 vs L20), home/away splits, B2B flag and quantified B2B hit rates, opponent defense rating, spread context, matchup-specific tier hit rates, teammate correlations (Pearson r + correlation tags), game pace context, bounce-back profiles, volatility scores, positional DvP, FG% safety margin, shooting regression flags, player profile narratives, team momentum, and defensive recency splits
 5. **Pre-Game Reporter** summarises today's ESPN player news + detects staleness in `nba_season_context.md` → `pre_game_news.json`
 6. **Analyst** reads today's slate + Quant output + Auditor feedback + Rolling summary → calls Claude API → generates prop picks; skips are recorded to `skipped_picks.json`
 7. **Lineup Watch** post-processes picks after each injury refresh — voids OUT picks, flags DOUBTFUL/QUESTIONABLE picks with risk levels
 8. **Lineup Update** diffs afternoon lineup changes against morning snapshot → calls Claude → amends affected picks
 9. **Post-Game Reporter** fetches ESPN exit news + Brave Search web narratives for missed-pick players → `post_game_news.json`
-10. **Parlay** reads today's picks → builds scored combinations → calls Claude API → generates 3–5 curated parlays
-11. Builds and deploys a static frontend to GitHub Pages
+10. Builds and deploys a static frontend to GitHub Pages
+
+(Auto-generated parlay agent deprecated 2026-04-24 — Parlays tab on the frontend is now Builder-only with a static, manually-authored guidance block. The user composes parlays manually in the Interactive Parlay Builder widget.)
 
 Picks: **PTS / REB / AST / 3PM** — OVER only, ≥70% confidence.
-API cost: ~$0.60/day (analyst + parlay + auditor combined at current slate sizes).
+API cost: ~$0.60/day (analyst + auditor combined at current slate sizes).
 
 ---
 
@@ -32,8 +33,8 @@ NBAgent/
 ├── agents/
 │   ├── quant.py              # Deterministic stats cards — tier hit rates, best tier, trend, B2B, opp defense, matchup splits, spread context, teammate correlations, game pace, bounce-back profiles, volatility, positional DvP, FG% safety margin, shooting regression, player profiles, team momentum, defensive recency
 │   ├── analyst.py            # Analyst agent — calls Claude, generates picks; injects season context + rolling audit summary; writes skipped_picks.json
-│   ├── parlay.py             # Parlay agent — pure Python combinatorial menu builder; no LLM; generates 5-10 ranked cards across Value/Standard/Reach odds buckets using market_implied_prob for odds + confidence_pct for ranking
-│   ├── auditor.py            # Auditor agent — grades picks + parlays + skips, writes audit_log.json + audit_summary.json; injects season context
+│   # parlay.py — DELETED 2026-04-24 (auto-generated parlay menu deprecated; Parlays tab now Builder-only with static guidance)
+│   ├── auditor.py            # Auditor agent — grades picks + skips, writes audit_log.json + audit_summary.json; injects season context (parlay grading removed 2026-04-24)
 │   ├── pre_game_reporter.py  # Summarises ESPN player news; detects nba_season_context.md staleness → pre_game_news.json
 │   ├── post_game_reporter.py # Fetches ESPN exit news + Brave Search web narratives for missed-pick players → post_game_news.json
 │   ├── lineup_watch.py       # Deterministic post-process — voids OUT picks, flags DOUBTFUL/QUESTIONABLE; runs after each injury refresh
@@ -54,7 +55,7 @@ NBAgent/
 │   ├── playoff_career_log.csv          # Career playoff + regular season box scores (2021–2025 backfill + daily playoff dual-write from espn_player_ingest.py)
 │   ├── player_dim.csv                  # ESPN athlete_id → player name map
 │   ├── team_game_log.csv               # Team-level aggregated box scores — used by Quant for opp defense + pace
-│   ├── player_stats.json               # Quant output — consumed by Analyst, Parlay, and Auditor
+│   ├── player_stats.json               # Quant output — consumed by Analyst and Auditor
 │   ├── injuries_today.json             # Hourly updated by injuries workflow
 │   ├── lineups_today.json              # Projected starters + snapshot_at_analyst_run; written by rotowire_injuries_only.py
 │   ├── standings_today.json            # Current NBA standings — written by espn_daily_ingest.py; feeds PLAYOFF PICTURE block
@@ -63,7 +64,8 @@ NBAgent/
 │   ├── post_game_news.json             # Yesterday's exit news + web narratives for missed players — written by post_game_reporter.py
 │   ├── picks.json                      # All picks with results; mutated in-place by analyst (append), lineup_watch (void/flag), lineup_update (lineup_update sub-object), auditor (grade)
 │   ├── skipped_picks.json              # Today's rule-forced skips (null grading fields); graded each morning by auditor; overwritten daily
-│   ├── parlays.json                    # All parlays with results
+│   # parlays.json                      # DEAD DATA 2026-04-24 — historical parlay output preserved on disk; no agent reads or writes it after auto-generated parlay deprecation
+│   ├── parlay_builder_guidance.md      # Static, manually-authored guidance block rendered on the Parlays tab (loaded by build_site.py load_parlay_guidance_html(); graceful no-op when missing)
 │   ├── audit_log.json                  # Daily auditor entries — full graded pick details
 │   ├── audit_summary.json              # Rolled-up season stats — consumed by Analyst as Rolling Performance Summary; includes skip_validation + human_flag_precision blocks
 │   ├── picks_review_YYYY-MM-DD.json    # Human-produced daily review file — verdicts: keep/trim/manual_skip; committed before auditor.yml runs; NOT written by any agent
@@ -88,7 +90,7 @@ NBAgent/
 │   ├── ingest.yml              # ~7 AM PT daily — ingests ESPN data, runs quant
 │   ├── injuries.yml            # Every :15 and :45, 11:45 AM–8:45 PM PT — scrapes Rotowire, runs lineup_watch + lineup_update, rebuilds site
 │   ├── auditor.yml             # Chains off ingest — grades yesterday's picks + skips, writes audit_log + audit_summary
-│   ├── analyst.yml             # Chains off auditor — runs rotowire → quant → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy
+│   ├── analyst.yml             # Chains off auditor — runs rotowire → quant → odds_prefetch → pre_game_reporter → analyst → odds_enrich → deploy (parlay step removed 2026-04-24)
 │   ├── odds.yml               # Manual-only — standalone odds fetch for mid-day re-runs
 │   └── odds_pretip.yml        # Every 30 min 3–7:30 PM PT — pre-tip odds sweep, updates picks.json + odds_pretip.json
 └── CLAUDE.md                   # This file
@@ -99,7 +101,7 @@ NBAgent/
 ## Workflow Chain
 
 ```
-ingest.yml → auditor.yml (post_game_reporter → auditor → season_context_updater) → analyst.yml (rotowire refresh → quant → playoff_matchup → odds_prefetch → pre_game_reporter → analyst → odds_enrich → parlay → deploy)
+ingest.yml → auditor.yml (post_game_reporter → auditor → season_context_updater) → analyst.yml (rotowire refresh → quant → playoff_matchup → odds_prefetch → pre_game_reporter → analyst → odds_enrich → deploy)  # parlay step removed 2026-04-24
 injuries.yml runs independently on :15/:45 schedule (rotowire → lineup_watch → lineup_update → site rebuild)
 odds_pretip.yml runs independently every 30 min 3–7:30 PM PT (pre-tip odds sweep → picks.json update → CLV baseline)
 post_game_reporter.py runs as first step of auditor.yml (fetches ESPN recaps + Rotowire news for yesterday's missed picks)
@@ -121,9 +123,9 @@ season_context_updater.py runs after auditor.py (date-gated to PLAYOFFS_R1_DATE 
 | pre_game_reporter.py | claude-sonnet-4-6 | 2048 | ESPN player news, nba_season_context.md | pre_game_news.json, context_flags.md |
 | analyst.py (Scout) | claude-sonnet-4-6 / opus-4-6 | 4096 | player_stats.json, injuries, lineups, game logs, nba_season_context, standings, team_defense_narratives, pre_game_news, player_profiles, leaderboard, odds_available.json | Scout shortlist (20–25 players) |
 | analyst.py (Pick) | claude-sonnet-4-6 | 32000 | Scout shortlist, filtered player_stats.json, injuries, audit_log (last 5), audit_summary, odds_available.json | picks.json (append), skipped_picks.json |
-| parlay.py | — (pure Python) | — | picks.json (market_implied_prob + confidence_pct), injuries_today.json, picks_review_YYYY-MM-DD.json | parlays.json (append): 5-10 ranked cards across Value/Standard/Reach odds buckets |
+| ~~parlay.py~~ | DELETED 2026-04-24 | — | — | — (Parlays tab now Builder-only with static guidance from `data/parlay_builder_guidance.md`) |
 | post_game_reporter.py | claude-sonnet-4-6 | 2048 | picks.json (yesterday), ESPN athlete news, Brave Search | post_game_news.json |
-| auditor.py | claude-sonnet-4-6 | 2048 | picks.json, parlays.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings, picks_review_YYYY-MM-DD.json (optional) | audit_log.json, audit_summary.json, updates picks + parlays in-place, grades skipped_picks.json |
+| auditor.py | claude-sonnet-4-6 | 2048 | picks.json, skipped_picks.json, player_game_log, post_game_news.json, nba_season_context, standings, picks_review_YYYY-MM-DD.json (optional) | audit_log.json, audit_summary.json, updates picks in-place, grades skipped_picks.json (parlay grading removed 2026-04-24) |
 | playoff_matchup.py | — (pure Python) | — | playoff_bracket.json, nba_master.csv, player_game_log.csv, player_whitelist.csv | playoff_matchup.json (no-op if bracket absent) |
 | injury_profiles.py | — (pure Python) | — | player_game_log.csv, nba_master.csv, player_whitelist.csv, injuries_today.json | injury_profiles.json |
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |
@@ -137,13 +139,13 @@ Full agent details → **@docs/AGENTS.md**
 ## Key Data Flows (non-obvious)
 
 - **`audit_summary.json`** is generated fresh after every auditor run by `save_audit_summary()`. The Analyst reads it as `## ROLLING PERFORMANCE SUMMARY` — provides season hit rates, per-prop rates, miss classification totals, and `skip_validation` per-rule false skip rates. Returns empty string if fewer than 3 audit entries exist (graceful cold-start).
-- **`player_stats.json`** is consumed by two agents: Analyst (pick generation) and Auditor (audit context injection for root-cause grading). The Parlay agent no longer reads this file — the 2026-04-22 combinatorial rewrite reads `picks.json` directly (market_implied_prob + confidence_pct per pick). Do not change `player_stats.json` schema without checking the Analyst and Auditor consumers.
+- **`player_stats.json`** is consumed by two agents: Analyst (pick generation) and Auditor (audit context injection for root-cause grading). Do not change `player_stats.json` schema without checking the Analyst and Auditor consumers. (The Parlay agent was deleted 2026-04-24 and never read this file in its final form anyway.)
 - **`picks.json`** is mutated in-place by four separate processes in sequence: Analyst appends new picks, lineup_watch.py mutates voided/risk fields, lineup_update.py writes `lineup_update` sub-objects (hourly, conditional on changes), Auditor grades results and tags `human_verdict`/`trim_reasons` from `picks_review_YYYY-MM-DD.json`. Always read the full file before writing — never overwrite with a subset.
 - **`skipped_picks.json`** is written fresh each morning by analyst (null grading fields), then graded by auditor the next morning. Committed by both `analyst.yml` and `auditor.yml`. Accumulates only today's skips — not a historical archive.
 - **`context/nba_season_context.md`** is injected into BOTH `analyst.py` and `auditor.py` prompts. Updates to this file affect both agents. **During playoffs it is auto-updated daily** by `season_context_updater.py` (runs in `auditor.yml` after `auditor.py`, date-gated to `PLAYOFFS_R1_DATE = 2026-04-18`): appends new series diary entries based on yesterday's completed postseason games, patches injury bullets where game performance changes status, and bumps the timestamp. Manual edits still work — the agent only appends within existing `##### (N) TEAM vs (N) TEAM` sections and replaces specific bullet lines it's asked to update.
 - **`pre_game_news.json`** staleness flags are picked up by `analyst.py` via the `⚠ CONTEXT FLAG` mechanism — Python-detected stale facts in `nba_season_context.md` are surfaced to the analyst as warnings without modifying the context file automatically.
 - **`post_game_news.json`** includes `web_narrative` fields (Brave Search summaries) for missed-pick players. Auditor renders these as `📰 WEB RECAP:` in the audit prompt — addresses ejections, foul trouble, and blowout context that ESPN athlete news misses.
-- **Parlay audit feedback loop** — RETIRED 2026-04-22. The LLM-based parlay agent was replaced with a pure-Python combinatorial menu builder that does not consume `parlay_lessons`/`parlay_reinforcements`. The auditor still writes those fields for audit-trail purposes, but they no longer flow back into pick selection. Card selection is now deterministic from `market_implied_prob` (odds) and `confidence_pct` (ranking).
+- **Parlay agent — DEPRECATED 2026-04-24.** `agents/parlay.py` deleted entirely. The 2026-04-22 combinatorial menu builder was retired after the parlay research pipeline (`tools/parlay_research_*.py`) demonstrated no archetype across the 4 buckets (Stable/Safe/Reach/Degen) produces positive `delta_vs_market`. The Parlays tab on the frontend now shows (a) a static, manually-authored guidance block from `data/parlay_builder_guidance.md` and (b) the preserved Interactive Parlay Builder widget. `data/parlays.json` is dead data — left on disk, not read or written by any agent.
 - **`odds_available.json`** is written by `ingest/odds_today.py --prefetch` early in `analyst.yml` (before the analyst runs). Consumed by `analyst.py` via `load_available_markets()` + `format_available_markets()` as an unconditional market availability gate: if no FanDuel alternate market exists for a player+prop+tier, the pick is forbidden (`no_market` skip). Gate disabled when file is missing or stale (graceful degradation — all picks proceed normally). `odds_today.json` is written later by `ingest/odds_today.py` (no flag) to enrich picks with market lines post-generation.
 - **Cross-workflow file persistence** — each GitHub Actions workflow does a fresh checkout. Files written but not committed by an upstream workflow are absent downstream. `lineups_today.json` and `skipped_picks.json` are both committed by `analyst.yml` so downstream hourly runs can read them. `playoff_career_log.csv` is committed by `ingest.yml` so that any playoff rows dual-written by `espn_player_ingest.py`'s `append_playoff_rows()` persist for consumption by `compute_playoff_splits()` in `quant.py` on the next run (inert during regular season — file will be clean in `git status` until postseason games flow through). When adding any cross-workflow feature, explicitly verify: (1) what files the feature writes, (2) which downstream workflow reads them, (3) whether they are committed before that workflow runs.
 
@@ -228,7 +230,7 @@ Five-tab dark theme SPA deployed to GitHub Pages via `build_site.py`.
 | Tab | Content |
 |-----|---------|
 | Today's Picks | Injury report dropdown, pick cards grouped by game (collapsible). Voided picks show strikethrough + VOIDED badge. DOUBTFUL/QUESTIONABLE picks show risk pills. Lineup Update shows ↑/↓ badge with expandable amendment detail. Review badges: ⚠ Caution (amber, trim verdict) and ⚠ Flagged (red, manual_skip verdict) shown below status badge when picks_review file present. Best Bets section below Top Picks: POSITIVE/STRONG edge picks ranked by calibrated edge; teal (POSITIVE) or green (STRONG) border; includes Odds + Sizing drawer. |
-| Parlays | Historical stats banner (hidden until graded history exists). Parlay cards with leg rows, implied odds, correlation badge, result once graded. H33 ⊖/⊕ cannibalization badges inline between same-team same-stat legs. "⚠ Leg at risk" banner when any leg player is voided. Custom Parlay Builder below system parlays: click picks to build, live odds/payout/edge, H33+correlation warnings, copy to clipboard. |
+| Parlays | **Builder-only as of 2026-04-24.** Static guidance block at top (rendered from `data/parlay_builder_guidance.md` via inline markdown→HTML; empty when file missing). Interactive Parlay Builder below: click picks from today's slate to build, live combined probability + American odds + payout + net calibrated edge, H33 cannibalization warnings + Pearson correlation badges between legs, Clear and Copy-to-clipboard actions. Auto-generated parlay menu (Stable/Safe/Reach/Degen tier drawers) deprecated after parlay research showed no archetype beats the FanDuel market. |
 | Results | Overall hit rate banner, 4 per-prop streak cards, 30-day hit rate trend chart (vanilla canvas), full pick history table. |
 | Audit Log | Latest auditor entry — hit rate stats, what worked, what to avoid, analyst instructions. Skip validation table. |
 | Research | Three collapsible sections stacked vertically. **Playoff Career Profiles** — sortable overview cards for ~58 players with career playoff deltas (PTS/REB/AST/3PM/FG%), season chips, expandable per-season breakdown; sort by Games / per-stat Δ / A–Z. **Playoff Game Explorer** — player/stat/season/round/opponent/H-A filters → tier hit rate table with bar charts + game log grouped by series with inferred round labels (R1/R2/CF/Finals). **Player Explorer** — current-season game log explorer, unchanged: filter by player, stat, home/away, rest days, spread bucket, game result, and opponent. Data sourced from `playoff_career_log.csv` (playoff sections) and `player_game_log.csv` (current-season section), both computed at build time. Static — no LLM calls, fully client-side. |
@@ -263,7 +265,7 @@ Never describe an agent as "operational," claim a "first real run," or treat man
 ## Sub-documents
 
 - **@docs/SESSION_CONTEXT.md** — Load this first on every new session. Dense handoff: current player_stats.json schema, live prompt format, all function signatures, design decisions, backtest verdicts, known gotchas, and active queue. Replaces the need to re-derive implementation state from source code.
-- **@docs/AGENTS.md** — Quant computations, Analyst prompt design, Parlay scoring logic, Auditor grading, all output schemas
+- **@docs/AGENTS.md** — Quant computations, Analyst prompt design, Auditor grading, all output schemas (parlay scoring deprecated 2026-04-24)
 - **@docs/DATA.md** — All CSV/JSON schemas, player whitelist with current roster, team abbreviation notes
 - **@docs/ROADMAP_active.md** — Open items, active queue, watch items, pending backtests
 - **@docs/ROADMAP_resolved.md** — Historical log of resolved issues and completed improvements
