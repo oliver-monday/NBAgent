@@ -1,222 +1,114 @@
 [
   {
-    "date": "2026-04-25",
-    "player_name": "Shai Gilgeous-Alexander",
-    "team": "OKC",
-    "opponent": "PHX",
-    "prop_type": "AST",
-    "tier_considered": 6,
+    "date": "2026-04-26",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "PHI",
+    "prop_type": "PTS",
+    "tier_considered": 25,
     "direction": "OVER",
-    "skip_reason": "no_market",
+    "skip_reason": "volatile_weak_combo",
     "rule_context": {
-      "player_name": "Shai Gilgeous-Alexander",
-      "prop_type": "AST",
-      "tier_considered": 6,
-      "reason": "no FanDuel market available for SGA"
+      "player_name": "Jaylen Brown",
+      "prop_type": "PTS",
+      "tier_considered": 25,
+      "hit_rate": "7/10",
+      "volatile": true,
+      "trend": "stable",
+      "reason": "VOLATILE + 7/10 at T25, trend not up \u2014 iron_floor exception requires trend=up to override. volatile_weak_combo fires unconditionally."
     },
-    "actual_value": 8.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-25",
-    "player_name": "Shai Gilgeous-Alexander",
-    "team": "OKC",
-    "opponent": "PHX",
+    "date": "2026-04-26",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "TOR",
     "prop_type": "3PM",
     "tier_considered": 1,
     "direction": "OVER",
-    "skip_reason": "no_market",
+    "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_name": "Shai Gilgeous-Alexander",
+      "player_name": "Donovan Mitchell",
       "prop_type": "3PM",
       "tier_considered": 1,
-      "reason": "no FanDuel market available for SGA"
+      "confidence_after_penalties": 72,
+      "minimum_floor": 75,
+      "reason": "VOLATILE overrides iron_floor on 3PM (both tags present); dossier HARD AVOID -5%; VOLATILE -3%; confidence 72% below 75% 3PM minimum floor."
     },
-    "actual_value": 1.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-25",
-    "player_name": "Cade Cunningham",
-    "team": "DET",
-    "opponent": "ORL",
-    "prop_type": "PTS",
-    "tier_considered": 15,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Cade Cunningham",
-      "prop_type": "PTS",
-      "tier_considered": 15,
-      "reason": "VOLATILE -3% reduces 70% overall to 67%; below 68% PTS/AST merit floor"
-    },
-    "actual_value": 27.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 27.0 \u2265 tier 15"
-  },
-  {
-    "date": "2026-04-25",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "NYK",
-    "prop_type": "REB",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Jalen Johnson",
-      "prop_type": "REB",
-      "tier_considered": 6,
-      "reason": "Offensive-first player extra-strictness gate fires; REB floor likely within 2 of T6; T4 not in FanDuel REB market"
-    },
-    "actual_value": 3.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 3.0 < tier 6"
-  },
-  {
-    "date": "2026-04-25",
-    "player_name": "Jalen Johnson",
-    "team": "ATL",
-    "opponent": "NYK",
+    "date": "2026-04-26",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "opponent": "LAL",
     "prop_type": "AST",
     "tier_considered": 4,
     "direction": "OVER",
     "skip_reason": "ast_hard_gate",
     "rule_context": {
-      "player_name": "Jalen Johnson",
+      "player_name": "Alperen Sengun",
       "prop_type": "AST",
       "tier_considered": 4,
-      "reason": "PF/SF position with opp_today=mid; AST T4+ hard gate requires soft defense for frontcourt player"
+      "position": "C",
+      "raw_avgs_ast": 5.7,
+      "opp_defense_rating": "mid",
+      "reason": "AST T4+ hard gate: position C triggers positional gate; opp_today=mid does not satisfy required 'soft' rating. Gate fires unconditionally."
     },
-    "actual_value": 5.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-04-25",
-    "player_name": "CJ McCollum",
-    "team": "ATL",
-    "opponent": "NYK",
+    "date": "2026-04-26",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "opponent": "HOU",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "LeBron James",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "confidence_after_penalties": 67,
+      "minimum_floor": 68,
+      "reason": "VOLATILE -3% + vs_tough=56% penalty + iron_floor maintained tier but confidence dropped to 67%, below 68% AST/PTS general floor."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "POR",
     "prop_type": "PTS",
     "tier_considered": 20,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_name": "CJ McCollum",
+      "player_name": "Victor Wembanyama",
       "prop_type": "PTS",
       "tier_considered": 20,
-      "reason": "Player absent from QUANT STATS section; cannot evaluate without quant data"
+      "confidence_after_penalties": 67,
+      "minimum_floor": 68,
+      "reason": "QUES status, VOLATILE -3%, vs_tough=61% penalty; confidence 67% below 68% general floor. Only 2 series games (SHORT_SAMPLE). FG_MARGIN_THIN also present."
     },
-    "actual_value": 17.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 17.0 < tier 20"
-  },
-  {
-    "date": "2026-04-25",
-    "player_name": "Karl-Anthony Towns",
-    "team": "NYK",
-    "opponent": "ATL",
-    "prop_type": "PTS",
-    "tier_considered": 15,
-    "direction": "OVER",
-    "skip_reason": "no_market",
-    "rule_context": {
-      "player_name": "Karl-Anthony Towns",
-      "prop_type": "PTS",
-      "tier_considered": 15,
-      "reason": "FG_MARGIN_THIN steps T15\u2192T10; T10 not in FanDuel market; KAT not found in market availability"
-    },
-    "actual_value": 20.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 20.0 \u2265 tier 15"
-  },
-  {
-    "date": "2026-04-25",
-    "player_name": "Karl-Anthony Towns",
-    "team": "NYK",
-    "opponent": "ATL",
-    "prop_type": "REB",
-    "tier_considered": 8,
-    "direction": "OVER",
-    "skip_reason": "no_market",
-    "rule_context": {
-      "player_name": "Karl-Anthony Towns",
-      "prop_type": "REB",
-      "tier_considered": 8,
-      "reason": "Karl-Anthony Towns not found in FanDuel market availability section"
-    },
-    "actual_value": 10.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 10.0 \u2265 tier 8"
-  },
-  {
-    "date": "2026-04-25",
-    "player_name": "Anthony Edwards",
-    "team": "MIN",
-    "opponent": "DEN",
-    "prop_type": "PTS",
-    "tier_considered": 20,
-    "direction": "OVER",
-    "skip_reason": "no_market",
-    "rule_context": {
-      "player_name": "Anthony Edwards",
-      "prop_type": "PTS",
-      "tier_considered": 20,
-      "reason": "FG_COLD-20% steps T20\u2192T15; min_floor<24 steps T15\u2192T10; T10 not in FanDuel market for Edwards"
-    },
-    "actual_value": 5.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 5.0 < tier 20"
-  },
-  {
-    "date": "2026-04-25",
-    "player_name": "Anthony Edwards",
-    "team": "MIN",
-    "opponent": "DEN",
-    "prop_type": "3PM",
-    "tier_considered": 2,
-    "direction": "OVER",
-    "skip_reason": "no_market",
-    "rule_context": {
-      "player_name": "Anthony Edwards",
-      "prop_type": "3PM",
-      "tier_considered": 2,
-      "reason": "Trend=down steps T2\u2192T1; T1 not in FanDuel market for Edwards"
-    },
-    "actual_value": 1.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 1.0 < tier 2"
-  },
-  {
-    "date": "2026-04-25",
-    "player_name": "Ausar Thompson",
-    "team": "DET",
-    "opponent": "ORL",
-    "prop_type": "REB",
-    "tier_considered": 4,
-    "direction": "OVER",
-    "skip_reason": "merit_below_floor",
-    "rule_context": {
-      "player_name": "Ausar Thompson",
-      "prop_type": "REB",
-      "tier_considered": 4,
-      "reason": "n_series=2 with VOLATILE tag caps confidence at 68%; below 72% REB minimum floor per auditor carry-forward rule"
-    },
-    "actual_value": 8.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]

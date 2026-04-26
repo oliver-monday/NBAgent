@@ -1,0 +1,374 @@
+[
+  {
+    "date": "2026-04-26",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile AST tag with a raw_avg of only 6.4 \u2014 barely above the T6 threshold \u2014 against a tough BOS defense. The typical miss is 2.0 below threshold and BOS's defensive recency is stable, meaning there is no softening trend to exploit; one quiet playmaking night lands this below 6."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile 3PM tag with raw_avg of 2.7 and a mid-caliber 75% confidence against a BOS defense that is not softening (def_recency delta near flat). PHI is a +7.5 underdog, creating potential for game-script-driven shot selection shifts if the deficit grows early."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile PTS tag with raw_avg of only 22.5 and a PHI defense that has tightened meaningfully in recent games (def_recency delta -6.1%). The FG_MARGIN_NEG step already fired, signaling recent shooting struggles \u2014 one cold-FG night at a volatile scorer's floor lands this below 20."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile AST tag with raw_avg of 5.8 \u2014 below the T6 threshold \u2014 and series production of only 1/3 at T6. The 76% confidence rests heavily on the broader 10-game window while the current series sample actively contradicts the floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "post_miss_hr is only 71% with a lift below 1.0 (0.93), meaning Barrett historically performs worse after a miss rather than bouncing back \u2014 structural fragility at a tier where the H2H sample is limited (1/2 in regular season) and the series context is the primary anchor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "post_miss_hr of only 60% with a lift of 0.70 is the lowest bounce-back rate on the slate \u2014 Mobley is explicitly worse at hitting T2 AST after missing it, not better. Against a tough TOR defense, this post-miss suppression makes the structural floor materially softer than the 80% headline suggests."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "post_miss_hr of 57% with a 0.79 lift signals genuine slump persistence on AST \u2014 Harden misses T4 AST in back-to-back games more than half the time after a miss. The series 1/3 at T6 underperformance and no H2H data against this opponent adds uncertainty on top of that structural fragility."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "LAL's defense has tightened dramatically in the last 5 games (def_recency delta -12.2%, flagged 'tough'), the sharpest defensive improvement on the slate. FG_COLD at -14% is just below the mandatory step threshold \u2014 one more cold-shooting game in this tough defensive environment risks falling below even a conservative T10 floor."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 8,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile REB tag with raw_avg of only 8.4 \u2014 barely above T8 \u2014 against a LAL defense with the sharpest recent tightening on the slate (def_recency -12.2% flagged tough). The post_miss_hr of 73% with a below-1.0 lift (0.85) indicates this is not a bounce-back-reliable prop."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "post_miss_hr of 70% with a materially below-1.0 lift (0.80) signals slump persistence on 3PM, not bounce-back. LAL's def_recency is the toughest on the slate (-12.2%), and the 3PM volatile/moderate profile means a cold-shooting game in a tight LAL defensive scheme can easily land below 2."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile 3PM tag with raw_avg of only 1.5 \u2014 the thinnest margin on any 3PM pick on the slate \u2014 and series production of only 1/3 at T2. The H2H anchor is strong but the series underperformance against this specific opponent is a direct contradiction of the floor, and one 0-for-3-from-three night (well within normal variance for a 1.5 avg) produces a miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Volatile AST tag with series production of only 1/3 at T6 \u2014 the tier immediately above the selected T4 \u2014 and the prior-series Castle REB audit lesson explicitly flagged that VOLATILE tags combined with small series samples anchor confidence too high. The same logic applies here: 70% confidence on a volatile player with active series underperformance is structurally fragile."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 19.8 with avg_minutes of 25.0 \u2014 the thinnest minutes floor on the slate for a rotation player in a non-elimination context. A single game where Harper is managed to 20 minutes or sits with foul trouble produces a miss; the consistent tag and 95% overall rate cannot insulate against this minutes fragility given how close the floor sits to the line."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Triple-stacked structural fragility: VOLATILE PTS tag, FG_MARGIN_THIN at 1% (the thinnest margin triggering a mandatory step-down), trend=down, and a post_miss_hr of 68% with a 0.91 lift \u2014 meaning Ingram is actively worse after missing, not resilient. At 70% confidence with all four negative signals present simultaneously, this pick has the weakest structural foundation on the slate."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "post_miss_hr of 67% with a deeply negative lift (0.75) \u2014 the worst AST bounce-back rate on the slate \u2014 paired with a raw_avg of only 2.8 sitting just above the T2 threshold. Ingram is structurally worse at hitting AST after a miss, and his scoring volatility often correlates with reduced playmaking activity."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Paul George",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "min_floor of 23.7 with a typical_miss of 10.0 points below threshold \u2014 the largest miss magnitude on the slate \u2014 means when George underperforms it is a significant miss, not a near-miss. The +7.5 underdog spread creates genuine Q4 rest risk if PHI falls behind early, and the 70% confidence with no iron_floor leaves this pick exposed to any minutes compression."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]

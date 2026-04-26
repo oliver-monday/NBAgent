@@ -1,71 +1,67 @@
 {
-  "date": "2026-04-25",
-  "generated_at": "2026-04-25T07:04:46.662034-07:00",
+  "date": "2026-04-26",
+  "generated_at": "2026-04-26T07:06:01.752139-07:00",
   "player_notes": {
-    "victor wembanyama": "Out (concussion) for Game 3 vs. Blazers; status for Game 4 unknown \u2014 monitor closely. His absence elevated Castle and Harper's roles significantly.",
-    "kevin durant": "Out for Lakers vs. Rockets Game 3; remains out heading into Game 4 \u2014 major usage boost for remaining Rockets scorers.",
-    "austin reaves": "Out for Lakers vs. Rockets Game 3; monitor availability for Game 4 \u2014 minutes redistributed among Lakers guards.",
-    "joel embiid": "Out (appendectomy) for 76ers vs. Celtics Game 3; availability for Game 4 uncertain \u2014 significant negative impact on PHI rebounding and scoring props.",
-    "immanuel quickley": "Out for remainder of Raptors vs. Cavaliers series (aggravated hamstring strain) \u2014 boosts usage for Barrett, Barnes, and other Raptors guards.",
-    "mikal bridges": "Scoreless and benched for most of the second half in Knicks' Game 3 loss; role reduction risk for Game 4 \u2014 confidence in pts/3PM props lowered.",
-    "stephon castle": "Stepped into starting/featured role with Wembanyama out, scoring a game-high 33 in Game 3 \u2014 elevated props if Wemby remains out for Game 4.",
-    "lebron james": "Scored 29 pts including clutch tying 3 in regulation; active and performing at high level with Rockets missing Durant \u2014 strong prop confidence.",
-    "jayson tatum": "25 pts in Game 3 win; continuing strong production in return from injury \u2014 prop confidence high.",
-    "jaylen brown": "25 pts in Game 3 win \u2014 solid role and usage confirmed, props remain reliable.",
-    "rj barrett": "Career playoff-high 33 pts in Game 3 rout with Quickley out for series \u2014 increased usage expected, positive prop outlook.",
-    "scottie barnes": "Career playoff-high 33 pts and 11 assists in Game 3 with Quickley out \u2014 expect elevated role for remainder of series."
+    "anthony edwards": "Exited Game 4 with apparent left knee hyperextension; undergoing MRI. Status for Game 5 is uncertain \u2014 monitor closely before betting any props.",
+    "donte divincenzo": "Suffered torn right Achilles tendon in Game 4. Out for remainder of playoffs \u2014 remove from all prop consideration.",
+    "kevin durant": "Missed Game 3 vs. Lakers; status for Game 4 (Sunday) still unclear per coach Udoka. If out again, Rockets' usage/volume redistributes significantly.",
+    "austin reaves": "Was ruled out for Game 3. Monitor status for Game 4 vs. Rockets \u2014 if out, Lakers role players see elevated usage.",
+    "joel embiid": "Missed Game 3 vs. Celtics recovering from appendectomy. Status for Game 4 vs. Celtics unclear \u2014 absence inflates Celtics' counting stats, deflates 76ers' frontcourt props.",
+    "victor wembanyama": "Out Game 3 with concussion. Monitor availability for Game 4 vs. Blazers \u2014 if still out, Castle/Harper usage remains elevated.",
+    "ayo dosunmu": "Exploded for 43 points in Game 4 with Edwards and DiVincenzo both injured. Expect elevated usage and scoring role in Game 5 if Edwards remains out.",
+    "stephon castle": "Scored 33 points in Game 3 without Wembanyama. If Wemby remains out for Game 4, Castle is a strong points/assists target."
   },
   "game_notes": {
-    "LAL vs HOU": "Kevin Durant (out) and Austin Reaves (out) both missed Game 4 \u2014 significant rotation implications for both sides. Rockets players face increased pressure with Durant sidelined.",
-    "SAS vs POR": "Victor Wembanyama (concussion) out for Game 3; Game 4 availability unknown \u2014 Castle and Harper/bench players see major minute and usage spikes if he remains out.",
-    "BOS vs PHI": "Joel Embiid (appendectomy) missed Game 3 and status for Game 4 is uncertain \u2014 deflates 76ers big man prop options and boosts Celtics frontcourt rebound props.",
-    "CLE vs TOR": "Immanuel Quickley ruled out for entire series (hamstring) \u2014 expect Barrett and Barnes to sustain elevated usage and stat lines for remaining games."
+    "MIN vs DEN": "Anthony Edwards (knee, MRI) and Donte DiVincenzo (torn Achilles) both left Game 4. Edwards' Game 5 status is critical \u2014 his absence would massively inflate Dosunmu and other Wolves' usage.",
+    "LAL vs HOU": "Kevin Durant missed Game 3 and his Game 4 status is uncertain. Austin Reaves also missed Game 3 \u2014 both players' availability must be confirmed before locking Lakers/Rockets props.",
+    "SAS vs POR": "Victor Wembanyama (concussion) missed Game 3. If still out for Game 4, Castle and Harper remain high-usage scoring targets.",
+    "BOS vs PHI": "Joel Embiid (appendectomy) missed Game 3. His Game 4 status is unclear \u2014 if out, Celtics' stars face a weaker defensive assignment and 76ers' frontcourt props are diminished."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 49,
+  "filtered_item_count": 50,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Immanuel Quickley (TOR)",
-      "current_context_fact": "Immanuel Quickley (TOR) \u2014 Right hamstring tightness... Day-to-day \u2014 monitor for G3 (Apr 23 at Toronto). TOR guard rotation without Quickley relies on Barrett + Shead.",
-      "conflict": "News confirms Quickley aggravated his strained right hamstring and will NOT be available for the remainder of Toronto's first-round series against Cleveland \u2014 no longer day-to-day, now out for the entire series.",
+      "player_or_team": "Donte DiVincenzo (MIN)",
+      "current_context_fact": "DiVincenzo is not mentioned in the season context document at all \u2014 no injury note exists for him.",
+      "conflict": "Today's news reports that Donte DiVincenzo suffered a torn right Achilles tendon in Game 4 vs. Denver. Charles Barkley cites injuries to both Edwards and DiVincenzo as reasons MIN cannot celebrate. This is a new season-ending injury not reflected anywhere in the context doc.",
       "urgency": "critical",
-      "suggested_action": "Upgrade Quickley's status from 'day-to-day' to 'OUT for remainder of R1 vs CLE series.' Remove any monitoring language. Update TOR injury context to reflect that his absence is now confirmed for all remaining games in this series."
+      "suggested_action": "Add DiVincenzo to the Season-Ending Absences (OFS) section: 'Donte DiVincenzo (MIN) \u2014 Torn right Achilles tendon, Game 4 vs DEN (Apr 25). Season over. Adds to MIN's injury concerns heading into potential R2.' Also update the DEN-MIN series diary G4 entry and the playoff injury landscape to note this as a second significant MIN injury alongside Edwards."
     },
     {
-      "player_or_team": "Damian Lillard (POR)",
-      "current_context_fact": "Damian Lillard (POR) \u2014 Achilles torn in 2025 playoffs. Out all season.",
-      "conflict": "News reports that the Trail Blazers have 'not ruled Damian Lillard out from returning for the NBA playoffs,' per Ramona Shelburne \u2014 suggesting a potential return is at least being discussed, which directly conflicts with the 'Out all season' designation.",
+      "player_or_team": "Anthony Edwards (MIN)",
+      "current_context_fact": "G4: Left game with a LEFT knee injury after only 18 min (5 pts, 1-8 FG); did not return; severity unclear with testing underway postgame. Now listed QUES per injury report.",
+      "conflict": "Today's news confirms Edwards 'will undergo an MRI after leaving Saturday's Game 4 win with an apparent hyperextension of his left knee.' The injury is now described specifically as a hyperextension, and an MRI is confirmed as the next diagnostic step. The context doc notes severity is unclear \u2014 MRI results are still pending but the mechanism (hyperextension) is now confirmed.",
       "urgency": "critical",
-      "suggested_action": "Remove Lillard from the confirmed season-ending absences list or add a caveat that POR has not officially ruled him out for the playoffs. Flag for immediate monitoring \u2014 if cleared, this would be a major roster development affecting SAS vs POR series props and POR player role context."
+      "suggested_action": "Update Edwards' injury note in the playoff injury landscape to specify the mechanism: 'apparent hyperextension of left knee; MRI scheduled.' Status remains QUES pending MRI results. This is the most critical availability variable for G5 of DEN-MIN."
     },
     {
       "player_or_team": "Kevin Durant (HOU)",
-      "current_context_fact": "LAL vs HOU G3 diary: 'Durant was ruled OUT again (ankle injury, now listed QUES)'",
-      "conflict": "News confirms Durant was downgraded from questionable to OUT before Game 3 \u2014 the 'QUES' tag in the game diary should be updated to reflect he is OUT for G3 (already played) and his status for G4 remains the key variable. The news also confirms this is an ankle injury specifically.",
+      "current_context_fact": "Context doc G4 LAL-HOU entry states: 'Durant's ankle status is THE variable \u2014 if he remains out, LAL faces a sweep opportunity.' The injury landscape lists Durant with a 'right knee contusion' and separately references an 'ankle injury' in the G3 diary.",
+      "conflict": "Today's news (Apr 25) states: 'Kevin Durant improving, but Game 4 status vs. Lakers unclear' \u2014 Ime Udoka said Saturday that Durant was 'doing better' but G4 availability is still unclear. This confirms Durant remains OUT for G4 (Apr 27) with status unresolved, consistent with the context doc, but the 'improving' characterization is a new development that slightly elevates his G4 return probability versus the prior framing.",
       "urgency": "monitor",
-      "suggested_action": "Update G3 diary and injury landscape to confirm Durant was OUT for G3 with ankle injury (not merely 'ruled OUT again, listed QUES'). Clarify his G4 status as unknown pending further updates. The G3 diary already reflects the DNP result correctly, but the injury landscape entry should be updated from 'QUES' to 'OUT G3, G4 TBD (ankle).'"
+      "suggested_action": "Update Durant's injury note in the playoff injury landscape and LAL-HOU series diary to reflect: 'Durant described as improving by Udoka (Apr 25) but G4 status still unclear \u2014 monitor final injury report before G4 (Apr 27).' The ankle injury label should be reconciled \u2014 context doc references both knee contusion (original) and ankle (G3 diary); clarify which is the current active injury."
     },
     {
-      "player_or_team": "Austin Reaves (LAL)",
-      "current_context_fact": "Austin Reaves (LAL) \u2014 Grade 2 oblique strain... 'out for the majority of the first-round series; earliest first week of May.' 12-25% reinjury risk if rushed.",
-      "conflict": "News confirms Reaves was downgraded from questionable to OUT before Game 3 \u2014 consistent with existing context, but the news confirms he remains OUT through at least G3. No new return timeline information, but the downgrade from QUES to OUT is a confirmatory data point.",
+      "player_or_team": "Devin Booker (PHX)",
+      "current_context_fact": "Booker has no injury flag in the playoff injury landscape or OKC-PHX series diary beyond general performance notes.",
+      "conflict": "Today's news reports: 'Suns star Devin Booker briefly left Saturday's Game 3 with a left ankle injury.' He returned to the game but the ankle injury is a new documented concern not reflected in the context doc. With G4 (elimination game) upcoming, this is a relevant availability/performance variable.",
       "urgency": "monitor",
-      "suggested_action": "Update injury landscape to note Reaves was officially confirmed OUT for G3 (downgraded from QUES). Status for G4 remains per existing timeline estimate (earliest first week of May). No fundamental change to the existing assessment needed."
+      "suggested_action": "Add Booker to the Active With Documented Concerns section of the playoff injury landscape: 'Devin Booker (PHX) \u2014 Left ankle injury, briefly exited G3 (Apr 25) but returned. Day-to-day heading into G4 (elimination). Monitor final injury report.' Also note in the OKC-PHX G3 diary entry."
+    },
+    {
+      "player_or_team": "Jalen Williams (OKC)",
+      "current_context_fact": "G3 diary entry states: 'Jalen Williams still OUT' and 'Jalen Williams' hamstring status is THE primary OKC variable.' Injury landscape lists him as questionable.",
+      "conflict": "Today's news from the OKC G3 recap confirms: 'Ajay Mitchell added 15 in place of the injured Jalen Williams' \u2014 Williams missed G3, consistent with context. However, the news also confirms G4 is an elimination game for PHX (OKC leads 3-0), and there is no updated Williams status reported for G4 in today's news. No direct conflict, but the context doc's G3 entry already covers his absence \u2014 no new conflicting information on his return timeline.",
+      "urgency": "monitor",
+      "suggested_action": "No immediate change required \u2014 context doc accurately reflects Williams as OUT for G3. Before G4 picks, verify whether Williams has been cleared or upgraded for G4 via the official OKC injury report, as his return for an elimination game is plausible and would significantly affect OKC prop ceilings."
     },
     {
       "player_or_team": "Nickeil Alexander-Walker (ATL)",
-      "current_context_fact": "Player note describes Alexander-Walker's career playoff history and production context, referencing his 20.8 PPG regular season average. No mention of any individual awards.",
-      "conflict": "News reports Alexander-Walker was named this season's Most Improved Player \u2014 a significant individual award not reflected anywhere in the season context document. This is relevant context for his role/performance narrative and confirms his breakout season was league-recognized.",
+      "current_context_fact": "Player note states Alexander-Walker had a 'career-best 20.8 PPG' regular season and flags cross-season PTS CAUTION. No mention of any award.",
+      "conflict": "Today's news reports: 'Hawks' Nickeil Alexander-Walker named Most Improved Player' \u2014 this is a confirmed new award that is not reflected in the context doc. While it does not change his on-court role or stats, it is a notable contextual fact and confirms his regular-season emergence was league-recognized.",
       "urgency": "monitor",
-      "suggested_action": "Add to Alexander-Walker's player note that he won the 2025-26 Most Improved Player award. Note it is 'the second straight Atlanta Hawks player to win the award.' This does not change his playoff prop treatment but is relevant biographical/contextual information for analysts."
-    },
-    {
-      "player_or_team": "TOR vs CLE \u2014 Game 3 score discrepancy",
-      "current_context_fact": "Game 3 (Apr 23) diary entry: 'TOR 126, CLE 104 | CLE leads 2-1' \u2014 Barnes 33/5/11, Barrett 33/5/5 (12-19 FG, 6 3PM)",
-      "conflict": "News headline states 'Barnes, Barrett each score 33 as Raptors beat Cavaliers 126-104' and describes Barrett adding 'a career playoff-high 33 points' \u2014 consistent with context. However, news also states 'Scottie Barnes set career playoff highs with 33 points and 11 assists' \u2014 the 11 assists figure for Barnes matches the context (11 AST), confirming accuracy. No direct conflict found on scores or stat lines.",
-      "urgency": "monitor",
-      "suggested_action": "No update needed \u2014 news confirms existing G3 diary facts. Barnes 33/11 AST and Barrett 33/6 3PM are confirmed. Retain existing diary entry as accurate."
+      "suggested_action": "Update Alexander-Walker's player note to reflect his 2025-26 Most Improved Player award. This is informational context rather than a stat/role conflict, but should be recorded for completeness. No change to the PTS CAUTION directive warranted."
     }
   ],
   "staleness_flags": []
