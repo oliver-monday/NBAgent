@@ -1,48 +1,48 @@
 {
-  "generated_at": "2026-04-25",
-  "entries_included": 49,
+  "generated_at": "2026-04-26",
+  "entries_included": 50,
   "overall": {
-    "total_picks": 1073,
-    "voided": 65,
-    "hits": 914,
+    "total_picks": 1098,
+    "voided": 66,
+    "hits": 939,
     "misses": 143,
-    "injury_exclusions": 6,
-    "hit_rate_pct": 87.0
+    "injury_exclusions": 7,
+    "hit_rate_pct": 87.3
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 404,
-      "hits": 346,
+      "picks": 418,
+      "hits": 360,
       "injury_exclusions": 3,
-      "hit_rate_pct": 86.3
+      "hit_rate_pct": 86.7
     },
     "REB": {
-      "picks": 154,
-      "hits": 134,
+      "picks": 159,
+      "hits": 139,
       "injury_exclusions": 0,
-      "hit_rate_pct": 87.0
+      "hit_rate_pct": 87.4
     },
     "AST": {
-      "picks": 328,
-      "hits": 275,
-      "injury_exclusions": 2,
-      "hit_rate_pct": 84.4
+      "picks": 333,
+      "hits": 280,
+      "injury_exclusions": 3,
+      "hit_rate_pct": 84.8
     },
     "3PM": {
-      "picks": 165,
-      "hits": 134,
+      "picks": 166,
+      "hits": 135,
       "injury_exclusions": 1,
-      "hit_rate_pct": 81.7
+      "hit_rate_pct": 81.8
     }
   },
   "high_conviction_summary": {
     "threshold_market_implied_prob": 85.0,
-    "n_days_included": 1,
-    "n_picks": 23,
-    "hits": 22,
+    "n_days_included": 2,
+    "n_picks": 45,
+    "hits": 44,
     "misses": 1,
-    "hit_rate_pct": 95.7,
-    "delta_vs_overall_pp": 8.7
+    "hit_rate_pct": 97.8,
+    "delta_vs_overall_pp": 10.5
   },
   "miss_classification_totals": {
     "variance": 60,
@@ -50,23 +50,23 @@
     "model_gap_signal": 8,
     "model_gap_rule": 49,
     "workflow_gap": 6,
-    "injury_event": 6
+    "injury_event": 7
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 510,
-      "hits": 432,
-      "hit_rate_pct": 84.7
+      "picks": 524,
+      "hits": 446,
+      "hit_rate_pct": 85.1
     },
     "76-80": {
-      "picks": 438,
-      "hits": 379,
-      "hit_rate_pct": 86.5
+      "picks": 447,
+      "hits": 388,
+      "hit_rate_pct": 86.8
     },
     "81-85": {
-      "picks": 69,
-      "hits": 61,
-      "hit_rate_pct": 88.4
+      "picks": 70,
+      "hits": 62,
+      "hit_rate_pct": 88.6
     },
     "86+": {
       "picks": 18,
@@ -75,48 +75,55 @@
     }
   },
   "recent_lessons": [
-    "Jokic AST T8 missed badly (3 actual vs 8 pick) in a blowout loss (DEN lost by 17). The DEN@MIN game was COMPETITIVE (17-point margin, classified borderline blowout). The VOLATILE penalty and MIN\u00d7AST suppressor were both active, and the lineup_update correctly flagged downside (Gordon OUT, revised to 67%). The pick ran at 70% despite the amendment signal. Rule fix: when lineup_update direction=down revises confidence below the prop-type floor (68% for AST), the pick should be voided or stepped down further \u2014 do not run AST picks when the amendment drops confidence below the floor.",
-    "Donovan Mitchell PTS T20 missed (15 actual vs 20 pick) in a TOR blowout win (TOR won by 22 \u2014 BLOWOUT). Mitchell had a pre-game ankle concern (listed questionable) and the game went to a 22-point TOR margin. The blowout game-script suppressed his scoring in the second half as CLE trailed badly. The VOLATILE tag and FG_MARGIN_THIN:4% step-down from T25 to T20 were correctly applied, but the blowout risk from CLE being a road underdog in a must-win TOR home game was not sufficiently penalized. Rule fix: when a road team is in a desperate must-win road context (down 0-2 in series) against a home team with home-crowd energy, apply an additional blowout-risk adjustment to PTS props for the road team's star scorer.",
-    "Jamal Murray PTS T20 missed (16 actual vs 20 pick) in the same DEN blowout loss (DEN lost 96-113, COMPETITIVE/borderline blowout). FG_COLD:-9% was noted but classified as 'below 15% threshold' and not actioned. Murray scored 16 in 35 minutes \u2014 the blowout script (DEN lost by 17) compressed his second-half production. The amendment correctly flagged upside (Jokic OUT \u2192 revised to 85%) but the pick still missed because the blowout suppressed Murray's floor despite elevated usage. The lesson: usage redistribution from a star's absence does not override game-script blowout suppression \u2014 if the team loses badly, the secondary star's counting stats are still compressed by garbage-time. Do not upgrade PTS confidence on absence-driven redistribution when the game is already trending toward a blowout.",
     "Mikal Bridges 3PM T1 missed (0 actual, 21 minutes played). The human verdict was 'trim' citing VOLATILE and raw_avg_3PM of only 1.4. The post-game news confirms he played only 21 minutes with 0-for-2 from three \u2014 reduced role via coach's decision in a close game. With raw_avg_3PM of 1.4 and no iron_floor, a non-iron-floor 3PM T1 pick for a player with documented VOLATILE tag and only 21 projected/actual minutes is structurally too thin. Rule fix: for non-iron-floor 3PM T1 picks where raw_avg_3PM < 1.5, require iron_floor or skip entirely \u2014 the distribution is too wide to reliably clear T1.",
     "CJ McCollum AST T2 missed (1 actual vs 2 pick) despite 9/10 overall hit rate and consistent tag. He played 35 full minutes and scored 23 points as the hero of a 1-point ATL win \u2014 a scoring-mode hero game where he did not distribute. The tier_walk correctly identified T2 as a structural near-certain floor, but in a close game where McCollum was the go-to scorer (23 PTS, hero role), his assist generation was suppressed by isolation usage. Model gap: the system does not currently flag hero-scorer role compression risk on AST props for non-primary playmakers in close-game crunch-time contexts. This is a model_gap_signal \u2014 no quant field captures 'player will enter hero-scorer isolation mode in a 1-point game.'",
     "REB is the structural weakness of this slate: 3 misses came from 3 different REB picks (Paul George REB T4: 0 actual, Jayson Tatum REB T8: 5 actual, Stephon Castle REB T4: 2 actual). All three players had non-zero minutes (41, 42, 34 respectively) and were not injury-limited. REB outcomes are more volatile game-to-game than PTS or AST, and the 57.1% REB hit rate on this slate (4/7) should prompt structural review of REB tier selection discipline.",
     "Tatum REB T8 miss reveals that the 'vs_tough=60%' and 'competitive=57%' signals at T8 were meaningful warnings that were insufficiently weighted. The tier_walk acknowledged these as 'concerning' but still emitted at 72% exactly at the REB minimum floor \u2014 this is the weakest possible confidence for a pick and should trigger a skip or lower-tier evaluation. When REB vs_tough and competitive rates are both below 65% at the selected tier, the pick is borderline at best.",
     "Paul George REB T4 with raw_avg_REB of 3.8 (below the T4 threshold) and actual output of 0 rebounds in 41 minutes is a clear signal: picking REB from below the player's average creates thin distributional support. The trim note flagged this correctly ('raw_avg_REB of 3.8 is below the T4 threshold') but the pick still ran. When raw_avg is below pick_value, the pick is already in the tail of the distribution \u2014 REB props should require raw_avg strictly above pick_value, not at or below it.",
     "Castle REB T4 miss (2 actual in 34 minutes) occurred in a COMPETITIVE game (SAS won by 12) \u2014 not a blowout, not a late-game coasting situation. The VOLATILE tag on Castle REB was applied (-3%) but the underlying 80% base was driven by only 2 series games. Small series samples (n=2) should not anchor REB confidence at 80% when the VOLATILE tag is also present; the combination should produce a more significant reduction or a skip.",
-    "The human_verdict='trim' flags on REB picks (George, Tatum, Queta) correctly identified the structural fragility of these picks. The trim rationale on George REB ('raw_avg_REB of 3.8 is below the T4 threshold, post_miss_hr for REB is only 50%') and Tatum REB ('VOLATILE on REB, PHI def_recency tightened') were accurate pre-game warnings. The system's trim/manual_skip verdicts are better-calibrated than the base picks on REB props \u2014 when the human reviewer trims a REB pick, that signal should be treated as a near-skip."
+    "The human_verdict='trim' flags on REB picks (George, Tatum, Queta) correctly identified the structural fragility of these picks. The trim rationale on George REB ('raw_avg_REB of 3.8 is below the T4 threshold, post_miss_hr for REB is only 50%') and Tatum REB ('VOLATILE on REB, PHI def_recency tightened') were accurate pre-game warnings. The system's trim/manual_skip verdicts are better-calibrated than the base picks on REB props \u2014 when the human reviewer trims a REB pick, that signal should be treated as a near-skip.",
+    "Anthony Edwards AST T2 miss (0 actual): the pick was undone by an in-game left knee injury exit at 18 minutes, not by analytical error. The analyst's concern about G3 load management (24 min) was directionally correct as a risk signal, but the pre-pick confidence of 82% appropriately reflected a structurally sound T2 pick given the injury_status was NOT_LISTED at check time. The injury event cannot be predicted from available data; however, the prior-game minutes reduction pattern (24 min in G3) was a documented signal in the pick object and the analyst noted it \u2014 this represents appropriate risk acknowledgment on a pick that still warranted selection. No lesson applicable to selection logic: miss is an injury_event.",
+    "The 81-85% confidence band registered 50% actual hit rate (1/2) against an 83% expectation \u2014 both picks in this band were Murray AST T4 (hit) and Edwards AST T2 (miss via injury). The band underperformance is entirely attributable to the injury event, not to miscalibration. No recalibration is warranted.",
+    "The human_verdict 'manual_skip' applied to OG Anunoby REB T6 (citing raw_avg 5.7 below pick threshold) was overridden by the actual outcome of 10 rebounds \u2014 the strongest blowout-side REB overage on the slate. The NYK win by 16 in Atlanta created a game script where Anunoby played 40 minutes at full load, generating well above the T6 threshold. The raw_avg-below-threshold skip rule may be overcautious for reliable rebounders in competitive playoff games where minutes are guaranteed."
   ],
   "recent_reinforcements": [
-    "REB props went 6/6 (100%) \u2014 the tier-walking discipline of applying 25th-pct gates, stepping from T6\u2192T4 when the gate fires, and respecting iron_floor tags produced a clean sweep across Mobley, Barnes, Randle, Johnson, and Anunoby. Continue applying this structured floor logic on all REB picks.",
-    "76-80% confidence band outperformed at 85.7% actual vs 78.0% expected \u2014 the higher-conviction picks (Harden 3PM T2, Barnes PTS/REB/AST, Jokic PTS/REB) were well-calibrated and delivered. This band is performing above expectation; continue prioritizing well-supported picks in the 76-80% range.",
-    "The desperate home context read for TOR was validated: Barnes 33 PTS/5 REB/11 AST and Barrett 33 PTS/5 AST both significantly exceeded their pick tiers. The 'home underdog desperate context maximizes usage' heuristic was correct and earned large cushions on T10 and T15 PTS picks.",
-    "Jokic PTS T20 iron_floor held despite the DEN blowout loss (27 PTS actual vs 20 pick) and despite a lineup_update flagging downside. The iron_floor tier protection rule correctly prevented a step-down that would have been overcautious. Amendment was overcautious: revised down to 70% but pick hit at 80%.",
-    "CJ McCollum 3PM iron_floor T1 (top pick) hit 2/2 threes in a close 1-point ATL win \u2014 the iron_floor designation on a trend=up shooter at T1 with H2H 3/3 was structurally sound and delivered even in a game where his AST prop missed badly (1 AST). Iron_floor on 3PM correctly decoupled the shooting prop from assist-role compression.",
     "Role-purity PTS picks at stepped-down tiers hit 100%: every FG_MARGIN_THIN or FG_MARGIN_NEG step-down from T15\u2192T10 resulted in a HIT with enormous cushion (Castle 33 actual vs T10, Thompson 26 actual vs T10, Smith 24 actual vs T10, Fox 18 actual vs T10). The tier-step discipline is adding value \u2014 stepped-down tiers are not conservative misses, they are sound floor identification.",
     "Primary PG assist floors were structurally sound across all three games. Fox AST T4 (6 actual), Thompson AST T4 (4 actual \u2014 exact threshold HIT), Castle AST T4 (5 actual), Tatum AST T4 (7 actual), White AST T2 (2 actual \u2014 exact threshold HIT), Edgecombe AST T2 (5 actual). The AST prop type went 6/6 (100%) validating the playmaker-role framework for identifying reliable assist floors.",
     "3PM picks at T1 hit 100% across all three games and five picks. Vassell 3 actual vs T1, Fox 1 actual vs T1, Brown 1 actual vs T1, Tatum 5 actual vs T1 (iron_floor validated despite trend=down step), Smith 6 actual vs T2. The conservative T1 selection discipline for players with raw_avg near 1.5\u20132.0 is the correct approach \u2014 every pick cleared with margin.",
     "Durant's absence (confirmed OUT pre-game) was correctly handled by the lineup update agent. Thompson PTS (26 actual vs T10), Smith PTS (24 actual vs T10), Smith REB (6 actual vs T4), and Smith 3PM (6 actual vs T2) all hit convincingly with KD's usage redistributed. The lineup_update direction='up' calls for Thompson and Smith were accurate \u2014 the agent correctly identified the usage cascade.",
-    "The PHI suppressor signal did not override sound BOS player picks in a competitive (BOS won by 8) game script. Brown PTS T20 (25 actual), Brown 3PM T1 (1 actual), Tatum AST T4 (7 actual), Tatum 3PM T1 (5 actual), White AST T2 (2 actual), Queta REB T4 (7 actual), Maxey PTS T15 (31 actual), Edgecombe PTS T10 (10 actual \u2014 exact threshold HIT), Edgecombe AST T2 (5 actual), George PTS T10 (18 actual) all hit. Correctly picking at stepped-down tiers while acknowledging the suppressor without hard-skipping was the right calibration."
+    "The PHI suppressor signal did not override sound BOS player picks in a competitive (BOS won by 8) game script. Brown PTS T20 (25 actual), Brown 3PM T1 (1 actual), Tatum AST T4 (7 actual), Tatum 3PM T1 (5 actual), White AST T2 (2 actual), Queta REB T4 (7 actual), Maxey PTS T15 (31 actual), Edgecombe PTS T10 (10 actual \u2014 exact threshold HIT), Edgecombe AST T2 (5 actual), George PTS T10 (18 actual) all hit. Correctly picking at stepped-down tiers while acknowledging the suppressor without hard-skipping was the right calibration.",
+    "Tier step-down cascade discipline held across the full slate: every FG_MARGIN_NEG, FG_MARGIN_THIN, and FG_COLD mandatory step fired correctly and all stepped-down picks hit comfortably (Murray PTS T15 hit 30, Brunson PTS T15 hit 19, Randle PTS T10 hit 15, Bane PTS T10 hit 25). The rule's conservatism was validated without exception.",
+    "The MIN\u00d7AST suppressor step-down on Jokic AST (T10\u2192T6) was correctly applied and the pick hit 9 AST \u2014 the suppressor caution preserved a live pick that would have been marginal at T10 given G3's 3-AST outcome, confirming suppressor-driven tier steps add protective value without eliminating strong underlying signals.",
+    "Playoff dossier STRONG_ELEVATOR treatment for Banchero paid off: PTS T15 hit 25 and REB T4 hit 12. Despite human trim flags on both, the analyst's core logic of recognizing Banchero's playoff elevation profile was structurally correct \u2014 the tier step-downs applied (FG_MARGIN_THIN on PTS) were appropriately conservative while still generating hits.",
+    "SGA T20 structural-lock directive was validated for the third consecutive game: scored 42 on a competitive PHX road game, delivering 22 points above threshold. The directive to avoid evaluating T20 and begin at T25 saved tokens and the FG_MARGIN_NEG step from T25\u2192T20 correctly identified T20 as the safe anchor.",
+    "Jokic triple-coverage (PTS/REB/AST) all hit in a must-win DEN home game: PTS 24 vs T20, REB 15 vs T10, AST 9 vs T6. The layered risk management \u2014 iron_floor on PTS, 25th-pct gate step on REB, MIN\u00d7AST suppressor step on AST \u2014 produced a clean 3/3 outcome on the highest-volume player on the slate, confirming that conservative tier selection on an elite player in a competitive game context is a reliable strategy."
   ],
   "recent_recommendations": [
-    "Implement a blowout-road-underdog PTS cap: when a player's team is (a) on the road, (b) down 2-0 or 0-2 in a playoff series (desperate context for the HOME team, not the road team), and (c) the road team is a confirmed underdog by \u22654 points, apply a mandatory -5pp confidence penalty to all PTS picks for the road team's primary scorers and do not select T20+ PTS picks without iron_floor. This would have prevented or flagged the Mitchell PTS T20 miss.",
-    "Add a lineup_update veto rule for AST props: when the afternoon lineup agent issues a direction=down amendment that revises AST confidence below the prop-type floor (68%), automatically void the AST pick rather than running it at the floor. The Jokic AST T8 pick ran at 70% despite the amendment dropping it to 67% \u2014 this is an execution gap. The amendment agent is a downstream check; its below-floor revisions must trigger auto-void.",
-    "For non-iron-floor 3PM T1 picks: require raw_avg_3PM \u2265 2.0 OR iron_floor = true before selection. Players with raw_avg_3PM between 1.0\u20131.9 and no iron_floor should be skipped at T1 regardless of overall hit rate, because a single 0-for-2 or 0-for-3 shooting night (entirely within normal variance for a 1.4 avg player) collapses the prop. Mikal Bridges (1.4 raw avg, VOLATILE, 21 minutes) is the prototype case.",
-    "Do not boost PTS confidence for absence-driven usage redistribution when pre-game signals include FG_COLD or VOLATILE and the opponent is a top-6 defensive team. The Jamal Murray amendment flagged 'upside revised to 85%' due to Jokic OUT, but Murray's FG_COLD:-9% + VOLATILE + DEN losing by 17 produced a 16-point output. Absence-driven upside revisions should be capped at +5pp maximum for VOLATILE PTS props and should not override FG_COLD signals already present at pick time.",
-    "Flag hero-scorer AST compression risk for non-primary playmakers (raw_avg_AST < 5.0) in close-game contexts: when a player has a PTS/AST ratio > 5:1 in their recent L5 games AND the game spread is < 4 points (close game likely), apply a mandatory -5pp penalty to their AST props and do not select AST T2+ without iron_floor. CJ McCollum (23 PTS, 1 AST in a 1-point game) and Jalen Brunson (26 PTS, 4 AST in a 1-point game) both exhibited this pattern on the same slate \u2014 two independent data points suggesting the signal is real.",
     "Implement a hard rule: REB picks require raw_avg_REB strictly greater than pick_value (not equal to or below). Paul George's raw_avg of 3.8 below the T4 threshold and Castle's thin distributional support at T4 are prototype cases. When raw_avg_REB < pick_value, classify as selection_error risk and skip unless iron_floor is confirmed.",
     "When REB vs_tough AND competitive rates are both below 65% at the selected tier, require either (a) a tier step-down, or (b) 9/10 hit rate at the selected tier before emitting. Tatum's REB T8 had both signals flagged in the tier_walk as 'concerning' \u2014 the 72% minimum floor emission should not be allowed when two independent context rates both signal sub-65%. Treat dual-signal degradation as a skip trigger, not a 72% floor.",
     "Apply a small-series-sample penalty to REB confidence when n_series \u2264 2 and VOLATILE is tagged. Castle's REB T4 was anchored on 2 series games at 80% base with a VOLATILE tag \u2014 this combination should cap at 68% maximum (below the 72% REB floor), effectively triggering a skip. Series samples of 2 are insufficient to override VOLATILE-tagged REB props at minimum tiers.",
     "Treat human_verdict='trim' on REB picks as a de facto confidence ceiling of 70% for audit purposes. Across this slate, every trimmed REB pick either missed or hit marginally (Queta hit with 7 actual but was correctly identified as minutes-fragile). Establish a workflow rule: if the pick qualifies for trim based on the trim_reasons criteria (raw_avg below threshold, VOLATILE + blowout risk, min_floor near-zero), cap the emitted confidence at 70% and flag for manual review before including in parlays.",
-    "For the BOS vs PHI series specifically: do not fade BOS players purely on the PHI suppressor when opp_defense is rated 'mid' and the series H2H already shows 2/2 hits at the selected tier. The suppressor is real in competitive games but the within-series hit rate data should be weighted more heavily than the full-season suppressor signal after G2+. Continue applying opp_today=mid as the operative signal when series-level data contradicts the full-season suppressor, and reserve the suppressor penalty for first-game picks in the series where no within-series data exists."
+    "For the BOS vs PHI series specifically: do not fade BOS players purely on the PHI suppressor when opp_defense is rated 'mid' and the series H2H already shows 2/2 hits at the selected tier. The suppressor is real in competitive games but the within-series hit rate data should be weighted more heavily than the full-season suppressor signal after G2+. Continue applying opp_today=mid as the operative signal when series-level data contradicts the full-season suppressor, and reserve the suppressor penalty for first-game picks in the series where no within-series data exists.",
+    "Establish a formal minutes-reduction carry-forward rule for in-series AST picks: when a player has had their minutes actively managed down by \u226510 minutes vs. their season average in the immediately preceding game (e.g., Edwards G3: 24 min vs. 38-min season avg), apply a mandatory -5% confidence penalty to ALL counting stat picks for that player in the next game, even at minimum tiers like T2. This bridges the gap between the analyst's acknowledged concern and a quantified rule adjustment.",
+    "Reconsider the raw_avg-below-threshold skip criterion for REB on wing players (SF/PF) in playoff games where minutes are structurally locked (\u226538 avg in series, no injury flag, competitive game): Anunoby's 5.7 raw_avg vs. T6 threshold triggered a manual_skip that missed a 10-REB actual. A more precise rule would be: skip only when raw_avg is more than 1.5 units below pick_value AND the player carries a VOLATILE tag \u2014 a non-VOLATILE player with an 8/10 hit rate and a series avg near the threshold warrants selection even below raw_avg.",
+    "For the DEN vs. MIN series going forward: Jokic's AST suppression by the MIN\u00d7AST scheme is now confirmed across G3 (3 AST in blowout) and G4 (9 AST in competitive home game). The signal behaves directionally as predicted \u2014 blowout game scripts suppress Jokic AST (3 in a 17-pt loss) while competitive must-win contexts allow full playmaking (9 in a close game). Apply the MIN\u00d7AST step-down advisory specifically when game context is BLOWOUT or DEN is trailing; do NOT apply it when DEN is in a must-win home context with a competitive spread (\u00b13 or less).",
+    "Anthony Edwards' knee is now a confirmed mid-game exit risk \u2014 left knee injury forced him out of G4 with 18 min played. For any Edwards prop pick in G5 (if series continues), require injury_status = NOT_LISTED AND a confirmed pre-game workout or shoot-around participation before including him. If listed GTD or QUESTIONABLE, void automatically. The G3 24-min load management followed by G4 injury exit creates a two-game pattern that warrants a mandatory injury-status gate independent of confidence.",
+    "The 70-75% band dramatically over-performed (100% actual vs. 72.5% expected) across 14 picks. While single-day samples are noisy, the consistent over-performance of conservative minimum-tier picks (T4/T6/T10 stepped down from higher tiers) across multiple sessions suggests the step-down cascade is generating alpha at lower confidence thresholds. Consider whether the 68% minimum floor is too low as a gate \u2014 the system's real floor on well-reasoned stepped-down picks may be closer to 75-78%, meaning picks that calculate to 68-72% after all penalties are being under-priced relative to their actual performance. Monitor this band across the next 5 sessions before adjusting the floor upward."
   ],
   "skip_validation": {
+    "no_market": {
+      "total": 6,
+      "false_skips": 4,
+      "correct_skips": 2,
+      "no_data": 0,
+      "false_skip_rate": 66.7
+    },
     "merit_below_floor": {
       "total": 4,
-      "false_skips": 4,
-      "correct_skips": 0,
+      "false_skips": 2,
+      "correct_skips": 2,
       "no_data": 0,
-      "false_skip_rate": 100.0
+      "false_skip_rate": 50.0
     },
     "ast_hard_gate": {
       "total": 1,
@@ -124,74 +131,60 @@
       "correct_skips": 0,
       "no_data": 0,
       "false_skip_rate": 100.0
-    },
-    "min_floor_tier_step": {
-      "total": 1,
-      "false_skips": 1,
-      "correct_skips": 0,
-      "no_data": 0,
-      "false_skip_rate": 100.0
-    },
-    "fg_margin_thin_tier_step": {
-      "total": 2,
-      "false_skips": 2,
-      "correct_skips": 0,
-      "no_data": 0,
-      "false_skip_rate": 100.0
     }
   },
   "human_flag_precision": {
     "trim": {
-      "hits": 199,
+      "hits": 208,
       "misses": 27,
-      "total": 226,
-      "hit_rate_pct": 88.1
+      "total": 235,
+      "hit_rate_pct": 88.5
     },
     "keep": {
-      "hits": 269,
+      "hits": 284,
       "misses": 38,
-      "total": 307,
-      "hit_rate_pct": 87.6
+      "total": 322,
+      "hit_rate_pct": 88.2
     },
     "manual_skip": {
-      "hits": 24,
+      "hits": 25,
       "misses": 3,
-      "total": 27,
-      "hit_rate_pct": 88.9
+      "total": 28,
+      "hit_rate_pct": 89.3
     }
   },
   "clv_summary": {
-    "total_with_clv": 270,
-    "beat_close": 78,
-    "lost_close": 56,
-    "no_movement": 136,
-    "avg_clv_pp": 0.32,
-    "beat_close_pct": 28.9,
-    "beat_close_hit_rate_pct": 85.9,
-    "lost_close_hit_rate_pct": 76.8,
-    "no_move_hit_rate_pct": 86.8
+    "total_with_clv": 295,
+    "beat_close": 79,
+    "lost_close": 62,
+    "no_movement": 154,
+    "avg_clv_pp": 0.25,
+    "beat_close_pct": 26.8,
+    "beat_close_hit_rate_pct": 86.1,
+    "lost_close_hit_rate_pct": 79.0,
+    "no_move_hit_rate_pct": 88.3
   },
   "playoff_calibration": {
     "70-75": {
-      "picks": 114,
-      "hits": 96,
-      "hit_rate_pct": 84.2,
-      "regular_season_pct": 84.7,
-      "divergence_pp": -0.5
+      "picks": 128,
+      "hits": 110,
+      "hit_rate_pct": 85.9,
+      "regular_season_pct": 85.1,
+      "divergence_pp": 0.8
     },
     "76-80": {
-      "picks": 58,
-      "hits": 51,
-      "hit_rate_pct": 87.9,
-      "regular_season_pct": 86.5,
-      "divergence_pp": 1.4
+      "picks": 67,
+      "hits": 60,
+      "hit_rate_pct": 89.6,
+      "regular_season_pct": 86.8,
+      "divergence_pp": 2.8
     },
     "81-85": {
-      "picks": 5,
-      "hits": 4,
-      "hit_rate_pct": 80.0,
-      "regular_season_pct": 88.4,
-      "divergence_pp": -8.4
+      "picks": 6,
+      "hits": 5,
+      "hit_rate_pct": 83.3,
+      "regular_season_pct": 88.6,
+      "divergence_pp": -5.3
     },
     "86+": {
       "picks": 0,
@@ -201,12 +194,12 @@
       "divergence_pp": null
     },
     "_overall": {
-      "picks": 177,
-      "hits": 151,
-      "hit_rate_pct": 85.3,
+      "picks": 201,
+      "hits": 175,
+      "hit_rate_pct": 87.1,
       "date_range": {
         "start": "2026-04-18",
-        "end": "2026-04-24"
+        "end": "2026-04-25"
       }
     }
   }

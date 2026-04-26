@@ -5964,5 +5964,101 @@
       "hit_rate_pct": 95.7,
       "delta_vs_overall_pp": 7.2
     }
+  },
+  {
+    "date": "2026-04-25",
+    "total_picks": 25,
+    "voided_picks": 1,
+    "hits": 25,
+    "misses": 0,
+    "no_data": 0,
+    "hit_rate_pct": 100.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 14,
+        "hits": 14,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 14,
+        "hits": 14,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 9,
+        "hits": 9,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Tier step-down cascade discipline held across the full slate: every FG_MARGIN_NEG, FG_MARGIN_THIN, and FG_COLD mandatory step fired correctly and all stepped-down picks hit comfortably (Murray PTS T15 hit 30, Brunson PTS T15 hit 19, Randle PTS T10 hit 15, Bane PTS T10 hit 25). The rule's conservatism was validated without exception.",
+      "The MIN\u00d7AST suppressor step-down on Jokic AST (T10\u2192T6) was correctly applied and the pick hit 9 AST \u2014 the suppressor caution preserved a live pick that would have been marginal at T10 given G3's 3-AST outcome, confirming suppressor-driven tier steps add protective value without eliminating strong underlying signals.",
+      "Playoff dossier STRONG_ELEVATOR treatment for Banchero paid off: PTS T15 hit 25 and REB T4 hit 12. Despite human trim flags on both, the analyst's core logic of recognizing Banchero's playoff elevation profile was structurally correct \u2014 the tier step-downs applied (FG_MARGIN_THIN on PTS) were appropriately conservative while still generating hits.",
+      "SGA T20 structural-lock directive was validated for the third consecutive game: scored 42 on a competitive PHX road game, delivering 22 points above threshold. The directive to avoid evaluating T20 and begin at T25 saved tokens and the FG_MARGIN_NEG step from T25\u2192T20 correctly identified T20 as the safe anchor.",
+      "Jokic triple-coverage (PTS/REB/AST) all hit in a must-win DEN home game: PTS 24 vs T20, REB 15 vs T10, AST 9 vs T6. The layered risk management \u2014 iron_floor on PTS, 25th-pct gate step on REB, MIN\u00d7AST suppressor step on AST \u2014 produced a clean 3/3 outcome on the highest-volume player on the slate, confirming that conservative tier selection on an elite player in a competitive game context is a reliable strategy."
+    ],
+    "lessons": [
+      "Anthony Edwards AST T2 miss (0 actual): the pick was undone by an in-game left knee injury exit at 18 minutes, not by analytical error. The analyst's concern about G3 load management (24 min) was directionally correct as a risk signal, but the pre-pick confidence of 82% appropriately reflected a structurally sound T2 pick given the injury_status was NOT_LISTED at check time. The injury event cannot be predicted from available data; however, the prior-game minutes reduction pattern (24 min in G3) was a documented signal in the pick object and the analyst noted it \u2014 this represents appropriate risk acknowledgment on a pick that still warranted selection. No lesson applicable to selection logic: miss is an injury_event.",
+      "The 81-85% confidence band registered 50% actual hit rate (1/2) against an 83% expectation \u2014 both picks in this band were Murray AST T4 (hit) and Edwards AST T2 (miss via injury). The band underperformance is entirely attributable to the injury event, not to miscalibration. No recalibration is warranted.",
+      "The human_verdict 'manual_skip' applied to OG Anunoby REB T6 (citing raw_avg 5.7 below pick threshold) was overridden by the actual outcome of 10 rebounds \u2014 the strongest blowout-side REB overage on the slate. The NYK win by 16 in Atlanta created a game script where Anunoby played 40 minutes at full load, generating well above the T6 threshold. The raw_avg-below-threshold skip rule may be overcautious for reliable rebounders in competitive playoff games where minutes are guaranteed."
+    ],
+    "recommendations": [
+      "Establish a formal minutes-reduction carry-forward rule for in-series AST picks: when a player has had their minutes actively managed down by \u226510 minutes vs. their season average in the immediately preceding game (e.g., Edwards G3: 24 min vs. 38-min season avg), apply a mandatory -5% confidence penalty to ALL counting stat picks for that player in the next game, even at minimum tiers like T2. This bridges the gap between the analyst's acknowledged concern and a quantified rule adjustment.",
+      "Reconsider the raw_avg-below-threshold skip criterion for REB on wing players (SF/PF) in playoff games where minutes are structurally locked (\u226538 avg in series, no injury flag, competitive game): Anunoby's 5.7 raw_avg vs. T6 threshold triggered a manual_skip that missed a 10-REB actual. A more precise rule would be: skip only when raw_avg is more than 1.5 units below pick_value AND the player carries a VOLATILE tag \u2014 a non-VOLATILE player with an 8/10 hit rate and a series avg near the threshold warrants selection even below raw_avg.",
+      "For the DEN vs. MIN series going forward: Jokic's AST suppression by the MIN\u00d7AST scheme is now confirmed across G3 (3 AST in blowout) and G4 (9 AST in competitive home game). The signal behaves directionally as predicted \u2014 blowout game scripts suppress Jokic AST (3 in a 17-pt loss) while competitive must-win contexts allow full playmaking (9 in a close game). Apply the MIN\u00d7AST step-down advisory specifically when game context is BLOWOUT or DEN is trailing; do NOT apply it when DEN is in a must-win home context with a competitive spread (\u00b13 or less).",
+      "Anthony Edwards' knee is now a confirmed mid-game exit risk \u2014 left knee injury forced him out of G4 with 18 min played. For any Edwards prop pick in G5 (if series continues), require injury_status = NOT_LISTED AND a confirmed pre-game workout or shoot-around participation before including him. If listed GTD or QUESTIONABLE, void automatically. The G3 24-min load management followed by G4 injury exit creates a two-game pattern that warrants a mandatory injury-status gate independent of confidence.",
+      "The 70-75% band dramatically over-performed (100% actual vs. 72.5% expected) across 14 picks. While single-day samples are noisy, the consistent over-performance of conservative minimum-tier picks (T4/T6/T10 stepped down from higher tiers) across multiple sessions suggests the step-down cascade is generating alpha at lower confidence thresholds. Consider whether the 68% minimum floor is too low as a gate \u2014 the system's real floor on well-reasoned stepped-down picks may be closer to 75-78%, meaning picks that calculate to 68-72% after all penalties are being under-priced relative to their actual performance. Monitor this band across the next 5 sessions before adjusting the floor upward."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Anthony Edwards",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 0,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: DEN @ MIN, MIN won 112-96 (margin 16, COMPETITIVE per game results). STEP 1 \u2014 Activity check: actual_value = 0 AST. Post-game news confirms Edwards left Game 4 with a left knee injury and did not return after only 18 minutes played \u2014 this is confirmed by post-game news context entry (event_type: injury_exit, confidence: confirmed). STEP 2 \u2014 Fast path triggered: post_game_event = 'injury_exit' is set directly on the pick object. Classification is injury_event. STEP 3 \u2014 Original reasoning: the analyst's thesis was sound \u2014 95% consistent AST floor at T2, perfect 6/6 H2H, 3/3 series, soft DEN defense, must-win game ensuring full minutes. The analyst did note G3's 24-minute load management as a risk factor and applied a conservative 82% confidence accordingly. The reasoning correctly identified the minutes risk but could not anticipate an acute in-game knee injury. STEP 4 \u2014 Hit rate: 10/10 consistent floor; the 10/10 hit rate accurately reflected the structural soundness of the pick under normal conditions. STEP 5 \u2014 Tier walk: T2 was the only evaluated tier; this was appropriate given T2 is the minimum AST tier and the gate (T4+) did not apply. No tier_skip_error or data_conflict. STEP 6 \u2014 No lineup_update present. In-game left knee injury exit confirmed by post-game news \u2014 Edwards played only 18 minutes before being ruled out, producing 0 AST against a pick of over 2. Player was active at pick time (NOT_LISTED); miss is entirely attributable to an unpredictable acute injury event, not to pick selection logic."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 22,
+      "hits": 22,
+      "misses": 0,
+      "hit_rate_pct": 100.0,
+      "delta_vs_overall_pp": 0.0
+    }
   }
 ]
