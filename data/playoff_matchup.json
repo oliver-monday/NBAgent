@@ -1,6 +1,6 @@
 {
-  "date": "2026-04-26",
-  "generated_at": "2026-04-26T07:05:59.245721-07:00",
+  "date": "2026-04-27",
+  "generated_at": "2026-04-27T08:07:55.257914-07:00",
   "mode": "playoffs",
   "round": 1,
   "season": "2025-26",
@@ -15,8 +15,8 @@
       "games_played": 3,
       "game_in_series": 4,
       "series_phase": "mid",
-      "game_today": false,
-      "today_host": null,
+      "game_today": true,
+      "today_host": "ORL",
       "series_state": {
         "home_state": "trailing",
         "away_state": "favorable",
@@ -1637,17 +1637,17 @@
       "conference": "East",
       "home_team": "BOS",
       "away_team": "PHI",
-      "home_wins": 2,
+      "home_wins": 3,
       "away_wins": 1,
-      "games_played": 3,
-      "game_in_series": 4,
-      "series_phase": "mid",
-      "game_today": true,
-      "today_host": "PHI",
+      "games_played": 4,
+      "game_in_series": 5,
+      "series_phase": "late",
+      "game_today": false,
+      "today_host": null,
       "series_state": {
-        "home_state": "favorable",
-        "away_state": "trailing",
-        "note": "Competitive series \u2014 both teams playing to win every game. Standard game scripts apply."
+        "home_state": "dominant",
+        "away_state": "desperate",
+        "note": "Home team faces potential sweep/elimination pressure. Expect star usage spike, tighter rotation, desperation pace from the trailing team. Leading team may conserve in late blowouts."
       },
       "game_log": [
         {
@@ -1673,87 +1673,95 @@
           "home_score": 100,
           "away_score": 108,
           "winner": "BOS"
+        },
+        {
+          "date": "2026-04-26",
+          "home_abbrev": "PHI",
+          "away_abbrev": "BOS",
+          "home_score": 96,
+          "away_score": 128,
+          "winner": "BOS"
         }
       ],
       "players": {
         "jaylen brown": {
           "team": "BOS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 29.0,
-              "reb": 6.0,
-              "ast": 3.7,
-              "tpm": 2.7,
-              "minutes": 36.0
+              "pts": 26.8,
+              "reb": 6.2,
+              "ast": 3.0,
+              "tpm": 2.8,
+              "minutes": 34.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T25": [
                   3,
-                  3
+                  4
                 ],
                 "T30": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T8": [
                   0,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   3,
-                  3
+                  4
                 ],
                 "T4": [
                   2,
-                  3
+                  4
                 ],
                 "T6": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -2012,61 +2020,61 @@
         "derrick white": {
           "team": "BOS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 9.7,
-              "reb": 3.0,
-              "ast": 3.7,
-              "tpm": 1.7,
-              "minutes": 35.3
+              "pts": 8.8,
+              "reb": 3.8,
+              "ast": 3.5,
+              "tpm": 1.8,
+              "minutes": 34.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   2,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T6": [
-                  0,
-                  3
+                  1,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ],
                 "T6": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
                   0,
-                  3
+                  4
                 ],
                 "T4": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -2297,65 +2305,77 @@
         "payton pritchard": {
           "team": "BOS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 10.3,
+              "pts": 15.8,
               "reb": 4.0,
-              "ast": 4.3,
-              "tpm": 2.3,
-              "minutes": 31.3
+              "ast": 4.5,
+              "tpm": 3.2,
+              "minutes": 32.2
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T15": [
+                  2,
+                  4
+                ],
+                "T20": [
                   1,
-                  3
+                  4
+                ],
+                "T25": [
+                  1,
+                  4
+                ],
+                "T30": [
+                  1,
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
                   0,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T4": [
-                  1,
-                  3
+                  2,
+                  4
                 ]
               }
             }
@@ -2546,93 +2566,97 @@
         "jayson tatum": {
           "team": "BOS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 23.0,
-              "reb": 10.0,
-              "ast": 7.7,
-              "tpm": 2.7,
-              "minutes": 37.7
+              "pts": 24.8,
+              "reb": 9.2,
+              "ast": 8.5,
+              "tpm": 3.2,
+              "minutes": 37.0
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T25": [
-                  2,
-                  3
+                  3,
+                  4
+                ],
+                "T30": [
+                  1,
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T8": [
                   2,
-                  3
+                  4
                 ],
                 "T10": [
                   2,
-                  3
+                  4
                 ],
                 "T12": [
                   1,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T8": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T10": [
-                  0,
-                  3
+                  1,
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T4": [
-                  1,
-                  3
+                  2,
+                  4
                 ]
               }
             }
@@ -2642,53 +2666,53 @@
         "neemias queta": {
           "team": "BOS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
               "pts": 9.0,
-              "reb": 5.0,
-              "ast": 0.3,
+              "reb": 5.8,
+              "ast": 0.5,
               "tpm": 0.0,
-              "minutes": 18.7
+              "minutes": 18.2
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T8": [
-                  0,
-                  3
+                  1,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   0,
-                  3
+                  4
                 ],
                 "T2": [
                   0,
-                  3
+                  4
                 ],
                 "T3": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -2905,85 +2929,81 @@
         "tyrese maxey": {
           "team": "PHI",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 27.0,
-              "reb": 3.0,
-              "ast": 7.7,
-              "tpm": 3.7,
-              "minutes": 39.7
+              "pts": 25.8,
+              "reb": 2.8,
+              "ast": 7.2,
+              "tpm": 3.8,
+              "minutes": 39.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T25": [
                   2,
-                  3
+                  4
                 ],
                 "T30": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
                   2,
-                  3
-                ],
-                "T6": [
-                  0,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T8": [
                   2,
-                  3
+                  4
                 ],
                 "T10": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ]
               }
             }
@@ -3249,7 +3269,94 @@
         },
         "joel embiid": {
           "team": "PHI",
-          "series_stats": null,
+          "series_stats": {
+            "n": 1,
+            "avgs": {
+              "pts": 26.0,
+              "reb": 10.0,
+              "ast": 6.0,
+              "tpm": 1.0,
+              "minutes": 34.0
+            },
+            "tier_hits": {
+              "PTS": {
+                "T10": [
+                  1,
+                  1
+                ],
+                "T15": [
+                  1,
+                  1
+                ],
+                "T20": [
+                  1,
+                  1
+                ],
+                "T25": [
+                  1,
+                  1
+                ]
+              },
+              "REB": {
+                "T4": [
+                  1,
+                  1
+                ],
+                "T6": [
+                  1,
+                  1
+                ],
+                "T8": [
+                  1,
+                  1
+                ],
+                "T10": [
+                  1,
+                  1
+                ],
+                "T12": [
+                  0,
+                  1
+                ]
+              },
+              "AST": {
+                "T2": [
+                  1,
+                  1
+                ],
+                "T4": [
+                  1,
+                  1
+                ],
+                "T6": [
+                  1,
+                  1
+                ],
+                "T8": [
+                  0,
+                  1
+                ]
+              },
+              "TPM": {
+                "T1": [
+                  1,
+                  1
+                ],
+                "T2": [
+                  0,
+                  1
+                ],
+                "T3": [
+                  0,
+                  1
+                ],
+                "T4": [
+                  0,
+                  1
+                ]
+              }
+            }
+          },
           "season_h2h": {
             "all": {
               "n": 2,
@@ -3442,65 +3549,65 @@
         "paul george": {
           "team": "PHI",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 18.0,
-              "reb": 2.7,
-              "ast": 3.0,
-              "tpm": 2.3,
-              "minutes": 34.7
+              "pts": 17.5,
+              "reb": 3.0,
+              "ast": 2.5,
+              "tpm": 2.5,
+              "minutes": 33.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
                   0,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
+                ],
+                "T6": [
+                  0,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   2,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
-                ],
-                "T6": [
-                  0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -3510,85 +3617,81 @@
         "vj edgecombe": {
           "team": "PHI",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 17.7,
-              "reb": 7.7,
-              "ast": 3.3,
-              "tpm": 2.0,
-              "minutes": 36.7
+              "pts": 14.8,
+              "reb": 6.8,
+              "ast": 2.8,
+              "tpm": 1.5,
+              "minutes": 36.5
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   3,
-                  3
+                  4
                 ],
                 "T15": [
                   1,
-                  3
+                  4
                 ],
                 "T20": [
                   1,
-                  3
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ],
                 "T30": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
                   2,
-                  3
+                  4
                 ],
                 "T8": [
                   2,
-                  3
+                  4
                 ],
                 "T10": [
                   2,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   3,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
-                ],
-                "T6": [
-                  0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   1,
-                  3
+                  4
                 ],
                 "T2": [
                   1,
-                  3
+                  4
                 ],
                 "T3": [
                   1,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -5941,14 +6044,14 @@
       "home_team": "CLE",
       "away_team": "TOR",
       "home_wins": 2,
-      "away_wins": 1,
-      "games_played": 3,
-      "game_in_series": 4,
-      "series_phase": "mid",
-      "game_today": true,
-      "today_host": "TOR",
+      "away_wins": 2,
+      "games_played": 4,
+      "game_in_series": 5,
+      "series_phase": "late",
+      "game_today": false,
+      "today_host": null,
       "series_state": {
-        "home_state": "favorable",
+        "home_state": "trailing",
         "away_state": "trailing",
         "note": "Competitive series \u2014 both teams playing to win every game. Standard game scripts apply."
       },
@@ -5976,67 +6079,79 @@
           "home_score": 126,
           "away_score": 104,
           "winner": "TOR"
+        },
+        {
+          "date": "2026-04-26",
+          "home_abbrev": "TOR",
+          "away_abbrev": "CLE",
+          "home_score": 93,
+          "away_score": 89,
+          "winner": "TOR"
         }
       ],
       "players": {
         "brandon ingram": {
           "team": "TOR",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 12.0,
-              "reb": 3.0,
-              "ast": 3.0,
-              "tpm": 0.7,
-              "minutes": 33.7
+              "pts": 14.8,
+              "reb": 3.8,
+              "ast": 2.2,
+              "tpm": 1.2,
+              "minutes": 34.2
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T15": [
+                  2,
+                  4
+                ],
+                "T20": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T6": [
-                  0,
-                  3
+                  1,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   3,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
-                ],
-                "T6": [
-                  0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T2": [
-                  0,
-                  3
+                  1,
+                  4
                 ],
                 "T3": [
+                  1,
+                  4
+                ],
+                "T4": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -6275,85 +6390,89 @@
         "scottie barnes": {
           "team": "TOR",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 26.7,
-              "reb": 3.3,
-              "ast": 7.7,
-              "tpm": 2.3,
-              "minutes": 35.7
+              "pts": 25.8,
+              "reb": 4.8,
+              "ast": 7.2,
+              "tpm": 1.8,
+              "minutes": 37.2
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T25": [
                   2,
-                  3
+                  4
                 ],
                 "T30": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
-                  0,
-                  3
+                  1,
+                  4
+                ],
+                "T8": [
+                  1,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T8": [
                   1,
-                  3
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   3,
-                  3
+                  4
                 ],
                 "T2": [
                   2,
-                  3
+                  4
                 ],
                 "T3": [
                   2,
-                  3
+                  4
                 ],
                 "T4": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -6616,81 +6735,81 @@
         "rj barrett": {
           "team": "TOR",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 26.3,
-              "reb": 5.3,
-              "ast": 4.3,
-              "tpm": 3.0,
-              "minutes": 36.0
+              "pts": 24.2,
+              "reb": 6.0,
+              "ast": 3.5,
+              "tpm": 2.5,
+              "minutes": 36.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
                   3,
-                  3
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ],
                 "T30": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T8": [
-                  1,
-                  3
+                  2,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   3,
-                  3
+                  4
                 ],
                 "T4": [
                   2,
-                  3
+                  4
                 ],
                 "T6": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T2": [
                   2,
-                  3
+                  4
                 ],
                 "T3": [
                   2,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -7071,81 +7190,81 @@
         "donovan mitchell": {
           "team": "CLE",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 25.7,
-              "reb": 5.0,
-              "ast": 4.0,
-              "tpm": 3.0,
-              "minutes": 33.7
+              "pts": 24.2,
+              "reb": 5.2,
+              "ast": 3.8,
+              "tpm": 3.2,
+              "minutes": 34.5
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T25": [
                   2,
-                  3
+                  4
                 ],
                 "T30": [
                   2,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T8": [
                   0,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
                   2,
-                  3
+                  4
                 ],
                 "T6": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ]
               }
             }
@@ -7396,77 +7515,77 @@
         "evan mobley": {
           "team": "CLE",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 19.0,
-              "reb": 7.0,
-              "ast": 4.3,
-              "tpm": 0.7,
-              "minutes": 33.0
+              "pts": 16.2,
+              "reb": 7.5,
+              "ast": 4.0,
+              "tpm": 0.5,
+              "minutes": 32.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   3,
-                  3
+                  4
                 ],
                 "T15": [
                   3,
-                  3
+                  4
                 ],
                 "T20": [
                   1,
-                  3
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T8": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T10": [
                   0,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
                   2,
-                  3
+                  4
                 ],
                 "T6": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   2,
-                  3
+                  4
                 ],
                 "T2": [
                   0,
-                  3
+                  4
                 ],
                 "T3": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -7705,49 +7824,61 @@
         "jarrett allen": {
           "team": "CLE",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 10.7,
-              "reb": 4.7,
-              "ast": 0.7,
+              "pts": 8.8,
+              "reb": 7.2,
+              "ast": 0.5,
               "tpm": 0.0,
-              "minutes": 26.3
+              "minutes": 26.5
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   3,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
+                  2,
+                  4
+                ],
+                "T8": [
                   1,
-                  3
+                  4
+                ],
+                "T10": [
+                  1,
+                  4
+                ],
+                "T12": [
+                  1,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   0,
-                  3
+                  4
                 ],
                 "T2": [
                   0,
-                  3
+                  4
                 ],
                 "T3": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -7858,81 +7989,81 @@
         "james harden": {
           "team": "CLE",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 22.7,
-              "reb": 3.7,
-              "ast": 6.0,
-              "tpm": 3.3,
-              "minutes": 33.7
+              "pts": 21.8,
+              "reb": 3.2,
+              "ast": 6.5,
+              "tpm": 3.0,
+              "minutes": 34.5
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
                   2,
-                  3
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
                   2,
-                  3
+                  4
                 ],
                 "T6": [
                   0,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T8": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T3": [
                   3,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -7951,8 +8082,8 @@
       "games_played": 3,
       "game_in_series": 4,
       "series_phase": "mid",
-      "game_today": false,
-      "today_host": null,
+      "game_today": true,
+      "today_host": "PHX",
       "series_state": {
         "home_state": "dominant",
         "away_state": "desperate",
@@ -9548,17 +9679,17 @@
       "conference": "West",
       "home_team": "SAS",
       "away_team": "POR",
-      "home_wins": 2,
+      "home_wins": 3,
       "away_wins": 1,
-      "games_played": 3,
-      "game_in_series": 4,
-      "series_phase": "mid",
-      "game_today": true,
-      "today_host": "POR",
+      "games_played": 4,
+      "game_in_series": 5,
+      "series_phase": "late",
+      "game_today": false,
+      "today_host": null,
       "series_state": {
-        "home_state": "favorable",
-        "away_state": "trailing",
-        "note": "Competitive series \u2014 both teams playing to win every game. Standard game scripts apply."
+        "home_state": "dominant",
+        "away_state": "desperate",
+        "note": "Home team faces potential sweep/elimination pressure. Expect star usage spike, tighter rotation, desperation pace from the trailing team. Leading team may conserve in late blowouts."
       },
       "game_log": [
         {
@@ -9584,79 +9715,99 @@
           "home_score": 108,
           "away_score": 120,
           "winner": "SAS"
+        },
+        {
+          "date": "2026-04-26",
+          "home_abbrev": "POR",
+          "away_abbrev": "SAS",
+          "home_score": 93,
+          "away_score": 114,
+          "winner": "SAS"
         }
       ],
       "players": {
         "victor wembanyama": {
           "team": "SAS",
           "series_stats": {
-            "n": 2,
+            "n": 3,
             "avgs": {
-              "pts": 20.0,
-              "reb": 4.5,
-              "ast": 1.0,
-              "tpm": 2.5,
-              "minutes": 22.5
+              "pts": 22.3,
+              "reb": 7.0,
+              "ast": 1.7,
+              "tpm": 2.0,
+              "minutes": 26.3
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  1,
-                  2
+                  2,
+                  3
                 ],
                 "T15": [
-                  1,
-                  2
+                  2,
+                  3
                 ],
                 "T20": [
-                  1,
-                  2
+                  2,
+                  3
                 ],
                 "T25": [
-                  1,
-                  2
+                  2,
+                  3
                 ],
                 "T30": [
                   1,
-                  2
+                  3
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  2
+                  3,
+                  3
                 ],
                 "T6": [
-                  0,
-                  2
+                  1,
+                  3
+                ],
+                "T8": [
+                  1,
+                  3
+                ],
+                "T10": [
+                  1,
+                  3
+                ],
+                "T12": [
+                  1,
+                  3
                 ]
               },
               "AST": {
                 "T2": [
-                  0,
-                  2
+                  1,
+                  3
                 ],
                 "T4": [
                   0,
-                  2
+                  3
                 ]
               },
               "TPM": {
                 "T1": [
-                  1,
-                  2
+                  2,
+                  3
                 ],
                 "T2": [
                   1,
-                  2
+                  3
                 ],
                 "T3": [
                   1,
-                  2
+                  3
                 ],
                 "T4": [
                   1,
-                  2
+                  3
                 ]
               }
             }
@@ -9666,85 +9817,81 @@
         "stephon castle": {
           "team": "SAS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 22.7,
-              "reb": 5.3,
-              "ast": 5.7,
-              "tpm": 2.0,
-              "minutes": 35.0
+              "pts": 21.0,
+              "reb": 4.2,
+              "ast": 6.2,
+              "tpm": 2.2,
+              "minutes": 32.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
                   1,
-                  3
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ],
                 "T30": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
                   2,
-                  3
+                  4
                 ],
                 "T6": [
                   2,
-                  3
-                ],
-                "T8": [
-                  0,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T8": [
-                  0,
-                  3
+                  1,
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T3": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T4": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -9907,73 +10054,77 @@
         "de'aaron fox": {
           "team": "SAS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 17.3,
-              "reb": 3.7,
-              "ast": 6.0,
-              "tpm": 1.3,
-              "minutes": 34.7
+              "pts": 20.0,
+              "reb": 4.2,
+              "ast": 6.2,
+              "tpm": 2.0,
+              "minutes": 35.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
-                  0,
-                  3
+                  1,
+                  4
+                ],
+                "T25": [
+                  1,
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
-                  0,
-                  3
+                  1,
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T8": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T3": [
-                  0,
-                  3
+                  1,
+                  4
                 ],
                 "T4": [
-                  0,
-                  3
+                  1,
+                  4
                 ]
               }
             }
@@ -10236,73 +10387,73 @@
         "devin vassell": {
           "team": "SAS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 14.0,
-              "reb": 7.3,
-              "ast": 2.3,
-              "tpm": 2.3,
-              "minutes": 33.7
+              "pts": 13.2,
+              "reb": 7.0,
+              "ast": 2.5,
+              "tpm": 2.0,
+              "minutes": 34.0
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
                   2,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T6": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T8": [
                   1,
-                  3
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ],
                 "T12": [
                   1,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T2": [
                   2,
-                  3
+                  4
                 ],
                 "T3": [
                   2,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -10517,77 +10668,77 @@
         "dylan harper": {
           "team": "SAS",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 14.3,
-              "reb": 4.7,
-              "ast": 2.3,
-              "tpm": 1.3,
-              "minutes": 25.3
+              "pts": 11.5,
+              "reb": 4.0,
+              "ast": 2.0,
+              "tpm": 1.0,
+              "minutes": 25.2
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   2,
-                  3
+                  4
                 ],
                 "T15": [
                   1,
-                  3
+                  4
                 ],
                 "T20": [
                   1,
-                  3
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
                   2,
-                  3
+                  4
                 ],
                 "T6": [
                   1,
-                  3
+                  4
                 ],
                 "T8": [
                   1,
-                  3
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
                   3,
-                  3
+                  4
                 ],
                 "T4": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   1,
-                  3
+                  4
                 ],
                 "T2": [
                   1,
-                  3
+                  4
                 ],
                 "T3": [
                   1,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -10783,8 +10934,8 @@
       "games_played": 4,
       "game_in_series": 5,
       "series_phase": "late",
-      "game_today": false,
-      "today_host": null,
+      "game_today": true,
+      "today_host": "DEN",
       "series_state": {
         "home_state": "desperate",
         "away_state": "dominant",
@@ -13169,16 +13320,16 @@
       "home_team": "LAL",
       "away_team": "HOU",
       "home_wins": 3,
-      "away_wins": 0,
-      "games_played": 3,
-      "game_in_series": 4,
-      "series_phase": "mid",
-      "game_today": true,
-      "today_host": "HOU",
+      "away_wins": 1,
+      "games_played": 4,
+      "game_in_series": 5,
+      "series_phase": "late",
+      "game_today": false,
+      "today_host": null,
       "series_state": {
         "home_state": "dominant",
         "away_state": "desperate",
-        "note": "Away team faces potential sweep/elimination pressure. Expect star usage spike, tighter rotation, desperation pace from the trailing team. Leading team may conserve in late blowouts."
+        "note": "Home team faces potential sweep/elimination pressure. Expect star usage spike, tighter rotation, desperation pace from the trailing team. Leading team may conserve in late blowouts."
       },
       "game_log": [
         {
@@ -13204,6 +13355,14 @@
           "home_score": 108,
           "away_score": 112,
           "winner": "LAL"
+        },
+        {
+          "date": "2026-04-26",
+          "home_abbrev": "HOU",
+          "away_abbrev": "LAL",
+          "home_score": 115,
+          "away_score": 96,
+          "winner": "HOU"
         }
       ],
       "players": {
@@ -13480,7 +13639,7 @@
         "austin reaves": {
           "team": "LAL",
           "series_stats": {
-            "n": 1,
+            "n": 2,
             "avgs": {
               "pts": 0.0,
               "reb": 0.0,
@@ -13492,21 +13651,21 @@
               "AST": {
                 "T2": [
                   0,
-                  1
+                  2
                 ]
               },
               "TPM": {
                 "T1": [
                   0,
-                  1
+                  2
                 ],
                 "T2": [
                   0,
-                  1
+                  2
                 ],
                 "T3": [
                   0,
-                  1
+                  2
                 ]
               }
             }
@@ -13701,97 +13860,97 @@
         "lebron james": {
           "team": "LAL",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 25.3,
-              "reb": 9.7,
-              "ast": 8.7,
-              "tpm": 2.3,
-              "minutes": 40.7
+              "pts": 21.5,
+              "reb": 8.2,
+              "ast": 8.8,
+              "tpm": 1.8,
+              "minutes": 38.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
                   3,
-                  3
+                  4
                 ],
                 "T20": [
                   2,
-                  3
+                  4
                 ],
                 "T25": [
                   2,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
                   3,
-                  3
+                  4
                 ],
                 "T8": [
                   3,
-                  3
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ],
                 "T12": [
                   1,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T8": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ],
                 "T12": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   3,
-                  3
+                  4
                 ],
                 "T2": [
                   2,
-                  3
+                  4
                 ],
                 "T3": [
                   1,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -14323,89 +14482,85 @@
         "alperen sengun": {
           "team": "HOU",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 24.0,
-              "reb": 11.7,
-              "ast": 5.7,
-              "tpm": 0.3,
-              "minutes": 39.3
+              "pts": 22.8,
+              "reb": 10.2,
+              "ast": 4.8,
+              "tpm": 0.2,
+              "minutes": 37.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
                   2,
-                  3
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ],
                 "T30": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T8": [
                   3,
-                  3
+                  4
                 ],
                 "T10": [
                   2,
-                  3
+                  4
                 ],
                 "T12": [
                   1,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
                   3,
-                  3
+                  4
                 ],
                 "T6": [
                   2,
-                  3
-                ],
-                "T8": [
-                  0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   1,
-                  3
+                  4
                 ],
                 "T2": [
                   0,
-                  3
+                  4
                 ],
                 "T3": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -14664,81 +14819,81 @@
         "amen thompson": {
           "team": "HOU",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 19.7,
-              "reb": 7.7,
-              "ast": 6.7,
+              "pts": 20.5,
+              "reb": 6.8,
+              "ast": 6.8,
               "tpm": 0.0,
-              "minutes": 44.3
+              "minutes": 43.5
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T25": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
                   2,
-                  3
+                  4
                 ],
                 "T8": [
                   1,
-                  3
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  2,
-                  3
+                  3,
+                  4
                 ],
                 "T8": [
                   1,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
                   0,
-                  3
+                  4
                 ],
                 "T2": [
                   0,
-                  3
+                  4
                 ],
                 "T3": [
                   0,
-                  3
+                  4
                 ]
               }
             }
@@ -14989,73 +15144,77 @@
         "jabari smith jr.": {
           "team": "HOU",
           "series_stats": {
-            "n": 3,
+            "n": 4,
             "avgs": {
-              "pts": 19.3,
+              "pts": 18.5,
               "reb": 8.0,
-              "ast": 0.7,
-              "tpm": 4.0,
+              "ast": 1.2,
+              "tpm": 3.5,
               "minutes": 42.0
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T15": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T20": [
                   1,
-                  3
+                  4
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T6": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T8": [
-                  1,
-                  3
+                  2,
+                  4
                 ],
                 "T10": [
                   1,
-                  3
+                  4
                 ],
                 "T12": [
                   1,
-                  3
+                  4
                 ]
               },
               "AST": {
                 "T2": [
+                  1,
+                  4
+                ],
+                "T4": [
                   0,
-                  3
+                  4
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T2": [
-                  3,
-                  3
+                  4,
+                  4
                 ],
                 "T3": [
                   3,
-                  3
+                  4
                 ],
                 "T4": [
                   1,
-                  3
+                  4
                 ]
               }
             }
@@ -15266,5 +15425,5 @@
       }
     }
   ],
-  "context_block": "## SERIES CONTEXT \u2014 PLAYOFFS\nPer-series performance data computed from completed playoff games + full regular season H2H matchup history. Season H2H is shown for ALL series regardless of games played \u2014 it is the baseline that captures the player-vs-opponent relationship across home/away environments. Series stats reflect actual playoff performance to date.\n\nUse this section to supplement QUANT STATS:\n  - Series-specific trend (over/under-performing vs season baseline?)\n  - Series state \u2014 dominant/desperate teams have structurally different game scripts\n  - Home/away H2H split \u2014 home court matters in a 7-game series\n  - First playoff meeting (0 H2H games) \u2014 treat as higher variance; lean on season DvP and pace signals instead\n=== BOS vs PHI \u2014 East | BOS leads 2-1 | GAME 4 (MID) ===\nTONIGHT: Game 4 at PHI. BOS on the road.\nState: BOS [FAVORABLE] / PHI [TRAILING]\nNote: Competitive series \u2014 both teams playing to win every game. Standard game scripts apply.\nGame log:\n  Game 1 (2026-04-19, BOS home): BOS 123 \u2014 PHI 91 (W: BOS)\n  Game 2 (2026-04-21, BOS home): BOS 97 \u2014 PHI 111 (W: PHI)\n  Game 3 (2026-04-24, BOS away): PHI 100 \u2014 BOS 108 (W: BOS)\n\n--- Jaylen Brown (BOS) ---\n  THIS SERIES (3 games): 29.0 PTS / 6.0 REB / 3.7 AST / 2.7 3PM  (36.0 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 3/3 | T30 1/3\n  REB: T4 3/3 | T6 2/3 | T8 0/3\n  AST: T2 3/3 | T4 2/3 | T6 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 1/3\n  SEASON H2H vs PHI (4 regular season games): 27.0 PTS / 5.8 REB / 5.8 AST / 2.2 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 4/4 | T25 3/4 | T30 1/4\n  REB: T4 3/4 | T6 3/4 | T8 1/4\n  AST: T2 4/4 | T4 4/4 | T6 2/4 | T8 1/4\n  TPM: T1 4/4 | T2 3/4 | T3 1/4 | T4 1/4\n  H2H splits: HOME (2g): 26.0 PTS / 7.0 REB / 6.0 AST | AWAY (2g): 28.0 PTS / 4.5 REB / 5.5 AST\n--- Derrick White (BOS) ---\n  THIS SERIES (3 games): 9.7 PTS / 3.0 REB / 3.7 AST / 1.7 3PM  (35.3 min avg)\n  Series tier hits:\n  PTS: T10 2/3\n  REB: T4 1/3 | T6 0/3\n  AST: T2 3/3 | T4 1/3 | T6 1/3\n  TPM: T1 3/3 | T2 2/3 | T3 0/3 | T4 0/3\n  SEASON H2H vs PHI (4 regular season games): 19.8 PTS / 4.5 REB / 5.8 AST / 3.8 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 2/4 | T25 1/4\n  REB: T4 3/4 | T6 1/4\n  AST: T2 4/4 | T4 4/4 | T6 2/4 | T8 1/4\n  TPM: T1 4/4 | T2 4/4 | T3 3/4 | T4 3/4\n  H2H splits: HOME (2g): 23.0 PTS / 4.5 REB / 6.0 AST | AWAY (2g): 16.5 PTS / 4.5 REB / 5.5 AST\n--- Payton Pritchard (BOS) ---\n  THIS SERIES (3 games): 10.3 PTS / 4.0 REB / 4.3 AST / 2.3 3PM  (31.3 min avg)\n  Series tier hits:\n  PTS: T10 2/3 | T15 1/3\n  REB: T4 2/3 | T6 0/3\n  AST: T2 3/3 | T4 2/3 | T6 1/3\n  TPM: T1 2/3 | T2 2/3 | T3 1/3 | T4 1/3\n  SEASON H2H vs PHI (4 regular season games): 9.0 PTS / 3.2 REB / 3.8 AST / 0.8 3PM\n  H2H tier hits:\n  PTS: T10 2/4 | T15 2/4\n  REB: T4 1/4 | T6 0/4\n  AST: T2 4/4 | T4 2/4 | T6 0/4\n  TPM: T1 3/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 8.0 PTS / 4.0 REB / 3.5 AST | AWAY (2g): 10.0 PTS / 2.5 REB / 4.0 AST\n--- Jayson Tatum (BOS) ---\n  THIS SERIES (3 games): 23.0 PTS / 10.0 REB / 7.7 AST / 2.7 3PM  (37.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 2/3\n  REB: T4 3/3 | T6 2/3 | T8 2/3 | T10 2/3 | T12 1/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 1/3 | T10 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 1/3\n  SEASON H2H: No regular season meetings found (first-time playoff opponent or data gap).\n--- Neemias Queta (BOS) ---\n  THIS SERIES (3 games): 9.0 PTS / 5.0 REB / 0.3 AST / 0.0 3PM  (18.7 min avg)\n  Series tier hits:\n  PTS: T10 1/3\n  REB: T4 2/3 | T6 2/3 | T8 0/3\n  AST: T2 0/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs PHI (4 regular season games): 14.0 PTS / 9.8 REB / 1.2 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 2/4 | T15 2/4 | T20 1/4 | T25 1/4\n  REB: T4 4/4 | T6 3/4 | T8 3/4 | T10 2/4 | T12 1/4\n  AST: T2 2/4 | T4 0/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 22.0 PTS / 12.5 REB / 1.0 AST | AWAY (2g): 6.0 PTS / 7.0 REB / 1.5 AST\n--- Tyrese Maxey (PHI) ---\n  THIS SERIES (3 games): 27.0 PTS / 3.0 REB / 7.7 AST / 3.7 3PM  (39.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 2/3 | T30 1/3\n  REB: T4 2/3 | T6 0/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 2/3 | T10 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 2/3 | T4 2/3\n  SEASON H2H vs BOS (4 regular season games): 30.0 PTS / 4.5 REB / 8.8 AST / 4.5 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 4/4 | T25 3/4 | T30 2/4\n  REB: T4 2/4 | T6 1/4 | T8 1/4\n  AST: T2 4/4 | T4 4/4 | T6 4/4 | T8 2/4 | T10 1/4 | T12 1/4\n  TPM: T1 4/4 | T2 4/4 | T3 4/4 | T4 3/4\n  H2H splits: HOME (2g): 23.5 PTS / 6.5 REB / 11.5 AST | AWAY (2g): 36.5 PTS / 2.5 REB / 6.0 AST\n--- Joel Embiid (PHI) ---\n  THIS SERIES: No games played yet.\n  SEASON H2H vs BOS (2 regular season games): 12.0 PTS / 6.0 REB / 2.5 AST / 0.5 3PM\n  H2H tier hits:\n  PTS: T10 1/2 | T15 1/2 | T20 1/2\n  REB: T4 2/2 | T6 2/2 | T8 0/2\n  AST: T2 2/2 | T4 0/2\n  TPM: T1 1/2 | T2 0/2 | T3 0/2\n  H2H splits: HOME (1g): 20.0 PTS / 6.0 REB / 3.0 AST | AWAY (1g): 4.0 PTS / 6.0 REB / 2.0 AST\n--- Paul George (PHI) ---\n  THIS SERIES (3 games): 18.0 PTS / 2.7 REB / 3.0 AST / 2.3 3PM  (34.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 0/3\n  REB: T4 2/3\n  AST: T2 2/3 | T4 1/3 | T6 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 1/3\n  SEASON H2H: No regular season meetings found (first-time playoff opponent or data gap).\n--- Vj Edgecombe (PHI) ---\n  THIS SERIES (3 games): 17.7 PTS / 7.7 REB / 3.3 AST / 2.0 3PM  (36.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 1/3 | T20 1/3 | T25 1/3 | T30 1/3\n  REB: T4 2/3 | T6 2/3 | T8 2/3 | T10 2/3\n  AST: T2 3/3 | T4 1/3 | T6 0/3\n  TPM: T1 1/3 | T2 1/3 | T3 1/3 | T4 1/3\n  SEASON H2H vs BOS (4 regular season games): 20.0 PTS / 5.0 REB / 3.5 AST / 3.5 3PM\n  H2H tier hits:\n  PTS: T10 3/4 | T15 3/4 | T20 2/4 | T25 1/4 | T30 1/4\n  REB: T4 3/4 | T6 1/4 | T8 0/4\n  AST: T2 4/4 | T4 1/4 | T6 0/4\n  TPM: T1 4/4 | T2 4/4 | T3 2/4 | T4 2/4\n  H2H splits: HOME (2g): 11.5 PTS / 4.0 REB / 4.0 AST | AWAY (2g): 28.5 PTS / 6.0 REB / 3.0 AST\n\n=== CLE vs TOR \u2014 East | CLE leads 2-1 | GAME 4 (MID) ===\nTONIGHT: Game 4 at TOR. CLE on the road.\nState: CLE [FAVORABLE] / TOR [TRAILING]\nNote: Competitive series \u2014 both teams playing to win every game. Standard game scripts apply.\nGame log:\n  Game 1 (2026-04-18, CLE home): CLE 126 \u2014 TOR 113 (W: CLE)\n  Game 2 (2026-04-20, CLE home): CLE 115 \u2014 TOR 105 (W: CLE)\n  Game 3 (2026-04-23, CLE away): TOR 126 \u2014 CLE 104 (W: TOR)\n\n--- Brandon Ingram (TOR) ---\n  THIS SERIES (3 games): 12.0 PTS / 3.0 REB / 3.0 AST / 0.7 3PM  (33.7 min avg)\n  Series tier hits:\n  PTS: T10 2/3 | T15 1/3\n  REB: T4 1/3 | T6 0/3\n  AST: T2 3/3 | T4 1/3 | T6 0/3\n  TPM: T1 2/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs CLE (3 regular season games): 22.7 PTS / 6.7 REB / 3.7 AST / 1.7 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 2/3 | T20 2/3 | T25 1/3 | T30 1/3\n  REB: T4 3/3 | T6 2/3 | T8 1/3\n  AST: T2 3/3 | T4 2/3 | T6 0/3\n  TPM: T1 1/3 | T2 1/3 | T3 1/3 | T4 1/3\n  H2H splits: HOME (1g): 37.0 PTS / 7.0 REB / 2.0 AST | AWAY (2g): 15.5 PTS / 6.5 REB / 4.5 AST\n--- Scottie Barnes (TOR) ---\n  THIS SERIES (3 games): 26.7 PTS / 3.3 REB / 7.7 AST / 2.3 3PM  (35.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 2/3 | T30 1/3\n  REB: T4 2/3 | T6 0/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 1/3 | T10 1/3\n  TPM: T1 3/3 | T2 2/3 | T3 2/3 | T4 0/3\n  SEASON H2H vs CLE (3 regular season games): 20.0 PTS / 10.3 REB / 6.3 AST / 0.7 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 2/3 | T20 1/3 | T25 1/3\n  REB: T4 3/3 | T6 3/3 | T8 3/3 | T10 3/3 | T12 0/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 1/3\n  TPM: T1 2/3 | T2 0/3 | T3 0/3\n  H2H splits: HOME (1g): 18.0 PTS / 11.0 REB / 6.0 AST | AWAY (2g): 21.0 PTS / 10.0 REB / 6.5 AST\n--- Rj Barrett (TOR) ---\n  THIS SERIES (3 games): 26.3 PTS / 5.3 REB / 4.3 AST / 3.0 3PM  (36.0 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 1/3 | T30 1/3\n  REB: T4 2/3 | T6 1/3 | T8 1/3\n  AST: T2 3/3 | T4 2/3 | T6 0/3\n  TPM: T1 2/3 | T2 2/3 | T3 2/3 | T4 1/3\n  SEASON H2H vs CLE (2 regular season games): 14.5 PTS / 6.0 REB / 3.0 AST / 1.5 3PM\n  H2H tier hits:\n  PTS: T10 1/2 | T15 1/2 | T20 1/2\n  REB: T4 1/2 | T6 1/2 | T8 1/2\n  AST: T2 2/2 | T4 1/2 | T6 0/2\n  TPM: T1 1/2 | T2 1/2 | T3 1/2 | T4 0/2\n  H2H splits: AWAY (2g): 14.5 PTS / 6.0 REB / 3.0 AST\n--- Immanuel Quickley (TOR) ---\n  THIS SERIES: No games played yet.\n  SEASON H2H vs CLE (3 regular season games): 13.3 PTS / 2.7 REB / 6.3 AST / 2.0 3PM\n  H2H tier hits:\n  PTS: T10 2/3 | T15 1/3 | T20 1/3 | T25 1/3\n  REB: T4 1/3 | T6 1/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 0/3\n  TPM: T1 2/3 | T2 1/3 | T3 1/3 | T4 1/3\n  H2H splits: HOME (1g): 11.0 PTS / 6.0 REB / 7.0 AST | AWAY (2g): 14.5 PTS / 1.0 REB / 6.0 AST\n--- Donovan Mitchell (CLE) ---\n  THIS SERIES (3 games): 25.7 PTS / 5.0 REB / 4.0 AST / 3.0 3PM  (33.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 2/3 | T30 2/3\n  REB: T4 2/3 | T6 1/3 | T8 0/3\n  AST: T2 3/3 | T4 2/3 | T6 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 2/3 | T4 2/3\n  SEASON H2H vs TOR (2 regular season games): 24.0 PTS / 3.5 REB / 7.0 AST / 2.5 3PM\n  H2H tier hits:\n  PTS: T10 2/2 | T15 2/2 | T20 1/2 | T25 1/2 | T30 1/2\n  REB: T4 1/2 | T6 1/2\n  AST: T2 2/2 | T4 2/2 | T6 2/2 | T8 1/2 | T10 0/2\n  TPM: T1 2/2 | T2 2/2 | T3 1/2 | T4 0/2\n  H2H splits: HOME (1g): 31.0 PTS / 6.0 REB / 6.0 AST | AWAY (1g): 17.0 PTS / 1.0 REB / 8.0 AST\n--- Evan Mobley (CLE) ---\n  THIS SERIES (3 games): 19.0 PTS / 7.0 REB / 4.3 AST / 0.7 3PM  (33.0 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 1/3 | T25 1/3\n  REB: T4 3/3 | T6 3/3 | T8 1/3 | T10 0/3\n  AST: T2 3/3 | T4 2/3 | T6 1/3\n  TPM: T1 2/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs TOR (3 regular season games): 16.7 PTS / 7.3 REB / 3.3 AST / 1.7 3PM\n  H2H tier hits:\n  PTS: T10 2/3 | T15 1/3 | T20 1/3 | T25 1/3\n  REB: T4 3/3 | T6 2/3 | T8 2/3 | T10 0/3\n  AST: T2 3/3 | T4 1/3 | T6 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 0/3 | T4 0/3\n  H2H splits: HOME (2g): 18.0 PTS / 8.5 REB / 3.0 AST | AWAY (1g): 14.0 PTS / 5.0 REB / 4.0 AST\n--- Jarrett Allen (CLE) ---\n  THIS SERIES (3 games): 10.7 PTS / 4.7 REB / 0.7 AST / 0.0 3PM  (26.3 min avg)\n  Series tier hits:\n  PTS: T10 3/3\n  REB: T4 2/3 | T6 1/3\n  AST: T2 0/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs TOR (1 regular season games): 6.0 PTS / 8.0 REB / 0.0 AST / 0.0 3PM\n  H2H tier hits:\n  REB: T4 1/1 | T6 1/1 | T8 1/1 | T10 0/1\n  AST: T2 0/1\n  TPM: T1 0/1 | T2 0/1 | T3 0/1\n  H2H splits: HOME (1g): 6.0 PTS / 8.0 REB / 0.0 AST\n--- James Harden (CLE) ---\n  THIS SERIES (3 games): 22.7 PTS / 3.7 REB / 6.0 AST / 3.3 3PM  (33.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 1/3\n  REB: T4 2/3 | T6 0/3\n  AST: T2 3/3 | T4 3/3 | T6 1/3 | T8 1/3 | T10 1/3\n  TPM: T1 3/3 | T2 3/3 | T3 3/3 | T4 1/3\n  SEASON H2H: No regular season meetings found (first-time playoff opponent or data gap).\n\n=== SAS vs POR \u2014 West | SAS leads 2-1 | GAME 4 (MID) ===\nTONIGHT: Game 4 at POR. SAS on the road.\nState: SAS [FAVORABLE] / POR [TRAILING]\nNote: Competitive series \u2014 both teams playing to win every game. Standard game scripts apply.\nGame log:\n  Game 1 (2026-04-19, SAS home): SAS 111 \u2014 POR 98 (W: SAS)\n  Game 2 (2026-04-21, SAS home): SAS 103 \u2014 POR 106 (W: POR)\n  Game 3 (2026-04-24, SAS away): POR 108 \u2014 SAS 120 (W: SAS)\n\n--- Victor Wembanyama (SAS) ---\n  THIS SERIES (2 games): 20.0 PTS / 4.5 REB / 1.0 AST / 2.5 3PM  (22.5 min avg)\n  Series tier hits:\n  PTS: T10 1/2 | T15 1/2 | T20 1/2 | T25 1/2 | T30 1/2\n  REB: T4 2/2 | T6 0/2\n  AST: T2 0/2 | T4 0/2\n  TPM: T1 1/2 | T2 1/2 | T3 1/2 | T4 1/2\n  SEASON H2H: No regular season meetings found (first-time playoff opponent or data gap).\n--- Stephon Castle (SAS) ---\n  THIS SERIES (3 games): 22.7 PTS / 5.3 REB / 5.7 AST / 2.0 3PM  (35.0 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 1/3 | T25 1/3 | T30 1/3\n  REB: T4 2/3 | T6 2/3 | T8 0/3\n  AST: T2 3/3 | T4 3/3 | T6 1/3 | T8 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 0/3\n  SEASON H2H vs POR (1 regular season games): 16.0 PTS / 5.0 REB / 9.0 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 1/1 | T15 1/1\n  REB: T4 1/1 | T6 0/1 | T8 0/1\n  AST: T2 1/1 | T4 1/1 | T6 1/1 | T8 1/1 | T10 0/1 | T12 0/1\n  TPM: T1 0/1 | T2 0/1 | T3 0/1\n  H2H splits: HOME (1g): 16.0 PTS / 5.0 REB / 9.0 AST\n--- De'Aaron Fox (SAS) ---\n  THIS SERIES (3 games): 17.3 PTS / 3.7 REB / 6.0 AST / 1.3 3PM  (34.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 0/3\n  REB: T4 2/3 | T6 0/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 1/3\n  TPM: T1 3/3 | T2 1/3 | T3 0/3 | T4 0/3\n  SEASON H2H vs POR (3 regular season games): 27.0 PTS / 5.7 REB / 6.3 AST / 2.7 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 2/3 | T30 1/3\n  REB: T4 3/3 | T6 2/3 | T8 0/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 1/3\n  TPM: T1 3/3 | T2 3/3 | T3 2/3 | T4 0/3\n  H2H splits: HOME (2g): 22.0 PTS / 5.5 REB / 5.5 AST | AWAY (1g): 37.0 PTS / 6.0 REB / 8.0 AST\n--- Devin Vassell (SAS) ---\n  THIS SERIES (3 games): 14.0 PTS / 7.3 REB / 2.3 AST / 2.3 3PM  (33.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 2/3\n  REB: T4 2/3 | T6 2/3 | T8 1/3 | T10 1/3 | T12 1/3\n  AST: T2 3/3 | T4 0/3\n  TPM: T1 2/3 | T2 2/3 | T3 2/3 | T4 1/3\n  SEASON H2H vs POR (2 regular season games): 18.5 PTS / 7.0 REB / 0.5 AST / 2.5 3PM\n  H2H tier hits:\n  PTS: T10 2/2 | T15 1/2 | T20 1/2\n  REB: T4 2/2 | T6 2/2 | T8 1/2 | T10 0/2\n  AST: T2 0/2\n  TPM: T1 2/2 | T2 2/2 | T3 1/2 | T4 0/2\n  H2H splits: HOME (1g): 14.0 PTS / 8.0 REB / 1.0 AST | AWAY (1g): 23.0 PTS / 6.0 REB / 0.0 AST\n--- Dylan Harper (SAS) ---\n  THIS SERIES (3 games): 14.3 PTS / 4.7 REB / 2.3 AST / 1.3 3PM  (25.3 min avg)\n  Series tier hits:\n  PTS: T10 2/3 | T15 1/3 | T20 1/3 | T25 1/3\n  REB: T4 2/3 | T6 1/3 | T8 1/3 | T10 1/3\n  AST: T2 3/3 | T4 0/3\n  TPM: T1 1/3 | T2 1/3 | T3 1/3 | T4 1/3\n  SEASON H2H vs POR (3 regular season games): 8.7 PTS / 4.0 REB / 3.0 AST / 1.3 3PM\n  H2H tier hits:\n  PTS: T10 1/3\n  REB: T4 1/3 | T6 1/3\n  AST: T2 3/3 | T4 1/3 | T6 0/3\n  TPM: T1 3/3 | T2 1/3 | T3 0/3 | T4 0/3\n  H2H splits: HOME (2g): 9.5 PTS / 4.5 REB / 3.5 AST | AWAY (1g): 7.0 PTS / 3.0 REB / 2.0 AST\n\n=== LAL vs HOU \u2014 West | LAL leads 3-0 | GAME 4 (MID) ===\nTONIGHT: Game 4 at HOU. LAL on the road.\nState: LAL [DOMINANT] / HOU [DESPERATE]\nNote: Away team faces potential sweep/elimination pressure. Expect star usage spike, tighter rotation, desperation pace from the trailing team. Leading team may conserve in late blowouts.\nGame log:\n  Game 1 (2026-04-18, LAL home): LAL 107 \u2014 HOU 98 (W: LAL)\n  Game 2 (2026-04-21, LAL home): LAL 101 \u2014 HOU 94 (W: LAL)\n  Game 3 (2026-04-24, LAL away): HOU 108 \u2014 LAL 112 (W: LAL)\n\n--- Luka Doncic (LAL) ---\n  THIS SERIES: No games played yet.\n  SEASON H2H vs HOU (3 regular season games): 33.7 PTS / 6.7 REB / 7.0 AST / 4.7 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 3/3 | T30 2/3\n  REB: T4 3/3 | T6 2/3 | T8 1/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 1/3 | T10 1/3\n  TPM: T1 3/3 | T2 3/3 | T3 3/3 | T4 2/3\n  H2H splits: HOME (1g): 25.0 PTS / 5.0 REB / 7.0 AST | AWAY (2g): 38.0 PTS / 7.5 REB / 7.0 AST\n--- Austin Reaves (LAL) ---\n  THIS SERIES (1 games): 0.0 PTS / 0.0 REB / 0.0 AST / 0.0 3PM  (0.0 min avg)\n  Series tier hits:\n  AST: T2 0/1\n  TPM: T1 0/1 | T2 0/1 | T3 0/1\n  SEASON H2H vs HOU (3 regular season games): 13.7 PTS / 2.3 REB / 4.7 AST / 1.0 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 1/3\n  REB: T4 0/3\n  AST: T2 2/3 | T4 2/3 | T6 1/3 | T8 1/3\n  TPM: T1 2/3 | T2 1/3 | T3 0/3 | T4 0/3\n  H2H splits: HOME (1g): 12.0 PTS / 1.0 REB / 1.0 AST | AWAY (2g): 14.5 PTS / 3.0 REB / 6.5 AST\n--- Lebron James (LAL) ---\n  THIS SERIES (3 games): 25.3 PTS / 9.7 REB / 8.7 AST / 2.3 3PM  (40.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 2/3\n  REB: T4 3/3 | T6 3/3 | T8 3/3 | T10 1/3 | T12 1/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 1/3 | T10 1/3 | T12 1/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 1/3\n  SEASON H2H vs HOU (3 regular season games): 22.0 PTS / 4.0 REB / 4.0 AST / 1.3 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 1/3 | T25 1/3 | T30 1/3\n  REB: T4 2/3 | T6 0/3\n  AST: T2 3/3 | T4 2/3 | T6 0/3\n  TPM: T1 3/3 | T2 1/3 | T3 0/3 | T4 0/3\n  H2H splits: HOME (1g): 18.0 PTS / 2.0 REB / 5.0 AST | AWAY (2g): 24.0 PTS / 5.0 REB / 3.5 AST\n--- Kevin Durant (HOU) ---\n  THIS SERIES (3 games): 7.7 PTS / 2.0 REB / 1.3 AST / 0.3 3PM  (41.0 min avg)\n  Series tier hits:\n  PTS: T10 1/3 | T15 1/3 | T20 1/3\n  REB: T4 1/3 | T6 1/3\n  AST: T2 1/3 | T4 1/3\n  TPM: T1 1/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs LAL (3 regular season games): 20.3 PTS / 5.0 REB / 4.7 AST / 2.0 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 1/3 | T25 1/3\n  REB: T4 3/3 | T6 1/3 | T8 0/3\n  AST: T2 3/3 | T4 2/3 | T6 1/3 | T8 1/3\n  TPM: T1 2/3 | T2 2/3 | T3 1/3 | T4 1/3\n  H2H splits: HOME (2g): 18.0 PTS / 5.5 REB / 3.0 AST | AWAY (1g): 25.0 PTS / 4.0 REB / 8.0 AST\n--- Alperen Sengun (HOU) ---\n  THIS SERIES (3 games): 24.0 PTS / 11.7 REB / 5.7 AST / 0.3 3PM  (39.3 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 1/3 | T30 1/3\n  REB: T4 3/3 | T6 3/3 | T8 3/3 | T10 2/3 | T12 1/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 0/3\n  TPM: T1 1/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs LAL (2 regular season games): 20.5 PTS / 8.0 REB / 7.0 AST / 0.5 3PM\n  H2H tier hits:\n  PTS: T10 2/2 | T15 1/2 | T20 1/2 | T25 1/2\n  REB: T4 2/2 | T6 1/2 | T8 1/2 | T10 1/2 | T12 1/2\n  AST: T2 2/2 | T4 2/2 | T6 1/2 | T8 1/2 | T10 1/2\n  TPM: T1 1/2 | T2 0/2 | T3 0/2\n  H2H splits: HOME (1g): 27.0 PTS / 4.0 REB / 10.0 AST | AWAY (1g): 14.0 PTS / 12.0 REB / 4.0 AST\n--- Amen Thompson (HOU) ---\n  THIS SERIES (3 games): 19.7 PTS / 7.7 REB / 6.7 AST / 0.0 3PM  (44.3 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 1/3 | T25 1/3\n  REB: T4 3/3 | T6 2/3 | T8 1/3 | T10 1/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 1/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs LAL (3 regular season games): 23.7 PTS / 10.0 REB / 4.7 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 2/3\n  REB: T4 3/3 | T6 3/3 | T8 2/3 | T10 2/3 | T12 1/3\n  AST: T2 3/3 | T4 3/3 | T6 0/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  H2H splits: HOME (2g): 22.5 PTS / 11.5 REB / 4.5 AST | AWAY (1g): 26.0 PTS / 7.0 REB / 5.0 AST\n--- Jabari Smith Jr. (HOU) ---\n  THIS SERIES (3 games): 19.3 PTS / 8.0 REB / 0.7 AST / 4.0 3PM  (42.0 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 1/3\n  REB: T4 3/3 | T6 3/3 | T8 1/3 | T10 1/3 | T12 1/3\n  AST: T2 0/3\n  TPM: T1 3/3 | T2 3/3 | T3 3/3 | T4 1/3\n  SEASON H2H vs LAL (3 regular season games): 18.7 PTS / 6.7 REB / 1.3 AST / 2.3 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 1/3\n  REB: T4 3/3 | T6 2/3 | T8 1/3\n  AST: T2 1/3 | T4 1/3\n  TPM: T1 3/3 | T2 3/3 | T3 1/3 | T4 0/3\n  H2H splits: HOME (2g): 20.0 PTS / 6.5 REB / 2.0 AST | AWAY (1g): 16.0 PTS / 7.0 REB / 0.0 AST"
+  "context_block": "## SERIES CONTEXT \u2014 PLAYOFFS\nPer-series performance data computed from completed playoff games + full regular season H2H matchup history. Season H2H is shown for ALL series regardless of games played \u2014 it is the baseline that captures the player-vs-opponent relationship across home/away environments. Series stats reflect actual playoff performance to date.\n\nUse this section to supplement QUANT STATS:\n  - Series-specific trend (over/under-performing vs season baseline?)\n  - Series state \u2014 dominant/desperate teams have structurally different game scripts\n  - Home/away H2H split \u2014 home court matters in a 7-game series\n  - First playoff meeting (0 H2H games) \u2014 treat as higher variance; lean on season DvP and pace signals instead\n=== DET vs ORL \u2014 East | ORL leads 2-1 | GAME 4 (MID) ===\nTONIGHT: Game 4 at ORL. DET on the road.\nState: DET [TRAILING] / ORL [FAVORABLE]\nNote: Competitive series \u2014 both teams playing to win every game. Standard game scripts apply.\nGame log:\n  Game 1 (2026-04-19, DET home): DET 101 \u2014 ORL 112 (W: ORL)\n  Game 2 (2026-04-22, DET home): DET 98 \u2014 ORL 83 (W: DET)\n  Game 3 (2026-04-25, DET away): ORL 113 \u2014 DET 105 (W: ORL)\n\n--- Cade Cunningham (DET) ---\n  THIS SERIES (3 games): 31.0 PTS / 5.3 REB / 8.0 AST / 2.3 3PM  (39.3 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 3/3 | T30 1/3\n  REB: T4 3/3 | T6 1/3 | T8 0/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 2/3 | T10 1/3\n  TPM: T1 3/3 | T2 2/3 | T3 2/3 | T4 0/3\n  SEASON H2H vs ORL (3 regular season games): 32.7 PTS / 8.3 REB / 10.7 AST / 2.3 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 3/3 | T30 2/3\n  REB: T4 3/3 | T6 3/3 | T8 1/3 | T10 1/3 | T12 1/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 3/3 | T10 3/3 | T12 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 1/3\n  H2H splits: HOME (2g): 34.5 PTS / 9.5 REB / 10.5 AST | AWAY (1g): 29.0 PTS / 6.0 REB / 11.0 AST\n--- Jalen Duren (DET) ---\n  THIS SERIES (3 games): 9.0 PTS / 8.3 REB / 2.0 AST / 0.0 3PM  (30.7 min avg)\n  Series tier hits:\n  PTS: T10 1/3\n  REB: T4 3/3 | T6 3/3 | T8 2/3 | T10 0/3\n  AST: T2 1/3 | T4 1/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs ORL (4 regular season games): 17.8 PTS / 11.0 REB / 2.2 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 1/4\n  REB: T4 4/4 | T6 4/4 | T8 4/4 | T10 3/4 | T12 2/4\n  AST: T2 3/4 | T4 1/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 18.5 PTS / 12.5 REB / 2.0 AST | AWAY (2g): 17.0 PTS / 9.5 REB / 2.5 AST\n--- Ausar Thompson (DET) ---\n  THIS SERIES (3 games): 12.0 PTS / 7.7 REB / 1.7 AST / 0.0 3PM  (30.0 min avg)\n  Series tier hits:\n  PTS: T10 2/3 | T15 1/3\n  REB: T4 3/3 | T6 3/3 | T8 2/3 | T10 0/3\n  AST: T2 1/3 | T4 0/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs ORL (4 regular season games): 9.2 PTS / 8.0 REB / 4.2 AST / 0.2 3PM\n  H2H tier hits:\n  PTS: T10 1/4\n  REB: T4 3/4 | T6 3/4 | T8 2/4 | T10 2/4\n  AST: T2 4/4 | T4 2/4 | T6 2/4\n  TPM: T1 1/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 10.0 PTS / 9.0 REB / 4.0 AST | AWAY (2g): 8.5 PTS / 7.0 REB / 4.5 AST\n--- Paolo Banchero (ORL) ---\n  THIS SERIES (3 games): 22.0 PTS / 9.0 REB / 7.0 AST / 1.3 3PM  (36.3 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 1/3\n  REB: T4 3/3 | T6 3/3 | T8 2/3 | T10 1/3 | T12 1/3\n  AST: T2 3/3 | T4 3/3 | T6 2/3 | T8 2/3 | T10 0/3\n  TPM: T1 2/3 | T2 2/3 | T3 0/3 | T4 0/3\n  SEASON H2H vs DET (3 regular season games): 26.3 PTS / 9.0 REB / 4.0 AST / 0.7 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 1/3 | T30 1/3\n  REB: T4 3/3 | T6 2/3 | T8 2/3 | T10 2/3 | T12 0/3\n  AST: T2 3/3 | T4 1/3 | T6 1/3\n  TPM: T1 2/3 | T2 0/3 | T3 0/3\n  H2H splits: HOME (2g): 27.5 PTS / 8.0 REB / 2.5 AST | AWAY (1g): 24.0 PTS / 11.0 REB / 7.0 AST\n--- Desmond Bane (ORL) ---\n  THIS SERIES (3 games): 18.0 PTS / 5.7 REB / 2.3 AST / 3.3 3PM  (35.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 2/3 | T20 1/3 | T25 1/3\n  REB: T4 3/3 | T6 2/3 | T8 0/3\n  AST: T2 2/3 | T4 1/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 1/3\n  SEASON H2H vs DET (4 regular season games): 22.8 PTS / 5.0 REB / 3.0 AST / 1.5 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 3/4 | T20 2/4 | T25 2/4 | T30 1/4\n  REB: T4 3/4 | T6 1/4 | T8 1/4\n  AST: T2 3/4 | T4 1/4 | T6 1/4\n  TPM: T1 3/4 | T2 1/4 | T3 1/4 | T4 1/4\n  H2H splits: HOME (2g): 21.0 PTS / 3.5 REB / 4.0 AST | AWAY (2g): 24.5 PTS / 6.5 REB / 2.0 AST\n\n=== OKC vs PHX \u2014 West | OKC leads 3-0 | GAME 4 (MID) ===\nTONIGHT: Game 4 at PHX. OKC on the road.\nState: OKC [DOMINANT] / PHX [DESPERATE]\nNote: Away team faces potential sweep/elimination pressure. Expect star usage spike, tighter rotation, desperation pace from the trailing team. Leading team may conserve in late blowouts.\nGame log:\n  Game 1 (2026-04-19, OKC home): OKC 119 \u2014 PHX 84 (W: OKC)\n  Game 2 (2026-04-22, OKC home): OKC 120 \u2014 PHX 107 (W: OKC)\n  Game 3 (2026-04-25, OKC away): PHX 109 \u2014 OKC 121 (W: OKC)\n\n--- Shai Gilgeous-Alexander (OKC) ---\n  THIS SERIES (3 games): 34.7 PTS / 4.3 REB / 8.0 AST / 1.0 3PM  (35.0 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 3/3 | T30 2/3\n  REB: T4 3/3 | T6 0/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 2/3 | T10 0/3\n  TPM: T1 2/3 | T2 1/3 | T3 0/3 | T4 0/3\n  SEASON H2H vs PHX (3 regular season games): 30.0 PTS / 1.7 REB / 7.3 AST / 2.3 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 3/3 | T30 1/3\n  REB: T4 0/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 2/3 | T10 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 2/3 | T4 0/3\n  H2H splits: HOME (2g): 32.5 PTS / 2.5 REB / 8.0 AST | AWAY (1g): 25.0 PTS / 0.0 REB / 6.0 AST\n--- Chet Holmgren (OKC) ---\n  THIS SERIES (3 games): 15.0 PTS / 7.3 REB / 0.7 AST / 1.7 3PM  (28.7 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 2/3\n  REB: T4 3/3 | T6 3/3 | T8 1/3 | T10 0/3\n  AST: T2 1/3\n  TPM: T1 2/3 | T2 2/3 | T3 1/3 | T4 0/3\n  SEASON H2H vs PHX (4 regular season games): 19.5 PTS / 7.2 REB / 1.5 AST / 2.0 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 3/4 | T20 2/4\n  REB: T4 4/4 | T6 3/4 | T8 3/4 | T10 0/4\n  AST: T2 2/4 | T4 0/4\n  TPM: T1 3/4 | T2 3/4 | T3 1/4 | T4 1/4\n  H2H splits: HOME (2g): 23.5 PTS / 8.0 REB / 1.5 AST | AWAY (2g): 15.5 PTS / 6.5 REB / 1.5 AST\n--- Jalen Williams (OKC) ---\n  THIS SERIES (2 games): 20.5 PTS / 4.0 REB / 5.0 AST / 2.0 3PM  (26.0 min avg)\n  Series tier hits:\n  PTS: T10 2/2 | T15 2/2 | T20 1/2\n  REB: T4 1/2 | T6 1/2\n  AST: T2 2/2 | T4 2/2 | T6 1/2 | T8 0/2\n  TPM: T1 2/2 | T2 2/2 | T3 0/2 | T4 0/2\n  SEASON H2H vs PHX (4 regular season games): 19.2 PTS / 4.2 REB / 6.2 AST / 1.2 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 3/4 | T20 2/4 | T25 1/4\n  REB: T4 4/4 | T6 0/4\n  AST: T2 4/4 | T4 4/4 | T6 2/4 | T8 1/4\n  TPM: T1 4/4 | T2 1/4 | T3 0/4 | T4 0/4\n  H2H splits: HOME (2g): 13.0 PTS / 4.5 REB / 6.5 AST | AWAY (2g): 25.5 PTS / 4.0 REB / 6.0 AST\n--- Isaiah Hartenstein (OKC) ---\n  THIS SERIES (3 games): 8.7 PTS / 7.0 REB / 1.7 AST / 0.0 3PM  (21.7 min avg)\n  Series tier hits:\n  PTS: T10 0/3\n  REB: T4 2/3 | T6 2/3 | T8 2/3 | T10 1/3\n  AST: T2 2/3 | T4 0/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  SEASON H2H vs PHX (1 regular season games): 8.0 PTS / 4.0 REB / 6.0 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 0/1\n  REB: T4 1/1 | T6 0/1\n  AST: T2 1/1 | T4 1/1 | T6 1/1 | T8 0/1\n  TPM: T1 0/1 | T2 0/1 | T3 0/1\n  H2H splits: AWAY (1g): 8.0 PTS / 4.0 REB / 6.0 AST\n--- Devin Booker (PHX) ---\n  THIS SERIES (3 games): 20.3 PTS / 5.7 REB / 4.3 AST / 1.3 3PM  (37.3 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3\n  REB: T4 3/3 | T6 2/3 | T8 0/3\n  AST: T2 3/3 | T4 2/3 | T6 1/3\n  TPM: T1 2/3 | T2 2/3 | T3 0/3 | T4 0/3\n  SEASON H2H vs OKC (2 regular season games): 22.5 PTS / 7.0 REB / 7.5 AST / 1.5 3PM\n  H2H tier hits:\n  PTS: T10 2/2 | T15 2/2 | T20 2/2 | T25 0/2\n  REB: T4 2/2 | T6 2/2 | T8 1/2 | T10 0/2\n  AST: T2 2/2 | T4 2/2 | T6 2/2 | T8 1/2 | T10 0/2\n  TPM: T1 2/2 | T2 1/2 | T3 0/2 | T4 0/2\n  H2H splits: HOME (1g): 24.0 PTS / 6.0 REB / 9.0 AST | AWAY (1g): 21.0 PTS / 8.0 REB / 6.0 AST\n--- Jalen Green (PHX) ---\n  THIS SERIES (3 games): 21.3 PTS / 5.0 REB / 3.3 AST / 2.0 3PM  (37.3 min avg)\n  Series tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 2/3 | T25 1/3\n  REB: T4 3/3 | T6 0/3 | T8 0/3\n  AST: T2 2/3 | T4 1/3 | T6 1/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 0/3\n  SEASON H2H vs OKC (1 regular season games): 0.0 PTS / 0.0 REB / 0.0 AST / 0.0 3PM\n  H2H tier hits:\n  AST: T2 0/1\n  TPM: T1 0/1 | T2 0/1 | T3 0/1\n  H2H splits: AWAY (1g): 0.0 PTS / 0.0 REB / 0.0 AST\n\n=== DEN vs MIN \u2014 West | MIN leads 3-1 | GAME 5 (LATE) ===\nTONIGHT: Game 5 at DEN. MIN on the road.\nState: DEN [DESPERATE] / MIN [DOMINANT]\nNote: Home team faces elimination pressure. Expect star usage spike, tighter rotation, desperation pace. Away team may conserve in late blowouts.\nGame log:\n  Game 1 (2026-04-18, DEN home): DEN 116 \u2014 MIN 105 (W: DEN)\n  Game 2 (2026-04-20, DEN home): DEN 114 \u2014 MIN 119 (W: MIN)\n  Game 3 (2026-04-23, DEN away): MIN 113 \u2014 DEN 96 (W: MIN)\n  Game 4 (2026-04-25, DEN away): MIN 112 \u2014 DEN 96 (W: MIN)\n\n--- Nikola Jokic (DEN) ---\n  THIS SERIES (4 games): 25.0 PTS / 14.5 REB / 7.8 AST / 1.2 3PM  (39.0 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 4/4 | T25 2/4\n  REB: T4 4/4 | T6 4/4 | T8 4/4 | T10 4/4 | T12 4/4\n  AST: T2 4/4 | T4 3/4 | T6 3/4 | T8 3/4 | T10 1/4\n  TPM: T1 3/4 | T2 2/4 | T3 0/4 | T4 0/4\n  SEASON H2H vs MIN (4 regular season games): 35.8 PTS / 15.0 REB / 11.2 AST / 2.0 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 4/4 | T25 4/4 | T30 2/4\n  REB: T4 4/4 | T6 4/4 | T8 4/4 | T10 4/4 | T12 4/4\n  AST: T2 4/4 | T4 4/4 | T6 4/4 | T8 4/4 | T10 3/4 | T12 1/4\n  TPM: T1 3/4 | T2 2/4 | T3 2/4 | T4 1/4\n  H2H splits: HOME (2g): 45.5 PTS / 14.5 REB / 12.0 AST | AWAY (2g): 26.0 PTS / 15.5 REB / 10.5 AST\n--- Jamal Murray (DEN) ---\n  THIS SERIES (4 games): 26.5 PTS / 5.0 REB / 5.8 AST / 2.2 3PM  (39.8 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 3/4 | T25 3/4 | T30 3/4\n  REB: T4 3/4 | T6 1/4 | T8 0/4\n  AST: T2 4/4 | T4 4/4 | T6 2/4 | T8 0/4\n  TPM: T1 2/4 | T2 2/4 | T3 2/4 | T4 1/4\n  SEASON H2H vs MIN (4 regular season games): 31.5 PTS / 4.8 REB / 7.2 AST / 4.2 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 4/4 | T25 3/4 | T30 2/4\n  REB: T4 3/4 | T6 2/4\n  AST: T2 4/4 | T4 3/4 | T6 2/4 | T8 2/4 | T10 2/4 | T12 1/4\n  TPM: T1 4/4 | T2 3/4 | T3 2/4 | T4 2/4\n  H2H splits: HOME (2g): 30.0 PTS / 3.5 REB / 7.0 AST | AWAY (2g): 33.0 PTS / 6.0 REB / 7.5 AST\n--- Aaron Gordon (DEN) ---\n  THIS SERIES (3 games): 11.3 PTS / 5.3 REB / 2.3 AST / 1.0 3PM  (29.7 min avg)\n  Series tier hits:\n  PTS: T10 1/3 | T15 1/3\n  REB: T4 2/3 | T6 2/3 | T8 1/3\n  AST: T2 2/3 | T4 1/3\n  TPM: T1 3/3 | T2 0/3 | T3 0/3 | T4 0/3\n  SEASON H2H vs MIN (2 regular season games): 16.0 PTS / 6.5 REB / 2.0 AST / 2.0 3PM\n  H2H tier hits:\n  PTS: T10 1/2 | T15 1/2 | T20 1/2\n  REB: T4 1/2 | T6 1/2 | T8 1/2 | T10 1/2\n  AST: T2 1/2 | T4 0/2\n  TPM: T1 1/2 | T2 1/2 | T3 1/2 | T4 1/2\n  H2H splits: AWAY (2g): 16.0 PTS / 6.5 REB / 2.0 AST\n--- Cameron Johnson (DEN) ---\n  THIS SERIES (4 games): 10.0 PTS / 1.2 REB / 1.5 AST / 1.0 3PM  (28.0 min avg)\n  Series tier hits:\n  PTS: T10 2/4\n  REB: T4 0/4\n  AST: T2 2/4 | T4 0/4\n  TPM: T1 3/4 | T2 1/4 | T3 0/4 | T4 0/4\n  SEASON H2H vs MIN (2 regular season games): 2.5 PTS / 3.0 REB / 2.5 AST / 0.5 3PM\n  H2H tier hits:\n  REB: T4 1/2 | T6 0/2\n  AST: T2 2/2 | T4 0/2\n  TPM: T1 1/2 | T2 0/2 | T3 0/2\n  H2H splits: HOME (1g): 0.0 PTS / 4.0 REB / 3.0 AST | AWAY (1g): 5.0 PTS / 2.0 REB / 2.0 AST\n--- Anthony Edwards (MIN) ---\n  THIS SERIES (4 games): 18.5 PTS / 6.8 REB / 3.0 AST / 2.0 3PM  (30.0 min avg)\n  Series tier hits:\n  PTS: T10 3/4 | T15 3/4 | T20 2/4 | T25 1/4 | T30 1/4\n  REB: T4 3/4 | T6 2/4 | T8 2/4 | T10 1/4\n  AST: T2 3/4 | T4 1/4 | T6 1/4\n  TPM: T1 4/4 | T2 3/4 | T3 1/4 | T4 0/4\n  SEASON H2H vs DEN (3 regular season games): 30.3 PTS / 5.7 REB / 5.0 AST / 2.7 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 2/3 | T30 1/3\n  REB: T4 2/3 | T6 2/3 | T8 1/3\n  AST: T2 3/3 | T4 2/3 | T6 2/3 | T8 0/3\n  TPM: T1 2/3 | T2 2/3 | T3 2/3 | T4 1/3\n  H2H splits: HOME (1g): 26.0 PTS / 8.0 REB / 6.0 AST | AWAY (2g): 32.5 PTS / 4.5 REB / 4.5 AST\n--- Julius Randle (MIN) ---\n  THIS SERIES (4 games): 17.5 PTS / 7.8 REB / 3.5 AST / 0.5 3PM  (33.0 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 1/4\n  REB: T4 4/4 | T6 4/4 | T8 2/4 | T10 0/4\n  AST: T2 4/4 | T4 2/4 | T6 1/4\n  TPM: T1 1/4 | T2 1/4 | T3 0/4\n  SEASON H2H vs DEN (4 regular season games): 24.0 PTS / 7.2 REB / 6.0 AST / 1.2 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 3/4 | T20 3/4 | T25 2/4 | T30 1/4\n  REB: T4 4/4 | T6 4/4 | T8 1/4 | T10 0/4\n  AST: T2 4/4 | T4 3/4 | T6 3/4 | T8 1/4\n  TPM: T1 4/4 | T2 1/4 | T3 0/4 | T4 0/4\n  H2H splits: HOME (2g): 25.0 PTS / 6.5 REB / 5.5 AST | AWAY (2g): 23.0 PTS / 8.0 REB / 6.5 AST\n--- Jaden Mcdaniels (MIN) ---\n  THIS SERIES (4 games): 15.5 PTS / 7.0 REB / 3.0 AST / 0.2 3PM  (36.0 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 2/4 | T20 1/4\n  REB: T4 3/4 | T6 3/4 | T8 3/4 | T10 1/4\n  AST: T2 4/4 | T4 0/4 | T6 0/4\n  TPM: T1 1/4 | T2 0/4 | T3 0/4\n  SEASON H2H vs DEN (4 regular season games): 20.2 PTS / 3.0 REB / 2.8 AST / 0.8 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 3/4 | T25 1/4\n  REB: T4 2/4 | T6 0/4\n  AST: T2 3/4 | T4 1/4\n  TPM: T1 3/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 20.0 PTS / 3.5 REB / 2.0 AST | AWAY (2g): 20.5 PTS / 2.5 REB / 3.5 AST\n--- Rudy Gobert (MIN) ---\n  THIS SERIES (4 games): 8.2 PTS / 11.0 REB / 2.0 AST / 0.0 3PM  (34.5 min avg)\n  Series tier hits:\n  PTS: T10 2/4 | T15 1/4\n  REB: T4 4/4 | T6 4/4 | T8 3/4 | T10 3/4 | T12 2/4\n  AST: T2 3/4 | T4 0/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  SEASON H2H vs DEN (4 regular season games): 7.0 PTS / 9.5 REB / 1.2 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 0/4\n  REB: T4 4/4 | T6 3/4 | T8 2/4 | T10 2/4 | T12 2/4\n  AST: T2 1/4 | T4 1/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 6.0 PTS / 5.5 REB / 0.5 AST | AWAY (2g): 8.0 PTS / 13.5 REB / 2.0 AST"
 }
