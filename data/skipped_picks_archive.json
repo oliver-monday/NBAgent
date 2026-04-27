@@ -6058,5 +6058,117 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "PHI",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "player_name": "Jaylen Brown",
+      "prop_type": "PTS",
+      "tier_considered": 25,
+      "hit_rate": "7/10",
+      "volatile": true,
+      "trend": "stable",
+      "reason": "VOLATILE + 7/10 at T25, trend not up \u2014 iron_floor exception requires trend=up to override. volatile_weak_combo fires unconditionally."
+    },
+    "actual_value": 20.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 20.0 < tier 25"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "TOR",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Donovan Mitchell",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "confidence_after_penalties": 72,
+      "minimum_floor": 75,
+      "reason": "VOLATILE overrides iron_floor on 3PM (both tags present); dossier HARD AVOID -5%; VOLATILE -3%; confidence 72% below 75% 3PM minimum floor."
+    },
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "opponent": "LAL",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_name": "Alperen Sengun",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "position": "C",
+      "raw_avgs_ast": 5.7,
+      "opp_defense_rating": "mid",
+      "reason": "AST T4+ hard gate: position C triggers positional gate; opp_today=mid does not satisfy required 'soft' rating. Gate fires unconditionally."
+    },
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "opponent": "HOU",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "LeBron James",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "confidence_after_penalties": 67,
+      "minimum_floor": 68,
+      "reason": "VOLATILE -3% + vs_tough=56% penalty + iron_floor maintained tier but confidence dropped to 67%, below 68% AST/PTS general floor."
+    },
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-04-26",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "POR",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Victor Wembanyama",
+      "prop_type": "PTS",
+      "tier_considered": 20,
+      "confidence_after_penalties": 67,
+      "minimum_floor": 68,
+      "reason": "QUES status, VOLATILE -3%, vs_tough=61% penalty; confidence 67% below 68% general floor. Only 2 series games (SHORT_SAMPLE). FG_MARGIN_THIN also present."
+    },
+    "actual_value": 27.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 27.0 \u2265 tier 20"
   }
 ]

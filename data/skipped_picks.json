@@ -17,10 +17,10 @@
       "trend": "stable",
       "reason": "VOLATILE + 7/10 at T25, trend not up \u2014 iron_floor exception requires trend=up to override. volatile_weak_combo fires unconditionally."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 20.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 20.0 < tier 25"
   },
   {
     "date": "2026-04-26",
@@ -39,10 +39,10 @@
       "minimum_floor": 75,
       "reason": "VOLATILE overrides iron_floor on 3PM (both tags present); dossier HARD AVOID -5%; VOLATILE -3%; confidence 72% below 75% 3PM minimum floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-26",
@@ -62,10 +62,10 @@
       "opp_defense_rating": "mid",
       "reason": "AST T4+ hard gate: position C triggers positional gate; opp_today=mid does not satisfy required 'soft' rating. Gate fires unconditionally."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
   },
   {
     "date": "2026-04-26",
@@ -84,10 +84,10 @@
       "minimum_floor": 68,
       "reason": "VOLATILE -3% + vs_tough=56% penalty + iron_floor maintained tier but confidence dropped to 67%, below 68% AST/PTS general floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-26",
@@ -106,9 +106,9 @@
       "minimum_floor": 68,
       "reason": "QUES status, VOLATILE -3%, vs_tough=61% penalty; confidence 67% below 68% general floor. Only 2 series games (SHORT_SAMPLE). FG_MARGIN_THIN also present."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 27.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 27.0 \u2265 tier 20"
   }
 ]
