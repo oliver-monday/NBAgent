@@ -1,58 +1,47 @@
 {
-  "date": "2026-04-27",
-  "generated_at": "2026-04-27T08:07:57.919011-07:00",
+  "date": "2026-04-28",
+  "generated_at": "2026-04-28T08:28:16.229158-07:00",
   "player_notes": {
-    "anthony edwards": "Edwards is OUT for multiple weeks with a bone bruise and hyperextension in his left knee \u2014 effectively eliminated from the playoffs. Do not play any Edwards props.",
-    "donte divincenzo": "DiVincenzo suffered a torn right Achilles tendon in Game 4 and is out for the remainder of the playoffs. Absence boosts usage for remaining Timberwolves players.",
-    "kevin durant": "Durant missed Game 4 with a bone bruise/sprained left ankle. His availability for Game 5 is uncertain \u2014 monitor status closely before playing any props.",
-    "victor wembanyama": "Wembanyama returned from concussion protocol and played full Game 4 (27 pts, 11 reb, 7 blk). No minutes restriction apparent; props fully in play for Game 5.",
-    "joel embiid": "Embiid returned from appendectomy in Game 4. Monitor workload/minutes restriction closely as he is likely on a ramp-up after missing time.",
-    "ayo dosunmu": "Scored 43 points in Game 4 with Edwards and DiVincenzo both out. With both injuries confirmed as serious, Dosunmu's role and usage are significantly elevated going forward.",
-    "lebron james": "LeBron had 10 points and 8 turnovers in Game 4 blowout loss. Series now 3-1 against Rockets with Game 5 upcoming; monitor if any injury concerns emerge.",
-    "payton pritchard": "Hit 6 threes and scored 32 points in Game 4 vs. 76ers. Active 3PT prop target in a favorable matchup with Boston leading 3-1."
+    "austin reaves": "Game-time decision for Lakers in Game 5 vs. Rockets after ~4 weeks out with a Grade 2 oblique strain. Team is optimistic about his return; monitor pre-game reports before betting his props.",
+    "jalen brunson": "Media narrative pushing for more KAT usage in Knicks offense; potential shift in usage/shot volume away from Brunson if coaching staff adjusts.",
+    "joel embiid": "Returned for 76ers vs. Celtics but his presence was debated as potentially harmful; monitor minutes and role if series continues.",
+    "aaron gordon": "Ruled out for Nuggets Game 5 (already played); if series continues, calf/hamstring issue is an ongoing absence to track for Game 6."
   },
   "game_notes": {
-    "HOU vs LAL": "Kevin Durant (ankle bone bruise) missed Game 4 and his Game 5 status is uncertain. If Durant is out again, expect elevated usage for Amen Thompson, Tari Eason, and Alperen Sengun.",
-    "MIN vs DEN": "Anthony Edwards (knee, out weeks) and Donte DiVincenzo (torn Achilles, season over) are both out for the Timberwolves. Dosunmu, Julius Randle, and Jaden McDaniels see boosted roles."
+    "LAL vs HOU": "Austin Reaves is a game-time decision (returning from oblique strain); his availability will impact Lakers rotation and props for LeBron, AD, and Reaves himself. LeBron had a poor Game 4 (10 pts, 8 TO).",
+    "MIN vs DEN": "Aaron Gordon out for Nuggets with hamstring; Timberwolves also dealing with injuries to Donte DiVincenzo and Anthony Edwards \u2014 monitor availability for Game 6. Jokic posted a triple-double in Game 5 win."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 49,
+  "filtered_item_count": 44,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Anthony Edwards (MIN)",
-      "current_context_fact": "G4: Left game with a LEFT knee injury after only 18 min (5 pts, 1-8 FG); did not return; severity unclear with testing underway postgame. Now listed QUES per injury report. Treat as a primary injury concern for G5; availability and minutes are now the most critical variables in the DEN-MIN series. Do not assume any baseline minutes until cleared.",
-      "conflict": "Today's news confirms Edwards has a bone bruise and hyperextension in his left knee and is expected to miss multiple weeks. This is no longer 'severity unclear' \u2014 he is definitively OUT for an extended period, not merely questionable. A separate news item also mentions Donte DiVincenzo suffered a torn right Achilles tendon in G4.",
+      "player_or_team": "Austin Reaves (LAL)",
+      "current_context_fact": "Austin Reaves (LAL) \u2014 Grade 2 oblique strain (Apr 2 vs OKC, same game as Doncic). 4-6 week timeline. Per Charania (Apr 13): 'out for the majority of the first-round series; earliest first week of May.' 12-25% reinjury risk if rushed.",
+      "conflict": "Today's news reports (Shams Charania, ESPN) that Austin Reaves is a game-time decision for Lakers in Game 5 and that the Lakers are 'optimistic' for his return. This indicates he is now actively under consideration to play in Game 5, which is earlier than the 'first week of May' estimate and changes his status from a confirmed absence to a live game-time decision.",
       "urgency": "critical",
-      "suggested_action": "Update Edwards' status to OUT (multiple weeks, bone bruise + hyperextension, left knee) \u2014 effectively season-ending for the remainder of this series and likely beyond. Add Donte DiVincenzo to the season-ending absences or injury landscape as he suffered a torn right Achilles in G4 (not currently mentioned anywhere in the context doc)."
+      "suggested_action": "Update Reaves' status from 'out for majority of first-round series' to 'game-time decision for Game 5 (Apr 28).' Remove the 'earliest first week of May' language. Note that his return would significantly change LAL's offensive profile and reduce LeBron's sole-engine burden."
     },
     {
-      "player_or_team": "Kevin Durant (HOU)",
-      "current_context_fact": "Durant's ankle status (still QUES) remains the decisive series variable... G4 key references Durant as 'still QUES' for ankle.",
-      "conflict": "Today's news confirms Durant was officially diagnosed with a bone bruise in his sprained LEFT ankle (news item: 'Kevin Durant, who was diagnosed with a bone bruise in his sprained left ankle after further testing, will miss Game 4'). The context doc references a 'right knee contusion' from practice Apr 16 earlier in the injury landscape section, and later describes his ankle as the injury. The confirmed diagnosis is now a bone bruise in the left ankle, and he missed G4. His status for G5 remains uncertain but the injury is more specifically defined than 'QUES ankle.'",
-      "urgency": "critical",
-      "suggested_action": "Update Durant's injury description to 'bone bruise, left ankle (confirmed diagnosis)' \u2014 replace vague 'ankle QUES' language. Also reconcile the earlier 'right knee contusion' reference in the LAL-HOU pre-series section with the actual ankle injury that kept him out of G2-G4. His G5 availability for a potential series-closing game remains the key variable."
-    },
-    {
-      "player_or_team": "Victor Wembanyama (SAS)",
-      "current_context_fact": "G4 (Apr 26): 27/12/3 (9-17 FG, 1 3PM, 34 min) \u2014 full load, no visible restriction, rim deterrence fully restored. Right ankle pain still noted but did not limit his G4 performance.",
-      "conflict": "Today's news reports Wembanyama had 27 points, 11 rebounds (not 12) and seven blocks in G4. The context doc states 12 rebounds; the news article says 11 rebounds. Minor stat discrepancy.",
+      "player_or_team": "Aaron Gordon (DEN)",
+      "current_context_fact": "Aaron Gordon (DEN) \u2014 Calf/hamstring strains recurring over past two seasons. Missed 40 games this season. DEN's key defensive anchor. If he misses games vs MIN, DEN defense suffers significantly.",
+      "conflict": "Today's news confirms 'Nuggets rule out Aaron Gordon for Game 5 with calf tightness' \u2014 the headline references 'left hamstring tightness' in the description. The context doc's G5 diary entry for DEN-MIN already notes Gordon was 'QUES pre-game' for G3 but does not definitively confirm his G5 status. The news item confirms he was officially ruled OUT for G5.",
       "urgency": "monitor",
-      "suggested_action": "Verify and correct Wembanyama's G4 rebound total \u2014 news reports 11 rebounds while context doc states 12. Update the series diary and injury note accordingly."
+      "suggested_action": "Update the playoff injury landscape to reflect Gordon was officially ruled OUT for Game 5 vs MIN with calf/hamstring tightness. The G5 diary entry should be updated to note his confirmed absence. His availability for G6 is now the key monitoring variable."
     },
     {
-      "player_or_team": "Donte DiVincenzo (MIN)",
-      "current_context_fact": "DiVincenzo is not mentioned anywhere in the season context document's injury landscape or player notes.",
-      "conflict": "Today's news reports DiVincenzo suffered a torn right Achilles tendon in G4 of the DEN-MIN series. This is a season-ending injury to a MIN rotation player that is entirely absent from the context doc.",
-      "urgency": "critical",
-      "suggested_action": "Add Donte DiVincenzo (MIN) to the injury landscape as OUT with a torn right Achilles (G4, Apr 25 vs DEN). Note his role in MIN's rotation and the compounding effect alongside Edwards' multi-week absence \u2014 MIN's backcourt depth is now severely depleted heading into G5."
-    },
-    {
-      "player_or_team": "Tari Eason (HOU)",
-      "current_context_fact": "Tari Eason is not mentioned in the LAL-HOU series diary G4 entry, which credits Thompson 23/4/7, Sengun 19/6/2, and Jabari Smith Jr. 16/8/3 as HOU's contributors.",
-      "conflict": "Today's news reports Tari Eason added 20 points in HOU's G4 115-96 win, making him a significant contributor who is entirely absent from the G4 series diary entry.",
+      "player_or_team": "Cooper Flagg / Rookie of the Year",
+      "current_context_fact": "Stephon Castle (SAS): Won Rookie of the Year 2024-25. Now a full starter in year two.",
+      "conflict": "Today's news reports 'Cooper Flagg tops Kon Knueppel for ROY honors in tight race' \u2014 Flagg (DAL) won Rookie of the Year for the 2025-26 season. This is not a conflict with Castle's 2024-25 ROY award, but it confirms the 2025-26 ROY winner is Cooper Flagg, which is a new confirmed fact not present in the context document.",
       "urgency": "monitor",
-      "suggested_action": "Update the LAL-HOU G4 series diary to include Tari Eason's 20-point performance. His emerging scoring role off the bench is relevant context for G5 player prop evaluation."
+      "suggested_action": "Add a note that Cooper Flagg (DAL) won the 2025-26 Rookie of the Year award. This is new information not conflicting with Castle's 2024-25 ROY but fills a gap in the context document. Note: DAL is eliminated, so this has no playoff prop relevance."
+    },
+    {
+      "player_or_team": "OKC vs PHX series",
+      "current_context_fact": "Game 4 (Apr 27) \u2014 OKC 131, PHX 122 | OKC leads 4-0 \u2014 SERIES CLINCHED (margin 9) [listed under playoff series diary as the most recent entry]",
+      "conflict": "Today's news confirms OKC completed the sweep: 'Gilgeous-Alexander scores 31 and Thunder outlast Suns 131-122 to cap a 4-game sweep' and 'Thunder complete sweep of Suns to reach Western Conference semis.' The series result in the diary is accurate and consistent with the news. No conflict \u2014 confirming existing data.",
+      "urgency": "monitor",
+      "suggested_action": "No change needed to the series result. Confirm OKC advances to R2 (Western Conference Semis). Update bracket/status to reflect OKC's R1 series is complete. PHX is eliminated."
     }
   ],
   "staleness_flags": []

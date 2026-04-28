@@ -1,0 +1,302 @@
+[
+  {
+    "date": "2026-04-28",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "PHI is a +11.5 underdog, creating genuine garbage-time risk in Q4 where Maxey's minutes may compress if BOS runs away early. Despite the blowout penalty already applied, the structural risk of a double-digit deficit leading to early benching of key players on a fading team remains \u2014 and PHI's team_momentum is neutral, not hot, suggesting limited capacity to keep the game close."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Tatum is a volatile player on the favored side of an 11.5-point blowout game, and AST picks on volatile scorers in blowout-risk games face compounded suppression: BOS may pull starters in Q4, eliminating late assist opportunities that would otherwise push the total over. The historical lesson that AST picks carry systematic overconfidence risk \u2014 especially when opp_today is not soft and game script could resolve early \u2014 applies here even at the conservative T6 tier."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Brown is flagged volatile with a min_floor of 29.9 and BLOWOUT_RISK on the favored side at -11.5 \u2014 in a game BOS controls early, starters routinely see Q4 rest, which is precisely where a volatile scorer's floor becomes fragile. The FG_MARGIN_NEG cascade already stepped down to T20, but Brown's wide distribution means a single cold-shooting quarter combined with early exit still produces a miss at this threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Pritchard's min_floor of 23.4 is the primary structural vulnerability: as a bench player on the BLOWOUT_RISK side, a game that gets away from PHI early could see Pritchard's minutes compressed well below his average, and 23.4 as the floor leaves meaningful exposure to a sub-10-point outcome in a reduced-minutes scenario. Bench rotational players are most susceptible to early garbage-time compression."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "White is flagged as a LATE_FADER, and the blowout-risk game script on the favored side is the exact scenario where late-game fading is most consequential \u2014 BOS protecting a lead in Q4 reduces pace and possession volume, directly compressing assist opportunities for a role player whose floor depends on run-the-offense minutes. The series AST record at T4 was already 1/4=25%, requiring a skip to T2, suggesting AST production has been genuinely inconsistent in this series."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Brunson is flagged volatile with FG_MARGIN_THIN at 0% \u2014 essentially no FG safety margin \u2014 meaning his hit rate is heavily dependent on efficient shooting nights, and a single cold-FG game produces a miss even at this conservative T15 tier. The volatile tag combined with near-zero FG margin creates a structurally fragile floor that the tier step-down partially but not fully mitigates."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Anunoby's raw_avg_REB of 5.8 sits below the T6 threshold, meaning he needs an above-average rebounding game just to clear the line \u2014 and his volatility flag (volatile) combined with a raw_avg below the target creates genuine negative-margin exposure. The quant tier being listed at T4 overall=75% while this pick targets T6 suggests the structural floor for this REB tier is thinner than the series/H2H data alone implies."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "Wembanyama's min_floor of 15.6 against an avg of 27.9 reveals extreme minutes volatility \u2014 a single game where he plays 20 minutes (well within historical variance for this player) produces a near-certain miss at PTS T15. This is not an elimination game, so the minutes fragility exception does not apply, and a 15.6 min_floor on a PTS T15 pick represents exactly the structural fragility the rules flag as disqualifying for high-confidence picks."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Fox faces a tough defense on the favored side of an 11.5-point blowout game \u2014 the historical lesson explicitly identifies that tough defenses generating turnovers cannibalize assist opportunities for primary ball-handlers, and the spread being >5 points in a game SAS is expected to control creates late-game pace reduction that further suppresses AST accumulation. The series hit rate at T6 (3/4=75%) is adequate but not dominant."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Harper's min_floor of 19.8 against avg 25.1 is structurally marginal for an AST prop \u2014 a game where he plays 20\u201322 minutes (within normal variance) leaves very little cushion to accumulate 3+ assists, and his post_miss bounce-back lift is negative (0.81), meaning recent misses do not reliably precede recoveries. The series AST record at T4 was 0/4=0%, requiring a full skip to T2, which underscores that this player's AST production in this series has been genuinely fragile."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Joel Embiid",
+    "team": "PHI",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "Joel Embiid",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-28",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
