@@ -2341,12 +2341,60 @@ The rules below can conflict. When they do, use this priority order:
      iron_floor, consistent tag, soft DvP, favorable rest. These can reduce the
      net penalty but cannot push confidence above a cap ceiling.
 
-PENALTY STACK LIMIT: If more than 3 independent confidence penalties apply to a single pick,
-stop and re-examine. Either the pick is genuinely marginal and should be skipped, or some
-penalties are redundant (e.g. B2B rate already prices in fatigue — also applying DENSE -5%
-is double-counting). Document each penalty in tier_walk and ask: is this adjustment
-independent of the others? If not, drop the weakest one. A pick that requires 4+ penalties
-to stay above 70% is not a confident pick — skip it.
+PENALTY STACK LIMIT — TWO PARALLEL CONSTRAINTS:
+
+1. COUNT LIMIT: If more than 3 independent confidence penalties apply to a single pick,
+   stop and re-examine. Either the pick is genuinely marginal and should be skipped, or some
+   penalties are redundant (e.g. B2B rate already prices in fatigue — also applying DENSE -5%
+   is double-counting). Document each penalty in tier_walk and ask: is this adjustment
+   independent of the others? If not, drop the weakest one. A pick that requires 4+ penalties
+   to stay above 70% is not a confident pick — skip it.
+
+2. MAGNITUDE CAP: The total penalty magnitude applied to a single pick is capped at
+   -20 percentage points. Sum the absolute values of all individual penalties (e.g.,
+   VOLATILE -8% + suppressor -12% + blowout -5% = -25pp total magnitude). If the total
+   exceeds -20pp, cap the aggregate adjustment at -20pp regardless of how many individual
+   penalties you've documented.
+
+   WHY THIS RULE EXISTS: penalties are individually defensible but their aggregate can
+   over-penalize structurally strong picks. The 2026-04-27 Jokic AST T8 case is the
+   canonical failure: VOLATILE -8% + MIN×AST suppressor -12% + blowout -5% = -25pp on
+   a 90% base produced 65% confidence (below 68% AST floor → skipped). Actual outcome
+   was a 16-AST triple-double — the pick was empirically near-certain, not marginal.
+   The penalties were each defensible but their sum was empirically wrong by ~25pp.
+   Capping at -20pp would have shipped the pick at 70% confidence and captured the hit.
+
+   HOW TO APPLY THE CAP:
+   - Document each penalty individually in tier_walk as you would normally
+     (e.g., "VOLATILE -8%, suppressor -12%, blowout -5% = -25pp total")
+   - In the same tier_walk, document the cap explicitly:
+     "PENALTY_CAP applied: -25pp aggregate exceeds -20pp limit, capping at -20pp"
+   - Apply the capped adjustment (-20pp) to the base confidence rather than the
+     uncapped sum (-25pp). For Jokic AST T8: 90% base → -20pp cap → 70% final
+     (NOT 65% from uncapped -25pp).
+   - The cap does NOT change which penalties applied — all individual penalties
+     remain documented and visible in tier_walk. Only the aggregate effect on
+     final confidence is capped.
+
+   INTERACTION WITH COUNT RULE: the COUNT rule still fires independently. If you have
+   4+ penalties AND total magnitude exceeds -20pp, the COUNT rule directs you to
+   re-examine and drop the weakest, which may also reduce magnitude below the cap.
+   If after re-examination you still have 3 penalties summing >-20pp, apply the
+   MAGNITUDE CAP. Order: re-examine penalty count first, then apply magnitude cap
+   if still needed.
+
+   INTERACTION WITH FLOOR CHECK: after applying the cap, verify the resulting
+   confidence against the prop-type minimum floor (PTS/AST 68%, REB 78%, 3PM 75%).
+   The cap raises confidence by 0-5pp (depending on excess), which may push
+   borderline picks above the floor. If the capped confidence still falls below
+   floor, the pick still skips via merit_below_floor — the cap does not override
+   the floor itself, only the aggregate penalty magnitude.
+
+   POSITIVE SIGNAL OFFSETS: positive offsets (iron_floor, consistent tag, soft DvP,
+   favorable rest) apply BEFORE the cap is computed. So if VOLATILE -5% is offset
+   by iron_floor +5% (net 0 penalty contribution), the iron_floor offset reduces
+   the pre-cap aggregate before the -20pp cap is checked. This means strong
+   positive context can keep a pick below the cap threshold without invoking it.
 
 TIER_WALK FORMAT — document the final state clearly:
   - Each tier checked: "T25→8/10✓" or "T20→5/10 skip"
@@ -3155,6 +3203,18 @@ TEAMMATE REFERENCES:
 
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
+- TIER_WALK MARKET-AWARENESS: Before walking down to a lower tier in your
+  tier_walk reasoning, check the AVAILABLE FANDUEL MARKETS section. If the
+  tier you would walk down TO has no FanDuel market available for that
+  player+prop, do NOT walk to it. Instead, keep the pick at the current
+  qualifying tier and apply the step-down's confidence penalty (e.g., a
+  FG_MARGIN_THIN -2% penalty that would have stepped T15→T10 should
+  instead apply -2% confidence at T15 when T10 is unavailable). If the
+  CURRENT tier also has no market, then the pick must be skipped via
+  no_market — the walk-down does not create a market that does not
+  exist. The goal is to never walk INTO a no-market tier when a market
+  exists at a higher qualifying tier; the walk-down rule's intent is
+  safety, not market evasion.
 - CRITICAL — pick_value + walked_tier output contract: After completing your tier_walk
   reasoning, set walked_tier to the final integer tier threshold. Then set pick_value
   to the same integer. Both fields must agree. If your tier_walk applies a step-down
@@ -4218,12 +4278,60 @@ The rules below can conflict. When they do, use this priority order:
      iron_floor, consistent tag, soft DvP, favorable rest. These can reduce the
      net penalty but cannot push confidence above a cap ceiling.
 
-PENALTY STACK LIMIT: If more than 3 independent confidence penalties apply to a single pick,
-stop and re-examine. Either the pick is genuinely marginal and should be skipped, or some
-penalties are redundant (e.g. B2B rate already prices in fatigue — also applying DENSE -5%
-is double-counting). Document each penalty in tier_walk and ask: is this adjustment
-independent of the others? If not, drop the weakest one. A pick that requires 4+ penalties
-to stay above 70% is not a confident pick — skip it.
+PENALTY STACK LIMIT — TWO PARALLEL CONSTRAINTS:
+
+1. COUNT LIMIT: If more than 3 independent confidence penalties apply to a single pick,
+   stop and re-examine. Either the pick is genuinely marginal and should be skipped, or some
+   penalties are redundant (e.g. B2B rate already prices in fatigue — also applying DENSE -5%
+   is double-counting). Document each penalty in tier_walk and ask: is this adjustment
+   independent of the others? If not, drop the weakest one. A pick that requires 4+ penalties
+   to stay above 70% is not a confident pick — skip it.
+
+2. MAGNITUDE CAP: The total penalty magnitude applied to a single pick is capped at
+   -20 percentage points. Sum the absolute values of all individual penalties (e.g.,
+   VOLATILE -8% + suppressor -12% + blowout -5% = -25pp total magnitude). If the total
+   exceeds -20pp, cap the aggregate adjustment at -20pp regardless of how many individual
+   penalties you've documented.
+
+   WHY THIS RULE EXISTS: penalties are individually defensible but their aggregate can
+   over-penalize structurally strong picks. The 2026-04-27 Jokic AST T8 case is the
+   canonical failure: VOLATILE -8% + MIN×AST suppressor -12% + blowout -5% = -25pp on
+   a 90% base produced 65% confidence (below 68% AST floor → skipped). Actual outcome
+   was a 16-AST triple-double — the pick was empirically near-certain, not marginal.
+   The penalties were each defensible but their sum was empirically wrong by ~25pp.
+   Capping at -20pp would have shipped the pick at 70% confidence and captured the hit.
+
+   HOW TO APPLY THE CAP:
+   - Document each penalty individually in tier_walk as you would normally
+     (e.g., "VOLATILE -8%, suppressor -12%, blowout -5% = -25pp total")
+   - In the same tier_walk, document the cap explicitly:
+     "PENALTY_CAP applied: -25pp aggregate exceeds -20pp limit, capping at -20pp"
+   - Apply the capped adjustment (-20pp) to the base confidence rather than the
+     uncapped sum (-25pp). For Jokic AST T8: 90% base → -20pp cap → 70% final
+     (NOT 65% from uncapped -25pp).
+   - The cap does NOT change which penalties applied — all individual penalties
+     remain documented and visible in tier_walk. Only the aggregate effect on
+     final confidence is capped.
+
+   INTERACTION WITH COUNT RULE: the COUNT rule still fires independently. If you have
+   4+ penalties AND total magnitude exceeds -20pp, the COUNT rule directs you to
+   re-examine and drop the weakest, which may also reduce magnitude below the cap.
+   If after re-examination you still have 3 penalties summing >-20pp, apply the
+   MAGNITUDE CAP. Order: re-examine penalty count first, then apply magnitude cap
+   if still needed.
+
+   INTERACTION WITH FLOOR CHECK: after applying the cap, verify the resulting
+   confidence against the prop-type minimum floor (PTS/AST 68%, REB 78%, 3PM 75%).
+   The cap raises confidence by 0-5pp (depending on excess), which may push
+   borderline picks above the floor. If the capped confidence still falls below
+   floor, the pick still skips via merit_below_floor — the cap does not override
+   the floor itself, only the aggregate penalty magnitude.
+
+   POSITIVE SIGNAL OFFSETS: positive offsets (iron_floor, consistent tag, soft DvP,
+   favorable rest) apply BEFORE the cap is computed. So if VOLATILE -5% is offset
+   by iron_floor +5% (net 0 penalty contribution), the iron_floor offset reduces
+   the pre-cap aggregate before the -20pp cap is checked. This means strong
+   positive context can keep a pick below the cap threshold without invoking it.
 
 TIER_WALK FORMAT — document the final state clearly:
   - Each tier checked: "T25→8/10✓" or "T20→5/10 skip"
@@ -4396,6 +4504,18 @@ TEAMMATE REFERENCES:
 
 picks rules:
 - pick_value must be one of the valid tier values listed above. No other values allowed.
+- TIER_WALK MARKET-AWARENESS: Before walking down to a lower tier in your
+  tier_walk reasoning, check the AVAILABLE FANDUEL MARKETS section. If the
+  tier you would walk down TO has no FanDuel market available for that
+  player+prop, do NOT walk to it. Instead, keep the pick at the current
+  qualifying tier and apply the step-down's confidence penalty (e.g., a
+  FG_MARGIN_THIN -2% penalty that would have stepped T15→T10 should
+  instead apply -2% confidence at T15 when T10 is unavailable). If the
+  CURRENT tier also has no market, then the pick must be skipped via
+  no_market — the walk-down does not create a market that does not
+  exist. The goal is to never walk INTO a no-market tier when a market
+  exists at a higher qualifying tier; the walk-down rule's intent is
+  safety, not market evasion.
 - CRITICAL — pick_value + walked_tier output contract: After completing your tier_walk
   reasoning, set walked_tier to the final integer tier threshold. Then set pick_value
   to the same integer. Both fields must agree. If your tier_walk applies a step-down
@@ -5274,6 +5394,180 @@ def reconcile_pick_values(picks: list[dict]) -> list[dict]:
     return picks
 
 
+def revert_no_market_walk(picks: list[dict], player_stats: dict) -> list[dict]:
+    """
+    Catch LLM tier-walks that land on a no-market FanDuel tier when a
+    higher qualifying tier IS bettable. Revert the walk to the next-higher
+    available market tier and apply the originally-cited step-down penalty
+    as a confidence adjustment instead.
+
+    Conditions for revert (all must hold):
+      1. The pick's walked_tier (= pick_value after reconcile_pick_values)
+         is strictly less than the player's best_tiers[prop_type].tier
+         (i.e. the LLM walked DOWN from the qualifying tier).
+      2. The walked_tier has no FanDuel market for this player+prop.
+      3. There exists a tier T such that walked_tier < T <= best_tier
+         AND T has a FanDuel market AND T is in VALID_TIERS[prop_type].
+         If multiple Ts qualify, choose the LOWEST (most conservative
+         tier that is still bettable — preserves the LLM's safety intent).
+
+    When all three hold, the pick is mutated in-place:
+      - pick_value: walked_tier → T
+      - walked_tier: walked_tier → T
+      - confidence_pct: penalty extracted from tier_walk text (default -3%
+        if no specific reason recognised)
+      - tier_walk: appended with [WALK_REVERTED: {old}→{T}, no T{old} market;
+        applied {penalty}% penalty in lieu of step]
+      - market_implied_prob: leave unchanged (it reflects the implied
+        probability for the new tier from FanDuel; reconcile_market_implied_prob
+        is downstream of this function and recomputes)
+
+    Picks that do not meet all three conditions are passed through
+    unchanged. The existing enforce_market_gate() runs after this and
+    will still reject any pick where even the best_tier has no market.
+
+    When odds_available.json is unavailable, the function returns picks
+    unchanged (graceful no-op — same fail-open behaviour as the existing
+    market gate).
+    """
+    import re
+
+    markets_data = load_available_markets()
+    if markets_data is None:
+        # No market data — cannot make decisions, pass through
+        return picks
+
+    players_markets = markets_data.get("players", {})
+    if not players_markets:
+        return picks
+
+    def _norm(name: str) -> str:
+        return re.sub(r"[^a-z0-9 ]", "", name.lower()).strip()
+
+    # Penalty extraction: regex-match common step-down trigger keywords in
+    # tier_walk text and map them to documented penalty values from the
+    # SELECTION RULES. Conservative defaults (-3% baseline) when keyword
+    # is recognised but specific value is not.
+    PENALTY_MAP = [
+        (re.compile(r"\bFG_MARGIN_NEG\b", re.IGNORECASE),    -3),
+        (re.compile(r"\bFG_MARGIN_THIN\b", re.IGNORECASE),   -2),
+        (re.compile(r"\bFG_COLD\b", re.IGNORECASE),          -3),
+        (re.compile(r"\bVOLATILE\b", re.IGNORECASE),         -3),
+        (re.compile(r"\bvs_tough\b", re.IGNORECASE),         -3),
+        (re.compile(r"\bdense_schedule\b|\bdense\b", re.IGNORECASE), -2),
+        (re.compile(r"\bblowout\b|\bBLOWOUT_RISK\b", re.IGNORECASE), -3),
+        (re.compile(r"\bdef_recency\b|\btough\b", re.IGNORECASE),     -2),
+        (re.compile(r"\bmin_floor\b|\bminutes\b", re.IGNORECASE),     -2),
+        (re.compile(r"\bsuppressor\b|\bMIN.AST\b", re.IGNORECASE),    -3),
+    ]
+    DEFAULT_PENALTY = -3  # baseline if walk happened but no keyword recognised
+
+    reverted_count = 0
+    for pick in picks:
+        prop_type   = pick.get("prop_type", "")
+        pick_value  = pick.get("pick_value")
+        player_name = pick.get("player_name", "")
+
+        if (not prop_type or pick_value is None or not player_name
+                or prop_type not in VALID_TIERS):
+            continue
+
+        # Look up player's qualifying tier from quant
+        stats_entry = player_stats.get(player_name)
+        if stats_entry is None:
+            # Try normalised name match (handle "VJ Edgecombe" vs "Vj Edgecombe" etc.)
+            target_norm = _norm(player_name)
+            for k, v in player_stats.items():
+                if _norm(k) == target_norm:
+                    stats_entry = v
+                    break
+        if stats_entry is None:
+            continue
+
+        best_tiers = stats_entry.get("best_tiers") or {}
+        best_entry = best_tiers.get(prop_type)
+        if best_entry is None:
+            continue
+
+        best_tier = best_entry.get("tier")
+        if best_tier is None or not isinstance(best_tier, int):
+            continue
+
+        # Condition 1: walk-down occurred (current tier below qualifying)
+        if pick_value >= best_tier:
+            continue
+
+        # Look up market availability for this player+prop
+        norm_name = _norm(player_name)
+        market_entry = players_markets.get(norm_name)
+        if market_entry is None:
+            # Player not in FanDuel data — existing gate will reject; no revert
+            continue
+
+        prop_tiers = market_entry.get(prop_type, [])
+        available_tiers = sorted({t.get("tier") for t in prop_tiers
+                                  if t.get("tier") is not None})
+
+        # Condition 2: walked tier has no market
+        if pick_value in available_tiers:
+            continue  # current walked tier IS bettable, no revert needed
+
+        # Condition 3: a higher tier in (walked, best_tier] has a market
+        valid_for_prop = VALID_TIERS[prop_type]
+        revert_candidates = [
+            t for t in available_tiers
+            if pick_value < t <= best_tier and t in valid_for_prop
+        ]
+        if not revert_candidates:
+            # No bettable tier in walk range — let market gate handle the reject
+            continue
+
+        revert_to = min(revert_candidates)  # lowest bettable tier in walk range
+
+        # Determine penalty from tier_walk text
+        tier_walk_text = pick.get("tier_walk") or ""
+        penalty = None
+        for pattern, value in PENALTY_MAP:
+            if pattern.search(tier_walk_text):
+                penalty = value
+                break
+        if penalty is None:
+            penalty = DEFAULT_PENALTY
+
+        # Apply revert
+        old_pv = pick_value
+        pick["pick_value"] = revert_to
+        pick["walked_tier"] = revert_to
+
+        # Adjust confidence: subtract penalty (penalty is negative)
+        old_conf = pick.get("confidence_pct")
+        if isinstance(old_conf, (int, float)):
+            new_conf = max(0, min(100, int(round(old_conf + penalty))))
+            pick["confidence_pct"] = new_conf
+        else:
+            new_conf = old_conf  # leave unchanged if confidence_pct missing/non-numeric
+
+        # Annotate tier_walk
+        pick["tier_walk"] = (
+            tier_walk_text
+            + f" [WALK_REVERTED: T{old_pv}→T{revert_to}, no T{old_pv} market;"
+              f" applied {penalty}% penalty in lieu of step]"
+        )
+
+        print(
+            f"[analyst] WALK_REVERT: {player_name} {prop_type} "
+            f"T{old_pv}→T{revert_to} "
+            f"(no T{old_pv} market; available: {available_tiers}; "
+            f"qualifying: T{best_tier}; "
+            f"confidence {old_conf}→{new_conf} via {penalty}% penalty)"
+        )
+        reverted_count += 1
+
+    if reverted_count > 0:
+        print(f"[analyst] revert_no_market_walk: reverted {reverted_count} pick(s)")
+    return picks
+
+
 def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
     """
     Remove picks whose tier_walk reasoning explicitly concludes with a skip decision.
@@ -5560,12 +5854,19 @@ def reconcile_game_attribution(picks: list[dict]) -> list[dict]:
     return picks
 
 
-def save_picks(picks: list[dict]):
+def save_picks(picks: list[dict], player_stats: dict | None = None):
     # Filter out picks where analyst's own tier_walk reasoning concluded skip
     picks = filter_self_skip_picks(picks)
 
     # Reconcile pick_value against tier_walk step-down documentation
     picks = reconcile_pick_values(picks)
+
+    # Revert tier-walks that landed on a no-market tier when a higher
+    # qualifying tier IS bettable (root cause documented 2026-04-26 LeBron PTS)
+    if player_stats is not None:
+        picks = revert_no_market_walk(picks, player_stats)
+    else:
+        print("[analyst] revert_no_market_walk: player_stats not provided — step skipped")
 
     # Reconcile home_away/opponent against nba_master.csv — defends against
     # LLM home/away inversion (root cause documented 2026-04-25)
@@ -5739,7 +6040,7 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        picks = save_picks(picks)
+        picks = save_picks(picks, player_stats)
         save_skips(skips)
         return
 
@@ -5765,7 +6066,7 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        picks = save_picks(picks)
+        picks = save_picks(picks, player_stats)
         save_skips(skips)
         return
 
@@ -5790,7 +6091,7 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        picks = save_picks(picks)
+        picks = save_picks(picks, player_stats)
         save_skips(skips)
         return
 
@@ -5809,7 +6110,7 @@ def main():
     picks, skips = call_analyst(pick_prompt, model=MODEL)
     print(f"[analyst] Pick returned {len(picks)} picks, {len(skips)} skip records")
 
-    picks = save_picks(picks)
+    picks = save_picks(picks, player_stats)
     save_skips(skips)
 
     # ── Stage 3: Review ───────────────────────────────────────────────
