@@ -1865,19 +1865,29 @@ def compute_minutes_trend(games_10: pd.DataFrame, games_5: pd.DataFrame) -> str:
 
 def compute_minutes_floor(grp: pd.DataFrame, window: int = 10) -> dict | None:
     """
-    Compute the 10th-percentile minutes floor over the last `window` non-DNP games.
+    Compute the 10th-percentile minutes floor over the last `window` games where
+    the player meaningfully played.
+
+    "Meaningfully played" excludes injury exits, ejections, and other anomalously-
+    low-minute appearances by filtering to games where minutes >= max(15.0,
+    0.5 * median(window_minutes)). The semantic is "realistic worst case when
+    this player actually plays," not "absolute worst case including the time
+    they got hurt." Including injury exits contaminates the floor and causes
+    false skips downstream in the Analyst.
 
     Returns:
         {
-            "floor_minutes": float,   # 10th-percentile of L10 minutes_raw
-            "avg_minutes":   float,   # mean of same window (for context)
-            "n":             int,     # games used
+            "floor_minutes": float,   # 10th-percentile of qualifying minutes
+            "avg_minutes":   float,   # mean of qualifying minutes (same set)
+            "n":             int,     # qualifying games used
         }
-    Returns None if fewer than MIN_GAMES valid rows.
+    Returns None if fewer than MIN_GAMES qualifying rows. A player whose
+    recent log is dominated by injury-affected games will receive None
+    rather than a misleading floor.
 
-    grp is expected to be sorted newest→oldest (same convention as all other per-player
-    compute functions). DNP rows are filtered defensively even though load_player_log()
-    already removes them.
+    grp is expected to be sorted newest→oldest (same convention as all other
+    per-player compute functions). DNP rows are filtered defensively even
+    though load_player_log() already removes them.
     """
     # Defensive DNP exclusion
     if "dnp" in grp.columns:
@@ -1895,9 +1905,34 @@ def compute_minutes_floor(grp: pd.DataFrame, window: int = 10) -> dict | None:
     if len(mins) < MIN_GAMES:
         return None
 
-    floor_minutes = round(float(np.percentile(mins, 10)), 1)
-    avg_minutes   = round(float(mins.mean()), 1)
-    n             = len(mins)
+    # ── Exclude injury-exit / non-meaningful-play games ────────────────
+    # The semantic intent of minutes_floor is "realistic worst case when
+    # this player actually plays" — not "absolute worst case including
+    # injury exits." A concussion exit at 12 min, an ejection at 18, a
+    # 1st-quarter rolled-ankle exit — these are not signals about minutes
+    # variance, they are signals about the absence of the player from
+    # that game. Including them contaminates the floor and cascades into
+    # false skips downstream in the Analyst.
+    #
+    # Filter the L{window} minutes to a qualifying set:
+    #   qualifying_min = max(15.0, 0.5 * median(L{window}_minutes))
+    # The absolute 15.0 catches injury exits (almost always <15 min).
+    # The 0.5 * median is a relative backstop for high-minute players;
+    # for most players the absolute 15.0 dominates.
+    median_mins = float(mins.median())
+    qualifying_min = max(15.0, 0.5 * median_mins)
+    mins_qualifying = mins[mins >= qualifying_min]
+
+    # Apply the same MIN_GAMES floor to the filtered set. A player whose
+    # L{window} is dominated by injury-affected games gets None rather
+    # than a misleading floor — consistent with the existing graceful
+    # null pattern.
+    if len(mins_qualifying) < MIN_GAMES:
+        return None
+
+    floor_minutes = round(float(np.percentile(mins_qualifying, 10)), 1)
+    avg_minutes   = round(float(mins_qualifying.mean()), 1)
+    n             = len(mins_qualifying)
 
     return {
         "floor_minutes": floor_minutes,
