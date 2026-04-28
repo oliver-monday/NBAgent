@@ -42567,8 +42567,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% H2H at T12 across 8 games; elimination game locks in 39+ minutes and glass dominance.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 11.5,
     "market_implied_prob": 77.78,
     "market_book": "fanduel",
@@ -42586,7 +42586,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "DEN is favored by 11.5 points, creating real blowout risk where Jokic may see reduced Q4 minutes; even with a 29.7 min_floor, a comfortable win could cut into his rebounding volume below T12. Combined with his VOLATILE tag and a raw_avg that sits only modestly above threshold, the blowout game script is the residual structural risk not fully absorbed by Pick's adjustments."
+    ],
+    "clv_pp": -2.22
   },
   {
     "date": "2026-04-27",
@@ -42607,8 +42612,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_COLD + FG_MARGIN_THIN force step to T15 where elimination game guarantees 40+ minutes.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "market_line": 14.5,
     "market_implied_prob": 98.36,
     "market_book": "fanduel",
@@ -42626,7 +42631,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag plus an 11.5-point blowout spread creates a genuine game-script risk where Murray's minutes get managed in Q4 of a comfortable win; his post_miss_hr of 85% is encouraging but the typical miss is 5.5 pts below threshold, indicating the floor is fragile when it breaks. The blowout penalty was applied but the residual structural risk of a starring-role scorer being rested late in a blowout remains."
+    ],
+    "clv_pp": 0.32
   },
   {
     "date": "2026-04-27",
@@ -42647,8 +42657,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "100% overall rate [consistent]; elimination game volume guarantees playmaking load at T4.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 3.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -42666,7 +42676,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.12
   },
   {
     "date": "2026-04-27",
@@ -42687,8 +42700,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Edwards OUT elevates usage; LATE_RISER G5, 4/4 series hits, 7/8 H2H at T15.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 27.0,
     "market_line": 14.5,
     "market_implied_prob": 87.01,
     "market_book": "fanduel",
@@ -42706,7 +42719,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Randle is VOLATILE with a post_miss_hr of only 69% (lift=0.85 below baseline), meaning when he misses this tier he slumps sequentially \u2014 and he's on the road as an 11.5-point underdog without Edwards, with DEN's defense potentially keying on him as the primary option while also playing at pace to build on a lead. The Edwards-out baseline adjustment is unquantified, and the neutral team momentum against a hot DEN squad compounds the fragility."
+    ],
+    "clv_pp": -2.46
   },
   {
     "date": "2026-04-27",
@@ -42727,8 +42745,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Playoff REB caution forces step to T4 where hit rate is near-certain; Edwards absence supports floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "market_line": 3.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -42746,7 +42764,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.12
   },
   {
     "date": "2026-04-27",
@@ -42767,8 +42788,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "4/4 series hits at T10; playoff PTS boost monotonic-up 4 seasons; Edwards OUT expands role.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "market_line": 9.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -42786,7 +42807,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 25.3 vs avg 33.4 is a wide gap indicating high minutes volatility; in a potential blowout loss (11.5-point underdogs), McDaniels risks seeing compressed late-game minutes on the losing side. His post_miss_hr of 69% and VOLATILE tag mean a miss here tends to compound, and the typical miss of 4.0 pts below threshold suggests the floor is not robust to any single off-night."
+    ],
+    "clv_pp": -1.66
   },
   {
     "date": "2026-04-27",
@@ -42807,8 +42833,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "4/4 series hits at T2; Edwards OUT increases ball-handling responsibility; vs_tough 90%.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 1.5,
     "market_implied_prob": 81.13,
     "market_book": "fanduel",
@@ -42826,7 +42852,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "Raw_avg of only 2.4 against a T2 threshold leaves virtually no margin; post_miss_hr of 67% (lift=0.83) is the lowest bounce-back rate on the slate, meaning sequential slump risk is real. As an 11.5-point road underdog without Edwards, MIN's offensive flow will be disrupted and McDaniels \u2014 a non-primary creator \u2014 is the last player to accumulate assists in a losing game script."
+    ],
+    "clv_pp": -1.63
   },
   {
     "date": "2026-04-27",
@@ -42847,8 +42878,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Playoff REB caution forces step to T6 where H2H 7/8 and series 4/4 provide structural floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 5.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -42866,7 +42897,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-27",
@@ -42887,8 +42921,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "6/6 H2H + 3/3 series at T25; elite scorer (31 PPG series); must-win game guarantees 39+ minutes.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 25.0,
     "market_line": 24.5,
     "market_implied_prob": 69.7,
     "market_book": "fanduel",
@@ -42906,7 +42940,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "ORL's def_recency flag is 'tough' with a dramatic -10.1% tightening over the last 5 games vs L15, meaning DET faces a defense that is materially stronger right now than the broader window suggests; raw_avg of only 21.6 sits below the 25-point threshold, requiring an above-average performance. The VOLATILE tag and post_miss_hr of 67% mean this pick has limited structural cushion against an improving defensive opponent."
+    ],
+    "clv_pp": -3.98
   },
   {
     "date": "2026-04-27",
@@ -42927,8 +42966,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Primary playmaker (8+ AST series avg) exempt from suppressor; H2H 5/6 at T8; must-win volume.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 6.0,
     "market_line": 7.5,
     "market_implied_prob": 76.19,
     "market_book": "fanduel",
@@ -42946,7 +42985,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.83
   },
   {
     "date": "2026-04-27",
@@ -42967,8 +43009,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps from T20; T15 3/3 series hits; playoff STRONG_ELEVATOR signal confirms floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "market_line": 14.5,
     "market_implied_prob": 87.5,
     "market_book": "fanduel",
@@ -42986,7 +43028,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "FG_MARGIN_THIN at 2% fired a mandatory step-down to T15, but the underlying FG volatility against DET's tough defense means even a modest cold-shooting night puts 15 at risk \u2014 the thin margin offers little structural protection. Post_miss_hr of 69% confirms the floor is fragile when it cracks, and DET opp_defense flagged as tough compounds the FG risk."
+    ],
+    "clv_pp": -1.39
   },
   {
     "date": "2026-04-27",
@@ -43007,8 +43054,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "3/3 series + playoff REB lift +1.4; consistent tag at T4 structural floor; home court advantage.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 5.5,
     "market_implied_prob": 84.62,
     "market_book": "fanduel",
@@ -43026,7 +43073,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -4.85
   },
   {
     "date": "2026-04-27",
@@ -43047,8 +43097,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG steps from T15; T10 hit rate near-certain; home court with series lead.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "market_line": 9.5,
     "market_implied_prob": 94.74,
     "market_book": "fanduel",
@@ -43066,7 +43116,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 17.9 against an avg of 31.3 is an extreme gap \u2014 a single foul-trouble game or coach's decision produces a miss entirely from minutes, not performance. DET's defense is rated tough and Bane's FG_MARGIN_NEG already fired once; at PTS T10 the minutes fragility is the dominant structural risk."
+    ],
+    "clv_pp": -2.82
   },
   {
     "date": "2026-04-27",
@@ -43087,8 +43142,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall at T1; 3/3 series hits; trend up after G3 eruption; home court ORL leading series.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 5.0,
     "market_line": 0.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -43106,7 +43161,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-27",
@@ -43127,8 +43185,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor [consistent] at 95%; Williams OUT expands role; 3/3 series hits; structural scoring floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "market_line": 9.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -43146,7 +43204,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -1.4
   },
   {
     "date": "2026-04-27",
@@ -43167,8 +43228,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "3/3 series + 6/7 H2H at T6; playoff REB neutral; Williams OUT expands interior role.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 5.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -43186,7 +43247,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK on a 10.5-point favorite combined with Holmgren's VOLATILE REB tag and a min_floor of 21.6 means garbage-time minute reduction could compress his rebounding opportunities below T6 in a comfortable OKC win. Series underperformance (1/3) already signals the tier is structurally soft in this matchup context."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-27",
@@ -43207,8 +43273,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG steps to T15; desperate home elimination game; 3/3 series hits at T15.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "market_line": 14.5,
     "market_implied_prob": 93.55,
     "market_book": "fanduel",
@@ -43226,7 +43292,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.24
   },
   {
     "date": "2026-04-27",
@@ -43247,8 +43316,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor at T4; desperate elimination game maximizes orchestration role; opp_today=mid favorable.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 84.13,
     "market_book": "fanduel",
@@ -43266,7 +43335,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -4.76
   },
   {
     "date": "2026-04-27",
@@ -43287,8 +43359,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "3/3 series hits; desperate home elimination game; Williams OUT slightly alleviates defensive pressure.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 23.0,
     "market_line": 14.5,
     "market_implied_prob": 77.78,
     "market_book": "fanduel",
@@ -43306,7 +43378,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Min_floor of 0.0 is a critical red flag \u2014 it signals at least one game in the recent window where Green logged near-zero minutes, indicating genuine DNP or severe restriction risk. Playing as a 10.5-point underdog on a neutral-momentum team, Green's role could compress further in a potential blowout loss, and a raw_avg of only 18.6 provides limited cushion."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-27",
@@ -43327,8 +43404,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "3/3 series; desperate home elimination; PHX three-guard identity fires threes regardless of result.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "market_line": 0.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -43346,7 +43423,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Same min_floor=0.0 structural concern applies: a single low-minutes game produces a miss entirely independent of shooting performance. Post_miss_hr of 62% (lift=0.79) is the lowest bounce-back rate for a 3PM pick on the slate, confirming that when Green misses this tier the sequential slump tendency is real."
+    ],
+    "clv_pp": -0.79
   },
   {
     "date": "2026-04-27",
@@ -43367,8 +43449,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "3/3 series + 6/7 H2H at T6; must-win context guarantees elevated minutes above proj_26.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "market_line": 5.5,
     "market_implied_prob": 61.24,
     "market_book": "fanduel",
@@ -43386,7 +43468,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Raw_avg of only 5.4 sits below the T6 threshold, meaning Thompson must outperform his average to hit \u2014 structurally this is an above-average requirement, not a floor. VOLATILE tag combined with ORL's def_recency flagged 'tough' (tightening defense) and a proj_min of only 26 (close to min_floor of 23.8) leaves minimal margin for a below-average rebounding night."
+    ],
+    "clv_pp": -0.3
   },
   {
     "date": "2026-04-27",
@@ -43407,8 +43494,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Stepped to T4 after penalties; PHX interior weakness with Mark Williams OUT provides REB opportunities.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 3.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -43426,7 +43513,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "BLOWOUT_RISK on a 10.5-point favorite with a min_floor of 18.1 and avg of only 20.4 \u2014 Hartenstein is a backup center who is among the first players benched in a comfortable OKC lead; the combination of low baseline minutes and blowout game script creates genuine risk of missing T4 purely from garbage-time benching. Post_miss_hr of 60% (lift=0.76) is the lowest bounce-back on the slate, and the VOLATILE tag amplifies the floor fragility."
+    ],
+    "clv_pp": 0.27
   },
   {
     "date": "2026-04-27",
@@ -43447,8 +43539,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_COLD + trend=down voluntary step to T6 where series 3/3 and H2H 4/4 provide strong floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 5.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -43466,6 +43558,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-27T22:45:53.782340-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 2.65
   }
 ]

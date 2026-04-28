@@ -18,10 +18,10 @@
       "step_to": 15,
       "reason": "FG_COLD -19% mandates step T20\u2192T15; T15 has no FanDuel market available; cascade fails"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 27.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 27.0 \u2265 tier 20"
   },
   {
     "date": "2026-04-27",
@@ -44,10 +44,10 @@
       "floor": 68,
       "reason": "VOLATILE+T8 primary playmaker -8%, MIN\u00d7AST suppressor -12%, blowout -5% drives below 68% AST floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 16.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 16.0 \u2265 tier 8"
   },
   {
     "date": "2026-04-27",
@@ -67,10 +67,10 @@
       "opp_today": "mid",
       "reason": "PF position triggers AST T4+ hard gate; opp_today=mid not soft; hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-27",
@@ -87,10 +87,10 @@
       "tier_considered": 25,
       "reason": "SGA not listed in FanDuel market availability; no props available for this player"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 31.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 31.0 \u2265 tier 25"
   },
   {
     "date": "2026-04-27",
@@ -111,10 +111,10 @@
       "opp_today": "tough",
       "reason": "PF position with raw_avgs AST 7.0 below 8.0 elite exemption; opp_today=tough not soft; hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-27",
@@ -134,10 +134,10 @@
       "blowout_window": "11-21",
       "reason": "trend=down step-down from T1 minimum with no iron_floor or 9+/10 exception; blowout relaxation applies step-down but no lower tier exists"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-27",
@@ -156,7 +156,7 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]
