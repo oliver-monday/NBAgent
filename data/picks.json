@@ -43582,8 +43582,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor T15, 95% hit rate, proj_min=41 in elimination game anchors scoring floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 25.0,
     "market_line": 14.5,
     "market_implied_prob": 94.74,
     "market_book": "fanduel",
@@ -43601,7 +43601,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "PHI is a +11.5 underdog, creating genuine garbage-time risk in Q4 where Maxey's minutes may compress if BOS runs away early. Despite the blowout penalty already applied, the structural risk of a double-digit deficit leading to early benching of key players on a fading team remains \u2014 and PHI's team_momentum is neutral, not hot, suggesting limited capacity to keep the game close."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-28",
@@ -43622,8 +43627,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG steps T20\u2192T15; series 4/4 at T20 confirms T15 as dominant floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "market_line": 14.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -43641,7 +43646,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-28",
@@ -43662,8 +43670,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Dossier playoff AST elevator confirmed; 4/4 series and H2H at T6 with facilitator role.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 4.0,
     "market_line": 5.5,
     "market_implied_prob": 75.0,
     "market_book": "fanduel",
@@ -43681,7 +43689,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Tatum is a volatile player on the favored side of an 11.5-point blowout game, and AST picks on volatile scorers in blowout-risk games face compounded suppression: BOS may pull starters in Q4, eliminating late assist opportunities that would otherwise push the total over. The historical lesson that AST picks carry systematic overconfidence risk \u2014 especially when opp_today is not soft and game script could resolve early \u2014 applies here even at the conservative T6 tier."
+    ],
+    "clv_pp": 0.64
   },
   {
     "date": "2026-04-28",
@@ -43702,8 +43715,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "94% overall at T2 with consistent tag; 100% vs_soft and vs_tough confirms structural floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 1.5,
     "market_implied_prob": 83.05,
     "market_book": "fanduel",
@@ -43721,7 +43734,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.57
   },
   {
     "date": "2026-04-28",
@@ -43742,8 +43758,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Dossier BOOST +18pp; series 4/4 at T20 with home close-out game maximizing usage.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "market_line": 19.5,
     "market_implied_prob": 84.62,
     "market_book": "fanduel",
@@ -43761,7 +43777,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Brown is flagged volatile with a min_floor of 29.9 and BLOWOUT_RISK on the favored side at -11.5 \u2014 in a game BOS controls early, starters routinely see Q4 rest, which is precisely where a volatile scorer's floor becomes fragile. The FG_MARGIN_NEG cascade already stepped down to T20, but Brown's wide distribution means a single cold-shooting quarter combined with early exit still produces a miss at this threshold."
+    ],
+    "clv_pp": -2.88
   },
   {
     "date": "2026-04-28",
@@ -43782,8 +43803,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall at T1 with trend=up; non-iron-floor cap limits to 80%.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "market_line": 0.5,
     "market_implied_prob": 88.24,
     "market_book": "fanduel",
@@ -43801,7 +43822,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.23
   },
   {
     "date": "2026-04-28",
@@ -43822,8 +43846,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "85% overall T10 with series 3/4; BOS home close-out game guarantees usage for bench spark.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 9.5,
     "market_implied_prob": 76.19,
     "market_book": "fanduel",
@@ -43841,7 +43865,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Pritchard's min_floor of 23.4 is the primary structural vulnerability: as a bench player on the BLOWOUT_RISK side, a game that gets away from PHI early could see Pritchard's minutes compressed well below his average, and 23.4 as the floor leaves meaningful exposure to a sub-10-point outcome in a reduced-minutes scenario. Bench rotational players are most susceptible to early garbage-time compression."
+    ],
+    "clv_pp": -3.81
   },
   {
     "date": "2026-04-28",
@@ -43862,8 +43891,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/8 H2H perfect record and 4/4 series at T2; 2-assist floor is structurally safe.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 1.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -43881,7 +43910,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-28",
@@ -43902,8 +43934,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor 3PM stepped T2\u2192T1 via trend=down; structural make floor holds in BOS home close-out.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "market_line": 0.5,
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
@@ -43921,7 +43953,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.5
   },
   {
     "date": "2026-04-28",
@@ -43942,8 +43977,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "8/8 H2H perfect record at T2; series 4/4 confirms this 2-assist floor in every playoff game.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
@@ -43961,7 +43996,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "White is flagged as a LATE_FADER, and the blowout-risk game script on the favored side is the exact scenario where late-game fading is most consequential \u2014 BOS protecting a lead in Q4 reduces pace and possession volume, directly compressing assist opportunities for a role player whose floor depends on run-the-offense minutes. The series AST record at T4 was already 1/4=25%, requiring a skip to T2, suggesting AST production has been genuinely inconsistent in this series."
+    ],
+    "clv_pp": -0.62
   },
   {
     "date": "2026-04-28",
@@ -43982,8 +44022,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall T1 with improving playoff trajectory; H2H series 4/4 confirms consistent shooting floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "market_line": 0.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -44001,7 +44041,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.53
   },
   {
     "date": "2026-04-28",
@@ -44022,8 +44065,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps T20\u2192T15; dossier BOOST +17pp and 4/4 series hits anchor floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 39.0,
     "market_line": 14.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -44041,7 +44084,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Brunson is flagged volatile with FG_MARGIN_THIN at 0% \u2014 essentially no FG safety margin \u2014 meaning his hit rate is heavily dependent on efficient shooting nights, and a single cold-FG game produces a miss even at this conservative T15 tier. The volatile tag combined with near-zero FG margin creates a structurally fragile floor that the tier step-down partially but not fully mitigates."
+    ],
+    "clv_pp": -0.53
   },
   {
     "date": "2026-04-28",
@@ -44062,8 +44110,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor T1 at 85% overall; NYK home G5 with trend=up confirms structural make floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 0.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -44081,7 +44129,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-28",
@@ -44102,8 +44153,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Series 3/4 at T15; LATE_FADER -5% still keeps T15 at minimum qualifying threshold.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 9.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -44121,7 +44172,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -2.64
   },
   {
     "date": "2026-04-28",
@@ -44142,8 +44196,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Series 4/4 at T6 and T8; NYK home G5 secures full minutes for dominant rebounding output.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "market_line": 5.5,
     "market_implied_prob": 61.83,
     "market_book": "fanduel",
@@ -44161,7 +44215,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Anunoby's raw_avg_REB of 5.8 sits below the T6 threshold, meaning he needs an above-average rebounding game just to clear the line \u2014 and his volatility flag (volatile) combined with a raw_avg below the target creates genuine negative-margin exposure. The quant tier being listed at T4 overall=75% while this pick targets T6 suggests the structural floor for this REB tier is thinner than the series/H2H data alone implies."
+    ],
+    "clv_pp": -6.42
   },
   {
     "date": "2026-04-28",
@@ -44182,8 +44241,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Trend=down steps T2\u2192T1; series 4/4 at T1 and H2H 3/3 confirm structural make floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 0.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -44201,7 +44260,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -1.12
   },
   {
     "date": "2026-04-28",
@@ -44222,8 +44284,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps T15\u2192T10; ATL primary scorer in elimination game guarantees max usage.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "market_line": 9.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -44241,7 +44303,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.21
   },
   {
     "date": "2026-04-28",
@@ -44262,8 +44327,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_THIN steps T20\u2192T15; G4 return 27pts in 34min confirms full health and scoring floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 14.5,
     "market_implied_prob": 98.04,
     "market_book": "fanduel",
@@ -44281,7 +44346,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "manual_skip",
+    "trim_reasons": [
+      "Wembanyama's min_floor of 15.6 against an avg of 27.9 reveals extreme minutes volatility \u2014 a single game where he plays 20 minutes (well within historical variance for this player) produces a near-certain miss at PTS T15. This is not an elimination game, so the minutes fragility exception does not apply, and a 15.6 min_floor on a PTS T15 pick represents exactly the structural fragility the rules flag as disqualifying for high-confidence picks."
+    ],
+    "clv_pp": 0.0
   },
   {
     "date": "2026-04-28",
@@ -44302,8 +44372,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "FG_MARGIN_NEG steps T15\u2192T10; series 4/4 at T15 confirms T10 as dominant scoring floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 15.0,
     "market_line": 9.5,
     "market_implied_prob": 93.55,
     "market_book": "fanduel",
@@ -44321,7 +44391,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.22
   },
   {
     "date": "2026-04-28",
@@ -44342,8 +44415,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "7/7 H2H perfect record at T15 vs POR; G4 28pts on 65% FG confirms peak scoring form.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "market_line": 14.5,
     "market_implied_prob": 72.97,
     "market_book": "fanduel",
@@ -44361,7 +44434,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.75
   },
   {
     "date": "2026-04-28",
@@ -44382,8 +44458,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "95% overall T4 with consistent tag; H2H 5/7 at T6 and 7/7 at lower confirms dominant assist floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 9.0,
     "market_line": 3.5,
     "market_implied_prob": 87.5,
     "market_book": "fanduel",
@@ -44401,7 +44477,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Fox faces a tough defense on the favored side of an 11.5-point blowout game \u2014 the historical lesson explicitly identifies that tough defenses generating turnovers cannibalize assist opportunities for primary ball-handlers, and the spread being >5 points in a game SAS is expected to control creates late-game pace reduction that further suppresses AST accumulation. The series hit rate at T6 (3/4=75%) is adequate but not dominant."
+    ],
+    "clv_pp": 1.79
   },
   {
     "date": "2026-04-28",
@@ -44422,8 +44503,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "80% overall T1 with trend=up; SAS home close-out game provides clean catch-and-shoot opportunities.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 0.5,
     "market_implied_prob": 83.87,
     "market_book": "fanduel",
@@ -44441,7 +44522,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -1.64
   },
   {
     "date": "2026-04-28",
@@ -44462,8 +44546,8 @@
     "top_pick": true,
     "is_skip": false,
     "reasoning": "Iron_floor T1 at 90% overall; consistent tag and H2H 5/6 confirms structural 1+ make floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "market_line": 0.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -44481,7 +44565,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.66
   },
   {
     "date": "2026-04-28",
@@ -44502,8 +44589,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "25th-pct gate steps T6\u2192T4 due to low regular-season REB floor; series 3/4 at T6 supports T4.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 3.5,
     "market_implied_prob": 56.14,
     "market_book": "fanduel",
@@ -44521,7 +44608,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -6.55
   },
   {
     "date": "2026-04-28",
@@ -44542,8 +44632,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall T2 with 6/7 H2H; blowout_games=92% highly relevant in SAS dominant home close-out.",
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 1.0,
     "market_line": 1.5,
     "market_implied_prob": 81.48,
     "market_book": "fanduel",
@@ -44561,7 +44651,12 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "trim",
+    "trim_reasons": [
+      "Harper's min_floor of 19.8 against avg 25.1 is structurally marginal for an AST prop \u2014 a game where he plays 20\u201322 minutes (within normal variance) leaves very little cushion to accumulate 3+ assists, and his post_miss bounce-back lift is negative (0.81), meaning recent misses do not reliably precede recoveries. The series AST record at T4 was 0/4=0%, requiring a full skip to T2, which underscores that this player's AST production in this series has been genuinely fragile."
+    ],
+    "clv_pp": -0.66
   },
   {
     "date": "2026-04-28",
@@ -44582,8 +44677,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "REB is Embiid's safest playoff prop per dossier; H2H 3/3 at T6 and G4 return 10 boards confirms T4 floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 3.5,
     "market_implied_prob": 97.22,
     "market_book": "fanduel",
@@ -44601,7 +44696,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 1.57
   },
   {
     "date": "2026-04-28",
@@ -44622,8 +44720,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "90% overall T2 consistent; H2H 3/3 perfect and G4 return 6 AST confirms basic playmaking floor.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 1.5,
     "market_implied_prob": 94.74,
     "market_book": "fanduel",
@@ -44641,7 +44739,10 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": -0.5
   },
   {
     "date": "2026-04-28",
@@ -44662,8 +44763,8 @@
     "top_pick": false,
     "is_skip": false,
     "reasoning": "Iron_floor T2 (soft_floor after role-purity); G4 6 AST despite cold shooting confirms structural playmaking.",
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 90.91,
     "market_book": "fanduel",
@@ -44681,6 +44782,9 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false
+    "voided": false,
+    "human_verdict": "keep",
+    "trim_reasons": [],
+    "clv_pp": 0.0
   }
 ]
