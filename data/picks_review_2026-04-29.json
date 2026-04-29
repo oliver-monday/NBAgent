@@ -1,0 +1,306 @@
+[
+  {
+    "date": "2026-04-29",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK (spread -9.5) compounds with a VOLATILE tag and a recency-tough defense (l5 96.4 vs l15 109.9, -12.3%) \u2014 if DET blows this out early, Cunningham's counting stats get compressed in Q4 garbage time. The structural blowout risk on a volatile scorer at T20 is not fully neutralized by the bounce-back lift."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE REB on a BLOWOUT_RISK game (spread -9.5): if DET leads big late, Cunningham's minutes and rebound opportunities shrink, and his post_miss_hr of 59% is the weakest bounce-back rate on the slate. The combination of blowout risk and a slump-persistent stat with below-average bounce-back makes this structurally fragile."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Desmond Bane",
+    "team": "ORL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD (-18%) triggered a mandatory step-down and VOLATILE tag on PTS \u2014 a player already running cold from the field is one difficult-matchup night away from missing even T10 on a tough DET defense. The 72% confidence is at the low end of the viable range, and the FG_COLD signal is the strongest structural warning on the slate for a secondary scorer."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_MARGIN_THIN at 4% (well below the 10% safety floor) triggered a mandatory step-down, and trend is down \u2014 Thompson is converting at a razor-thin margin above floor on a stat that is already stepped down. A single cold-shooting night where FG% dips further produces a miss even at T10."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Amen Thompson",
+    "team": "HOU",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_MARGIN_THIN at 1% is the thinnest margin on the entire slate \u2014 essentially no statistical buffer above the T10 threshold. On a tough LAL defense with a down trend in FG margin, one subpar shooting night flips this miss with near certainty if the margin degrades at all."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Jabari Smith Jr.",
+    "team": "HOU",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "VOLATILE tag on REB with a min_floor of 25.1 against the toughest rebounding defense context (HOU opp_defense tough) \u2014 the tier was stepped down to T4 precisely because of volatility, and LeBron's wide distribution means a single low-engagement or foul-trouble game easily produces a miss. The 70% confidence is the minimum viable threshold."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK (spread -8.5) combined with VOLATILE tag and FG_MARGIN_THIN (1%) on a mandatory step-down pick \u2014 if CLE builds a large lead early, Mitchell's Q4 minutes and shot attempts compress, and with essentially zero FG margin buffer, any late-game removal produces a miss at T15."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK (spread -8.5) with FG_MARGIN_THIN (5%) step-down on a secondary scorer \u2014 if CLE blows this out, Harden is among the first rotation players rested in Q4, compressing his scoring accumulation. The structural risk of a blowout-game exit for a secondary scorer at even T10 is meaningful at 68% confidence."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "manual_skip",
+    "trim_reasons": [
+      "FG_COLD (-16%) triggered a mandatory step-down on a VOLATILE scorer in a BLOWOUT_RISK game (spread -8.5) with a min_floor of only 22.0 \u2014 three compounding structural risks simultaneously: cold shooter, blowout exit risk, and a minutes floor that allows a single low-usage game to produce a miss. The 68% confidence is at the absolute minimum viable threshold, and the bear case here is structurally stronger than Pick's adjustments capture."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK (spread -8.5) with a min_floor of 22.0 and trend=down on REB \u2014 if CLE runs away with this game, Mobley's minutes and rebounding opportunities are compressed in Q4, and the trend-down signal suggests his rebounding rate is declining even in normal game contexts."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Brandon Ingram",
+    "team": "TOR",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD (-17%) mandatory step-down on a VOLATILE scorer at 70% confidence \u2014 Ingram is running significantly cold from the field, and even at the stepped-down T10, a continuation of the cold shooting streak against a tough CLE defense puts this at genuine risk. The VOLATILE tag means the distribution is wide enough that sub-10 games are well within the realistic range."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "BLOWOUT_RISK (spread -9.5) combined with trend=down on REB and a tough recency defense flag \u2014 the tier was stepped down from T8 to T6 due to the blowout penalty, but if DET blows this out, Duren's garbage-time minutes compress rebounding volume even at the conservative T6 threshold. The post_miss_hr of 65% is also below average for REB props."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-29",
+    "player_name": "Ausar Thompson",
+    "team": "DET",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]

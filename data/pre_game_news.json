@@ -1,15 +1,13 @@
 {
-  "date": "2026-04-28",
-  "generated_at": "2026-04-28T08:28:16.229158-07:00",
+  "date": "2026-04-29",
+  "generated_at": "2026-04-29T08:12:07.625310-07:00",
   "player_notes": {
-    "austin reaves": "Game-time decision for Lakers in Game 5 vs. Rockets after ~4 weeks out with a Grade 2 oblique strain. Team is optimistic about his return; monitor pre-game reports before betting his props.",
-    "jalen brunson": "Media narrative pushing for more KAT usage in Knicks offense; potential shift in usage/shot volume away from Brunson if coaching staff adjusts.",
-    "joel embiid": "Returned for 76ers vs. Celtics but his presence was debated as potentially harmful; monitor minutes and role if series continues.",
-    "aaron gordon": "Ruled out for Nuggets Game 5 (already played); if series continues, calf/hamstring issue is an ongoing absence to track for Game 6."
+    "kevin durant": "Officially ruled OUT for Game 5 vs. Lakers (left ankle sprain). Major absence \u2014 Houston will need others to fill scoring load.",
+    "austin reaves": "Game-time decision for Game 5 vs. Rockets (Grade 2 oblique strain, missed ~4 weeks). Lakers optimistic he returns; monitor final status closely.",
+    "franz wagner": "Uncertain for Game 5 (right calf strain); return depends on treatment response. If out, significant impact on Magic's scoring and minutes distribution."
   },
   "game_notes": {
-    "LAL vs HOU": "Austin Reaves is a game-time decision (returning from oblique strain); his availability will impact Lakers rotation and props for LeBron, AD, and Reaves himself. LeBron had a poor Game 4 (10 pts, 8 TO).",
-    "MIN vs DEN": "Aaron Gordon out for Nuggets with hamstring; Timberwolves also dealing with injuries to Donte DiVincenzo and Anthony Edwards \u2014 monitor availability for Game 6. Jokic posted a triple-double in Game 5 win."
+    "HOU vs LAL": "Kevin Durant (ankle) is OUT for Houston. Austin Reaves is a game-time decision for LA \u2014 two star-level absences could heavily shift scoring props for teammates on both sides."
   },
   "raw_item_count": 50,
   "filtered_item_count": 44,
@@ -18,30 +16,30 @@
     {
       "player_or_team": "Austin Reaves (LAL)",
       "current_context_fact": "Austin Reaves (LAL) \u2014 Grade 2 oblique strain (Apr 2 vs OKC, same game as Doncic). 4-6 week timeline. Per Charania (Apr 13): 'out for the majority of the first-round series; earliest first week of May.' 12-25% reinjury risk if rushed.",
-      "conflict": "Today's news reports (Shams Charania, ESPN) that Austin Reaves is a game-time decision for Lakers in Game 5 and that the Lakers are 'optimistic' for his return. This indicates he is now actively under consideration to play in Game 5, which is earlier than the 'first week of May' estimate and changes his status from a confirmed absence to a live game-time decision.",
+      "conflict": "Two news items from Apr 28 report: (1) Shams Charania reports Reaves is a game-time decision for Lakers in Game 5, and (2) sources say Lakers are optimistic for Reaves' return in Game 5 after missing ~four weeks with the Grade 2 oblique strain.",
       "urgency": "critical",
-      "suggested_action": "Update Reaves' status from 'out for majority of first-round series' to 'game-time decision for Game 5 (Apr 28).' Remove the 'earliest first week of May' language. Note that his return would significantly change LAL's offensive profile and reduce LeBron's sole-engine burden."
+      "suggested_action": "Update Reaves' status from 'out for the majority of the first-round series' to 'game-time decision for G5 (Apr 30); optimistic for return per sources.' If he plays G5, remove from confirmed-out list and note his return alongside any minutes restriction concern given the reinjury risk flag."
     },
     {
-      "player_or_team": "Aaron Gordon (DEN)",
-      "current_context_fact": "Aaron Gordon (DEN) \u2014 Calf/hamstring strains recurring over past two seasons. Missed 40 games this season. DEN's key defensive anchor. If he misses games vs MIN, DEN defense suffers significantly.",
-      "conflict": "Today's news confirms 'Nuggets rule out Aaron Gordon for Game 5 with calf tightness' \u2014 the headline references 'left hamstring tightness' in the description. The context doc's G5 diary entry for DEN-MIN already notes Gordon was 'QUES pre-game' for G3 but does not definitively confirm his G5 status. The news item confirms he was officially ruled OUT for G5.",
-      "urgency": "monitor",
-      "suggested_action": "Update the playoff injury landscape to reflect Gordon was officially ruled OUT for Game 5 vs MIN with calf/hamstring tightness. The G5 diary entry should be updated to note his confirmed absence. His availability for G6 is now the key monitoring variable."
+      "player_or_team": "Kevin Durant (HOU)",
+      "current_context_fact": "Durant returned (23/6reb/4ast, 7-12 FG, 41 min) [G2]... Durant's ankle status (still QUES) remains the decisive series variable [G4 diary entry]. Durant was ruled OUT again (ankle injury, now listed QUES) [G3 diary].",
+      "conflict": "News from Apr 29 confirms: 'Rockets rule out Kevin Durant (ankle) for Game 5 vs. Lakers' \u2014 officially ruled out with a left ankle sprain. The injury is now confirmed as a left ankle sprain (context doc previously noted 'right knee contusion' for G1 absence and later referenced ankle generically).",
+      "urgency": "critical",
+      "suggested_action": "Update Durant's status to CONFIRMED OUT for G5 (left ankle sprain, officially ruled out Apr 29). Also clarify injury history: initial absence was right knee contusion (G1); current absence is left ankle sprain. Update the injury landscape section accordingly. The series diary G4 entry references him as 'still QUES' \u2014 superseded by official G5 ruling."
     },
     {
-      "player_or_team": "Cooper Flagg / Rookie of the Year",
-      "current_context_fact": "Stephon Castle (SAS): Won Rookie of the Year 2024-25. Now a full starter in year two.",
-      "conflict": "Today's news reports 'Cooper Flagg tops Kon Knueppel for ROY honors in tight race' \u2014 Flagg (DAL) won Rookie of the Year for the 2025-26 season. This is not a conflict with Castle's 2024-25 ROY award, but it confirms the 2025-26 ROY winner is Cooper Flagg, which is a new confirmed fact not present in the context document.",
-      "urgency": "monitor",
-      "suggested_action": "Add a note that Cooper Flagg (DAL) won the 2025-26 Rookie of the Year award. This is new information not conflicting with Castle's 2024-25 ROY but fills a gap in the context document. Note: DAL is eliminated, so this has no playoff prop relevance."
+      "player_or_team": "Franz Wagner (ORL)",
+      "current_context_fact": "The DET vs ORL series diary and injury landscape do not list Wagner with any current injury concern. Wagner is described as fully active: 'Wagner and Suggs: back from extended absences... Wagner on minutes restriction in play-in loss to PHI (12 pts) but looked sharper in CHA rout.' No injury flag exists for Wagner heading into G5.",
+      "conflict": "News from Apr 28 reports: 'Franz Wagner's status for Game 5 is uncertain due to a right calf strain, and his return will depend on how the injury responds to treatment, sources told ESPN.'",
+      "urgency": "critical",
+      "suggested_action": "Add Franz Wagner to the active injury concerns section: right calf strain, status uncertain for G5 (DET vs ORL). Flag as a primary availability variable for G5 and beyond. Note this is a new injury not previously documented in the context."
     },
     {
-      "player_or_team": "OKC vs PHX series",
-      "current_context_fact": "Game 4 (Apr 27) \u2014 OKC 131, PHX 122 | OKC leads 4-0 \u2014 SERIES CLINCHED (margin 9) [listed under playoff series diary as the most recent entry]",
-      "conflict": "Today's news confirms OKC completed the sweep: 'Gilgeous-Alexander scores 31 and Thunder outlast Suns 131-122 to cap a 4-game sweep' and 'Thunder complete sweep of Suns to reach Western Conference semis.' The series result in the diary is accurate and consistent with the news. No conflict \u2014 confirming existing data.",
-      "urgency": "monitor",
-      "suggested_action": "No change needed to the series result. Confirm OKC advances to R2 (Western Conference Semis). Update bracket/status to reflect OKC's R1 series is complete. PHX is eliminated."
+      "player_or_team": "LAL vs HOU \u2014 series context / Reaves role",
+      "current_context_fact": "G4 diary: 'Reaves DNP (0/0/0, 0 min) \u2014 his continued absence means LAL's entire offensive burden remains on LeBron's shoulders with no secondary creator available.' Series intel: 'LAL without Doncic AND Reaves \u2014 LeBron (41) sole offensive engine.'",
+      "conflict": "Reaves is now a game-time decision for G5 and sources say LAL is optimistic about his return \u2014 meaning the 'sole offensive engine' framing and 'no secondary creator' characterization may no longer apply for G5.",
+      "urgency": "critical",
+      "suggested_action": "Update G5 series preview to reflect Reaves' potential return. If he plays, LAL's offensive structure changes materially \u2014 LeBron is no longer the sole engine, and the series suppressor dynamics for HOU shift. Note the reinjury risk (12-25% per prior context) as a caveat on any minutes projection."
     }
   ],
   "staleness_flags": []
