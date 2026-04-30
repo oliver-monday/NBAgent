@@ -15,10 +15,10 @@
       "trend": "down",
       "reason": "VOLATILE + AST T6 hard skip; no iron_floor+trend=up T6 exception"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-04-29",
@@ -34,10 +34,10 @@
       "percentile_25th_floor": 6,
       "reason": "25th-pct gate: pick_value=6 equals minimum series floor; step to T4 has no FanDuel market"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-29",
@@ -54,10 +54,10 @@
       "opp_today_ast": "tough",
       "reason": "PF position with raw_avgs AST 4-8 range; opp_today=tough requires soft for T4+"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-29",
@@ -74,10 +74,10 @@
       "offensive_first_player_gate": true,
       "reason": "Offensive-first player gate: lowest REB within 2 of T6; step to T4 has no market"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-29",
@@ -94,10 +94,10 @@
       "opp_today_ast": "mid",
       "reason": "Center position; opp_today=mid requires soft for T4+ per C/PF positional gate"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
   },
   {
     "date": "2026-04-29",
@@ -117,10 +117,10 @@
       "floor": 68,
       "reason": "Combined penalties drop below 68% floor; no lower market available for step"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 15"
   },
   {
     "date": "2026-04-29",
@@ -138,10 +138,10 @@
       "trend": "stable",
       "reason": "VOLATILE + AST T6 hard skip; no iron_floor+trend=up T6 exception"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-29",
@@ -159,10 +159,10 @@
       "competitive_split": 0.52,
       "reason": "VOLATILE + AST T6 hard skip; additionally competitive_split=52% below 70% gate"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 6"
   },
   {
     "date": "2026-04-29",
@@ -180,10 +180,10 @@
       "floor_3pm": 75,
       "reason": "VOLATILE -3% drops 75% base below 75% 3PM minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-29",
@@ -204,9 +204,9 @@
       "floor": 68,
       "reason": "vs_tough=61% degradation and FG_COLD:-20% combined push below 68% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 9.0 < tier 10"
   }
 ]
