@@ -834,6 +834,36 @@ def load_series_context() -> str:
         return ""
 
 
+def is_playoff_mode() -> bool:
+    """
+    Returns True when today is in playoff mode per playoff_matchup.json.
+
+    Used to gate the Stage-3 Review API call (the auto-trim engine), which
+    over-flags during playoffs because its adversarial assessment leans on
+    regular-season-derived signals (FG_COLD, raw_avg, post-miss bounce-back,
+    volatile tag) that are empirically dominated by playoff series tier hit
+    rates the agent does not know to weight differently. Rather than retune
+    the Review prompt mid-postseason, the call is gated off until regular
+    season returns. See ROADMAP_resolved.md entry 2026-04-30.
+
+    Returns False on any failure mode — file missing, parse error, stale
+    date, mode != "playoffs". Fail-open default ensures regular-season
+    behavior is preserved when the gate cannot positively confirm playoffs.
+    """
+    if not PLAYOFF_MATCHUP_JSON.exists():
+        return False
+    try:
+        with open(PLAYOFF_MATCHUP_JSON) as f:
+            data = json.load(f)
+        if data.get("mode") != "playoffs":
+            return False
+        if data.get("date") != TODAY_STR:
+            return False
+        return True
+    except Exception:
+        return False
+
+
 def build_playoff_context(today_str: str) -> str:
     """
     Returns a PLAYOFF CONTEXT prompt block when today is on or after
@@ -6349,9 +6379,16 @@ def main():
     save_skips(skips)
 
     # ── Stage 3: Review ───────────────────────────────────────────────
+    # Gated off in playoffs (2026-04-30): the Review agent over-flags during
+    # postseason because regular-season-derived signals dominate its bear-case
+    # construction while playoff series tier hit rates already empirically
+    # dominate those signals. See ROADMAP_resolved.md entry 2026-04-30.
+    # Regular-season behavior is preserved unchanged.
     review_path = DATA / f"picks_review_{TODAY_STR}.json"
     if not picks:
         print("[analyst] No picks to review — skipping Review stage")
+    elif is_playoff_mode():
+        print("[analyst] Playoff mode — skipping Review stage (auto-trim gated off in postseason)")
     else:
         review_context = build_review_context(picks, filtered_stats, lineup_context=lineup_context)
         review_prompt  = build_review_prompt(picks, review_context, audit_summary)
