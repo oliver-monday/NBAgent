@@ -2376,6 +2376,31 @@ PENALTY STACK LIMIT — TWO PARALLEL CONSTRAINTS:
      remain documented and visible in tier_walk. Only the aggregate effect on
      final confidence is capped.
 
+   RAW PENALTY ANNOTATION (REQUIRED ON EVERY PICK WITH PENALTIES):
+
+   After summing all individual penalties to get the aggregate magnitude, BEFORE
+   applying the magnitude cap or any floor check, emit this annotation in
+   tier_walk on its own line:
+
+       [PENALTY_RAW: <value>pp]
+
+   where <value> is the SIGNED aggregate sum (negative for net penalty, e.g.
+   [PENALTY_RAW: -8pp], [PENALTY_RAW: -25pp]). This annotation is REQUIRED
+   for every pick where at least one penalty applies, EVEN IF THE CAP DOES
+   NOT FIRE. When the cap does fire, the existing [PENALTY_CAP applied: ...]
+   annotation should follow on the next line.
+
+   This annotation is observability data — Python parses it after the analyst
+   run to track the penalty distribution and confirm the cap rule is firing
+   appropriately. Do not omit it. Picks without any penalty (clean iron_floor
+   picks, for example) do not need this annotation.
+
+   Format examples:
+     Penalty case (no cap):  [PENALTY_RAW: -8pp]
+     Penalty case (cap):     [PENALTY_RAW: -25pp]
+                             [PENALTY_CAP applied: -25pp → -20pp capped]
+     No penalties:           (no annotation)
+
    INTERACTION WITH COUNT RULE: the COUNT rule still fires independently. If you have
    4+ penalties AND total magnitude exceeds -20pp, the COUNT rule directs you to
    re-examine and drop the weakest, which may also reduce magnitude below the cap.
@@ -3215,6 +3240,34 @@ picks rules:
   exist. The goal is to never walk INTO a no-market tier when a market
   exists at a higher qualifying tier; the walk-down rule's intent is
   safety, not market evasion.
+
+  WALK DECLINED ANNOTATION (REQUIRED WHEN DECLINING A WALK FOR MARKET REASONS):
+
+  When you decline to walk to a lower tier because the target tier has no
+  FanDuel market available — and you therefore either pick at the original
+  best_tier or skip the player — emit this annotation in tier_walk on its
+  own line:
+
+      [WALK_DECLINED: T<from>→T<to>, no market]
+
+  where <from> is the best_tier (the tier you walked from) and <to> is the
+  tier you considered walking to but rejected for market reasons. This
+  annotation is REQUIRED whenever you decline a walk for market unavailability.
+
+  Format examples:
+    Declined walk T15→T10 (no T10 market):  [WALK_DECLINED: T15→T10, no market]
+    Declined walk T6→T4 (no T4 market):     [WALK_DECLINED: T6→T4, no market]
+
+  This annotation is the LLM-side observability counterpart to Layer B's
+  [WALK_REVERTED:] Python annotation. Together they cover both cases where
+  this rule fires: the LLM correctly declining (LLM-side observability) and
+  the Python post-processor rescuing a missed decline (Python-side
+  observability). Python parses both annotations after the analyst run.
+
+  Normal walks to a market-supported tier do not require this annotation —
+  only declines for market unavailability. Walks blocked for OTHER reasons
+  (volatility, blowout, opp_defense) do not use this annotation; this is
+  exclusively for market unavailability declines.
 - CRITICAL — pick_value + walked_tier output contract: After completing your tier_walk
   reasoning, set walked_tier to the final integer tier threshold. Then set pick_value
   to the same integer. Both fields must agree. If your tier_walk applies a step-down
@@ -4313,6 +4366,31 @@ PENALTY STACK LIMIT — TWO PARALLEL CONSTRAINTS:
      remain documented and visible in tier_walk. Only the aggregate effect on
      final confidence is capped.
 
+   RAW PENALTY ANNOTATION (REQUIRED ON EVERY PICK WITH PENALTIES):
+
+   After summing all individual penalties to get the aggregate magnitude, BEFORE
+   applying the magnitude cap or any floor check, emit this annotation in
+   tier_walk on its own line:
+
+       [PENALTY_RAW: <value>pp]
+
+   where <value> is the SIGNED aggregate sum (negative for net penalty, e.g.
+   [PENALTY_RAW: -8pp], [PENALTY_RAW: -25pp]). This annotation is REQUIRED
+   for every pick where at least one penalty applies, EVEN IF THE CAP DOES
+   NOT FIRE. When the cap does fire, the existing [PENALTY_CAP applied: ...]
+   annotation should follow on the next line.
+
+   This annotation is observability data — Python parses it after the analyst
+   run to track the penalty distribution and confirm the cap rule is firing
+   appropriately. Do not omit it. Picks without any penalty (clean iron_floor
+   picks, for example) do not need this annotation.
+
+   Format examples:
+     Penalty case (no cap):  [PENALTY_RAW: -8pp]
+     Penalty case (cap):     [PENALTY_RAW: -25pp]
+                             [PENALTY_CAP applied: -25pp → -20pp capped]
+     No penalties:           (no annotation)
+
    INTERACTION WITH COUNT RULE: the COUNT rule still fires independently. If you have
    4+ penalties AND total magnitude exceeds -20pp, the COUNT rule directs you to
    re-examine and drop the weakest, which may also reduce magnitude below the cap.
@@ -4516,6 +4594,34 @@ picks rules:
   exist. The goal is to never walk INTO a no-market tier when a market
   exists at a higher qualifying tier; the walk-down rule's intent is
   safety, not market evasion.
+
+  WALK DECLINED ANNOTATION (REQUIRED WHEN DECLINING A WALK FOR MARKET REASONS):
+
+  When you decline to walk to a lower tier because the target tier has no
+  FanDuel market available — and you therefore either pick at the original
+  best_tier or skip the player — emit this annotation in tier_walk on its
+  own line:
+
+      [WALK_DECLINED: T<from>→T<to>, no market]
+
+  where <from> is the best_tier (the tier you walked from) and <to> is the
+  tier you considered walking to but rejected for market reasons. This
+  annotation is REQUIRED whenever you decline a walk for market unavailability.
+
+  Format examples:
+    Declined walk T15→T10 (no T10 market):  [WALK_DECLINED: T15→T10, no market]
+    Declined walk T6→T4 (no T4 market):     [WALK_DECLINED: T6→T4, no market]
+
+  This annotation is the LLM-side observability counterpart to Layer B's
+  [WALK_REVERTED:] Python annotation. Together they cover both cases where
+  this rule fires: the LLM correctly declining (LLM-side observability) and
+  the Python post-processor rescuing a missed decline (Python-side
+  observability). Python parses both annotations after the analyst run.
+
+  Normal walks to a market-supported tier do not require this annotation —
+  only declines for market unavailability. Walks blocked for OTHER reasons
+  (volatility, blowout, opp_defense) do not use this annotation; this is
+  exclusively for market unavailability declines.
 - CRITICAL — pick_value + walked_tier output contract: After completing your tier_walk
   reasoning, set walked_tier to the final integer tier threshold. Then set pick_value
   to the same integer. Both fields must agree. If your tier_walk applies a step-down
@@ -5854,6 +5960,130 @@ def reconcile_game_attribution(picks: list[dict]) -> list[dict]:
     return picks
 
 
+# ── Observability post-processor (added 2026-04-28) ──────────────────
+# Pure-read telemetry layer. Parses penalty and walk annotations from each
+# pick's tier_walk text and writes structured sub-objects to picks.json.
+# Does NOT mutate any existing field. Inserts as final step of save_picks
+# chain after enforce_market_gate.
+
+import re as _re_obs  # local alias to avoid shadowing if `re` isn't imported globally
+
+_OBS_RE_PENALTY_RAW = _re_obs.compile(
+    r"\[PENALTY_RAW:\s*(-?\d+(?:\.\d+)?)\s*pp\]",
+    _re_obs.IGNORECASE,
+)
+_OBS_RE_PENALTY_CAP = _re_obs.compile(
+    r"\[PENALTY_CAP\s+applied:\s*(-?\d+(?:\.\d+)?)\s*pp\s*[→\->]+\s*(-?\d+(?:\.\d+)?)\s*pp",
+    _re_obs.IGNORECASE,
+)
+_OBS_RE_WALK_DECLINED = _re_obs.compile(
+    r"\[WALK_DECLINED:\s*T(\d+)\s*[→\->]+\s*T(\d+)",
+    _re_obs.IGNORECASE,
+)
+_OBS_RE_WALK_REVERTED = _re_obs.compile(
+    r"\[WALK_REVERTED:\s*T(\d+)\s*[→\->]+\s*T(\d+)",
+    _re_obs.IGNORECASE,
+)
+
+
+def _parse_penalty_observability(pick: dict) -> dict | None:
+    """
+    Extract penalty raw + cap state from tier_walk text.
+    Returns None if the pick has no penalty annotation at all.
+    """
+    tw = pick.get("tier_walk", "") or ""
+    m_raw = _OBS_RE_PENALTY_RAW.search(tw)
+    m_cap = _OBS_RE_PENALTY_CAP.search(tw)
+
+    if not m_raw and not m_cap:
+        return None
+
+    raw_pp = float(m_raw.group(1)) if m_raw else None
+    cap_applied = m_cap is not None
+    savings_pp = 0.0
+
+    if cap_applied:
+        cap_raw_value = float(m_cap.group(1))
+        cap_capped_value = float(m_cap.group(2))
+        savings_pp = round(abs(cap_raw_value - cap_capped_value), 1)
+        # If [PENALTY_RAW:] annotation is missing but cap fired, infer raw_pp
+        # from the cap annotation. The cap rule should always be preceded by
+        # [PENALTY_RAW:], but this handles LLM omission gracefully.
+        if raw_pp is None:
+            raw_pp = cap_raw_value
+
+    return {
+        "raw_pp": round(raw_pp, 1) if raw_pp is not None else None,
+        "cap_applied": cap_applied,
+        "savings_pp": savings_pp,
+    }
+
+
+def _parse_walk_observability(pick: dict) -> dict | None:
+    """
+    Extract walk decline / revert outcome from tier_walk text.
+    Returns None if no walk-declined or walk-reverted annotation present.
+    Normal walks (LLM walked to a market-supported tier) are NOT telemetried.
+    """
+    tw = pick.get("tier_walk", "") or ""
+
+    m_declined = _OBS_RE_WALK_DECLINED.search(tw)
+    m_reverted = _OBS_RE_WALK_REVERTED.search(tw)
+
+    if m_declined:
+        return {
+            "outcome": "declined",
+            "from_tier": int(m_declined.group(1)),
+            "to_tier": int(m_declined.group(2)),
+        }
+    if m_reverted:
+        return {
+            "outcome": "reverted",
+            "from_tier": int(m_reverted.group(1)),
+            "to_tier": int(m_reverted.group(2)),
+        }
+    return None
+
+
+def _log_observability(pick: dict) -> None:
+    """Emit per-pick console log lines for analyst.yml workflow visibility."""
+    obs_p = pick.get("obs_penalty")
+    obs_w = pick.get("obs_walk")
+    pname = pick.get("player_name", "?")
+    prop = pick.get("prop_type", "?")
+    tier = pick.get("pick_value", "?")
+
+    if obs_p is not None:
+        cap_str = " CAP_APPLIED" if obs_p.get("cap_applied") else ""
+        raw_str = f"{obs_p.get('raw_pp')}pp" if obs_p.get("raw_pp") is not None else "?"
+        print(f"[analyst] OBS PENALTY: {pname} {prop} T{tier} raw={raw_str}{cap_str}")
+
+    if obs_w is not None:
+        outcome = obs_w.get("outcome", "?").upper()
+        from_t = obs_w.get("from_tier", "?")
+        to_t = obs_w.get("to_tier", "?")
+        print(f"[analyst] OBS WALK_{outcome}: {pname} {prop} T{from_t}→T{to_t}")
+
+
+def compute_observability(picks: list[dict]) -> list[dict]:
+    """
+    Read-only observability post-processor. Parses each pick's tier_walk text
+    for penalty and walk annotations and writes structured sub-objects to the
+    pick dict. Adds two new top-level keys per pick:
+
+      - obs_penalty: {raw_pp, cap_applied, savings_pp} or None
+      - obs_walk:    {outcome, from_tier, to_tier} or None
+
+    Does NOT mutate any existing field. Idempotent (safe to call multiple times).
+    Inserts as final step of save_picks chain after enforce_market_gate.
+    """
+    for pick in picks:
+        pick["obs_penalty"] = _parse_penalty_observability(pick)
+        pick["obs_walk"] = _parse_walk_observability(pick)
+        _log_observability(pick)
+    return picks
+
+
 def save_picks(picks: list[dict], player_stats: dict | None = None):
     # Filter out picks where analyst's own tier_walk reasoning concluded skip
     picks = filter_self_skip_picks(picks)
@@ -5874,6 +6104,11 @@ def save_picks(picks: list[dict], player_stats: dict | None = None):
 
     # Enforce FanDuel market existence — reject picks with no market
     picks = enforce_market_gate(picks)
+
+    # Observability post-processor: parse tier_walk telemetry
+    # (penalty cap raw, walk-declined, walk-reverted) into structured
+    # obs_penalty / obs_walk sub-objects. Read-only; adds new fields.
+    picks = compute_observability(picks)
 
     # Load existing picks (from prior days), append today's
     existing = []
