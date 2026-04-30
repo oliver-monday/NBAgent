@@ -1,45 +1,46 @@
 {
-  "date": "2026-04-29",
-  "generated_at": "2026-04-29T08:12:07.625310-07:00",
+  "date": "2026-04-30",
+  "generated_at": "2026-04-30T08:08:31.549450-07:00",
   "player_notes": {
-    "kevin durant": "Officially ruled OUT for Game 5 vs. Lakers (left ankle sprain). Major absence \u2014 Houston will need others to fill scoring load.",
-    "austin reaves": "Game-time decision for Game 5 vs. Rockets (Grade 2 oblique strain, missed ~4 weeks). Lakers optimistic he returns; monitor final status closely.",
-    "franz wagner": "Uncertain for Game 5 (right calf strain); return depends on treatment response. If out, significant impact on Magic's scoring and minutes distribution."
+    "kevin durant": "OUT for Game 6 vs. Lakers with ankle injury. Massive role expansion expected for Rockets supporting cast \u2014 Jabari Smith Jr., Tari Eason, and others should see increased usage/minutes.",
+    "austin reaves": "Returned from a 9-game injury absence in Game 5 vs. Rockets. Monitor minutes restriction risk in Game 6; workload after extended absence warrants caution on high prop lines.",
+    "brandon ingram": "Exited Game 5 vs. Cavaliers with right heel inflammation. Status uncertain for Game 6 \u2014 if out, significant usage opens up for Raptors teammates."
   },
   "game_notes": {
-    "HOU vs LAL": "Kevin Durant (ankle) is OUT for Houston. Austin Reaves is a game-time decision for LA \u2014 two star-level absences could heavily shift scoring props for teammates on both sides."
+    "HOU vs LAL": "Kevin Durant (OUT, ankle) misses Game 6. Rockets' offensive load redistributes to Smith Jr., Eason, and others \u2014 target their points/rebounds props. Reaves back for Lakers but monitor minutes ceiling after long absence.",
+    "TOR vs CLE": "Brandon Ingram left Game 5 with right heel inflammation; availability for Game 6 TBD. If he's out, Raptors' remaining players absorb significant shot and usage share."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 44,
+  "filtered_item_count": 50,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Austin Reaves (LAL)",
-      "current_context_fact": "Austin Reaves (LAL) \u2014 Grade 2 oblique strain (Apr 2 vs OKC, same game as Doncic). 4-6 week timeline. Per Charania (Apr 13): 'out for the majority of the first-round series; earliest first week of May.' 12-25% reinjury risk if rushed.",
-      "conflict": "Two news items from Apr 28 report: (1) Shams Charania reports Reaves is a game-time decision for Lakers in Game 5, and (2) sources say Lakers are optimistic for Reaves' return in Game 5 after missing ~four weeks with the Grade 2 oblique strain.",
-      "urgency": "critical",
-      "suggested_action": "Update Reaves' status from 'out for the majority of the first-round series' to 'game-time decision for G5 (Apr 30); optimistic for return per sources.' If he plays G5, remove from confirmed-out list and note his return alongside any minutes restriction concern given the reinjury risk flag."
-    },
-    {
       "player_or_team": "Kevin Durant (HOU)",
-      "current_context_fact": "Durant returned (23/6reb/4ast, 7-12 FG, 41 min) [G2]... Durant's ankle status (still QUES) remains the decisive series variable [G4 diary entry]. Durant was ruled OUT again (ankle injury, now listed QUES) [G3 diary].",
-      "conflict": "News from Apr 29 confirms: 'Rockets rule out Kevin Durant (ankle) for Game 5 vs. Lakers' \u2014 officially ruled out with a left ankle sprain. The injury is now confirmed as a left ankle sprain (context doc previously noted 'right knee contusion' for G1 absence and later referenced ankle generically).",
+      "current_context_fact": "Durant's status (listed DOUBT per injury report) remains the critical HOU variable \u2014 HOU has now won G5 without him... G6 key: Reaves' health and conditioning trajectory after his first game back are the primary LAL variables... and Durant's ankle availability is the decisive HOU structural variable that could transform this series outcome regardless of the current 3-2 scoreline.",
+      "conflict": "Multiple sources (ESPN, Shams Charania) confirm Kevin Durant will NOT play in Game 6 vs. Lakers due to the ankle injury. This moves him from DOUBT/questionable to confirmed OUT for G6.",
       "urgency": "critical",
-      "suggested_action": "Update Durant's status to CONFIRMED OUT for G5 (left ankle sprain, officially ruled out Apr 29). Also clarify injury history: initial absence was right knee contusion (G1); current absence is left ankle sprain. Update the injury landscape section accordingly. The series diary G4 entry references him as 'still QUES' \u2014 superseded by official G5 ruling."
+      "suggested_action": "Update Durant's Game 6 status from DOUBT to confirmed OUT. Remove any conditional framing around his G6 availability. HOU must again rely on the Thompson-Sengun-Smith offensive structure for G6."
     },
     {
       "player_or_team": "Franz Wagner (ORL)",
-      "current_context_fact": "The DET vs ORL series diary and injury landscape do not list Wagner with any current injury concern. Wagner is described as fully active: 'Wagner and Suggs: back from extended absences... Wagner on minutes restriction in play-in loss to PHI (12 pts) but looked sharper in CHA rout.' No injury flag exists for Wagner heading into G5.",
-      "conflict": "News from Apr 28 reports: 'Franz Wagner's status for Game 5 is uncertain due to a right calf strain, and his return will depend on how the injury responds to treatment, sources told ESPN.'",
+      "current_context_fact": "Game 5 diary entry (Apr 29) documents Banchero 45/9/7 and Ausar Thompson 6/15/6 \u2014 Wagner is not mentioned as absent or injured in the G5 diary.",
+      "conflict": "News confirms Franz Wagner was OUT for Game 5 vs. Pistons with a strained right calf. The season context G5 diary does not reflect his absence, which is a significant ORL roster/injury omission.",
       "urgency": "critical",
-      "suggested_action": "Add Franz Wagner to the active injury concerns section: right calf strain, status uncertain for G5 (DET vs ORL). Flag as a primary availability variable for G5 and beyond. Note this is a new injury not previously documented in the context."
+      "suggested_action": "Add Franz Wagner to the ACTIVE WITH DOCUMENTED CONCERNS or CONFIRMED OUT section with right calf strain. Update the DET vs ORL G5 diary to note Wagner was OUT (strained right calf), which affected ORL's rotation and context for all G5 stat lines. Flag his availability for G6 as uncertain."
     },
     {
-      "player_or_team": "LAL vs HOU \u2014 series context / Reaves role",
-      "current_context_fact": "G4 diary: 'Reaves DNP (0/0/0, 0 min) \u2014 his continued absence means LAL's entire offensive burden remains on LeBron's shoulders with no secondary creator available.' Series intel: 'LAL without Doncic AND Reaves \u2014 LeBron (41) sole offensive engine.'",
-      "conflict": "Reaves is now a game-time decision for G5 and sources say LAL is optimistic about his return \u2014 meaning the 'sole offensive engine' framing and 'no secondary creator' characterization may no longer apply for G5.",
-      "urgency": "critical",
-      "suggested_action": "Update G5 series preview to reflect Reaves' potential return. If he plays, LAL's offensive structure changes materially \u2014 LeBron is no longer the sole engine, and the series suppressor dynamics for HOU shift. Note the reinjury risk (12-25% per prior context) as a caveat on any minutes projection."
+      "player_or_team": "Austin Reaves (LAL)",
+      "current_context_fact": "Context states Reaves returned in G5 (Apr 29): 'played 34 min, 22/4/6 on 4-16 FG \u2014 ahead of the stated Charania timeline.' Series score listed as LAL leads 3-2 after G5 (Apr 29) with HOU winning 99-93.",
+      "conflict": "News confirms the G5 final score was HOU 99, LAL 93 (series now 3-2 LAL) and that Reaves returned. The context already reflects the correct score, but the news headline 'Jabari Smith Jr. scored 22 points, Tari Eason added 18' introduces Tari Eason as a significant HOU contributor (18 points) who is not mentioned in the G5 diary at all.",
+      "urgency": "monitor",
+      "suggested_action": "Update the LAL vs HOU G5 diary to include Tari Eason's 18-point contribution, which represents an emerging HOU secondary scoring option not previously documented in the series diary."
+    },
+    {
+      "player_or_team": "CLE vs TOR \u2014 Dennis Schroder",
+      "current_context_fact": "G5 diary (Apr 29) credits Harden 23/9/5 and Mobley 23/9/1 as CLE's key contributors. Mitchell 19/5/3 noted. No mention of Dennis Schroder as a significant contributor.",
+      "conflict": "News reports that 'Dennis Schroder scored 11 of his 19 points in the fourth quarter' and was described as breaking out in Game 5, framed as a key factor in CLE's 125-120 win. The G5 diary omits Schroder's 19-point performance entirely.",
+      "urgency": "monitor",
+      "suggested_action": "Update the CLE vs TOR G5 diary to include Schroder's 19-point breakout (11 in Q4), which represents an important emerging CLE bench contributor and changes the G6 tactical picture."
     }
   ],
   "staleness_flags": []

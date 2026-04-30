@@ -1,0 +1,358 @@
+[
+  {
+    "date": "2026-04-30",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "FG_COLD (-18%) and FG_MARGIN_NEG (-2%) flags are both active, meaning Jokic is in a cold shooting stretch where his FG percentage is below breakeven \u2014 a step-down was applied but the structural scoring suppression remains live. With raw_avg 24.7 stepped all the way down to T20, a continuation of the cold streak in a moderately contested game could still produce a miss."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "REB",
+    "pick_value": 12,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Jokic is tagged volatile on REB with a post_miss_hr of only 71% (near-flat lift of +1.02), meaning the bounce-back effect is minimal \u2014 a sequential slump is a real possibility. At T12, this is a high threshold requiring consistent effort on the glass against MIN, and the volatile tag means the distribution is wide enough that games below 12 are not rare."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Nikola Jokic",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 8,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Murray carries both FG_COLD (-17%) and FG_MARGIN_THIN (0%) flags simultaneously \u2014 his FG margin is exactly at breakeven with a cold shooting trend. The volatile tag means his scoring distribution is wide, and typical_miss of 5.5 pts below means a cold game falls well short of T15. The step-down was applied but the compounded shooting suppression risk remains structurally meaningful."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jamal Murray",
+    "team": "DEN",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Tatum is tagged volatile with FG_MARGIN_NEG (-4%) active \u2014 below breakeven shooting \u2014 triggering a step-down cascade to T15. BOS is a 6.5-point road favorite, and blowout game script risk means Tatum could see reduced Q4 minutes once games are decided, compressing counting stats on a volatile scorer who is already in a negative-margin shooting stretch."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Brown has FG_MARGIN_NEG at -11% \u2014 deeply below breakeven \u2014 and is tagged volatile, with typical_miss of 10 pts below threshold. Even after the mandatory step-down cascade to T20, a continuation of the negative-margin shooting performance is structurally more likely than a correction, and the wide distribution means misses by large margins are common."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Joel Embiid",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Embiid carries both FG_COLD (-15%) and FG_MARGIN_THIN (6%) flags with a min_floor of only 27.6 against a tough BOS defense \u2014 his post_miss bounce-back rate is only 67% with a negative lift (0.78), meaning he is one of the few players on this slate who does NOT reliably respond after a miss. The combination of injury management minutes risk and active shooting suppression flags on a tough opponent makes this structurally fragile despite the conservative T15 selection."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Joel Embiid",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 20,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Brunson is tagged volatile on AST with H2H vs ATL at T6 showing only 1/3 in regular season (33%), and the pick walked down to T4 \u2014 but the volatile tag and a post_miss bounce-back rate of only 90% with a typical miss of just 1 below threshold means the margin is thin. A game where Brunson focuses on scoring over playmaking \u2014 common for a volatile, high-usage guard \u2014 could produce exactly 3 assists."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 15,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jalen Johnson",
+    "team": "ATL",
+    "prop_type": "AST",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Johnson's post_miss_hr for AST is only 59% with a negative lift (0.81) \u2014 the weakest bounce-back profile on the slate for this prop type \u2014 confirming slump persistence. The volatile tag and a typical_miss of only 2 below threshold mean even a slightly reduced playmaking game produces a miss, and the historical data suggests slumps compound rather than self-correct."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "trim",
+    "trim_reasons": [
+      "Anunoby is tagged volatile on REB with raw_avg of only 6.0 \u2014 exactly at the pick value \u2014 meaning roughly half his games land at or below the threshold before any suppression is applied. The volatile tag on a player whose average barely clears the pick value creates a structurally thin floor even at the conservative T6 tier."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Jaden McDaniels",
+    "team": "MIN",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "McDaniels has active left knee patella tendinopathy and a bone bruise with QUES status \u2014 his G5 minutes were already restricted to 27, and min_floor of 26.2 against his avg of 33.5 shows a wide minutes variance floor. A further minutes restriction in this game could easily produce fewer than 10 points, and the volatile tag means the scoring distribution is wide even at full health."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Rudy Gobert",
+    "team": "MIN",
+    "prop_type": "REB",
+    "pick_value": 6,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Paul George",
+    "team": "PHI",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "trim",
+    "trim_reasons": [
+      "George's min_floor is 23.7 against an avg of 33.0 \u2014 a 9.3-minute gap representing extreme minutes fragility for a PTS prop. His post_miss_hr is only 67% with negative lift (0.88), and the volatile tag with a typical_miss of 10 pts below threshold means low-minutes games produce dramatic shortfalls. BOS is a 6.5-point favorite, creating Q4 blowout-rest risk on the PHI side."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Paul George",
+    "team": "PHI",
+    "prop_type": "REB",
+    "pick_value": 4,
+    "verdict": "trim",
+    "trim_reasons": [
+      "George's raw_avg_REB is only 4.2 \u2014 essentially at the pick value \u2014 and his post_miss_hr is 54% with a deeply negative lift (0.73), the worst bounce-back profile for REB on the entire slate. The confirmed slump-persistence for REB props combined with a below-average recovery rate and minutes fragility (min_floor 23.7) makes this structurally weak."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Derrick White",
+    "team": "BOS",
+    "prop_type": "AST",
+    "pick_value": 2,
+    "verdict": "trim",
+    "trim_reasons": [
+      "White carries an active knee contusion (QUES status) with a -5% shooting penalty applied, and his post_miss_hr is only 63% with a negative lift (0.83) \u2014 below-average recovery. The knee injury introduces playmaking aggressiveness risk: a player managing a soft-tissue joint concern may avoid the aggressive drives and ball-handling sequences that generate assists."
+    ],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "Cameron Johnson",
+    "team": "DEN",
+    "prop_type": "3PM",
+    "pick_value": 1,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  },
+  {
+    "date": "2026-04-30",
+    "player_name": "CJ McCollum",
+    "team": "ATL",
+    "prop_type": "PTS",
+    "pick_value": 10,
+    "verdict": "keep",
+    "trim_reasons": [],
+    "source": "auto"
+  }
+]
