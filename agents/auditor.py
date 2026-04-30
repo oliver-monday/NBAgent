@@ -1120,13 +1120,100 @@ STEP 2 — CHECK INJURY STATUS, THEN CLASSIFY THE MISS as exactly one of:
   - "variance": pick was sound, player had an off night. Hit rate and context
     supported the pick; outcome was within normal variance range.
 
-IMPORTANT — INJURY AND WORKFLOW MISSES: For any miss classified as injury_event or
-workflow_gap, do NOT write a lesson or recommendation targeting the Analyst's pick
-selection logic. These are not analytical errors. Instead, write a single neutral
-note in root_cause only (e.g. "Workflow gap: player listed OUT pre-game, pick not
-voided in time" or "Injury event: player exited mid-game, near-zero output despite
-active pre-game status"). Exclude these picks entirely from the lessons and
-recommendations arrays — they must not pollute the Analyst's feedback loop.
+IMPORTANT — RECOMMENDATION CONTAMINATION GUARDS:
+
+Three classes of pick outcomes must NOT drive tightening recommendations
+that target the Analyst's selection logic. These guards exist because
+recommendations roll up into the Analyst's next-run feedback and become
+de-facto rules; recommendations grounded in non-signal must be filtered
+at write time.
+
+GUARD 1 — INJURY AND WORKFLOW MISSES:
+For any miss classified as injury_event or workflow_gap, do NOT write a
+lesson or recommendation targeting the Analyst's pick selection logic.
+These are not analytical errors. Write a single neutral note in
+root_cause only (e.g. "Workflow gap: player listed OUT pre-game, pick
+not voided in time" or "Injury event: player exited mid-game, near-zero
+output despite active pre-game status"). Exclude these picks entirely
+from the lessons and recommendations arrays.
+
+This guard cannot be bypassed by reframing the recommendation around the
+pick's risk profile (e.g. "Players combining FG_COLD + VOLATILE + 70%
+confidence should be skip-eligible — see Ingram"). If a pick missed
+because of an injury event, NO recommendation may cite that pick or its
+risk profile, even indirectly. The risk profile that "would have been
+fragile if the player had actually played" is not evidence — the player
+did not play long enough to test the profile.
+
+GUARD 2 — VARIANCE MISSES:
+For any miss classified as variance, do NOT write a recommendation
+targeting the Analyst's pick selection logic. By the variance
+classification's own definition ("pick was sound, player had an off
+night; outcome was within normal variance range"), the pick was correct
+and the outcome was noise. Tightening selection logic in response to
+noise is overfitting.
+
+You may write a lesson noting the outcome for context (e.g. "Mobley AST
+T2 missed by 1 — within distribution for a player averaging ~2.0 AST in
+playoffs"), but the lessons array entry must NOT propose a rule change.
+Lessons describe; recommendations prescribe. Variance can drive a
+description but never a prescription.
+
+GUARD 3 — HITS:
+The recommendations array exists exclusively to address actual MISSES.
+A pick that HIT, regardless of how marginally or how uncomfortable the
+auditor felt about it, may NOT motivate a tightening recommendation. If
+two players (e.g. Mobley PTS T10 and Harden PTS T10) both hit at 68%
+confidence with LATE_FADER and VOLATILE tags, the recommendation array
+must NOT contain "skip such picks in future." The picks worked. The
+threshold the system used was correct.
+
+If you observe a pattern of marginal hits and want to surface it, use
+the reinforcements array: "LATE_FADER + VOLATILE + 68% confidence
+picks (Mobley PTS, Harden PTS) both hit despite carrying multiple
+structural warnings — the minimum confidence floor is calibrated
+correctly for these cases." Do not redirect this pattern observation
+into a tightening recommendation.
+
+NARROW MISS NOTE (not a hard guard, but informational):
+A miss by exactly 1 unit on PTS, REB, or AST (e.g. Sengun PTS 14 vs
+T15, LeBron REB 3 vs T4) typically indicates the tier was correctly at
+the edge of viability; the player simply landed on the wrong side of
+the threshold. Such misses can legitimately be classified as
+model_gap_rule or model_gap_signal IF a specific structural mechanism
+is identified (e.g. "no T10 market existed; the inability to step down
+materially raised tail risk" or "opponent's league-leading OREB%
+structurally compresses opponent REB volume"). They should NOT be
+classified as model_gap on purely "the system should have been more
+cautious" grounds — that reasoning applies to every miss-by-1 by
+construction and would tighten the system into producing zero picks.
+
+When in doubt on a miss-by-1, prefer the variance classification over
+model_gap. Variance is the correct floor classification when the pick's
+hit-rate, matchup, and minutes evidence all supported the selection.
+
+SUMMARY OF WHAT IS ALLOWED IN RECOMMENDATIONS:
+The recommendations array should contain prescriptive rule changes
+motivated by ONE OR MORE of:
+  - selection_error misses (analyst chose a tier that quant data did
+    not support);
+  - model_gap_rule misses where the structural mechanism is explicit
+    and reproducible;
+  - model_gap_signal misses where the missing signal is identifiable
+    and could be operationalized;
+  - patterns of repeated misses across multiple picks that reveal a
+    systematic blind spot (not single-instance outcomes).
+
+Recommendations must NOT be motivated by injury_event misses,
+workflow_gap misses, variance misses, hits the auditor felt
+uncomfortable with, or single miss-by-1 outcomes lacking a specific
+mechanism.
+
+If the slate had no qualifying misses for recommendations, write
+recommendations addressing reinforcements ("the analyst is correctly
+applying X — continue") or simply state that no rule changes are
+warranted from this slate. An empty or short recommendations array is
+preferable to a contaminated one.
 
 STEP 3 — CRITIQUE THE ORIGINAL REASONING: The pick object includes a "reasoning" field
 containing the analyst's original thesis. Read it. If the pick missed, identify specifically
