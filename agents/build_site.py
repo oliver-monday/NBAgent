@@ -1833,8 +1833,6 @@ def generate_html(d: dict) -> str:
                       border-radius: 10px; padding: 16px 18px;
                       display: grid; grid-template-columns: 1fr auto;
                       gap: 12px; align-items: start; }}
-    .bb-edge {{ font-size: 13px; font-weight: 700; color: #2dd4bf; margin-top: 4px; }}
-    .bb-edge.strong {{ color: #22c55e; }}
     .best-bets-divider {{ height: 1px; background: var(--border); margin: 20px 0 16px; }}
 
     /* History drawers */
@@ -2378,7 +2376,7 @@ function renderPicks() {{
       const hcAttr = isHC ? 'true' : 'false';
       const hcBadge = isHC ? `<span class="high-conv-badge">HIGH CONV</span>` : '';
       html += `
-        <div class="pick-card${{voidedCls}}" data-hc="${{hcAttr}}">
+        <div class="pick-card${{voidedCls}}" data-hc="${{hcAttr}}" data-canonical="true">
           <div class="pick-main">
             <div class="player">${{p.player_name}}${{hcBadge}}</div>
             ${{statusBadge}}
@@ -2775,19 +2773,20 @@ function renderAudit() {{
     const dp = hc.delta_vs_overall_pp;
     const dpStr = dp != null ? `${{dp >= 0 ? '+' : ''}}${{dp.toFixed(1)}}pp` : '—';
     const dpColor = dp == null ? 'var(--muted)' : (dp >= 0 ? '#50c878' : '#ef4444');
-    const days = hc.n_days_included != null ? `${{hc.n_days_included}} days · ` : '';
     return `<div class="audit-card"><h3>${{label}}</h3>
       <div style="display:flex;gap:24px;flex-wrap:wrap">
         <div><div style="font-size:11px;color:var(--muted)">Hit Rate</div><div style="font-size:24px;font-weight:700;color:#50c878">${{hr}}</div></div>
-        <div><div style="font-size:11px;color:var(--muted)">Picks</div><div style="font-size:24px;font-weight:700">${{days}}${{hc.n_picks}}</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Picks</div><div style="font-size:24px;font-weight:700">${{hc.n_picks}}</div></div>
         <div><div style="font-size:11px;color:var(--muted)">Hits</div><div style="font-size:24px;font-weight:700;color:var(--hit)">${{hc.hits}}</div></div>
         <div><div style="font-size:11px;color:var(--muted)">Misses</div><div style="font-size:24px;font-weight:700;color:var(--miss)">${{hc.misses}}</div></div>
         <div><div style="font-size:11px;color:var(--muted)">vs Overall</div><div style="font-size:24px;font-weight:700;color:${{dpColor}}">${{dpStr}}</div></div>
       </div>
     </div>`;
   }};
-  html += renderHCPanel('High-Conviction (yesterday) — market ≥ 85%', a.high_conviction_breakdown);
-  html += renderHCPanel('High-Conviction (rolling) — market ≥ 85%', DATA.high_conviction_summary);
+  html += renderHCPanel('High-Conviction (yesterday)', a.high_conviction_breakdown);
+  const _hcRolling = DATA.high_conviction_summary || {{}};
+  const _rollingDaysSuffix = _hcRolling.n_days_included != null ? ` - ${{_hcRolling.n_days_included}} days` : '';
+  html += renderHCPanel(`High-Conviction (rolling${{_rollingDaysSuffix}})`, _hcRolling);
 
   if (a.reinforcements?.length) {{
     html += `<div class="audit-card"><h3>✓ What Worked</h3><ul class="audit-list">`;
@@ -2936,8 +2935,8 @@ function renderBestBets() {{
     const edgePct  = br.calibrated_edge_pct;
     // Best Bets are surfaced when calibrated_edge_pct >= +5pp (RARE SETUP band
     // in the new vocabulary; ≥+8pp gets the bolder accent green border).
-    const edgeStr  = edgePct != null ? `+${{edgePct.toFixed(1)}}pp edge` : '';
-    const edgeCls  = (edgePct != null && edgePct >= 8.0) ? 'strong' : '';
+    // Edge text itself is rendered via the shared buildEdgeLine() so format
+    // matches Top Picks and game-group cards (e.g. "RARE SETUP (+6.2pp)").
     const borderColor = (edgePct != null && edgePct >= 8.0) ? '#22c55e' : '#2dd4bf';
     const gameTime = p.game_time ? ` · ${{p.game_time}}` : '';
     const reasoning = p.reasoning
@@ -2962,7 +2961,7 @@ function renderBestBets() {{
             ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
           </div>
           <div class="tp-conf">${{displayConf(p)}}% conf</div>
-          <div class="bb-edge ${{edgeCls}}">${{edgeStr}}</div>
+          ${{buildEdgeLine(p)}}
         </div>
       </div>`;
   }});
@@ -2992,19 +2991,27 @@ renderAudit();
 
   function applyHCFilter() {{
     const on = toggle.checked;
+    // Visibility loop — walks ALL pick-cards (including Top Picks / Best Bets
+    // duplicates) so duplicate cards hide correctly when toggle is ON.
     const cards = document.querySelectorAll('.pick-card');
-    let shown = 0, total = 0;
     cards.forEach(card => {{
       // Skip opportunity cards — they don't carry data-hc
       if (!card.hasAttribute('data-hc')) return;
-      total++;
       const isHC = card.dataset.hc === 'true';
       if (!on || isHC) {{
         card.style.display = '';
-        shown++;
       }} else {{
         card.style.display = 'none';
       }}
+    }});
+    // Counter loop — counts ONLY canonical (game-group) cards so the same
+    // pick isn't counted multiple times across Top Picks / Best Bets / drawers.
+    let shown = 0, total = 0;
+    document.querySelectorAll('.pick-card[data-canonical="true"]').forEach(card => {{
+      if (!card.hasAttribute('data-hc')) return;
+      total++;
+      const isHC = card.dataset.hc === 'true';
+      if (!on || isHC) shown++;
     }});
     // Hide game-group containers with zero visible pick cards
     document.querySelectorAll('.game-group').forEach(g => {{
