@@ -21,11 +21,13 @@ analyst.yml (chains off auditor)
   └─ pre_game_reporter.py    → pre_game_news.json, context/context_flags.md
   └─ analyst.py              → picks.json (today's picks appended; OUT/DOUBTFUL pre-filtered)
   └─ odds_today.py           → picks.json (odds annotation + calibrated edge), odds_today.json
+  └─ kalshi_today.py         → picks.json (kalshi_* fields), kalshi_today.json
   # parlay.py step removed 2026-04-24 — auto-generated parlay menu deprecated; Parlays tab is now Builder-only
   └─ build_site.py           → site/index.html (deployed to GitHub Pages)
 
 odds_pretip.yml (independent, every 30 min 3–7:30 PM PT)
   └─ odds_today.py --pretip  → picks.json (pre-tip odds update + CLV baseline), odds_pretip.json
+  └─ kalshi_today.py --pretip → picks.json (kalshi_* refresh, tip-off guarded), kalshi_today.json
 
 injuries.yml (hourly, independent)
   └─ rotowire_injuries_only.py → injuries_today.json + lineups_today.json
@@ -113,6 +115,37 @@ TPM_TIERS = [1, 2, 3, 4]
 `feeder_target`, `volume_game`, `pace_beneficiary`, `positively_correlated`, `independent`, `insufficient_data`, `board_rivals`, `scoring_rivals`, `negatively_correlated`
 
 **Whitelist filtering:** Quant filters to `(player_name.lower(), team_abbrev.upper())` tuples — this prevents traded players from appearing under their old team.
+
+---
+
+## kalshi_today.py — Kalshi NBA Player-Prop Mirror (Ingest P1, NEW 2026-05-01)
+
+Fetches Kalshi NBA player-prop markets across the four series (`KXNBAPTS`, `KXNBAREB`, `KXNBAAST`, `KXNBA3PT`) for today's slate, matches them to today's unvoided picks in `picks.json` by `(_norm_name(player), prop_type, int(pick_value))` key, and writes a parallel `kalshi_*` namespace on each pick. Architectural sibling to `ingest/odds_today.py` (FanDuel ingest) — runs alongside it but uses an entirely independent code path.
+
+**Two modes:**
+- `python ingest/kalshi_today.py` (no flag, morning capture in `analyst.yml`): runs after `odds_today.py` annotates picks with FanDuel data. Sets `kalshi_market_listed` (true or false) on EVERY pickable today's pick; for matched picks, writes all nine `kalshi_*` fields. Sets `kalshi_morning_implied_prob` ONLY on first capture (sticky baseline, never overwritten).
+- `python ingest/kalshi_today.py --pretip` (hourly refresh in `odds_pretip.yml`): runs after the FanDuel pretip sweep. Refreshes live fields on already-listed picks. Does NOT change `kalshi_market_listed` — coverage classification is set definitively by `main()` only.
+
+**Inputs (read-only):** `picks.json` (today's pickable picks), `nba_master.csv` (`game_date`/`game_time_utc`/`home_team_abbrev`/`away_team_abbrev` columns — used by pretip mode for the tip-off guard), Kalshi public Markets API.
+
+**Outputs:** `picks.json` (in-place, atomic write via `tmp → os.replace`) — adds nine `kalshi_*` fields per matched pick, only `kalshi_market_listed: false` on unmatched. `data/kalshi_today.json` — diagnostic raw API response cache, overwritten each run, NOT consumed by any agent.
+
+**Architectural decisions:**
+- **Pure stdlib only** — `urllib.request`/`urllib.parse`/`urllib.error` instead of `requests`. Kalshi public endpoint requires no API key and stdlib HTTP works cleanly per the kalshi probes (`tools/kalshi_probe.py`, `tools/kalshi_reprobe_v2.py`). Kept self-contained — `_norm_name()` re-implemented identically rather than imported from `odds_today.py` so future independent refactors of either don't cross boundaries.
+- **No prefetch mode** — Kalshi is NOT used as a market-availability gate (only annotation). The FanDuel `--prefetch` flag has no Kalshi analog.
+- **No snapshot file** like `odds_pretip.json` — Kalshi has no API quota so per-hour refreshes are free and need no dedup. The morning baseline lives durably on each pick as `kalshi_morning_implied_prob`.
+- **No liquidity classification** stored — only raw `kalshi_volume_24h_fp` plus bid/ask. The probe's `liquid` / `thin` / `top_of_book` / `empty` buckets are deferred to P2/P3.
+- **Cron schedule unchanged** — Kalshi piggybacks on FanDuel's hourly cadence verbatim (`odds_pretip.yml` runs hourly noon–7 PM PT during the season).
+
+**Tip-off guard semantics** (pretip mode only): builds `commenced_teams` set from `nba_master.csv` `game_time_utc` with `PRETIP_GRACE_MINUTES = 30` (mirrors `odds_today.py`). For any pick whose `team` or `opponent` is in `commenced_teams` AND has `kalshi_market_implied_prob` already set, refresh is SKIPPED — preserves the last pre-tip implied probability as the closing-line anchor for future CLV calculations. First-capture-post-tip case is allowed but logs a `WARNING: ... CLV may be unreliable` line.
+
+**Fallback morning baseline:** if a pick has `kalshi_market_listed: true` but `kalshi_morning_implied_prob` was never set (e.g., morning capture missed it because Kalshi hadn't listed the player yet that morning), the first pretip cycle that matches that pick sets `kalshi_morning_implied_prob` from the current implied as a "better-than-nothing" baseline; logged as `FALLBACK MORNING:`.
+
+**Movement logging:** any pick where `|new_implied − prior_implied| ≥ 1.0pp` produces a `MOVEMENT:` log line with delta. Diagnostic only — does not affect any field beyond the refresh itself.
+
+**Failure mode:** any error (network failure, parse error, missing input file) prints a warning and exits 0. `picks.json` is never touched on failure. The workflow can re-run safely at any time. Transient failures self-heal on the next cron tick. **No agent reads `kalshi_*` fields in P1** — analyst, auditor, parlay, build_site, lineup_update all unchanged. Kalshi data is currently invisible to the rest of the system by design; analyst/auditor wiring (P2/P3 prompts) is deferred until coverage data accumulates over the first 5+ slates.
+
+**Settlement note:** `kalshi_settlement_rule` is always `"last_fair_price"`. Kalshi binary contracts settle to last fair market price when the underlying player is DNP-active (active but doesn't play). FanDuel voids in the same scenario. The auditor's future P5 reconciliation logic (deferred) will use this field to handle DNP-active scratches differently across the two markets.
 
 ---
 

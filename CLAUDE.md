@@ -46,6 +46,7 @@ NBAgent/
 ├── ingest/
 │   ├── espn_daily_ingest.py        # Game slate + spreads + standings from ESPN API → nba_master.csv, standings_today.json
 │   ├── espn_player_ingest.py       # Player box scores → player_game_log.csv, team_game_log.csv, player_dim.csv
+│   ├── kalshi_today.py             # Kalshi NBA player-prop mirror (P1) — picks.json kalshi_* fields + kalshi_today.json; pure stdlib, no API key, two modes (morning + --pretip); added 2026-05-01
 │   └── rotowire_injuries_only.py   # Injury + lineup scrape → injuries_today.json, lineups_today.json; optional projected_minutes + onoff_usage when Rotowire creds present
 ├── context/
 │   └── nba_season_context.md   # Manually maintained NBA context — injected into Analyst AND Auditor prompts
@@ -72,6 +73,7 @@ NBAgent/
 │   ├── odds_available.json             # Pre-fetched FanDuel alternate market lines — written by odds_today.py --prefetch; consumed by analyst.py as market availability gate
 │   ├── odds_today.json                 # Diagnostic odds cache — written by odds_today.py after picks; enriches picks.json with market_line/edge_pct
 │   ├── odds_pretip.json                # Morning baseline + pre-tip odds snapshots — written by odds_today.py main() and --pretip; consumed for CLV tracking
+│   ├── kalshi_today.json               # Diagnostic Kalshi raw response cache — written by kalshi_today.py morning + --pretip (added 2026-05-01); not consumed by any agent
 │   ├── playoff_matchup.json            # Per-series playoff context — written by playoff_matchup.py; consumed by analyst.py; absent during regular season
 │   └── context_flags.md                # Staleness flags written by pre_game_reporter.py; picked up by analyst via ⚠ CONTEXT FLAG mechanism
 ├── playerprops/
@@ -101,9 +103,9 @@ NBAgent/
 ## Workflow Chain
 
 ```
-ingest.yml → auditor.yml (post_game_reporter → auditor → season_context_updater) → analyst.yml (rotowire refresh → quant → playoff_matchup → odds_prefetch → pre_game_reporter → analyst → odds_enrich → deploy)  # parlay step removed 2026-04-24
+ingest.yml → auditor.yml (post_game_reporter → auditor → season_context_updater) → analyst.yml (rotowire refresh → quant → playoff_matchup → odds_prefetch → pre_game_reporter → analyst → odds_enrich → kalshi_enrich → deploy)  # parlay step removed 2026-04-24; kalshi_enrich added 2026-05-01 (P1 ingest mirror)
 injuries.yml runs independently on :15/:45 schedule (rotowire → lineup_watch → lineup_update → site rebuild)
-odds_pretip.yml runs independently every 30 min 3–7:30 PM PT (pre-tip odds sweep → picks.json update → CLV baseline)
+odds_pretip.yml runs independently every 30 min 3–7:30 PM PT (pre-tip odds sweep → kalshi pretip sweep → picks.json update → CLV baseline)  # kalshi sweep added 2026-05-01 (P1 ingest mirror)
 post_game_reporter.py runs as first step of auditor.yml (fetches ESPN recaps + Rotowire news for yesterday's missed picks)
 season_context_updater.py runs after auditor.py (date-gated to PLAYOFFS_R1_DATE — appends series diary entries + injury-bullet updates to nba_season_context.md)
 ```
@@ -131,6 +133,7 @@ season_context_updater.py runs after auditor.py (date-gated to PLAYOFFS_R1_DATE 
 | lineup_watch.py | — (pure Python) | — | injuries_today.json, picks.json | picks.json (in-place mutations: voided, lineup_risk) |
 | lineup_update.py | claude-sonnet-4-6 | 2048 | lineups_today.json (snapshot), injuries_today.json, picks.json, nba_master.csv | picks.json (lineup_update sub-object on affected picks) |
 | season_context_updater.py | claude-sonnet-4-6 | 4096 | nba_master.csv, player_game_log.csv, post_game_news.json, injuries_today.json, nba_season_context.md (as ground truth + patch target) | nba_season_context.md (in-place patch: series diary entries + injury bullet updates + timestamp); date-gated to PLAYOFFS_R1_DATE |
+| kalshi_today.py | — (pure Python) | — | picks.json, nba_master.csv (game_time_utc + matchup columns for tip-off guard), Kalshi public Markets API (no API key) | picks.json (kalshi_* fields), kalshi_today.json (added 2026-05-01, P1 ingest mirror) |
 
 Full agent details → **@docs/AGENTS.md**
 

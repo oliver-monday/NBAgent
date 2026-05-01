@@ -49,12 +49,15 @@ jobs:
       - name: Run pre-tip odds sweep
         run: python ingest/odds_today.py --pretip
 
+      - name: Run pre-tip Kalshi sweep
+        run: python ingest/kalshi_today.py --pretip
+
       - name: Commit odds updates
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          FILES="data/odds_pretip.json data/picks.json"
+          FILES="data/odds_pretip.json data/picks.json data/kalshi_today.json"
           for f in $FILES; do
             [ -f "$f" ] && cp "$f" "$f.local"
           done

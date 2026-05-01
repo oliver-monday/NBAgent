@@ -361,6 +361,17 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
     "last_observed_at": "ISO timestamp",             // refreshed every cycle the warning is still active
     "source_backtest": "H34 — backtest_clv_ast_disagree (2026-04-30)"  // identifier of the backtest motivating this warning
   },
+  // ── Kalshi P1 ingest mirror (added 2026-05-01) — set by ingest/kalshi_today.py only ──
+  "kalshi_market_listed": bool|null,                 // true if Kalshi has a market for this (player, prop, tier); set on every pickable today's pick by main(); pretip_sweep() does NOT flip false→true
+  "kalshi_market_ticker": "string|null",             // full Kalshi ticker, e.g. "KXNBAPTS-26MAY01CLETOR-DM1-15"; only on matched picks
+  "kalshi_yes_bid_dollars": number|null,             // top-of-book YES bid in dollars (0–1 range); refreshed each pretip cycle subject to tip-off guard
+  "kalshi_yes_ask_dollars": number|null,             // top-of-book YES ask in dollars (0–1 range)
+  "kalshi_market_implied_prob": number|null,         // = yes_bid_dollars × 100 in PERCENT (matches FanDuel market_implied_prob convention so future CLV math can subtract directly); refreshed each pretip cycle subject to tip-off guard
+  "kalshi_morning_implied_prob": number|null,        // first-capture implied prob, frozen baseline for future CLV math; set ONCE per pick per day, never overwritten; pretip_sweep() will set as fallback if main() missed
+  "kalshi_volume_24h_fp": number|null,               // Kalshi 24h trade volume in contracts; refreshed each pretip cycle
+  "kalshi_settlement_rule": "last_fair_price",       // always this literal — Kalshi binary contracts settle to last fair market price on DNP-active scratches; FanDuel voids in same scenario
+  "kalshi_fetched_at": "ISO timestamp|null",         // ISO timestamp of last successful capture
+  // Unmatched picks have ONLY kalshi_market_listed: false — none of the other eight fields appear (no leakage)
   "alt_tiers": [{"tier": N, "line": N, "mkt_prob": N, "hits": N, "games": N, "hit_pct": N}] | null,  // alternate FanDuel tiers with quant hit rates; set by build_site.py enrich_alt_tiers(); transient (not persisted)
   "bet_recommendation": {                            // set by odds_today.py compute_edge(); null/absent pre-enrichment
     "calibrated_prob": number|null,                  // actual hit rate for this confidence band from audit_summary.json; null when no market
@@ -425,6 +436,23 @@ Written/appended by `lineup_update.py` hourly when qualifying player absences ar
 ```
 
 `qualifying_tiers`: props ≥70% hit rate where player has no morning pick. `upgrade_tiers`: props where quant best tier > morning pick tier. Both optional; player card not emitted when both empty. `without_player_*` fields optional (teammate side only, ≥3 historical without-player games required). Has no grading integration — opportunity card accuracy not tracked by auditor.
+
+### kalshi_today.json
+Diagnostic cache written by `ingest/kalshi_today.py` (added 2026-05-01, P1 ingest mirror). Overwritten each run (morning + every pretip cycle, not cumulative). Contains raw Kalshi public Markets API responses for today's slate filtered to the four NBA player-prop series (`KXNBAPTS`, `KXNBAREB`, `KXNBAAST`, `KXNBA3PT`). NOT consumed by any agent.
+```json
+{
+  "date":       "YYYY-MM-DD",
+  "mode":       "morning|pretip",
+  "fetched_at": "ISO timestamp",
+  "by_series": {
+    "KXNBAPTS": [<raw Kalshi market dict>, ...],
+    "KXNBAREB": [...],
+    "KXNBAAST": [...],
+    "KXNBA3PT": [...]
+  }
+}
+```
+Each market dict mirrors Kalshi's `/markets` list response shape: `ticker`, `event_ticker`, `status`, `title`, `yes_sub_title`, `yes_bid_dollars`, `yes_ask_dollars`, `no_bid_dollars`, `no_ask_dollars`, `last_price_dollars`, `volume_fp`, `volume_24h_fp`, `open_interest_fp`, `liquidity_dollars`, `yes_bid_size_fp`, `yes_ask_size_fp`, `open_time`, `close_time`. Filtered to events whose `event_ticker` matches `{series}-{slate_date_ticker}{matchup}` for matchups derived from today's pick `(team, opponent)` pairs.
 
 ### odds_today.json
 Diagnostic cache written by `ingest/odds_today.py`. Overwritten each run (not cumulative). Contains raw FanDuel alternate market lines fetched from The Odds API. Used for debugging odds matching; not consumed by any agent.

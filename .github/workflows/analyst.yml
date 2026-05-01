@@ -71,12 +71,15 @@ jobs:
       - name: Enrich picks with odds
         run: python ingest/odds_today.py
 
+      - name: Enrich picks with Kalshi odds
+        run: python ingest/kalshi_today.py
+
       - name: Commit picks
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          FILES="data/picks.json data/player_stats.json data/lineups_today.json data/skipped_picks.json data/standings_today.json data/opportunity_flags.json data/pre_game_news.json data/team_defense_narratives.json data/injuries_today.json data/odds_available.json data/odds_today.json data/playoff_matchup.json data/injury_profiles.json"
+          FILES="data/picks.json data/player_stats.json data/lineups_today.json data/skipped_picks.json data/standings_today.json data/opportunity_flags.json data/pre_game_news.json data/team_defense_narratives.json data/injuries_today.json data/odds_available.json data/odds_today.json data/playoff_matchup.json data/injury_profiles.json data/kalshi_today.json"
           for f in $FILES; do
             [ -f "$f" ] && cp "$f" "$f.local"
           done
