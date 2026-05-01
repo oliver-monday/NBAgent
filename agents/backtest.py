@@ -180,6 +180,17 @@ H31_MIN_TOTAL_PLAYOFF     = 15   # min total playoff games for per-player table
 H31_PROGRESSION_THRESHOLD = 8.0  # |late - early| >= 8pp at key tier → meaningful progression
 SERIES_PROGRESSION_JSON = DATA / "backtest_series_progression.json"
 
+# ── CLV × AST disagreement (descriptive — no rule shipped) ────────────
+CLV_AST_DISAGREE_JSON   = DATA / "backtest_clv_ast_disagree.json"
+CLV_LOST_THRESHOLD      = -0.5     # clv_pp below this → "lost the close"
+CLV_BEAT_THRESHOLD      = 0.5      # clv_pp above this → "beat the close"
+CLV_AST_MIN_PICKS_CELL  = 5        # below this, sub-cells are reported as small-sample
+CLV_AST_RECENT_WINDOW   = 14       # days for the "recent" stability cell
+CLV_AST_DELTA_THRESHOLD_PP = 10.0  # |delta vs baseline| above this flagged as MEANINGFUL
+CLV_AST_CONF_BANDS      = [(70, 75, "70-75"), (76, 80, "76-80"),
+                           (81, 85, "81-85"), (86, 999, "86+")]
+CLV_AST_TIERS           = [2, 4, 6, 8]
+
 # H32 — Player Consistency Index
 H32_STATS = ["PTS", "REB", "AST", "3PM"]
 H32_STAT_COL = {"PTS": "pts", "REB": "reb", "AST": "ast", "3PM": "tpm"}
@@ -8181,6 +8192,292 @@ def run_playoff_career_analysis(args) -> None:
     print(f"\n[backtest] H28 results → {out_path}")
 
 
+# ── H34 — CLV × AST Disagreement ────────────────────────────────────
+
+def run_clv_ast_disagree_analysis(picks: list, args) -> None:
+    """
+    Backtest mode: clv-ast-disagree.
+
+    Tests the hypothesis that AST picks where the market moved against
+    us in the pretip window (clv_pp < CLV_LOST_THRESHOLD) hit at
+    materially lower rates than baseline AST picks.
+
+    Filter (matches auditor.py:1485-1488 + tools/clv_analysis.py exactly):
+      - clv_pp is not None
+      - result in ("HIT", "MISS")
+      - voided is not True
+
+    Computes:
+      1. Headline cells: AST baseline + 3 directional cells (beat/lost/no_move)
+      2. Tier decomposition: per-tier baseline + lost cell
+      3. Confidence band × lost_close: 70-75, 76-80, 81-85, 86+
+      4. Date-window stability: early/late halves + recent 14-day window
+      5. Per-player counts within the lost_close cell (concentration check)
+      6. Cross-prop reference: same beat/lost/no_move split for PTS/REB/3PM
+         (so the report shows AST is the only prop with this pattern)
+
+    Writes data/backtest_clv_ast_disagree.json.
+    Prints structured console report.
+    Returns None. Does not modify picks.
+
+    Output is descriptive only — does NOT propose a rule. Rule design
+    is a separate downstream prompt.
+    """
+    if not picks:
+        print("[backtest] WARNING: no picks provided to clv-ast-disagree.")
+        return
+
+    # Optional date filter from args (mirrors H29 pattern)
+    if getattr(args, "start", None):
+        picks = [p for p in picks if p.get("date", "") >= args.start]
+    if getattr(args, "end", None):
+        picks = [p for p in picks if p.get("date", "") <= args.end]
+
+    def is_clv_pick(p: dict) -> bool:
+        return (p.get("clv_pp") is not None
+                and p.get("result") in ("HIT", "MISS")
+                and p.get("voided") is not True)
+
+    clv = [p for p in picks if is_clv_pick(p)]
+    ast_clv = [p for p in clv if p.get("prop_type") == "AST"]
+
+    if not ast_clv:
+        print("[backtest] WARNING: no CLV-eligible AST picks. Cannot run clv-ast-disagree.")
+        return
+
+    def cell(subset: list) -> dict:
+        n = len(subset)
+        if n == 0:
+            return {"n": 0, "hits": 0, "hit_rate_pct": None}
+        hits = sum(1 for p in subset if p.get("result") == "HIT")
+        return {"n": n, "hits": hits, "hit_rate_pct": round(hits / n * 100, 1)}
+
+    # ── Block 3 — Headline cells ─────────────────────────────────────
+    baseline   = cell(ast_clv)
+    beat_close = cell([p for p in ast_clv if p["clv_pp"] > CLV_BEAT_THRESHOLD])
+    lost_close = cell([p for p in ast_clv if p["clv_pp"] < CLV_LOST_THRESHOLD])
+    no_move    = cell([p for p in ast_clv if abs(p["clv_pp"]) <= CLV_BEAT_THRESHOLD])
+
+    delta_lost_vs_baseline = (
+        round(lost_close["hit_rate_pct"] - baseline["hit_rate_pct"], 1)
+        if (baseline["hit_rate_pct"] is not None and lost_close["hit_rate_pct"] is not None)
+        else None
+    )
+    delta_beat_vs_baseline = (
+        round(beat_close["hit_rate_pct"] - baseline["hit_rate_pct"], 1)
+        if (baseline["hit_rate_pct"] is not None and beat_close["hit_rate_pct"] is not None)
+        else None
+    )
+
+    # ── Block 4 — Tier decomposition ─────────────────────────────────
+    by_tier: dict = {}
+    for t in CLV_AST_TIERS:
+        tier_all  = [p for p in ast_clv if p.get("pick_value") == t]
+        tier_lost = [p for p in tier_all if p["clv_pp"] < CLV_LOST_THRESHOLD]
+        tier_all_cell  = cell(tier_all)
+        tier_lost_cell = cell(tier_lost)
+        if tier_all_cell["hit_rate_pct"] is not None and tier_lost_cell["hit_rate_pct"] is not None:
+            tier_delta = round(tier_lost_cell["hit_rate_pct"] - tier_all_cell["hit_rate_pct"], 1)
+        else:
+            tier_delta = None
+        by_tier[t] = {
+            "baseline":   tier_all_cell,
+            "lost_close": tier_lost_cell,
+            "delta_pp":   tier_delta,
+        }
+
+    # ── Block 5 — Confidence band × AST × lost_close ─────────────────
+    by_band: dict = {}
+    ast_lost_picks = [p for p in ast_clv if p["clv_pp"] < CLV_LOST_THRESHOLD]
+    for lo, hi, label in CLV_AST_CONF_BANDS:
+        band_subset = [
+            p for p in ast_lost_picks
+            if p.get("confidence_pct") is not None
+            and lo <= float(p["confidence_pct"]) <= hi
+        ]
+        by_band[label] = cell(band_subset)
+
+    # ── Block 6 — Date-window stability ──────────────────────────────
+    ast_lost_sorted = sorted(ast_lost_picks, key=lambda p: p.get("date", ""))
+    half = len(ast_lost_sorted) // 2
+    early_half = ast_lost_sorted[:half]
+    late_half  = ast_lost_sorted[half:]
+
+    if ast_lost_sorted:
+        latest_date = ast_lost_sorted[-1].get("date", "")
+        try:
+            from datetime import datetime, timedelta
+            latest_dt = datetime.strptime(latest_date, "%Y-%m-%d")
+            cutoff_dt = latest_dt - timedelta(days=CLV_AST_RECENT_WINDOW)
+            cutoff_str = cutoff_dt.strftime("%Y-%m-%d")
+        except Exception:
+            cutoff_str = ""
+        recent_lost = [p for p in ast_lost_picks if p.get("date", "") >= cutoff_str]
+        recent_all  = [p for p in ast_clv      if p.get("date", "") >= cutoff_str]
+    else:
+        recent_lost = []
+        recent_all  = []
+        cutoff_str  = ""
+
+    date_stability = {
+        "early_half": {**cell(early_half),
+                       "date_range": (f"{early_half[0]['date']} → {early_half[-1]['date']}"
+                                      if early_half else "")},
+        "late_half":  {**cell(late_half),
+                       "date_range": (f"{late_half[0]['date']} → {late_half[-1]['date']}"
+                                      if late_half else "")},
+        "recent": {
+            "ast_baseline": cell(recent_all),
+            "ast_lost":     cell(recent_lost),
+            "since":        cutoff_str,
+            "window_days":  CLV_AST_RECENT_WINDOW,
+        },
+    }
+
+    # ── Block 7 — Per-player concentration check ─────────────────────
+    from collections import Counter
+    player_counts = Counter(p.get("player_name", "") for p in ast_lost_picks)
+    by_player = []
+    for player, cnt in sorted(player_counts.items(), key=lambda kv: (-kv[1], kv[0])):
+        sub = [p for p in ast_lost_picks if p.get("player_name") == player]
+        by_player.append({"player": player, **cell(sub)})
+
+    # ── Block 8 — Cross-prop reference (negative controls) ───────────
+    cross_prop = {}
+    for prop in ["PTS", "REB", "3PM"]:
+        prop_clv  = [p for p in clv if p.get("prop_type") == prop]
+        prop_baseline   = cell(prop_clv)
+        prop_beat_close = cell([p for p in prop_clv if p["clv_pp"] > CLV_BEAT_THRESHOLD])
+        prop_lost_close = cell([p for p in prop_clv if p["clv_pp"] < CLV_LOST_THRESHOLD])
+        prop_no_move    = cell([p for p in prop_clv if abs(p["clv_pp"]) <= CLV_BEAT_THRESHOLD])
+        if (prop_baseline["hit_rate_pct"] is not None and
+                prop_lost_close["hit_rate_pct"] is not None):
+            prop_delta = round(prop_lost_close["hit_rate_pct"] - prop_baseline["hit_rate_pct"], 1)
+        else:
+            prop_delta = None
+        cross_prop[prop] = {
+            "baseline":               prop_baseline,
+            "beat_close":             prop_beat_close,
+            "lost_close":             prop_lost_close,
+            "no_movement":            prop_no_move,
+            "delta_lost_vs_baseline": prop_delta,
+        }
+
+    # ── Block 9 — Verdict (informational tag, NOT prescription) ──────
+    verdict = "INSUFFICIENT_SAMPLE"
+    if lost_close["n"] >= 30 and delta_lost_vs_baseline is not None:
+        if delta_lost_vs_baseline <= -CLV_AST_DELTA_THRESHOLD_PP:
+            verdict = "MEANINGFUL_DEGRADATION"
+        elif delta_lost_vs_baseline >= -3.0:
+            verdict = "NO_EFFECT"
+        else:
+            verdict = "WEAK_DEGRADATION"
+
+    # ── Block 10 — Persist + console output ──────────────────────────
+    output = {
+        "generated_at": dt.date.today().isoformat(),
+        "mode":         "clv-ast-disagree",
+        "filter":       "clv_pp set, result in (HIT, MISS), not voided",
+        "thresholds": {
+            "lost_close":          CLV_LOST_THRESHOLD,
+            "beat_close":          CLV_BEAT_THRESHOLD,
+            "delta_meaningful_pp": CLV_AST_DELTA_THRESHOLD_PP,
+        },
+        "headline": {
+            "ast_baseline":              baseline,
+            "ast_beat_close":            beat_close,
+            "ast_lost_close":            lost_close,
+            "ast_no_movement":           no_move,
+            "delta_lost_vs_baseline_pp": delta_lost_vs_baseline,
+            "delta_beat_vs_baseline_pp": delta_beat_vs_baseline,
+        },
+        "by_tier":        by_tier,
+        "by_band":        by_band,
+        "date_stability": date_stability,
+        "by_player":      by_player,
+        "cross_prop":     cross_prop,
+        "verdict":        verdict,
+    }
+    with open(CLV_AST_DISAGREE_JSON, "w") as fh:
+        json.dump(output, fh, indent=2)
+    print(f"[backtest] Wrote {CLV_AST_DISAGREE_JSON}")
+
+    # ── Console report ────────────────────────────────────────────────
+    def _fmt_hr(c: dict) -> str:
+        return f"{c['hit_rate_pct']:.1f}%" if c.get("hit_rate_pct") is not None else "—"
+
+    def _fmt_delta(d) -> str:
+        return f"{d:+.1f}pp" if d is not None else "—"
+
+    print()
+    print("════════════════════════════════════════════════════════════════")
+    print("H34 — CLV × AST DISAGREEMENT")
+    print("════════════════════════════════════════════════════════════════")
+    print()
+    print("Headline cells:")
+    print(f"  AST baseline:     n={baseline['n']:<4} {_fmt_hr(baseline)}")
+    print(f"  AST × beat_close: n={beat_close['n']:<4} {_fmt_hr(beat_close)}   "
+          f"({_fmt_delta(delta_beat_vs_baseline)})")
+    print(f"  AST × no_move:    n={no_move['n']:<4} {_fmt_hr(no_move)}")
+    no_move_delta = (round(no_move['hit_rate_pct'] - baseline['hit_rate_pct'], 1)
+                     if no_move['hit_rate_pct'] is not None and baseline['hit_rate_pct'] is not None
+                     else None)
+    print(f"  AST × lost_close: n={lost_close['n']:<4} {_fmt_hr(lost_close)}   "
+          f"({_fmt_delta(delta_lost_vs_baseline)})")
+    print()
+
+    print("Tier × lost_close decomposition:")
+    print(f"  {'Tier':<6} {'baseline n':>10} {'baseline hit%':>14} "
+          f"{'lost n':>8} {'lost hit%':>11} {'delta':>10}")
+    for t in CLV_AST_TIERS:
+        b = by_tier[t]["baseline"]
+        l = by_tier[t]["lost_close"]
+        d = by_tier[t]["delta_pp"]
+        print(f"  T{t:<5} {b['n']:>10} {_fmt_hr(b):>14} "
+              f"{l['n']:>8} {_fmt_hr(l):>11} {_fmt_delta(d):>10}")
+    print()
+
+    print("Confidence band × AST × lost_close:")
+    for _, _, label in CLV_AST_CONF_BANDS:
+        c = by_band[label]
+        print(f"  {label:<8} n={c['n']:<4} {_fmt_hr(c)}")
+    print()
+
+    print("Date-window stability:")
+    eh = date_stability["early_half"]
+    lh = date_stability["late_half"]
+    rec = date_stability["recent"]
+    print(f"  Early half ({eh['date_range']}): n={eh['n']:<4} {_fmt_hr(eh)}")
+    print(f"  Late half  ({lh['date_range']}): n={lh['n']:<4} {_fmt_hr(lh)}")
+    print(f"  Recent (since {rec['since']}, {rec['window_days']}d): "
+          f"AST baseline n={rec['ast_baseline']['n']} {_fmt_hr(rec['ast_baseline'])}, "
+          f"AST × lost n={rec['ast_lost']['n']} {_fmt_hr(rec['ast_lost'])}")
+    print()
+
+    print("Cross-prop reference (lost_close pattern):")
+    print(f"  {'Prop':<6} {'baseline':>10} {'lost':>10} {'delta':>10}")
+    for prop in ["PTS", "REB", "3PM"]:
+        cp = cross_prop[prop]
+        print(f"  {prop:<6} "
+              f"{cp['baseline']['n']:>4} {_fmt_hr(cp['baseline']):>5} "
+              f"{cp['lost_close']['n']:>4} {_fmt_hr(cp['lost_close']):>5} "
+              f"{_fmt_delta(cp['delta_lost_vs_baseline']):>10}")
+    print()
+
+    print("Top 5 players by count in AST × lost_close:")
+    for entry in by_player[:5]:
+        print(f"  {entry['player']:<28} n={entry['n']:<3} {_fmt_hr(entry)}")
+    print()
+
+    print(f"VERDICT: {verdict}")
+    if verdict == "MEANINGFUL_DEGRADATION":
+        print(f"  delta_lost_vs_baseline = {_fmt_delta(delta_lost_vs_baseline)} "
+              f"(threshold ≤ -{CLV_AST_DELTA_THRESHOLD_PP}pp)")
+        print(f"  n_lost = {lost_close['n']} (threshold ≥ 30)")
+        print("  Note: this is a descriptive tag. Rule design is a separate decision.")
+    print("════════════════════════════════════════════════════════════════")
+
+
 # ── H29 — Player-Level Confidence Calibration ───────────────────────
 
 def run_confidence_calibration_analysis(picks: list, args) -> None:
@@ -10255,7 +10552,7 @@ def main():
     parser.add_argument("--output", type=str, default=None,
                         help="Override output JSON path (default: data/backtest_results.json)")
     parser.add_argument("--mode", type=str, default=None,
-                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence' | 'primary-blowout' | 'playoff-career' | 'confidence-calibration' | 'minutes-elasticity' | 'consistency-index' | 'series-progression' | 'teammate-cannibalization' | 'market-disagreement' | 'trim-escalation'")
+                        help="Analysis mode: 'bounce-back' | 'mean-reversion' | 'recency-weight' | 'player-bounce-back' | 'post-blowout' | 'opp-fatigue' | 'shooting-regression' | 'shot-volume' | 'ft-safety-margin' | 'positional-dvp' | 'opp-team-hit-rate' | '3pa-volume-gate' | 'spread-context' | 'blowout-regime' | 'losing-side-ast' | 'miss-anatomy' | 'elite-opp-rebounder' | 'star-absence' | 'primary-blowout' | 'playoff-career' | 'confidence-calibration' | 'minutes-elasticity' | 'consistency-index' | 'series-progression' | 'teammate-cannibalization' | 'market-disagreement' | 'trim-escalation' | 'clv-ast-disagree'")
     parser.add_argument("--stat", type=str, default=None,
                         help="Restrict to a single stat: PTS | REB | AST | 3PM")
     args = parser.parse_args()
@@ -10277,6 +10574,16 @@ def main():
             print("[backtest] No graded picks found — cannot run H29.")
             sys.exit(0)
         run_confidence_calibration_analysis(picks, args)
+        sys.exit(0)
+
+    # ── CLV × AST disagreement (H34, descriptive) ────────────────────
+    # Picks-only mode like H29 — exits before standard loaders.
+    if getattr(args, "mode", None) == "clv-ast-disagree":
+        picks = load_picks_json()
+        if not picks:
+            print("[backtest] No graded picks found — cannot run clv-ast-disagree.")
+            sys.exit(0)
+        run_clv_ast_disagree_analysis(picks, args)
         sys.exit(0)
 
     # ── Playoff series progression (H31) ─────────────────────────────

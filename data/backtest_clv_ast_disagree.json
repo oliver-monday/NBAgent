@@ -1,0 +1,338 @@
+{
+  "generated_at": "2026-04-30",
+  "mode": "clv-ast-disagree",
+  "filter": "clv_pp set, result in (HIT, MISS), not voided",
+  "thresholds": {
+    "lost_close": -0.5,
+    "beat_close": 0.5,
+    "delta_meaningful_pp": 10.0
+  },
+  "headline": {
+    "ast_baseline": {
+      "n": 113,
+      "hits": 87,
+      "hit_rate_pct": 77.0
+    },
+    "ast_beat_close": {
+      "n": 32,
+      "hits": 27,
+      "hit_rate_pct": 84.4
+    },
+    "ast_lost_close": {
+      "n": 32,
+      "hits": 20,
+      "hit_rate_pct": 62.5
+    },
+    "ast_no_movement": {
+      "n": 49,
+      "hits": 40,
+      "hit_rate_pct": 81.6
+    },
+    "delta_lost_vs_baseline_pp": -14.5,
+    "delta_beat_vs_baseline_pp": 7.4
+  },
+  "by_tier": {
+    "2": {
+      "baseline": {
+        "n": 52,
+        "hits": 36,
+        "hit_rate_pct": 69.2
+      },
+      "lost_close": {
+        "n": 13,
+        "hits": 7,
+        "hit_rate_pct": 53.8
+      },
+      "delta_pp": -15.4
+    },
+    "4": {
+      "baseline": {
+        "n": 51,
+        "hits": 45,
+        "hit_rate_pct": 88.2
+      },
+      "lost_close": {
+        "n": 14,
+        "hits": 10,
+        "hit_rate_pct": 71.4
+      },
+      "delta_pp": -16.8
+    },
+    "6": {
+      "baseline": {
+        "n": 8,
+        "hits": 6,
+        "hit_rate_pct": 75.0
+      },
+      "lost_close": {
+        "n": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0
+      },
+      "delta_pp": 0.0
+    },
+    "8": {
+      "baseline": {
+        "n": 2,
+        "hits": 0,
+        "hit_rate_pct": 0.0
+      },
+      "lost_close": {
+        "n": 1,
+        "hits": 0,
+        "hit_rate_pct": 0.0
+      },
+      "delta_pp": 0.0
+    }
+  },
+  "by_band": {
+    "70-75": {
+      "n": 20,
+      "hits": 14,
+      "hit_rate_pct": 70.0
+    },
+    "76-80": {
+      "n": 12,
+      "hits": 6,
+      "hit_rate_pct": 50.0
+    },
+    "81-85": {
+      "n": 0,
+      "hits": 0,
+      "hit_rate_pct": null
+    },
+    "86+": {
+      "n": 0,
+      "hits": 0,
+      "hit_rate_pct": null
+    }
+  },
+  "date_stability": {
+    "early_half": {
+      "n": 16,
+      "hits": 10,
+      "hit_rate_pct": 62.5,
+      "date_range": "2026-04-12 \u2192 2026-04-22"
+    },
+    "late_half": {
+      "n": 16,
+      "hits": 10,
+      "hit_rate_pct": 62.5,
+      "date_range": "2026-04-22 \u2192 2026-04-29"
+    },
+    "recent": {
+      "ast_baseline": {
+        "n": 89,
+        "hits": 67,
+        "hit_rate_pct": 75.3
+      },
+      "ast_lost": {
+        "n": 28,
+        "hits": 17,
+        "hit_rate_pct": 60.7
+      },
+      "since": "2026-04-15",
+      "window_days": 14
+    }
+  },
+  "by_player": [
+    {
+      "player": "Devin Booker",
+      "n": 4,
+      "hits": 3,
+      "hit_rate_pct": 75.0
+    },
+    {
+      "player": "Jalen Johnson",
+      "n": 3,
+      "hits": 1,
+      "hit_rate_pct": 33.3
+    },
+    {
+      "player": "De'Aaron Fox",
+      "n": 2,
+      "hits": 2,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Desmond Bane",
+      "n": 2,
+      "hits": 2,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Evan Mobley",
+      "n": 2,
+      "hits": 1,
+      "hit_rate_pct": 50.0
+    },
+    {
+      "player": "Nikola Jokic",
+      "n": 2,
+      "hits": 1,
+      "hit_rate_pct": 50.0
+    },
+    {
+      "player": "Tyrese Maxey",
+      "n": 2,
+      "hits": 2,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "VJ Edgecombe",
+      "n": 2,
+      "hits": 1,
+      "hit_rate_pct": 50.0
+    },
+    {
+      "player": "Amen Thompson",
+      "n": 1,
+      "hits": 1,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Anthony Edwards",
+      "n": 1,
+      "hits": 0,
+      "hit_rate_pct": 0.0
+    },
+    {
+      "player": "Ausar Thompson",
+      "n": 1,
+      "hits": 0,
+      "hit_rate_pct": 0.0
+    },
+    {
+      "player": "Derrick White",
+      "n": 1,
+      "hits": 1,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Dylan Harper",
+      "n": 1,
+      "hits": 0,
+      "hit_rate_pct": 0.0
+    },
+    {
+      "player": "Isaiah Hartenstein",
+      "n": 1,
+      "hits": 1,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Jaden McDaniels",
+      "n": 1,
+      "hits": 0,
+      "hit_rate_pct": 0.0
+    },
+    {
+      "player": "Jalen Brunson",
+      "n": 1,
+      "hits": 0,
+      "hit_rate_pct": 0.0
+    },
+    {
+      "player": "Jayson Tatum",
+      "n": 1,
+      "hits": 1,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Kon Knueppel",
+      "n": 1,
+      "hits": 0,
+      "hit_rate_pct": 0.0
+    },
+    {
+      "player": "Payton Pritchard",
+      "n": 1,
+      "hits": 1,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Scottie Barnes",
+      "n": 1,
+      "hits": 1,
+      "hit_rate_pct": 100.0
+    },
+    {
+      "player": "Shai Gilgeous-Alexander",
+      "n": 1,
+      "hits": 1,
+      "hit_rate_pct": 100.0
+    }
+  ],
+  "cross_prop": {
+    "PTS": {
+      "baseline": {
+        "n": 176,
+        "hits": 161,
+        "hit_rate_pct": 91.5
+      },
+      "beat_close": {
+        "n": 48,
+        "hits": 41,
+        "hit_rate_pct": 85.4
+      },
+      "lost_close": {
+        "n": 41,
+        "hits": 38,
+        "hit_rate_pct": 92.7
+      },
+      "no_movement": {
+        "n": 87,
+        "hits": 82,
+        "hit_rate_pct": 94.3
+      },
+      "delta_lost_vs_baseline": 1.2
+    },
+    "REB": {
+      "baseline": {
+        "n": 62,
+        "hits": 55,
+        "hit_rate_pct": 88.7
+      },
+      "beat_close": {
+        "n": 12,
+        "hits": 11,
+        "hit_rate_pct": 91.7
+      },
+      "lost_close": {
+        "n": 15,
+        "hits": 13,
+        "hit_rate_pct": 86.7
+      },
+      "no_movement": {
+        "n": 35,
+        "hits": 31,
+        "hit_rate_pct": 88.6
+      },
+      "delta_lost_vs_baseline": -2.0
+    },
+    "3PM": {
+      "baseline": {
+        "n": 56,
+        "hits": 46,
+        "hit_rate_pct": 82.1
+      },
+      "beat_close": {
+        "n": 17,
+        "hits": 12,
+        "hit_rate_pct": 70.6
+      },
+      "lost_close": {
+        "n": 13,
+        "hits": 11,
+        "hit_rate_pct": 84.6
+      },
+      "no_movement": {
+        "n": 26,
+        "hits": 23,
+        "hit_rate_pct": 88.5
+      },
+      "delta_lost_vs_baseline": 2.5
+    }
+  },
+  "verdict": "MEANINGFUL_DEGRADATION"
+}

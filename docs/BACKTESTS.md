@@ -38,6 +38,27 @@ All findings applied. Full methodology preserved in git history. Key results:
 
 ## Open Hypotheses (Pending Backtest)
 
+### H34 — CLV × AST Disagreement
+
+**Status: COMPLETE — verdict MEANINGFUL_DEGRADATION (April 30, 2026)**
+**Mode:** `--mode clv-ast-disagree`
+**Output:** `data/backtest_clv_ast_disagree.json`
+**Data:** `data/picks.json` (1184 graded picks; 407 with CLV; 113 AST CLV-eligible)
+
+**Question:** Do AST picks where the market moved against us in the pretip window (`clv_pp < -0.5`) hit at materially lower rates than baseline AST picks?
+
+**Headline result:** AST × lost_close (clv < -0.5): **62.5% on n=32** vs AST baseline 77.0% on n=113 → **-14.5pp delta**. Control cells sit ABOVE baseline supporting the directional read: AST × beat_close 84.4% (+7.4pp), AST × no_movement 81.6%. Stable across two date halves (62.5% / 62.5% on n=16 each) and recent 14d (60.7%, n=28; AST baseline in same window 75.3%, n=89). Pattern holds at T2 (-15.4pp on n=13) and T4 (-16.8pp on n=14).
+
+**Cross-prop reference (negative controls):** PTS × lost_close 92.7% (vs 91.5% baseline, +1.2pp INVERTED), REB × lost_close 86.7% (vs 88.7%, -2.0pp negligible), 3PM × lost_close 84.6% (vs 82.1%, +2.5pp INVERTED). The lost_close penalty does not generalize — signal is AST-specific.
+
+**Concentration check:** lost-cell sample reasonably distributed across players (Booker n=4 75%, Jalen Johnson n=3 33.3%, then long tail of singletons). Not driven by one outlier.
+
+**Verdict:** MEANINGFUL_DEGRADATION (delta ≤ -10pp AND n ≥ 30). Sample size n=32 is borderline by classical thresholds; effect size is large but warrants n=60+ validation before shipping a directive rule. Re-run cadence: weekly during playoffs to track sample expansion.
+
+**Rule design deferred** to a follow-up prompt — see `ROADMAP_active.md` for architectural decision points (CLV requires pretip data, so any rule must fire AFTER `odds_pretip.yml` runs, not at morning analyst time).
+
+---
+
 ### H33 — Teammate Scoring Cannibalization
 
 **Status: FIRST RUN COMPLETE — April 11, 2026 — pending Oliver review**
