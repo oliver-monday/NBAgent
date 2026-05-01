@@ -1481,6 +1481,14 @@ def generate_html(d: dict) -> str:
     .edge-line.positive {{ color: #2dd4bf; }}
     .edge-line.neutral {{ color: var(--muted); }}
     .edge-line.fade    {{ color: #ef4444; }}
+    /* Book quote lines (P2: FanDuel + Kalshi side-by-side on pick cards).
+       Same vertical rhythm as .conf-line / .edge-line. Monospace so both
+       books align column-wise across the rail. Label gets full text color;
+       quote stays muted so the conf number above + edge label below remain
+       the visual anchors. */
+    .book-line {{ font-size: 10px; color: var(--muted); margin-top: 4px;
+                  white-space: nowrap; font-family: monospace; }}
+    .book-line .book-label {{ font-weight: 600; color: var(--text); }}
     .movement-line {{ font-size: 10px; margin-top: 6px; line-height: 1.5; }}
     .movement-line.agrees {{ color: #2dd4bf; }}
     .movement-line.disagrees {{ color: #FF9800; }}
@@ -2187,6 +2195,54 @@ function buildClvWarnBadge(p) {{
   return ` <span class="clv-warn-badge" title="${{tooltip.replace(/"/g, '&quot;')}}">⚠ CLV WARN ${{liveStr}}</span>`;
 }}
 
+// ── Book-line helpers (P2: FanDuel + Kalshi side-by-side display) ──
+// Reads market_implied_prob (FanDuel) and kalshi_market_implied_prob (Kalshi)
+// from each pick. Renders American odds + implied prob as two stacked lines
+// in the right rail. Visual divergence between books is read at a glance —
+// no computed delta is shown. Both helpers gracefully handle missing data
+// (Kalshi market not listed, legacy picks predating P1 ingest, etc.) by
+// rendering "—" as the no-data placeholder.
+function impliedToAmerican(impliedPct) {{
+  // impliedPct is in percent (0-100). Returns a formatted string like
+  // "-150" or "+135", or null if the input is out of range.
+  if (impliedPct == null || impliedPct <= 0 || impliedPct >= 100) return null;
+  let raw;
+  if (impliedPct >= 50) {{
+    raw = -100 * impliedPct / (100 - impliedPct);
+  }} else {{
+    raw = 100 * (100 - impliedPct) / impliedPct;
+  }}
+  const n = Math.round(raw);
+  return n > 0 ? `+${{n}}` : `${{n}}`;
+}}
+
+function buildFanDuelLine(p) {{
+  // FanDuel book quote line. Always rendered (defensive "—" fallback if
+  // market_implied_prob is missing, which should be rare given the
+  // Phase 1.5 market gate).
+  const implied = p.market_implied_prob;
+  if (implied == null) {{
+    return `<div class="book-line"><span class="book-label">FanDuel:</span> —</div>`;
+  }}
+  const am = impliedToAmerican(implied);
+  const amStr = am != null ? am : '—';
+  return `<div class="book-line"><span class="book-label">FanDuel:</span> ${{amStr}} (${{implied.toFixed(1)}}%)</div>`;
+}}
+
+function buildKalshiLine(p) {{
+  // Kalshi book quote line. Three states render the same dash placeholder:
+  //   - kalshi_market_listed === false (P1 ingest ran, market not on Kalshi)
+  //   - kalshi_market_listed === undefined (legacy picks from before P1)
+  //   - field present but kalshi_market_implied_prob null (partial fetch)
+  if (!p.kalshi_market_listed || p.kalshi_market_implied_prob == null) {{
+    return `<div class="book-line"><span class="book-label">Kalshi:</span> —</div>`;
+  }}
+  const implied = p.kalshi_market_implied_prob;
+  const am = impliedToAmerican(implied);
+  const amStr = am != null ? am : '—';
+  return `<div class="book-line"><span class="book-label">Kalshi:</span> ${{amStr}} (${{implied.toFixed(1)}}%)</div>`;
+}}
+
 function buildEdgeLine(p) {{
   const br = p.bet_recommendation;
   if (!br || !br.recommendation_tier || br.recommendation_tier === 'NO_MARKET') return '';
@@ -2441,6 +2497,8 @@ function renderPicks() {{
             </div>
             ${{buildHitRate(p)}}
             <div class="conf-line">${{displayConf(p)}}% conf</div>
+            ${{buildFanDuelLine(p)}}
+            ${{buildKalshiLine(p)}}
             ${{buildEdgeLine(p)}}
           </div>
         </div>`;
@@ -2943,6 +3001,8 @@ function renderTopPicks() {{
             ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
           </div>
           <div class="tp-conf">${{displayConf(p)}}% conf</div>
+          ${{buildFanDuelLine(p)}}
+          ${{buildKalshiLine(p)}}
           ${{buildEdgeLine(p)}}
         </div>
       </div>`;
@@ -2997,6 +3057,8 @@ function renderBestBets() {{
             ${{p.pick_value}}<span class="stat-type ${{propColor(pt)}}">${{pt}}</span>
           </div>
           <div class="tp-conf">${{displayConf(p)}}% conf</div>
+          ${{buildFanDuelLine(p)}}
+          ${{buildKalshiLine(p)}}
           ${{buildEdgeLine(p)}}
         </div>
       </div>`;
