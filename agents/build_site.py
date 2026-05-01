@@ -1485,6 +1485,22 @@ def generate_html(d: dict) -> str:
     .movement-line.agrees {{ color: #2dd4bf; }}
     .movement-line.disagrees {{ color: #FF9800; }}
     .movement-line.significant {{ font-weight: 600; }}
+    .clv-warn-badge {{
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 6px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #FF9800;
+      border: 1px solid #FF9800;
+      border-radius: 3px;
+      vertical-align: middle;
+      cursor: help;
+    }}
+    .clv-warn-badge:hover {{
+      background: rgba(255, 152, 0, 0.1);
+    }}
     .movement-line .edge-shift {{ font-size: 9px; opacity: 0.8; }}
     .movement-line .edge-shift s {{ text-decoration-color: inherit; opacity: 0.6; }}
     .movement-drawer {{ font-size: 10px; color: var(--muted); margin-top: 2px;
@@ -2151,6 +2167,26 @@ function tierLabelFromEdge(edgePct) {{
   return                 {{ label: 'RARE SETUP',          cls: 'rare-setup' }};
 }}
 
+function buildClvWarnBadge(p) {{
+  // Renders a small "⚠ CLV WARN" chip when lineup_update.py has flagged
+  // a pick with the H34 AST × lost_close signal. Observability only —
+  // does NOT modify pick visibility, sorting, or grouping.
+  const w = p.clv_warning;
+  if (!w) return '';
+  // Defensive — only render the badge for AST picks (Prompt A guarantees
+  // this, but defend against schema drift).
+  if (p.prop_type !== 'AST') return '';
+  const liveStr   = (w.live_clv_pp != null) ? `${{w.live_clv_pp.toFixed(2)}}pp` : '—';
+  const morningStr = (w.morning_implied_prob != null) ? `${{w.morning_implied_prob.toFixed(1)}}%` : '—';
+  const marketStr  = (w.market_implied_prob != null) ? `${{w.market_implied_prob.toFixed(1)}}%` : '—';
+  const tooltip = `H34 CLV warning — observability only.\\n` +
+    `Live CLV: ${{liveStr}} (lost-close threshold: −0.50pp)\\n` +
+    `Morning implied: ${{morningStr}} → Market implied: ${{marketStr}}\\n` +
+    `Proposed penalty (NOT applied): −${{w.proposed_penalty_pp}}pp\\n` +
+    `Backtest: ${{w.source_backtest || 'H34'}}`;
+  return ` <span class="clv-warn-badge" title="${{tooltip.replace(/"/g, '&quot;')}}">⚠ CLV WARN ${{liveStr}}</span>`;
+}}
+
 function buildEdgeLine(p) {{
   const br = p.bet_recommendation;
   if (!br || !br.recommendation_tier || br.recommendation_tier === 'NO_MARKET') return '';
@@ -2378,7 +2414,7 @@ function renderPicks() {{
       html += `
         <div class="pick-card${{voidedCls}}" data-hc="${{hcAttr}}" data-canonical="true">
           <div class="pick-main">
-            <div class="player">${{p.player_name}}${{hcBadge}}</div>
+            <div class="player">${{p.player_name}}${{hcBadge}}${{buildClvWarnBadge(p)}}</div>
             ${{statusBadge}}
             ${{reviewHtml}}
             ${{buildMicroStats(p)}}
@@ -2894,7 +2930,7 @@ function renderTopPicks() {{
     html += `
       <div class="top-pick-card pick-card" data-hc="${{hcAttr}}" style="border-left-color:${{color}}">
         <div class="tp-left">
-          <div class="tp-player">${{p.player_name}}${{hcBadge}}</div>
+          <div class="tp-player">${{p.player_name}}${{hcBadge}}${{buildClvWarnBadge(p)}}</div>
           <div class="tp-meta">${{p.team}}${{gameTime}}</div>
           ${{ironBadge}}
           ${{reasoning}}
@@ -2950,7 +2986,7 @@ function renderBestBets() {{
     html += `
       <div class="best-bet-card pick-card" data-hc="${{hcAttr}}" style="border-left-color:${{borderColor}}">
         <div class="tp-left">
-          <div class="tp-player">${{p.player_name}}${{hcBadge}}</div>
+          <div class="tp-player">${{p.player_name}}${{hcBadge}}${{buildClvWarnBadge(p)}}</div>
           <div class="tp-meta">${{p.team}}${{gameTime}}</div>
           ${{reasoning}}
           ${{buildOddsSizing(p)}}
