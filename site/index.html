@@ -118,6 +118,10 @@
     .toggle-switch input:checked + .slider::before { transform: translateX(18px); }
     .hc-toggle-label { color: var(--text); font-size: 14px; }
     .hc-toggle-counter { color: var(--muted); font-size: 13px; margin-left: auto; }
+    /* When two toggle wraps are stacked (HC + Kalshi as of P4), give the
+       second one an 8px gap. Adjacent-sibling selector means the rule has
+       zero effect on a single isolated wrap. */
+    .high-conv-toggle-wrap + .high-conv-toggle-wrap { margin-top: 8px; }
 
     /* New tier vocabulary (renamed 2026-04-25 from FADE/NEUTRAL/POSITIVE/STRONG)
        Bands derived from calibrated_edge_pct at render time:
@@ -577,7 +581,7 @@
 
 <header>
   <div class="logo"><span class="logo-nb">NB</span><span class="logo-a">A</span><span class="logo-gent">gent</span></div>
-  <div class="built-at">Updated May 01, 2026 at 1:18 AM PT</div>
+  <div class="built-at">Updated May 01, 2026 at 1:38 AM PT</div>
 </header>
 
 <div class="tabs">
@@ -598,6 +602,14 @@
     </label>
     <span class="hc-toggle-label">High-conviction only (market ≥ 85%)</span>
     <span class="hc-toggle-counter" id="hc-counter"></span>
+  </div>
+  <div class="high-conv-toggle-wrap">
+    <label class="toggle-switch">
+      <input type="checkbox" id="kalshi-toggle" />
+      <span class="slider"></span>
+    </label>
+    <span class="hc-toggle-label">Kalshi-listed only</span>
+    <span class="hc-toggle-counter" id="kalshi-counter"></span>
   </div>
   <div id="injury-container"></div>
   <div id="top-picks-container"></div>
@@ -1170,8 +1182,9 @@ function renderPicks() {
       const isHC = (p.market_implied_prob != null) && (p.market_implied_prob >= 85.0);
       const hcAttr = isHC ? 'true' : 'false';
       const hcBadge = isHC ? `<span class="high-conv-badge">HIGH CONV</span>` : '';
+      const kalshiAttr = (p.kalshi_market_listed === true) ? 'true' : 'false';
       html += `
-        <div class="pick-card${voidedCls}" data-hc="${hcAttr}" data-canonical="true">
+        <div class="pick-card${voidedCls}" data-hc="${hcAttr}" data-kalshi="${kalshiAttr}" data-canonical="true">
           <div class="pick-main">
             <div class="player">${p.player_name}${hcBadge}${buildClvWarnBadge(p)}</div>
             ${statusBadge}
@@ -1688,8 +1701,9 @@ function renderTopPicks() {
     const isHC = (p.market_implied_prob != null) && (p.market_implied_prob >= 85.0);
     const hcAttr = isHC ? 'true' : 'false';
     const hcBadge = isHC ? `<span class="high-conv-badge">HIGH CONV</span>` : '';
+    const kalshiAttr = (p.kalshi_market_listed === true) ? 'true' : 'false';
     html += `
-      <div class="top-pick-card pick-card" data-hc="${hcAttr}" style="border-left-color:${color}">
+      <div class="top-pick-card pick-card" data-hc="${hcAttr}" data-kalshi="${kalshiAttr}" style="border-left-color:${color}">
         <div class="tp-left">
           <div class="tp-player">${p.player_name}${hcBadge}${buildClvWarnBadge(p)}</div>
           <div class="tp-meta">${p.team}${gameTime}</div>
@@ -1745,9 +1759,10 @@ function renderBestBets() {
     const isHC = (p.market_implied_prob != null) && (p.market_implied_prob >= 85.0);
     const hcAttr = isHC ? 'true' : 'false';
     const hcBadge = isHC ? `<span class="high-conv-badge">HIGH CONV</span>` : '';
+    const kalshiAttr = (p.kalshi_market_listed === true) ? 'true' : 'false';
 
     html += `
-      <div class="best-bet-card pick-card" data-hc="${hcAttr}" style="border-left-color:${borderColor}">
+      <div class="best-bet-card pick-card" data-hc="${hcAttr}" data-kalshi="${kalshiAttr}" style="border-left-color:${borderColor}">
         <div class="tp-left">
           <div class="tp-player">${p.player_name}${hcBadge}${buildClvWarnBadge(p)}</div>
           <div class="tp-meta">${p.team}${gameTime}</div>
@@ -1778,76 +1793,94 @@ renderPicks();
 renderResults();
 renderAudit();
 
-// ── HIGH-CONVICTION TOGGLE ──
-// In-memory only — toggle resets to OFF on page reload (no localStorage).
-// Filters all pick cards across Today's Picks tab (regular cards inside
-// game-group drawers + Top Picks cards + Best Bets cards) to those carrying
-// data-hc="true" (market_implied_prob >= 85.0). When ON, hides game-group
-// containers with zero passing cards. Counter shows "Showing X of Y picks"
-// only while the filter is active.
+// ── UNIFIED FILTER TOGGLES (HC + Kalshi as of P4) ──
+// In-memory only — toggles reset to OFF on page reload (no localStorage).
+// Two independent toggles (HC: market_implied_prob ≥ 85.0; Kalshi: pick has
+// kalshi_market_listed === true) compose with logical AND: a card is shown
+// iff it passes EVERY active filter. When neither toggle is on, all cards
+// show. Game-group / Top Picks / Best Bets containers hide when their
+// filtered pick set is empty AND any filter is active. Both counters show
+// the same "Showing X of Y picks" message whenever any filter is active.
+// Counter denominator uses [data-canonical="true"] cards only so Top Picks
+// and Best Bets duplicates don't inflate the count.
 (function() {
-  const toggle = document.getElementById('hc-toggle');
-  const counter = document.getElementById('hc-counter');
-  if (!toggle) return;
+  const hcToggle      = document.getElementById('hc-toggle');
+  const hcCounter     = document.getElementById('hc-counter');
+  const kalshiToggle  = document.getElementById('kalshi-toggle');
+  const kalshiCounter = document.getElementById('kalshi-counter');
+  if (!hcToggle && !kalshiToggle) return;
 
-  function applyHCFilter() {
-    const on = toggle.checked;
+  function applyAllFilters() {
+    const hcOn     = hcToggle     ? hcToggle.checked     : false;
+    const kalshiOn = kalshiToggle ? kalshiToggle.checked : false;
+    const anyOn    = hcOn || kalshiOn;
+
     // Visibility loop — walks ALL pick-cards (including Top Picks / Best Bets
-    // duplicates) so duplicate cards hide correctly when toggle is ON.
+    // duplicates) so duplicate cards hide correctly when any toggle is ON.
     const cards = document.querySelectorAll('.pick-card');
     cards.forEach(card => {
-      // Skip opportunity cards — they don't carry data-hc
+      // Skip opportunity cards — they don't carry data-hc / data-kalshi
       if (!card.hasAttribute('data-hc')) return;
-      const isHC = card.dataset.hc === 'true';
-      if (!on || isHC) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
+      const passHC     = !hcOn     || card.dataset.hc     === 'true';
+      const passKalshi = !kalshiOn || card.dataset.kalshi === 'true';
+      const show = passHC && passKalshi;
+      card.style.display = show ? '' : 'none';
     });
+
     // Counter loop — counts ONLY canonical (game-group) cards so the same
     // pick isn't counted multiple times across Top Picks / Best Bets / drawers.
     let shown = 0, total = 0;
     document.querySelectorAll('.pick-card[data-canonical="true"]').forEach(card => {
       if (!card.hasAttribute('data-hc')) return;
       total++;
-      const isHC = card.dataset.hc === 'true';
-      if (!on || isHC) shown++;
+      const passHC     = !hcOn     || card.dataset.hc     === 'true';
+      const passKalshi = !kalshiOn || card.dataset.kalshi === 'true';
+      if (passHC && passKalshi) shown++;
     });
+
     // Hide game-group containers with zero visible pick cards
     document.querySelectorAll('.game-group').forEach(g => {
       const visible = Array.from(g.querySelectorAll('.pick-card[data-hc]'))
         .filter(c => c.style.display !== 'none');
       g.style.display = visible.length === 0 ? 'none' : '';
     });
-    // Hide Top Picks header + grid if no top picks pass
-    const topGrid = document.querySelector('#top-picks-container .top-picks-grid');
-    const topHeader = document.querySelector('#top-picks-container .top-picks-header');
+
+    // Hide Top Picks header + grid + divider if no top picks pass any active filter
+    const topGrid    = document.querySelector('#top-picks-container .top-picks-grid');
+    const topHeader  = document.querySelector('#top-picks-container .top-picks-header');
     const topDivider = document.querySelector('#top-picks-container .top-picks-divider');
     if (topGrid) {
       const visTops = Array.from(topGrid.querySelectorAll('.pick-card[data-hc]'))
         .filter(c => c.style.display !== 'none');
-      const hide = on && visTops.length === 0;
+      const hide = anyOn && visTops.length === 0;
       [topGrid, topHeader, topDivider].forEach(el => {
         if (el) el.style.display = hide ? 'none' : '';
       });
     }
+
     // Same for Best Bets
-    const bbGrid = document.querySelector('#best-bets-container .best-bets-grid');
-    const bbHeader = document.querySelector('#best-bets-container .best-bets-header');
+    const bbGrid    = document.querySelector('#best-bets-container .best-bets-grid');
+    const bbHeader  = document.querySelector('#best-bets-container .best-bets-header');
     const bbDivider = document.querySelector('#best-bets-container .best-bets-divider');
     if (bbGrid) {
       const visBets = Array.from(bbGrid.querySelectorAll('.pick-card[data-hc]'))
         .filter(c => c.style.display !== 'none');
-      const hide = on && visBets.length === 0;
+      const hide = anyOn && visBets.length === 0;
       [bbGrid, bbHeader, bbDivider].forEach(el => {
         if (el) el.style.display = hide ? 'none' : '';
       });
     }
-    counter.textContent = on ? `Showing ${shown} of ${total} picks` : '';
+
+    // Counter: same "Showing X of Y picks" message on each counter when
+    // any filter is active. Both blank when nothing is active.
+    const message = anyOn ? `Showing ${shown} of ${total} picks` : '';
+    if (hcCounter)     hcCounter.textContent     = message;
+    if (kalshiCounter) kalshiCounter.textContent = message;
   }
-  toggle.addEventListener('change', applyHCFilter);
-  applyHCFilter();
+
+  if (hcToggle)     hcToggle.addEventListener('change', applyAllFilters);
+  if (kalshiToggle) kalshiToggle.addEventListener('change', applyAllFilters);
+  applyAllFilters();
 })();
 
 // ── PARLAY GUIDANCE (static) ──
