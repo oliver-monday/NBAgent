@@ -15,10 +15,10 @@
       "prop_floor": 75,
       "reason": "75% base minus VOLATILE -3% = 72%, below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-04-30",
@@ -36,10 +36,10 @@
       "gate": "offensive_first_player_within_2_of_floor",
       "reason": "KAT raw_avgs PTS >20 (offensive-first); lowest series REB (~9) is within 2 of pick_value=8; skip per offensive-first REB gate"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 8"
   },
   {
     "date": "2026-04-30",
@@ -56,10 +56,10 @@
       "tier_considered": 15,
       "reason": "Nickeil Alexander-Walker does not appear in FANDUEL MARKET AVAILABILITY section; no market available for any tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 11.0 < tier 15"
   },
   {
     "date": "2026-04-30",
@@ -80,8 +80,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-04-30",
@@ -98,9 +98,9 @@
       "iron_floor_on_ast": false,
       "reason": "VOLATILE tag + AST T6 = hard skip; no iron_floor exception available; evaluated at T4 instead"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 6"
   }
 ]
