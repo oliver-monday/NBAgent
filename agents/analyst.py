@@ -5824,7 +5824,7 @@ def filter_self_skip_picks(picks: list[dict]) -> list[dict]:
 
 
 
-def enforce_market_gate(picks: list[dict]) -> list[dict]:
+def enforce_market_gate(picks: list[dict]) -> tuple[list[dict], list[dict]]:
     """
     Post-processor: remove picks that have no FanDuel market in odds_available.json.
 
@@ -5835,25 +5835,30 @@ def enforce_market_gate(picks: list[dict]) -> list[dict]:
     When odds_available.json is missing or stale, the gate is disabled and all picks
     pass through (never block picks due to missing odds data).
 
-    Returns the filtered pick list.
+    Returns (kept, rejected_records) where:
+      - kept: filtered list of picks that pass the gate
+      - rejected_records: skip-shaped dicts (skip_reason="market_gate_reject")
+        ready for merging into save_skips(). Empty list when the gate is
+        disabled or nothing was rejected.
     """
     import re
 
     markets_data = load_available_markets()
     if markets_data is None:
         print("[analyst] Market gate: odds_available.json unavailable — gate disabled")
-        return picks
+        return picks, []
 
     players_markets = markets_data.get("players", {})
     if not players_markets:
         print("[analyst] Market gate: no player markets in odds_available.json — gate disabled")
-        return picks
+        return picks, []
 
     def _norm(name: str) -> str:
         return re.sub(r"[^a-z0-9 ]", "", name.lower()).strip()
 
-    kept = []
-    rejected = 0
+    kept: list[dict] = []
+    rejected_records: list[dict] = []
+
     for pick in picks:
         player_name = pick.get("player_name", "")
         prop_type = pick.get("prop_type", "")
@@ -5872,29 +5877,59 @@ def enforce_market_gate(picks: list[dict]) -> list[dict]:
                 f"[analyst] MARKET_GATE_REJECT: {player_name} {prop_type} T{pick_value} — "
                 f"player not in FanDuel market data"
             )
-            rejected += 1
+            rejected_records.append({
+                "date":            TODAY_STR,
+                "player_name":     player_name,
+                "team":            pick.get("team", ""),
+                "opponent":        pick.get("opponent", ""),
+                "prop_type":       prop_type,
+                "tier_considered": pick_value,
+                "direction":       pick.get("direction", "OVER"),
+                "skip_reason":     "market_gate_reject",
+                "rule_context": {
+                    "failure_mode":    "player_absent",
+                    "reason":          f"{player_name} not in FanDuel market data — Python gate fired after LLM violated MARKET AVAILABILITY GATE",
+                    "available_tiers": None,
+                },
+            })
             continue
 
         prop_tiers = market_entry.get(prop_type, [])
         available_tier_values = {t.get("tier") for t in prop_tiers if t.get("tier") is not None}
 
         if pick_value not in available_tier_values:
-            available_str = sorted(available_tier_values) if available_tier_values else "none"
+            available_sorted = sorted(available_tier_values) if available_tier_values else []
+            available_str = available_sorted if available_sorted else "none"
             print(
                 f"[analyst] MARKET_GATE_REJECT: {player_name} {prop_type} T{pick_value} — "
                 f"tier not in FanDuel markets (available: {available_str})"
             )
-            rejected += 1
+            rejected_records.append({
+                "date":            TODAY_STR,
+                "player_name":     player_name,
+                "team":            pick.get("team", ""),
+                "opponent":        pick.get("opponent", ""),
+                "prop_type":       prop_type,
+                "tier_considered": pick_value,
+                "direction":       pick.get("direction", "OVER"),
+                "skip_reason":     "market_gate_reject",
+                "rule_context": {
+                    "failure_mode":    "tier_absent",
+                    "reason":          f"T{pick_value} not in FanDuel {prop_type} markets for {player_name} — Python gate fired after LLM violated MARKET AVAILABILITY GATE",
+                    "available_tiers": available_sorted,
+                },
+            })
             continue
 
         kept.append(pick)
 
-    if rejected:
-        print(f"[analyst] Market gate: removed {rejected} pick(s) with no FanDuel market")
+    rejected_count = len(rejected_records)
+    if rejected_count:
+        print(f"[analyst] Market gate: removed {rejected_count} pick(s) with no FanDuel market")
     else:
         print(f"[analyst] Market gate: all {len(kept)} picks have valid markets")
 
-    return kept
+    return kept, rejected_records
 
 
 def reconcile_game_attribution(picks: list[dict]) -> list[dict]:
@@ -6114,7 +6149,16 @@ def compute_observability(picks: list[dict]) -> list[dict]:
     return picks
 
 
-def save_picks(picks: list[dict], player_stats: dict | None = None):
+def save_picks(picks: list[dict], player_stats: dict | None = None) -> tuple[list[dict], list[dict]]:
+    """
+    Run the post-processing chain and write picks.json.
+
+    Returns (picks, market_gate_rejections) where:
+      - picks: the final list of picks written to picks.json
+      - market_gate_rejections: skip-shaped dicts produced by
+        enforce_market_gate() for callers to merge into save_skips().
+        Empty list when the gate is disabled or nothing was rejected.
+    """
     # Filter out picks where analyst's own tier_walk reasoning concluded skip
     picks = filter_self_skip_picks(picks)
 
@@ -6132,8 +6176,10 @@ def save_picks(picks: list[dict], player_stats: dict | None = None):
     # LLM home/away inversion (root cause documented 2026-04-25)
     picks = reconcile_game_attribution(picks)
 
-    # Enforce FanDuel market existence — reject picks with no market
-    picks = enforce_market_gate(picks)
+    # Enforce FanDuel market existence — reject picks with no market.
+    # Rejected picks return as skip-shaped records to be merged into
+    # save_skips() by the caller.
+    picks, market_gate_rejections = enforce_market_gate(picks)
 
     # Observability post-processor: parse tier_walk telemetry
     # (penalty cap raw, walk-declined, walk-reverted) into structured
@@ -6171,7 +6217,7 @@ def save_picks(picks: list[dict], player_stats: dict | None = None):
     print(f"[analyst] Saved {len(picks)} picks for {TODAY_STR} → {PICKS_JSON}")
     for p in picks:
         print(f"  {p.get('player_name', '?')} {p.get('prop_type', '?')} OVER {p.get('pick_value', '?')} ({p.get('confidence_pct', '?')}%) — {p.get('reasoning', '(no reasoning)')[:80]}...")
-    return picks
+    return picks, market_gate_rejections
 
 
 def save_skips(skips: list[dict]) -> None:
@@ -6305,8 +6351,8 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        picks = save_picks(picks, player_stats)
-        save_skips(skips)
+        picks, market_gate_rejections = save_picks(picks, player_stats)
+        save_skips(skips + market_gate_rejections)
         return
 
     # ── Stage 2: Pick ─────────────────────────────────────────────────
@@ -6331,8 +6377,8 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        picks = save_picks(picks, player_stats)
-        save_skips(skips)
+        picks, market_gate_rejections = save_picks(picks, player_stats)
+        save_skips(skips + market_gate_rejections)
         return
 
     missing = shortlist_names - set(player_stats.keys())
@@ -6356,8 +6402,8 @@ def main():
         )
         picks, skips = call_analyst(fallback_prompt, model=model_to_use)
         print(f"[analyst] Fallback returned {len(picks)} picks, {len(skips)} skip records")
-        picks = save_picks(picks, player_stats)
-        save_skips(skips)
+        picks, market_gate_rejections = save_picks(picks, player_stats)
+        save_skips(skips + market_gate_rejections)
         return
 
     filtered_quant_context = build_quant_context(filtered_stats, lineup_context=lineup_context, players_out_today=_players_out_names)
@@ -6375,8 +6421,8 @@ def main():
     picks, skips = call_analyst(pick_prompt, model=MODEL)
     print(f"[analyst] Pick returned {len(picks)} picks, {len(skips)} skip records")
 
-    picks = save_picks(picks, player_stats)
-    save_skips(skips)
+    picks, market_gate_rejections = save_picks(picks, player_stats)
+    save_skips(skips + market_gate_rejections)
 
     # ── Stage 3: Review ───────────────────────────────────────────────
     # Gated off in playoffs (2026-04-30): the Review agent over-flags during
