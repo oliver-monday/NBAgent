@@ -37,6 +37,17 @@ ODDS_AVAILABLE_JSON = DATA / "odds_available.json"
 MODEL          = "claude-sonnet-4-6"
 MAX_TOKENS     = 2048
 CUTOFF_MINUTES = 20    # skip picks for games tipping off within this many minutes
+
+# ── H34 CLV warning constants (observability only — no confidence change) ──
+# AST × lost_close hit rate is 62.5% (n=32) vs 77.0% AST baseline (n=113);
+# delta -14.5pp validated 2026-04-30 (data/backtest_clv_ast_disagree.json).
+# This block detects + LOGS the signal each pretip cycle so we accumulate
+# prod-data evidence before activating any confidence haircut.
+CLV_WARN_LOST_THRESHOLD   = -0.5     # live_clv_pp below this → AST warning fires
+CLV_WARN_PROP_TYPES       = {"AST"}  # H34 is AST-specific; PTS/REB/3PM excluded
+CLV_WARN_PROPOSED_PENALTY = 5        # Proposed confidence penalty (NOT applied;
+                                     # surfaced for review only)
+
 ET             = ZoneInfo("America/Los_Angeles")   # repo-wide convention
 TODAY_STR      = dt.datetime.now(ET).strftime("%Y-%m-%d")
 
@@ -1724,6 +1735,93 @@ def _retroactive_amendment_skip_patch() -> int:
     return patched
 
 
+def detect_clv_warnings(today_picks: list[dict], now_iso: str) -> dict:
+    """
+    Scan today's picks for the H34 signal (AST × lost_close, live).
+
+    Mutates each affected pick in-place by writing a `clv_warning`
+    sub-object. Does NOT modify `confidence_pct`, `voided`, `result`,
+    `lineup_update`, or any other existing field.
+
+    A warning fires when ALL conditions hold:
+      - pick.prop_type in CLV_WARN_PROP_TYPES (AST only)
+      - pick.morning_implied_prob is not None
+      - pick.market_implied_prob is not None
+      - live_clv_pp < CLV_WARN_LOST_THRESHOLD (-0.5)
+      - pick is not voided
+      - pick has no graded result yet (result is None / not set)
+
+    Idempotent: re-running on the same picks updates the warning's
+    `live_clv_pp` and `last_observed_at` fields with the latest pretip
+    data, but does not duplicate. If the live_clv_pp moves back above
+    -0.5 on a later cycle, the warning is REMOVED (line moved back
+    toward us; no longer a warning candidate).
+
+    Returns: {"fired": int, "cleared": int, "skipped": int}
+        fired   — picks that received a new or updated warning this cycle
+        cleared — picks where a previously-set warning is now removed
+                  (live_clv_pp recovered above -0.5 threshold)
+        skipped — picks excluded due to filter (wrong prop, missing data,
+                  voided, graded) — for diagnostic logging
+    """
+    fired = 0
+    cleared = 0
+    skipped = 0
+
+    for p in today_picks:
+        # Filter — must be AST today's pick with both odds fields and not graded/voided
+        if p.get("prop_type") not in CLV_WARN_PROP_TYPES:
+            skipped += 1
+            continue
+        if p.get("voided") is True:
+            skipped += 1
+            continue
+        if p.get("result") in ("HIT", "MISS"):
+            # Already graded (e.g. early game outcome arrived) — don't add
+            # a pretip warning to a settled pick.
+            skipped += 1
+            continue
+
+        morning = p.get("morning_implied_prob")
+        market  = p.get("market_implied_prob")
+        if morning is None or market is None:
+            skipped += 1
+            continue
+
+        try:
+            live_clv = round(float(market) - float(morning), 2)
+        except (TypeError, ValueError):
+            skipped += 1
+            continue
+
+        existing = p.get("clv_warning")
+
+        if live_clv < CLV_WARN_LOST_THRESHOLD:
+            # Warning fires (or refreshes)
+            warning = {
+                "type":               "ast_lost_close",
+                "live_clv_pp":        live_clv,
+                "morning_implied_prob": round(float(morning), 1),
+                "market_implied_prob":  round(float(market), 1),
+                "threshold":          CLV_WARN_LOST_THRESHOLD,
+                "proposed_penalty_pp": CLV_WARN_PROPOSED_PENALTY,
+                "applied":            False,
+                "first_observed_at":  (existing.get("first_observed_at")
+                                       if existing else now_iso),
+                "last_observed_at":   now_iso,
+                "source_backtest":    "H34 — backtest_clv_ast_disagree (2026-04-30)",
+            }
+            p["clv_warning"] = warning
+            fired += 1
+        elif existing is not None:
+            # Warning was previously set but live_clv has recovered above
+            # the threshold — clear it.
+            p.pop("clv_warning", None)
+            cleared += 1
+
+    return {"fired": fired, "cleared": cleared, "skipped": skipped}
+
+
 def main() -> None:
     # One-time retroactive patch — un-void amendment auto-skip picks that were
     # incorrectly carrying injury-void semantics. Idempotent; safe to run every cycle.
@@ -1844,16 +1942,11 @@ def main() -> None:
                 amendments = []
 
             if amendments:
-                # ── Apply + write ─────────────────────────────────────────────
+                # ── Apply (write deferred to end of main()) ──────────────────
                 n_amended, n_up, n_down = apply_amendments(
                     all_picks, amendments, affected_picks, changes, now_iso,
                     player_stats=player_stats,
                 )
-
-                tmp = PICKS_JSON.with_suffix(".json.tmp")
-                with open(tmp, "w") as fh:
-                    json.dump(all_picks, fh, indent=2)
-                os.replace(tmp, PICKS_JSON)
 
                 n_unchanged = n_amended - n_up - n_down
                 print(
@@ -1861,7 +1954,7 @@ def main() -> None:
                     f"amended={n_amended} ({n_up} up, {n_down} down, {n_unchanged} unchanged)"
                 )
             else:
-                print("[lineup_update] no amendments returned — skipping write")
+                print("[lineup_update] no amendments returned — no in-memory amendments applied")
     else:
         print("[lineup_update] no actionable picks affected by changes — skipping LLM call")
 
@@ -1935,6 +2028,42 @@ def main() -> None:
                 print(f"  {r['player_name']} {r['prop_type']} T{r['tier_considered']} — {r['reasoning']}")
         else:
             print("[lineup_update] DEBUG skip-recon: no qualifying reconsiderations found")
+
+    # ── H34 CLV Warning Detection (observability only — no confidence change) ──
+    # Scans today's AST picks for live_clv_pp < -0.5 (the lost_close threshold
+    # validated in backtest_clv_ast_disagree.json). Writes/refreshes a
+    # `clv_warning` sub-object on each affected pick. Does NOT modify
+    # confidence_pct, voided, result, or lineup_update fields.
+    # Activation (actual confidence haircut) is a future prompt depending on
+    # 7+ days of accumulated observability data.
+    clv_report = detect_clv_warnings(today_picks, now_iso)
+    if clv_report["fired"] or clv_report["cleared"]:
+        print(
+            f"[lineup_update] CLV warnings — fired: {clv_report['fired']}, "
+            f"cleared: {clv_report['cleared']}, skipped: {clv_report['skipped']}"
+        )
+        # Diagnostic listing of currently-active warnings on today's slate
+        active = [p for p in today_picks if p.get("clv_warning") is not None]
+        if active:
+            print(f"[lineup_update] Active CLV warnings ({len(active)}):")
+            for p in active:
+                w = p["clv_warning"]
+                print(
+                    f"  {p['player_name']} ({p['team']}) AST T{p['pick_value']} — "
+                    f"live_clv {w['live_clv_pp']:+.2f}pp "
+                    f"({w['morning_implied_prob']:.1f}% → {w['market_implied_prob']:.1f}%)"
+                )
+    else:
+        print("[lineup_update] CLV warnings — no AST × lost_close fires this cycle")
+
+    # ── Unified picks.json write ───────────────────────────────────────────
+    # Single write covering all in-memory mutations (LLM amendments + CLV
+    # warnings). Skipped in debug mode. Atomic via tmp + os.replace.
+    if not debug:
+        tmp = PICKS_JSON.with_suffix(".json.tmp")
+        with open(tmp, "w") as fh:
+            json.dump(all_picks, fh, indent=2)
+        os.replace(tmp, PICKS_JSON)
 
 
 if __name__ == "__main__":

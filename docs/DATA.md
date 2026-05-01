@@ -349,6 +349,18 @@ Flat list of all picks, all dates. `result` and `actual_value` are null until Au
   "odds_fetched_at": "ISO timestamp|null",           // when odds were fetched; null when no match
   "morning_implied_prob": number|null,               // FanDuel morning implied prob; set once by pretip_sweep() before overwriting with pretip odds; used for CLV; null when no pretip sweep ran
   "clv_pp": number|null,                             // Closing Line Value in pp; pretip_implied − morning_implied; positive = beat the close; set by auditor; null when no morning+pretip data
+  "clv_warning": {                                   // optional sub-object, set by lineup_update.py detect_clv_warnings() (added 2026-04-30, H34 Prompt A — observability only); written/refreshed each pretip cycle for AST picks where live_clv_pp < -0.5; absent on PTS/REB/3PM (H34 is AST-specific) and on AST picks where line has not moved against us; cleared entirely if line recovers above -0.5 on a later cycle
+    "type": "ast_lost_close",                        // literal string; only H34 trigger today
+    "live_clv_pp": number,                           // market_implied_prob − morning_implied_prob at observation time (rounded to 2dp); same arithmetic as auditor's clv_pp but in-flight pre-grading
+    "morning_implied_prob": number,                  // snapshot of morning value at trigger time (1dp)
+    "market_implied_prob": number,                   // snapshot of market value at trigger time (1dp)
+    "threshold": -0.5,                               // constant; included for self-documenting (matches CLV_WARN_LOST_THRESHOLD)
+    "proposed_penalty_pp": 5,                        // the confidence haircut WOULD be applied if applied=true; surfaced for review only
+    "applied": false,                                // ALWAYS false in H34 Prompt A observability mode; activation prompt (Prompt C) will flip to true ONLY when the actual confidence change is also being applied
+    "first_observed_at": "ISO timestamp",            // sticky — preserved across pretip cycles; tells us when the warning first triggered
+    "last_observed_at": "ISO timestamp",             // refreshed every cycle the warning is still active
+    "source_backtest": "H34 — backtest_clv_ast_disagree (2026-04-30)"  // identifier of the backtest motivating this warning
+  },
   "alt_tiers": [{"tier": N, "line": N, "mkt_prob": N, "hits": N, "games": N, "hit_pct": N}] | null,  // alternate FanDuel tiers with quant hit rates; set by build_site.py enrich_alt_tiers(); transient (not persisted)
   "bet_recommendation": {                            // set by odds_today.py compute_edge(); null/absent pre-enrichment
     "calibrated_prob": number|null,                  // actual hit rate for this confidence band from audit_summary.json; null when no market
