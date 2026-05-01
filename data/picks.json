@@ -1166,14 +1166,11 @@
     "result": "HIT",
     "actual_value": 28.0,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -1245,12 +1242,12 @@
     "actual_value": 17.0,
     "lineup_update": {
       "triggered_by": [
-        "Immanuel Quickley (TOR) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -1559,14 +1556,11 @@
     "result": "HIT",
     "actual_value": 28.0,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -1588,13 +1582,11 @@
     "voided": true,
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -1731,7 +1723,16 @@
     "opp_defense_rating": "mid",
     "reasoning": "T8 ceiling rule met: 7/10 recent hit rate; TOR switching scheme slightly suppresses but mid rating holds.",
     "result": "HIT",
-    "actual_value": 12.0
+    "actual_value": 12.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Dosunmu is a guard; his absence doesn't meaningfully shift frontcourt rebounding dynamics."
+    }
   },
   {
     "date": "2026-03-05",
@@ -2259,14 +2260,11 @@
     "result": "HIT",
     "actual_value": 38.0,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -2286,14 +2284,11 @@
     "result": "MISS",
     "actual_value": 12.0,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -3210,11 +3205,13 @@
     "result": "MISS",
     "actual_value": 14.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -4465,14 +4462,11 @@
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -4498,13 +4492,11 @@
     "voided": true,
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -4804,14 +4796,11 @@
     "injury_check_time": "2026-03-09T16:32:15.723742-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -5473,11 +5462,13 @@
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -6153,7 +6144,16 @@
     "actual_value": 12.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Dosunmu is a guard; his absence doesn't meaningfully shift frontcourt rebounding dynamics."
+    }
   },
   {
     "date": "2026-03-10",
@@ -6647,11 +6647,13 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -7103,14 +7105,11 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -7136,13 +7135,11 @@
     "voided": true,
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -7930,14 +7927,11 @@
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -8380,14 +8374,11 @@
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -8413,13 +8404,11 @@
     "voided": true,
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -9184,11 +9173,13 @@
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -9896,14 +9887,11 @@
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -10294,14 +10282,11 @@
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -10328,13 +10313,11 @@
     "voided": true,
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -10477,11 +10460,13 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -11350,7 +11335,16 @@
     "actual_value": 7.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Dosunmu is a guard; his absence doesn't meaningfully shift frontcourt rebounding dynamics."
+    }
   },
   {
     "date": "2026-03-16",
@@ -13167,11 +13161,13 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -13357,14 +13353,11 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -13391,13 +13384,11 @@
     "voided": true,
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -13925,11 +13916,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -14185,14 +14178,11 @@
       "keep as standalone only with awareness it is the system's highest-risk pick today"
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -15207,11 +15197,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -15471,15 +15463,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Immanuel Quickley (TOR) OUT \u2014 had picks this morning (detected via picks.json)",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -15508,13 +15496,11 @@
     "trim_reasons": [],
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -16024,14 +16010,11 @@
       "BLOWOUT_RISK is real even after the confidence cap: DEN is an 8.5-point home favorite, and Jokic \u2014 the team's primary star \u2014 is the classic Q4 rest candidate when games are decided early. The floor_minutes of 29.5 vs avg 35.8 shows meaningful minutes variance, meaning a single early-decision game compresses his counting stats window despite a strong historical hit rate."
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -16062,13 +16045,11 @@
     ],
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -16098,11 +16079,13 @@
       "MIN is a 10.5-point road underdog at BOS, creating a severe losing-side blowout-loss risk. Historical lessons explicitly flag that losing-side blowout scripts reduce the primary forward's scoring volume, and Randle's post_miss_hr of only 64% (lift=0.80) signals meaningful downside persistence. The Without-Edwards baseline elevates confidence, but a blowout loss context would structurally suppress his volume regardless."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -18022,11 +18005,13 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -18484,14 +18469,11 @@
       "VOLATILE tag combined with an -18.5 blowout spread creates meaningful floor fragility: Jokic's min_floor of 29.5 is already discounted from his 36.1 average, and a blowout game script compresses minutes for stars \u2014 a game decided by Q3 could see Jokic sit Q4 entirely, leaving him short of 10 rebounds. The VOLATILE classification means his distribution is wide enough that even a full-minutes game carries miss risk at T10+."
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. He will not play, making OVER impossible."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
     }
   },
   {
@@ -19078,11 +19060,13 @@
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -19430,14 +19414,11 @@
     "injury_check_time": "2026-03-29T22:34:49.147336-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -20849,14 +20830,11 @@
     "injury_check_time": "2026-04-01T22:14:36.489180-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -20888,14 +20866,11 @@
     "injury_check_time": "2026-04-01T22:14:36.489180-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. He will not play, making OVER impossible."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
     }
   },
   {
@@ -22289,14 +22264,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -22332,14 +22304,11 @@
       "vs_tough=59% and competitive=67% both sit materially below Jokic's overall REB rate, and SA's defense has been trending tighter over the L5 (delta_pct=-5.9%). REB is confirmed slump-persistent per audit history \u2014 if Jokic had a sub-par board game recently, the combined tough-matchup and split suppression creates a structurally softer floor than iron_floor status would imply (notably, iron_floor=False here)."
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. He will not play, making OVER impossible."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
     }
   },
   {
@@ -22374,13 +22343,11 @@
     "trim_reasons": [],
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -22416,14 +22383,11 @@
       "VOLATILE tag combined with opp_defense=tough and a typical_miss of 7 pts below threshold means a bad shooting night easily undershoots T15 \u2014 the distribution is wide enough that the structural floor is genuinely fragile, and the FG_MARGIN_NEG penalty already forced a step-down indicating thin scoring margin above the line."
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -22455,7 +22419,14 @@
     "injury_check_time": "2026-04-04T22:21:52.607397-07:00",
     "voided": false,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu absence has negligible effect on Murray's playmaking role or AST opportunities."
+    }
   },
   {
     "date": "2026-04-04",
@@ -23025,11 +22996,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -23246,14 +23219,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -23290,13 +23260,11 @@
     ],
     "void_reason": "Amendment auto-skip: revised_confidence 67% < 70 (Gordon was reliable dump-off target; his absence removes a viable receiver, redu)",
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     }
   },
   {
@@ -23332,14 +23300,11 @@
       "VOLATILE tag combined with an -8.5 blowout spread is a compounding risk: if DEN builds a large lead early, Jokic sits in Q4 and REB accumulation halts; the VOLATILE distribution means he can miss badly even in a full-minutes game, and blowout rest is an additional minutes ceiling the iron_floor doesn't protect against."
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. He will not play, making OVER impossible."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
     }
   },
   {
@@ -23792,11 +23757,13 @@
       "Spread of -12.5 creates genuine blowout game-script risk: even after Pick's blowout penalty, MIN as a heavy favorite means Randle \u2014 a secondary scorer with moderate volatility and a post-miss hit rate of only 69% \u2014 could see Q4 minutes compressed if the game is decided early. The min_floor of 28.8 vs a 33.4 average leaves meaningful downside if rest/garbage-time pulls him before he reaches the threshold."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -24833,14 +24800,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -26331,14 +26295,11 @@
       "This is an exact replay of the audited Jokic PTS T15 miss: VOLATILE scorer, blowout-risk spread (12.5), DEN as heavy favorite, 74% confidence cap \u2014 the prior session confirmed Jokic was pulled in Q4 under nearly identical conditions and missed by 1 point. The audit explicitly notes the iron_floor tag at T20 did not protect T15 from garbage-time minute reduction on a large spread, and the structural risk is not fully captured by the existing blowout cap."
     ],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -26382,7 +26343,14 @@
     "void_reason": "player OUT per injury report",
     "lineup_risk": "high",
     "human_verdict": null,
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu absence has negligible effect on Murray's playmaking role or AST opportunities."
+    }
   },
   {
     "date": "2026-04-10",
@@ -26427,14 +26395,11 @@
     "human_verdict": null,
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "triggered_by": [],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -30815,13 +30780,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. He will not play, making OVER impossible."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
     }
   },
   {
@@ -30868,13 +30832,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -30918,7 +30881,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu absence has negligible effect on Murray's playmaking role or AST opportunities."
+    }
   },
   {
     "date": "2026-04-18",
@@ -31870,13 +31842,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -33527,13 +33498,12 @@
     "clv_pp": 0.76,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     }
   },
   {
@@ -33582,13 +33552,12 @@
     "clv_pp": -2.42,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. He will not play, making OVER impossible."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
     }
   },
   {
@@ -33635,13 +33604,12 @@
     "clv_pp": -0.34,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     }
   },
   {
@@ -33687,7 +33655,16 @@
     "trim_reasons": [
       "AST props on VOLATILE players against tough defenses have historically underperformed in this system; Murray's raw_avg_AST of 6.8 gives some cushion, but the opp_defense is rated tough and audit history confirms VOLATILE AST T4 picks in playoff road games are the floor of what the system should be picking. At minimum confidence (70%) with no iron_floor, a single suppressed playmaking night ends the bet."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu absence has negligible effect on Murray's playmaking role or AST opportunities."
+    }
   },
   {
     "date": "2026-04-20",
@@ -34682,13 +34659,12 @@
     "clv_pp": 0.62,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     }
   },
   {
@@ -34923,13 +34899,12 @@
     "clv_pp": -1.84,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT weakens DEN defense; McDaniels trend=up and vs_tough=86% support elevated scoring floor."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Dosunmu OUT opens minutes and usage for McDaniels on perimeter; role expands in elimination game."
     }
   },
   {
@@ -38092,13 +38067,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. Confidence collapses as he will not play."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -38145,13 +38119,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Jokic is OUT; pick is void. He will not play, making OVER impossible."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -38199,12 +38172,12 @@
     "void_reason": "",
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T15:00:43.291322-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 67,
-      "revised_reasoning": "Gordon was reliable dump-off target; his absence removes a viable receiver, reducing assist opportunities for Jokic."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -38251,13 +38224,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 85,
-      "revised_reasoning": "Jokic OUT redistributes massive primary_creator usage to Murray; 41min projected amplifies upside."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -38306,13 +38278,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jokic OUT removes DEN defensive_anchor; Randle gets easier paint access and higher volume."
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -38412,13 +38383,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT weakens DEN defense; McDaniels trend=up and vs_tough=86% support elevated scoring floor."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Dosunmu OUT opens minutes and usage for McDaniels on perimeter; role expands in elimination game."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -38513,13 +38483,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Ayo Dosunmu (MIN) removed from projected starters"
       ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT increases Johnson usage and shot creation; kick-out 3s more frequent with primary_creator gone."
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Dosunmu not a rim anchor or defensive anchor; no meaningful change to Johnson's 3PM outlook."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -39934,7 +39903,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -6.35
+    "clv_pp": -6.35,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
+    }
   },
   {
     "date": "2026-04-25",
@@ -39977,7 +39955,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -1.91
+    "clv_pp": -1.91,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
+    }
   },
   {
     "date": "2026-04-25",
@@ -40020,7 +40007,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -2.64
+    "clv_pp": -2.64,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
+    }
   },
   {
     "date": "2026-04-25",
@@ -40065,7 +40061,16 @@
     "trim_reasons": [
       "Murray is VOLATILE with a FG_COLD flag and overall rate that only barely cleared the T15 bar at 70% \u2014 the typical_miss is 5.5 pts below threshold, meaning a cold shooting night drops him well under. The bounce_back lift of +1.12 is positive but post_miss_hr of 84% still means roughly 1-in-6 games he misses again, and the VOLATILE tag makes the distribution wide."
     ],
-    "clv_pp": -1.57
+    "clv_pp": -1.57,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
+    }
   },
   {
     "date": "2026-04-25",
@@ -40108,7 +40113,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu absence has negligible effect on Murray's playmaking role or AST opportunities."
+    }
   },
   {
     "date": "2026-04-25",
@@ -40886,7 +40900,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -1.41
+    "clv_pp": -1.41,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
+    }
   },
   {
     "date": "2026-04-25",
@@ -40972,7 +40995,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -0.65
+    "clv_pp": -0.65,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Dosunmu OUT opens minutes and usage for McDaniels on perimeter; role expands in elimination game."
+    }
   },
   {
     "date": "2026-04-25",
@@ -42715,7 +42747,16 @@
     "trim_reasons": [
       "DEN is favored by 11.5 points, creating real blowout risk where Jokic may see reduced Q4 minutes; even with a 29.7 min_floor, a comfortable win could cut into his rebounding volume below T12. Combined with his VOLATILE tag and a raw_avg that sits only modestly above threshold, the blowout game script is the residual structural risk not fully absorbed by Pick's adjustments."
     ],
-    "clv_pp": -2.22
+    "clv_pp": -2.22,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
+    }
   },
   {
     "date": "2026-04-27",
@@ -42760,7 +42801,16 @@
     "trim_reasons": [
       "VOLATILE tag plus an 11.5-point blowout spread creates a genuine game-script risk where Murray's minutes get managed in Q4 of a comfortable win; his post_miss_hr of 85% is encouraging but the typical miss is 5.5 pts below threshold, indicating the floor is fragile when it breaks. The blowout penalty was applied but the residual structural risk of a starring-role scorer being rested late in a blowout remains."
     ],
-    "clv_pp": 0.32
+    "clv_pp": 0.32,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
+    }
   },
   {
     "date": "2026-04-27",
@@ -42803,7 +42853,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 1.12
+    "clv_pp": 1.12,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu absence has negligible effect on Murray's playmaking role or AST opportunities."
+    }
   },
   {
     "date": "2026-04-27",
@@ -42848,7 +42907,16 @@
     "trim_reasons": [
       "Randle is VOLATILE with a post_miss_hr of only 69% (lift=0.85 below baseline), meaning when he misses this tier he slumps sequentially \u2014 and he's on the road as an 11.5-point underdog without Edwards, with DEN's defense potentially keying on him as the primary option while also playing at pace to build on a lead. The Edwards-out baseline adjustment is unquantified, and the neutral team momentum against a hot DEN squad compounds the fragility."
     ],
-    "clv_pp": -2.46
+    "clv_pp": -2.46,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
+    }
   },
   {
     "date": "2026-04-27",
@@ -42936,7 +43004,16 @@
     "trim_reasons": [
       "Min_floor of 25.3 vs avg 33.4 is a wide gap indicating high minutes volatility; in a potential blowout loss (11.5-point underdogs), McDaniels risks seeing compressed late-game minutes on the losing side. His post_miss_hr of 69% and VOLATILE tag mean a miss here tends to compound, and the typical miss of 4.0 pts below threshold suggests the floor is not robust to any single off-night."
     ],
-    "clv_pp": -1.66
+    "clv_pp": -1.66,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Dosunmu OUT opens minutes and usage for McDaniels on perimeter; role expands in elimination game."
+    }
   },
   {
     "date": "2026-04-27",
@@ -43024,7 +43101,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Dosunmu is a guard; his absence doesn't meaningfully shift frontcourt rebounding dynamics."
+    }
   },
   {
     "date": "2026-04-27",
@@ -46296,7 +46382,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu is a role player; minimal impact on Jokic PTS. Iron_floor intact."
+    }
   },
   {
     "date": "2026-04-30",
@@ -46336,7 +46431,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu absence doesn't affect rebounding dynamics. Gobert matchup unchanged."
+    }
   },
   {
     "date": "2026-04-30",
@@ -46376,7 +46480,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu not a primary playmaking target or defensive pressure factor for Jokic AST."
+    }
   },
   {
     "date": "2026-04-30",
@@ -46416,7 +46529,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 70,
+      "revised_reasoning": "Dosunmu is a role defender; Murray's PTS driven by series script and own shot creation."
+    }
   },
   {
     "date": "2026-04-30",
@@ -46456,7 +46578,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Dosunmu absence has negligible effect on Murray's playmaking role or AST opportunities."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47176,7 +47307,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Dosunmu OUT redistributes MIN offensive usage; Randle absorbs extra shots as primary big scorer."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47216,7 +47356,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Dosunmu OUT opens minutes and usage for McDaniels on perimeter; role expands in elimination game."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47256,7 +47405,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Dosunmu is a guard; his absence doesn't meaningfully shift frontcourt rebounding dynamics."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47536,7 +47694,16 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T17:03:13.480986-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Ayo Dosunmu (MIN) removed from projected starters"
+      ],
+      "updated_at": "2026-04-30T17:03:15.833462-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Dosunmu not a rim anchor or defensive anchor; no meaningful change to Johnson's 3PM outlook."
+    }
   },
   {
     "date": "2026-04-30",
