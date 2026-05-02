@@ -1,35 +1,64 @@
 {
   "asof_date": "2026-05-02",
-  "built_at_utc": "2026-05-02T22:23:55Z",
+  "built_at_utc": "2026-05-02T23:03:08Z",
   "source": "rotowire",
-  "PHI": {
+  "BOS": {
     "starters": [
       {
         "position": "PG",
-        "name": "Tyrese Maxey",
+        "name": "Derrick White",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "VJ Edgecombe",
+        "name": "Baylor Scheierman",
         "injury_status": null
       },
       {
         "position": "SF",
-        "name": "Kelly Oubre",
+        "name": "Jaylen Brown",
         "injury_status": null
       },
       {
         "position": "PF",
-        "name": "Paul George",
-        "injury_status": "PROB"
+        "name": "Sam Hauser",
+        "injury_status": null
       },
       {
         "position": "C",
-        "name": "Joel Embiid",
-        "injury_status": "PROB"
+        "name": "Neemias Queta",
+        "injury_status": null
       }
     ],
+    "confirmed": false
+  },
+  "snapshot_at_analyst_run": {
+    "written_at": "2026-05-02T07:12:51.420760-07:00",
+    "teams": {
+      "PHI": {
+        "starters": [
+          "Tyrese Maxey",
+          "VJ Edgecombe",
+          "Kelly Oubre",
+          "Paul George",
+          "Joel Embiid"
+        ],
+        "confirmed": false
+      },
+      "BOS": {
+        "starters": [
+          "Derrick White",
+          "Jaylen Brown",
+          "Sam Hauser",
+          "Jayson Tatum",
+          "Neemias Queta"
+        ],
+        "confirmed": false
+      }
+    }
+  },
+  "PHI": {
+    "starters": [],
     "confirmed": false,
     "projected_minutes": [
       {
@@ -42,7 +71,7 @@
         "name": "Paul George",
         "minutes": 40,
         "section": "STARTERS",
-        "injury_status": "PROB"
+        "injury_status": null
       },
       {
         "name": "VJ Edgecombe",
@@ -60,7 +89,7 @@
         "name": "Joel Embiid",
         "minutes": 36,
         "section": "STARTERS",
-        "injury_status": "PROB"
+        "injury_status": null
       },
       {
         "name": "Quentin Grimes",
@@ -123,60 +152,5 @@
         "injury_status": null
       }
     ]
-  },
-  "BOS": {
-    "starters": [
-      {
-        "position": "PG",
-        "name": "Derrick White",
-        "injury_status": null
-      },
-      {
-        "position": "SG",
-        "name": "Baylor Scheierman",
-        "injury_status": null
-      },
-      {
-        "position": "SF",
-        "name": "Jaylen Brown",
-        "injury_status": null
-      },
-      {
-        "position": "PF",
-        "name": "Sam Hauser",
-        "injury_status": null
-      },
-      {
-        "position": "C",
-        "name": "Neemias Queta",
-        "injury_status": null
-      }
-    ],
-    "confirmed": false
-  },
-  "snapshot_at_analyst_run": {
-    "written_at": "2026-05-02T07:12:51.420760-07:00",
-    "teams": {
-      "PHI": {
-        "starters": [
-          "Tyrese Maxey",
-          "VJ Edgecombe",
-          "Kelly Oubre",
-          "Paul George",
-          "Joel Embiid"
-        ],
-        "confirmed": false
-      },
-      "BOS": {
-        "starters": [
-          "Derrick White",
-          "Jaylen Brown",
-          "Sam Hauser",
-          "Jayson Tatum",
-          "Neemias Queta"
-        ],
-        "confirmed": false
-      }
-    }
   }
 }
