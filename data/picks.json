@@ -64,13 +64,11 @@
     "result": "HIT",
     "actual_value": 25.0,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     }
   },
   {
@@ -90,13 +88,11 @@
     "result": "HIT",
     "actual_value": 6.0,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Bona is role player; Maxey's creation duties already priced in as sole PHI engine. VOLATILE limits revision."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor marginally helps but AST generation is self-contained; series elevator signal holds."
     }
   },
   {
@@ -192,7 +188,18 @@
     "opp_defense_rating": "soft",
     "reasoning": "Tatum out massively boosts Brown's usage and shot volume at home vs weak Charlotte.",
     "result": "HIT",
-    "actual_value": 20.0
+    "actual_value": 20.0,
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-04",
@@ -280,12 +287,12 @@
     "actual_value": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Jaylen Brown (BOS) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-09T16:01:26.965955-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jaylen Brown out frees usage; Pritchard projects 32min, trend stable, redistribution directly boosts his scoring role."
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
     }
   },
   {
@@ -305,11 +312,13 @@
     "result": "MISS",
     "actual_value": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona absence doesn't affect Pritchard's PHI matchup or AST opportunities; 7/7 H2H record unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
     }
   },
   {
@@ -2435,7 +2444,18 @@
     "opp_defense_rating": "mid",
     "reasoning": "Iron floor at T20 with consistent tag; BLOWOUT_RISK applied \u2014 stepping down from T25, floor holds.",
     "result": "HIT",
-    "actual_value": 24.0
+    "actual_value": 24.0,
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-06",
@@ -2471,11 +2491,13 @@
     "result": "HIT",
     "actual_value": 2.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona out has no meaningful effect on Brown's 3PM opportunities; T1 threshold at 90% base unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
     }
   },
   {
@@ -2840,13 +2862,11 @@
     "result": "HIT",
     "actual_value": 31.0,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     }
   },
   {
@@ -3441,7 +3461,18 @@
     "iron_floor": true,
     "reasoning": "Iron-floor consistent T20 at 8/10; Tatum minutes cap likely boosts Brown usage tonight.",
     "result": "HIT",
-    "actual_value": 23.0
+    "actual_value": 23.0,
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-08",
@@ -5178,7 +5209,17 @@
     "actual_value": 8.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-10",
@@ -6113,11 +6154,13 @@
     "void_reason": "player OUT per injury report",
     "lineup_risk": "high",
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona absence doesn't affect Pritchard's PHI matchup or AST opportunities; 7/7 H2H record unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
     }
   },
   {
@@ -7992,7 +8035,17 @@
     "actual_value": 34.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-12",
@@ -8481,12 +8534,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jaylen Brown (BOS) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-09T16:01:26.965955-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jaylen Brown out frees usage; Pritchard projects 32min, trend stable, redistribution directly boosts his scoring role."
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
     }
   },
   {
@@ -8533,11 +8586,13 @@
     "injury_check_time": "2026-03-12T22:05:35.529572-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona absence doesn't affect Pritchard's PHI matchup or AST opportunities; 7/7 H2H record unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
     }
   },
   {
@@ -9930,7 +9985,17 @@
     "actual_value": 16.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-14",
@@ -10368,12 +10433,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jaylen Brown (BOS) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-09T16:01:26.965955-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jaylen Brown out frees usage; Pritchard projects 32min, trend stable, redistribution directly boosts his scoring role."
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
     }
   },
   {
@@ -10422,11 +10487,13 @@
     "injury_check_time": "2026-03-14T22:15:21.427266-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona absence doesn't affect Pritchard's PHI matchup or AST opportunities; 7/7 H2H record unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
     }
   },
   {
@@ -13849,12 +13916,22 @@
     "actual_value": 32.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-18T22:03:43.101704-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "FG_MARGIN_THIN already forced step from T20; Tatum return creates role subordination risk in marquee home game that system cannot price",
       "74% is floor-scraping for a tier that required a step-down \u2014 not parlay material"
-    ]
+    ],
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-18",
@@ -15510,11 +15587,21 @@
     "actual_value": 30.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-20T21:47:42.550975-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "Even after the blowout confidence cap was applied, a -15.5 spread creates genuine Q4 rest risk for Brown as a star on a dominant road favorite \u2014 the penalty priced confidence down but cannot eliminate the structural scenario where BOS leads by 25 in the third quarter and Brown sits the entire fourth, making the 15-point floor dependent on early-game volume that blowout scripts do not guarantee."
-    ]
+    ],
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-20",
@@ -16163,11 +16250,21 @@
     "actual_value": 29.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-22T22:15:17.206439-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "BOS is a 10.5-point favorite with BLOWOUT_RISK, and even with iron_floor status, a blowout win creates genuine Q4 rest risk for a star at a T20 floor. The FG_MARGIN_THIN flag (8%) noted in the pick_reasoning means Brown is one off-shooting night from falling short, and the typical_miss of 10 pts below is the largest on the slate \u2014 signaling that when Brown misses, he misses badly."
-    ]
+    ],
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-03-22",
@@ -21187,7 +21284,17 @@
     "odds_fetched_at": "2026-04-01T09:20:37.887835-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-01T22:14:36.489180-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-01",
@@ -22470,7 +22577,14 @@
     "human_verdict": "manual_skip",
     "trim_reasons": [
       "B2B with insufficient B2B hit rate data (no reliable floor), VOLATILE tag, QUES status, min_floor=23.4 (<24), post_miss bounce-back lift of only 0.71 (worst on slate), and competitive split=52% all converge on the same player for the same prop \u2014 the structural risks are stacked and the b2b_hit_rate is unknowable, making the confidence floor entirely unverifiable."
-    ]
+    ],
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Tatum OUT as defensive_anchor removes BOS's best wing defender; Embiid paint access easier, FG% should improve meaningfully."
+    }
   },
   {
     "date": "2026-04-04",
@@ -22682,9 +22796,19 @@
     "odds_fetched_at": "2026-04-05T12:47:54.056603-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-05T22:34:17.483923-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-05",
@@ -23604,9 +23728,19 @@
     "odds_fetched_at": "2026-04-07T07:37:34.063660-07:00",
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-07T22:21:54.542474-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-07",
@@ -23639,11 +23773,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona out has no meaningful effect on Brown's 3PM opportunities; T1 threshold at 90% base unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
     }
   },
   {
@@ -24928,10 +25064,19 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-09T22:13:28.451867-07:00",
     "voided": true,
-    "void_reason": "player OUT per injury report",
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
     "lineup_risk": "high",
     "human_verdict": "keep",
-    "trim_reasons": []
+    "trim_reasons": [],
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-09",
@@ -24976,11 +25121,13 @@
       "Non-iron-floor 3PM picks carry confirmed session-wide variance risk; the sole session miss was a non-iron-floor 3PM (RJ Barrett) despite a 9/10 hit rate, and post_miss_hr of 83% with a typical_miss of only 1.0 below threshold means a single cold night lands exactly at the floor. BOS is a slight road underdog (+4.5), and tight competitive game scripts can compress catch-and-shoot volume for secondary options when possessions are at a premium."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona out has no meaningful effect on Brown's 3PM opportunities; T1 threshold at 90% base unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
     }
   },
   {
@@ -25153,12 +25300,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Jaylen Brown (BOS) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-09T16:01:26.965955-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Jaylen Brown out frees usage; Pritchard projects 32min, trend stable, redistribution directly boosts his scoring role."
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -25493,13 +25640,11 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T21:34:57.155051-07:00",
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Bona is role player; Maxey's creation duties already priced in as sole PHI engine. VOLATILE limits revision."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor marginally helps but AST generation is self-contained; series elevator signal holds."
     },
     "voided": false,
     "human_verdict": "manual_skip",
@@ -25546,13 +25691,11 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-10T21:34:57.155051-07:00",
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 75,
-      "revised_reasoning": "Bona is not a primary receiver; Edgecombe's AST floor protected by iron_floor tag, no meaningful connection."
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
     },
     "voided": false,
     "human_verdict": "trim",
@@ -26432,11 +26575,13 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona absence doesn't affect Pritchard's PHI matchup or AST opportunities; 7/7 H2H record unchanged."
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
     }
   },
   {
@@ -27993,13 +28138,11 @@
     "trim_reasons": [],
     "clv_pp": 2.65,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     }
   },
   {
@@ -28047,13 +28190,11 @@
     ],
     "clv_pp": 4.24,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out redistributes PHI offensive load; Edgecombe absorbs more shots in desperation home context."
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT helps but trend=down and tough opp_def remain; iron_floor protected but limited ceiling boost for role player."
     }
   },
   {
@@ -29480,13 +29621,11 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     }
   },
   {
@@ -29534,13 +29673,11 @@
     ],
     "clv_pp": -0.27,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Bona is role player; Maxey's creation duties already priced in as sole PHI engine. VOLATILE limits revision."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor marginally helps but AST generation is self-contained; series elevator signal holds."
     }
   },
   {
@@ -29586,13 +29723,11 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 75,
-      "revised_reasoning": "Bona is not a primary receiver; Edgecombe's AST floor protected by iron_floor tag, no meaningful connection."
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
     }
   },
   {
@@ -29640,13 +29775,11 @@
     ],
     "clv_pp": -1.44,
     "lineup_update": {
-      "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
-      ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out redistributes PHI offensive load; Edgecombe absorbs more shots in desperation home context."
+      "triggered_by": [],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT helps but trend=down and tough opp_def remain; iron_floor protected but limited ceiling boost for role player."
     }
   },
   {
@@ -32561,12 +32694,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     }
   },
   {
@@ -32607,12 +32740,22 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-19T22:28:52.062994-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "BOS is favored by -12.5 with BLOWOUT_RISK, and Brown's FG_MARGIN_THIN of 4% (near-zero cushion) means even modest defensive resistance or a blowout-induced minutes reduction could push him below T15. The mandatory step-down from T20 was already required by the thin margin, meaning this pick lives on a structurally fragile floor."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-19",
@@ -32660,12 +32803,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona out has no meaningful effect on Brown's 3PM opportunities; T1 threshold at 90% base unchanged."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
     }
   },
   {
@@ -32865,12 +33008,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out redistributes PHI offensive load; Edgecombe absorbs more shots in desperation home context."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT helps but trend=down and tough opp_def remain; iron_floor protected but limited ceiling boost for role player."
     }
   },
   {
@@ -34941,12 +35084,12 @@
     "clv_pp": 0.34,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     }
   },
   {
@@ -34995,12 +35138,12 @@
     "clv_pp": -6.95,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Bona is role player; Maxey's creation duties already priced in as sole PHI engine. VOLATILE limits revision."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor marginally helps but AST generation is self-contained; series elevator signal holds."
     }
   },
   {
@@ -35358,12 +35501,22 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-21T22:14:12.460587-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "VOLATILE with FG_MARGIN_NEG:-9% and iron_floor at T20 in a -14.5 BLOWOUT_RISK game \u2014 Brown is a secondary scorer who may see reduced Q4 usage if BOS cruises, and his iron_floor classification only protects the floor tier structurally, not against blowout-driven minutes compression. The typical_miss of 10 pts below floor signals wide downside distribution."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-21",
@@ -35460,7 +35613,16 @@
     "trim_reasons": [
       "Pritchard is explicitly a BLOWOUT_SECONDARY_SCORER in a -14.5 game \u2014 his min_floor of 23.4 means a single early-benching in a runaway BOS win puts T10 at risk, and his trend=down signals recent scoring compression. The blowout penalty was applied but secondary scorers in lopsided games face structural fourth-quarter irrelevance."
     ],
-    "clv_pp": 1.48
+    "clv_pp": 1.48,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
+    }
   },
   {
     "date": "2026-04-21",
@@ -35506,12 +35668,12 @@
     "clv_pp": -0.62,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona absence doesn't affect Pritchard's PHI matchup or AST opportunities; 7/7 H2H record unchanged."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
     }
   },
   {
@@ -35601,12 +35763,12 @@
     "clv_pp": 3.68,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out redistributes PHI offensive load; Edgecombe absorbs more shots in desperation home context."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT helps but trend=down and tough opp_def remain; iron_floor protected but limited ceiling boost for role player."
     }
   },
   {
@@ -35653,12 +35815,12 @@
     "clv_pp": 1.53,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 75,
-      "revised_reasoning": "Bona is not a primary receiver; Edgecombe's AST floor protected by iron_floor tag, no meaningful connection."
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
     }
   },
   {
@@ -38528,12 +38690,12 @@
     "clv_pp": 0.0,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     }
   },
   {
@@ -38582,12 +38744,12 @@
     "clv_pp": 1.23,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out redistributes PHI offensive load; Edgecombe absorbs more shots in desperation home context."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT helps but trend=down and tough opp_def remain; iron_floor protected but limited ceiling boost for role player."
     }
   },
   {
@@ -38634,12 +38796,12 @@
     "clv_pp": -3.57,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 75,
-      "revised_reasoning": "Bona is not a primary receiver; Edgecombe's AST floor protected by iron_floor tag, no meaningful connection."
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
     }
   },
   {
@@ -38688,12 +38850,12 @@
     "clv_pp": -1.53,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "up",
-      "revised_confidence_pct": 73,
-      "revised_reasoning": "Bona out redistributes PHI usage to George; conservative T10 threshold benefits modestly from added volume."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor gives George easier looks; vs_tough=67% underrates upside with elite defender removed."
     }
   },
   {
@@ -38739,7 +38901,16 @@
     "trim_reasons": [
       "raw_avg_REB of 3.8 is below the T4 threshold \u2014 George is picking T4 from below his average, meaning the distribution is already thin. The post_miss_hr for REB is only 50% with a negative lift (0.67), confirming slump-persistence risk on REB props. A single low-effort defensive game or blowout script where PHI trails and George is managed could easily land at 3 REB."
     ],
-    "clv_pp": -0.71
+    "clv_pp": -0.71,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Tatum not a rim_anchor; rebounding matchup for George largely unaffected by his absence."
+    }
   },
   {
     "date": "2026-04-24",
@@ -38779,12 +38950,22 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-24T22:01:29.578359-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "Brown is tagged VOLATILE with a def_recency flag showing PHI's defense has tightened dramatically over the last 5 games (l5_avg 103.4 vs l15_avg 113.6, delta -8.98%) \u2014 the single sharpest defensive recency flag on the entire slate. Despite the iron_floor designation protecting at T20, a volatile scorer against a suddenly elite defensive unit is structurally softer than the 74% confidence implies; the typical_miss of 10 pts below T20 means a cold game produces a significant shortfall."
     ],
-    "clv_pp": 2.53
+    "clv_pp": 2.53,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-24",
@@ -38830,12 +39011,12 @@
     "clv_pp": 0.56,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona out has no meaningful effect on Brown's 3PM opportunities; T1 threshold at 90% base unchanged."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
     }
   },
   {
@@ -41080,12 +41261,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out removes PHI's only interior threat; Maxey absorbs more usage and attempts, iron_floor protected."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -41132,12 +41313,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Bona is role player; Maxey's creation duties already priced in as sole PHI engine. VOLATILE limits revision."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor marginally helps but AST generation is self-contained; series elevator signal holds."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -41400,12 +41581,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona out has no meaningful effect on Brown's 3PM opportunities; T1 threshold at 90% base unchanged."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -42586,12 +42767,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 83,
-      "revised_reasoning": "Bona out redistributes PHI offensive load; Edgecombe absorbs more shots in desperation home context."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT helps but trend=down and tough opp_def remain; iron_floor protected but limited ceiling boost for role player."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -42638,12 +42819,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 75,
-      "revised_reasoning": "Bona is not a primary receiver; Edgecombe's AST floor protected by iron_floor tag, no meaningful connection."
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -42690,12 +42871,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
       "direction": "up",
-      "revised_confidence_pct": 73,
-      "revised_reasoning": "Bona out redistributes PHI usage to George; conservative T10 threshold benefits modestly from added volume."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor gives George easier looks; vs_tough=67% underrates upside with elite defender removed."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -42744,12 +42925,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Adem Bona (PHI) removed from projected starters"
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-26T15:21:35.031629-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Bona absence doesn't affect Pritchard's PHI matchup or AST opportunities; 7/7 H2H record unchanged."
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -43921,7 +44102,16 @@
     "trim_reasons": [
       "PHI is a +11.5 underdog, creating genuine garbage-time risk in Q4 where Maxey's minutes may compress if BOS runs away early. Despite the blowout penalty already applied, the structural risk of a double-digit deficit leading to early benching of key players on a fading team remains \u2014 and PHI's team_momentum is neutral, not hot, suggesting limited capacity to keep the game close."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
+    }
   },
   {
     "date": "2026-04-28",
@@ -44092,12 +44282,22 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-28T22:41:01.611797-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "Brown is flagged volatile with a min_floor of 29.9 and BLOWOUT_RISK on the favored side at -11.5 \u2014 in a game BOS controls early, starters routinely see Q4 rest, which is precisely where a volatile scorer's floor becomes fragile. The FG_MARGIN_NEG cascade already stepped down to T20, but Brown's wide distribution means a single cold-shooting quarter combined with early exit still produces a miss at this threshold."
     ],
-    "clv_pp": -2.88
+    "clv_pp": -2.88,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-28",
@@ -44140,7 +44340,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 1.23
+    "clv_pp": 1.23,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
+    }
   },
   {
     "date": "2026-04-28",
@@ -44185,7 +44394,16 @@
     "trim_reasons": [
       "Pritchard's min_floor of 23.4 is the primary structural vulnerability: as a bench player on the BLOWOUT_RISK side, a game that gets away from PHI early could see Pritchard's minutes compressed well below his average, and 23.4 as the floor leaves meaningful exposure to a sub-10-point outcome in a reduced-minutes scenario. Bench rotational players are most susceptible to early garbage-time compression."
     ],
-    "clv_pp": -3.81
+    "clv_pp": -3.81,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
+    }
   },
   {
     "date": "2026-04-28",
@@ -44228,7 +44446,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
+    }
   },
   {
     "date": "2026-04-28",
@@ -45100,7 +45327,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
+    }
   },
   {
     "date": "2026-04-29",
@@ -46804,7 +47040,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -0.91
+    "clv_pp": -0.91,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
+    }
   },
   {
     "date": "2026-04-30",
@@ -46859,7 +47104,16 @@
     },
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -3.44
+    "clv_pp": -3.44,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor marginally helps but AST generation is self-contained; series elevator signal holds."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47048,12 +47302,22 @@
     },
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-04-30T22:56:02.927754-07:00",
-    "voided": false,
+    "voided": true,
     "human_verdict": "trim",
     "trim_reasons": [
       "Brown has FG_MARGIN_NEG at -11% \u2014 deeply below breakeven \u2014 and is tagged volatile, with typical_miss of 10 pts below threshold. Even after the mandatory step-down cascade to T20, a continuation of the negative-margin shooting performance is structurally more likely than a correction, and the wide distribution means misses by large margins are common."
     ],
-    "clv_pp": -0.66
+    "clv_pp": -0.66,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47139,7 +47403,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -0.53
+    "clv_pp": -0.53,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47184,7 +47457,16 @@
     "trim_reasons": [
       "Embiid carries both FG_COLD (-15%) and FG_MARGIN_THIN (6%) flags with a min_floor of only 27.6 against a tough BOS defense \u2014 his post_miss bounce-back rate is only 67% with a negative lift (0.78), meaning he is one of the few players on this slate who does NOT reliably respond after a miss. The combination of injury management minutes risk and active shooting suppression flags on a tough opponent makes this structurally fragile despite the conservative T15 selection."
     ],
-    "clv_pp": -0.27
+    "clv_pp": -0.27,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Tatum OUT as defensive_anchor removes BOS's best wing defender; Embiid paint access easier, FG% should improve meaningfully."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47751,7 +48033,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -1.13
+    "clv_pp": -1.13,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47794,7 +48085,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47839,7 +48139,16 @@
     "trim_reasons": [
       "George's min_floor is 23.7 against an avg of 33.0 \u2014 a 9.3-minute gap representing extreme minutes fragility for a PTS prop. His post_miss_hr is only 67% with negative lift (0.88), and the volatile tag with a typical_miss of 10 pts below threshold means low-minutes games produce dramatic shortfalls. BOS is a 6.5-point favorite, creating Q4 blowout-rest risk on the PHI side."
     ],
-    "clv_pp": 3.33
+    "clv_pp": 3.33,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor gives George easier looks; vs_tough=67% underrates upside with elite defender removed."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47884,7 +48193,16 @@
     "trim_reasons": [
       "George's raw_avg_REB is only 4.2 \u2014 essentially at the pick value \u2014 and his post_miss_hr is 54% with a deeply negative lift (0.73), the worst bounce-back profile for REB on the entire slate. The confirmed slump-persistence for REB props combined with a below-average recovery rate and minutes fragility (min_floor 23.7) makes this structurally weak."
     ],
-    "clv_pp": 1.01
+    "clv_pp": 1.01,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Tatum not a rim_anchor; rebounding matchup for George largely unaffected by his absence."
+    }
   },
   {
     "date": "2026-04-30",
@@ -47927,7 +48245,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -0.27
+    "clv_pp": -0.27,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
+    }
   },
   {
     "date": "2026-04-30",
@@ -49663,7 +49990,16 @@
     "kalshi_morning_implied_prob": 75.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 88,
+      "revised_reasoning": "Iron_floor structural pick; Tatum OUT removes tough defender but Maxey's floor is already impenetrable vs BOS."
+    }
   },
   {
     "date": "2026-05-02",
@@ -49710,7 +50046,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor marginally helps but AST generation is self-contained; series elevator signal holds."
+    }
   },
   {
     "date": "2026-05-02",
@@ -49965,7 +50310,17 @@
     "kalshi_morning_implied_prob": 81.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": true,
+    "void_reason": "Amendment auto-skip: revised_confidence 68% < 70 (Tatum OUT removes primary creator; Brown's usage rises but volatile tag and tren)",
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 68,
+      "revised_reasoning": "Tatum OUT removes primary creator; Brown's usage rises but volatile tag and trend=down offset; defense collapses on Brown."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50020,7 +50375,16 @@
     "kalshi_morning_implied_prob": 83.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "down",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT as perimeter_threat collapses spacing onto Brown; fewer open 3PM opportunities with defense keying on him."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50075,7 +50439,16 @@
     "kalshi_morning_implied_prob": 70.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 87,
+      "revised_reasoning": "Tatum OUT as high_usage creator redistributes shots; Pritchard absorbs volume as primary scoring option off bench."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50130,7 +50503,16 @@
     "kalshi_morning_implied_prob": 59.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Tatum OUT as primary_creator elevates Pritchard to secondary creator role; already 91% vs_tough, AST floor rises meaningfully."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50189,7 +50571,16 @@
     "kalshi_morning_implied_prob": 84.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Tatum OUT as defensive_anchor gives George easier looks; vs_tough=67% underrates upside with elite defender removed."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50244,7 +50635,16 @@
     "kalshi_morning_implied_prob": 76.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Tatum not a rim_anchor; rebounding matchup for George largely unaffected by his absence."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50295,7 +50695,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Tatum OUT as defensive_anchor removes BOS's best wing defender; Embiid paint access easier, FG% should improve meaningfully."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50350,7 +50759,16 @@
     "kalshi_morning_implied_prob": 62.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Tatum OUT helps but trend=down and tough opp_def remain; iron_floor protected but limited ceiling boost for role player."
+    }
   },
   {
     "date": "2026-05-02",
@@ -50405,6 +50823,15 @@
     "kalshi_morning_implied_prob": 80.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-02T11:34:31.207244-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Jayson Tatum (BOS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-02T11:34:33.336364-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 75,
+      "revised_reasoning": "Tatum absence doesn't directly affect Edgecombe's AST generation; iron_floor and H2H signals hold as original."
+    }
   }
 ]

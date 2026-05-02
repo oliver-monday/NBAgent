@@ -3556,5 +3556,239 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-05-02",
+    "generated_at": "2026-05-02T11:34:33.336364-07:00",
+    "triggered_by": "Jayson Tatum",
+    "triggered_by_team": "BOS",
+    "side": "opponent",
+    "player_name": "Joel Embiid",
+    "team": "PHI",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 85.51,
+        "market_odds": -590
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 80.0,
+        "market_odds": -400
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "consistent",
+        "market_implied_pct": 82.46,
+        "market_odds": -470
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 25,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 60.0,
+        "market_odds": -150,
+        "morning_tier": 15,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (reb_floor_skip, ast_hard_gate)",
+    "reasoning": "REB T6 80% [up] (mkt 86%, edge -6pp); AST T4 70% [up] (mkt 80%, edge -10pp); 3PM T1 90% [down] (mkt 82%, edge +8pp); PTS T25 80% [stable] (mkt 60%, edge +20pp); skipped this morning (reb_floor_skip, ast_hard_gate)",
+    "best_edge_pp": 20.0,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-02",
+    "generated_at": "2026-05-02T11:34:33.336364-07:00",
+    "triggered_by": "Jayson Tatum",
+    "triggered_by_team": "BOS",
+    "side": "teammate",
+    "player_name": "Neemias Queta",
+    "team": "BOS",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 74.68,
+        "market_odds": -295
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "REB T6 75% [up] (mkt 75%, edge +0pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 0.3,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-02",
+    "generated_at": "2026-05-02T11:34:33.336364-07:00",
+    "triggered_by": "Jayson Tatum",
+    "triggered_by_team": "BOS",
+    "side": "opponent",
+    "player_name": "Paul George",
+    "team": "PHI",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "moderate",
+        "market_implied_pct": 88.89,
+        "market_odds": -800
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "moderate",
+        "market_implied_pct": 95.65,
+        "market_odds": -2200
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 61.24,
+        "market_odds": -158,
+        "morning_tier": 10,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "AST T2 70% [up] (mkt 89%, edge -19pp); 3PM T1 80% [up] (mkt 96%, edge -16pp); PTS T15 75% [stable] (mkt 61%, edge +14pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 13.8,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-02",
+    "generated_at": "2026-05-02T11:34:33.336364-07:00",
+    "triggered_by": "Jayson Tatum",
+    "triggered_by_team": "BOS",
+    "side": "teammate",
+    "player_name": "Payton Pritchard",
+    "team": "BOS",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 66.67,
+        "market_odds": -200
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "3PM T2 75% [down] (mkt 67%, edge +8pp)",
+    "best_edge_pp": 8.3,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-02",
+    "generated_at": "2026-05-02T11:34:33.336364-07:00",
+    "triggered_by": "Jayson Tatum",
+    "triggered_by_team": "BOS",
+    "side": "opponent",
+    "player_name": "Tyrese Maxey",
+    "team": "PHI",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 83.33,
+        "market_odds": -500
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "3PM T2 75% [up] (mkt 83%, edge -8pp)",
+    "best_edge_pp": -8.3,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-02",
+    "generated_at": "2026-05-02T11:34:33.336364-07:00",
+    "triggered_by": "Jayson Tatum",
+    "triggered_by_team": "BOS",
+    "side": "opponent",
+    "player_name": "VJ Edgecombe",
+    "team": "PHI",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 56.52,
+        "market_odds": -130
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 88.24,
+        "market_odds": -750
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T6 70% [up] (mkt 57%, edge +13pp); 3PM T1 75% [stable] (mkt 88%, edge -13pp)",
+    "best_edge_pp": 13.5,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
