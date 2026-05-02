@@ -49,6 +49,17 @@ _ABBR_NORM: dict[str, str] = {
     "NY": "NYK", "UTAH": "UTA", "WSH": "WAS",
 }
 
+# Rotowire injury status code normalisation — abbreviated → canonical full form.
+# Canonical forms are what picks.json's injury_status_at_check field uses and what
+# the void/flag matching logic expects. Without this map, DOUBT and QUES picks fall
+# through both code paths without being flagged. Confirmed live 2026-05-01 on
+# Brandon Ingram (TOR, DOUBT) — fix applied at the load_injury_lookup() boundary.
+_STATUS_NORM: dict[str, str] = {
+    "DOUBT": "DOUBTFUL",
+    "QUES":  "QUESTIONABLE",
+    "PROB":  "PROBABLE",
+}
+
 
 def _norm_team(abbr: str) -> str:
     a = str(abbr).upper().strip()
@@ -98,7 +109,8 @@ def load_injury_lookup() -> dict[tuple, dict]:
         for entry in val:
             raw_name = (entry.get("player_name") or entry.get("name") or "").strip()
             last = _extract_last(raw_name)
-            status_str = (entry.get("status") or "").upper().strip()
+            status_raw = (entry.get("status") or "").upper().strip()
+            status_str = _STATUS_NORM.get(status_raw, status_raw)
             if last:
                 key = (norm_t, last)
                 # If duplicate last name on same team, keep the higher-severity entry
