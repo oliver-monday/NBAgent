@@ -63,6 +63,32 @@ def _norm(abbr: str) -> str:
     return _ABBR_NORM.get(a, a)
 
 
+# Rotowire injury status code normalization — mirrors lineup_watch.py _STATUS_NORM.
+# Rotowire emits abbreviated codes (DOUBT/QUES/PROB) but the diff function and
+# downstream comparisons use canonical full forms (DOUBTFUL/QUESTIONABLE/PROBABLE).
+_STATUS_NORM: dict[str, str] = {
+    "DOUBT": "DOUBTFUL",
+    "QUES":  "QUESTIONABLE",
+    "PROB":  "PROBABLE",
+}
+
+
+def _extract_last_name(name: str) -> str:
+    """Return lowercased last name from either 'F. LastName' or 'FirstName LastName'.
+
+    Mirrors lineup_watch.py _extract_last(). Used to bridge Rotowire's abbreviated
+    names ('B. Ingram') with snapshot full names ('Brandon Ingram') in injury_map
+    construction and lookup.
+    """
+    n = str(name).strip()
+    # Rotowire abbreviated format: "L. James"
+    if len(n) >= 3 and n[1] == "." and n[2] == " ":
+        return n[3:].lower()
+    # Full name: "LeBron James" → "james"
+    parts = n.split()
+    return parts[-1].lower() if parts else n.lower()
+
+
 def _norm_odds_name(name: str) -> str:
     """Normalize player name to match odds_available.json player keys.
 
@@ -1218,17 +1244,25 @@ def compute_lineup_diff(lineups: dict, injuries: dict, today_picks: list[dict] |
     snapshot = lineups.get("snapshot_at_analyst_run") or {}
     snap_teams: dict = snapshot.get("teams", {})
 
-    # Build injury map: team → {name_lower: status}
+    # Build injury map: team → {last_name_lower: canonical_status}
+    # Keyed by last name (via _extract_last_name) to bridge Rotowire's abbreviated
+    # names ('B. Ingram') with snapshot full names ('Brandon Ingram'). Status values
+    # are normalized through _STATUS_NORM so downstream comparisons against
+    # ('OUT', 'DOUBTFUL') match correctly.
     injury_map: dict[str, dict[str, str]] = {}
     for key, val in injuries.items():
         if key == "fetched_at" or not isinstance(val, list):
             continue
         team = _norm(key)
-        injury_map[team] = {
-            row["name"].strip().lower(): row.get("status", "UNKNOWN")
-            for row in val
-            if isinstance(row, dict) and row.get("name")
-        }
+        injury_map[team] = {}
+        for row in val:
+            if not isinstance(row, dict) or not row.get("name"):
+                continue
+            last = _extract_last_name(row["name"])
+            status_raw = (row.get("status") or "UNKNOWN").strip().upper()
+            status     = _STATUS_NORM.get(status_raw, status_raw)
+            if last:
+                injury_map[team][last] = status
 
     changes: list[dict] = []
     # Track (team, name_lower) pairs already added to avoid duplicates across sources
@@ -1262,9 +1296,15 @@ def compute_lineup_diff(lineups: dict, injuries: dict, today_picks: list[dict] |
             )
 
             key = (team, name_lower)
-            if name_lower in team_injuries:
-                status = team_injuries[name_lower]
-                if status in ("OUT", "DOUBTFUL") and key not in seen:
+            last_for_lookup = _extract_last_name(name_lower)
+            if last_for_lookup in team_injuries:
+                status = team_injuries[last_for_lookup]
+                # Gate admits OUT, DOUBTFUL, and QUESTIONABLE — all three trigger
+                # the cascade layer (opportunity surfacing + amendment LLM call
+                # for teammates/opponents). lineup_watch.py owns the availability
+                # layer (void OUT, flag DOUBTFUL/QUESTIONABLE on the absent
+                # player's own picks).
+                if status in ("OUT", "DOUBTFUL", "QUESTIONABLE") and key not in seen:
                     seen.add(key)
                     changes.append({
                         "team":        team,
@@ -1304,17 +1344,12 @@ def compute_lineup_diff(lineups: dict, injuries: dict, today_picks: list[dict] |
             if key in seen:
                 continue  # already detected via snapshot source
 
-            # Check current injury status via full-name match
-            team_inj = injury_map.get(p_team, {})
-            last_lower = name_lower.split()[-1] if name_lower else ""
-
-            current_status = team_inj.get(name_lower)
-            # Fallback: last-name match across all entries for this team
-            if current_status is None:
-                for inj_name, inj_data in team_inj.items():
-                    if inj_name.split()[-1] == last_lower:
-                        current_status = inj_data if isinstance(inj_data, str) else None
-                        break
+            # injury_map is keyed by last name (per team) with canonical statuses.
+            # _extract_last_name() handles the picks-side full name ('brandon ingram'
+            # → 'ingram') matching the same key form used during map construction.
+            team_inj   = injury_map.get(p_team, {})
+            last_lower = _extract_last_name(name_lower)
+            current_status = team_inj.get(last_lower)
 
             # Only infer OUT from a void when the void_reason indicates an actual
             # injury/absence — NOT when the void was an amendment auto-skip
@@ -1336,7 +1371,9 @@ def compute_lineup_diff(lineups: dict, injuries: dict, today_picks: list[dict] |
             else:
                 inferred_status = current_status
 
-            if inferred_status in ("OUT", "DOUBTFUL"):
+            # Same gate as Source 1 — OUT/DOUBTFUL/QUESTIONABLE all trigger
+            # the cascade layer.
+            if inferred_status in ("OUT", "DOUBTFUL", "QUESTIONABLE"):
                 seen.add(key)
                 changes.append({
                     "team":        p_team,
@@ -1364,8 +1401,28 @@ def get_affected_picks(
     """
     Return open today picks whose team or opponent matches a change team,
     and whose game is still actionable (tip-off > CUTOFF_MINUTES away).
+
+    Self-absence filter: picks where the pick player themselves is in
+    `new_absence` changes are excluded — those are handled by lineup_watch
+    (voids OUT picks; flags DOUBTFUL/QUESTIONABLE picks with lineup_risk).
+    Sending such picks to the LLM is a degenerate query (the answer is always
+    "this pick is dead") and produces contradictory `direction: down +
+    revised_confidence_pct: 70` amendments due to the prompt's 70-99 floor.
+    Reserve the LLM call for cascade effects (teammate/opponent absences).
     """
     changed_teams: set[str] = {_norm(c["team"]) for c in changes}
+
+    # Build set of (team, lower_name) for self-absent players. Only new_absence
+    # changes qualify — starter_replaced (player demoted but not injured) does
+    # not, since the LLM may still have useful judgment on a reduced-role pick.
+    self_absent_keys: set[tuple[str, str]] = set()
+    for c in changes:
+        if c.get("change_type") != "new_absence":
+            continue
+        team_norm  = _norm(c.get("team", ""))
+        name_lower = (c.get("player_name") or "").strip().lower()
+        if team_norm and name_lower:
+            self_absent_keys.add((team_norm, name_lower))
 
     affected: list[dict] = []
     for pick in today_picks:
@@ -1374,10 +1431,21 @@ def get_affected_picks(
         if pick.get("voided", False):
             continue
 
-        pick_team = _norm(pick.get("team", ""))
-        pick_opp  = _norm(pick.get("opponent", ""))
+        pick_team       = _norm(pick.get("team", ""))
+        pick_opp        = _norm(pick.get("opponent", ""))
+        pick_name_lower = (pick.get("player_name") or "").strip().lower()
 
         if pick_team not in changed_teams and pick_opp not in changed_teams:
+            continue
+
+        # Self-absence skip — pick player is themselves in a new_absence change.
+        # Owned by lineup_watch availability layer.
+        if (pick_team, pick_name_lower) in self_absent_keys:
+            print(
+                f"[lineup_update] self_absent_skip: {pick.get('player_name')} "
+                f"({pick_team}) {pick.get('prop_type')} OVER {pick.get('pick_value')} "
+                f"— pick player is absent; lineup_watch handles availability"
+            )
             continue
 
         tip_utc = game_map.get(pick_team) or game_map.get(pick_opp) or ""
