@@ -3790,5 +3790,54 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-05-02",
+    "generated_at": "2026-05-02T12:16:23.820013-07:00",
+    "triggered_by": "Jayson Tatum",
+    "triggered_by_team": "BOS",
+    "side": "teammate",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 90.0,
+        "market_odds": -900
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 96.77,
+        "market_odds": -3000
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 25,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 61.83,
+        "market_odds": -162,
+        "morning_tier": 20,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "REB T4 75% [stable] (mkt 90%, edge -15pp); AST T2 90% [down] (mkt 97%, edge -7pp); PTS T25 70% [down] (mkt 62%, edge +8pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 8.2,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
