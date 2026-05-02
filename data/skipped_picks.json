@@ -14,8 +14,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-05-01",
@@ -33,10 +33,10 @@
       "required": "soft",
       "reason": "C position with raw_avgs AST < 8.0; opp_today=mid, hard gate requires soft"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 4"
   },
   {
     "date": "2026-05-01",
@@ -56,10 +56,10 @@
       "floor": 68,
       "reason": "VOLATILE+T6 primary playmaker -8pp + tough opp -8pp = 59%, below 68% AST floor; T4 has no FanDuel market"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-01",
@@ -81,10 +81,10 @@
       "floor": 68,
       "reason": "FG_COLD-15% + FG_MARGIN_THIN step to T10 blocked (no T10 market); multiple penalties total -15pp on 70% base = 55%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 28.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 28.0 \u2265 tier 15"
   },
   {
     "date": "2026-05-01",
@@ -104,9 +104,9 @@
       "floor": 68,
       "reason": "Series 3/5 at T6 (60%) + VOLATILE -3% + tough opp AST penalty -10% (auditor: turnover-generating defense); 62% below 68% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 6"
   }
 ]

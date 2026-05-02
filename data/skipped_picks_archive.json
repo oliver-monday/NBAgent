@@ -6644,5 +6644,115 @@
     "would_have_hit": false,
     "skip_verdict": "correct_skip",
     "skip_verdict_notes": "Actual 3.0 < tier 6"
+  },
+  {
+    "date": "2026-05-01",
+    "player_name": "Kevin Durant",
+    "team": "HOU",
+    "opponent": "LAL",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "Durant listed as DOUBTFUL in injury report (effectively OUT per pre-game confirmation); no props should be evaluated",
+      "status": "DOUBT"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-05-01",
+    "player_name": "Alperen Sengun",
+    "team": "HOU",
+    "opponent": "LAL",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "C",
+      "raw_avgs_ast": 5.4,
+      "opp_today": "mid",
+      "required": "soft",
+      "reason": "C position with raw_avgs AST < 8.0; opp_today=mid, hard gate requires soft"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 4"
+  },
+  {
+    "date": "2026-05-01",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "opponent": "HOU",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_penalty": -8,
+      "opp_tough_penalty": -8,
+      "total_penalties": -16,
+      "final_confidence": 59,
+      "floor": 68,
+      "reason": "VOLATILE+T6 primary playmaker -8pp + tough opp -8pp = 59%, below 68% AST floor; T4 has no FanDuel market"
+    },
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-01",
+    "player_name": "LeBron James",
+    "team": "LAL",
+    "opponent": "HOU",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 70,
+      "fg_cold_no_market_penalty": -5,
+      "fg_margin_no_market_penalty": -2,
+      "volatile_penalty": -3,
+      "opp_tough_penalty": -5,
+      "total_penalties": -15,
+      "final_confidence": 55,
+      "floor": 68,
+      "reason": "FG_COLD-15% + FG_MARGIN_THIN step to T10 blocked (no T10 market); multiple penalties total -15pp on 70% base = 55%"
+    },
+    "actual_value": 28.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 28.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-05-01",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_penalty": -3,
+      "opp_tough_penalty": -10,
+      "total_penalties": -13,
+      "final_confidence": 62,
+      "floor": 68,
+      "reason": "Series 3/5 at T6 (60%) + VOLATILE -3% + tough opp AST penalty -10% (auditor: turnover-generating defense); 62% below 68% floor"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 6"
   }
 ]
