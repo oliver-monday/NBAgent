@@ -2,7 +2,7 @@
 
 _Read-only descriptive analysis over `data/audit_log.json`. Decision input for the next major workstream choice. No rules ship from this report._
 
-_v2 enrichment: this report includes confidence-band analysis and per-prop/per-player miss rates (computed from picks.json volume baseline), and uses tightened keyword detection with negation guards. v1 sections retain their structure._
+_v3 enrichment: extends v2 (confidence-band analysis, per-prop/per-player miss rates from picks.json volume baseline, tightened keyword detection) with two new keyword patterns (`expected_variance_lang`, `reasoning_was_sound`) calibrated against actual auditor variance-class language. Variance-class keyword coverage expanded from ~10% (v2 top pattern) to substantially higher. v1 and v2 sections retain their structure._
 
 ---
 
@@ -16,7 +16,7 @@ Population characterization of graded miss data. This is descriptive analysis on
 - Null/ungraded `miss_classification` rows excluded: **7**
 - Total graded picks in baseline (denominator for miss rates): **1215**
 - Audit miss rows successfully joined to picks.json: **172 of 172 (100.0%)**
-- Keyword detection: **v2** with negation guards (30-char lookback) and causal-phrase tightening
+- Keyword detection: **v3** with negation guards (30-char lookback), causal-phrase tightening, and variance-class coverage expansion (16 pattern groups, +2 over v2)
 - `model_gap` (legacy alias) and `model_gap_signal` are bucketed identically as `catchable_with_new_data` but reported separately so audit-time taxonomy drift remains visible.
 
 
@@ -61,26 +61,27 @@ For each classification with `n >= 5`, the top-5 keyword patterns. v2 detection:
 
 |pattern_key|matches|% of misses in this class|
 |---|---|---|
-|near_miss_variance|7|10.3%|
+|reasoning_was_sound|56|82.4%|
+|expected_variance_lang|48|70.6%|
+|near_miss_variance|14|20.6%|
 |blowout|6|8.8%|
 |fg_cold|5|7.4%|
-|volatile_tag|4|5.9%|
-|suppressor_cross_prop|3|4.4%|
 
 ### model_gap_rule (n=59)
 
 |pattern_key|matches|% of misses in this class|
 |---|---|---|
+|reasoning_was_sound|34|57.6%|
 |blowout|11|18.6%|
 |fg_margin_thin|10|16.9%|
+|near_miss_variance|10|16.9%|
 |minutes_compression|5|8.5%|
-|fg_cold|4|6.8%|
-|near_miss_variance|4|6.8%|
 
 ### model_gap_signal (n=12)
 
 |pattern_key|matches|% of misses in this class|
 |---|---|---|
+|reasoning_was_sound|5|41.7%|
 |blowout|3|25.0%|
 |minutes_compression|3|25.0%|
 |rebounding_competition|1|8.3%|
@@ -91,25 +92,33 @@ For each classification with `n >= 5`, the top-5 keyword patterns. v2 detection:
 |pattern_key|matches|% of misses in this class|
 |---|---|---|
 |blowout|3|25.0%|
+|reasoning_was_sound|3|25.0%|
 |minutes_compression|2|16.7%|
+|expected_variance_lang|1|8.3%|
+|near_miss_variance|1|8.3%|
 
 ### injury_event (n=10)
 
 |pattern_key|matches|% of misses in this class|
 |---|---|---|
 |injury_exit|6|60.0%|
+|reasoning_was_sound|3|30.0%|
 |fg_margin_thin|1|10.0%|
 |tier_walk_market|1|10.0%|
 |volatile_tag|1|10.0%|
 
 ### workflow_gap (n=6)
 
-_(no keyword pattern matches found in this class)_
+|pattern_key|matches|% of misses in this class|
+|---|---|---|
+|reasoning_was_sound|1|16.7%|
 
 ### selection_error (n=5)
 
 |pattern_key|matches|% of misses in this class|
 |---|---|---|
+|reasoning_was_sound|2|40.0%|
+|near_miss_variance|1|20.0%|
 |volatile_tag|1|20.0%|
 
 ---
@@ -268,9 +277,9 @@ Top-3 keyword patterns — candidates for new prompt rules. Each requires its ow
 
 |pattern_key|matches|
 |---|---|
+|reasoning_was_sound|35|
 |blowout|11|
 |fg_margin_thin|10|
-|minutes_compression|5|
 
 ### Within `catchable_with_new_data` (model_gap_signal + model_gap):
 
@@ -279,9 +288,9 @@ Top-3 keyword patterns — candidates for new data fields in `agents/quant.py` o
 
 |pattern_key|matches|
 |---|---|
+|reasoning_was_sound|8|
 |blowout|6|
 |minutes_compression|5|
-|rebounding_competition|1|
 
 ### Notable single-pick concentration
 
@@ -316,4 +325,4 @@ No prop is more than 1.5× the lowest-rate prop. Per-prop miss rates are roughly
 
 ### Open question for human review
 
-Given that `deterministic_rule_catchable` is the largest catchable bucket and `blowout` is its top pattern: is the next workstream a `blowout`-rule expansion (with backtest), or do we accept that variance level and prioritize the next-largest bucket instead?
+Given that `deterministic_rule_catchable` is the largest catchable bucket and `reasoning_was_sound` is its top pattern: is the next workstream a `reasoning_was_sound`-rule expansion (with backtest), or do we accept that variance level and prioritize the next-largest bucket instead?

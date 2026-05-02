@@ -175,12 +175,50 @@ KEYWORD_PATTERNS: dict[str, list[str]] = {
         "volatility penalty applied",
     ],
     "near_miss_variance": [
-        "missed by 1",
-        "missed by 2",
-        "missed by exactly",
+        "missing the t",          # auditor verbatim Step 0: "missing the T15 threshold by"
+        "below the t",            # variant: "1 point below the T15 threshold"
         "by exactly 1",
         "by exactly 2",
+        "by exactly 3",
+        "missed.*by exactly",     # regex-style; see detector update below
         "near-miss",
+        "1 point below",
+        "2 points below",
+        "1-point miss",
+        "2-point miss",
+    ],
+    "expected_variance_lang": [
+        "within normal variance",
+        "within expected variance",
+        "within the expected",
+        "expected miss range",
+        "expected miss rate",
+        "normal variance",
+        "legitimate variance",
+        "legitimate variance outcome",
+        "statistically expected",
+        "expected 20% miss",
+        "expected 25% miss",
+        "expected 30% miss",
+        "miss probability",
+        "30% miss probability",
+        "is within normal",
+        "no systematic error",
+        "no actionable signal",
+    ],
+    "reasoning_was_sound": [
+        "reasoning was sound",
+        "reasoning was conservative",
+        "reasoning was appropriate",
+        "reasoning was correct",
+        "reasoning correctly",
+        "analyst's reasoning correctly",
+        "analyst correctly identified",
+        "analyst correctly applied",
+        "correctly identified",
+        "correctly applied",
+        "structurally correct",
+        "structurally sound",
     ],
     "structural_ceiling": [
         "ceiling miss",
@@ -445,7 +483,7 @@ def section_overview(df: pd.DataFrame, baseline: pd.DataFrame) -> str:
         f"- Null/ungraded `miss_classification` rows excluded: **{n_null}**\n"
         f"- Total graded picks in baseline (denominator for miss rates): **{baseline_total}**\n"
         f"- Audit miss rows successfully joined to picks.json: **{matched} of {total} ({match_pct:.1f}%)**\n"
-        "- Keyword detection: **v2** with negation guards (30-char lookback) and causal-phrase tightening\n"
+        "- Keyword detection: **v3** with negation guards (30-char lookback), causal-phrase tightening, and variance-class coverage expansion (16 pattern groups, +2 over v2)\n"
         "- `model_gap` (legacy alias) and `model_gap_signal` are bucketed identically "
         "as `catchable_with_new_data` but reported separately so audit-time "
         "taxonomy drift remains visible.\n"
@@ -1171,10 +1209,12 @@ def main() -> None:
         "_Read-only descriptive analysis over `data/audit_log.json`. "
         "Decision input for the next major workstream choice. No rules ship "
         "from this report._\n\n"
-        "_v2 enrichment: this report includes confidence-band analysis and "
-        "per-prop/per-player miss rates (computed from picks.json volume "
-        "baseline), and uses tightened keyword detection with negation guards. "
-        "v1 sections retain their structure._\n"
+        "_v3 enrichment: extends v2 (confidence-band analysis, per-prop/per-player "
+        "miss rates from picks.json volume baseline, tightened keyword detection) "
+        "with two new keyword patterns (`expected_variance_lang`, `reasoning_was_sound`) "
+        "calibrated against actual auditor variance-class language. Variance-class "
+        "keyword coverage expanded from ~10% (v2 top pattern) to substantially higher. "
+        "v1 and v2 sections retain their structure._\n"
     )
     report = header + "\n---\n\n" + "\n\n---\n\n".join(sections) + "\n"
     REPORT_OUT.write_text(report)
