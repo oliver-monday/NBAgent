@@ -1,68 +1,46 @@
 {
-  "date": "2026-05-01",
-  "generated_at": "2026-05-01T07:20:17.388197-07:00",
+  "date": "2026-05-02",
+  "generated_at": "2026-05-02T07:12:18.333361-07:00",
   "player_notes": {
-    "jayson tatum": "Expected to play in Game 7 vs. 76ers despite exiting Game 6 with an apparent left leg injury. Monitor for minutes restriction or reduced effectiveness.",
-    "kevin durant": "OUT for Game 6 vs. Lakers (ankle injury). Has missed most of Houston's playoff series; significant boost to Lakers props, shifts usage to other Rockets.",
-    "franz wagner": "OUT for Game 6 vs. Pistons (calf strain), second straight missed game. Increasingly unlikely to return this series; major role/usage shift for Magic teammates."
+    "brandon ingram": "Ruled OUT for Game 6 vs. Cavaliers with right heel inflammation. His absence boosts usage for RJ Barrett and other Raptors \u2014 note: Game 6 already played, monitor status for Game 7.",
+    "luka doncic": "Per Windhorst, Luka is 'not close' to returning. Remains OUT as Lakers advance to face Thunder in Round 2.",
+    "paul george": "Resurgent 23-point performance in Game 6 win; appears healthy and back in form heading into Game 7 vs. Celtics."
   },
   "game_notes": {
-    "HOU vs LAL": "Kevin Durant (OUT) removes Houston's star from Game 6; elevated usage expected for remaining Rockets (Alperen \u015eeng\u00fcn, Jalen Green et al.), and Lakers defenders face lighter load.",
-    "ORL vs DET": "Franz Wagner OUT again (calf), boosting usage for remaining Magic starters/wings in Game 6.",
-    "BOS vs PHI": "Jayson Tatum expected to play Game 7 but left leg injury warrants caution on his points/minutes props. Terrence Shannon Jr. started for Minnesota (injury fill-in) \u2014 not applicable here, but Tatum injury is the key note for this game."
+    "TOR vs CLE": "Brandon Ingram was OUT for Game 6; his availability for Game 7 is uncertain \u2014 if still out, Barrett and other Raptors see elevated role and usage.",
+    "LAL vs OKC": "Luka Doncic confirmed 'not close' to returning, so Lakers will face Thunder without him. LeBron James logged 28 points in Game 6 closeout, remains primary offensive engine."
   },
   "raw_item_count": 50,
   "filtered_item_count": 48,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Jayson Tatum (BOS)",
-      "current_context_fact": "G6 (Apr 30) diary: 'post-game news confirms he exited G6 with an apparent calf injury with MRI results pending, which is the most consequential development of the entire series; his 29 minutes and 3 AST are consistent with the injury limiting his late-game playmaking, and the structural uncertainty around his G7 availability transforms what was a competitive series conclusion into a potentially catastrophic BOS health crisis.'",
-      "conflict": "Shams Charania reports the Celtics expect Jayson Tatum to play in Game 7 vs. the 76ers after exiting with an apparent left leg injury.",
+      "player_or_team": "DET vs ORL series",
+      "current_context_fact": "Game 6 (May 1) \u2014 DET 93, ORL 79 | DET wins series 4-2 \u2014 SERIES CLINCHED (margin 14)",
+      "conflict": "Today's news reports 'Pistons rally from 24 down to beat Magic 93-79 and force Game 7' \u2014 the series is now tied 3-3 with a Game 7 to be played, not a DET series win. The final score (93-79) matches but the series outcome in the context doc is wrong: it says DET won 4-2, but news confirms this was G6 and DET forced Game 7.",
       "urgency": "critical",
-      "suggested_action": "Update the BOS vs PHI series diary and injury landscape to note that Tatum is expected to play in G7 per Shams. Remove 'potentially catastrophic BOS health crisis' framing and replace with 'Tatum expected active for G7; monitor for any minutes restriction or in-game limitation given the calf concern remains present even if he plays.'"
+      "suggested_action": "Update DET vs ORL series record to 3-3. Remove 'SERIES CLINCHED' designation. Add G6 diary entry reflecting the 24-point comeback and upcoming Game 7. The context doc incorrectly recorded G6 as a series clincher for DET when in fact ORL led 3-1 going into G5, DET won G5 and G6 to force G7."
     },
     {
-      "player_or_team": "Kevin Durant (HOU)",
-      "current_context_fact": "LAL vs HOU G5 diary: 'Durant's status (listed DOUBT per injury report) remains the critical HOU variable \u2014 HOU has now won G5 without him, but their ceiling with a healthy Durant is structurally different and has not materialized in this series.' Injury landscape: 'Durant (right knee contusion from practice Apr 16) for G1 \u2014 missed G1, availability for G2 (Apr 21) uncertain.'",
-      "conflict": "Multiple sources (ESPN, Shams Charania) confirm Kevin Durant will NOT play in Game 6 vs. the Lakers due to his lingering ankle injury.",
-      "urgency": "critical",
-      "suggested_action": "Update the LAL vs HOU series diary and injury landscape to confirm Durant is OUT for G6. Note the injury has shifted from 'right knee contusion' framing to 'ankle injury' per latest reports. HOU must again rely on Thompson-Sengun-Smith three-man attack for G6."
-    },
-    {
-      "player_or_team": "Franz Wagner (ORL)",
-      "current_context_fact": "DET vs ORL series diary does not mention Wagner being ruled out for G6. Wagner is listed as having returned from a 48-game absence and appearing in the play-in and early series games.",
-      "conflict": "News confirms the Magic have ruled Franz Wagner OUT for Game 6 vs. the Pistons due to a calf strain, his second straight missed game, with it appearing increasingly unlikely he returns in this series.",
-      "urgency": "critical",
-      "suggested_action": "Add Franz Wagner (ORL) to the active injury concerns section noting he is OUT for G6 with a calf strain and unlikely to return in the series. Update the DET vs ORL series diary G6 preview to reflect ORL will again be without Wagner, significantly altering their offensive and defensive depth."
-    },
-    {
-      "player_or_team": "Ayo Dosunmu (MIN)",
-      "current_context_fact": "DEN vs MIN G6 diary entry (added as part of today's context update) notes Dosunmu was OUT per injury report. However, earlier diary entries describe him as a key contributor (25/3/9 in G3, 43 pts in G4) with no standing injury designation in the injury landscape section.",
-      "conflict": "News confirms Ayo Dosunmu was OUT for Game 6 due to a right calf issue, corroborating the G6 diary note but confirming this as a documented injury (not previously listed in the injury landscape).",
+      "player_or_team": "CLE vs TOR series",
+      "current_context_fact": "Game 6 (May 1) \u2014 TOR 112, CLE 110 | Series tied 3-3 \u2014 TOR FORCES G7 (margin 2, OT)",
+      "conflict": "Today's news confirms 'Barrett hits winning 3-pointer in OT as Raptors force Game 7, beat Cavaliers 112-110' \u2014 this is consistent with the context doc's G6 result. However, the news also references 'All-Star forward Brandon Ingram out with heel inflammation' being ruled out for Game 6, and the context doc's G6 diary already reflects Ingram's absence. No direct conflict on the series result, but the news confirms three Game 7s are upcoming (BOS-PHI, DET-ORL, CLE-TOR), which aligns with context.",
       "urgency": "monitor",
-      "suggested_action": "Add Dosunmu (MIN) to the active injury concerns section with 'right calf issue, OUT for G6' notation. Flag his R2 availability as uncertain \u2014 his role as MIN's secondary creator/emergency engine makes his health a meaningful R2 variable."
+      "suggested_action": "No change needed for series status. Confirm Ingram's heel inflammation status for Game 7 \u2014 news headline 'All-Star forward Brandon Ingram out with heel inflammation' references G6 ruling, but G7 availability remains uncertain and should be flagged as the defining TOR variable."
     },
     {
-      "player_or_team": "Donte DiVincenzo (MIN)",
-      "current_context_fact": "DiVincenzo is not mentioned anywhere in the season context document \u2014 no injury listing, no roster note, no series diary reference.",
-      "conflict": "News reports that Minnesota Timberwolves wore Donte DiVincenzo jerseys ahead of Game 6, with the article noting he suffered a torn Achilles in Game 4 of the first-round series against Denver.",
+      "player_or_team": "LAL vs HOU series",
+      "current_context_fact": "Game 6 (May 1) \u2014 LAL 98, HOU 78 | LAL wins series 4-2 \u2014 SERIES CLINCHED (margin 20)",
+      "conflict": "News confirms 'Lakers close out Rockets in Game 6 rout' with LeBron scoring 28 points in a 98-78 win \u2014 consistent with context doc. No conflict on series result. However, the news headline 'Windy: Luka is not close to returning' directly updates the context doc's note that Luka's 'Realistic: R2 (~May 3-4)' \u2014 Windhorst is now reporting Luka is NOT close to returning for R2 against OKC.",
       "urgency": "critical",
-      "suggested_action": "Add Donte DiVincenzo (MIN) to the season-ending absences / confirmed out section: torn Achilles sustained in G4 vs DEN. He is out for the remainder of the playoffs. Note this as a MIN depth loss heading into R2 alongside Edwards' knee and McDaniels' tendinopathy."
+      "suggested_action": "Update Luka Doncic injury entry: Remove 'Realistic: R2 (~May 3-4)' timeline. Per Windhorst (May 2), Luka 'is not close' to returning for the LAL-OKC series. LAL's R2 offensive architecture remains LeBron-dependent with Reaves as secondary option. The R2 context note about Luka's AST dossier update remains valid but his unavailability for early R2 games should be flagged as near-certain."
     },
     {
-      "player_or_team": "Terrence Shannon Jr. (MIN)",
-      "current_context_fact": "Terrence Shannon Jr. is not mentioned anywhere in the season context document.",
-      "conflict": "News reports that Terrence Shannon Jr. scored 24 points in a 'surprise start' for Minnesota in their Game 6 clincher vs. Denver, indicating he started in place of injured/absent players.",
+      "player_or_team": "MIN (Terrence Shannon Jr.)",
+      "current_context_fact": "The context doc's DEN vs MIN G6 diary entry describes McDaniels 32/10/3 leading MIN, with Randle 18/4/5, Gobert 10/13/8. No mention of Terrence Shannon Jr. starting.",
+      "conflict": "News headline states 'Jaden McDaniels leads Timberwolves on both ends of the court in 110-98 clincher to oust Nuggets in 6' and the description mentions 'Terrence Shannon Jr. scored 24 points in a surprise start for the injury-ravaged Minnesota' \u2014 Shannon Jr. started and scored 24 points, which is not reflected in the context doc's G6 diary.",
       "urgency": "monitor",
-      "suggested_action": "Add a note to the DEN vs MIN series diary and MIN roster context that Terrence Shannon Jr. started and scored 24 points in the G6 clincher. Heading into R2, he may be a rotation/starting candidate given MIN's injury attrition (Edwards OUT, Dosunmu OUT, DiVincenzo torn Achilles)."
-    },
-    {
-      "player_or_team": "BOS vs PHI series status",
-      "current_context_fact": "G6 diary states 'PHI 106, BOS 93 | Series tied 3-3 \u2014 PHI FORCES G7 (margin 13)' and 'G7 key: Tatum's calf injury MRI outcome is the defining series variable.'",
-      "conflict": "News confirms the series score and G7 setup are accurate, but Tatum is now expected to play per Shams \u2014 removing the 'defining variable' uncertainty around his availability. The context doc's G7 framing is predicated on Tatum's status being unknown, which is now resolved toward 'expected to play.'",
-      "urgency": "critical",
-      "suggested_action": "Update G7 key section in the BOS vs PHI diary: Tatum expected to play per Shams report. Shift G7 framing from 'Tatum availability is THE variable' to 'Tatum expected active but potential minutes restriction and calf management remain watch items; Embiid's conditioning for his fourth game back is now the primary PHI variable.'"
+      "suggested_action": "Update MIN G6 diary to include Terrence Shannon Jr.'s 24-point surprise start. This confirms MIN's injury depth (Edwards OUT) forced a roster reshuffling beyond what was documented. Note Shannon Jr. as a potential R2 contributor if Edwards remains out."
     }
   ],
   "staleness_flags": []
