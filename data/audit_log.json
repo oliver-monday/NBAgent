@@ -6854,5 +6854,97 @@
       "hit_rate_pct": 94.7,
       "delta_vs_overall_pp": 3.0
     }
+  },
+  {
+    "date": "2026-05-02",
+    "total_picks": 11,
+    "voided_picks": 4,
+    "hits": 10,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 90.9,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 0,
+        "hit_rate_pct": 0.0
+      },
+      "AST": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Maxey PTS T20 iron_floor held at 88% and hit by 10 points (30 actual): the combination of 6/6 series hit rate, 9/10 H2H, and iron_floor tag correctly identified an impenetrable scoring floor for PHI's primary engine in a Game 7 elimination context. The LATE_FADER -5% and dossier -3pp advisories were appropriate conservative adjustments but did not prevent selection of a structurally sound pick.",
+      "Tatum OUT lineup amendment correctly elevated BOS picks across the board: Brown PTS revised up to 82% (hit 33), Brown 3PM revised up to 86% (hit 3), Pritchard PTS revised up to 87% (hit 13), Pritchard AST revised up to 83% (hit 7), Embiid PTS revised up to 80% (hit 34), Edgecombe PTS revised up to 79% (hit 23), Edgecombe AST revised up to 79% (hit 4). The afternoon amendment agent correctly identified the usage redistribution signal on a high_usage primary_creator absence and applied directionally correct upward revisions across all affected players.",
+      "Brown PTS T20 iron_floor + BOOST designation withstood a FG_MARGIN_NEG step-down from T25: the mandatory cascade to T20 was the correct safety mechanism, and Brown's actual 33-point output validates that T20 was a structurally safe floor despite his negative FG margin trend. The BOOST designation and iron_floor tag correctly anchored the selection.",
+      "Embiid PTS T15 hit by a massive margin (34 actual vs 15 threshold) despite SHORT_SAMPLE:3g penalties and FG_COLD cascades: the walk-down architecture \u2014 cascading from T25 through T20/T15 to an attempted T10 step blocked by no available market, then applying confidence penalties in lieu of the step \u2014 produced a well-calibrated 74% pick that hit cleanly. The 3/3 series iron floor at T15 was the decisive grounding signal.",
+      "George PTS T10 step-down from T15 via FG_MARGIN_THIN validated as a correct safety mechanism: George scored 13 actual vs T10 threshold, a clean hit. Had the analyst remained at T15 (the primary qualifying tier), the pick would still have hit (13 > 15 is false \u2014 13 < 15), meaning the step-down to T10 was what preserved the hit. The FG_MARGIN_THIN cascade is correctly calibrated for perimeter-dependent scorers in playoff competitive game contexts."
+    ],
+    "lessons": [
+      "Paul George REB T4 missed with 3 actual vs 4 threshold in 42 full minutes (PHI won by 9, CLOSE game context): the post-game news confirms no injury or external factor \u2014 George simply had a low-rebound game despite full participation. The 80% overall hit rate and 5/6 series data supported the pick, and the playoff REB BOOST dossier signal (+2.2 per game) was cited affirmatively. The miss is classified variance. In CLOSE game scripts, George's rebounding role is not structurally elevated; a 42-minute road game where PHI won by 9 does not guarantee rebounding opportunities \u2014 his REB output appears sensitive to possession count and defensive orientation rather than minutes alone."
+    ],
+    "recommendations": [
+      "Paul George REB dossier signal calibration: the playoff REB BOOST (+2.2 per game) for George was cited as a positive confirming signal, but his series-wide REB data (5/6 at T4) masks a meaningful game-to-game variance in his rebounding output. Before selecting George REB T4+ in future playoff games, verify his series rebounding distribution \u2014 if any series games produced 1-2 rebounds, the T4 floor is not structurally reliable despite the 5/6 series rate. A 5/6 hit rate at T4 can coexist with periodic collapses to 2-3 rebounds that are not variance outliers but a consistent tail risk. Consider requiring 9/10 hit rate OR iron_floor confirmation before selecting George REB T4 in future playoff series against tough opponents rather than relying on the 80% overall and 5/6 series rate alone.",
+      "Single-game REB variance guard for perimeter forwards in CLOSE elimination games: this miss illustrates that perimeter forwards (George archetype \u2014 6'8\", primarily a wing scorer/spacer) can underperform REB T4 in close elimination games where defensive rebounding is contested and pace is managed. The PHI suppressor was active in this game. When the PHI suppressor environment combines with a CLOSE game script (margin < 10) and the player is a wing scorer rather than a dedicated rebounder, apply an additional -5pp advisory to REB T4 picks for non-primary rebounders, regardless of their playoff REB dossier direction.",
+      "No rule changes warranted for PTS, AST, or 3PM selection logic on this slate: all six PTS picks, all three AST picks, and the single 3PM pick hit cleanly. The tier-walk architecture, iron_floor identification, FG_COLD cascade, SHORT_SAMPLE penalties, and LATE_FADER adjustments all produced correct outcomes. The 70-75% confidence band overperformed at 100% (6/6) and the 86%+ band hit at 100% (1/1). Do not tighten PTS, AST, or 3PM thresholds based on this slate."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Paul George",
+        "prop_type": "REB",
+        "pick_value": 4,
+        "actual_value": 3,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 GAME CONTEXT: PHI @ BOS final 109-100, PHI won by 9 \u2014 CLOSE game script. Neither blowout nor garbage-time factors apply; full minutes expected and confirmed (42 minutes played per post-game news). STEP 1 \u2014 ACTIVITY: George played 42 full minutes per post-game news, scored points (confirmed active), 3 rebounds recorded. Not a DNP or injury exit. STEP 2 \u2014 CLASSIFICATION: Post-game news explicitly states 'No injury or external factor explains the miss; it was simply a low-rebound performance in an otherwise full outing.' injury_status_at_check = NOT_LISTED, no injury_exit event. Classification: variance. STEP 3 \u2014 REASONING CRITIQUE: The analyst's reasoning cited 80% overall, 5/6 series at T4, and the playoff REB BOOST (+2.2 per game dossier) as confirming signals. These are all legitimate data points. The reasoning correctly noted the T4 minimum tier structure and proj_min \u2265 30 suspending the min_floor gate. No analytical error is present in the selection logic \u2014 the available data fully supported T4. The miss reflects George landing on the unfavorable tail of his distribution in a single game. STEP 4 \u2014 HIT RATE: 8/10 overall and 5/6 series (83%) are both solid hit rates that statistically supported the pick. A miss on an 8/10 pick occurs roughly 20% of the time by definition; one such miss across an 11-pick slate is within normal expectation. STEP 5 \u2014 TIER WALK: The tier walk correctly identified T6 as failing (1/6 series) and validated T4 on hit rate merit (80% overall, 5/6 series). The T4 minimum tier exception was correctly applied. No tier_skip_error or data_conflict is present \u2014 T4 was the appropriate and only viable tier. STEP 6 \u2014 AMENDMENT: lineup_update direction = 'up', revised_confidence_pct = 81%, reasoning cited Tatum OUT removing a perimeter rebounder. Amendment flagged upside (revised to 81%) but pick missed. The amendment's directional signal was reasonable given Tatum's absence but could not override the fundamental variance in George's per-game rebounding output. The amendment does not represent an analytical failure \u2014 the pick missed due to game-to-game REB variance, not a structural error in the upward revision."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 7,
+      "hits": 7,
+      "misses": 0,
+      "hit_rate_pct": 100.0,
+      "delta_vs_overall_pp": 9.1
+    }
   }
 ]

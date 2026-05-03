@@ -6754,5 +6754,133 @@
     "would_have_hit": false,
     "skip_verdict": "correct_skip",
     "skip_verdict_notes": "Actual 3.0 < tier 6"
+  },
+  {
+    "date": "2026-05-02",
+    "player_name": "Joel Embiid",
+    "team": "PHI",
+    "opponent": "BOS",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "reb_floor_skip",
+    "rule_context": {
+      "player_name": "Joel Embiid",
+      "prop_type": "REB",
+      "tier_considered": 6,
+      "third_lowest_l10": 4,
+      "pick_value_attempted": 6,
+      "reason": "25th-percentile gate fires: pick_value 6 not strictly less than 3rd-lowest 4; SHORT_SAMPLE:3g compounds; T4 has no FanDuel market available to step to"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-02",
+    "player_name": "Joel Embiid",
+    "team": "PHI",
+    "opponent": "BOS",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_name": "Joel Embiid",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "raw_avgs_ast": 7.3,
+      "opp_today": "tough",
+      "reason": "VOLATILE + AST T6 block: VOLATILE tag present and raw_avgs AST < 8.0 (series avg 7.3, secondary creator per rule). Hard skip fires regardless of series 3/3 hit rate."
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-02",
+    "player_name": "Jaylen Brown",
+    "team": "BOS",
+    "opponent": "PHI",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Jaylen Brown",
+      "prop_type": "REB",
+      "tier_considered": 4,
+      "reason": "VOLATILE on REB, series shows recent G6 data (Brown had 1 REB in 28 min in a PHI-blowout-win game per rolling summary). Post-miss REB slump -5% + VOLATILE -3% brings confidence below 72% REB floor. PHI suppressor active on road rebounding context."
+    },
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-05-02",
+    "player_name": "Neemias Queta",
+    "team": "BOS",
+    "opponent": "PHI",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Neemias Queta",
+      "prop_type": "REB",
+      "tier_considered": 6,
+      "base_confidence": 75,
+      "penalties_applied": "VOLATILE -3%, post_miss_slump -5%",
+      "final_confidence": 67,
+      "floor_required": 72,
+      "reason": "Post-miss REB slump rule fires (2 REB in G6 = miss); VOLATILE deduction; combined penalties bring confidence to 67%, below 72% REB minimum floor"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-02",
+    "player_name": "Jayson Tatum",
+    "team": "BOS",
+    "opponent": "PHI",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Jayson Tatum",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "Series 4/6=67% fails 70% hit rate threshold; VOLATILE+AST T6 block would apply -8% penalty if series qualified \u2014 skip on merit first"
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 6"
+  },
+  {
+    "date": "2026-05-02",
+    "player_name": "Paul George",
+    "team": "PHI",
+    "opponent": "BOS",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Paul George",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "LATE_FADER G7 context + vs_tough=69% at T2 borderline; non-iron-floor 80% cap + tough DvP advisory. Overall=80% at T1 is best qualifying tier. T2 has vs_tough=69% below floor. Emitting T1 pick separately if qualifying \u2014 actually T1: overall=80% but LATE_FADER applies to 3PM? LATE_FADER only applies to PTS. No LATE_FADER on 3PM. T1: series 6/6, overall 80%, trend=up. Non-iron-floor cap 80%. 80% \u2265 75% floor. Should emit T1 pick not skip T2."
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
   }
 ]
