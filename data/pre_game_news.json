@@ -1,46 +1,71 @@
 {
-  "date": "2026-05-02",
-  "generated_at": "2026-05-02T07:12:18.333361-07:00",
+  "date": "2026-05-03",
+  "generated_at": "2026-05-03T07:11:45.820062-07:00",
   "player_notes": {
-    "brandon ingram": "Ruled OUT for Game 6 vs. Cavaliers with right heel inflammation. His absence boosts usage for RJ Barrett and other Raptors \u2014 note: Game 6 already played, monitor status for Game 7.",
-    "luka doncic": "Per Windhorst, Luka is 'not close' to returning. Remains OUT as Lakers advance to face Thunder in Round 2.",
-    "paul george": "Resurgent 23-point performance in Game 6 win; appears healthy and back in form heading into Game 7 vs. Celtics."
+    "brandon ingram": "Ruled out with right heel inflammation; availability for Game 7 vs. Cavaliers is uncertain \u2014 monitor status closely before betting Raptors props.",
+    "rj barrett": "Hit the game-winning 3 in OT in Game 6; high-confidence role as primary scorer/closer in Game 7 vs. Cavaliers with Ingram potentially out."
   },
   "game_notes": {
-    "TOR vs CLE": "Brandon Ingram was OUT for Game 6; his availability for Game 7 is uncertain \u2014 if still out, Barrett and other Raptors see elevated role and usage.",
-    "LAL vs OKC": "Luka Doncic confirmed 'not close' to returning, so Lakers will face Thunder without him. LeBron James logged 28 points in Game 6 closeout, remains primary offensive engine."
+    "TOR vs CLE": "Brandon Ingram (heel inflammation) is questionable/likely out for Game 7, significantly elevating Barrett's usage and boosting props for other Raptors role players.",
+    "ORL vs DET": "Franz Wagner ruled out again (right calf strain) for Game 7 vs. Pistons; Orlando's offensive ceiling limited without him."
   },
-  "raw_item_count": 50,
-  "filtered_item_count": 48,
+  "raw_item_count": 47,
+  "filtered_item_count": 46,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "DET vs ORL series",
+      "player_or_team": "BOS vs PHI \u2014 Series Result & G7 Score",
+      "current_context_fact": "Game 7 (May 2) \u2014 PHI 109, BOS 100 | PHI wins series 4-3 \u2014 PHI ADVANCES (margin 9)",
+      "conflict": "Multiple news items report the final score as PHI 109, BOS 100 is consistent, BUT several headlines specifically state '109-100' as the G7 final \u2014 one headline reads 'Joel Embiid leads 76ers to 109-100 Game 7 win over Celtics.' The context doc records the score as PHI 109, BOS 100 (margin 9), which is consistent. No conflict on the score itself. However, the context doc's G7 entry was written in advance of confirmation \u2014 news confirms PHI did advance 4-3. This is consistent with context.",
+      "urgency": "monitor",
+      "suggested_action": "No change needed on series result or score \u2014 context doc G7 entry is consistent with news. Confirm only that the G7 diary entry accurately reflects PHI 109, BOS 100."
+    },
+    {
+      "player_or_team": "DET vs ORL \u2014 Series Result (G6 vs G7)",
       "current_context_fact": "Game 6 (May 1) \u2014 DET 93, ORL 79 | DET wins series 4-2 \u2014 SERIES CLINCHED (margin 14)",
-      "conflict": "Today's news reports 'Pistons rally from 24 down to beat Magic 93-79 and force Game 7' \u2014 the series is now tied 3-3 with a Game 7 to be played, not a DET series win. The final score (93-79) matches but the series outcome in the context doc is wrong: it says DET won 4-2, but news confirms this was G6 and DET forced Game 7.",
+      "conflict": "Today's news reports 'Pistons erase 24-point deficit to stun Magic and force Game 7' and 'Pistons stun ice-cold Magic with furious 2nd-half rally, force Game 7' and 'Cade Cunningham scored 32 points...Detroit Pistons pulled off an incredible rally...beating the Orlando Magic 93-79 to force a Game 7.' Additionally, 'Pistons, Magic set for game 7 matchup' confirms a G7 is scheduled. The context doc states DET won the series 4-2 in G6, but news confirms G6 was a DET win that FORCED G7, not a series clincher \u2014 meaning the series is now 3-3, not over.",
       "urgency": "critical",
-      "suggested_action": "Update DET vs ORL series record to 3-3. Remove 'SERIES CLINCHED' designation. Add G6 diary entry reflecting the 24-point comeback and upcoming Game 7. The context doc incorrectly recorded G6 as a series clincher for DET when in fact ORL led 3-1 going into G5, DET won G5 and G6 to force G7."
+      "suggested_action": "Update the DET vs ORL series diary: G6 was DET 93, ORL 79 \u2014 DET forces G7 (series tied 3-3), NOT series clinched. Remove 'DET wins series 4-2' designation. Add G7 as a scheduled game (today, May 3). Update the series status in the bracket from DET advancing to series tied 3-3. Also update the playoff bracket/standings section to reflect that neither DET nor ORL has advanced yet."
     },
     {
-      "player_or_team": "CLE vs TOR series",
+      "player_or_team": "CLE vs TOR \u2014 Series Status (G6 vs G7)",
       "current_context_fact": "Game 6 (May 1) \u2014 TOR 112, CLE 110 | Series tied 3-3 \u2014 TOR FORCES G7 (margin 2, OT)",
-      "conflict": "Today's news confirms 'Barrett hits winning 3-pointer in OT as Raptors force Game 7, beat Cavaliers 112-110' \u2014 this is consistent with the context doc's G6 result. However, the news also references 'All-Star forward Brandon Ingram out with heel inflammation' being ruled out for Game 6, and the context doc's G6 diary already reflects Ingram's absence. No direct conflict on the series result, but the news confirms three Game 7s are upcoming (BOS-PHI, DET-ORL, CLE-TOR), which aligns with context.",
+      "conflict": "News confirms 'Cavaliers, Raptors set for game 7 matchup' and RJ Barrett hit a winning 3-pointer in OT for TOR's G6 win. The context doc correctly records TOR forcing G7 via G6 OT win. However, the context doc's G6 score (TOR 112, CLE 110) and the news ('Barrett hits winning 3-pointer in OT as Raptors force Game 7, beat Cavaliers 112-110') are consistent. No conflict \u2014 G7 is today as the context doc implies. The context doc appears correct that the series is 3-3 heading into G7 today.",
       "urgency": "monitor",
-      "suggested_action": "No change needed for series status. Confirm Ingram's heel inflammation status for Game 7 \u2014 news headline 'All-Star forward Brandon Ingram out with heel inflammation' references G6 ruling, but G7 availability remains uncertain and should be flagged as the defining TOR variable."
+      "suggested_action": "No change needed on series status \u2014 context is consistent with news. Confirm G7 is scheduled for today (May 3) as implied."
     },
     {
-      "player_or_team": "LAL vs HOU series",
-      "current_context_fact": "Game 6 (May 1) \u2014 LAL 98, HOU 78 | LAL wins series 4-2 \u2014 SERIES CLINCHED (margin 20)",
-      "conflict": "News confirms 'Lakers close out Rockets in Game 6 rout' with LeBron scoring 28 points in a 98-78 win \u2014 consistent with context doc. No conflict on series result. However, the news headline 'Windy: Luka is not close to returning' directly updates the context doc's note that Luka's 'Realistic: R2 (~May 3-4)' \u2014 Windhorst is now reporting Luka is NOT close to returning for R2 against OKC.",
+      "player_or_team": "Franz Wagner (ORL)",
+      "current_context_fact": "No specific Wagner injury note in the playoff injury landscape beyond 'Wagner and Suggs: back from extended absences (Wagner 48 games, Suggs 25 games)' in pre-series intel. The series diary notes Wagner played in early games.",
+      "conflict": "News reports 'Magic rule Franz Wagner out again for Game 7 vs. Pistons' with a right calf strain. This is a new injury status not reflected in the context doc \u2014 Wagner is OUT for G7.",
       "urgency": "critical",
-      "suggested_action": "Update Luka Doncic injury entry: Remove 'Realistic: R2 (~May 3-4)' timeline. Per Windhorst (May 2), Luka 'is not close' to returning for the LAL-OKC series. LAL's R2 offensive architecture remains LeBron-dependent with Reaves as secondary option. The R2 context note about Luka's AST dossier update remains valid but his unavailability for early R2 games should be flagged as near-certain."
+      "suggested_action": "Add Franz Wagner (ORL) to the ACTIVE WITH DOCUMENTED CONCERNS or CONFIRMED OUT section of the Playoff Injury Landscape: OUT for G7 vs DET with right calf strain. Update the DET vs ORL series diary to note Wagner's absence as a key variable for G7."
     },
     {
-      "player_or_team": "MIN (Terrence Shannon Jr.)",
-      "current_context_fact": "The context doc's DEN vs MIN G6 diary entry describes McDaniels 32/10/3 leading MIN, with Randle 18/4/5, Gobert 10/13/8. No mention of Terrence Shannon Jr. starting.",
-      "conflict": "News headline states 'Jaden McDaniels leads Timberwolves on both ends of the court in 110-98 clincher to oust Nuggets in 6' and the description mentions 'Terrence Shannon Jr. scored 24 points in a surprise start for the injury-ravaged Minnesota' \u2014 Shannon Jr. started and scored 24 points, which is not reflected in the context doc's G6 diary.",
+      "player_or_team": "Jayson Tatum (BOS) \u2014 G7 Status",
+      "current_context_fact": "G7 (May 2): Tatum DNP (knee injury) \u2014 context doc records this correctly in the G7 diary entry as 'Tatum DNP (knee injury).' The G6 entry notes 'Tatum's calf injury MRI outcome is the defining series variable' and he 'exited G6 with an apparent calf injury.'",
+      "conflict": "News confirms 'Celtics rule Jayson Tatum out for Game 7 with knee stiffness' \u2014 the news uses 'knee stiffness' while the context doc refers to a 'calf injury' from G6 and then 'knee injury' for the DNP. The G7 ruling is consistent (DNP confirmed), but the injury description in context (calf in G6, knee in G7) may reflect two separate issues or reclassification. The series is over (PHI advanced), so this is lower urgency.",
       "urgency": "monitor",
-      "suggested_action": "Update MIN G6 diary to include Terrence Shannon Jr.'s 24-point surprise start. This confirms MIN's injury depth (Edwards OUT) forced a roster reshuffling beyond what was documented. Note Shannon Jr. as a potential R2 contributor if Edwards remains out."
+      "suggested_action": "Clarify in the injury landscape and series diary that Tatum's G7 DNP was officially listed as 'left knee stiffness' per the injury report, which may be distinct from or related to the G6 calf injury. Series is over so this is primarily a record-keeping correction."
+    },
+    {
+      "player_or_team": "PHI vs NYK \u2014 R2 Matchup Confirmed",
+      "current_context_fact": "The context doc's R2 bracket is not explicitly populated yet \u2014 the R1 results section shows PHI advancing but no R2 bracket is listed.",
+      "conflict": "News confirms 'Brunson and the Knicks host Philadelphia to begin second round' and 'Joel Embiid asks 76ers fans not to sell tickets ahead of matchup vs. Knicks' \u2014 PHI vs NYK is confirmed as an R2 East matchup.",
+      "urgency": "monitor",
+      "suggested_action": "Add R2 East bracket entry: (3) NYK vs (7) PHI \u2014 series begins with NYK hosting. Update playoff bracket section with all confirmed R2 matchups."
+    },
+    {
+      "player_or_team": "MIN vs SAS \u2014 R2 Matchup Confirmed",
+      "current_context_fact": "Context doc shows SAS advancing (4-1 over POR) and MIN advancing (4-2 over DEN) but R2 bracket is not explicitly listed.",
+      "conflict": "News confirms 'Randle and the Timberwolves visit San Antonio to begin second round' \u2014 MIN vs SAS is confirmed as an R2 West matchup with SAS hosting.",
+      "urgency": "monitor",
+      "suggested_action": "Add R2 West bracket entry: (2) SAS vs (6) MIN \u2014 series begins with SAS hosting. Update playoff bracket section."
+    },
+    {
+      "player_or_team": "Luka Doncic (LAL) \u2014 Return Timeline",
+      "current_context_fact": "Playoff Injury Landscape states: 'Realistic: R2 (~May 3-4). Without Doncic + Reaves, LeBron is LAL's sole offensive engine.'",
+      "conflict": "News reports Brian Windhorst saying Luka 'is not close' to returning, following the Lakers' G6 win over the Rockets. This directly contradicts the context doc's 'Realistic"
     }
   ],
   "staleness_flags": []
