@@ -3839,5 +3839,226 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-05-03",
+    "generated_at": "2026-05-03T11:35:29.067649-07:00",
+    "triggered_by": "Brandon Ingram",
+    "triggered_by_team": "TOR",
+    "side": "opponent",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 100,
+        "trend": "down",
+        "volatility": "consistent",
+        "market_implied_pct": 96.15,
+        "market_odds": -2500
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 81.82,
+        "market_odds": -450,
+        "morning_tier": 15,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T2 100% [down] (mkt 96%, edge +4pp); PTS T20 70% [down] (mkt 82%, edge -12pp)",
+    "best_edge_pp": 3.8,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-03",
+    "generated_at": "2026-05-03T11:35:29.067649-07:00",
+    "triggered_by": "Brandon Ingram",
+    "triggered_by_team": "TOR",
+    "side": "opponent",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 83.33,
+        "market_odds": -500
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 68.25,
+        "market_odds": -215,
+        "morning_tier": 10,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T2 90% [stable] (mkt 83%, edge +7pp); PTS T15 75% [stable] (mkt 68%, edge +7pp)",
+    "best_edge_pp": 6.8,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-03",
+    "generated_at": "2026-05-03T11:35:29.067649-07:00",
+    "triggered_by": "Brandon Ingram",
+    "triggered_by_team": "TOR",
+    "side": "opponent",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 85.71,
+        "market_odds": -600
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 70.59,
+        "market_odds": -240
+      }
+    },
+    "upgrade_tiers": {
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 81.48,
+        "market_odds": -440,
+        "morning_tier": 1,
+        "morning_confidence_pct": 75
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 90% [stable] (mkt 86%, edge +4pp); REB T4 70% [up] (mkt 71%, edge -1pp); 3PM T2 85% [down] (mkt 81%, edge +4pp)",
+    "best_edge_pp": 4.3,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-03",
+    "generated_at": "2026-05-03T11:35:29.067649-07:00",
+    "triggered_by": "Brandon Ingram",
+    "triggered_by_team": "TOR",
+    "side": "opponent",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 76.19,
+        "market_odds": -320
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T6 75% [down] (mkt 76%, edge -1pp)",
+    "best_edge_pp": -1.2,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-03",
+    "generated_at": "2026-05-03T11:35:29.067649-07:00",
+    "triggered_by": "Brandon Ingram",
+    "triggered_by_team": "TOR",
+    "side": "teammate",
+    "player_name": "RJ Barrett",
+    "team": "TOR",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 90,
+        "trend": "up",
+        "volatility": "consistent",
+        "market_implied_pct": 93.33,
+        "market_odds": -1400
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T2 90% [up] (mkt 93%, edge -3pp)",
+    "best_edge_pp": -3.3,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-03",
+    "generated_at": "2026-05-03T11:35:29.067649-07:00",
+    "triggered_by": "Brandon Ingram",
+    "triggered_by_team": "TOR",
+    "side": "teammate",
+    "player_name": "Scottie Barnes",
+    "team": "TOR",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 88.24,
+        "market_odds": -750
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 70% [up] (mkt 88%, edge -18pp)",
+    "best_edge_pp": -18.2,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
