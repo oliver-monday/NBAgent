@@ -4060,5 +4060,266 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-05-04",
+    "generated_at": "2026-05-04T12:06:42.134276-07:00",
+    "triggered_by": "Anthony Edwards",
+    "triggered_by_team": "MIN",
+    "side": "opponent",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 50.5,
+        "market_odds": -102
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 79.59,
+        "market_odds": -390
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 61.54,
+        "market_odds": -160
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (blowout_secondary_scorer)",
+    "reasoning": "PTS T10 80% [stable] (mkt 50%, edge +30pp); AST T2 85% [down] (mkt 80%, edge +5pp); 3PM T1 70% [down] (mkt 62%, edge +8pp); skipped this morning (blowout_secondary_scorer)",
+    "best_edge_pp": 29.5,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-04",
+    "generated_at": "2026-05-04T12:06:42.134276-07:00",
+    "triggered_by": "Anthony Edwards",
+    "triggered_by_team": "MIN",
+    "side": "teammate",
+    "player_name": "Jaden McDaniels",
+    "team": "MIN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 78.72,
+        "market_odds": -370
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T2 75% [up] (mkt 79%, edge -4pp)",
+    "best_edge_pp": -3.7,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-04",
+    "generated_at": "2026-05-04T12:06:42.134276-07:00",
+    "triggered_by": "Anthony Edwards",
+    "triggered_by_team": "MIN",
+    "side": "teammate",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 68.75,
+        "market_odds": -220
+      },
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 69.23,
+        "market_odds": -225
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 81.13,
+        "market_odds": -430,
+        "morning_tier": 10,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (ast_hard_gate)",
+    "reasoning": "REB T6 70% [up] (mkt 69%, edge +1pp); AST T4 75% [stable] (mkt 69%, edge +6pp); PTS T15 80% [stable] (mkt 81%, edge -1pp); skipped this morning (ast_hard_gate)",
+    "best_edge_pp": 5.8,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-04",
+    "generated_at": "2026-05-04T12:06:42.134276-07:00",
+    "triggered_by": "Anthony Edwards",
+    "triggered_by_team": "MIN",
+    "side": "teammate",
+    "player_name": "Rudy Gobert",
+    "team": "MIN",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 10,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 67.21,
+        "market_odds": -205
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T10 70% [stable] (mkt 67%, edge +3pp)",
+    "best_edge_pp": 2.8,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-04",
+    "generated_at": "2026-05-04T12:06:42.134276-07:00",
+    "triggered_by": "Anthony Edwards",
+    "triggered_by_team": "MIN",
+    "side": "opponent",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 84.62,
+        "market_odds": -550
+      },
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 76.19,
+        "market_odds": -320
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 90,
+        "trend": "up",
+        "volatility": "moderate",
+        "market_implied_pct": 80.0,
+        "market_odds": -400
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 69.23,
+        "market_odds": -225,
+        "morning_tier": 10,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "REB T4 70% [down] (mkt 85%, edge -15pp); AST T6 75% [down] (mkt 76%, edge -1pp); 3PM T1 90% [up] (mkt 80%, edge +10pp); PTS T15 90% [stable] (mkt 69%, edge +21pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 20.8,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-04",
+    "generated_at": "2026-05-04T12:06:42.134276-07:00",
+    "triggered_by": "Anthony Edwards",
+    "triggered_by_team": "MIN",
+    "side": "opponent",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 10,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 75.61,
+        "market_odds": -310
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 86.11,
+        "market_odds": -620
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 88.51,
+        "market_odds": -770,
+        "morning_tier": 15,
+        "morning_confidence_pct": 71
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "REB T10 70% [down] (mkt 76%, edge -6pp); AST T2 70% [down] (mkt 86%, edge -16pp); PTS T20 75% [stable] (mkt 89%, edge -14pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -5.6,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
