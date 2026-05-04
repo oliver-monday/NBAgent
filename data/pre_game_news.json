@@ -1,71 +1,57 @@
 {
-  "date": "2026-05-03",
-  "generated_at": "2026-05-03T07:11:45.820062-07:00",
+  "date": "2026-05-04",
+  "generated_at": "2026-05-04T08:12:03.092303-07:00",
   "player_notes": {
-    "brandon ingram": "Ruled out with right heel inflammation; availability for Game 7 vs. Cavaliers is uncertain \u2014 monitor status closely before betting Raptors props.",
-    "rj barrett": "Hit the game-winning 3 in OT in Game 6; high-confidence role as primary scorer/closer in Game 7 vs. Cavaliers with Ingram potentially out."
+    "anthony edwards": "Listed as questionable for Game 1 vs. Spurs after being cleared for on-court activities. Sources indicate he could return as early as Games 3-4 if he misses Game 1 \u2014 assume reduced role or absence tonight; fade all ANT props until official status confirmed."
   },
   "game_notes": {
-    "TOR vs CLE": "Brandon Ingram (heel inflammation) is questionable/likely out for Game 7, significantly elevating Barrett's usage and boosting props for other Raptors role players.",
-    "ORL vs DET": "Franz Wagner ruled out again (right calf strain) for Game 7 vs. Pistons; Orlando's offensive ceiling limited without him."
+    "MIN vs SAS": "Anthony Edwards questionable for Game 1; if out, significant usage shifts expected for other Wolves perimeter players (Conley, McDaniels, etc.)."
   },
-  "raw_item_count": 47,
-  "filtered_item_count": 46,
+  "raw_item_count": 50,
+  "filtered_item_count": 49,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "BOS vs PHI \u2014 Series Result & G7 Score",
-      "current_context_fact": "Game 7 (May 2) \u2014 PHI 109, BOS 100 | PHI wins series 4-3 \u2014 PHI ADVANCES (margin 9)",
-      "conflict": "Multiple news items report the final score as PHI 109, BOS 100 is consistent, BUT several headlines specifically state '109-100' as the G7 final \u2014 one headline reads 'Joel Embiid leads 76ers to 109-100 Game 7 win over Celtics.' The context doc records the score as PHI 109, BOS 100 (margin 9), which is consistent. No conflict on the score itself. However, the context doc's G7 entry was written in advance of confirmation \u2014 news confirms PHI did advance 4-3. This is consistent with context.",
-      "urgency": "monitor",
-      "suggested_action": "No change needed on series result or score \u2014 context doc G7 entry is consistent with news. Confirm only that the G7 diary entry accurately reflects PHI 109, BOS 100."
-    },
-    {
-      "player_or_team": "DET vs ORL \u2014 Series Result (G6 vs G7)",
-      "current_context_fact": "Game 6 (May 1) \u2014 DET 93, ORL 79 | DET wins series 4-2 \u2014 SERIES CLINCHED (margin 14)",
-      "conflict": "Today's news reports 'Pistons erase 24-point deficit to stun Magic and force Game 7' and 'Pistons stun ice-cold Magic with furious 2nd-half rally, force Game 7' and 'Cade Cunningham scored 32 points...Detroit Pistons pulled off an incredible rally...beating the Orlando Magic 93-79 to force a Game 7.' Additionally, 'Pistons, Magic set for game 7 matchup' confirms a G7 is scheduled. The context doc states DET won the series 4-2 in G6, but news confirms G6 was a DET win that FORCED G7, not a series clincher \u2014 meaning the series is now 3-3, not over.",
+      "player_or_team": "Anthony Edwards (MIN)",
+      "current_context_fact": "Anthony Edwards \u2014 G5: DNP \u2014 OUT per injury report, left knee. Now confirmed OUT for G5 with severity still unclear. Treat as a primary injury concern for G6; his availability and any potential minutes restriction are the most critical variables in the DEN-MIN series.",
+      "conflict": "Today's news reports Edwards was cleared for on-court activities and is listed as QUESTIONABLE for Game 1 of the R2 series vs. SAS (May 4). A separate report says there is 'growing optimism he could return as early as Games 3 or 4,' implying he will miss at least the start of the R2 series but may return mid-series.",
       "urgency": "critical",
-      "suggested_action": "Update the DET vs ORL series diary: G6 was DET 93, ORL 79 \u2014 DET forces G7 (series tied 3-3), NOT series clinched. Remove 'DET wins series 4-2' designation. Add G7 as a scheduled game (today, May 3). Update the series status in the bracket from DET advancing to series tied 3-3. Also update the playoff bracket/standings section to reflect that neither DET nor ORL has advanced yet."
+      "suggested_action": "Update Edwards' status to QUESTIONABLE for R2 Game 1 vs. SAS. He has been cleared for on-court activities. Current expectation is he misses the start of the series with optimism for a Games 3-4 return. Do not assume DNP for all of R2 \u2014 treat as day-to-day with a probable mid-series return timeline. Remove the DEN-MIN series framing and context to the SAS matchup."
     },
     {
-      "player_or_team": "CLE vs TOR \u2014 Series Status (G6 vs G7)",
-      "current_context_fact": "Game 6 (May 1) \u2014 TOR 112, CLE 110 | Series tied 3-3 \u2014 TOR FORCES G7 (margin 2, OT)",
-      "conflict": "News confirms 'Cavaliers, Raptors set for game 7 matchup' and RJ Barrett hit a winning 3-pointer in OT for TOR's G6 win. The context doc correctly records TOR forcing G7 via G6 OT win. However, the context doc's G6 score (TOR 112, CLE 110) and the news ('Barrett hits winning 3-pointer in OT as Raptors force Game 7, beat Cavaliers 112-110') are consistent. No conflict \u2014 G7 is today as the context doc implies. The context doc appears correct that the series is 3-3 heading into G7 today.",
-      "urgency": "monitor",
-      "suggested_action": "No change needed on series status \u2014 context is consistent with news. Confirm G7 is scheduled for today (May 3) as implied."
-    },
-    {
-      "player_or_team": "Franz Wagner (ORL)",
-      "current_context_fact": "No specific Wagner injury note in the playoff injury landscape beyond 'Wagner and Suggs: back from extended absences (Wagner 48 games, Suggs 25 games)' in pre-series intel. The series diary notes Wagner played in early games.",
-      "conflict": "News reports 'Magic rule Franz Wagner out again for Game 7 vs. Pistons' with a right calf strain. This is a new injury status not reflected in the context doc \u2014 Wagner is OUT for G7.",
+      "player_or_team": "Jamahl Mosley (ORL)",
+      "current_context_fact": "ORL | Jamahl Mosley (head coach listed in the HEAD COACHES table)",
+      "conflict": "Today's news confirms Jamahl Mosley was fired as head coach of the Orlando Magic on Monday, May 4, 2026, following the team's Game 7 elimination by Detroit.",
       "urgency": "critical",
-      "suggested_action": "Add Franz Wagner (ORL) to the ACTIVE WITH DOCUMENTED CONCERNS or CONFIRMED OUT section of the Playoff Injury Landscape: OUT for G7 vs DET with right calf strain. Update the DET vs ORL series diary to note Wagner's absence as a key variable for G7."
+      "suggested_action": "Remove Jamahl Mosley as ORL's head coach in the HEAD COACHES table. ORL is eliminated from the playoffs so this has no immediate pick impact, but the context doc should reflect the coaching change. Note ORL is conducting a head coach search."
     },
     {
-      "player_or_team": "Jayson Tatum (BOS) \u2014 G7 Status",
-      "current_context_fact": "G7 (May 2): Tatum DNP (knee injury) \u2014 context doc records this correctly in the G7 diary entry as 'Tatum DNP (knee injury).' The G6 entry notes 'Tatum's calf injury MRI outcome is the defining series variable' and he 'exited G6 with an apparent calf injury.'",
-      "conflict": "News confirms 'Celtics rule Jayson Tatum out for Game 7 with knee stiffness' \u2014 the news uses 'knee stiffness' while the context doc refers to a 'calf injury' from G6 and then 'knee injury' for the DNP. The G7 ruling is consistent (DNP confirmed), but the injury description in context (calf in G6, knee in G7) may reflect two separate issues or reclassification. The series is over (PHI advanced), so this is lower urgency.",
+      "player_or_team": "Jarrett Allen (CLE)",
+      "current_context_fact": "The G7 series diary entry for CLE vs TOR states: 'Allen 22/19/2 (7-11 FG, 33 min)' and notes his 19 rebounds as an extraordinary total that 'warrants a recalibration note, though one game does not override the cross-season signal.'",
+      "conflict": "Today's news confirms Allen scored 22 points and grabbed 19 rebounds in Game 7, described as tying his 'playoff career high' \u2014 consistent with the diary. However, the news framing ('tied his playoff career high with 22 points') confirms the 22-point output was a career playoff high in scoring as well, which is relevant context for calibrating his R2 ceiling. No direct conflict \u2014 this is confirmatory.",
       "urgency": "monitor",
-      "suggested_action": "Clarify in the injury landscape and series diary that Tatum's G7 DNP was officially listed as 'left knee stiffness' per the injury report, which may be distinct from or related to the G6 calf injury. Series is over so this is primarily a record-keeping correction."
+      "suggested_action": "No change needed \u2014 news confirms the diary entry. Note that multiple outlets are highlighting Allen's 22/19 line as a defining performance. His R2 role elevation vs. DET is worth monitoring given this output."
     },
     {
-      "player_or_team": "PHI vs NYK \u2014 R2 Matchup Confirmed",
-      "current_context_fact": "The context doc's R2 bracket is not explicitly populated yet \u2014 the R1 results section shows PHI advancing but no R2 bracket is listed.",
-      "conflict": "News confirms 'Brunson and the Knicks host Philadelphia to begin second round' and 'Joel Embiid asks 76ers fans not to sell tickets ahead of matchup vs. Knicks' \u2014 PHI vs NYK is confirmed as an R2 East matchup.",
+      "player_or_team": "Tobias Harris (DET)",
+      "current_context_fact": "The DET vs ORL series diary G7 entry credits 'Cunningham 32/1/12 (10-18 FG, 4 3PM, 39 min)' as the series-clinching performance but does not prominently feature Tobias Harris.",
+      "conflict": "Today's news headlines specifically credit 'Cunningham and Harris' as the duo that helped the Pistons finish their comeback, with Harris described as adding 30 points in the Game 7 win. The season context G7 diary does not mention Harris's 30-point contribution, which is a significant omission that could affect R2 role/prop calibration for Harris.",
       "urgency": "monitor",
-      "suggested_action": "Add R2 East bracket entry: (3) NYK vs (7) PHI \u2014 series begins with NYK hosting. Update playoff bracket section with all confirmed R2 matchups."
+      "suggested_action": "Update the DET vs ORL G7 series diary to include Tobias Harris's 30-point performance as a key secondary scoring contribution alongside Cunningham's 32. This establishes Harris as a legitimate R2 secondary scoring option for DET and should be reflected in prop evaluation going forward."
     },
     {
-      "player_or_team": "MIN vs SAS \u2014 R2 Matchup Confirmed",
-      "current_context_fact": "Context doc shows SAS advancing (4-1 over POR) and MIN advancing (4-2 over DEN) but R2 bracket is not explicitly listed.",
-      "conflict": "News confirms 'Randle and the Timberwolves visit San Antonio to begin second round' \u2014 MIN vs SAS is confirmed as an R2 West matchup with SAS hosting.",
-      "urgency": "monitor",
-      "suggested_action": "Add R2 West bracket entry: (2) SAS vs (6) MIN \u2014 series begins with SAS hosting. Update playoff bracket section."
+      "player_or_team": "R2 Bracket \u2014 East",
+      "current_context_fact": "The season context does not contain an R2 bracket. The R1 matchups show (3) NYK vs (6) ATL, (2) BOS vs (7) PHI, (1) DET vs (8) ORL, (4) CLE vs (5) TOR as the East R1 matchups.",
+      "conflict": "Today's news confirms the R2 matchups are now set: PHI vs NYK (Embiid asking fans not to sell tickets to Knicks fans), and DET vs CLE (news item: 'Detroit hosts Cleveland to start second round'). BOS is eliminated. ORL is eliminated. These are confirmed R2 pairings.",
+      "urgency": "critical",
+      "suggested_action": "Add R2 East bracket: (1) DET vs (4) CLE and (3) NYK vs (7) PHI. Update series diaries section accordingly. Note BOS and ORL are eliminated from the 2025-26 playoffs."
     },
     {
-      "player_or_team": "Luka Doncic (LAL) \u2014 Return Timeline",
-      "current_context_fact": "Playoff Injury Landscape states: 'Realistic: R2 (~May 3-4). Without Doncic + Reaves, LeBron is LAL's sole offensive engine.'",
-      "conflict": "News reports Brian Windhorst saying Luka 'is not close' to returning, following the Lakers' G6 win over the Rockets. This directly contradicts the context doc's 'Realistic"
+      "player_or_team": "R2 Bracket \u2014 West",
+      "current_context_fact": "The season context does not contain an R2 bracket. R1 West matchups were (1) OKC vs (8) PHX, (2) SAS vs (7) POR, (3) DEN vs (6) MIN, (4) LAL vs (5) HOU.",
+      "conflict": "Today's news confirms R2 West matchups: OKC vs LAL ('Oklahoma City hosts Los Angeles to begin second round') and SAS vs MIN ('Wembanyama, Gobert set to match wits as Spurs, Timberwolves meet in West semifinal matchup'). HOU, POR, PHX, and DEN are eliminated.",
+      "urgency": "critical",
+      "suggested_action": "Add R2 West bracket: (1) OKC vs (4) LAL and (2) SAS vs (6) MIN. Update eliminated teams list to include HOU, POR, PHX, and DEN. Note the SAS vs MIN matchup directly activates the MIN\u00d7AST suppressor for SAS players and the SAS floor compression pattern for MIN players."
     }
   ],
   "staleness_flags": []
