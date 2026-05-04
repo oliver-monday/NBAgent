@@ -17,10 +17,10 @@
       "floor": 68,
       "note": "No T4 AST market available to step down; 67% below 68% AST floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-03",
@@ -40,10 +40,10 @@
       "floor": 75,
       "note": "72% below 75% 3PM minimum floor after VOLATILE -3% and BLOWOUT -5%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-03",
@@ -63,9 +63,9 @@
       "required_rating": "soft",
       "note": "PF position triggers AST T4+ hard gate; opp_today=tough fails soft requirement; exemption requires \u22658.0 AST avg, Banchero has 6.3"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   }
 ]

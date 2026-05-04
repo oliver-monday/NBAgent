@@ -6882,5 +6882,74 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-05-03",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 80,
+      "volatile_ast_t6_penalty": -8,
+      "blowout_playoff_penalty": -5,
+      "total_penalties": -13,
+      "final_confidence": 67,
+      "floor": 68,
+      "note": "No T4 AST market available to step down; 67% below 68% AST floor"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-03",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "ORL",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 80,
+      "volatile_penalty": -3,
+      "blowout_playoff_penalty": -5,
+      "total_penalties": -8,
+      "final_confidence": 72,
+      "floor": 75,
+      "note": "72% below 75% 3PM minimum floor after VOLATILE -3% and BLOWOUT -5%"
+    },
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-05-03",
+    "player_name": "Paolo Banchero",
+    "team": "ORL",
+    "opponent": "DET",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "PF",
+      "raw_avgs_ast": 6.3,
+      "elite_playmaker_exemption_threshold": 8.0,
+      "opp_today_rating": "tough",
+      "gate_condition_triggered": "position_PF",
+      "required_rating": "soft",
+      "note": "PF position triggers AST T4+ hard gate; opp_today=tough fails soft requirement; exemption requires \u22658.0 AST avg, Banchero has 6.3"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   }
 ]
