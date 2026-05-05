@@ -52307,8 +52307,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 13.0,
     "market_line": 19.5,
     "market_implied_prob": 78.26,
     "market_book": "fanduel",
@@ -52335,7 +52335,8 @@
     "kalshi_morning_implied_prob": 77.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -1.74
   },
   {
     "date": "2026-05-04",
@@ -52362,8 +52363,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 2.0,
     "market_line": 3.5,
     "market_implied_prob": 88.24,
     "market_book": "fanduel",
@@ -52382,7 +52383,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -3.43
   },
   {
     "date": "2026-05-04",
@@ -52409,8 +52411,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 10.0,
     "market_line": 9.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -52438,7 +52440,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Edwards absence doesn't directly affect Fox's scoring floor; 95% consistency remains structurally intact."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-04",
@@ -52465,8 +52468,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 88.89,
     "market_book": "fanduel",
@@ -52494,7 +52497,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Fox's 95% assist rate is self-sustaining; Edwards absence has no direct impact on Fox's playmaking volume."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-04",
@@ -52521,8 +52525,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "market_line": 0.5,
     "market_implied_prob": 85.29,
     "market_book": "fanduel",
@@ -52558,7 +52562,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Edwards absence doesn't meaningfully alter Fox's 3PM attempts or defensive coverage he faces."
-    }
+    },
+    "clv_pp": -0.42
   },
   {
     "date": "2026-05-04",
@@ -52585,8 +52590,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 0.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -52614,7 +52619,8 @@
       "direction": "up",
       "revised_confidence_pct": 82,
       "revised_reasoning": "Edwards out removes MIN's best perimeter defender; Vassell gets more open catch-and-shoot opportunities."
-    }
+    },
+    "clv_pp": -0.64
   },
   {
     "date": "2026-05-04",
@@ -52641,8 +52647,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 69.23,
     "market_book": "fanduel",
@@ -52670,7 +52676,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Vassell's secondary playmaking role in SAS motion offense unaffected by Edwards' MIN absence."
-    }
+    },
+    "clv_pp": -4.45
   },
   {
     "date": "2026-05-04",
@@ -52697,8 +52704,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 9.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -52726,7 +52733,8 @@
       "direction": "up",
       "revised_confidence_pct": 77,
       "revised_reasoning": "Edwards absence softens MIN perimeter defense marginally; modest boost for Castle's scoring floor."
-    }
+    },
+    "clv_pp": 0.79
   },
   {
     "date": "2026-05-04",
@@ -52753,8 +52761,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 11.0,
     "market_line": 14.5,
     "market_implied_prob": 97.56,
     "market_book": "fanduel",
@@ -52782,7 +52790,8 @@
       "direction": "up",
       "revised_confidence_pct": 75,
       "revised_reasoning": "Edwards out weakens MIN's overall defensive structure; Wemby faces slightly easier coverage in paint."
-    }
+    },
+    "clv_pp": -0.8
   },
   {
     "date": "2026-05-04",
@@ -52809,8 +52818,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 0.0,
     "market_line": 0.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -52846,7 +52855,8 @@
       "direction": "up",
       "revised_confidence_pct": 81,
       "revised_reasoning": "Edwards was MIN's premier perimeter defender; his absence directly creates more open 3PM looks for Wemby."
-    }
+    },
+    "clv_pp": 1.12
   },
   {
     "date": "2026-05-04",
@@ -52873,8 +52883,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 14.0,
     "market_line": 19.5,
     "market_implied_prob": 83.87,
     "market_book": "fanduel",
@@ -52893,7 +52903,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -0.26
   },
   {
     "date": "2026-05-04",
@@ -52920,8 +52931,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 4.0,
     "market_line": 5.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -52948,7 +52959,8 @@
     "kalshi_morning_implied_prob": 82.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -1.57
   },
   {
     "date": "2026-05-04",
@@ -52975,8 +52987,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "market_line": 9.5,
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
@@ -53004,7 +53016,8 @@
       "direction": "up",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Edwards out redistributes significant usage to Randle; more shots and post touches expected."
-    }
+    },
+    "clv_pp": -1.07
   },
   {
     "date": "2026-05-04",
@@ -53031,8 +53044,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 35.0,
     "market_line": 19.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -53051,7 +53064,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -3.33
   },
   {
     "date": "2026-05-04",
@@ -53078,8 +53092,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "market_line": 3.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -53098,7 +53112,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-04",
@@ -53125,8 +53140,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 0.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -53153,7 +53168,8 @@
     "kalshi_morning_implied_prob": 94.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.62
   },
   {
     "date": "2026-05-04",
@@ -53180,8 +53196,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 18.0,
     "market_line": 9.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -53200,7 +53216,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-04",
@@ -53227,8 +53244,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 3.0,
     "market_line": 3.5,
     "market_implied_prob": 89.47,
     "market_book": "fanduel",
@@ -53255,7 +53272,8 @@
     "kalshi_morning_implied_prob": 86.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -4.65
   },
   {
     "date": "2026-05-04",
@@ -53282,8 +53300,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 1.5,
     "market_implied_prob": 73.68,
     "market_book": "fanduel",
@@ -53310,7 +53328,8 @@
     "kalshi_morning_implied_prob": 66.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.35
   },
   {
     "date": "2026-05-04",
@@ -53337,8 +53356,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 16.0,
     "market_line": 9.5,
     "market_implied_prob": 83.33,
     "market_book": "fanduel",
@@ -53366,7 +53385,8 @@
       "direction": "up",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Edwards absence pushes usage to McDaniels; trend-up profile amplifies scoring upside with extra shots."
-    }
+    },
+    "clv_pp": -8.34
   },
   {
     "date": "2026-05-04",
@@ -53393,8 +53413,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 9.5,
     "market_implied_prob": 73.33,
     "market_book": "fanduel",
@@ -53421,7 +53441,8 @@
     "kalshi_morning_implied_prob": 69.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-04",
@@ -53448,8 +53469,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 1.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -53476,6 +53497,7 @@
     "kalshi_morning_implied_prob": 80.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-04T22:30:53.776418-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.0
   }
 ]

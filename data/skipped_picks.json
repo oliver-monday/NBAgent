@@ -18,10 +18,10 @@
       "final_confidence": 72,
       "minimum_floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-05-04",
@@ -41,10 +41,10 @@
       "opp_today_rating": "tough",
       "reason": "AST T4+ hard gate: position=PF, opp_today=tough (not soft) \u2014 hard gate fires regardless of hit rate"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
   },
   {
     "date": "2026-05-04",
@@ -63,10 +63,10 @@
       "avg_minutes_last5": 27.2,
       "reason": "trend=down AND avg_minutes_last5 <= 30: hard skip all 3PM including T1; no iron_floor present, hit rate only 7/10 (not 9+/10)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-04",
@@ -87,10 +87,10 @@
       "final_confidence": 67,
       "minimum_floor": 68
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 15"
   },
   {
     "date": "2026-05-04",
@@ -108,10 +108,10 @@
       "reason": "T10: VOLATILE -3% + competitive=61% degradation + trend=down yields sub-72% REB floor; T8 also fails due to VOLATILE and blowout game context; only T8+ available in market",
       "market_available_tiers": "T8 T10 T12"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 10"
   },
   {
     "date": "2026-05-04",
@@ -130,10 +130,10 @@
       "base_confidence": 70,
       "competitive_split": "47%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 4"
   },
   {
     "date": "2026-05-04",
@@ -153,10 +153,10 @@
       "volatile_penalty": -8,
       "final_confidence": 67
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-05-04",
@@ -176,9 +176,9 @@
       "reason": "spread_abs=13.5 < 16.5 playoff BLOWOUT_SECONDARY_SCORER threshold \u2014 hard skip does NOT fire at T10. T10 FLOOR EXCEPTION also protects. Re-evaluating: T10 proceeds. VOLATILE present; competitive=58% (well below 70%). Base 80% - VOLATILE 3% = 77% - competitive degradation (-8%) = 69% \u2192 below 68% floor? 69% > 68% \u2014 barely qualifies. However min_floor=19.8 with avg=25.2; proj_min unclear for playoff. Elimination game override suspends min_floor rules only for elimination games \u2014 this is R2 G1 (not elimination). min_floor=19.8 < 24 \u2192 would trigger step-down at T15+ but T10 is below T15 \u2192 rule doesn't apply at T10. Actually re-checking: competitive=58% is the primary concern. 69% confidence is above 68% floor. Emit at 69%. Re-classifying: this is a pick, not a skip.",
       "resolution": "Re-classified as pick at 69% confidence \u2014 see picks array"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 10"
   }
 ]
