@@ -252,6 +252,45 @@ Quant output. One entry per whitelisted player playing today.
 }
 ```
 
+### playoff_bracket.json
+Manually maintained by Oliver as the bracket evolves through the postseason. Read by `agents/playoff_matchup.py` (per-series state computation), `agents/season_context_updater.py` (`trim_completed_series_for_llm()` filter for completed series), and `agents/build_site.py` (Playoff bracket frontend rendering, if/when added). Top-level shape:
+```json
+{
+  "season": "2025-26",
+  "round": 2,                                          // current round (1=R1, 2=R2, 3=CF, 4=Finals)
+  "playoff_start_date": "2026-04-18",
+  "play_in": { ... },                                   // per-conference play-in results
+  "eliminated": ["MIA", "LAC", "CHA", "GSW", ...],      // accumulating list of teams eliminated, including play-in losers and round losers
+  "standings": { "east": [...], "west": [...] },        // final regular-season standings snapshot
+  "series": [
+    {
+      "series_id": "E1",
+      "round": 1,                                       // (added 2026-05-05) which round this series is in
+      "conference": "East",
+      "home_team": "DET",
+      "away_team": "ORL",
+      "best_of": 7,
+      "completed": true,                                // (added 2026-05-05) true once the series is over
+      "winner": "DET",                                  // (added 2026-05-05) populated when completed
+      "result": "4-3"                                   // (added 2026-05-05) "W-L" form, populated when completed
+    },
+    { ... 7 more R1 series ... },
+    {
+      "series_id": "E5",
+      "round": 2,
+      "conference": "East",
+      "home_team": "DET",
+      "away_team": "CLE",
+      "best_of": 7,
+      "completed": false                                // active series — winner/result fields absent until completed flips to true
+    },
+    { ... more R2 series ... }
+  ]
+}
+```
+
+The `completed`/`winner`/`result` fields drive the season-context trim helper: any series with `completed: true` has its corresponding `##### (X) TEAM vs (Y) TEAM` diary section in `context/nba_season_context.md` replaced (in-memory only, for LLM input) with a one-line digest. Active series are preserved verbatim.
+
 ### standings_today.json
 Written daily by `espn_daily_ingest.py`. Source: ESPN standings endpoint. Teams are sorted by win percentage descending (total wins tiebreaker) before rank assignment — ESPN API returns entries in division-grouped order, not by record.
 ```json

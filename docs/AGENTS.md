@@ -199,7 +199,7 @@ Existing behavior unchanged. Fetches ESPN headlines and cross-references against
 - `player_stats.json` — quant output; provides pre-computed best tiers and matchup-specific hit rates injected as a structured prompt section
 - `injuries_today.json` — filtered to today's teams only
 - `audit_log.json` — last 5 entries (reinforcements, lessons, recommendations)
-- `context/nba_season_context.md` — SEASON FACTS section only; static `## TEAM DEFENSIVE PROFILES` section no longer injected; handles missing file gracefully
+- `context/nba_season_context.md` — SEASON FACTS section only; static `## TEAM DEFENSIVE PROFILES` section no longer injected; handles missing file gracefully. As of 2026-05-05, `load_season_context()` also applies `trim_completed_series_for_llm()` (from `agents/season_context_updater.py`) after the TDP strip — completed playoff series diaries (per `data/playoff_bracket.json` `completed: true` flags) are condensed to one-line digests for LLM input cost reduction. Source file on disk is unmodified.
 - `context/context_flags.md` — staleness and conflict flags from pre_game_reporter; injected as `⚠ CONTEXT FLAG` prefixed lines
 - `data/standings_today.json` — live standings snapshot; formatted by `format_playoff_picture()` and injected as `## PLAYOFF PICTURE` section
 - `data/team_defense_narratives.json` — auto-generated team defense profiles; formatted by `format_team_defense_section()` and injected as `## TEAM DEFENSIVE PROFILES` section
@@ -432,12 +432,15 @@ Fields `date`, `id`, `result`, `legs_hit`, `legs_total` are added by `save_parla
 ## auditor.py — Results Grader + Feedback Writer
 
 **Model:** `claude-sonnet-4-6`
-**MAX_TOKENS:** `2048`
+**MAX_TOKENS:** `16384` (bumped 2026-05-05 from 8192 after a 9-miss-day truncation; combined with the season context trim, covers worst-case audit cleanly)
 **Runs for:** yesterday's date
 
 **Inputs consumed (in addition to picks.json):**
 - `data/standings_today.json` — auditor receives the same playoff picture snapshot as the analyst, since it grades picks made with that information available
 - `data/picks_review_YYYY-MM-DD.json` — optional human-produced daily review file; read by `load_picks_review()` to tag `human_verdict` + `trim_reasons` on graded picks; graceful no-op when absent
+- `context/nba_season_context.md` — read via `load_season_context()`, which applies `trim_completed_series_for_llm()` (from `agents/season_context_updater.py`) before returning. Completed playoff series diaries (per `data/playoff_bracket.json` `completed: true` flags) are condensed to one-line digests for LLM input cost reduction. Source file on disk is unmodified.
+
+**Parse resilience (added 2026-05-05):** `_attempt_json_repair(raw)` helper recovers from truncated responses by trimming back to the last complete `},` (end of an array element followed by another), counting unclosed `{`/`[` via escape-aware bracket-balance scan, and appending matching closers. `call_auditor()` no longer `sys.exit(1)` on initial parse failure — it logs `[auditor] WARNING: initial JSON parse failed`, attempts repair, and on success logs `[auditor] Recovered partial response via JSON repair (N hits, M misses). Some entries may be missing relative to actual graded picks.` and returns the partial dict. Only exits if repair also fails (logs first/last 2000 chars instead of full response). New `[auditor] Claude usage: in=N out=M stop_reason=...` line added for cost/truncation visibility.
 
 **Grading logic:**
 - Matches picks to `player_game_log.csv` by `(player_name.lower(), team_abbrev)` for yesterday's date

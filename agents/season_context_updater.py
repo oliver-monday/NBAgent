@@ -274,6 +274,10 @@ _SERIES_HEADER_RE = re.compile(
     r"^##### +\((\d+)\) +([A-Z]{2,4}) +vs +\((\d+)\) +([A-Z]{2,4})",
     re.MULTILINE,
 )
+
+# Path constant for the trim helper (Part 2 — read-only consumption of
+# playoff_bracket.json to identify completed series).
+PLAYOFF_BRACKET_JSON = DATA / "playoff_bracket.json"
 _GAME_ENTRY_RE = re.compile(r"\*\*Game \d+\b")
 
 
@@ -357,6 +361,106 @@ def match_game_to_series(game: dict, series_sections: list[dict]) -> dict | None
         if {home, away} == s_pair:
             return section
     return None
+
+
+def trim_completed_series_for_llm(
+    context_text: str,
+    bracket_path: Path = PLAYOFF_BRACKET_JSON,
+) -> str:
+    """Return a trimmed copy of season_context for LLM consumption.
+
+    For each playoff series marked completed in `bracket_path`, the corresponding
+    diary section in `context_text` is replaced with a compact digest header
+    listing the series result. Active (incomplete) series and non-diary content
+    are preserved verbatim.
+
+    The source file on disk is NEVER modified. The auto-updater
+    (apply_diary_entries / apply_injury_updates) continues to operate on the
+    full file. This function only produces trimmed text for LLM input.
+
+    Robustness behavior:
+      - If bracket_path is missing or unreadable: return context_text unchanged.
+      - If bracket has no completed series: return context_text unchanged.
+      - If a completed series in the bracket has no matching diary section:
+        skip it silently (do not crash, do not error).
+      - If a diary section in the context matches no series in the bracket:
+        treat as active (preserve verbatim). Most likely cause is a series
+        diary added before the bracket entry; correct conservative behavior
+        is to err on side of preserving content.
+      - All exceptions during trimming are caught and result in returning
+        context_text unchanged with a warning printed. The trim function
+        must NEVER raise to the caller — callers depend on it as a pure
+        text-pass-through fallback.
+    """
+    try:
+        # Load bracket; gracefully handle missing/malformed file
+        bracket = load_json_safe(bracket_path)
+        if not isinstance(bracket, dict):
+            return context_text
+
+        completed_pairs: set[frozenset[str]] = set()
+        results_by_pair: dict[frozenset[str], dict] = {}
+        for s in bracket.get("series", []):
+            if not isinstance(s, dict) or not s.get("completed"):
+                continue
+            home = _norm_team(s.get("home_team", ""))
+            away = _norm_team(s.get("away_team", ""))
+            if not home or not away:
+                continue
+            pair = frozenset({home, away})
+            completed_pairs.add(pair)
+            results_by_pair[pair] = {
+                "winner":   s.get("winner", ""),
+                "result":   s.get("result", ""),
+                "round":    s.get("round", 1),
+            }
+
+        if not completed_pairs:
+            return context_text
+
+        # Reuse existing parsing infrastructure
+        sections = find_series_sections(context_text)
+        if not sections:
+            return context_text
+
+        # Walk sections in REVERSE order so character offsets stay valid as
+        # we splice replacements in.
+        # Idempotency sentinel: digest emits `<!-- TRIMMED -->` so re-runs
+        # (trim of already-trimmed text) detect the marker and skip the
+        # section. Without this, find_series_sections() would re-detect
+        # the digest header on a second pass and double-suffix it.
+        trim_marker = "<!-- TRIMMED -->"
+        trimmed = context_text
+        for section in reversed(sections):
+            # Skip if this section is already a digest from a prior trim pass
+            section_body_text = trimmed[section["header_start"]: section["section_end"]]
+            if trim_marker in section_body_text:
+                continue
+
+            t1 = _norm_team(section["team1"])
+            t2 = _norm_team(section["team2"])
+            pair = frozenset({t1, t2})
+            if pair not in completed_pairs:
+                continue  # active series, preserve verbatim
+
+            info = results_by_pair[pair]
+            digest = (
+                f"{section['header']} {trim_marker} — R{info['round']} COMPLETE: "
+                f"{info['winner']} wins {info['result']}\n"
+                f"*(Full diary preserved in source file. "
+                f"Trimmed for LLM input to reduce token cost.)*\n"
+            )
+            # Replace the entire section (header + body) with the digest
+            trimmed = (
+                trimmed[: section["header_start"]]
+                + digest
+                + trimmed[section["section_end"] :]
+            )
+
+        return trimmed
+    except Exception as e:
+        print(f"[season_context_updater] WARNING: trim failed, returning untrimmed: {e}")
+        return context_text
 
 
 # ─────────────────────────────────────────────────────────────────────

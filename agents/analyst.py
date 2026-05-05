@@ -380,6 +380,10 @@ def load_season_context() -> str:
     Injected into the prompt between the injury report and player game logs
     so the Analyst can correctly interpret both before making picks.
     Returns empty string gracefully if file is missing — never blocks a run.
+
+    For LLM input, completed playoff series diaries are condensed to a
+    one-line digest via trim_completed_series_for_llm() to reduce input
+    token cost. The source file on disk is unaffected.
     """
     if not CONTEXT_MD.exists():
         print("[analyst] WARNING: context/nba_season_context.md not found, skipping.")
@@ -396,7 +400,25 @@ def load_season_context() -> str:
         tdp_idx = text.find("## TEAM DEFENSIVE PROFILES")
         if tdp_idx != -1:
             text = text[:tdp_idx].rstrip()
-        print(f"[analyst] Season context loaded ({len(text.split())} words, TEAM DEFENSIVE PROFILES stripped)")
+        full_words = len(text.split())
+        # Apply trim for completed playoff series. Deferred import keeps the
+        # analyst functional if the helper module is unavailable for any reason.
+        try:
+            from agents.season_context_updater import trim_completed_series_for_llm
+            text = trim_completed_series_for_llm(text)
+        except Exception as e:
+            print(f"[analyst] WARNING: trim helper unavailable, using full context: {e}")
+        trimmed_words = len(text.split())
+        if trimmed_words < full_words:
+            print(
+                f"[analyst] Season context loaded ({trimmed_words} words "
+                f"after R1-completed-series trim, was {full_words}, TEAM DEFENSIVE PROFILES stripped)"
+            )
+        else:
+            print(
+                f"[analyst] Season context loaded ({trimmed_words} words, "
+                "TEAM DEFENSIVE PROFILES stripped)"
+            )
         return text
     except Exception as e:
         print(f"[analyst] WARNING: could not load season context: {e}")

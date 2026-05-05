@@ -1,6 +1,6 @@
 {
   "season": "2025-26",
-  "round": 1,
+  "round": 2,
   "playoff_start_date": "2026-04-18",
   "play_in": {
     "east": {
@@ -14,7 +14,7 @@
       "final": {"home": "PHX", "away": "GSW", "date": "2026-04-17", "winner": "PHX"}
     }
   },
-  "eliminated": ["MIA", "LAC", "CHA", "GSW"],
+  "eliminated": ["MIA", "LAC", "CHA", "GSW", "ATL", "BOS", "ORL", "TOR", "DEN", "HOU", "PHX", "POR"],
   "standings": {
     "east": [
       {"seed": 1, "team": "DET", "record": "60-22"},
@@ -44,59 +44,127 @@
   "series": [
     {
       "series_id": "E1",
+      "round": 1,
       "conference": "East",
       "home_team": "DET",
       "away_team": "ORL",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "DET",
+      "result": "4-3"
     },
     {
       "series_id": "E2",
+      "round": 1,
       "conference": "East",
       "home_team": "BOS",
       "away_team": "PHI",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "PHI",
+      "result": "4-3"
     },
     {
       "series_id": "E3",
+      "round": 1,
       "conference": "East",
       "home_team": "NYK",
       "away_team": "ATL",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "NYK",
+      "result": "4-2"
     },
     {
       "series_id": "E4",
+      "round": 1,
       "conference": "East",
       "home_team": "CLE",
       "away_team": "TOR",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "CLE",
+      "result": "4-3"
     },
     {
       "series_id": "W1",
+      "round": 1,
       "conference": "West",
       "home_team": "OKC",
       "away_team": "PHX",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "OKC",
+      "result": "4-0"
     },
     {
       "series_id": "W2",
+      "round": 1,
       "conference": "West",
       "home_team": "SAS",
       "away_team": "POR",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "SAS",
+      "result": "4-1"
     },
     {
       "series_id": "W3",
+      "round": 1,
       "conference": "West",
       "home_team": "DEN",
       "away_team": "MIN",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "MIN",
+      "result": "4-2"
     },
     {
       "series_id": "W4",
+      "round": 1,
       "conference": "West",
       "home_team": "LAL",
       "away_team": "HOU",
-      "best_of": 7
+      "best_of": 7,
+      "completed": true,
+      "winner": "LAL",
+      "result": "4-2"
+    },
+    {
+      "series_id": "E5",
+      "round": 2,
+      "conference": "East",
+      "home_team": "DET",
+      "away_team": "CLE",
+      "best_of": 7,
+      "completed": false
+    },
+    {
+      "series_id": "E6",
+      "round": 2,
+      "conference": "East",
+      "home_team": "NYK",
+      "away_team": "PHI",
+      "best_of": 7,
+      "completed": false
+    },
+    {
+      "series_id": "W5",
+      "round": 2,
+      "conference": "West",
+      "home_team": "OKC",
+      "away_team": "LAL",
+      "best_of": 7,
+      "completed": false
+    },
+    {
+      "series_id": "W6",
+      "round": 2,
+      "conference": "West",
+      "home_team": "SAS",
+      "away_team": "MIN",
+      "best_of": 7,
+      "completed": false
     }
   ]
 }

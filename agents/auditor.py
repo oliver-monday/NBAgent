@@ -56,7 +56,7 @@ PLAYOFF_CAL_DIVERGE_PP = 10  # pp divergence threshold for warning
 
 # ── Config ───────────────────────────────────────────────────────────
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 8192
+MAX_TOKENS = 16384  # bumped 2026-05-05 after 9-miss-day truncation; combined with season context trim, covers worst-case audit cleanly
 
 # High-conviction subset: picks where the FanDuel market itself is heavily
 # confident (market_implied_prob >= 85.0). Empirically the safest band per
@@ -96,6 +96,10 @@ def load_season_context() -> str:
     Injected into the audit prompt so the Auditor can correctly interpret
     permanent absences vs. game-level factors before assigning root causes.
     Returns empty string gracefully if file is missing — never blocks a run.
+
+    For LLM input, completed playoff series diaries are condensed to a
+    one-line digest via trim_completed_series_for_llm() to reduce input
+    token cost. The source file on disk is unaffected.
     """
     if not CONTEXT_MD.exists():
         print("[auditor] WARNING: context/nba_season_context.md not found, skipping.")
@@ -107,7 +111,22 @@ def load_season_context() -> str:
             end = text.find("-->")
             if end != -1:
                 text = text[end + 3:].strip()
-        print(f"[auditor] Season context loaded ({len(text.split())} words)")
+        full_words = len(text.split())
+        # Apply trim for completed playoff series. Deferred import keeps the
+        # auditor functional if the helper module is unavailable for any reason.
+        try:
+            from agents.season_context_updater import trim_completed_series_for_llm
+            text = trim_completed_series_for_llm(text)
+        except Exception as e:
+            print(f"[auditor] WARNING: trim helper unavailable, using full context: {e}")
+        trimmed_words = len(text.split())
+        if trimmed_words < full_words:
+            print(
+                f"[auditor] Season context loaded ({trimmed_words} words "
+                f"after R1-completed-series trim, was {full_words})"
+            )
+        else:
+            print(f"[auditor] Season context loaded ({trimmed_words} words)")
         return text
     except Exception as e:
         print(f"[auditor] WARNING: could not load season context: {e}")
@@ -1309,6 +1328,71 @@ Respond ONLY with valid JSON. No preamble.
 
 # ── Claude call ──────────────────────────────────────────────────────
 
+def _attempt_json_repair(raw: str) -> dict | None:
+    """Best-effort recovery of a truncated JSON response.
+
+    Strategy: walk backwards from the end of the string to find the last
+    position where we have a complete JSON object inside an array (matched
+    by the pattern `},`). Trim there, then close any unterminated arrays
+    and the outer object via bracket-balance counting. Try to parse the
+    result.
+
+    This is specifically designed to recover from truncation inside an
+    array element of `miss_details` or `hit_details` — the typical failure
+    mode when output hits the token cap. Returns the parsed dict on
+    successful repair, or None if the response can't be repaired.
+
+    Robustness: catches all exceptions and returns None rather than raising.
+    Caller decides what to do with None (typically: log and exit gracefully).
+    """
+    try:
+        # Locate the last complete `},` (end of an array element followed
+        # by a comma — meaning at least one more was being generated).
+        last_complete = raw.rfind("},")
+        if last_complete == -1:
+            return None
+
+        # Take everything up to and including the final `}` of that complete entry
+        repaired = raw[: last_complete + 1]
+
+        # Count unclosed structures from the start to know how many `]` and `}` to append.
+        # Bracket-balance scan that respects strings + escape sequences.
+        depth_obj = 0
+        depth_arr = 0
+        in_string = False
+        escape = False
+        for ch in repaired:
+            if escape:
+                escape = False
+                continue
+            if ch == "\\" and in_string:
+                escape = True
+                continue
+            if ch == '"':
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            if ch == "{":
+                depth_obj += 1
+            elif ch == "}":
+                depth_obj -= 1
+            elif ch == "[":
+                depth_arr += 1
+            elif ch == "]":
+                depth_arr -= 1
+
+        # Append closers in correct order (arrays close before outer objects)
+        repaired += "]" * depth_arr + "}" * depth_obj
+
+        result = json.loads(repaired)
+        if not isinstance(result, dict):
+            return None
+        return result
+    except Exception:
+        return None
+
+
 def call_auditor(prompt: str) -> dict:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
@@ -1324,6 +1408,15 @@ def call_auditor(prompt: str) -> dict:
         messages=[{"role": "user", "content": prompt}],
     )
 
+    # Surface usage + stop_reason for cost/truncation visibility
+    usage = getattr(message, "usage", None)
+    stop_reason = getattr(message, "stop_reason", None)
+    if usage:
+        print(
+            f"[auditor] Claude usage: in={usage.input_tokens} out={usage.output_tokens} "
+            f"stop_reason={stop_reason}"
+        )
+
     raw = message.content[0].text.strip()
     if raw.startswith("```"):
         raw = raw.split("```")[1]
@@ -1337,8 +1430,23 @@ def call_auditor(prompt: str) -> dict:
             raise ValueError("Response is not a JSON object")
         return result
     except Exception as e:
-        print(f"[auditor] ERROR parsing Claude response: {e}")
-        print(f"[auditor] Raw response:\n{raw}")
+        print(f"[auditor] WARNING: initial JSON parse failed: {e}")
+        # Attempt repair on truncated response
+        repaired = _attempt_json_repair(raw)
+        if repaired is not None:
+            recovered_misses = len(repaired.get("miss_details", []))
+            recovered_hits   = len(repaired.get("hit_details", []))
+            print(
+                f"[auditor] Recovered partial response via JSON repair "
+                f"({recovered_hits} hits, {recovered_misses} misses). "
+                f"Some entries may be missing relative to actual graded picks."
+            )
+            return repaired
+
+        # Repair failed — log truncated head/tail and exit
+        print(f"[auditor] ERROR: parse failed and repair unsuccessful")
+        print(f"[auditor] Raw response (first 2000 chars):\n{raw[:2000]}")
+        print(f"[auditor] Raw response (last 2000 chars):\n{raw[-2000:]}")
         sys.exit(1)
 
 
