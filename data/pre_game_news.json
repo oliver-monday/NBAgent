@@ -1,76 +1,20 @@
 {
-  "date": "2026-05-05",
-  "generated_at": "2026-05-05T12:38:05.375526-07:00",
+  "date": "2026-05-06",
+  "generated_at": "2026-05-06T08:29:00.701162-07:00",
   "player_notes": {
-    "luka doncic": "Windhorst reports Lakers are in 'wait-and-see' mode on Luka's Grade 2 hamstring injury \u2014 status uncertain for upcoming game, significant doubt for availability.",
-    "anthony edwards": "Returned from hyperextended knee in Game 1 vs. Spurs, coming off the bench and scoring 18 points \u2014 monitor role/minutes restriction heading into Game 2."
+    "jarred vanderbilt": "Dislocated right pinkie sustained in Game 1 vs OKC. Monitor availability for Game 2; likely compromised or out.",
+    "austin reaves": "Shot 3-for-16 in Game 1 vs OKC with 4 turnovers, citing lingering effects of injury layoff. Significant shooting slump raises concern for 3PM and points props.",
+    "victor wembanyama": "Posted 12-block triple-double in Game 1 loss to MIN; Wolves coach alleging at least 4 were missed goaltending calls. No availability concern \u2014 fully active and extremely high-volume producer.",
+    "anthony edwards": "Returned unexpectedly from injury in Game 1 vs SA, scoring 18 points. Availability confirmed; monitor minutes restriction risk in Game 2.",
+    "donovan mitchell": "Expressed frustration over lack of foul calls in playoffs, getting to line less than regular season. Points props may carry downside risk if FT volume stays suppressed."
   },
   "game_notes": {
-    "LAL vs OKC": "Luka Doncic (Grade 2 hamstring) is questionable/unlikely \u2014 if out, Lakers' offensive load shifts heavily to remaining roster, boosting usage for other Lakers props and elevating SGA's scoring upside."
+    "LAL vs OKC": "Vanderbilt (dislocated right pinkie) likely out or limited for Game 2, thinning LAL's frontcourt rotation. Reaves in a deep shooting slump (3-16 Game 1), rotation implications if struggles continue.",
+    "MIN vs SA": "Edwards returned unexpectedly from injury for Game 1; monitor if minutes are restricted in Game 2. Wembanyama fully active and dominant defensively."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 49,
+  "filtered_item_count": 48,
   "fetch_errors": [],
-  "suggested_context_updates": [
-    {
-      "player_or_team": "Anthony Edwards (MIN)",
-      "current_context_fact": "Anthony Edwards \u2014 G5: DNP \u2014 OUT per injury report, left knee. Now confirmed OUT for G5 with severity still unclear. Treat as a primary injury concern for G6; his availability and any potential minutes restriction are the most critical variables in the DEN-MIN series.",
-      "conflict": "Multiple news items confirm Edwards returned and played in MIN vs SAS Game 1 of the Western Conference semifinals (R2), scoring 18 points off the bench in a 104-102 Timberwolves win. One headline states he 'returned just nine days after hyperextending his knee, coming off the bench in Game 1 vs. the Spurs.'",
-      "urgency": "critical",
-      "suggested_action": "Update Edwards' injury status: he has returned from his left knee injury and played in R2 G1 vs SAS on May 4/5. He came off the bench (not starting), scored 18 points. Update the injury landscape to reflect his return status and note the bench role / minutes restriction context. Remove 'DNP/OUT' language and replace with active-with-monitoring status."
-    },
-    {
-      "player_or_team": "MIN vs SAS \u2014 R2 Series",
-      "current_context_fact": "The season context playoff bracket and series diaries do not contain any R2 series diary entries; the last SAS diary entry covers R1 G5 (series clinched 4-1 over POR). The context shows SAS advancing and MIN advancing, but no R2 game results are recorded.",
-      "conflict": "News confirms MIN vs SAS R2 Game 1 has already been played: Minnesota Timberwolves defeated San Antonio Spurs 104-102. Wembanyama recorded a playoff-record 12 blocks in a triple-double in a losing effort. Edwards returned off the bench with 18 points.",
-      "urgency": "critical",
-      "suggested_action": "Add R2 series diary entry for MIN vs SAS. Record G1 result: MIN 104, SAS 102, MIN leads 1-0. Note Wembanyama's 12-block triple-double (playoff record), Edwards' return off bench (18 pts), and series now underway. Update playoff injury landscape to reflect Edwards' active status."
-    },
-    {
-      "player_or_team": "NYK vs PHI \u2014 R2 Series",
-      "current_context_fact": "The season context playoff bracket and series diaries do not contain R2 diary entries for NYK vs PHI. The last BOS vs PHI R1 diary entry covers G7 (PHI wins series 4-3). NYK is noted as R1 winner vs ATL.",
-      "conflict": "News confirms NYK vs PHI R2 Game 1 has already been played: New York Knicks crushed Philadelphia 76ers 137-98 (margin 39). Brunson scored 35 points (27 in first half). The series is underway with NYK leading 1-0.",
-      "urgency": "critical",
-      "suggested_action": "Add R2 series diary entry for NYK vs PHI. Record G1 result: NYK 137, PHI 98, NYK leads 1-0. Note Brunson's 35-point performance (27 in first half), the 39-point blowout margin. Update the playoff bracket section to reflect R2 matchup is NYK vs PHI with NYK leading 1-0."
-    },
-    {
-      "player_or_team": "Victor Wembanyama (SAS)",
-      "current_context_fact": "Wembanyama player note states he is fully healthy entering R2 after R1 series vs POR. The injury landscape notes 'Treat as fully healthy entering R2. No injury concern.'",
-      "conflict": "News reports Wembanyama recorded a playoff-record 12 blocks in a triple-double in a LOSING effort in G1 vs MIN (104-102 loss). While no new injury is reported, SAS lost G1 at home to MIN. The 'energy mismanagement' quote from Wembanyama himself and the close loss introduce new series context. No injury conflict per se, but the game result and his quote about 'energy mismanagement' are new factual developments.",
-      "urgency": "monitor",
-      "suggested_action": "Add R2 G1 game result to Wembanyama's notes and the SAS-MIN series diary. Note his 12-block triple-double (playoff record) in a 104-102 loss. His health remains intact per available reporting but SAS trails 0-1. Update series status accordingly."
-    },
-    {
-      "player_or_team": "ORL \u2014 Head Coach Jamahl Mosley",
-      "current_context_fact": "Head coaches table lists ORL coach as 'Jamahl Mosley'.",
-      "conflict": "News confirms: 'Magic fire head coach Jamahl Mosley after 5 seasons' \u2014 he was fired on Monday May 4, 2026 after ORL blew a 3-1 series lead and was eliminated by Detroit in R1.",
-      "urgency": "critical",
-      "suggested_action": "Update ORL head coach entry. Mosley has been fired. ORL is currently without a permanent head coach (interim or TBD). Update the coaches table to reflect this change."
-    },
-    {
-      "player_or_team": "DET \u2014 Head Coach J.B. Bickerstaff",
-      "current_context_fact": "Head coaches table lists DET coach as 'J.B. Bickerstaff | New hire Jul 2024'. No contract extension is mentioned.",
-      "conflict": "News reports: 'Pistons extend J.B. Bickerstaff after rare series victory' \u2014 he received a contract extension after leading DET to their first playoff series victory since 2008 (defeating ORL in R1).",
-      "urgency": "monitor",
-      "suggested_action": "Update DET head coach note to reflect Bickerstaff received a contract extension as of May 4, 2026. This is a positive stability signal for DET heading into R2."
-    },
-    {
-      "player_or_team": "CLE vs DET \u2014 R2 Series",
-      "current_context_fact": "The playoff bracket shows R2 matchups but no R2 game results exist in the context. CLE-TOR R1 series diary ends with CLE winning 4-3 in G7. DET-ORL R1 diary ends with DET winning 4-3 in G7.",
-      "conflict": "News headline states 'Cavaliers-Pistons have to quickly regroup with their series starting Tuesday night in Detroit' \u2014 confirming CLE vs DET is the R2 East matchup and Game 1 is scheduled for Tuesday May 5, 2026 (today). No game has been played yet in this series per available news.",
-      "urgency": "monitor",
-      "suggested_action": "Confirm and add R2 East bracket entry: CLE vs DET begins Tuesday May 5 in Detroit. Add series diary header for this matchup. Note Bickerstaff extension context and that both teams are coming off grueling 7-game R1 series."
-    },
-    {
-      "player_or_team": "Jaden McDaniels (MIN)",
-      "current_context_fact": "Injury landscape states: 'Treat as a meaningful injury concern heading into R2 \u2014 monitor practice participation and any post-series health updates. Do not assume full-minutes availability until confirmed, despite the G6 performance.'",
-      "conflict": "News confirms MIN played R2 G1 vs SAS (104-102 MIN win) with no specific McDaniels injury news flagged. His participation in G1 (no DNP or absence reported) implies he played, but his minutes and status in that game are not specified in the news items. The 45-minute G6 R1 load concern has not been resolved by confirmed health reporting.",
-      "urgency": "monitor",
-      "suggested_action": "After adding R2 G1 game data, update McDaniels' status based on his G1 MIN vs SAS performance. If he played significant minutes with no reported setback, the injury concern can be downgraded; if restricted, maintain caution language."
-    },
-    {
-      "player_or_team": "LAL vs OKC \u2014 R2 Series context"
-    }
-  ],
+  "suggested_context_updates": [],
   "staleness_flags": []
 }
