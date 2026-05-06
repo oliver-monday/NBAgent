@@ -18,10 +18,10 @@
       "floor": 68,
       "note": "VOLATILE+AST T6+ with raw_avgs AST \u22656.0 applies -8% penalty. 70%-8%=62% < 68% PTS/AST floor. vs_soft=58%, blowout_games=67% at T6 also confirm below-baseline performance."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-05",
@@ -43,10 +43,10 @@
       "floor_3pm": 75,
       "note": "VOLATILE+iron_floor incompatibility removes iron_floor protection on 3PM. H27 HARD AVOID 3PM advisory. After -3% VOLATILE: 67% < 75% 3PM minimum floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-05",
@@ -67,10 +67,10 @@
       "floor_3pm": 75,
       "note": "VOLATILE -3% (playoff) reduces 75% to 72%, below the 75% 3PM minimum confidence floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-05",
@@ -91,10 +91,10 @@
       "floor_reb": 72,
       "note": "VOLATILE -3% (playoff) drops 70% to 67%, below 72% REB minimum floor. min_floor=19.8 adds further concern without proj_min available."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-05",
@@ -114,9 +114,9 @@
       "floor": 68,
       "note": "FG_MARGIN_THIN:4% steps T15\u2192T10. At T10, HOU series only 2/4 (50%). After blowout-adjacent underdog penalty: 65% < 68% floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 8.0 < tier 15"
   }
 ]
