@@ -1,81 +1,108 @@
 [
   {
-    "date": "2026-05-06",
-    "player_name": "Tyrese Maxey",
-    "team": "PHI",
-    "opponent": "NYK",
+    "date": "2026-05-07",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "LAL",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_penalty": -8,
+      "blowout_ast_compounding": -7,
+      "vs_tough_drop_penalty": -5,
+      "total_penalty": -20,
+      "capped_at": -20,
+      "final_confidence": 55,
+      "floor": 68,
+      "note": "VOLATILE primary playmaker -8pp + blowout AST compounding (spread_abs=15.5, favored team) -7pp + vs_tough=55% drop advisory -5pp = -20pp cap; 75-20=55%, below 68% floor"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-05-07",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "LAL",
     "prop_type": "3PM",
-    "tier_considered": 2,
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_blowout_trend_down",
+    "rule_context": {
+      "trend": "down",
+      "iron_floor": false,
+      "t1_hit_rate": "8/10",
+      "note": "trend=down, no iron_floor, <9+/10 at T1; cannot step below minimum tier T1 \u2014 skip per trend=down step-down rule with no valid lower tier"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-05-07",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "CLE",
+    "prop_type": "PTS",
+    "tier_considered": 15,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
       "base_confidence": 70,
       "volatile_penalty": -3,
       "final_confidence": 67,
-      "floor": 75,
-      "reason": "VOLATILE -3% drops 70% base below 75% 3PM minimum floor"
-    },
-    "actual_value": 1.0,
-    "would_have_hit": false,
-    "skip_verdict": "correct_skip",
-    "skip_verdict_notes": "Actual 1.0 < tier 2"
-  },
-  {
-    "date": "2026-05-06",
-    "player_name": "Jalen Brunson",
-    "team": "NYK",
-    "opponent": "PHI",
-    "prop_type": "PTS",
-    "tier_considered": 25,
-    "direction": "OVER",
-    "skip_reason": "volatile_weak_combo",
-    "rule_context": {
-      "volatile_tag": true,
-      "hit_rate": "7/10",
-      "tier": 25,
-      "reason": "VOLATILE + exactly 7/10 + T25 = hard skip per volatile_weak_combo rule"
-    },
-    "actual_value": 26.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 26.0 \u2265 tier 25"
-  },
-  {
-    "date": "2026-05-06",
-    "player_name": "Joel Embiid",
-    "team": "PHI",
-    "opponent": "NYK",
-    "prop_type": "REB",
-    "tier_considered": 6,
-    "direction": "OVER",
-    "skip_reason": "reb_floor_skip",
-    "rule_context": {
-      "reason": "Offensive-first player gate: raw_avgs PTS>20 AND raw_avgs AST>6; REB floor (lowest L10 = 4, G1 blowout) is within 2 of pick_value=6; skip REB and pick scoring/assists instead",
-      "pick_value_considered": 6,
-      "reb_floor_value": 4,
-      "gap": 2
+      "floor": 68,
+      "note": "Overall 70% - VOLATILE -3% = 67%, below 68% PTS minimum floor"
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": "no_data",
-    "skip_verdict_notes": "player not found in yesterday's game log"
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-05-06",
-    "player_name": "Victor Wembanyama",
-    "team": "SAS",
-    "opponent": "MIN",
+    "date": "2026-05-07",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "opponent": "DET",
     "prop_type": "REB",
-    "tier_considered": 10,
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 70,
+      "volatile_penalty": -3,
+      "final_confidence": 67,
+      "floor": 68,
+      "note": "VOLATILE -3% on 70% base = 67%, below 68% floor; vs_tough=57% additional headwind"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-05-07",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "opponent": "LAL",
+    "prop_type": "REB",
+    "tier_considered": 8,
     "direction": "OVER",
     "skip_reason": "reb_floor_skip",
     "rule_context": {
-      "reason": "25th-percentile gate: stepped T10\u2192T8 (3rd-lowest estimated at 9, T8<9 passes); T8 is the operative pick tier and is emitted as a pick",
-      "note": "This skip record documents the T10 block only; T8 pick is emitted separately"
+      "pick_value": 8,
+      "estimated_3rd_lowest_l10": 7,
+      "note": "25th-percentile gate: pick_value=8 not strictly below estimated 3rd-lowest L10 of ~7; gate fails, stepped to T6"
     },
-    "actual_value": 15.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 15.0 \u2265 tier 10"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]
