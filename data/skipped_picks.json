@@ -15,10 +15,10 @@
       "floor": 75,
       "reason": "VOLATILE -3% drops 70% base below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 2"
   },
   {
     "date": "2026-05-06",
@@ -35,10 +35,10 @@
       "tier": 25,
       "reason": "VOLATILE + exactly 7/10 + T25 = hard skip per volatile_weak_combo rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 26.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 26.0 \u2265 tier 25"
   },
   {
     "date": "2026-05-06",
@@ -57,8 +57,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-05-06",
@@ -73,9 +73,9 @@
       "reason": "25th-percentile gate: stepped T10\u2192T8 (3rd-lowest estimated at 9, T8<9 passes); T8 is the operative pick tier and is emitted as a pick",
       "note": "This skip record documents the T10 block only; T8 pick is emitted separately"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 10"
   }
 ]

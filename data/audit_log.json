@@ -7366,5 +7366,128 @@
       "hit_rate_pct": 90.0,
       "delta_vs_overall_pp": 21.2
     }
+  },
+  {
+    "date": "2026-05-06",
+    "total_picks": 22,
+    "voided_picks": 2,
+    "hits": 18,
+    "misses": 4,
+    "no_data": 0,
+    "hit_rate_pct": 81.8,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 11,
+        "hits": 10,
+        "hit_rate_pct": 90.9
+      },
+      "REB": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 2,
+        "hit_rate_pct": 50.0
+      },
+      "3PM": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 13,
+        "hits": 12,
+        "hit_rate_pct": 92.3,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 9,
+        "hits": 6,
+        "hit_rate_pct": 66.7,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Blowout compression exemption applied correctly to both games: in MIN@SAS (SAS won by 38, BLOWOUT), players on both sides were correctly tier-walked conservatively; in PHI@NYK (NYK won by 6, CLOSE), competitive game script supported full-minute baselines and all picks resolved favorably. The game-script pre-check framework is functioning as designed.",
+      "Embiid OUT usage-redistribution logic was correctly identified by the afternoon lineup agent across multiple PHI and NYK players: Maxey PTS (actual 26, hit), Edgecombe PTS (actual 17, hit), Paul George PTS (actual 19, hit), KAT REB (actual 10, hit), and OG Anunoby PTS (actual 24, hit) all benefited from the absence of PHI's primary interior anchor. The amended upward confidence revisions were directionally correct in every case.",
+      "The MIN\u00d7AST suppressor signal's relevance in a blowout context was validated: De'Aaron Fox posted only 2 AST in 26 minutes in an SAS blowout win (38-point margin). Both the AST miss for Fox and Edwards are consistent with blowout game-script collapsing assist sequences on the losing side, confirming that the MIN\u00d7AST suppressor interacts with blowout game-script in a compounding way that the system partially anticipated but did not fully operationalize.",
+      "Conservative tier-stepping for players with FG_MARGIN_NEG or FG_MARGIN_THIN signals produced clean hits: Stephon Castle PTS (stepped T15\u2192T10, actual 21), Julius Randle PTS (stepped T15\u2192T10, actual 12), and Paul George PTS (stepped T15\u2192T10, actual 19) all cleared their walked-down tiers convincingly. The mandatory step-down rule for negative/thin FG margin is functioning as a genuine risk-reduction mechanism.",
+      "Rudy Gobert REB T8 at 72% confidence under the career playoff STRONG CAUTION directive hit cleanly (actual 10 REB in 28 minutes of a blowout loss). The conservative dossier-aware tier selection (avoiding T10 which would have failed the ceiling rule due to the DEN series T10 rate of 4/6) correctly landed at a tier that held even in a blowout losing environment, validating the playoff dossier's REB caution signal as a tier-floor guide rather than a full skip directive."
+    ],
+    "lessons": [
+      "De'Aaron Fox AST T4 missed (actual 2, pick_value 4) in an SAS blowout win (133-95). Game-script is the primary mechanism: Fox played only 26 minutes in a 38-point blowout where SAS managed his load in the second half. Even with a 9/10 historical hit rate and H2H MIN 3/3 perfect record, AST props on the winning side of a blowout are structurally at risk due to early lead management, starters resting in Q4, and reduced half-court creation opportunities once the outcome is decided. The blowout penalty applied (-5pp) was insufficient to bring confidence below the pick threshold \u2014 it landed at 80%, still a pick.",
+      "Stephon Castle 3PM T1 missed (actual 0, pick_value 1) despite POR series 5/5 T1 and SAS being a 9.5-point home favorite. Post-game news confirms Castle attempted only 1 three-pointer and missed it. In a 38-point blowout win, SAS's offensive execution shifted heavily toward two-point scoring (Castle finished 6-10 overall with 9-9 FTs, scoring 21 PTS without needing perimeter volume). The blowout game-script compressed Castle's perimeter attempt volume to a single shot \u2014 not a miss due to shooting percentage variance, but due to near-zero attempt volume. The 3PM iron_floor concept assumes sufficient attempts, not just shooting ability.",
+      "Anthony Edwards PTS T15 missed (actual 12, pick_value 15) and AST T2 missed (actual 0, pick_value 2) in an SAS blowout win (133-95). Post-game news confirms Edwards played 24 minutes with the miss attributed to lopsided game flow. At pick time Edwards was QUESTIONABLE, a -5pp injury penalty was applied to PTS, and proj_min was set to 30 \u2014 but actual minutes were 24 in a blowout loss. The combined effect of QUESTIONABLE minutes uncertainty and a losing-side blowout game-script was not fully priced: a QUESTIONABLE player on the projected losing side in a game with a 9.5-point spread faces both a minutes floor uncertainty AND a blowout compression risk, and these two penalties should compound rather than be evaluated independently."
+    ],
+    "recommendations": [
+      "Implement a compounding blowout penalty for AST picks on the WINNING side of games where spread_abs \u2265 8.0: if spread_abs \u2265 8.0 in playoffs, apply an additional -7pp beyond the standard blowout penalty for AST T4+ on the favored team's players. This addresses the Fox AST miss directly \u2014 the current -5pp blowout penalty left the pick at 80% confidence despite the structural risk of starters being managed once a large lead is secured. The Fox case (9/10 overall, H2H MIN 3/3, but 26 min in a 38-point win with 2 AST) confirms the existing penalty is too soft for large-spread playoff games.",
+      "For 3PM picks where the tier is T1 and no iron_floor is present: require evidence of 3PM ATTEMPT VOLUME in recent games, not just hit rate. If a player's recent L5 shows fewer than 3 three-point attempts per game on average, apply an additional -5pp regardless of hit rate, because T1 3PM can fail not from shooting percentage but from attempt scarcity in blowout or role-compressed games. The Castle 3PM miss is the clearest example: 0-for-1 with no shooting misses at the tier level in a game where attempt volume collapsed due to blowout script.",
+      "For picks on QUESTIONABLE players who are projected to be on the LOSING SIDE of the game (opponent spread favorite by 7+), compound the injury penalty with a blowout-minutes penalty: apply an additional -5pp to PTS and AST props on top of the standard QUESTIONABLE -5pp. A QUESTIONABLE player on the underdog side in a potential blowout faces two independent minutes compression mechanisms \u2014 injury-related load management AND losing-side game-script truncation. The Edwards PTS and AST misses both suffered from this compounding effect that was not operationalized at pick time.",
+      "The MIN\u00d7AST suppressor's interaction with blowout game-script should be formalized: when SAS (or any team with a floor compression pattern) is the favored home team by 8+ points in a playoff game, AST picks on the LOSING TEAM'S players should receive the MIN\u00d7AST suppressor penalty stacked on top of the blowout-AST penalty. In the SAS@MIN G2 context, Fox's 2 AST is consistent with both the blowout losing-side mechanism AND the suppressor being neutralized when the game runs away \u2014 but picks made before the game cannot know which mechanism will dominate. The double-penalty approach accounts for this structural uncertainty.",
+      "The 76-80% confidence band underperformed significantly (66.7% actual vs 78.0% expected, 6/9). All four misses occurred in this band (Fox AST at 80%, Edwards PTS at 74%, Edwards AST at 78%, Castle 3PM at 80%). This is a sample-size-limited signal but warrants monitoring: consider whether the blowout game-script was systematically underpenalized in the 76-80% band specifically. For the next run, picks in this band that combine (a) blowout_risk=true AND (b) spread_abs \u2265 8.0 should be capped at 75% confidence or require iron_floor to proceed above 75%."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Stephon Castle",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: MIN@SAS final score 95-133, SAS won by 38 \u2014 BLOWOUT. SAS is the winning side; Castle is on the winning team. STEP 1: Castle was active, scored 21 PTS on 6-10 FG with 9-9 FT in 24 minutes \u2014 fully active but played reduced minutes due to blowout game management. STEP 2: Post-game news confirms Castle went 0-for-1 from three despite scoring 21 points; his scoring came entirely from two-point field goals and free throws. No injury event. Classification: model_gap_rule. The signal existed \u2014 spread_abs=9.5 and BLOWOUT_RISK=True were both present in the pick object \u2014 but the rule's handling of 3PM attempt volume on the winning side of a blowout was insufficient. T1 3PM picks are structurally vulnerable not only to shooting percentage variance but to attempt volume collapse when a team builds a large lead and shifts to two-point/paint execution. Castle's 0-for-1 reflects a single attempt context, not a shooting failure. The current blowout penalty (-5pp via the general blowout rule) was not applied in the tier_walk because the blowout-AST/3PM rule structure doesn't specifically penalize winning-side 3PM for attempt scarcity. The POR series 5/5 T1 rate was compiled largely against a weaker opponent (POR) in a series SAS dominated, and the G1 3-three game vs MIN may have been a competitive-game artifact. STEP 3: The reasoning cited 'POR series 5/5 T1, G1 3 threes vs MIN; SAS home desperation' \u2014 all three signals were real, but none captures the attempt-volume compression risk in a blowout win context. STEP 4: Hit rate was 9/10 overall \u2014 a genuine rate miss, not a marginal pick. The 3PM non-iron-floor cap was correctly applied at 80%. STEP 5: Tier walk correctly selected T1 as best qualifying tier; no walk flag. STEP 6: Lineup update flagged upside (Edwards QUES \u2192 83% revised), which was directionally reasonable but the amendment missed the blowout-compression mechanism entirely."
+      },
+      {
+        "player_name": "De'Aaron Fox",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 2.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: MIN@SAS final score 95-133, SAS won by 38 \u2014 BLOWOUT. Fox is on the winning team (SAS). STEP 1: Fox was active, scored 16 PTS in 26 minutes \u2014 fully active. His 2 AST is the missed stat; non-zero output confirms no injury or DNP. STEP 2: Post-game news confirms Fox finished with only 2 assists in 26 minutes with no mid-game exit or restriction \u2014 the miss is a performance outcome in a blowout win. No injury event. Classification: model_gap_rule. The structural mechanism: Fox played 26 minutes (not 34+) as SAS managed his load in a 38-point blowout win. Once the lead was safe, half-court creation sequences were compressed, Fox's minutes were curtailed, and his assist opportunities collapsed. The existing blowout penalty (-5pp) brought confidence from 95% to 90% \u2014 still 80%, a pick. A stronger compounding penalty for AST on the winning side of a spread_abs \u2265 8 blowout would have correctly suppressed this. The MIN\u00d7AST suppressor was not active here (Fox is SAS, not MIN), but the blowout-winner AST mechanism is analogous: starters on winning teams with large leads are managed out of the game before they can accumulate assists in late-half-court sets. STEP 3: Reasoning cited 'Consistent T4 AST 95%; H2H MIN 3/3 perfect; G1 6 assists confirms floor; SAS home G2' \u2014 the G1 6-assist performance was in a competitive context (G1 MIN@SAS was closer than G2). The floor established in G1 did not hold in a blowout. STEP 4: 9/10 hit rate is strong \u2014 this is not a marginal rate miss but a game-script failure. STEP 5: Tier walk correctly stepped down from T6 (H2H MIN 1/3 at T6 < 70%) to T4 (9/10 overall). The walk was sound; the issue is insufficient blowout-winner AST penalty at any tier. STEP 6: Lineup amendment was 'unchanged' \u2014 direction held at 80%. The amendment correctly did not revise for Edwards QUES since AST rarely shifts with opposing perimeter absence, but it also did not detect the blowout-winner AST compression risk."
+      },
+      {
+        "player_name": "Anthony Edwards",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 12.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: MIN@SAS final score 95-133, SAS won by 38 \u2014 BLOWOUT. Edwards is on the losing team (MIN). STEP 1: Edwards was active \u2014 scored 12 PTS on 5-13 FG in 24 minutes. Non-zero output; no DNP. STEP 2: Post-game news confirms Edwards shot 5-13 for 12 points in 24 minutes as Minnesota was blown out 133-95. The reduced minutes appear tied to the lopsided score rather than injury. No injury event. Classification: model_gap_rule. Two compounding mechanisms both fired simultaneously: (1) QUESTIONABLE injury status (knee) created genuine minutes uncertainty with proj_min=30, and (2) losing-side blowout compression truncated his actual minutes to 24 and disrupted offensive rhythm. These two penalties (-5pp for QUES knee, standard blowout advisory) were evaluated independently rather than compounded. At pick time, the combined signal of 'QUESTIONABLE player on projected losing side of a spread_abs=9.5 game' was present in the pick object but no compounding rule existed to handle this specific intersection. The H2H SAS 3/3 T15 regular-season record and dossier G1-4 BOOST were strong signals that held under normal conditions but were overwhelmed by the combined minutes compression. STEP 3: Reasoning cited 'T15 85% base; H2H SAS 3/3 T15; dossier BOOST G1-4; knee QUES applied with proj_min=30.' The proj_min=30 assumption proved optimistic by 6 minutes in a blowout context \u2014 a QUESTIONABLE player on a losing blowout team is structurally less likely to receive 30 minutes than a healthy player in a competitive game. STEP 4: 8/10 hit rate \u2014 pick was not marginal; the intersection of injury uncertainty and blowout context is the mechanism, not poor hit rate selection. STEP 5: Tier walk correctly at T15 (T20 skipped at 2/4 DEN series). No tier walk flag. STEP 6: No lineup update was triggered for Edwards (injury_status_at_check shows NOT_LISTED at final check, though Edwards was listed QUESTIONABLE at lineup update time with a revised_confidence of 74% to 77% via the lineup update triggered by Edwards QUES). The amendment's upward revision (Edwards QUES \u2192 77%) did not adequately penalize the blowout-loser minutes compression risk."
+      },
+      {
+        "player_name": "Anthony Edwards",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 0.0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: MIN@SAS final score 95-133, SAS won by 38 \u2014 BLOWOUT. Edwards is on the losing team (MIN). STEP 1: Edwards was active \u2014 scored 12 PTS in 24 minutes. The 0 AST is the missed stat; non-zero PTS output confirms no DNP. STEP 2: Post-game news confirms Edwards played 24 minutes in the blowout loss with no injury exit. Classification: model_gap_rule. The mechanism is compounding: (1) QUESTIONABLE status (knee) suppressed minutes to 24, (2) losing-side blowout game-script eliminated late-game half-court creation sequences where Edwards typically generates assists, and (3) the soft_floor downgrade (-5pp for PTS/AST ratio >3x) was applied but insufficient to suppress below pick threshold. At 0 AST in 24 minutes, Edwards' assist count was zero \u2014 reflecting both the blowout game-script (no Q4 competitive possessions) and likely a conservative usage pattern given his knee concern. The iron_floor at T2 was retained as soft_floor but even a soft_floor cannot protect against a player logging 24 minutes in a 38-point loss where the offense collapsed in Q3-Q4. STEP 3: Reasoning cited 'Iron floor AST T2 90% overall; H2H SAS 4/4; soft_floor downgrade applied for role-purity.' The H2H SAS 4/4 record was from regular season games; none of those games occurred in a blowout-loss context for MIN. The floor concept broke down when minutes dropped to 24 in a lopsided environment. STEP 4: 9/10 hit rate overall \u2014 strong rate; the mechanism is structural game-script failure, not poor rate selection. STEP 5: T4 correctly skipped (DEN series 1/4 = 25%); T2 was the only viable tier. No walk flag \u2014 the walk was constrained correctly. STEP 6: No lineup update was separately triggered for Edwards AST (the lineup update noted 'unchanged' for AST reasoning). The amendment correctly identified that opposing perimeter absence doesn't shift AST, but missed the blowout compression compounding the QUESTIONABLE minutes risk."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 15,
+      "hits": 13,
+      "misses": 2,
+      "hit_rate_pct": 86.7,
+      "delta_vs_overall_pp": 4.9
+    }
   }
 ]
