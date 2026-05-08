@@ -1,66 +1,70 @@
 {
-  "date": "2026-05-07",
-  "generated_at": "2026-05-07T08:29:52.879162-07:00",
+  "date": "2026-05-08",
+  "generated_at": "2026-05-08T07:51:09.866933-07:00",
   "player_notes": {
-    "og anunoby": "Exited Game 2 late with an apparent leg injury; availability for Game 3 is uncertain. Significant minutes/role risk \u2014 monitor status closely before betting any props.",
-    "joel embiid": "Ruled out for Game 2 (ankle and hip injuries); status for Game 3 remains unclear given ongoing injury concerns. If out again, 76ers role players see elevated usage.",
-    "luka doncic": "Still sidelined with a Grade 2 hamstring strain; no return timeline provided as of May 6. Remains OUT \u2014 do not target his props.",
-    "sam merrill": "Had MRI on left hamstring after injuring it in Game 1 vs. Pistons; sat out practice. Likely out or severely limited for Game 2 \u2014 avoid props."
+    "og anunoby": "Diagnosed with a right hamstring strain, listed day-to-day and questionable for Knicks Game 3 vs. 76ers. If he misses or is limited, expect redistributed offensive load for Brunson, Hart, and Bridges.",
+    "james harden": "Back-to-back poor playoff performances \u2014 3-for-13 FG, 0-for-4 from 3 in Game 2. Fade scoring and 3PM props until signs of offensive recovery emerge.",
+    "karl-anthony towns": "Foul trouble has been a notable issue; analysts calling him out specifically. Increased foul risk suppresses his minutes/rebound/point upside \u2014 factor into floor props."
   },
   "game_notes": {
-    "PHI vs NYK": "Embiid remains out (ankle/hip), boosting usage for 76ers role players. Anunoby injury creates potential minutes/role void for Knicks in Game 3.",
-    "LAL vs OKC": "Luka Doncic remains out indefinitely, leaving LeBron James as the clear offensive focal point; supporting cast elevated usage expected."
+    "NYK vs PHI": "OG Anunoby (hamstring strain) is day-to-day for Game 3. His absence would meaningfully shift Knicks wing usage and defensive assignments."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 48,
+  "filtered_item_count": 46,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
       "player_or_team": "OG Anunoby (NYK)",
-      "current_context_fact": "The season context doc marks BOS vs PHI as the current R2 series in progress, and NYK is listed as advancing after beating ATL 4-2. The injury landscape and series diary have Anunoby as healthy and fully active heading into R2, with no documented injury concern post-series.",
-      "conflict": "Multiple news items confirm Anunoby exited Game 2 of the NYK vs PHI R2 series late with an apparent leg injury ('Knicks' OG Anunoby exits Game 2 late with apparent leg injury'). Stephen A. Smith called this a bigger headline than the Knicks' win. His availability and role for Game 3 are now uncertain.",
+      "current_context_fact": "No injury listed for Anunoby in the Playoff Injury Landscape or series diary heading into R2. Series diary notes his G6 performance (29/7/2, 11-14 FG, 4 3PM, 27 min) and flags his G6 efficiency must be evaluated cautiously given blowout context.",
+      "conflict": "Multiple news items (Shams Charania, ESPN) report Anunoby has been diagnosed with a right hamstring strain and is day-to-day, questionable for Game 3 of the NYK-PHI R2 series.",
       "urgency": "critical",
-      "suggested_action": "Add Anunoby to the ACTIVE WITH DOCUMENTED CONCERNS section under Playoff Injury Landscape. Flag as GTD/QUES with apparent leg injury suffered in R2 G2 (May 6). Apply availability caveat to all Anunoby props until severity and G3 status are confirmed. Note that the OG Anunoby cross-season dossier signals (AST CAUTION, etc.) are now secondary to availability risk."
+      "suggested_action": "Add OG Anunoby to the Active With Documented Concerns section of the Playoff Injury Landscape: 'OG Anunoby (NYK) \u2014 Right hamstring strain, diagnosed post-R1. Day-to-day, questionable for R2 G3 (at PHI). Availability is the primary NYK variable; his absence would compress the wing depth that defined NYK's G5-G6 R1 closing run and shift offensive burden to Brunson and Bridges.'"
     },
     {
-      "player_or_team": "NYK vs PHI \u2014 R2 Series State",
-      "current_context_fact": "The season context doc contains no R2 series diary entries. The playoff bracket shows the R2 matchups as confirmed but no game results are recorded for any R2 series.",
-      "conflict": "News confirms NYK leads PHI 2-0 in R2 ('Knicks take 2-0 lead into game 3 against the 76ers'; 'Jalen Brunson helps the Knicks take a 2-0 lead over the 76ers with a 108-102 victory'). Game 2 score was NYK 108, PHI 102. Brunson scored 26 points. The series context doc has no record of G1 or G2 results.",
+      "player_or_team": "NYK vs PHI \u2014 R2 series status",
+      "current_context_fact": "Season context document ends with R1 series diaries; no R2 series diary exists for NYK-PHI. The context establishes PHI advanced by winning R1 4-3 over BOS.",
+      "conflict": "Multiple news items confirm NYK leads PHI 2-0 in R2, with Game 3 scheduled in Philadelphia. This means R2 Games 1 and 2 have already been played with results not captured in the context document.",
       "urgency": "critical",
-      "suggested_action": "Create R2 series diary for NYK vs PHI. Record G2 result: NYK 108, PHI 102 (NYK leads 2-0). Note Brunson 26 pts, Anunoby leg injury exit late in game. Series shifts to Philadelphia for G3."
+      "suggested_action": "Create an R2 series diary for NYK vs PHI and record G1 and G2 results. At minimum, note NYK leads 2-0 heading into G3 in Philadelphia. The Brunson ankle status and Anunoby hamstring strain are the key injury variables for G3."
     },
     {
-      "player_or_team": "Joel Embiid (PHI)",
-      "current_context_fact": "The playoff injury landscape entry for Embiid states: 'Heading into R2, treat as a player approaching peak playoff conditioning \u2014 the four-game return arc confirms durability across consecutive high-minute appearances. No structural injury concern beyond the appendectomy recovery.'",
-      "conflict": "News confirms Embiid was ruled OUT for R2 Game 2 due to ankle and hip injuries ('76ers star Joel Embiid out for Game 2 due to multiple injuries'; 'Shams: Joel Embiid to miss Game 2 vs. Knicks'). These are new injuries distinct from the appendectomy. Multiple commentators discussed his absence as a significant factor ('What the 76ers miss with Joel Embiid out').",
+      "player_or_team": "DET vs CLE \u2014 R2 series status",
+      "current_context_fact": "Season context document ends with R1 series diaries. CLE advanced over TOR 4-3 and DET advanced over ORL 4-3 (after 7 games). No R2 series diary exists.",
+      "conflict": "Multiple news items confirm DET leads CLE 2-0 in R2, with Game 3 in Cleveland. Cunningham had 25 points and 10 assists in G2 (107-97 DET win). Harden went 3-for-13 from the field and missed all four 3-point attempts in G2 \u2014 second straight struggle game.",
       "urgency": "critical",
-      "suggested_action": "Update Embiid's injury landscape entry to reflect new ankle and hip injuries that caused him to miss R2 G2. Remove the 'no structural injury concern' language. Add to CONFIRMED OUT section for at least G2 (already played), and flag as QUES/GTD for G3 with ankle and hip as the active concerns. His R2 availability is now the primary PHI variable, not appendectomy conditioning."
+      "suggested_action": "Create an R2 series diary for DET vs CLE. Record DET leads 2-0. Key updates: Harden is struggling (3-13 FG, 0-4 3PM in G2), directly reinforcing the career playoff PTS CAUTION and 3PM avoid-high-tier directives. Cunningham is performing at All-NBA level (25 pts, 10 AST in G2). Tobias Harris scored 21 points in G2 \u2014 note as an emerging secondary contributor."
     },
     {
-      "player_or_team": "SAS vs MIN \u2014 R2 Series State",
-      "current_context_fact": "The season context doc contains no R2 series diary entries. The playoff bracket lists SAS vs MIN as a confirmed R2 matchup (SAS 2-seed vs MIN 6-seed) but has no game results.",
-      "conflict": "News confirms SAS won R2 G2 133-95 ('Wembanyama and Spurs rebound to hand Timberwolves largest postseason defeat, 133-95, to even series'). Series is now tied 1-1. Wembanyama had 19 points and 15 rebounds. The Timberwolves apparently came out 'cool' despite Edwards' warning ('Wolves fail to heed Edwards' warning, come out cool in rout').",
+      "player_or_team": "LAL vs OKC \u2014 R2 series status",
+      "current_context_fact": "Season context ends with LAL advancing over HOU 4-2 in R1. No R2 series diary exists for LAL-OKC.",
+      "conflict": "Multiple news items confirm OKC leads LAL 2-0 in R2. SGA and Holmgren each scored 22 in G2. Redick ripped officiating after G2 loss. Reaves expressed feeling 'disrespected.' OKC took control of G2 with SGA on the bench due to foul trouble.",
       "urgency": "critical",
-      "suggested_action": "Create R2 series diary for SAS vs MIN. Record G2 result: SAS 133, MIN 95 (series tied 1-1). Note Wembanyama 19/15, Fox and Wemby described as bouncing back from 'shaky performances in the series opener.' Add G1 result (MIN won) based on the news framing of SAS bouncing back. Series now tied heading to Game 3."
+      "suggested_action": "Create an R2 series diary for OKC vs LAL. Record OKC leads 2-0. Note SGA had foul trouble in G2 (only 22 points \u2014 below his typical output but T20 structural lock status unaffected). Holmgren 22 points. Reaves is active and playing but struggling or limited. Redick's officiating complaints post-G2 are noted color context."
     },
     {
-      "player_or_team": "LAL vs OKC \u2014 R2 Series State",
-      "current_context_fact": "The season context doc contains no R2 series diary entries. The playoff bracket confirms LAL vs OKC as a R2 matchup (OKC 1-seed vs LAL 4-seed) but has no game results.",
-      "conflict": "News confirms LAL lost R2 G1 to OKC ('NBA championship and Finals MVP odds: Lakers' odds lengthen... following their Game 1 loss to the Thunder'; 'Stephen A.: LeBron's one-man show is not going to work against OKC'). OKC leads 1-0. LeBron's performance as a one-man show is being criticized.",
+      "player_or_team": "MIN vs SAS \u2014 R2 series status",
+      "current_context_fact": "Season context ends with SAS advancing over POR 4-1 in R1 and MIN advancing over DEN 4-2 in R1. No R2 series diary exists for MIN-SAS.",
+      "conflict": "Multiple news items confirm SAS and MIN are tied 1-1 in R2. SAS won G2 133-95 \u2014 the largest postseason loss in MIN franchise history. Wembanyama had 19 points and 15 rebounds. Fox and Wemby 'bounced back from shaky performances in the series opener.' Edwards warned teammates before G2 but MIN came out 'cool.' Finch said 'They kicked our butt in every aspect.'",
       "urgency": "critical",
-      "suggested_action": "Create R2 series diary for OKC vs LAL. Record G1 result: OKC won (LAL lost). OKC leads 1-0. Note that LeBron's supporting cast performance is under scrutiny. LAL odds have lengthened to 40-1 for championship."
+      "suggested_action": "Create an R2 series diary for SAS vs MIN. Record series tied 1-1 with SAS winning G2 133-95. Wembanyama 19/15 in G2 confirms continued health. Edwards played G2 (his knee status and minutes must be tracked \u2014 the news implies he played but MIN lost by 38). Fox had a strong G2 bounce-back. MIN's Anthony Edwards injury concern from R1 needs a status update \u2014 confirm whether he played G2 and at what capacity."
     },
     {
-      "player_or_team": "CLE vs DET \u2014 R2 Series State",
-      "current_context_fact": "The season context doc contains no R2 series diary entries. The playoff bracket lists CLE vs DET as a confirmed R2 matchup (DET 1-seed vs CLE 4-seed) but has no game results.",
-      "conflict": "News references '2026 NBA playoffs: Conference semifinals takeaways' covering 'Cavs-Pistons' as an active R2 series with results. 'Sam Merrill gets MRI on hamstring, sits out practice' after injuring it 'in a Game 1 loss to the Pistons' \u2014 confirming DET won R2 G1 over CLE. The article on Daniss Jenkins ('NBA playoffs 2026: How Daniss Jenkins helped save Detroit's 1-seed') also suggests DET is active in R2.",
-      "urgency": "critical",
-      "suggested_action": "Create R2 series diary for DET vs CLE. Record G1 result: DET won (CLE lost). DET leads 1-0. Add Sam Merrill (CLE) to injury landscape: left hamstring injury suffered in G1, MRI taken, sat out practice \u2014 GTD/QUES status for G2. Note that Merrill is a reserve guard and the primary concern is his availability."
+      "player_or_team": "Anthony Edwards (MIN)",
+      "current_context_fact": "Playoff Injury Landscape states Edwards was 'OUT for G5' in R1 vs DEN with left knee injury, and series diary confirms he was OUT for MIN's series-clinching G6 win over DEN. Treat as a primary injury concern; availability and minutes restriction are critical variables.",
+      "conflict": "News item about MIN-SAS G2 states Edwards 'warned' teammates before the game and describes his role in the loss, implying he played in R2 G2. However, his knee status and minutes are not detailed in the news.",
+      "urgency": "monitor",
+      "suggested_action": "Update Edwards' injury status: he appears to have returned for R2 play vs SAS, but his left knee concern from late R1 is unresolved in the context doc. Confirm his minutes and performance in SAS-MIN G1 and G2, and update the injury landscape to reflect his current active/restricted status rather than 'OUT.'"
     },
     {
-      "player_or_team": "Luka Doncic (LAL)",
-      "current_context_fact": "The playoff injury landscape states: 'Luka Doncic (LAL) \u2014 Grade 2 left hamstring strain (Apr 2 vs OKC). Same hamstring he tweaked Feb 5. In Spain for stem cell injection treatment. Re-evaluation Apr 14. OUT for R1 Game 1. Best case: late R1 (Games 4-5 if series goes long). Realistic: R2 (~May 3-4).'",
-      "conflict": "News from May 6 states Doncic 'does not know when he will be able to return' and says 'I feel better every day' \u2014 but critically, he is still not cleared and has no return timeline confirmed ('Lakers' Luka D"
+      "player_or_team": "James Harden (CLE)",
+      "current_context_fact": "R1 series diary (CLE vs TOR G7) notes Harden 18/6/3 (3-9 FG, 1 3PM) in G7 and flags his dossier PTS CAUTION (trajectory net_down) and 3PM avoid-high-tier directive. R2 context does not exist.",
+      "conflict": "News confirms Harden went 3-for-13 from the field and missed all four 3-point attempts in R2 G2 vs DET \u2014 described as 'struggles for 2nd straight game.' This directly reinforces both the PTS CAUTION and 3PM strong CAUTION directives in a live R2 context.",
+      "urgency": "monitor",
+      "suggested_action": "In the R2 DET-CLE series diary, record Harden's G2 struggles (3-13 FG, 0-4 3PM). Annotate that his career playoff PTS CAUTION and 3PM strong CAUTION directives are being validated in real time in R2. Do not pick Harden 3PM T2+ in this series."
+    },
+    {
+      "player_or_team": "BOS \u2014 eliminated status / Jaylen Brown",
+      "current_context_fact": "Context doc notes"
     }
   ],
   "staleness_flags": []
