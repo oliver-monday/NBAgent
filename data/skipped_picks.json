@@ -19,10 +19,10 @@
       "floor": 68,
       "note": "VOLATILE primary playmaker -8pp + blowout AST compounding (spread_abs=15.5, favored team) -7pp + vs_tough=55% drop advisory -5pp = -20pp cap; 75-20=55%, below 68% floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 6"
   },
   {
     "date": "2026-05-07",
@@ -39,10 +39,10 @@
       "t1_hit_rate": "8/10",
       "note": "trend=down, no iron_floor, <9+/10 at T1; cannot step below minimum tier T1 \u2014 skip per trend=down step-down rule with no valid lower tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-07",
@@ -60,10 +60,10 @@
       "floor": 68,
       "note": "Overall 70% - VOLATILE -3% = 67%, below 68% PTS minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 25.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 25.0 \u2265 tier 15"
   },
   {
     "date": "2026-05-07",
@@ -81,10 +81,10 @@
       "floor": 68,
       "note": "VOLATILE -3% on 70% base = 67%, below 68% floor; vs_tough=57% additional headwind"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-05-07",
@@ -100,9 +100,9 @@
       "estimated_3rd_lowest_l10": 7,
       "note": "25th-percentile gate: pick_value=8 not strictly below estimated 3rd-lowest L10 of ~7; gate fails, stepped to T6"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 8"
   }
 ]
