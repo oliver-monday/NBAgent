@@ -17,10 +17,10 @@
       "tier_threshold": "T25+",
       "reason": "VOLATILE + 7/10 (70%) + T25 triggers volatile_weak_combo hard skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 33.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 33.0 \u2265 tier 25"
   },
   {
     "date": "2026-05-08",
@@ -41,10 +41,10 @@
       "floor_required": 72,
       "reason": "VOLATILE -3pp reduces 70% below 72% REB floor; stepped to T8 instead"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 10"
   },
   {
     "date": "2026-05-08",
@@ -70,8 +70,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-05-08",
@@ -95,8 +95,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-05-08",
@@ -119,10 +119,10 @@
       "series_minutes": "24.5 avg",
       "reason": "QUES knee + VOLATILE + compounding penalty for QUESTIONABLE player on potential losing side (MIN +4.5 underdog) reduces confidence below 68% floor; series avg 15 PPG in 24.5 min with G2 only 18 min is fragile"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 32.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 32.0 \u2265 tier 15"
   },
   {
     "date": "2026-05-08",
@@ -141,10 +141,10 @@
       "third_lowest_l10_estimate": 10,
       "reason": "25th-percentile gate: 3rd-lowest L10 REB estimated at 10 \u2014 pick_value=10 is NOT strictly less than floor value 10; gate fails. Stepped to T8 instead."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 7.0 < tier 10"
   },
   {
     "date": "2026-05-08",
@@ -165,10 +165,10 @@
       "floor_required": 72,
       "reason": "VOLATILE -3pp reduces 70% below 72% REB floor; competitive=50% and vs_soft=54% both confirm T12 is too high"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 12"
   },
   {
     "date": "2026-05-08",
@@ -188,10 +188,10 @@
       "raw_avgs_ast": 4.5,
       "reason": "VOLATILE + AST T6+ hard skip fires: raw_avgs AST < 6.0 (secondary creator). No exception applies. Hard skip."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-08",
@@ -213,10 +213,10 @@
       "final_confidence": 62,
       "reason": "Career playoff REB STRONG CAUTION (monotonic_down, avoid T6+) combined with VOLATILE -3pp and competitive=78% \u2192 67% below 72% floor. Scout note explicitly says 'hard directive that the Pick agent must enforce \u2014 do not reach on REB.'"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-08",
@@ -241,10 +241,10 @@
       "floor_required": 68,
       "reason": "vs_tough=50% at T10 is a major red flag (-10pp); VOLATILE -3pp; 80%-13pp=67% below 68% PTS floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 8.0 < tier 10"
   },
   {
     "date": "2026-05-08",
@@ -261,9 +261,9 @@
       "tier_considered": 2,
       "reason": "no FanDuel market available for Mike Conley \u2014 not listed in FANDUEL MARKET AVAILABILITY"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   }
 ]
