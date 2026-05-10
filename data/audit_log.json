@@ -7707,5 +7707,99 @@
       "hit_rate_pct": 92.3,
       "delta_vs_overall_pp": 1.8
     }
+  },
+  {
+    "date": "2026-05-09",
+    "total_picks": 19,
+    "voided_picks": 0,
+    "hits": 18,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 94.7,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 8,
+        "hits": 8,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0
+      },
+      "AST": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 12,
+        "hits": 12,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Tier step-down discipline on FG_MARGIN_THIN worked across all four triggered instances (Holmgren PTS T20\u2192T10, Cunningham PTS T20\u2192T15, Mitchell PTS T20\u2192T15, Harden PTS T15\u2192T10): every stepped pick hit, validating that the mandatory step-down rule correctly converts borderline primary tiers into reliable floor picks without sacrificing viability.",
+      "The Mobley AST CAUTION directive (avoid T4+ in playoffs, T2 acceptable) was correctly applied \u2014 Mobley posted 4 AST vs the T2 threshold, hitting comfortably. The carry-forward of the career playoff AST CAUTION dossier signal produced a structurally sound pick that required no hedging.",
+      "Cunningham AST T6 selection anchored on his elite series average (8.5 AST) and the raw_avgs \u22656.0 primary-playmaker exemption produced a 10-AST actual, validating the exemption logic \u2014 his G3 playmaking was not suppressed by DET's own secondary-creator compression signal, confirming the dossier's primary-creator carve-out is correctly scoped.",
+      "LeBron AST T6 at 70% confidence in the face of multiple stacked penalties (VOLATILE+AST -8pp, LOAD RISK -5pp, competitive drop to 73%) still hit with 8 actual assists \u2014 the 70% floor confidence minimum correctly kept this pick alive despite a heavy penalty stack, and the pick contributed positively to the slate.",
+      "Ausar Thompson REB T6 top pick designation (80% confidence, consistent tag, 9/10 hit rate, H2H vs CLE T6 5/6) produced 7 actual rebounds in a CLOSE game (CLE won by 7), validating the top pick elevation logic for players with consistent tags and strong cross-series rebounding floors. The market edge (+8.57% vs FanDuel implied) was correctly identified."
+    ],
+    "lessons": [
+      "Jalen Duren REB T8 missed badly (4 actual vs 8 threshold, -4 margin) in a CLOSE game (DET lost by 7) with no confirmed injury exit and full 29 minutes played. The post-game news explicitly confirms 'a simply poor rebounding performance.' The competitive=66% signal in the tier_walk was the only structural warning present \u2014 the analyst noted this as 'a significant concern' but proceeded to 78% confidence after a net adjustment. The miss highlights that competitive=66% on a REB pick, even with strong series form (2/2 T8), warrants a more aggressive confidence reduction or tier step than was applied."
+    ],
+    "recommendations": [
+      "For REB picks where competitive hit rate drops materially below 70% (e.g. competitive=66% as seen with Duren REB), apply a mandatory additional -8pp penalty rather than treating it as a soft adjustment. If the resulting confidence falls below 72%, step the tier down one level regardless of series form. Series form (2/2) should not fully offset a structural competitive-game suppression signal \u2014 the two signals address different sample populations and the competitive sample is more directly relevant to playoff game scripts.",
+      "When a REB pick's 25th-percentile gate analysis finds the 3rd-lowest recent game value is close to or at the pick threshold (e.g. PHX series avg 9.4 with estimated low games near 7-8), and the competitive hit rate is simultaneously below 70%, treat this as a compound gate signal and step down one additional tier even if the 25th-pct gate nominally clears. The Duren T8 miss with competitive=66% and a PHX series that had borderline 3rd-lowest values illustrates that narrow gate clearances combined with poor competitive rates create outsized tail risk.",
+      "The obs_walk 'declined' outcome on Duren REB (T10\u2192T8 declined, no T5 market) identified a structural limitation: when no lower market tier exists and FG_MARGIN_THIN fires, the analyst correctly held with a confidence penalty, but the combination of FG_MARGIN_THIN + FG_COLD (-21%) + competitive=66% on a REB pick with no walk-down option available should trigger a skip consideration rather than a held pick at floor confidence. Codify: if FG_COLD \u226515% AND competitive<70% AND no lower market tier exists for a REB pick, classify as skip-eligible at the analyst's discretion.",
+      "The Harden PTS dossier advisory ('AVOID PTS in playoffs') was correctly applied as a -10pp penalty rather than a hard skip, and the pick hit (19 actual vs T10). This validates the current treatment \u2014 dossier AVOID signals on PTS should continue to be operationalized as confidence penalties at conservative tiers (T10 and below) rather than absolute skips when series evidence (2/2 T10) and H2H data (3/3 vs DET) provide strong override context. Do not escalate the AVOID directive to a hard skip rule based on this slate.",
+      "The walk-revert outcome on Harden AST (T2 market unavailable, reverted to T4 with -3pp penalty) produced a 7-actual vs T4 hit. When a walk-revert occurs due to market unavailability, the -3pp penalty-in-lieu approach is functioning correctly \u2014 no rule change needed. Reinforce that walk-revert picks should continue to apply the -3pp penalty and remain in the slate, as the reversion to a higher tier with a small confidence haircut correctly reflects the incremental risk of not fully walking down."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jalen Duren",
+        "prop_type": "REB",
+        "pick_value": 8,
+        "actual_value": 4,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: DET @ CLE, CLE won 116-109, margin 7 \u2014 CLOSE game. Not a blowout; game script is not a causal factor for this miss. STEP 1 \u2014 Activity confirmed: Duren played 29 minutes per post-game news, recorded 11 PTS and 4 REB \u2014 active throughout, no injury exit. STEP 2 \u2014 No injury_exit in post-game news; injury_status_at_check was NOT_LISTED. Post-game web recap explicitly states 'a simply poor rebounding performance' with no injury or restriction confirmed. Classification: variance. STEP 3 \u2014 Original reasoning cited '2/2 T8 this series; H2H vs CLE T10 4/5; elimination context proj_min=34.' The series form was real (2/2 T8 in prior games) and the H2H data was supportive. The reasoning did not adequately weight the competitive=66% signal, which the tier_walk acknowledged as 'a significant concern' but insufficiently penalized \u2014 the analyst applied a net -6pp adjustment and landed at 78%, when the competitive=66% combined with a CLOSE game context warranted heavier reduction. However, the underlying pick logic was not unsound: hit rate was 8/10, series form was strong, and the pick was at the best available tier (T8) after 25th-pct gate processing. The 4-rebound outcome is well below even the floor implied by recent games and represents a genuine off night. STEP 4 \u2014 Hit rate was 8/10 (80%) with trend=up \u2014 both supportive signals. A miss from an 8/10 player in a CLOSE game with full minutes is within the normal distribution of outcomes for a stat as volatile as rebounding. Miss margin of -4 is larger than typical variance, but rebounding variance is structurally wider than PTS or AST. STEP 5 \u2014 Tier walk correctly processed: T12 failed (insufficient H2H), T10 failed 25th-pct gate, T8 cleared 25th-pct gate after conservative floor estimation. The walk was sound and the selected tier was the best defensible option given market availability. No tier_skip_error, data_conflict, or insufficient_walk applies. STEP 6 \u2014 No lineup_update sub-object present; no amendment was triggered for this pick. No amendment context to note. Summary: Pick was structurally sound at pick time \u2014 8/10 hit rate, trend up, strong series form, correct tier walk. Competitive=66% was the one warning flag that should have driven a heavier confidence reduction (see recommendations), but the outcome of 4 rebounds in 29 full minutes of a CLOSE game is a variance event, not a structural selection failure."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 16,
+      "hits": 15,
+      "misses": 1,
+      "hit_rate_pct": 93.8,
+      "delta_vs_overall_pp": -0.9
+    }
   }
 ]

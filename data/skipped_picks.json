@@ -14,10 +14,10 @@
       "tier_considered": 20,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 23.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 23.0 \u2265 tier 20"
   },
   {
     "date": "2026-05-09",
@@ -34,10 +34,10 @@
       "tier_considered": 6,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-09",
@@ -54,10 +54,10 @@
       "tier_considered": 1,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-09",
@@ -75,10 +75,10 @@
       "minimum_floor": 75,
       "reason": "VOLATILE -3pp on 3PM T1 drops below 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-05-09",
@@ -97,10 +97,10 @@
       "minimum_floor": 75,
       "reason": "VOLATILE overrides iron_floor on 3PM; HARD AVOID dossier -10pp; 62% below 75% 3PM floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-09",
@@ -118,10 +118,10 @@
       "minimum_floor": 72,
       "reason": "VOLATILE -3pp drops T4 REB to 67%, below 72% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
   },
   {
     "date": "2026-05-09",
@@ -140,10 +140,10 @@
       "minimum_floor": 68,
       "reason": "vs_tough=56% material drop + VOLATILE produces 67%, below 68% PTS floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 10"
   },
   {
     "date": "2026-05-09",
@@ -162,10 +162,10 @@
       "minimum_floor": 72,
       "reason": "Post-G1 REB miss slump signal -5pp + VOLATILE -3pp = 62%, below 72% REB floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 6"
   },
   {
     "date": "2026-05-09",
@@ -183,10 +183,10 @@
       "minimum_floor": 72,
       "reason": "VOLATILE -3pp on T6 REB produces 71%, just below 72% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-09",
@@ -203,9 +203,9 @@
       "tier_considered": 20,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 21.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 21.0 \u2265 tier 20"
   }
 ]
