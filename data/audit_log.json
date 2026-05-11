@@ -7801,5 +7801,129 @@
       "hit_rate_pct": 93.8,
       "delta_vs_overall_pp": -0.9
     }
+  },
+  {
+    "date": "2026-05-10",
+    "total_picks": 19,
+    "voided_picks": 3,
+    "hits": 18,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 94.7,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 9,
+        "hits": 8,
+        "hit_rate_pct": 88.9
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 11,
+        "hits": 10,
+        "hit_rate_pct": 90.9,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 8,
+        "hits": 8,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Ejection/injury-exit handling is a structural gap, not a selection failure \u2014 both Wembanyama misses (PTS T15, REB T10) resulted from a Flagrant 2 ejection in Q2 that left him with 12 minutes played. The system correctly had 87% and 72% confidence respectively on well-supported picks; the outcome was purely an unforeseeable in-game event. The injury_event classification is correct and no rule tightening is warranted.",
+      "AST and 3PM prop selection was flawless (5/5 and 4/4). Iron_floor 3PM picks for Brunson (6 actual vs T1) and Vassell (2 actual vs T1) both hit by wide margins, validating the iron_floor hold-with-penalty approach when trend=down. The tier-walk cascade from T2\u2192T1 on trend=down for Vassell and Edwards 3PM was correct \u2014 both hit comfortably.",
+      "The blowout game-script correctly suppressed top-pick designations and reduced confidence on NYK-side picks (Brunson, Bridges) under the sweep-context caution directive. NYK won 144-114, and Brunson played only 28 minutes \u2014 yet all three Brunson picks still hit because the tier selections (T20 PTS, T1 3PM, T4 AST) had sufficient floor cushion to absorb reduced minutes. Conservative tier selection in sweep contexts protected the slate.",
+      "The Anunoby-OUT lineup amendment correctly identified upside for Brunson PTS (revised up to 75%) and Maxey PTS (revised up to 79%). Both hit \u2014 Brunson with 22 pts (T20 clear) and Maxey with 17 pts (T15 clear). The afternoon amendment agent added value on both picks, validating perimeter-defender-out \u2192 primary-scorer-upside logic.",
+      "PHI suppressor treatment on BOS was correctly NOT carried over to the NYK series \u2014 the series diary shows the suppressor was a BOS-specific phenomenon. Picks against PHI from the NYK side (Brunson, Bridges) were evaluated on standard tier logic and all hit, confirming suppressor scope is series-specific and should not be mechanically applied across all PHI opponents.",
+      "REB prop discipline held on Gobert: the analyst correctly walked T10\u2192T8\u2192T6 via the 25th-percentile gate, applying the STRONG CAUTION + VOLATILE penalty cascade capped at -20pp, landing at T6. Gobert finished with 13 rebounds \u2014 a dominant hit that validated stepping down to the correct floor tier rather than forcing T10 against the gate signal."
+    ],
+    "lessons": [
+      "Wembanyama ejection (G4, SAS @ MIN): Both Wembanyama picks (PTS T15, REB T10) missed because he was ejected in Q2 for a Flagrant 2 foul and played only 12 minutes. This is an unforeseeable in-game disciplinary event \u2014 not a pre-game injury, not a selection error, and not predictable from any quant signal available at pick time. The player was fully healthy and not listed on the injury report. Both misses are classified as injury_event.",
+      "VJ Edgecombe PTS T10 miss (PHI vs NYK, blowout loss): Edgecombe exited with a low back injury and did not return. He scored 8 points on 4-14 shooting before leaving \u2014 the miss was driven by both the early exit and cold shooting. The post_game_event field confirms injury_exit. Despite the morning amendment correctly identifying upside (revised to 84%) after Anunoby was ruled out, the real risk was an in-game structural exit, not the Anunoby absence. Classified as injury_event.",
+      "Paul George PTS T10 miss (PHI vs NYK, blowout loss): George played only 27 minutes in a 144-114 blowout loss and scored 7 points on 3-7 FG. The game went to blowout for NYK, and PHI's starters \u2014 including George \u2014 were benched in the fourth quarter. The pick was made at 70% confidence after a FG_MARGIN_THIN step from T15\u2192T10; the competitive=61% warning in the tier_walk was a real signal that the game script could suppress his output. The blowout game-script was the proximate cause: George's 27-minute load was directly compressed by the 30-point NYK margin. The pre-game spread was only 1.5 points \u2014 the system had no blowout signal at pick time \u2014 but a spread of 1.5 combined with a desperate home PHI team and competitive=61% created structural fragility. Classified as model_gap_rule: the system correctly flagged competitive=61% as a warning but did not translate it into a hard skip or mandatory step-down for secondary scorers on the losing side when the game tips into blowout territory."
+    ],
+    "recommendations": [
+      "BLOWOUT SECONDARY SCORER RULE EXPANSION \u2014 Paul George miss: The current BLOWOUT_SECONDARY_SCORER hard skip fires only when spread_abs \u2265 13.5 (regular season) or 16.5 (playoffs) at pick time. George's miss illustrates that a blowout can materialize from a near-even spread (1.5 pts) when a desperate home team is outgunned. For secondary scorers (PTS/AST rank \u2265 2 on their team) with competitive_pct < 65% at the selected tier, add a mandatory confidence penalty of -8pp regardless of spread, and require a minimum 75% confidence floor to proceed rather than 70%. This directly addresses the George scenario: 70% confidence + competitive=61% + secondary scorer = skip-eligible. Apply this rule to PTS T10+ only for secondary scorers.",
+      "EJECTION RISK ANNOTATION FOR HIGH-FOUL-RATE BIG MEN \u2014 Wembanyama misses: The system currently has no signal for in-game ejection risk. While ejections are rare and cannot be fully predicted, the Wembanyama dossier notes he is SAS's primary shot-blocker and rim protector \u2014 a role that creates elevated Flagrant foul exposure in physical playoff matchups. For players carrying a 'rim deterrence' or 'shot-blocking' tag in high-intensity road games, consider flagging top_pick eligibility as restricted (top_pick=false) when the pick's margin of safety depends on 30+ minutes being played. This does not change tier selection but limits top_pick designation to picks that can survive a 15-20 minute game.",
+      "COMPETITIVE_PCT HARD FLOOR FOR SECONDARY SCORER PTS PICKS \u2014 George miss validation: The tier_walk for Paul George explicitly noted competitive=61% as a concern and applied a -8pp penalty, but still proceeded at 70% confidence. Codify a hard rule: if competitive_pct at the selected tier is below 65% AND the player is a secondary scorer (not team PTS leader), the pick is skip-eligible unless hit_rate_display is 9/10 or 10/10 AND the tier has an iron_floor tag. The existing penalty-and-proceed logic is insufficient when competitive context is this suppressed \u2014 the penalty reduces confidence to the floor rather than triggering a skip.",
+      "INJURY_EXIT RATE MONITORING FOR HIGH-CONTACT PLAYERS IN BLOWOUT CONTEXTS \u2014 Edgecombe miss note: Edgecombe's low back injury in a blowout loss (144-114) represents a second injury_exit on this slate alongside Wembanyama's ejection. While neither is individually predictable, the system should track injury_exit rate by prop type (PTS secondary scorer vs. primary star) across playoff slates. If a per-player injury history flag becomes available (e.g. 'low back soreness flagged in prior week'), weight it as a confidence reduction signal equivalent to QUESTIONABLE status rather than treating the player as fully healthy. For now, no rule change is warranted \u2014 but monitor if injury_exit misses cluster on secondary scorers in blowout games across R2.",
+      "WEMBANYAMA TOP_PICK RESTRICTION IN ROAD GAMES WITH PHYSICAL MATCHUP CONTEXT \u2014 procedural note: Both Wembanyama picks (PTS T15 as top_pick=true, REB T10 as top_pick=false) were structurally sound selections invalidated by ejection. The top_pick=true designation on his PTS pick contributed to him being a featured selection on this slate. Going forward, apply top_pick=false to Wembanyama PTS/REB picks in road playoff games where the opponent (MIN) has elite interior physicality (Gobert, McDaniels, Reid) and the series has already established a pattern of physical play. The series diary noted Wembanyama received a concussion in G2 from a hard fall \u2014 the physical series context was a documented risk. This is a minor procedural guard, not a tier change."
+    ],
+    "miss_details": [
+      {
+        "player_name": "VJ Edgecombe",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 8,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": null,
+        "root_cause": "In-game injury exit confirmed by post-game news \u2014 Edgecombe exited with a low back injury and did not return, per confirmed web recap, finishing with only 8 points on 4-14 shooting in approximately 30 minutes before departure. Player was NOT_LISTED on the injury report at pick time and was fully active at game start. The miss is not attributable to pick selection logic: the tier walk was sound (T10 at 85% overall, 7/7 H2H vs NYK, 3/3 this series), and the pick cleared all standard gates. The pick object confirms post_game_event = 'injury_exit'. Amendment flagged upside (revised to 84% after Anunoby OUT) but the real risk was the in-game back injury, which was unforeseeable. No lesson or recommendation warranted from this pick."
+      },
+      {
+        "player_name": "Paul George",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 7,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: NYK @ PHI final 144-114, NYK won by 30. BLOWOUT. PHI was on the losing side of a 30-point blowout; PHI starters \u2014 including George \u2014 were pulled in the fourth quarter, limiting him to 27 minutes. STEP 1 \u2014 Activity confirmed: George played 27 minutes and scored 7 points (3-7 FG, 1-4 3Pt per web recap). Not a DNP. STEP 2 \u2014 No injury_exit event for Paul George in post-game news. Miss classified as model_gap_rule: the game-script signal (blowout on the losing side) was the proximate cause of reduced minutes, and the pre-game spread of 1.5 points meant the system had no blowout flag at pick time. However, the tier_walk explicitly identified competitive=61% as a structural warning and applied a -8pp penalty, reducing confidence to 70%. The rule insufficiency: the system penalized for competitive=61% but did not translate this into a skip for a secondary scorer in a game where the opposing team's dominant win probability was concentrated in higher tiers \u2014 a 70% floor was too permissive when competitive context was this suppressed. STEP 3 \u2014 Original reasoning noted series 3/3 at T15/T10 (correct) but the 3-game series sample in this specific NYK-PHI series is limited and George's regular-season H2H vs NYK (1/3 T10, noted in tier_walk) was a warning sign that was partially acknowledged but not acted on. STEP 4 \u2014 hit_rate_display 8/10 overall, but this series form (3/3 at T10-15) came against an opponent where George historically underperforms. STEP 5 \u2014 Tier walk was appropriate (FG_MARGIN_THIN step T15\u2192T10 was correct). STEP 6 \u2014 Amendment flagged upside (revised to 74% after Anunoby OUT) but pick missed. Amendment missed the real risk \u2014 Anunoby's absence was the wrong directional signal; George's vulnerability was blowout game-script compressing a secondary scorer's minutes, not perimeter defense quality. The structural gap: no hard rule forces a skip or mandatory further step-down when competitive_pct < 65% AND secondary scorer AND blowout is possible from a near-even spread in a playoff elimination context."
+      },
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 4,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": null,
+        "root_cause": "In-game ejection confirmed by post-game news \u2014 Wembanyama received a Flagrant 2 foul in the second quarter and was ejected, finishing with 4 points in 12 minutes. Player was NOT_LISTED on the injury report at pick time and cleared concussion protocol fully (confirmed by series diary G4-G5 context). The pick object confirms post_game_event = 'injury_exit'. The tier selection was sound: T15 at 90% overall with top_pick=true designation, proj_min=36, and series validation including a 39-point G3 road performance. The ejection \u2014 a disciplinary event, not a physical injury \u2014 was entirely unforeseeable from any pre-game signal. Miss not attributable to pick selection logic. No lesson or recommendation warranted from this pick."
+      },
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "REB",
+        "pick_value": 10,
+        "actual_value": 4,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": null,
+        "root_cause": "In-game ejection confirmed by post-game news \u2014 same Flagrant 2 ejection in Q2 that ended his PTS pick also produced 4 rebounds in 12 minutes, well below the T10 threshold. Player was NOT_LISTED on the injury report at pick time. The pick object confirms post_game_event = 'injury_exit'. The tier walk appropriately navigated the 25th-percentile gate (T12\u2192T10 with competitive_pct penalty applied), and the series 3/3 at T12 (all 15+ rebounds per game in this series) strongly supported the selection. The ejection is the sole causal factor \u2014 no aspect of the pick selection or tier walk logic contributed to this miss. No lesson or recommendation warranted from this pick."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 18,
+      "hits": 17,
+      "misses": 1,
+      "hit_rate_pct": 94.4,
+      "delta_vs_overall_pp": -0.3
+    }
   }
 ]

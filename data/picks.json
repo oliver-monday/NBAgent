@@ -59331,8 +59331,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 22.0,
     "market_line": 19.5,
     "market_implied_prob": 87.01,
     "market_book": "fanduel",
@@ -59368,7 +59368,8 @@
       "direction": "up",
       "revised_confidence_pct": 75,
       "revised_reasoning": "Anunoby OUT redistributes usage to Brunson; perimeter_threat loss may tighten defense but Brunson absorbs more shot volume."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59391,8 +59392,8 @@
     "reasoning": "Iron_floor 3PM, 9/10 overall, 3/3 in series, stable trend in elimination game context.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 0.5,
     "market_implied_prob": 94.74,
     "market_book": "fanduel",
@@ -59428,7 +59429,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Iron_floor 3PM tag unchanged; Anunoby absence doesn't meaningfully alter Brunson's three-point attempt floor."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59451,8 +59453,8 @@
     "reasoning": "H2H vs PHI T4 6/7, desperate PHI game means Brunson stays in creation mode all game.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 90.0,
     "market_book": "fanduel",
@@ -59488,7 +59490,8 @@
       "direction": "up",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Anunoby OUT means Brunson stays in primary creation mode longer; slight AST boost from added offensive responsibility."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59511,8 +59514,8 @@
     "reasoning": "Iron_floor after FG_MARGIN_THIN step to T15; desperation home game guarantees 40+ minutes.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 17.0,
     "market_line": 14.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -59540,7 +59543,8 @@
       "direction": "up",
       "revised_confidence_pct": 79,
       "revised_reasoning": "Anunoby OUT removes tough perimeter defender; Maxey gets easier looks, iron_floor intact, desperation minutes guaranteed."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59567,8 +59571,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 3.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -59604,7 +59608,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Anunoby not a ball-pressure defender; Maxey creation role unaffected. Trend-down quant offsets any minor benefit."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59627,8 +59632,8 @@
     "reasoning": "95% overall T1 with consistent tag; desperation home game ensures full attempts volume.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 1.0,
     "market_line": 0.5,
     "market_implied_prob": 95.65,
     "market_book": "fanduel",
@@ -59664,7 +59669,8 @@
       "direction": "up",
       "revised_confidence_pct": 83,
       "revised_reasoning": "Anunoby OUT removes elite perimeter contest; Maxey gets more open looks. Already consistent tag, trend-down offset partially."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59692,7 +59698,7 @@
     },
     "obs_walk": null,
     "result": null,
-    "actual_value": null,
+    "actual_value": 8.0,
     "market_line": 9.5,
     "market_implied_prob": 73.68,
     "market_book": "fanduel",
@@ -59719,7 +59725,7 @@
     "kalshi_morning_implied_prob": 73.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false,
+    "voided": true,
     "lineup_update": {
       "triggered_by": [
         "OG Anunoby (NYK) now OUT \u2014 was expected starter at pick time"
@@ -59728,7 +59734,10 @@
       "direction": "up",
       "revised_confidence_pct": 84,
       "revised_reasoning": "Anunoby OUT removes top perimeter defender; Edgecombe benefits from easier looks and better spacing. bb_lift=1.15 amplifies."
-    }
+    },
+    "post_game_event": "injury_exit",
+    "post_game_detail": "Exited game against Knicks with a low back injury and did not return, per Brave search sources.",
+    "void_reason": "injury_exit_mid_game"
   },
   {
     "date": "2026-05-10",
@@ -59751,8 +59760,8 @@
     "reasoning": "Iron_floor T2 AST with 7/7 H2H vs NYK; desperation home game, soft_floor role-purity applied.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 1.5,
     "market_implied_prob": 88.89,
     "market_book": "fanduel",
@@ -59788,7 +59797,10 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Anunoby absence doesn't directly affect Edgecombe's assist opportunities; iron_floor and H2H edge unchanged."
-    }
+    },
+    "post_game_event": "injury_exit",
+    "post_game_detail": "Exited game against Knicks with a low back injury and did not return, per Brave search sources.",
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59811,8 +59823,8 @@
     "reasoning": "FG_MARGIN_THIN steps T15\u2192T10; 3/3 in series, desperation home game, 40+ minutes guaranteed.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 7.0,
     "market_line": 9.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -59848,7 +59860,8 @@
       "direction": "up",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Anunoby OUT removes tough wing defender on George; easier perimeter looks boost ceiling at T10 line."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59871,8 +59884,8 @@
     "reasoning": "3/3 at T10 in series, FG_HOT tag, vs_tough=83%; PHI desperate home guarantees competitive game.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 9.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -59908,7 +59921,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Anunoby is a teammate; his absence slightly raises Bridges usage but VOLATILE tag limits confidence revision."
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -59936,7 +59950,7 @@
     },
     "obs_walk": null,
     "result": null,
-    "actual_value": null,
+    "actual_value": 4.0,
     "market_line": 14.5,
     "market_implied_prob": 98.04,
     "market_book": "fanduel",
@@ -59955,7 +59969,10 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": true,
+    "post_game_event": "injury_exit",
+    "post_game_detail": "Ejected in second quarter after Flagrant 2 foul, finished with 4 points in 12 minutes.",
+    "void_reason": "injury_exit_mid_game"
   },
   {
     "date": "2026-05-10",
@@ -59983,7 +60000,7 @@
       "to_tier": 6
     },
     "result": null,
-    "actual_value": null,
+    "actual_value": 4.0,
     "market_line": 9.5,
     "market_implied_prob": 86.11,
     "market_book": "fanduel",
@@ -60010,7 +60027,10 @@
     "kalshi_morning_implied_prob": 81.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": true,
+    "post_game_event": "injury_exit",
+    "post_game_detail": "Ejected in second quarter after Flagrant 2 foul, finished with 4 points in 12 minutes.",
+    "void_reason": "injury_exit_mid_game"
   },
   {
     "date": "2026-05-10",
@@ -60033,8 +60053,8 @@
     "reasoning": "FG_MARGIN_NEG steps T15\u2192T10; series 3/3, proj_min=35 confirmed, road game minor reduction applied.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 20.0,
     "market_line": 9.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -60053,7 +60073,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-10",
@@ -60080,8 +60101,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 4.0,
     "market_line": 3.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -60100,7 +60121,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 1.12
   },
   {
     "date": "2026-05-10",
@@ -60123,8 +60145,8 @@
     "reasoning": "95% overall T10 with consistent tag, 3/3 series, H2H vs MIN 3/3 historical, 15-game hit streak.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 24.0,
     "market_line": 9.5,
     "market_implied_prob": 92.31,
     "market_book": "fanduel",
@@ -60143,7 +60165,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -1.81
   },
   {
     "date": "2026-05-10",
@@ -60166,8 +60189,8 @@
     "reasoning": "85% overall T2, 3/3 this series, trend=up, soft_floor role-purity applied (-5pp).",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 1.5,
     "market_implied_prob": 74.68,
     "market_book": "fanduel",
@@ -60198,7 +60221,8 @@
       "first_observed_at": "2026-05-10T13:03:50.835471-07:00",
       "last_observed_at": "2026-05-10T23:23:54.812608-07:00",
       "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
-    }
+    },
+    "clv_pp": -1.51
   },
   {
     "date": "2026-05-10",
@@ -60221,8 +60245,8 @@
     "reasoning": "Iron_floor 3PM T1, 3/3 this series; trend=down step-down offset by iron_floor hold with -5pp penalty.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 2.0,
     "market_line": 0.5,
     "market_implied_prob": 92.31,
     "market_book": "fanduel",
@@ -60241,7 +60265,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 1.83
   },
   {
     "date": "2026-05-10",
@@ -60268,8 +60293,8 @@
       "from_tier": 15,
       "to_tier": 10
     },
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 36.0,
     "market_line": 14.5,
     "market_implied_prob": 95.24,
     "market_book": "fanduel",
@@ -60288,7 +60313,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -0.91
   },
   {
     "date": "2026-05-10",
@@ -60311,8 +60337,8 @@
     "reasoning": "3PM T2 trend=down steps to T1; 3/3 this series, 3/3 H2H vs SAS; 80% non-iron-floor cap applied.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 3.0,
     "market_line": 0.5,
     "market_implied_prob": 97.83,
     "market_book": "fanduel",
@@ -60339,7 +60365,8 @@
     "kalshi_morning_implied_prob": 97.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": 0.27
   },
   {
     "date": "2026-05-10",
@@ -60362,8 +60389,8 @@
     "reasoning": "90% overall T10, PTS STRONG_BOOST dossier, 6/6 H2H vs SAS combined, G3 health confirmed at 40 min.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 14.0,
     "market_line": 9.5,
     "market_implied_prob": 87.8,
     "market_book": "fanduel",
@@ -60390,7 +60417,8 @@
     "kalshi_morning_implied_prob": 86.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -3.87
   },
   {
     "date": "2026-05-10",
@@ -60413,8 +60441,8 @@
     "reasoning": "FG_MARGIN_NEG steps T15\u2192T10; series 3/3, H2H vs SAS 3/3; playoff negative dossier constrains tier.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 9.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -60433,7 +60461,8 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -3.07
   },
   {
     "date": "2026-05-10",
@@ -60460,8 +60489,8 @@
       "savings_pp": 3.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 13.0,
     "market_line": 5.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -60488,6 +60517,7 @@
     "kalshi_morning_implied_prob": 94.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
-    "voided": false
+    "voided": false,
+    "clv_pp": -1.12
   }
 ]

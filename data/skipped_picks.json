@@ -11,10 +11,10 @@
     "rule_context": {
       "reason": "VOLATILE+AST T6 block: raw_avgs AST \u2265 6.0 applies -8pp penalty. 70% base - 8pp = 62%, below 68% AST floor. Stepped to T4 instead."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-10",
@@ -28,10 +28,10 @@
     "rule_context": {
       "reason": "3PM trend=down step T2\u2192T1; no iron_floor and overall 85%=8/10 fails the 9+/10 exception threshold for holding at T1. Cannot step below T1. Skip."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-05-10",
@@ -45,10 +45,10 @@
     "rule_context": {
       "reason": "Post-miss REB penalty -5pp on 72% base = 67%, below 72% REB minimum floor. Last played game (G2) resulted in REB miss at T6 based on series T6 1/2."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-05-10",
@@ -62,10 +62,10 @@
     "rule_context": {
       "reason": "Playoff AST CAUTION (-18pp) + soft_floor role-purity (-5pp) = -23pp; penalty cap at -20pp \u2192 85%-20%=65%, below 68% AST floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-10",
@@ -82,10 +82,10 @@
       "tier_considered": 10,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 4.0 < tier 10"
   },
   {
     "date": "2026-05-10",
@@ -104,8 +104,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-05-10",
@@ -119,9 +119,9 @@
     "rule_context": {
       "reason": "FG_MARGIN_NEG:-9% fires mandatory step-down cascade from T25 to T20. Emitting pick at T20 instead."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 22.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 22.0 < tier 25"
   }
 ]
