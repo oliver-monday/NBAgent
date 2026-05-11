@@ -1,83 +1,81 @@
 {
-  "date": "2026-05-10",
-  "generated_at": "2026-05-10T07:20:53.067220-07:00",
+  "date": "2026-05-11",
+  "generated_at": "2026-05-11T08:56:24.479717-07:00",
   "player_notes": {
-    "jalen brunson": "Active and performing at high volume \u2014 33 points in Game 3 win; Knicks lead 3-0 and look to close out in Game 4.",
-    "joel embiid": "Returned from injury in Game 3 but 76ers still lost; availability confirmed for Game 4, though team is down 3-0 and facing elimination.",
-    "victor wembanyama": "Fully active and dominant \u2014 39 points, 15 rebounds in Game 3 win; no injury concerns, sky-high ceiling on all prop markets.",
-    "ajay mitchell": "Breakout role with Jalen Williams sidelined \u2014 posted 24 points and 10 assists in Game 3; elevated usage and minutes expected to continue in Game 4.",
-    "jalen williams": "Out (sidelined) for Thunder vs. Lakers series; Mitchell is filling the offensive void with expanded role."
+    "jalen williams": "Williams is sidelined (out) for OKC. Ajay Mitchell has stepped up as a key playmaker in his absence, recording 24 pts/10 ast in Game 3.",
+    "victor wembanyama": "Wembanyama was ejected in Game 4 and faces a potential suspension for Game 5 (elbow on Naz Reid). Monitor availability \u2014 if suspended, massive minutes/usage shift for remaining Spurs.",
+    "og anunoby": "Anunoby ruled out for Game 4 with a strained right hamstring; remains day-to-day. Knicks series is over (sweep), so only relevant if he plays in ECF."
   },
   "game_notes": {
-    "OKC vs LAL": "Jalen Williams is out for OKC, boosting Ajay Mitchell's role significantly \u2014 factor into points, assists, and 3PM props for Mitchell and SGA.",
-    "NYK vs PHI": "OG Anunoby was out for Knicks in Game 3 (check status for Game 4); Embiid returned for 76ers but team still lost \u2014 monitor Anunoby availability as it affects Knicks rotation and opposing player props."
+    "SAS vs MIN": "Wembanyama faces potential suspension for Game 5 after ejection in Game 4; his absence would significantly boost usage/minutes for remaining Spurs and Wolves bigs.",
+    "OKC vs LAL": "Jalen Williams remains out; Ajay Mitchell is filling a star role (24 pts, 10 ast in Game 3). Thunder lead 3-0."
   },
-  "raw_item_count": 46,
-  "filtered_item_count": 44,
+  "raw_item_count": 50,
+  "filtered_item_count": 41,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "NYK vs PHI \u2014 Series State",
-      "current_context_fact": "Season context contains no R2 series diary for NYK vs PHI; the last documented series in context is R1 (PHI wins 4-3 over BOS). The playoff bracket shows NYK advanced from R1 over ATL.",
-      "conflict": "Multiple news items confirm NYK leads PHI 3-0 in what is clearly the Eastern Conference Semifinals (R2). Brunson scored 33 in a 108-94 Game 3 win. Embiid returned but PHI is on the brink of elimination. OG Anunoby was OUT for Game 3.",
+      "player_or_team": "NYK vs PHI (R2 series)",
+      "current_context_fact": "The season context document contains no R2 series diary for NYK vs PHI, and the playoff bracket shows PHI advanced from R1. The context ends with PHI winning R1 over BOS 4-3.",
+      "conflict": "Multiple news items confirm the Knicks have swept the 76ers in R2 (4-0), with a 144-114 blowout in Game 4 on May 10. NYK is now in the Eastern Conference Finals. PHI is eliminated.",
       "urgency": "critical",
-      "suggested_action": "Add R2 series diary for NYK vs PHI. Update series state to NYK leads 3-0. Note Anunoby was OUT for Game 3 (reason not specified \u2014 monitor injury status). Note Embiid returned for PHI Game 3 (this is his R2 debut). Note Brunson is active and scoring at a high level."
+      "suggested_action": "Add NYK vs PHI R2 series diary. Mark PHI as eliminated. Update NYK status to ECF. Note: OG Anunoby was OUT for Game 4 with a strained right hamstring (day-to-day per news item). NYK swept PHI 4-0."
     },
     {
       "player_or_team": "OG Anunoby (NYK)",
-      "current_context_fact": "No documented injury for Anunoby heading into R2. R1 series diary ends with Anunoby healthy (29/7/2, 27 min in series-clinching G6 blowout).",
-      "conflict": "News confirms 'OG Anunoby out for Knicks' in Game 3 of the NYK-PHI series. He did not play.",
+      "current_context_fact": "No injury note for Anunoby in the playoff injury landscape beyond his R1 series diary appearances.",
+      "conflict": "News item dated May 10 states: 'OG Anunoby was ruled out again for Game 4 with a strained right hamstring, and the Knicks forward remains day-to-day.' This is a new, undocumented injury affecting his availability.",
       "urgency": "critical",
-      "suggested_action": "Add Anunoby to ACTIVE WITH DOCUMENTED CONCERNS or note as GTD/OUT for R2 Game 3. Flag his availability status as unknown heading into Game 4. Do not assume availability until confirmed."
+      "suggested_action": "Add Anunoby strained right hamstring to the active injury landscape. Flag as day-to-day heading into ECF. Note he was OUT for NYK-PHI R2 G4."
     },
     {
-      "player_or_team": "CLE vs DET \u2014 Series State and Round",
-      "current_context_fact": "Context shows CLE eliminated TOR 4-3 in R1. DET eliminated ORL 4-3 in R1. No R2 series diary exists for CLE vs DET.",
-      "conflict": "News confirms CLE vs DET is an active Eastern Conference Semifinals series. Detroit leads 2-1 after Game 3. CLE won Game 3 116-109 behind Mitchell's 35 points and clutch Harden shots. Game 4 is upcoming.",
+      "player_or_team": "SAS vs MIN (R2 series)",
+      "current_context_fact": "The context document contains no R2 series diary for SAS vs MIN. The playoff bracket and R1 results confirm both teams advanced, but no R2 games are recorded.",
+      "conflict": "News items confirm this series is in progress and now tied 2-2. Game 4 result: MIN 114, SAS 109. Victor Wembanyama was ejected from Game 4 for elbowing Naz Reid in the jaw early in the second quarter. Anthony Edwards scored 36 points (16 in Q4) to lead MIN. Stephen A. Smith is calling for a suspension for Wembanyama for Game 5.",
       "urgency": "critical",
-      "suggested_action": "Add R2 series diary for DET vs CLE. Update series state to DET leads 2-1. Note Mitchell scored 35 in CLE's Game 3 win. Note Harden hit clutch shots late. Add game results for G1, G2, G3."
+      "suggested_action": "Create SAS vs MIN R2 series diary. Record series tied 2-2. Note Wembanyama ejected in G4 for elbowing Naz Reid \u2014 first career ejection. Flag Wembanyama as facing potential suspension for G5 (not confirmed, but being discussed). Note Edwards returned and played a full starring role (36 pts), updating his injury status from the left knee concern documented in R1."
     },
     {
-      "player_or_team": "OKC vs LAL \u2014 Series State and Round",
-      "current_context_fact": "Context shows OKC swept PHX 4-0 in R1. LAL eliminated HOU 4-2 in R1. No R2 series diary exists for OKC vs LAL.",
-      "conflict": "Multiple news items confirm OKC leads LAL 3-0 in the Western Conference Semifinals. OKC won Game 3 131-108. Ajay Mitchell had career playoff highs of 24 points and 10 assists. OKC's playoff record is now 7-0 (sweep of PHX + 3-0 vs LAL).",
+      "player_or_team": "Anthony Edwards (MIN)",
+      "current_context_fact": "Playoff Injury Landscape states Edwards was OUT for G5 (DEN series) with left knee injury and remained OUT for G6 (series clincher). 'Edwards' left knee status and recovery timeline are the defining MIN variables heading into R2.'",
+      "conflict": "News items confirm Edwards scored 36 points in R2 Game 4 vs SAS (MIN 114-109), with 16 of those points in the fourth quarter. He is clearly available and performing at a high level in R2.",
       "urgency": "critical",
-      "suggested_action": "Add R2 series diary for OKC vs LAL. Update series state to OKC leads 3-0. Note Ajay Mitchell's breakout (24 pts, 10 AST in Game 3) as an emerging role player. Note OKC is 7-0 in the 2026 playoffs. Add G1, G2, G3 results."
+      "suggested_action": "Update Edwards' injury status: left knee is no longer a limiting factor. He is active and productive in R2. Remove the 'defining MIN variable' uncertainty framing and treat as healthy unless new information emerges."
     },
     {
-      "player_or_team": "SAS vs MIN \u2014 Series State and Round",
-      "current_context_fact": "Context shows SAS eliminated POR 4-1 in R1. MIN eliminated DEN 4-2 in R1. No R2 series diary exists for SAS vs MIN.",
-      "conflict": "News confirms SAS leads MIN 2-1 in the Western Conference Semifinals. Wembanyama had 39 points and 15 rebounds in a 115-108 Game 3 SAS win.",
+      "player_or_team": "Victor Wembanyama (SAS)",
+      "current_context_fact": "Playoff Injury Landscape states: 'Treat as fully healthy entering R2. No injury concern.' R1 series diary G5 entry notes: 'the SAS floor compression pattern held for POR throughout the series.'",
+      "conflict": "Wembanyama was ejected from R2 Game 4 vs MIN for elbowing Naz Reid in the jaw. He faces a potential league suspension for Game 5 per Stephen A. Smith's commentary and the news headline describing this as warranting a suspension.",
       "urgency": "critical",
-      "suggested_action": "Add R2 series diary for SAS vs MIN. Update series state to SAS leads 2-1. Note Wembanyama's 39/15 Game 3 performance. Add G1, G2, G3 results."
+      "suggested_action": "Flag Wembanyama as facing potential suspension for R2 G5 vs MIN. This is not yet confirmed but is being actively discussed. Add to injury/availability landscape as a critical variable. Note: if suspended, SAS would play G5 without their franchise player \u2014 analogous to the G2/G3 concussion situation in R1."
+    },
+    {
+      "player_or_team": "OKC vs LAL (R2 series)",
+      "current_context_fact": "The context document contains no R2 series diary for OKC vs LAL. The playoff bracket shows both teams advanced from R1.",
+      "conflict": "News items confirm OKC leads LAL 3-0 in R2. Game 3 result: OKC 131, LAL 108. Ajay Mitchell had career playoff highs of 24 points and 10 assists. A news item references 'the Lakers down 3-0' and OKC's '7-0 playoff run.' Jalen Williams remains sidelined.",
+      "urgency": "critical",
+      "suggested_action": "Create OKC vs LAL R2 series diary. Record OKC leads 3-0. Note Ajay Mitchell's breakout (24 pts, 10 AST in G3) as OKC's secondary star with Jalen Williams still out. Note OKC's 7-0 overall playoff record. Update Jalen Williams status as still sidelined."
     },
     {
       "player_or_team": "Jalen Williams (OKC)",
-      "current_context_fact": "R1 series diary notes Jalen Williams exited Game 2 vs PHX with a left hamstring injury and was OUT for Games 3 and 4. R2 injury landscape had not been updated.",
-      "conflict": "News headline states 'with Jalen Williams sidelined' in the context of OKC's Game 3 R2 win over LAL (131-108), confirming Williams remains OUT deep into R2.",
+      "current_context_fact": "R1 series diary G4 entry: 'OKC advances to R2 with Jalen Williams still OUT (hamstring).' R2 key note: 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round.'",
+      "conflict": "News item from May 10 states: 'Thunder ride Ajay Mitchell's star turn to 3-0 lead over Lakers' with Jalen Williams 'sidelined' \u2014 confirming he remains OUT through at least R2 Game 3 (May 10).",
       "urgency": "critical",
-      "suggested_action": "Update Jalen Williams injury status: confirmed still OUT (left hamstring) through at least OKC-LAL Game 3 (R2). Add to ACTIVE WITH DOCUMENTED CONCERNS or CONFIRMED OUT section. Note Ajay Mitchell has emerged as the primary beneficiary of his absence."
+      "suggested_action": "Confirm Jalen Williams remains OUT (hamstring) through R2 G3 at minimum. Update injury landscape accordingly. Note Ajay Mitchell has emerged as the primary secondary scorer/playmaker in Williams' continued absence."
     },
     {
-      "player_or_team": "Ajay Mitchell (OKC)",
-      "current_context_fact": "Ajay Mitchell is not mentioned anywhere in the season context document.",
-      "conflict": "News confirms Ajay Mitchell is a key OKC contributor in R2, described as having a 'star turn' with career playoff highs of 24 points and 10 assists in Game 3 vs LAL. He is breaking out as a 'playoff star for OKC' filling Jalen Williams' absence.",
+      "player_or_team": "DET vs CLE (R2 series)",
+      "current_context_fact": "The context document contains no R2 series diary for DET vs CLE. Both teams advanced from R1.",
+      "conflict": "A news item dated May 10 references 'Cunningham and the Pistons visit Cleveland with 2-1 series lead,' confirming R2 is in progress with DET leading 2-1 heading into what appears to be Game 4.",
       "urgency": "critical",
-      "suggested_action": "Add Ajay Mitchell to player notes. He is a second-year OKC guard who has emerged as a key contributor in R2 with Jalen Williams out. His 24-point, 10-assist Game 3 performance is the most significant role expansion in the current series."
+      "suggested_action": "Create DET vs CLE R2 series diary. Record DET leads 2-1 as of May 10 (G4 date). Note series is ongoing with DET holding a series lead."
     },
     {
-      "player_or_team": "Steve Kerr (GSW)",
-      "current_context_fact": "Context states: 'Kerr expressed uncertainty about his coaching future after the loss' (referring to GSW's play-in elimination). GSW coach listed as Steve Kerr.",
-      "conflict": "News confirms Steve Kerr agreed to a new 2-year contract to remain as Warriors coach, resolving the uncertainty flagged in the context.",
+      "player_or_team": "Steve Kerr (GSW coach)",
+      "current_context_fact": "Head coaches table lists GSW coach as Steve Kerr. Post-series note in OKC vs PHX R1 diary states: 'Kerr expressed uncertainty about his coaching future after the loss.'",
+      "conflict": "News items from May 10 confirm Steve Kerr has signed a new two-year deal with the Warriors and is returning as head coach. 'Shams: Steve Kerr wanted to coach, Warriors wanted him back' and 'Steve Kerr returning as Warriors coach: Why? What's next?'",
       "urgency": "monitor",
-      "suggested_action": "Update GSW coach note: Kerr's future is resolved \u2014 he signed a 2-year extension. Remove the 'expressed uncertainty about coaching future' annotation."
-    },
-    {
-      "player_or_team": "Joel Embiid (PHI) \u2014 R2 status",
-      "current_context_fact": "Playoff injury landscape last updated 2026-05-04. Embiid's last documented appearance is Game 7 vs BOS (R1): 34/12/6 in 39 min. Context treats him as 'approaching peak playoff conditioning' heading into R2.",
-      "conflict": "News confirms Embiid returned and played in PHI's Game 3 of R2 vs NYK, but PHI lost and is now down 0-3. The headline 'Joel Embiid's return not enough as Sixers pushed to brink of elimination' confirms he played but PHI still lost.",
-      "urgency": "monitor",
-      "suggested_action": "Add Embiid's R2 Game 3 appearance to the playoff injury landscape. Note PHI is down 0-3 to NYK with Embiid active. Update conditioning arc with this additional data point."
+      "suggested_action": "Update Kerr's status note: remove the uncertainty"
     }
   ],
   "staleness_flags": []
