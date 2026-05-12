@@ -706,7 +706,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "Elite scorer at home; TOR mid defense can't contain his primary offensive load.",
     "result": "MISS",
-    "actual_value": 22.0
+    "actual_value": 22.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-03-05",
@@ -723,7 +730,14 @@
     "opp_defense_rating": "mid",
     "reasoning": "High volume shooter with consistent deep-ball output; game has competitive pace tag.",
     "result": "HIT",
-    "actual_value": 5.0
+    "actual_value": 5.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out reduces SAS perimeter deterrence; Edwards gets cleaner looks off pick-and-roll; VOLATILE tempers full revision."
+    }
   },
   {
     "date": "2026-03-05",
@@ -1274,13 +1288,11 @@
     "result": "HIT",
     "actual_value": 8.0,
     "lineup_update": {
-      "triggered_by": [
-        "Immanuel Quickley (TOR) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -1300,13 +1312,11 @@
     "result": "HIT",
     "actual_value": 4.0,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -1734,13 +1744,11 @@
     "result": "HIT",
     "actual_value": 12.0,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rebounding factor; Gobert's boards driven by frontcourt matchup vs SAS, unaffected by Edwards absence."
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
     }
   },
   {
@@ -2980,7 +2988,14 @@
     "tier_walk": "PTS: 30\u21921/10 25\u21926/10 20\u21929/10\u2713",
     "reasoning": "9/10 at T20; VOLATILE -5%, ORL tough DvP -5%; F.Wagner out reduces ORL defensive depth.",
     "result": "HIT",
-    "actual_value": 34.0
+    "actual_value": 34.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-03-07",
@@ -2998,7 +3013,14 @@
     "tier_walk": "AST: 4\u21925/10 2\u219210/10\u2713",
     "reasoning": "Consistent tag, 10/10 at T2; ORL tough AST defense but floor is absolute at T2.",
     "result": "HIT",
-    "actual_value": 2.0
+    "actual_value": 2.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-03-07",
@@ -3016,7 +3038,14 @@
     "tier_walk": "3PM: 4\u21924/10 3\u21928/10\u2713",
     "reasoning": "8/10 at T3 meets ceiling rule; VOLATILE -5%, ORL tough 3PM noted; high pace not confirmed, skip T4.",
     "result": "HIT",
-    "actual_value": 5.0
+    "actual_value": 5.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out reduces SAS perimeter deterrence; Edwards gets cleaner looks off pick-and-roll; VOLATILE tempers full revision."
+    }
   },
   {
     "date": "2026-03-07",
@@ -3251,10 +3280,10 @@
     "actual_value": 9.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -5009,7 +5038,14 @@
     "actual_value": 4.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-03-10",
@@ -5031,7 +5067,14 @@
     "actual_value": 1.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out reduces SAS perimeter deterrence; Edwards gets cleaner looks off pick-and-roll; VOLATILE tempers full revision."
+    }
   },
   {
     "date": "2026-03-10",
@@ -5531,10 +5574,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -5559,13 +5602,11 @@
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -6185,13 +6226,11 @@
     "injury_check_time": "2026-03-10T19:27:34.918946-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rebounding factor; Gobert's boards driven by frontcourt matchup vs SAS, unaffected by Edwards absence."
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
     }
   },
   {
@@ -6329,7 +6368,14 @@
     "actual_value": 36.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-03-11",
@@ -6351,7 +6397,14 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-03-11",
@@ -6716,10 +6769,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -6744,13 +6797,11 @@
     "injury_check_time": "2026-03-11T21:19:25.221750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -8882,7 +8933,14 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-03-13",
@@ -9254,13 +9312,11 @@
     "injury_check_time": "2026-03-13T21:53:09.027347-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -10556,10 +10612,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -10585,13 +10641,11 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -10736,7 +10790,14 @@
     "actual_value": 5.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-03-15",
@@ -11400,13 +11461,11 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rebounding factor; Gobert's boards driven by frontcourt matchup vs SAS, unaffected by Edwards absence."
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
     }
   },
   {
@@ -13254,13 +13313,11 @@
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -14021,13 +14078,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -15311,13 +15366,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -16202,10 +16255,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -16233,13 +16286,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -18143,13 +18194,11 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     }
   },
   {
@@ -18997,11 +19046,13 @@
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rim_anchor; his absence doesn't meaningfully shift rebounding dynamics. VOLATILE tag keeps confidence steady."
+      "revised_reasoning": "Fox is perimeter_threat, not rim_anchor; minimal rebounding impact on Wemby. VOLATILE tag keeps confidence steady."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -19065,11 +19116,13 @@
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Santos was not a primary ball-pressure defender; Castle's elite 95% AST hit rate unaffected by this absence."
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 91,
+      "revised_reasoning": "Fox out redistributes primary playmaking; Castle absorbs creator role, already 100% series rate at T4."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -19098,11 +19151,13 @@
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     },
     "human_verdict": "manual_skip",
     "trim_reasons": [
@@ -19203,13 +19258,11 @@
     "injury_check_time": "2026-03-28T22:20:44.614614-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -19999,11 +20052,13 @@
     "injury_check_time": "2026-03-30T22:20:12.951132-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     },
     "human_verdict": "manual_skip",
     "trim_reasons": [
@@ -20999,11 +21054,13 @@
     "injury_check_time": "2026-04-01T22:14:36.489180-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -21063,11 +21120,13 @@
     "injury_check_time": "2026-04-01T22:14:36.489180-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -21095,12 +21154,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Gui Santos (GSW) removed from projected starters"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-01T17:04:04.538722-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Santos was not a primary ball-pressure defender; Castle's elite 95% AST hit rate unaffected by this absence."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 91,
+      "revised_reasoning": "Fox out redistributes primary playmaking; Castle absorbs creator role, already 100% series rate at T4."
     }
   },
   {
@@ -21374,13 +21433,11 @@
     "injury_check_time": "2026-04-02T22:16:40.692264-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) removed from projected starters"
-      ],
-      "updated_at": "2026-04-02T15:18:14.168052-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 84,
-      "revised_reasoning": "Edwards OUT redistributes MIN creation; Randle absorbs more playmaking duties, already at AST ceiling historically."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -21504,11 +21561,13 @@
       "B2B hit rate at T20 is only 58% (n=12), materially below the overall rate, and the VOLATILE tag means the distribution is wide \u2014 a zero-burst night is realistic. The system stepped down from T25 and applied adjustments, but 58% B2B at this tier is a genuinely fragile floor that the 74% confidence may not fully reflect."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -22315,11 +22374,13 @@
       "VOLATILE tag on a player whose FG_MARGIN was thin enough to mandate a step-down means a cold shooting night can easily close the gap from 15 to the line \u2014 post_miss bounce-back lift is only 0.81, the weakest on the slate, indicating the floor doesn't reliably snap back after a miss."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -22581,11 +22642,13 @@
       "VOLATILE tag, min_floor=22.9 (<24), FG_MARGIN_NEG forcing a mandatory step-down, and a typical_miss of 5 pts below threshold together create a genuinely fragile floor \u2014 a single low-minutes or cold-shooting game against a DEN defense collapses the pick, and none of these risks are offset by iron_floor status or a favorable split."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -23484,11 +23547,13 @@
       "VOLATILE tag plus a min_floor of only 22.9 on a BLOWOUT_RISK game (-8.5 SA favorite) is the fragile combination: if SA goes up big early, Castle's minutes compress exactly to or below his floor, and the FG_MARGIN_NEG step-down signals his scoring efficiency is already shaky at higher tiers."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -23517,11 +23582,13 @@
     "human_verdict": "keep",
     "trim_reasons": [],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -26294,11 +26361,13 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -27428,11 +27497,13 @@
       "Wemby is QUES with a VOLATILE PTS tag and a post_miss lift of only 0.80 (below 1.0), indicating bounce-back is not reliable. Combined with blowout risk (SAS -10.5) and a min_floor of 25.0 on a QUES player, a precautionary minutes restriction \u2014 even 4\u20135 fewer minutes \u2014 could push him below T15 on a night his shot isn't falling."
     ],
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -32101,14 +32172,11 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -32152,7 +32220,14 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
+    }
   },
   {
     "date": "2026-04-18",
@@ -32197,7 +32272,14 @@
     "trim_reasons": [
       "Edwards is QUESTIONABLE (knee) \u2014 while Pick applied the -5% penalty, a knee soft-tissue concern on a volatile scorer means the injury itself could suppress his aggressiveness attacking the rim, which is core to his scoring floor. The post_miss_hr of only 55% with deeply negative lift (0.67) signals this player's PTS distribution is genuinely wide on off nights."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-04-18",
@@ -32240,7 +32322,14 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-04-18",
@@ -32283,7 +32372,14 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out reduces SAS perimeter deterrence; Edwards gets cleaner looks off pick-and-roll; VOLATILE tempers full revision."
+    }
   },
   {
     "date": "2026-04-18",
@@ -33374,11 +33470,13 @@
     ],
     "clv_pp": -0.76,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -33574,11 +33672,13 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     }
   },
   {
@@ -33624,11 +33724,13 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -35011,14 +35113,11 @@
     ],
     "clv_pp": 3.96,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     }
   },
   {
@@ -35064,7 +35163,14 @@
     "trim_reasons": [
       "Edwards is QUES with a knee injury (-5% shooting penalty applied) and carries FG_COLD:-19% which triggered a mandatory step-down cascade; the post_miss_hr is only 55% with a deeply negative lift (0.66), the worst PTS bounce-back on the entire slate. A VOLATILE tag on a player with an active soft-tissue injury who is already in a shooting slump represents genuine floor fragility even at the stepped-down T15 tier."
     ],
-    "clv_pp": 0.45
+    "clv_pp": 0.45,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-04-20",
@@ -35107,7 +35213,14 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -1.81
+    "clv_pp": -1.81,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-04-20",
@@ -35152,7 +35265,14 @@
     "trim_reasons": [
       "Edwards has an active knee injury with a -5% shooting penalty on 3PM props and a FG_COLD:-19% signal; trend=down triggered a mandatory step to T1, and the overall at T1 is only 75% \u2014 not an iron_floor or 9/10 rate. A cold-shooting injured guard on the road in a playoff game is structurally one of the most volatile 3PM scenarios possible."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out reduces SAS perimeter deterrence; Edwards gets cleaner looks off pick-and-roll; VOLATILE tempers full revision."
+    }
   },
   {
     "date": "2026-04-20",
@@ -35197,13 +35317,11 @@
     "trim_reasons": [],
     "clv_pp": -1.84,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     }
   },
   {
@@ -35355,11 +35473,13 @@
     ],
     "clv_pp": -0.57,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     }
   },
   {
@@ -35564,11 +35684,13 @@
     "clv_pp": -3.33,
     "void_reason": "injury_exit_mid_game",
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -35669,11 +35791,13 @@
     ],
     "clv_pp": -0.79,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -38722,14 +38846,11 @@
     "injury_check_time": "2026-04-23T22:23:30.548672-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Aaron Gordon (DEN) removed from projected starters",
-        "Nikola Jokic (DEN) OUT \u2014 had picks this morning (detected via picks.json)"
-      ],
-      "updated_at": "2026-04-23T17:00:01.175031-07:00",
-      "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Jokic OUT eliminates elite rim-anchor; Randle competes against weaker DEN frontcourt for boards."
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -38775,13 +38896,11 @@
     "injury_check_time": "2026-04-23T22:23:30.548672-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -40109,11 +40228,13 @@
     "trim_reasons": [],
     "clv_pp": 1.91,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     }
   },
   {
@@ -40161,11 +40282,13 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -40252,7 +40375,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 0.79
+    "clv_pp": 0.79,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 91,
+      "revised_reasoning": "Fox out redistributes primary playmaking; Castle absorbs creator role, already 100% series rate at T4."
+    }
   },
   {
     "date": "2026-04-25",
@@ -40897,7 +41029,14 @@
     "trim_reasons": [],
     "post_game_event": "injury_exit",
     "post_game_detail": "Left Game 4 with a left knee injury and did not return; played only 18 minutes",
-    "void_reason": "injury_exit_mid_game"
+    "void_reason": "injury_exit_mid_game",
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-04-25",
@@ -41414,7 +41553,14 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -0.22
+    "clv_pp": -0.22,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
+    }
   },
   {
     "date": "2026-04-25",
@@ -41459,13 +41605,11 @@
     "trim_reasons": [],
     "clv_pp": -0.65,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     }
   },
   {
@@ -42802,11 +42946,13 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     }
   },
   {
@@ -42852,11 +42998,13 @@
     "trim_reasons": [],
     "clv_pp": 2.45,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -42902,7 +43050,16 @@
     "trim_reasons": [
       "Volatile AST tag with series production of only 1/3 at T6 \u2014 the tier immediately above the selected T4 \u2014 and the prior-series Castle REB audit lesson explicitly flagged that VOLATILE tags combined with small series samples anchor confidence too high. The same logic applies here: 70% confidence on a volatile player with active series underperformance is structurally fragile."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 91,
+      "revised_reasoning": "Fox out redistributes primary playmaking; Castle absorbs creator role, already 100% series rate at T4."
+    }
   },
   {
     "date": "2026-04-26",
@@ -43507,7 +43664,14 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 1.12
+    "clv_pp": 1.12,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
+    }
   },
   {
     "date": "2026-04-27",
@@ -43554,13 +43718,11 @@
     ],
     "clv_pp": -1.66,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     }
   },
   {
@@ -43651,13 +43813,11 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rebounding factor; Gobert's boards driven by frontcourt matchup vs SAS, unaffected by Edwards absence."
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
     }
   },
   {
@@ -45241,11 +45401,13 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     }
   },
   {
@@ -45291,11 +45453,13 @@
     "trim_reasons": [],
     "clv_pp": 0.22,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     }
   },
   {
@@ -45493,11 +45657,13 @@
     "trim_reasons": [],
     "clv_pp": 1.66,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     }
   },
   {
@@ -48349,13 +48515,11 @@
     "injury_check_time": "2026-04-30T22:56:02.927754-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -48403,13 +48567,11 @@
     "injury_check_time": "2026-04-30T22:56:02.927754-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rebounding factor; Gobert's boards driven by frontcourt matchup vs SAS, unaffected by Edwards absence."
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -52752,12 +52914,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     },
     "clv_pp": -0.64
   },
@@ -52809,12 +52971,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-04T12:06:42.134276-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Vassell's secondary playmaking role in SAS motion offense unaffected by Edwards' MIN absence."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Fox out elevates Vassell as secondary creator; trend=up and 90% overall rate amplified by redistribution."
     },
     "clv_pp": -4.45
   },
@@ -52866,12 +53028,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     },
     "clv_pp": 0.79
   },
@@ -52923,12 +53085,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     },
     "clv_pp": -0.8
   },
@@ -53572,12 +53734,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     },
     "clv_pp": -8.34
   },
@@ -55431,12 +55593,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rim_anchor; his absence doesn't meaningfully shift rebounding dynamics. VOLATILE tag keeps confidence steady."
+      "revised_reasoning": "Fox is perimeter_threat, not rim_anchor; minimal rebounding impact on Wemby. VOLATILE tag keeps confidence steady."
     },
     "clv_pp": -0.5
   },
@@ -55496,12 +55658,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     },
     "clv_pp": -0.22
   },
@@ -55805,12 +55967,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     },
     "clv_pp": -3.91
   },
@@ -55862,12 +56024,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     },
     "clv_pp": -0.76
   },
@@ -55921,7 +56083,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-06T22:48:17.192857-07:00",
     "voided": false,
-    "clv_pp": -1.85
+    "clv_pp": -1.85,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-05-06",
@@ -55973,7 +56144,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-06T22:48:17.192857-07:00",
     "voided": false,
-    "clv_pp": 0.67
+    "clv_pp": 0.67,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-05-06",
@@ -56031,12 +56211,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rebounding factor; Gobert's boards driven by frontcourt matchup vs SAS, unaffected by Edwards absence."
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
     },
     "clv_pp": -1.16
   },
@@ -57830,12 +58010,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 82,
-      "revised_reasoning": "Edwards OUT removes MIN's high-usage offensive engine; softer MIN defense and pace may lift Wemby scoring opportunities slightly."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
     },
     "clv_pp": -0.34
   },
@@ -57895,12 +58075,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rim_anchor; his absence doesn't meaningfully shift rebounding dynamics. VOLATILE tag keeps confidence steady."
+      "revised_reasoning": "Fox is perimeter_threat, not rim_anchor; minimal rebounding impact on Wemby. VOLATILE tag keeps confidence steady."
     },
     "clv_pp": 0.87
   },
@@ -58025,12 +58205,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 78,
-      "revised_reasoning": "Edwards OUT softens MIN perimeter defense; Castle trend=up with usage growth benefits from weaker defensive pressure."
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
     },
     "clv_pp": 2.31
   },
@@ -58143,12 +58323,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "up",
-      "revised_confidence_pct": 79,
-      "revised_reasoning": "Edwards OUT boosts McDaniels usage share; trend=up and vs_tough=81% suggest he absorbs volume well in elevated role."
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
     },
     "clv_pp": -1.09
   },
@@ -58208,12 +58388,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 72,
-      "revised_reasoning": "Edwards not a rebounding factor; Gobert's boards driven by frontcourt matchup vs SAS, unaffected by Edwards absence."
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
     },
     "clv_pp": -2.88
   },
@@ -58265,12 +58445,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Anthony Edwards (MIN) now QUESTIONABLE \u2014 was expected starter at pick time"
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-05-08T16:35:10.105151-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Edwards not rim_anchor or defensive_anchor; iron_floor 3PM tag and series consistency unchanged by his absence."
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
     },
     "clv_pp": 1.01
   },
@@ -59972,7 +60152,16 @@
     "voided": true,
     "post_game_event": "injury_exit",
     "post_game_detail": "Ejected in second quarter after Flagrant 2 foul, finished with 4 points in 12 minutes.",
-    "void_reason": "injury_exit_mid_game"
+    "void_reason": "injury_exit_mid_game",
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60030,7 +60219,16 @@
     "voided": true,
     "post_game_event": "injury_exit",
     "post_game_detail": "Ejected in second quarter after Flagrant 2 foul, finished with 4 points in 12 minutes.",
-    "void_reason": "injury_exit_mid_game"
+    "void_reason": "injury_exit_mid_game",
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat, not rim_anchor; minimal rebounding impact on Wemby. VOLATILE tag keeps confidence steady."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60074,7 +60272,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60122,7 +60329,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
     "voided": false,
-    "clv_pp": 1.12
+    "clv_pp": 1.12,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 91,
+      "revised_reasoning": "Fox out redistributes primary playmaking; Castle absorbs creator role, already 100% series rate at T4."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60222,7 +60438,16 @@
       "last_observed_at": "2026-05-10T23:23:54.812608-07:00",
       "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
     },
-    "clv_pp": -1.51
+    "clv_pp": -1.51,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Fox out elevates Vassell as secondary creator; trend=up and 90% overall rate amplified by redistribution."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60266,7 +60491,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
     "voided": false,
-    "clv_pp": 1.83
+    "clv_pp": 1.83,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60314,7 +60548,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
     "voided": false,
-    "clv_pp": -0.91
+    "clv_pp": -0.91,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60366,7 +60609,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
     "voided": false,
-    "clv_pp": 0.27
+    "clv_pp": 0.27,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out reduces SAS perimeter deterrence; Edwards gets cleaner looks off pick-and-roll; VOLATILE tempers full revision."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60418,7 +60670,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
     "voided": false,
-    "clv_pp": -3.87
+    "clv_pp": -3.87,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60518,7 +60779,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-10T23:23:52.101604-07:00",
     "voided": false,
-    "clv_pp": -1.12
+    "clv_pp": -1.12,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
+    }
   },
   {
     "date": "2026-05-11",
@@ -61453,7 +61723,16 @@
     "kalshi_morning_implied_prob": 51.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 91,
+      "revised_reasoning": "Fox out redistributes primary playmaking; Castle absorbs creator role, already 100% series rate at T4."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61508,7 +61787,16 @@
     "kalshi_morning_implied_prob": 91.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox absence pushes usage to Castle; vs_tough=64% limits ceiling but elimination minutes and added ball-handling lift floor."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61559,7 +61847,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat, not rim_anchor; minimal rebounding impact on Wemby. VOLATILE tag keeps confidence steady."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61610,7 +61907,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out increases offensive load on Wemby; vs_soft=96% and vs_tough=91% support higher usage translating to points."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61751,7 +62057,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 84,
+      "revised_reasoning": "Fox absence increases Vassell's ball movement role and catch-and-shoot volume; iron_floor plus added usage boosts 3PM floor."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61798,7 +62113,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 83,
+      "revised_reasoning": "Fox out elevates Vassell as secondary creator; trend=up and 90% overall rate amplified by redistribution."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61849,7 +62173,16 @@
     "kalshi_morning_implied_prob": 73.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Fox absence pushes scoring duty to Vassell; VOLATILE tag limits revision magnitude despite usage gain."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61896,7 +62229,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 78,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; Edwards faces softer on-ball coverage, vs_tough=89% base supports higher floor."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61947,7 +62289,16 @@
     "kalshi_morning_implied_prob": 16.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox is perimeter_threat not primary ball-pressure defender; iron_floor AST pick unaffected by his absence."
+    }
   },
   {
     "date": "2026-05-12",
@@ -61990,7 +62341,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 79,
+      "revised_reasoning": "Fox out reduces SAS perimeter deterrence; Edwards gets cleaner looks off pick-and-roll; VOLATILE tempers full revision."
+    }
   },
   {
     "date": "2026-05-12",
@@ -62045,7 +62405,16 @@
     "kalshi_morning_implied_prob": 85.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 85,
+      "revised_reasoning": "Fox out weakens SAS perimeter defense; McDaniels already 7/7 H2H vs SAS, easier scoring environment amplifies trend=up."
+    }
   },
   {
     "date": "2026-05-12",
@@ -62100,7 +62469,16 @@
     "kalshi_morning_implied_prob": 87.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Fox absence doesn't directly affect Randle's playmaking role against SAS frontcourt; consistent 95% floor stable."
+    }
   },
   {
     "date": "2026-05-12",
@@ -62143,7 +62521,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox is perimeter_threat with no rim_anchor role; no meaningful rebounding impact on Randle. VOLATILE holds."
+    }
   },
   {
     "date": "2026-05-12",
@@ -62190,6 +62577,15 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-12T12:21:48.188709-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "De'Aaron Fox (SAS) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-12T12:21:50.664273-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Fox out has no rim_anchor impact; Gobert's rebounding environment vs SAS frontcourt unchanged. VOLATILE holds."
+    }
   }
 ]
