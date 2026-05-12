@@ -14,10 +14,10 @@
       "tier_considered": 20,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 35.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 35.0 \u2265 tier 20"
   },
   {
     "date": "2026-05-11",
@@ -34,10 +34,10 @@
       "tier_considered": 6,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-11",
@@ -54,10 +54,10 @@
       "tier_considered": 1,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-11",
@@ -74,10 +74,10 @@
       "tier_considered": 20,
       "reason": "no FanDuel market available"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 16.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 16.0 < tier 20"
   },
   {
     "date": "2026-05-11",
@@ -94,10 +94,10 @@
       "tier_considered": 2,
       "reason": "VOLATILE+iron_floor incompatibility overrides iron_floor on 3PM; after VOLATILE -3pp, confidence 72% < 75% 3PM floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-11",
@@ -114,10 +114,10 @@
       "tier_considered": 2,
       "reason": "After VOLATILE -3pp deduction, 67% < 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-11",
@@ -134,9 +134,9 @@
       "tier_considered": 6,
       "reason": "After VOLATILE -3pp and BLOWOUT -5pp, confidence 70% < 72% REB minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 6"
   }
 ]

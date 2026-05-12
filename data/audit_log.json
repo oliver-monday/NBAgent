@@ -7925,5 +7925,119 @@
       "hit_rate_pct": 94.4,
       "delta_vs_overall_pp": -0.3
     }
+  },
+  {
+    "date": "2026-05-11",
+    "total_picks": 17,
+    "voided_picks": 0,
+    "hits": 14,
+    "misses": 3,
+    "no_data": 0,
+    "hit_rate_pct": 82.4,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 7,
+        "hits": 6,
+        "hit_rate_pct": 85.7
+      },
+      "REB": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 11,
+        "hits": 8,
+        "hit_rate_pct": 72.7,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Tier step-downs driven by FG_MARGIN flags continued to perform well: Cunningham PTS (T20\u2192T15), Mitchell PTS (T20\u2192T15), and Holmgren PTS (T15\u2192T10) all hit comfortably, with Mitchell posting 43 actual vs. a T15 pick. The step-down mechanic is correctly absorbing FG efficiency uncertainty while preserving qualified picks.",
+      "Mobley's three-prop sweep (PTS T10 HIT 17, REB T4 HIT 8, AST T2 HIT 5) validates the auditor-recommended DET step-down on REB (T6\u2192T4) and the hard gate skip on AST T4 (C-position, tough defense) in favor of T2. The multi-prop approach on a reliable player with correctly tiered picks is the right template.",
+      "Harden AST T4 hit 11 actual in a mid-series (G4) context, directly confirming the 'AST bulletproof in mid-series games' dossier signal. The analyst correctly did not apply the LATE_FADER penalty (which fires G5-7 only) and correctly held T4 over T6 given the series 2/3 at T6 rate. Dossier-derived AST stability calls are calibrated correctly for mid-series games.",
+      "Ausar Thompson REB T4 hit exactly at threshold (4 actual vs. T4 pick), validating the 25th-pct gate step from T6 to T4 as the correct conservative anchor. The consistent tag and 95% overall at T4 were the right primary signals; the gate step was precautionary and appropriate given uncertainty about the 3rd-lowest L10 floor.",
+      "Reaves AST T6 hit exactly at threshold (6 actual vs. T6 pick) in the LAL elimination context, validating the expanded creation role argument with Doncic OUT and the series 3/3 supporting signal. The analyst correctly held T6 despite the season H2H being only 1/3, weighting this-series evidence over stale season data \u2014 the correct playoff methodology."
+    ],
+    "lessons": [
+      "Jalen Duren REB T6 missed badly (2 actual vs. T6 pick) in a CLOSE game (DET lost by 9, 103-112). The game script was not a blowout \u2014 Duren played 27 minutes. The miss appears to be a performance outlier: no injury exit, full availability, but only 2 rebounds in 27 minutes. The analyst's tier_walk correctly identified competitive=64% at T8 as a significant concern and correctly flagged the 25th-pct gate, stepping to T6 and applying -16pp in total penalties. Despite reaching 72% confidence after heavy discounting, the outcome was a catastrophic 2-rebound night. The series T6 rate of 2/3 (67%) below the 70% threshold was a warning sign the analyst flagged but could not formally reject the pick on at T6. The LAL suppressor and CLE interior rebounding competition were structural suppressors that the competitive=64% signal partially captured but could not fully price in.",
+      "Jarrett Allen PTS T10 missed by 1 (9 actual vs. T10 pick, market line 9.5 \u2014 this is an exact-threshold miss under the grading rule: actual must be \u2265 pick_value, and 9 < 10 makes this a miss). The analyst correctly identified vs_tough=56% as a material downgrade signal and applied a -5pp tough defense penalty. The 9-point output in 32 minutes confirms the tough defense signal was real. Web recap confirms a lingering knee issue from the regular season with no mid-game exit \u2014 the knee context may have subtly compressed his interior scoring without triggering a formal injury classification.",
+      "LeBron James AST T6 missed significantly (3 actual vs. T6 pick). The game was CLOSE (OKC won by 5, 115-110), so blowout game-script is not a causal explanation. LeBron played a full 40 minutes. The web recap notes he appeared to aggravate a hip injury from Game 2, which may have suppressed his playmaking without triggering a mid-game exit. The analyst correctly applied the VOLATILE T6+ penalty (-8pp) and trend=down signal, reaching 80% confidence (then noted as 74% in the pick object). The series 3/3 at T6 was the primary supporting signal \u2014 but a series sample of 3 games is small, and the analyst's own tier_walk noted series 1/3 at T8, implying T6 had only a thin margin. The hip injury context, while not formally listed on the injury report, was documented in the post-game news and represents a structural suppressor of playmaking that the system had no mechanism to price pre-game."
+    ],
+    "recommendations": [
+      "For Jalen Duren REB specifically: the series T6 rate of 2/3 (67%) fell below the 70% required threshold, but the pick was held at T6 because T4 had no market. When the only available tier has a series hit rate below the 70% minimum floor AND competitive rate below 65%, apply an additional hard skip evaluation: if the series hit rate at the selected tier is < 70% AND no lower market exists, classify as merit_below_floor and skip. The current rule only checks overall season rate against the floor \u2014 extend the floor check to also gate on series rate when series sample \u2265 3 games. This would have flagged Duren REB T6 (series 2/3 = 67% < 70%) as a skip candidate.",
+      "For Jarrett Allen (and similar secondary scorers) against tough defenses: vs_tough=56% is among the lowest matchup-specific rates in the dataset. When a secondary scorer's vs_tough rate falls below 60% at the selected tier AND the player carries a VOLATILE tag, require a mandatory additional step-down of one tier (beyond any FG_MARGIN step already applied). If no lower tier market exists, apply the merit_below_floor skip. This tighter rule specifically targets secondary scorer PTS props where tough defense creates a double suppression that the current -5pp cap does not fully price.",
+      "For LeBron James AST picks in Game 4+ of a playoff series: the trend=down signal was present and the analyst correctly applied the VOLATILE T6+ penalty. However, the series-based evidence (3/3 at T6) was given too much weight given it was only a 3-game sample in a series where LeBron's minutes and health are actively managed. Add a rule: when a player has a documented within-series injury event (hip, knee, oblique \u2014 any non-fatal injury flagged in post-game news from a prior game in the same series), apply an additional -5pp penalty to AST picks at T6+, even if not formally listed as QUESTIONABLE. The post-game news for the Game 2 hip aggravation was available in the series diary context; the afternoon injury agent should be instructed to check series diary injury language as a supplemental injury signal.",
+      "The 76-80% confidence band performed at 100% (6/6) on this slate, significantly outperforming the 78% expected rate. While one slate is insufficient to recommend raising picks in this band, this reinforces that the current penalty structure (VOLATILE -3pp, FG_MARGIN step-downs, tough defense discounts) is producing well-calibrated outputs in the 76-80% range. Do not tighten minimum confidence thresholds in this band \u2014 the current calibration is correct. The 70-75% band (72.7% actual vs. 72.5% expected) is also near-perfectly calibrated; maintain current floors.",
+      "For any REB prop where the analyst's tier_walk shows competitive rate < 65% at the primary tier AND the 25th-pct gate forces a step-down AND no lower market exists: require the pick to meet a 75% minimum series hit rate at the held tier (not the standard 70% overall floor) before proceeding. Duren REB T6 had series 2/3 (67%) \u2014 below a 75% series minimum that would have been a skip signal under this rule. This specifically addresses the scenario where competitive suppression, gate-forced holds, and thin series data combine to create a fragile pick with no downward escape."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jalen Duren",
+        "prop_type": "REB",
+        "pick_value": 6,
+        "actual_value": 2,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: DET @ CLE, final 103-112, CLE won by 9. CLOSE game \u2014 blowout game-script not a causal factor. Duren played 27 minutes with no injury exit reported. STEP 1 \u2014 Player was active, played 27 minutes, posted real counting stats. STEP 2 \u2014 No injury event in post-game news. Full availability confirmed. Classification: model_gap_rule. The analyst's tier_walk correctly identified competitive=64% at T8 as a major concern, applied the 25th-pct gate step (T8\u2192T6), and noted no T4 market was available (walk_declined T6\u2192T4). A combined -16pp penalty was applied, reaching 72% at T6. However, the series T6 hit rate of 2/3 (67%) fell below the 70% minimum floor that governs overall hit rate qualification \u2014 the rule does not currently enforce a series-rate floor at the held tier when the walk-declined scenario leaves no lower market. The existing penalty structure discounted correctly but could not price the tail risk of a near-zero rebounding night. STEP 3 \u2014 The analyst's reasoning correctly cited competitive suppression and the 25th-pct gate, but the decision to hold at T6 (despite series 2/3 at T6) when no T4 market existed created a structural fragility that the current framework lacks a hard skip rule to address. STEP 4 \u2014 Hit rate display 8/10 reflects overall season; this-series rate of 2/3 at T6 was the more actionable signal and was below the minimum floor. STEP 5 \u2014 Tier walk is sound: T8 failed the competitive gate, T6 was the only available market, walk to T4 was declined due to no market. The walk-declined scenario exposed the gap \u2014 no current rule mandates a skip when the only available tier has a below-floor series rate. No lineup_update amendment was present."
+      },
+      {
+        "player_name": "Jarrett Allen",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 9,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: DET @ CLE, final 103-112, CLE won by 9. CLOSE game \u2014 blowout game-script not a causal factor. Allen played 32 minutes with no mid-game exit reported. STEP 1 \u2014 Player was active, 32 minutes played, scored 9 points (non-zero). Miss is by exactly 1 unit (9 actual vs. 10 pick). STEP 2 \u2014 Post-game news confirms a lingering knee issue from the regular season with no mid-game exit in this game. The knee context does not constitute a confirmed injury_event (no exit, full 32 minutes). No workflow_gap (player was NOT_LISTED on injury report at check time). Classification: variance. A miss by 1 unit on a pick supported by 8/10 hit rate and a series average of 14.0 PTS (4 points above the T10 threshold) falls within normal distribution variance. STEP 3 \u2014 The analyst's reasoning correctly identified vs_tough=56% as a material downgrade signal and applied -8pp total penalties (VOLATILE -3pp + tough defense -5pp), reaching 72% confidence \u2014 a conservative, honest reflection of the matchup difficulty. The reasoning was sound. STEP 4 \u2014 Hit rate display 8/10; the tough defense discount was correctly applied and the pick was assigned the minimum viable confidence floor. A 28% miss probability at 72% confidence means outcomes like this are structurally expected roughly 1-in-4 times. STEP 5 \u2014 Tier walk correctly skipped T15 (2/4 H2H) and selected T10 (80% overall). No lower tier was indicated. The walk was thorough and conservative. The lingering knee note in post-game news is informational context; without a mid-game exit, it cannot be used to reclassify from variance to injury_event. No lineup_update amendment was present."
+      },
+      {
+        "player_name": "LeBron James",
+        "prop_type": "AST",
+        "pick_value": 6,
+        "actual_value": 3,
+        "miss_classification": "model_gap_signal",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: OKC @ LAL, final 115-110, OKC won by 5. CLOSE game \u2014 blowout game-script not a causal factor. LeBron played a full 40 minutes with no mid-game exit. STEP 1 \u2014 Player was active, 40 minutes played, 3 assists recorded. Miss is significant (3 actual vs. 6 pick, a 3-unit gap). STEP 2 \u2014 Post-game news explicitly notes LeBron appeared to aggravate a hip injury sustained in Game 2 of this series. No mid-game exit occurred; the hip did not prevent him from playing 40 full minutes. This is not a formal injury_event (no exit, full minutes), and the hip was not listed on the pre-game injury report. Classification: model_gap_signal. The hip aggravation \u2014 documented in post-game news as originating in Game 2 and potentially influencing playmaking in Game 4 \u2014 was a within-series injury escalation signal that the system had no mechanism to detect or price at pick time. The injury report showed NOT_LISTED; the series diary did not contain a formal hip-injury notation for LeBron at the time picks were made; and there is no current prompt rule instructing the analyst to scan post-game recap language from prior games in the same series for undocumented injury escalation before setting AST confidence. The signal required \u2014 'prior-game post-game news hip language as a pre-game suppressor of AST output' \u2014 does not exist in the system's current quant fields or prompt rules. STEP 3 \u2014 The analyst's reasoning correctly applied the VOLATILE T6+ penalty (-8pp), noted trend=down, used series 3/3 at T6 as the primary supporting signal, and cited LeBron's expanded sole-creator role with Doncic OUT. The reasoning was internally consistent. The flaw was not in the logic applied but in the absence of a mechanism to detect the undisclosed hip aggravation from prior-game post-game context. STEP 4 \u2014 Hit rate display 9/10; the 90% overall at T6 and 3/3 series rate were the dominant quantitative signals. Both were correct representations of LeBron's healthy-game AST output. The hip's suppressive effect on playmaking \u2014 which produced 3 assists in 40 minutes despite full availability \u2014 is not captured by any current signal. STEP 5 \u2014 Tier walk correctly skipped T8 (1/3 series) and selected T6. The walk was conservative and appropriate. The -8pp VOLATILE T6+ penalty was the maximum applicable discount given available data; the pick was correctly held at 74-80% confidence rather than elevated. No lineup_update amendment was present. The bet recommendation incorrectly flagged this as STRONG (calibrated_prob 95%), which is a calibration artifact from the per_player calibration source \u2014 this suggests the per_player calibration model is overconfident on LeBron AST and warrants review."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 13,
+      "hits": 12,
+      "misses": 1,
+      "hit_rate_pct": 92.3,
+      "delta_vs_overall_pp": 9.9
+    }
   }
 ]
