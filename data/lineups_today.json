@@ -1,35 +1,64 @@
 {
   "asof_date": "2026-05-12",
-  "built_at_utc": "2026-05-12T23:18:55Z",
+  "built_at_utc": "2026-05-12T23:39:53Z",
   "source": "rotowire",
-  "MIN": {
+  "SAS": {
     "starters": [
       {
         "position": "PG",
-        "name": "Ayo Dosunmu",
+        "name": "De'Aaron Fox",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "Anthony Edwards",
+        "name": "Stephon Castle",
         "injury_status": null
       },
       {
         "position": "SF",
-        "name": "Jaden McDaniels",
+        "name": "Devin Vassell",
         "injury_status": null
       },
       {
         "position": "PF",
-        "name": "Julius Randle",
+        "name": "Julian Champagnie",
         "injury_status": null
       },
       {
         "position": "C",
-        "name": "Rudy Gobert",
+        "name": "Victor Wembanyama",
         "injury_status": null
       }
     ],
+    "confirmed": false
+  },
+  "snapshot_at_analyst_run": {
+    "written_at": "2026-05-12T08:41:14.318410-07:00",
+    "teams": {
+      "MIN": {
+        "starters": [
+          "Ayo Dosunmu",
+          "Anthony Edwards",
+          "Jaden McDaniels",
+          "Julius Randle",
+          "Rudy Gobert"
+        ],
+        "confirmed": false
+      },
+      "SAS": {
+        "starters": [
+          "De'Aaron Fox",
+          "Stephon Castle",
+          "Devin Vassell",
+          "Julian Champagnie",
+          "Victor Wembanyama"
+        ],
+        "confirmed": false
+      }
+    }
+  },
+  "MIN": {
+    "starters": [],
     "confirmed": false,
     "projected_minutes": [
       {
@@ -117,60 +146,5 @@
         "injury_status": null
       }
     ]
-  },
-  "SAS": {
-    "starters": [
-      {
-        "position": "PG",
-        "name": "De'Aaron Fox",
-        "injury_status": "QUES"
-      },
-      {
-        "position": "SG",
-        "name": "Stephon Castle",
-        "injury_status": null
-      },
-      {
-        "position": "SF",
-        "name": "Devin Vassell",
-        "injury_status": null
-      },
-      {
-        "position": "PF",
-        "name": "Julian Champagnie",
-        "injury_status": null
-      },
-      {
-        "position": "C",
-        "name": "Victor Wembanyama",
-        "injury_status": null
-      }
-    ],
-    "confirmed": false
-  },
-  "snapshot_at_analyst_run": {
-    "written_at": "2026-05-12T08:41:14.318410-07:00",
-    "teams": {
-      "MIN": {
-        "starters": [
-          "Ayo Dosunmu",
-          "Anthony Edwards",
-          "Jaden McDaniels",
-          "Julius Randle",
-          "Rudy Gobert"
-        ],
-        "confirmed": false
-      },
-      "SAS": {
-        "starters": [
-          "De'Aaron Fox",
-          "Stephon Castle",
-          "Devin Vassell",
-          "Julian Champagnie",
-          "Victor Wembanyama"
-        ],
-        "confirmed": false
-      }
-    }
   }
 }
