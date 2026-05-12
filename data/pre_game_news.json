@@ -1,81 +1,64 @@
 {
-  "date": "2026-05-11",
-  "generated_at": "2026-05-11T08:56:24.479717-07:00",
+  "date": "2026-05-12",
+  "generated_at": "2026-05-12T08:40:35.186704-07:00",
   "player_notes": {
-    "jalen williams": "Williams is sidelined (out) for OKC. Ajay Mitchell has stepped up as a key playmaker in his absence, recording 24 pts/10 ast in Game 3.",
-    "victor wembanyama": "Wembanyama was ejected in Game 4 and faces a potential suspension for Game 5 (elbow on Naz Reid). Monitor availability \u2014 if suspended, massive minutes/usage shift for remaining Spurs.",
-    "og anunoby": "Anunoby ruled out for Game 4 with a strained right hamstring; remains day-to-day. Knicks series is over (sweep), so only relevant if he plays in ECF."
+    "victor wembanyama": "Cleared of suspension; confirmed available for Game 5 vs. Minnesota. No minutes restriction mentioned \u2014 full availability expected."
   },
   "game_notes": {
-    "SAS vs MIN": "Wembanyama faces potential suspension for Game 5 after ejection in Game 4; his absence would significantly boost usage/minutes for remaining Spurs and Wolves bigs.",
-    "OKC vs LAL": "Jalen Williams remains out; Ajay Mitchell is filling a star role (24 pts, 10 ast in Game 3). Thunder lead 3-0."
+    "SAS vs MIN": "Wembanyama (ejected Game 4) is confirmed available for Game 5 after avoiding suspension; series tied 2-2. His return stabilizes Spurs rotation after his absence contributed to Game 4 loss."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 41,
+  "filtered_item_count": 44,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "NYK vs PHI (R2 series)",
-      "current_context_fact": "The season context document contains no R2 series diary for NYK vs PHI, and the playoff bracket shows PHI advanced from R1. The context ends with PHI winning R1 over BOS 4-3.",
-      "conflict": "Multiple news items confirm the Knicks have swept the 76ers in R2 (4-0), with a 144-114 blowout in Game 4 on May 10. NYK is now in the Eastern Conference Finals. PHI is eliminated.",
+      "player_or_team": "OKC vs LAL \u2014 Series Result",
+      "current_context_fact": "The season context only documents R1 results for LAL vs HOU (LAL wins 4-2). There is no R2 series diary or result recorded for OKC vs LAL.",
+      "conflict": "Multiple news items confirm OKC swept LAL in R2 (4-0), with Game 4 final score 115-110 on 2026-05-12. SGA scored 35 in G4. OKC is now 8-0 this postseason. LAL is eliminated.",
       "urgency": "critical",
-      "suggested_action": "Add NYK vs PHI R2 series diary. Mark PHI as eliminated. Update NYK status to ECF. Note: OG Anunoby was OUT for Game 4 with a strained right hamstring (day-to-day per news item). NYK swept PHI 4-0."
+      "suggested_action": "Add OKC vs LAL R2 series result: OKC wins 4-0 (sweep). LAL eliminated. Update playoff bracket to reflect OKC advancing to conference finals. Note SGA scored 35 in G4, T20 streak intact. LeBron is publicly 'recalibrating' his future."
     },
     {
-      "player_or_team": "OG Anunoby (NYK)",
-      "current_context_fact": "No injury note for Anunoby in the playoff injury landscape beyond his R1 series diary appearances.",
-      "conflict": "News item dated May 10 states: 'OG Anunoby was ruled out again for Game 4 with a strained right hamstring, and the Knicks forward remains day-to-day.' This is a new, undocumented injury affecting his availability.",
+      "player_or_team": "NYK vs PHI \u2014 Series Result",
+      "current_context_fact": "The season context documents the BOS vs PHI R1 series (PHI wins 4-3) and NYK vs ATL R1 series (NYK wins 4-2). There is no R2 series result recorded for NYK vs PHI.",
+      "conflict": "News items confirm NYK swept PHI in R2 (4-0). Multiple headlines reference 'Knicks' sweep of 76ers' and a 144-114 Game 4 blowout win in Philadelphia. NYK advances to conference finals.",
       "urgency": "critical",
-      "suggested_action": "Add Anunoby strained right hamstring to the active injury landscape. Flag as day-to-day heading into ECF. Note he was OUT for NYK-PHI R2 G4."
+      "suggested_action": "Add NYK vs PHI R2 series result: NYK wins 4-0 (sweep). PHI eliminated. NYK advances to ECF. Note the 144-114 G4 final and that NYK's championship odds have shortened following the sweep."
     },
     {
-      "player_or_team": "SAS vs MIN (R2 series)",
-      "current_context_fact": "The context document contains no R2 series diary for SAS vs MIN. The playoff bracket and R1 results confirm both teams advanced, but no R2 games are recorded.",
-      "conflict": "News items confirm this series is in progress and now tied 2-2. Game 4 result: MIN 114, SAS 109. Victor Wembanyama was ejected from Game 4 for elbowing Naz Reid in the jaw early in the second quarter. Anthony Edwards scored 36 points (16 in Q4) to lead MIN. Stephen A. Smith is calling for a suspension for Wembanyama for Game 5.",
+      "player_or_team": "CLE vs DET \u2014 Series Status",
+      "current_context_fact": "The season context has no R2 series diary for CLE vs DET. The R2 matchup is implied but not documented.",
+      "conflict": "News confirms CLE vs DET is an active R2 series. 'Bickerstaff calls FT disparity in Game 4 loss unacceptable' \u2014 DET lost G4. Mitchell scored 43 points (39 in second half, tying an NBA playoff record) as CLE won 112-103 to even the series. The series is now tied (implied 2-2 based on 'even series' language).",
       "urgency": "critical",
-      "suggested_action": "Create SAS vs MIN R2 series diary. Record series tied 2-2. Note Wembanyama ejected in G4 for elbowing Naz Reid \u2014 first career ejection. Flag Wembanyama as facing potential suspension for G5 (not confirmed, but being discussed). Note Edwards returned and played a full starring role (36 pts), updating his injury status from the left knee concern documented in R1."
+      "suggested_action": "Add CLE vs DET R2 series diary. Series is tied (2-2 after CLE's G4 win 112-103). Mitchell scored 43 pts with 39 in the second half, tying an NBA playoff record. Bickerstaff publicly criticized the free throw disparity. Update series status accordingly."
+    },
+    {
+      "player_or_team": "SAS vs MIN \u2014 Series Status and Wembanyama",
+      "current_context_fact": "The season context documents SAS vs POR R1 (SAS wins 4-1) and notes Wembanyama as 'fully healthy entering R2. No injury concern.' There is no R2 series diary for SAS vs MIN.",
+      "conflict": "News confirms SAS vs MIN is an active R2 series tied 2-2. Wembanyama elbowed Naz Reid, received his first career ejection, was reviewed for suspension, and was cleared by the NBA to play Game 5 with no further discipline. Anthony Edwards scored 36 points (16 in Q4) to lead MIN to a 114-109 G4 win and even the series. The 'Gobert/Wemby French Connection' headline confirms Gobert is active for MIN in this series.",
+      "urgency": "critical",
+      "suggested_action": "Add SAS vs MIN R2 series diary. Series tied 2-2. Wembanyama was ejected in G4 for elbowing Naz Reid, reviewed for suspension, and cleared to play G5 (no further discipline). Edwards scored 36 in G4 win 114-109. Edwards appears healthy and active \u2014 update his injury status from the R1 left knee concern. Note Wemby ejection/elbow incident as a flagged disciplinary item to monitor."
     },
     {
       "player_or_team": "Anthony Edwards (MIN)",
-      "current_context_fact": "Playoff Injury Landscape states Edwards was OUT for G5 (DEN series) with left knee injury and remained OUT for G6 (series clincher). 'Edwards' left knee status and recovery timeline are the defining MIN variables heading into R2.'",
-      "conflict": "News items confirm Edwards scored 36 points in R2 Game 4 vs SAS (MIN 114-109), with 16 of those points in the fourth quarter. He is clearly available and performing at a high level in R2.",
+      "current_context_fact": "Playoff Injury Landscape states Edwards was 'OUT for G5 with severity still unclear' (left knee) and 'treat as a primary injury concern for G6; his availability and any potential minutes restriction are the most critical variables.' This was written in the context of the DEN-MIN R1 series.",
+      "conflict": "News confirms Edwards scored 36 points (16 in Q4) in MIN's G4 R2 win vs SAS on 2026-05-11, playing a full and impactful game. He appears fully healthy and active in R2.",
       "urgency": "critical",
-      "suggested_action": "Update Edwards' injury status: left knee is no longer a limiting factor. He is active and productive in R2. Remove the 'defining MIN variable' uncertainty framing and treat as healthy unless new information emerges."
+      "suggested_action": "Update Edwards' injury status: he is active and performing at a high level in R2 vs SAS (36 pts in G4). The R1 left knee concern appears resolved. Remove 'primary injury concern' designation and treat as healthy unless new information emerges."
     },
     {
       "player_or_team": "Victor Wembanyama (SAS)",
-      "current_context_fact": "Playoff Injury Landscape states: 'Treat as fully healthy entering R2. No injury concern.' R1 series diary G5 entry notes: 'the SAS floor compression pattern held for POR throughout the series.'",
-      "conflict": "Wembanyama was ejected from R2 Game 4 vs MIN for elbowing Naz Reid in the jaw. He faces a potential league suspension for Game 5 per Stephen A. Smith's commentary and the news headline describing this as warranting a suspension.",
-      "urgency": "critical",
-      "suggested_action": "Flag Wembanyama as facing potential suspension for R2 G5 vs MIN. This is not yet confirmed but is being actively discussed. Add to injury/availability landscape as a critical variable. Note: if suspended, SAS would play G5 without their franchise player \u2014 analogous to the G2/G3 concussion situation in R1."
-    },
-    {
-      "player_or_team": "OKC vs LAL (R2 series)",
-      "current_context_fact": "The context document contains no R2 series diary for OKC vs LAL. The playoff bracket shows both teams advanced from R1.",
-      "conflict": "News items confirm OKC leads LAL 3-0 in R2. Game 3 result: OKC 131, LAL 108. Ajay Mitchell had career playoff highs of 24 points and 10 assists. A news item references 'the Lakers down 3-0' and OKC's '7-0 playoff run.' Jalen Williams remains sidelined.",
-      "urgency": "critical",
-      "suggested_action": "Create OKC vs LAL R2 series diary. Record OKC leads 3-0. Note Ajay Mitchell's breakout (24 pts, 10 AST in G3) as OKC's secondary star with Jalen Williams still out. Note OKC's 7-0 overall playoff record. Update Jalen Williams status as still sidelined."
-    },
-    {
-      "player_or_team": "Jalen Williams (OKC)",
-      "current_context_fact": "R1 series diary G4 entry: 'OKC advances to R2 with Jalen Williams still OUT (hamstring).' R2 key note: 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round.'",
-      "conflict": "News item from May 10 states: 'Thunder ride Ajay Mitchell's star turn to 3-0 lead over Lakers' with Jalen Williams 'sidelined' \u2014 confirming he remains OUT through at least R2 Game 3 (May 10).",
-      "urgency": "critical",
-      "suggested_action": "Confirm Jalen Williams remains OUT (hamstring) through R2 G3 at minimum. Update injury landscape accordingly. Note Ajay Mitchell has emerged as the primary secondary scorer/playmaker in Williams' continued absence."
-    },
-    {
-      "player_or_team": "DET vs CLE (R2 series)",
-      "current_context_fact": "The context document contains no R2 series diary for DET vs CLE. Both teams advanced from R1.",
-      "conflict": "A news item dated May 10 references 'Cunningham and the Pistons visit Cleveland with 2-1 series lead,' confirming R2 is in progress with DET leading 2-1 heading into what appears to be Game 4.",
-      "urgency": "critical",
-      "suggested_action": "Create DET vs CLE R2 series diary. Record DET leads 2-1 as of May 10 (G4 date). Note series is ongoing with DET holding a series lead."
-    },
-    {
-      "player_or_team": "Steve Kerr (GSW coach)",
-      "current_context_fact": "Head coaches table lists GSW coach as Steve Kerr. Post-series note in OKC vs PHX R1 diary states: 'Kerr expressed uncertainty about his coaching future after the loss.'",
-      "conflict": "News items from May 10 confirm Steve Kerr has signed a new two-year deal with the Warriors and is returning as head coach. 'Shams: Steve Kerr wanted to coach, Warriors wanted him back' and 'Steve Kerr returning as Warriors coach: Why? What's next?'",
+      "current_context_fact": "Playoff Injury Landscape states Wembanyama should be treated as 'fully healthy entering R2. No injury concern.' The WEMBANYAMA BLOWOUT EXEMPTION note does not mention any ejection or discipline history.",
+      "conflict": "Wembanyama elbowed Naz Reid in G4 vs MIN, resulting in his first career ejection. The NBA reviewed the play for a suspension but cleared him to play G5 with no further discipline. This is a new disciplinary event with no prior context in the season document.",
       "urgency": "monitor",
-      "suggested_action": "Update Kerr's status note: remove the uncertainty"
+      "suggested_action": "Add note to Wembanyama's player entry: received first career ejection in R2 G4 vs MIN for elbowing Naz Reid. NBA reviewed for suspension and cleared him for G5 with no further discipline. No injury concern, but flag the ejection as a behavioral/discipline data point. Monitor for any recurrence or foul trouble elevation in subsequent games."
+    },
+    {
+      "player_or_team": "Rudy Gobert (MIN)",
+      "current_context_fact": "Playoff Injury Landscape and player notes do not document Gobert's R2 availability or status. His R1 series vs DEN is documented with his career playoff CAUTION signals active.",
+      "conflict": "The 'French Connection' headline confirms Gobert is active and playing in the R2 SAS vs MIN series (series tied 2-2). No injury concern indicated.",
+      "urgency": "monitor",
+      "suggested_action": "Confirm Gobert is active in R2 vs SAS. Update playoff injury landscape to reflect his R2 availability. Career playoff PTS and REB CAUTION directives remain applicable."
     }
   ],
   "staleness_flags": []
