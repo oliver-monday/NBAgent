@@ -63064,6 +63064,18 @@
       "direction": "unchanged",
       "revised_confidence_pct": 90,
       "revised_reasoning": "Robinson absence has no direct connection to Mitchell's assist floor; structural floor intact."
+    },
+    "clv_warning": {
+      "type": "ast_lost_close",
+      "live_clv_pp": -0.76,
+      "morning_implied_prob": 91.7,
+      "market_implied_prob": 90.9,
+      "threshold": -0.5,
+      "proposed_penalty_pp": 5,
+      "applied": false,
+      "first_observed_at": "2026-05-13T16:21:08.993154-07:00",
+      "last_observed_at": "2026-05-13T16:21:08.993154-07:00",
+      "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
     }
   },
   {
@@ -63427,14 +63439,14 @@
     },
     "clv_warning": {
       "type": "ast_lost_close",
-      "live_clv_pp": -3.21,
+      "live_clv_pp": -1.81,
       "morning_implied_prob": 94.1,
-      "market_implied_prob": 90.9,
+      "market_implied_prob": 92.3,
       "threshold": -0.5,
       "proposed_penalty_pp": 5,
       "applied": false,
       "first_observed_at": "2026-05-13T13:54:27.836977-07:00",
-      "last_observed_at": "2026-05-13T15:49:16.832944-07:00",
+      "last_observed_at": "2026-05-13T16:21:08.993154-07:00",
       "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
     }
   },
