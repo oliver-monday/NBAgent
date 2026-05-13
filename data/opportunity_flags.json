@@ -6202,5 +6202,239 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-05-13",
+    "generated_at": "2026-05-13T12:24:03.788463-07:00",
+    "triggered_by": "Duncan Robinson",
+    "triggered_by_team": "DET",
+    "side": "teammate",
+    "player_name": "Ausar Thompson",
+    "team": "DET",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 87.5,
+        "market_odds": -700
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "AST T2 75% [down] (mkt 88%, edge -12pp)",
+    "best_edge_pp": -12.5,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-13",
+    "generated_at": "2026-05-13T12:24:03.788463-07:00",
+    "triggered_by": "Duncan Robinson",
+    "triggered_by_team": "DET",
+    "side": "teammate",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 68.25,
+        "market_odds": -215
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (fg_margin_thin_tier_step)",
+    "reasoning": "3PM T2 70% [up] (mkt 68%, edge +2pp); skipped this morning (fg_margin_thin_tier_step)",
+    "best_edge_pp": 1.8,
+    "best_edge_prop": "3PM",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-13",
+    "generated_at": "2026-05-13T12:24:03.788463-07:00",
+    "triggered_by": "Duncan Robinson",
+    "triggered_by_team": "DET",
+    "side": "opponent",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 75.61,
+        "market_odds": -310
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 20,
+        "hit_rate_pct": 80,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 86.11,
+        "market_odds": -620,
+        "morning_tier": 15,
+        "morning_confidence_pct": 74
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "REB T4 75% [stable] (mkt 76%, edge -1pp); PTS T20 80% [up] (mkt 86%, edge -6pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -0.6,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-13",
+    "generated_at": "2026-05-13T12:24:03.788463-07:00",
+    "triggered_by": "Duncan Robinson",
+    "triggered_by_team": "DET",
+    "side": "teammate",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 72.6,
+        "market_odds": -265
+      },
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 72.6,
+        "market_odds": -265
+      },
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 58.68,
+        "market_odds": -142
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "PTS T10 75% [down] (mkt 73%, edge +2pp); REB T8 80% [stable] (mkt 73%, edge +7pp); AST T2 75% [down] (mkt 59%, edge +16pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 16.3,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-13",
+    "generated_at": "2026-05-13T12:24:03.788463-07:00",
+    "triggered_by": "Duncan Robinson",
+    "triggered_by_team": "DET",
+    "side": "opponent",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 4,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 96.15,
+        "market_odds": -2500
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 75,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 74.36,
+        "market_odds": -290
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 90,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 77.78,
+        "market_odds": -350,
+        "morning_tier": 10,
+        "morning_confidence_pct": 71
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (fg_margin_thin_tier_step)",
+    "reasoning": "AST T4 85% [stable] (mkt 96%, edge -11pp); 3PM T2 75% [down] (mkt 74%, edge +1pp); PTS T15 90% [stable] (mkt 78%, edge +12pp); skipped this morning (fg_margin_thin_tier_step)",
+    "best_edge_pp": 12.2,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-13",
+    "generated_at": "2026-05-13T12:24:03.788463-07:00",
+    "triggered_by": "Duncan Robinson",
+    "triggered_by_team": "DET",
+    "side": "opponent",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "PTS": {
+        "tier": 10,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 69.23,
+        "market_odds": -225
+      },
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 80,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 94.12,
+        "market_odds": -1600
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T10 75% [stable] (mkt 69%, edge +6pp); REB T4 80% [stable] (mkt 94%, edge -14pp)",
+    "best_edge_pp": 5.8,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
