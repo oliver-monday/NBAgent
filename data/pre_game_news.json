@@ -1,64 +1,62 @@
 {
-  "date": "2026-05-12",
-  "generated_at": "2026-05-12T08:40:35.186704-07:00",
+  "date": "2026-05-13",
+  "generated_at": "2026-05-13T08:43:42.209397-07:00",
   "player_notes": {
-    "victor wembanyama": "Cleared of suspension; confirmed available for Game 5 vs. Minnesota. No minutes restriction mentioned \u2014 full availability expected."
+    "donovan mitchell": "Scored 43 points (39 in second half) in Game 4 win vs. Pistons \u2014 series now tied 2-2 heading to Game 5 in Detroit. Extremely hot hand; high confidence on points prop."
   },
   "game_notes": {
-    "SAS vs MIN": "Wembanyama (ejected Game 4) is confirmed available for Game 5 after avoiding suspension; series tied 2-2. His return stabilizes Spurs rotation after his absence contributed to Game 4 loss."
+    "CLE vs DET": "Series tied 2-2 heading into Game 5 in Detroit. Mitchell is scorching hot, but expect elevated defensive intensity from Pistons at home."
   },
   "raw_item_count": 50,
   "filtered_item_count": 44,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "OKC vs LAL \u2014 Series Result",
-      "current_context_fact": "The season context only documents R1 results for LAL vs HOU (LAL wins 4-2). There is no R2 series diary or result recorded for OKC vs LAL.",
-      "conflict": "Multiple news items confirm OKC swept LAL in R2 (4-0), with Game 4 final score 115-110 on 2026-05-12. SGA scored 35 in G4. OKC is now 8-0 this postseason. LAL is eliminated.",
+      "player_or_team": "LAL vs OKC (R2 series)",
+      "current_context_fact": "The season context document contains no R2 series diary for OKC vs LAL, and the playoff bracket/injury landscape sections do not reflect R2 results.",
+      "conflict": "Multiple news items confirm OKC swept the Lakers 4-0 in R2. 'Champion Thunder hold off tenacious Lakers 115-110 in Game 4 for another playoff series sweep.' SGA scored 35 points in the clinching game. LAL is eliminated. OKC is 8-0 this postseason.",
       "urgency": "critical",
-      "suggested_action": "Add OKC vs LAL R2 series result: OKC wins 4-0 (sweep). LAL eliminated. Update playoff bracket to reflect OKC advancing to conference finals. Note SGA scored 35 in G4, T20 streak intact. LeBron is publicly 'recalibrating' his future."
+      "suggested_action": "Add OKC vs LAL R2 series result: OKC wins 4-0 (sweep). LAL eliminated. OKC advances to conference semifinals/WCF. Update playoff bracket status accordingly. Note SGA's 35-pt G4 performance (T20 streak intact through sweep)."
     },
     {
-      "player_or_team": "NYK vs PHI \u2014 Series Result",
-      "current_context_fact": "The season context documents the BOS vs PHI R1 series (PHI wins 4-3) and NYK vs ATL R1 series (NYK wins 4-2). There is no R2 series result recorded for NYK vs PHI.",
-      "conflict": "News items confirm NYK swept PHI in R2 (4-0). Multiple headlines reference 'Knicks' sweep of 76ers' and a 144-114 Game 4 blowout win in Philadelphia. NYK advances to conference finals.",
+      "player_or_team": "LeBron James (LAL)",
+      "current_context_fact": "R2 key (LAL series entry): 'Reaves' conditioning trajectory and reinjury risk profile after his early return from the Grade 2 oblique are the primary LAL health variables heading into R2; LeBron's 37-minute managed load in a 20-point win suggests Redick is carefully calibrating his minutes.'",
+      "conflict": "LAL has been eliminated (swept by OKC in R2). LeBron James is now weighing his NBA future: 'LeBron James to recalibrate, weigh NBA future with family' and 'I don't know what the future holds for me.' Rob Pelinka stated the team wants LeBron back. LeBron's season is over.",
       "urgency": "critical",
-      "suggested_action": "Add NYK vs PHI R2 series result: NYK wins 4-0 (sweep). PHI eliminated. NYK advances to ECF. Note the 144-114 G4 final and that NYK's championship odds have shortened following the sweep."
+      "suggested_action": "Update LAL playoff status: eliminated in R2 (swept by OKC 4-0). LeBron's 2025-26 playoff run is over. Add note that his future with LAL is uncertain \u2014 he is 'recalibrating' and has not committed to returning. Remove any R2+ projection language for LAL players."
     },
     {
-      "player_or_team": "CLE vs DET \u2014 Series Status",
-      "current_context_fact": "The season context has no R2 series diary for CLE vs DET. The R2 matchup is implied but not documented.",
-      "conflict": "News confirms CLE vs DET is an active R2 series. 'Bickerstaff calls FT disparity in Game 4 loss unacceptable' \u2014 DET lost G4. Mitchell scored 43 points (39 in second half, tying an NBA playoff record) as CLE won 112-103 to even the series. The series is now tied (implied 2-2 based on 'even series' language).",
+      "player_or_team": "MIN vs SAS (R2 series)",
+      "current_context_fact": "The season context document has no R2 series diary for SAS vs MIN. The playoff landscape section ends after R1 results and does not reflect the current R2 state of this series.",
+      "conflict": "Multiple news items confirm SAS vs MIN is an active R2 series tied 2-2 heading into Game 5, and Game 5 has now been played: 'Wembanyama returns with a huge performance as the Spurs beat the Wolves 126-97 for a 3-2 lead.' Wemby had 27 points, 17 rebounds, 3 blocks. SAS leads series 3-2. Anthony Edwards and MIN are facing elimination ('Defiant Edwards says Wolves not worried with season on brink'). The French Connection article references 'a 2-2 series' (pre-G5), confirming the series progression.",
       "urgency": "critical",
-      "suggested_action": "Add CLE vs DET R2 series diary. Series is tied (2-2 after CLE's G4 win 112-103). Mitchell scored 43 pts with 39 in the second half, tying an NBA playoff record. Bickerstaff publicly criticized the free throw disparity. Update series status accordingly."
-    },
-    {
-      "player_or_team": "SAS vs MIN \u2014 Series Status and Wembanyama",
-      "current_context_fact": "The season context documents SAS vs POR R1 (SAS wins 4-1) and notes Wembanyama as 'fully healthy entering R2. No injury concern.' There is no R2 series diary for SAS vs MIN.",
-      "conflict": "News confirms SAS vs MIN is an active R2 series tied 2-2. Wembanyama elbowed Naz Reid, received his first career ejection, was reviewed for suspension, and was cleared by the NBA to play Game 5 with no further discipline. Anthony Edwards scored 36 points (16 in Q4) to lead MIN to a 114-109 G4 win and even the series. The 'Gobert/Wemby French Connection' headline confirms Gobert is active for MIN in this series.",
-      "urgency": "critical",
-      "suggested_action": "Add SAS vs MIN R2 series diary. Series tied 2-2. Wembanyama was ejected in G4 for elbowing Naz Reid, reviewed for suspension, and cleared to play G5 (no further discipline). Edwards scored 36 in G4 win 114-109. Edwards appears healthy and active \u2014 update his injury status from the R1 left knee concern. Note Wemby ejection/elbow incident as a flagged disciplinary item to monitor."
-    },
-    {
-      "player_or_team": "Anthony Edwards (MIN)",
-      "current_context_fact": "Playoff Injury Landscape states Edwards was 'OUT for G5 with severity still unclear' (left knee) and 'treat as a primary injury concern for G6; his availability and any potential minutes restriction are the most critical variables.' This was written in the context of the DEN-MIN R1 series.",
-      "conflict": "News confirms Edwards scored 36 points (16 in Q4) in MIN's G4 R2 win vs SAS on 2026-05-11, playing a full and impactful game. He appears fully healthy and active in R2.",
-      "urgency": "critical",
-      "suggested_action": "Update Edwards' injury status: he is active and performing at a high level in R2 vs SAS (36 pts in G4). The R1 left knee concern appears resolved. Remove 'primary injury concern' designation and treat as healthy unless new information emerges."
+      "suggested_action": "Add SAS vs MIN R2 series diary. Current series state: SAS leads 3-2 after G5 (126-97 SAS win). Wemby: 27/17/3 blocks in G5. Edwards' status and availability for G6 is the key MIN variable. Note Wemby had his first career ejection prior to G5 (referenced in news) but was not suspended per NBA ruling. Update playoff bracket to reflect SAS leads MIN 3-2 in R2."
     },
     {
       "player_or_team": "Victor Wembanyama (SAS)",
-      "current_context_fact": "Playoff Injury Landscape states Wembanyama should be treated as 'fully healthy entering R2. No injury concern.' The WEMBANYAMA BLOWOUT EXEMPTION note does not mention any ejection or discipline history.",
-      "conflict": "Wembanyama elbowed Naz Reid in G4 vs MIN, resulting in his first career ejection. The NBA reviewed the play for a suspension but cleared him to play G5 with no further discipline. This is a new disciplinary event with no prior context in the season document.",
-      "urgency": "monitor",
-      "suggested_action": "Add note to Wembanyama's player entry: received first career ejection in R2 G4 vs MIN for elbowing Naz Reid. NBA reviewed for suspension and cleared him for G5 with no further discipline. No injury concern, but flag the ejection as a behavioral/discipline data point. Monitor for any recurrence or foul trouble elevation in subsequent games."
+      "current_context_fact": "Injury landscape entry: 'Victor Wembanyama (SAS) \u2014 SERIES OVER (SAS advances). Concussion protocol cleared before G4; G4: 27/12/3 (9-17 FG, 1 3PM, 34 min) and G5: 17/14/3 (5-7 FG, 1 3PM, 34 min) confirm full health and no residual restriction from the jaw injury. Right ankle pain did not limit performance in either return game. Treat as fully healthy entering R2. No injury concern.'",
+      "conflict": "News confirms Wemby suffered his first career ejection in a game prior to G5 of the MIN series (an elbow to Naz Reid), then 'returned with a huge performance' in G5: 27 points, 17 rebounds, 3 blocks. The NBA did not suspend him. The injury landscape entry above describes R1 vs POR (his G4/G5 were in the POR series), but R2 G5 stats are now available and the ejection incident is new information not in the context doc.",
+      "urgency": "critical",
+      "suggested_action": "Update Wembanyama's active injury/incident log for R2: He received his first career ejection (elbow to Naz Reid) in the MIN series \u2014 NBA reviewed and took no suspension action. G5 vs MIN: 27/17/3 blocks, fully healthy, no minutes restriction. The ejection concern is resolved. Treat as fully healthy for G6."
     },
     {
-      "player_or_team": "Rudy Gobert (MIN)",
-      "current_context_fact": "Playoff Injury Landscape and player notes do not document Gobert's R2 availability or status. His R1 series vs DEN is documented with his career playoff CAUTION signals active.",
-      "conflict": "The 'French Connection' headline confirms Gobert is active and playing in the R2 SAS vs MIN series (series tied 2-2). No injury concern indicated.",
-      "urgency": "monitor",
-      "suggested_action": "Confirm Gobert is active in R2 vs SAS. Update playoff injury landscape to reflect his R2 availability. Career playoff PTS and REB CAUTION directives remain applicable."
+      "player_or_team": "CLE vs DET (R2 series)",
+      "current_context_fact": "The season context document has no R2 series diary for CLE vs DET. The playoff bracket section shows both teams advanced from R1 but contains no R2 series state.",
+      "conflict": "News confirms CLE vs DET is an active R2 series. 'The Cavaliers and Pistons are headed back to Detroit tied 2-2' (pre-G4 preview), and then Donovan Mitchell 'tied an NBA playoff record with 39 points in the second half' as 'Cavs evened their second-round series against the Pistons with a 112-103 victory Monday night' \u2014 meaning the series is now tied 2-2 after G4. G5 preview article also confirms '2026 NBA playoffs: What to watch for in Cavaliers-Pistons Game 5' with the series tied 2-2 heading back to Detroit.",
+      "urgency": "critical",
+      "suggested_action": "Add CLE vs DET R2 series diary. Current series state: tied 2-2 after G4. Mitchell scored 43 points total in G4 (39 in the second half, tying an NBA playoff record for points in a second half). Pistons coach Bickerstaff called the FT disparity in G4 'unacceptable.' Series shifts back to Detroit for G5. Update playoff bracket accordingly."
+    },
+    {
+      "player_or_team": "Donovan Mitchell (CLE)",
+      "current_context_fact": "The R1 series diary notes Mitchell's persistent shooting slump across G3-G7 in the TOR series: 'Mitchell's persistent shooting slump across G3-G7 (five consecutive sub-30 games after back-to-back 30+ performances in G1-G2) is CLE's most critical tactical variable.' R2 context for Mitchell is absent.",
+      "conflict": "Mitchell scored 43 points in R2 G4 vs DET (39 in the second half), tying an NBA playoff record for second-half scoring. This directly contradicts any residual 'shooting slump' narrative and establishes a new R2 performance ceiling. His R1 slump has clearly not carried into R2.",
+      "urgency": "critical",
+      "suggested_action": "Add Mitchell R2 context: His R1 shooting slump did not carry into R2. G4 vs DET: 43 points (39 in the second half), tying an NBA playoff record. Treat Mitchell as operating at or above his G1-G2 R1 ceiling. Remove 'shooting slump' framing as an active concern for R2 picks."
+    },
+    {
+      "player_or_team": "PHI 76ers \u2014 Daryl Morey",
+      "current_context_fact": "The context document lists Nick Nurse as PHI head coach and references PHI's front office implicitly through the series diary, but contains no specific note about Daryl Morey's status as president of basketball operations.",
+      "conflict": "'"
     }
   ],
   "staleness_flags": []
