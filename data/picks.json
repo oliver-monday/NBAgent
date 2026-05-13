@@ -756,11 +756,13 @@
     "result": "MISS",
     "actual_value": 0.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Wagner's absence as a wing does not affect Thompson's rebounding matchup or opportunity."
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
     }
   },
   {
@@ -945,11 +947,13 @@
     "result": "HIT",
     "actual_value": 26.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     }
   },
   {
@@ -970,12 +974,12 @@
     "actual_value": 8.0,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Cunningham OUT \u2014 pick is void; player will not play. Confidence unchanged as pick cannot be graded."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
     }
   },
   {
@@ -2920,11 +2924,13 @@
     "result": "NO_DATA",
     "actual_value": null,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     }
   },
   {
@@ -2946,12 +2952,12 @@
     "actual_value": null,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Cunningham OUT \u2014 pick is void; player will not play. Confidence unchanged as pick cannot be graded."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
     }
   },
   {
@@ -3578,10 +3584,10 @@
     "actual_value": 30.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -3604,10 +3610,10 @@
     "actual_value": 5.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -3630,10 +3636,10 @@
     "actual_value": 3.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -3656,10 +3662,10 @@
     "actual_value": 8.0,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     }
   },
   {
@@ -3737,11 +3743,13 @@
     "result": "HIT",
     "actual_value": 26.0,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     }
   },
   {
@@ -3764,12 +3772,12 @@
     "actual_value": 10.0,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Cunningham OUT \u2014 pick is void; player will not play. Confidence unchanged as pick cannot be graded."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
     }
   },
   {
@@ -4667,10 +4675,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -4696,10 +4704,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -4725,10 +4733,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -4754,10 +4762,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     }
   },
   {
@@ -5397,12 +5405,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Cunningham OUT \u2014 pick is void; player will not play. Confidence unchanged as pick cannot be graded."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
     }
   },
   {
@@ -6511,10 +6519,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -6562,10 +6570,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -6591,10 +6599,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -6620,10 +6628,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -7545,12 +7553,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Cunningham OUT \u2014 pick is void; player will not play. Confidence unchanged as pick cannot be graded."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
     }
   },
   {
@@ -9021,12 +9029,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Cunningham OUT \u2014 pick is void; player will not play. Confidence unchanged as pick cannot be graded."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
     }
   },
   {
@@ -9076,10 +9084,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -9129,10 +9137,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -9159,10 +9167,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -10951,11 +10959,13 @@
     "voided": true,
     "void_reason": "manual_void: PTS pick generated in error (over-constrained rule cascade produced egregiously low T10 tier; voided pre-result to exclude from hit rate calculations)",
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     }
   },
   {
@@ -10982,12 +10992,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Cade Cunningham (DET) OUT \u2014 had picks this morning (detected via picks.json)"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-03-15T11:57:53.382678-07:00",
-      "direction": "down",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Cunningham OUT \u2014 pick is void; player will not play. Confidence unchanged as pick cannot be graded."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
     }
   },
   {
@@ -11077,10 +11087,10 @@
     "void_reason": "manual_void: PTS pick generated in error (over-constrained rule cascade produced egregiously low T10 tier; voided pre-result to exclude from hit rate calculations)",
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -11200,10 +11210,10 @@
     "void_reason": "manual_void: PTS pick generated in error (over-constrained rule cascade produced egregiously low T10 tier; voided pre-result to exclude from hit rate calculations)",
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -11230,10 +11240,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -11260,10 +11270,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram lacked defensive/rim-anchor tags; no meaningful paint-access benefit for Mobley."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
     }
   },
   {
@@ -11290,10 +11300,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     }
   },
   {
@@ -11431,11 +11441,13 @@
     "injury_check_time": "2026-03-15T22:25:25.686602-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Wagner's absence as a wing does not affect Thompson's rebounding matchup or opportunity."
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
     }
   },
   {
@@ -12646,11 +12658,13 @@
     "voided": true,
     "void_reason": "Q1 injury exit: back spasms after hard fall, ruled out for remainder (5 min played) \u2014 voided post-hoc per sportsbook standard for mid-game injury exits",
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     }
   },
   {
@@ -12675,7 +12689,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-03-17T22:07:18.960206-07:00",
     "voided": true,
-    "void_reason": "Q1 injury exit: back spasms after hard fall, ruled out for remainder (5 min played) \u2014 voided post-hoc per sportsbook standard for mid-game injury exits"
+    "void_reason": "Q1 injury exit: back spasms after hard fall, ruled out for remainder (5 min played) \u2014 voided post-hoc per sportsbook standard for mid-game injury exits",
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-03-17",
@@ -12848,10 +12871,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -12878,10 +12901,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -12908,10 +12931,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -12938,10 +12961,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram lacked defensive/rim-anchor tags; no meaningful paint-access benefit for Mobley."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
     }
   },
   {
@@ -13160,10 +13183,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -15045,10 +15068,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -15077,10 +15100,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -15143,10 +15166,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     }
   },
   {
@@ -17290,10 +17313,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -17422,10 +17445,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -17454,10 +17477,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -17486,10 +17509,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     }
   },
   {
@@ -17521,10 +17544,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -18736,10 +18759,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -20237,10 +20260,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -20307,10 +20330,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -20568,10 +20591,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -20603,10 +20626,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     },
     "market_line": 1.5,
     "market_implied_prob": 80.0,
@@ -20641,10 +20664,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     },
     "human_verdict": "keep",
     "trim_reasons": []
@@ -20788,10 +20811,10 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     },
     "market_line": 14.5,
     "market_implied_prob": 80.77,
@@ -23658,10 +23681,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -23775,10 +23798,10 @@
     ],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -23815,10 +23838,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -24573,10 +24596,10 @@
     "trim_reasons": [],
     "lineup_update": {
       "triggered_by": [],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -29132,11 +29155,13 @@
     "injury_check_time": "2026-04-12T22:30:12.710542-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     },
     "human_verdict": null,
     "trim_reasons": [],
@@ -31798,13 +31823,11 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -31852,13 +31875,11 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     }
   },
   {
@@ -31906,13 +31927,11 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram lacked defensive/rim-anchor tags; no meaningful paint-access benefit for Mobley."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
     }
   },
   {
@@ -31960,13 +31979,11 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "No lineup change creates direct AST impact for Mobley. Default rule holds."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
     }
   },
   {
@@ -32014,13 +32031,11 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -34132,13 +34147,11 @@
     "injury_check_time": "2026-04-20T22:15:39.540750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -34186,13 +34199,11 @@
     "injury_check_time": "2026-04-20T22:15:39.540750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     },
     "human_verdict": "manual_skip",
     "trim_reasons": [
@@ -34840,13 +34851,11 @@
     "injury_check_time": "2026-04-20T22:15:39.540750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -34948,13 +34957,11 @@
     "injury_check_time": "2026-04-20T22:15:39.540750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -35002,13 +35009,11 @@
     "injury_check_time": "2026-04-20T22:15:39.540750-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "No lineup change creates direct AST impact for Mobley. Default rule holds."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -37855,13 +37860,11 @@
     "injury_check_time": "2026-04-23T22:23:30.548672-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -37907,13 +37910,11 @@
     "injury_check_time": "2026-04-23T22:23:30.548672-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Quickley out has no profile; no direct connection to Mitchell AST. Unchanged per default rule."
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -37959,13 +37960,11 @@
     "injury_check_time": "2026-04-23T22:23:30.548672-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram lacked defensive/rim-anchor tags; no meaningful paint-access benefit for Mobley."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -38013,13 +38012,11 @@
     "injury_check_time": "2026-04-23T22:23:30.548672-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -38065,13 +38062,11 @@
     "injury_check_time": "2026-04-23T22:23:30.548672-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Immanuel Quickley (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-04-23T16:29:25.538686-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "No lineup change creates direct AST impact for Mobley. Default rule holds."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -40984,7 +40979,16 @@
     "trim_reasons": [
       "The def_recency flag is 'tough' with a dramatic -10.3% delta (l5 avg 102.2 vs l15 avg 113.9), meaning ORL's defense has tightened sharply in recent games \u2014 this is the most severe recency tightening on the slate. VOLATILE + AST T6+ at 72% confidence against a defense trending hard toward tough creates real fragility for a pass-first metric."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-04-25",
@@ -42267,13 +42271,11 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     }
   },
   {
@@ -42319,7 +42321,14 @@
     "trim_reasons": [
       "post_miss_hr of only 60% with a lift of 0.70 is the lowest bounce-back rate on the slate \u2014 Mobley is explicitly worse at hitting T2 AST after missing it, not better. Against a tough TOR defense, this post-miss suppression makes the structural floor materially softer than the 80% headline suggests."
     ],
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
+    }
   },
   {
     "date": "2026-04-26",
@@ -42364,13 +42373,11 @@
     "trim_reasons": [],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -43866,12 +43873,12 @@
     "clv_pp": -3.98,
     "lineup_update": {
       "triggered_by": [
-        "Franz Wagner (ORL) removed from projected starters"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     }
   },
   {
@@ -43915,7 +43922,16 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": 1.83
+    "clv_pp": 1.83,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-04-27",
@@ -44430,12 +44446,12 @@
     "clv_pp": -0.3,
     "lineup_update": {
       "triggered_by": [
-        "Franz Wagner (ORL) removed from projected starters"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Wagner's absence as a wing does not affect Thompson's rebounding matchup or opportunity."
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
     }
   },
   {
@@ -45931,12 +45947,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Franz Wagner (ORL) removed from projected starters"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
-      "direction": "unchanged",
-      "revised_confidence_pct": 74,
-      "revised_reasoning": "Wagner absence doesn't directly affect Cunningham's offensive usage or scoring opportunity for DET."
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
     },
     "human_verdict": "trim",
     "trim_reasons": [
@@ -46551,13 +46567,11 @@
     ],
     "clv_pp": 0.53,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     }
   },
   {
@@ -46603,13 +46617,11 @@
     "trim_reasons": [],
     "clv_pp": 0.27,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     }
   },
   {
@@ -46657,13 +46669,11 @@
     ],
     "clv_pp": 0.0,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     }
   },
   {
@@ -47014,13 +47024,11 @@
     ],
     "clv_pp": -0.22,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram lacked defensive/rim-anchor tags; no meaningful paint-access benefit for Mobley."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
     }
   },
   {
@@ -47068,13 +47076,11 @@
     ],
     "clv_pp": -0.53,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     }
   },
   {
@@ -47118,7 +47124,14 @@
     "voided": false,
     "human_verdict": "keep",
     "trim_reasons": [],
-    "clv_pp": -1.88
+    "clv_pp": -1.88,
+    "lineup_update": {
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
+    }
   },
   {
     "date": "2026-04-29",
@@ -47271,12 +47284,12 @@
     "voided": false,
     "lineup_update": {
       "triggered_by": [
-        "Franz Wagner (ORL) removed from projected starters"
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
       ],
-      "updated_at": "2026-04-29T15:11:04.254924-07:00",
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 75,
-      "revised_reasoning": "Wagner's absence as a wing does not affect Thompson's rebounding matchup or opportunity."
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
     },
     "human_verdict": "keep",
     "trim_reasons": [],
@@ -49033,7 +49046,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-01T22:25:05.322506-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
+    }
   },
   {
     "date": "2026-05-01",
@@ -49725,13 +49747,11 @@
     "injury_check_time": "2026-05-01T22:25:05.322506-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) removed from projected starters"
-      ],
-      "updated_at": "2026-05-01T16:08:23.711662-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram absence doesn't directly elevate Harden's scoring; late_fader caution remains primary concern."
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
     },
     "clv_pp": -0.27
   },
@@ -49790,13 +49810,11 @@
     "injury_check_time": "2026-05-01T22:25:05.322506-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     },
     "clv_pp": -0.74
   },
@@ -49851,13 +49869,11 @@
     "injury_check_time": "2026-05-01T22:25:05.322506-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     },
     "clv_pp": 0.34
   },
@@ -49908,13 +49924,11 @@
     "injury_check_time": "2026-05-01T22:25:05.322506-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     },
     "clv_pp": -0.79
   },
@@ -50412,7 +50426,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-01T22:25:05.322506-07:00",
     "voided": false,
-    "clv_pp": 3.01
+    "clv_pp": 3.01,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
+    }
   },
   {
     "date": "2026-05-01",
@@ -51496,7 +51519,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-03T22:51:30.276724-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
+    }
   },
   {
     "date": "2026-05-03",
@@ -52187,13 +52219,11 @@
     "injury_check_time": "2026-05-03T22:51:30.276724-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a rim_anchor; Mobley's rebounding floor vs TOR frontcourt unaffected."
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
     },
     "clv_pp": -0.91
   },
@@ -52252,13 +52282,11 @@
     "injury_check_time": "2026-05-03T22:51:30.276724-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram lacked defensive/rim-anchor tags; no meaningful paint-access benefit for Mobley."
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
     },
     "clv_pp": -2.42
   },
@@ -52317,13 +52345,11 @@
     "injury_check_time": "2026-05-03T22:51:30.276724-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
-      "revised_confidence_pct": 70,
-      "revised_reasoning": "Ingram not a defensive anchor; Mitchell's scoring volume vs TOR unaffected by his absence."
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
     },
     "clv_pp": 0.0
   },
@@ -52378,13 +52404,11 @@
     "injury_check_time": "2026-05-03T22:51:30.276724-07:00",
     "voided": false,
     "lineup_update": {
-      "triggered_by": [
-        "Brandon Ingram (TOR) now OUT \u2014 was expected starter at pick time"
-      ],
-      "updated_at": "2026-05-03T16:03:27.917183-07:00",
+      "triggered_by": [],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
       "direction": "unchanged",
       "revised_confidence_pct": 80,
-      "revised_reasoning": "Ingram not a perimeter defender; iron_floor 3PM profile unaffected by TOR lineup change."
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
     },
     "clv_pp": 0.0
   },
@@ -52442,7 +52466,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-03T22:51:30.276724-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
+    }
   },
   {
     "date": "2026-05-03",
@@ -54035,7 +54068,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-05T22:44:43.123302-07:00",
     "voided": false,
-    "clv_pp": 0.79
+    "clv_pp": 0.79,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-05-05",
@@ -54091,7 +54133,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-05T22:44:43.123302-07:00",
     "voided": false,
-    "clv_pp": 0.79
+    "clv_pp": 0.79,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
+    }
   },
   {
     "date": "2026-05-05",
@@ -54147,7 +54198,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-05T22:44:43.123302-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
+    }
   },
   {
     "date": "2026-05-05",
@@ -54203,7 +54263,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-05T22:44:43.123302-07:00",
     "voided": false,
-    "clv_pp": -0.96
+    "clv_pp": -0.96,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
+    }
   },
   {
     "date": "2026-05-05",
@@ -54259,7 +54328,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-05T22:44:43.123302-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
+    }
   },
   {
     "date": "2026-05-05",
@@ -54355,7 +54433,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-05T22:44:43.123302-07:00",
     "voided": false,
-    "clv_pp": -0.5
+    "clv_pp": -0.5,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
+    }
   },
   {
     "date": "2026-05-05",
@@ -54619,7 +54706,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-05T22:44:43.123302-07:00",
     "voided": false,
-    "clv_pp": 0.57
+    "clv_pp": 0.57,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
+    }
   },
   {
     "date": "2026-05-05",
@@ -56274,7 +56370,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": -1.41
+    "clv_pp": -1.41,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-05-07",
@@ -56382,7 +56487,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": 0.34
+    "clv_pp": 0.34,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
+    }
   },
   {
     "date": "2026-05-07",
@@ -56486,7 +56600,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": -0.74
+    "clv_pp": -0.74,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
+    }
   },
   {
     "date": "2026-05-07",
@@ -56542,7 +56665,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": -0.3
+    "clv_pp": -0.3,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
+    }
   },
   {
     "date": "2026-05-07",
@@ -56590,7 +56722,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
+    }
   },
   {
     "date": "2026-05-07",
@@ -56646,7 +56787,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
+    }
   },
   {
     "date": "2026-05-07",
@@ -56702,7 +56852,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": -0.62
+    "clv_pp": -0.62,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
+    }
   },
   {
     "date": "2026-05-07",
@@ -56754,7 +56913,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": 0.62
+    "clv_pp": 0.62,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
+    }
   },
   {
     "date": "2026-05-07",
@@ -57078,7 +57246,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-07T22:17:34.369874-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
+    }
   },
   {
     "date": "2026-05-07",
@@ -58612,7 +58789,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
+    }
   },
   {
     "date": "2026-05-09",
@@ -58668,7 +58854,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-05-09",
@@ -58772,7 +58967,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
+    }
   },
   {
     "date": "2026-05-09",
@@ -58828,7 +59032,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
+    }
   },
   {
     "date": "2026-05-09",
@@ -58884,7 +59097,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
+    }
   },
   {
     "date": "2026-05-09",
@@ -58940,7 +59162,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
+    }
   },
   {
     "date": "2026-05-09",
@@ -58988,7 +59219,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
+    }
   },
   {
     "date": "2026-05-09",
@@ -59044,7 +59284,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
+    }
   },
   {
     "date": "2026-05-09",
@@ -59484,7 +59733,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-09T22:51:52.613565-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
+    }
   },
   {
     "date": "2026-05-10",
@@ -60836,7 +61094,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
     "voided": false,
-    "clv_pp": -0.21
+    "clv_pp": -0.21,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
+    }
   },
   {
     "date": "2026-05-11",
@@ -60892,7 +61159,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
     "voided": false,
-    "clv_pp": -0.64
+    "clv_pp": -0.64,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-05-11",
@@ -60940,7 +61216,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
     "voided": false,
-    "clv_pp": -0.34
+    "clv_pp": -0.34,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
+    }
   },
   {
     "date": "2026-05-11",
@@ -60996,7 +61281,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
     "voided": false,
-    "clv_pp": -1.39
+    "clv_pp": -1.39,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
+    }
   },
   {
     "date": "2026-05-11",
@@ -61036,7 +61330,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
+    }
   },
   {
     "date": "2026-05-11",
@@ -61084,7 +61387,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
     "voided": false,
-    "clv_pp": -1.76
+    "clv_pp": -1.76,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
+    }
   },
   {
     "date": "2026-05-11",
@@ -61132,7 +61444,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
     "voided": false,
-    "clv_pp": 0.0
+    "clv_pp": 0.0,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
+    }
   },
   {
     "date": "2026-05-11",
@@ -61340,7 +61661,16 @@
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-11T22:54:16.660284-07:00",
     "voided": false,
-    "clv_pp": -1.19
+    "clv_pp": -1.19,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
+    }
   },
   {
     "date": "2026-05-11",
@@ -62661,7 +62991,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 74,
+      "revised_reasoning": "Robinson is a role player with no defensive anchor tag; minimal impact on Mitchell's scoring volume."
+    }
   },
   {
     "date": "2026-05-13",
@@ -62716,7 +63055,16 @@
     "kalshi_morning_implied_prob": 88.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 90,
+      "revised_reasoning": "Robinson absence has no meaningful effect on Mitchell's elite AST floor; structural floor intact."
+    }
   },
   {
     "date": "2026-05-13",
@@ -62771,7 +63119,16 @@
     "kalshi_morning_implied_prob": 77.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson is not a defensive anchor; no spacing or deterrence shift affecting Mitchell's 3PM rate."
+    }
   },
   {
     "date": "2026-05-13",
@@ -62826,7 +63183,16 @@
     "kalshi_morning_implied_prob": 81.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Role player absence with no rim or defensive anchor tags; no meaningful paint access change for Mobley."
+    }
   },
   {
     "date": "2026-05-13",
@@ -62877,7 +63243,16 @@
     "kalshi_morning_implied_prob": 76.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 72,
+      "revised_reasoning": "Robinson not a rim anchor; no frontcourt rebounding vacuum created by his absence."
+    }
   },
   {
     "date": "2026-05-13",
@@ -62920,7 +63295,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Robinson's role has no direct connection to Mobley's passing lanes or assist opportunities."
+    }
   },
   {
     "date": "2026-05-13",
@@ -62967,7 +63351,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 71,
+      "revised_reasoning": "Robinson not a defensive anchor; no meaningful defensive void created benefiting Harden's scoring."
+    }
   },
   {
     "date": "2026-05-13",
@@ -63022,7 +63415,16 @@
     "kalshi_morning_implied_prob": 91.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 80,
+      "revised_reasoning": "Losing a spacing threat slightly tightens DET floor but Cade's primary creator role is unchanged."
+    }
   },
   {
     "date": "2026-05-13",
@@ -63073,7 +63475,16 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "up",
+      "revised_confidence_pct": 76,
+      "revised_reasoning": "Robinson's absence reduces DET spacing minimally; Cade may absorb slight usage bump as primary handler."
+    }
   },
   {
     "date": "2026-05-13",
@@ -63120,6 +63531,15 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-13T13:25:39.152706-07:00",
-    "voided": false
+    "voided": false,
+    "lineup_update": {
+      "triggered_by": [
+        "Duncan Robinson (DET) now QUESTIONABLE \u2014 was expected starter at pick time"
+      ],
+      "updated_at": "2026-05-13T13:25:42.166008-07:00",
+      "direction": "unchanged",
+      "revised_confidence_pct": 82,
+      "revised_reasoning": "Robinson not a rebounder; no frontcourt board redistribution affects Thompson's consistent REB floor."
+    }
   }
 ]
