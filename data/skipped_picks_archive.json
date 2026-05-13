@@ -8179,5 +8179,59 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 10.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-12",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "MIN",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "trend=down mandatory step-down T2\u2192T1; T1 has 8/10 hit rate (not \u22659/10) and no iron_floor \u2014 exception conditions not met, per-rules skip required when step-down lands below minimum tier without qualifying exception"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-05-12",
+    "player_name": "Julius Randle",
+    "team": "MIN",
+    "opponent": "SAS",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_tier_step",
+    "rule_context": {
+      "flag": "FG_MARGIN_NEG:-3%",
+      "original_tier": 15,
+      "stepped_tier": 10,
+      "reason": "FG_MARGIN_NEG mandatory step T15\u2192T10; FG_COLD:-16% additionally severe; at T10 FG_COLD -16% \u2265 15% triggers additional step T10\u2192no valid tier. FG_COLD \u226515% on T15+ step applies from T15; after stepping to T10, T10 is below T15 threshold so FG_COLD step does not cascade further. However FG_COLD -16% at T10: rules say FG_COLD step applies to T15+. T10 is exempt from FG_COLD step. But competitive=79% at T15, vs_tough=64%, series T15 1/4=25% at T15. After FG_MARGIN step to T10: VOLATILE -3% + FG_COLD context + series 4/4 at T10 = sufficient. Revisiting: Randle PTS T10 is not skipped \u2014 series 4/4 at T10 (100%), H2H 3/3 (100%). Actually T10 pick: VOLATILE -3% \u2192 97% base \u2192 94%. No blowout penalty (underdog). Actually I should emit this as a T10 pick not skip. Re-examining: FG_MARGIN_NEG steps T15\u2192T10. T10 market available. T10 overall: implied >95% from series and H2H. VOLATILE -3% \u2192 ~92%. Emitting as pick? But I already have Randle REB T4 and AST T2. Adding PTS T10 is valid. Skip record incorrect \u2014 should be a pick. Emitting as PICK correction below."
+    },
+    "actual_value": 17.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 17.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-05-12",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "opponent": "MIN",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "Secondary scorer with competitive=58% at T10 (below 65% threshold); applying auditor-recommended -8pp penalty brings confidence from 77% to 69%, below required 75% floor for secondary scorers with competitive<65%"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 10"
   }
 ]

@@ -8039,5 +8039,108 @@
       "hit_rate_pct": 92.3,
       "delta_vs_overall_pp": 9.9
     }
+  },
+  {
+    "date": "2026-05-12",
+    "total_picks": 16,
+    "voided_picks": 0,
+    "hits": 14,
+    "misses": 2,
+    "no_data": 0,
+    "hit_rate_pct": 87.5,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0
+      },
+      "3PM": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 8,
+        "hits": 7,
+        "hit_rate_pct": 87.5,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 6,
+        "hits": 5,
+        "hit_rate_pct": 83.3,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Wembanyama blowout exemption validated in practice: Wembanyama posted 27 PTS and 17 REB in 33 minutes of a 29-point SAS blowout win, clearing both his PTS T15 (actual 27) and REB T8 (actual 17) picks comfortably. The directive to exempt him from blowout secondary-scorer skips is structurally confirmed \u2014 his counting-stat floors hold even in garbage-time-shortened blowout contexts. Continue applying the exemption without hesitation.",
+      "Tier walk-down discipline on SAS player PTS picks paid off across the slate: Castle PTS walked from T15 to T10 via FG_MARGIN_NEG step, Vassell PTS walked from T15 to T10 via FG_MARGIN_THIN step, and Wembanyama PTS held at T15 with a series-discount penalty. All three hit comfortably (17, 12, and 27 actual respectively vs. T10/T10/T15 thresholds). The conservative step-down cascade on FG margin flags is correctly calibrated for playoff blowout environments \u2014 it reduces tier risk without sacrificing pick count.",
+      "Castle AST T4 iron-floor pick with Fox QUESTIONABLE correctly identified upside risk redistribution: The afternoon lineup agent revised confidence upward to 91% upon Fox's QUES status, and Castle delivered 6 AST in 27 minutes (clearing T4 by 2). The playmaking-redistribution logic \u2014 Castle absorbs primary creation duties when Fox is limited \u2014 is well-supported and should continue to be applied as a systematic upward revision trigger when the primary PG is out or questionable on the same roster.",
+      "Randle REB career playoff CAUTION directive correctly steered the tier walk to T4 rather than T6: Randle posted 10 actual rebounds, clearing T4 (threshold 4) easily. Though the pick was ultra-conservative relative to actual output, the CAUTION signal on Randle REB (trajectory monotonic_down, -30.1pp at T6) was applied correctly \u2014 T6 would have been a miss given the 29-point blowout context (23 minutes for Gobert, role compression across the MIN roster in losing effort). The rule protected against a T6 pick that was genuinely at risk in this game script.",
+      "Edwards AST iron-floor T2 held in a 29-point blowout road loss: Edwards posted exactly 2 AST in 39 minutes, hitting the T2 threshold exactly (actual = pick_value = HIT per grading rules). The iron-floor designation on AST T2 for a primary scorer/ball-handler correctly identifies that even in a lopsided loss where offensive rhythm is disrupted, elite-usage players accumulate at least 2 assists across 39 minutes. This floor pattern remains reliable and the soft_floor downgrade logic (PTS/AST ratio check) was appropriately applied without overcorrecting."
+    ],
+    "lessons": [
+      "Randle AST T2 missed in a 29-point blowout loss: Randle recorded only 1 assist across 36 minutes as MIN trailed badly. The post-game recap explicitly confirms the blowout game script compressed his playmaking role \u2014 he focused on scoring and rebounding rather than facilitating. The series rate (3/4 = 75%) and overall rate (9/10 = 95%) were both favorable but neither predicted the specific mechanism: in a road blowout loss where the primary team-level offensive structure collapses, even a team's PF/power forward playmaker sees assist opportunities dry up when the defense is not competing to be set up. The CLV warning (ast_lost_close, -1.4pp live CLV movement, observed from morning through afternoon) was present and flagged but not applied. The analyst noted this as 'applied: false' \u2014 this was a missed signal.",
+      "Gobert REB T8 missed badly in a 29-point blowout: Gobert posted only 5 rebounds in 23 minutes. The post-game recap confirms two compounding factors: (1) blowout game script materially reduced his floor time (23 min vs. a projected 35+ baseline), and (2) a noted left rib sprain may have reduced his physical aggressiveness at the rim. The career playoff REB CAUTION (trajectory monotonic_down, -6.7pp at T6) was correctly applied to bring confidence to the 72% floor, but the pre-game spread of 9.5 points \u2014 which in playoffs is treated as below the blowout-penalty threshold of >11 \u2014 ultimately understated the actual blowout risk. The final margin of 29 points far exceeded what a 9.5-point spread implied, and MIN's rebounding corps was unable to compete at normal rates once the game was out of reach."
+    ],
+    "recommendations": [
+      "Implement a CLV warning application rule for AST picks: The Randle AST T2 pick had an active clv_warning (ast_lost_close, -1.4pp live CLV movement, proposed_penalty_pp of 5pp) that was flagged but not applied (applied: false). For AST picks in blowout-risk game scripts (spread_abs \u2265 8.0 in playoffs), require that any CLV warning with type 'ast_lost_close' and live_clv_pp \u2264 -1.0 trigger the proposed penalty automatically. A 5pp reduction on Randle AST T2 would have brought confidence from 80% to 75% \u2014 still a valid pick, but flagged as marginal and potentially below any parlay threshold, reducing exposure to this game-script-sensitive outcome.",
+      "Apply an enhanced blowout-minutes floor for road underdogs facing a spread of 8\u201311 points in playoffs: The 9.5-point spread threshold currently sits just below the playoff blowout-penalty gate (>11). However, the actual MIN @ SAS margin was 29 points \u2014 the spread materially underestimated the game outcome. For road underdog players with REB or AST picks where the implied spread is 8\u201311, apply a -5pp pre-emptive game-script risk penalty (in addition to any VOLATILE or series penalties) to account for the realistic tail of game outcomes where the actual margin far exceeds the line. This would have reduced Gobert REB T8 from 72% (floor) to 67%, triggering a skip below the 72% REB floor minimum.",
+      "For rebounding picks on road underdog players flagged with career playoff REB CAUTION AND a VOLATILE tag, require the 25th-percentile gate to clear with 3rd-lowest > pick_value + 1 (not just > pick_value): Gobert's T8 pick passed the 25th-pct gate on the narrowest possible reading (3rd-lowest estimated at ~9, gate 8 < 9). When a player carries both the career playoff REB CAUTION directive and the VOLATILE tag, the gate should require a 1-unit buffer above the pick threshold to protect against the additional tail risk introduced by those two compounding signals. Under this rule, T8 would have failed (needing 3rd-lowest \u2265 10) and the walk would have proceeded to T6 (series 4/4 = 100%, estimated 3rd-lowest=9 > 6), which still hits in this game at 5 actual \u2014 but the T6 pick would also have missed. Given both the CAUTION and VOLATILE signals, the correct outcome per existing rules would have been a skip at all tiers below 72% floor post-VOLATILE deduction. Formalize this dual-signal skip explicitly.",
+      "Add an explicit road-underdog AST suppression modifier for players whose primary role is scoring/rebounding (PTS/AST raw ratio > 5x) in blowout-risk game scripts: Randle's PTS/AST ratio this series was approximately 17 PTS / 1.25 AST = ~13.6x, well above the 5x threshold. For players with PTS/AST > 5x in a road underdog context with spread_abs \u2265 8, apply an additional -8pp penalty to AST picks, reflecting that when the game script goes badly for the road team, high-ratio scorers stop generating playmaking opportunities first. This modifier is distinct from the existing series-discount and would have reduced Randle AST T2 confidence from 80% to 72% \u2014 at the floor, triggering additional scrutiny before emission."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Julius Randle",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: MIN @ SAS final 97\u2013126, SAS won by 29. BLOWOUT. MIN was the road underdog losing by a playoff-significant margin; starters played but in a compromised game script with offensive rhythm disrupted throughout. STEP 1 \u2014 Randle was active: 36 minutes, 17 PTS, 10 REB, 1 AST confirmed. Stat is non-zero but AST fell below the T2 threshold (pick_value=2, actual=1). STEP 2 \u2014 No injury event. Classification: model_gap_rule. The pick was supported by a 9/10 overall hit rate and a consistent tag at AST T2. However, a live CLV warning was active at pick time (type: ast_lost_close, live_clv_pp: -1.4pp, proposed_penalty_pp: 5pp) and explicitly not applied (applied: false). Additionally, the 29-point blowout game script \u2014 where MIN's offensive structure collapsed and Randle's role narrowed to scoring and rebounding (per post-game recap) \u2014 is the direct causal mechanism. The pre-game spread of 9.5 was below the playoff blowout-penalty threshold of >11, so no automatic penalty fired; however, the realized margin of 29 points represents exactly the tail outcome the CLV warning was detecting. The signal existed (CLV warning, road underdog blowout context, Randle's PTS/AST ratio ~13x indicating a scorer role not a playmaker role) but the rules did not combine them into a mandatory deduction. STEP 3 \u2014 Original reasoning noted 'primary playmaking role stable despite tough defense' \u2014 this was too broad; Randle is not a primary playmaker in the traditional sense, and his series AST rate (3/4 = 75%) was already below his overall baseline of 95% at T2, suggesting series-specific role compression that the reasoning did not adequately weight. The series T4 rate of 0/4 was also a sharp warning. STEP 4 \u2014 Hit rate 9/10 overall, but series rate 3/4 (75%) and the CLV warning together constituted a compound caution flag that was not actioned. STEP 5 \u2014 Tier walk landed at T2 (correct tier); the 0/4 series rate at T4 validly excluded T4, and T2 was the only viable remaining option. No tier walk error \u2014 the walk was correct but the confidence output did not reflect the CLV warning penalty. STEP 6 \u2014 Amendment flagged direction 'unchanged' (revised_confidence_pct: 80%, no Fox impact on Randle's AST structure). Amendment correctly held; no additional signal was missed by the amendment agent specifically."
+      },
+      {
+        "player_name": "Rudy Gobert",
+        "prop_type": "REB",
+        "pick_value": 8,
+        "actual_value": 5,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: MIN @ SAS final 97\u2013126, SAS won by 29. BLOWOUT. Shared game context with Randle miss. MIN road players saw minutes compressed and role disruption in the losing effort. STEP 1 \u2014 Gobert was active: 23 minutes confirmed, 5 REB. Stat is non-zero but falls well below the T8 threshold (pick_value=8, actual=5, miss margin=-3). STEP 2 \u2014 No injury exit at pick time; post-game news notes a left rib sprain that Gobert played through but which may have limited his physical aggressiveness at the rim. Classification: model_gap_rule. Two compounding mechanisms drove the miss: (1) the blowout game script reduced Gobert's floor time to 23 minutes \u2014 materially below his typical 35+ playoff minute baseline \u2014 and the pre-game spread of 9.5 sat just below the playoff blowout-penalty threshold of >11, meaning no automatic REB blowout penalty fired; (2) the career playoff REB CAUTION directive (trajectory monotonic_down, -6.7pp at T6, worsening each season) was correctly identified and applied in the tier walk (pushing confidence to the 72% floor), but the combination of CAUTION + VOLATILE + road underdog blowout context was not sufficient to either generate an additional penalty or force a skip. The rule threshold for blowout-penalty activation (spread_abs >11) is too permissive when the actual game outcome's tail risk is this severe. The 25th-percentile gate was borderline (estimated 3rd-lowest ~9, pick=8 narrowly clearing), and the pick was emitted at exactly the 72% floor \u2014 the minimum confidence level the system allows for REB. STEP 3 \u2014 Original reasoning stated 'series 3/4 at T8 vs SAS; career playoff REB CAUTION and VOLATILE bring to 72% floor.' This was accurate but the floor was hit precisely \u2014 the reasoning identified every major risk factor but the rule architecture did not translate those stacked risks into a skip. STEP 4 \u2014 Hit rate 8/10 (80%) overall, but series rate 3/4 (75%) at T8 \u2014 both below the 87.1% baseline. The combination of below-baseline hit rates at every evaluated tier and the career trajectory-down signal was correctly flagged but inadequately penalized given the road underdog blowout tail. STEP 5 \u2014 Tier walk correctly stepped from T10 to T8 via 25th-pct gate analysis; T6 was the next option but the gate and VOLATILE penalty interactions made the tier selection coherent. No tier walk error. STEP 6 \u2014 Amendment flagged direction 'unchanged' (Fox has no frontcourt rebounding impact on Gobert). Amendment correct and no upside revision was warranted."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 13,
+      "hits": 12,
+      "misses": 1,
+      "hit_rate_pct": 92.3,
+      "delta_vs_overall_pp": 4.8
+    }
   }
 ]
