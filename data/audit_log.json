@@ -8142,5 +8142,100 @@
       "hit_rate_pct": 92.3,
       "delta_vs_overall_pp": 4.8
     }
+  },
+  {
+    "date": "2026-05-13",
+    "total_picks": 10,
+    "voided_picks": 0,
+    "hits": 9,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 90.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 0,
+        "hit_rate_pct": 0.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Mitchell PTS T15 (walked from T20 via FG_MARGIN_THIN step-down): The mandatory step-down rule executed correctly \u2014 Mitchell scored 21 on an underlying 43-point game, clearing T15 comfortably. The FG_MARGIN_THIN cascade to T15 was the right discipline; had the pick stayed at T20 it still would have hit, but the conservative walk protected against a scenario where scoring came entirely from driving/FTs rather than from a volume baseline. The LATE_FADER and VOLATILE penalty stack to 82% was accurately calibrated for a G5 pick.",
+      "Mitchell AST T2 at 90%: The structural AST floor logic held exactly as modeled \u2014 3 actual assists on a pick_value of 2. The series 4/4 pattern, vs_tough=97%, and competitive=98% all fired correctly. The H27 late-series -21pp advisory was appropriately treated as annotation rather than a hard override, and the conservative -5pp discount rather than the full -21pp was validated: Mitchell delivered 3 AST in 42 minutes, well above the T2 threshold. The CLV warning (ast_lost_close, -1.67pp) was correctly not applied.",
+      "Cunningham AST T6 at 80%: Series 4/4 with 9 actual assists on a 6-threshold pick confirmed the primary ball-handler exemption from the DET secondary creator AST caution. The VOLATILE+T6 -8pp penalty was correctly applied per the unchanged Override 2 rule, and the 80% final confidence reflected the structural reality of Cunningham as an elite playmaker in a competitive elimination game. The lineup amendment (revised down to 77% on Robinson QUESTIONABLE) was overcautious \u2014 Robinson's absence had no material impact on Cunningham's assist load and the pick hit comfortably.",
+      "Cunningham PTS T15 at 74%: The WALK_DECLINED outcome (no T10 market available) was handled correctly \u2014 holding at T15 with a -2pp thin-margin penalty rather than walking to an unavailable tier. Cunningham scored 39 (OT game), confirming the series 4/4 structural floor. The amendment flagging Robinson's absence as a modest negative was overcautious given Cunningham's role as primary initiator. The FG_MARGIN_THIN and VOLATILE penalty stack to ~80% was appropriate, and the walk-declined mechanism correctly preserved the pick rather than voiding it.",
+      "Harden PTS T10 at 71%: The H27 'AVOID in G5+' advisory was respected with a meaningful -13pp penalty stack (H31 LATE_FADER -5pp + H27 advisory -8pp), yet the T10 structural floor proved durable \u2014 Harden scored 30 in 43 OT minutes. This validates the principle that even a strong 'AVOID' advisory on PTS at high tiers does not invalidate a deeply conservative floor tier (T10 on a player averaging ~18+ PTS). The FG_MARGIN_NEG step cascade from T15 to T10 was the correct mechanism that preserved viability while respecting the dossier signal. The penalty was appropriately applied without tipping into a skip.",
+      "Mobley AST T2 at 80%: Actual 8 assists against a threshold of 2 in an OT game. The T4 hard gate correctly blocked the C-position/tough-defense combination, and the walk to T2 with 90% overall and series 4/4 support was the right resolution. The CLV warning (ast_lost_close, -0.71pp) was correctly not applied. The zero-penalty final for a consistent, non-VOLATILE AST prop with trend=up was well-calibrated.",
+      "Ausar Thompson REB T4 at 82%: The minimum-tier B2B cap (72% max when b2b_hit_rates null) fired correctly and constrained the 95% raw confidence to a disciplined 72% \u2014 Thompson rebounded 7 in 41 OT minutes. The series 4/4 and consistent tag were correctly identified as supporting evidence. The amended confidence (unchanged at 82% post-Robinson news) was correctly assessed given Robinson's non-rebounding role."
+    ],
+    "lessons": [
+      "Mitchell 3PM T2 MISS: The H27 HARD AVOID 3PM advisory (-7.5pp playoff suppressor, 43% actual vs 76% assigned) was directionally correct but insufficiently weighted. The analyst applied a -10.5pp penalty stack (VOLATILE iron_floor override + H27 advisory) to arrive at ~78% confidence, but the actual outcome (1 made three on a 43-point game driven by drives and free throws) is precisely the scenario H27 describes. A 43-point game with 1 three-pointer \u2014 the bulk of scoring coming inside the arc \u2014 is the canonical Mitchell playoff 3PM suppression pattern. The series 4/4 and H2H 6/6 at T2 were genuine historical data points, but H27's playoff-specific calibration (43% actual hit rate assigned 76% by the system) should carry more weight than within-series recent form when the directional mechanism (Mitchell shifts to isolation/driving in playoffs) is well-documented. The pick's quant data showed iron_floor overridden by VOLATILE incompatibility, which removed the one floor protection mechanism that might have supported a different conclusion. The 80% confidence landing above the 3PM 75% minimum floor allowed the pick to survive when the advisory logic was pointing toward a skip."
+    ],
+    "recommendations": [
+      "3PM HARD AVOID directive enforcement: When a per-player dossier flags 'HARD AVOID 3PM' for a specific player in playoff context (e.g. Mitchell H27: 43% actual vs 76% assigned, -7.5pp suppressor), treat this as a near-mandatory skip regardless of within-series form or H2H recency. Series 4/4 and H2H 6/6 at T2 are insufficient to override a documented playoff-specific mechanism where the player's scoring style structurally shifts away from threes. Specifically: when HARD AVOID 3PM is annotated AND the player's series scoring pattern is consistent with drive/FT dominance (e.g. Mitchell's 43-point game with 1 three), the 3PM pick should require iron_floor confirmation \u2014 not just 'not overridden' \u2014 to proceed. In the absence of a confirmed iron_floor after VOLATILE override, default to SKIP when H27 or equivalent dossier flags HARD AVOID.",
+      "Compounding advisory stacking for 3PM: Introduce a compounding rule for 3PM picks: if two or more of the following are present simultaneously \u2014 (a) VOLATILE tag, (b) iron_floor=false after override, (c) dossier HARD AVOID or strong suppressor annotation, (d) game-script context suggesting drive/FT-dominant scoring \u2014 the pick should be skipped regardless of within-series hit rate. The Mitchell 3PM pick activated all four conditions; the current rules allowed it to survive each condition individually while the combination was structurally unsound. A compound-skip threshold of 3 or more active conditions would have correctly blocked this pick.",
+      "CLV warning threshold enforcement review: Three picks on this slate (Mitchell AST, Mobley AST, Cunningham AST) triggered ast_lost_close CLV warnings (live_clv_pp of -1.67, -0.71, and -2.45 respectively) with proposed 5pp penalties that were all flagged as applied=false. All three hits landed comfortably above threshold. This confirms the H34 backtest_clv_ast_disagree signal is not yet reliably predictive on its own \u2014 applying a mandatory 5pp penalty for any ast_lost_close trigger would have been overcautious here. Continue not auto-applying this penalty; require validation from a larger sample before operationalizing the proposed 5pp deduction as mandatory.",
+      "Overtime game reconstruction for floor props: This game went to overtime (CLE 117, DET 113 \u2014 confirmed by Cunningham 48 minutes played). Multiple picks benefited from expanded floor production in OT minutes: Harden scored 30 (vs T10), Mobley had 8 AST (vs T2), Cunningham had 9 AST (vs T6) in 48 minutes. None of the pick confidence values were modeled with overtime probability factored in. For elimination games or series-deciding games where overtime probability is elevated (e.g. spread \u22645, series tied or 3-2/2-3), consider a modest +2pp floor-pick upward adjustment to reflect the additional possession volume that overtime provides for counting stat props. This is particularly relevant for AST and REB floor picks at minimum tiers."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Donovan Mitchell",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: CLE @ DET final 117-113 (CLE won by 4), CLOSE game. Game script is not a causal factor for this miss \u2014 a close competitive game typically supports, not undermines, a 3PM floor pick. STEP 1 \u2014 Mitchell was active and played 42 minutes, scoring 43 points. The 3PM miss was a prop-specific failure, not a minutes or activity issue. STEP 2 \u2014 Classification: model_gap_rule. The signal existed \u2014 H27 HARD AVOID 3PM with a documented -7.5pp playoff suppressor showing 43% actual vs 76% system-assigned hit rate \u2014 but the rule framework allowed the pick to survive by treating this as an advisory annotation rather than a near-mandatory skip. The mechanism is explicit: Mitchell's playoff scoring shifts structurally toward drives and free throws, reducing his three-point volume even in high-scoring games. His 43-point game achieved via inside scoring with only 1 three-pointer is precisely the scenario H27 describes. The analyst applied a -10.5pp penalty stack (VOLATILE iron_floor incompatibility override + H27 advisory) but the combination of series 4/4 and H2H 6/6 data kept the confidence above the 75% 3PM minimum floor. STEP 3 \u2014 Original reasoning flaw: the analyst correctly identified the tension between series/H2H recency data (100% at T2) and the H27 HARD AVOID annotation, but resolved it by applying H27 as a -7.5pp discount rather than as a conditional skip. The reasoning noted 'VOLATILE + iron_floor incompatibility means iron_floor is overridden' and arrived at ~78% \u2014 just above the 75% floor. The critical gap was that HARD AVOID + VOLATILE + iron_floor=false (post-override) + no confirmed iron_floor is a structural combination that should trigger a skip, not merely a confidence reduction. STEP 4 \u2014 Hit rate: 8/10 overall at T2 (80%), but the H27 playoff-specific calibration shows 43% actual \u2014 a 37pp gap between regular-season and playoff reality for this specific prop. The 8/10 overall rate blended RS and playoff samples; the playoff-specific rate was the relevant signal here. STEP 5 \u2014 Tier walk: T2 was the only viable tier and the analyst walked correctly to it. The tier walk itself was sound; the error was in the confidence calibration at that tier given the HARD AVOID advisory. No tier_skip_error. STEP 6 \u2014 Amendment: direction=unchanged (Robinson absence has no bearing on Mitchell 3PM). No amendment note required. The rule gap: the current framework has no compound-skip threshold that fires when HARD AVOID + VOLATILE + iron_floor=false (overridden) are simultaneously active on a 3PM prop. This combination should route to skip rather than to a discounted confidence pick."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 8,
+      "hits": 8,
+      "misses": 0,
+      "hit_rate_pct": 100.0,
+      "delta_vs_overall_pp": 10.0
+    }
   }
 ]

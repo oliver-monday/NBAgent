@@ -11,10 +11,10 @@
     "rule_context": {
       "reason": "Series 1/4=25% at T4 \u2014 far below 70% threshold; T2 selected instead"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 4"
   },
   {
     "date": "2026-05-13",
@@ -31,10 +31,10 @@
       "opp_today_rating": "tough",
       "rule": "AST T4+ hard gate: C position, opp_today must be soft. tough defense \u2192 skip T4"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
   },
   {
     "date": "2026-05-13",
@@ -51,10 +51,10 @@
       "flag": "FG_MARGIN_NEG:-2%",
       "reason": "FG_MARGIN_NEG mandatory step T15\u2192T10; pick emitted at T10 instead"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 30.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 30.0 \u2265 tier 15"
   },
   {
     "date": "2026-05-13",
@@ -71,10 +71,10 @@
       "season_h2h_rate": "5/7=71%",
       "reason": "Series rate 50% at T6 below 70% floor; no lower market exists; auditor carry-forward rule applied"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 6"
   },
   {
     "date": "2026-05-13",
@@ -91,9 +91,9 @@
       "flag": "FG_MARGIN_THIN:9%",
       "reason": "FG_MARGIN_THIN step T15\u2192T10 declined: no T10 market. Pick held at T15 with confidence penalty applied."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 39.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 39.0 \u2265 tier 15"
   }
 ]
