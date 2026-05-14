@@ -1,6 +1,6 @@
 {
-  "date": "2026-05-13",
-  "generated_at": "2026-05-13T08:43:40.401885-07:00",
+  "date": "2026-05-14",
+  "generated_at": "2026-05-14T08:17:25.839047-07:00",
   "mode": "playoffs",
   "round": 2,
   "season": "2025-26",
@@ -15,7 +15,7 @@
       "games_played": 7,
       "game_in_series": 8,
       "series_phase": "late",
-      "game_today": true,
+      "game_today": false,
       "today_host": null,
       "series_state": {
         "home_state": "favorable",
@@ -3429,7 +3429,7 @@
       "games_played": 7,
       "game_in_series": 8,
       "series_phase": "late",
-      "game_today": true,
+      "game_today": false,
       "today_host": null,
       "series_state": {
         "home_state": "favorable",
@@ -8994,15 +8994,15 @@
       "home_team": "DET",
       "away_team": "CLE",
       "home_wins": 2,
-      "away_wins": 2,
-      "games_played": 4,
-      "game_in_series": 5,
+      "away_wins": 3,
+      "games_played": 5,
+      "game_in_series": 6,
       "series_phase": "late",
-      "game_today": true,
-      "today_host": "DET",
+      "game_today": false,
+      "today_host": null,
       "series_state": {
         "home_state": "trailing",
-        "away_state": "trailing",
+        "away_state": "favorable",
         "note": "Competitive series \u2014 both teams playing to win every game. Standard game scripts apply."
       },
       "game_log": [
@@ -9037,95 +9037,107 @@
           "home_score": 112,
           "away_score": 103,
           "winner": "CLE"
+        },
+        {
+          "date": "2026-05-13",
+          "home_abbrev": "DET",
+          "away_abbrev": "CLE",
+          "home_score": 113,
+          "away_score": 117,
+          "winner": "CLE"
         }
       ],
       "players": {
         "cade cunningham": {
           "team": "DET",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 23.5,
-              "reb": 4.8,
-              "ast": 8.2,
-              "tpm": 2.2,
-              "minutes": 40.5
+              "pts": 26.6,
+              "reb": 5.2,
+              "ast": 8.4,
+              "tpm": 3.0,
+              "minutes": 42.0
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T15": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T20": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T25": [
-                  2,
-                  4
+                  3,
+                  5
+                ],
+                "T30": [
+                  1,
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  1,
-                  4
+                  2,
+                  5
                 ],
                 "T6": [
-                  1,
-                  4
+                  2,
+                  5
                 ],
                 "T8": [
                   1,
-                  4
+                  5
                 ],
                 "T10": [
                   1,
-                  4
+                  5
                 ]
               },
               "AST": {
                 "T2": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T4": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T6": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T8": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T10": [
                   2,
-                  4
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T2": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T3": [
-                  1,
-                  4
+                  2,
+                  5
                 ],
                 "T4": [
-                  0,
-                  4
+                  1,
+                  5
                 ]
               }
             }
@@ -9392,65 +9404,65 @@
         "jalen duren": {
           "team": "DET",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 9.5,
-              "reb": 7.0,
-              "ast": 2.0,
+              "pts": 9.4,
+              "reb": 6.6,
+              "ast": 2.4,
               "tpm": 0.0,
-              "minutes": 31.0
+              "minutes": 29.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   2,
-                  4
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T6": [
                   2,
-                  4
+                  5
                 ],
                 "T8": [
                   2,
-                  4
+                  5
                 ],
                 "T10": [
                   2,
-                  4
+                  5
                 ],
                 "T12": [
                   1,
-                  4
+                  5
                 ]
               },
               "AST": {
                 "T2": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T4": [
-                  1,
-                  4
+                  2,
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
                   0,
-                  4
+                  5
                 ],
                 "T2": [
                   0,
-                  4
+                  5
                 ],
                 "T3": [
                   0,
-                  4
+                  5
                 ]
               }
             }
@@ -9697,61 +9709,61 @@
         "ausar thompson": {
           "team": "DET",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 8.5,
-              "reb": 6.5,
-              "ast": 3.2,
+              "pts": 8.0,
+              "reb": 6.6,
+              "ast": 3.6,
               "tpm": 0.0,
-              "minutes": 26.2
+              "minutes": 29.2
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
                   2,
-                  4
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T6": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T8": [
                   1,
-                  4
+                  5
                 ]
               },
               "AST": {
                 "T2": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T4": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T6": [
                   0,
-                  4
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
                   0,
-                  4
+                  5
                 ],
                 "T2": [
                   0,
-                  4
+                  5
                 ],
                 "T3": [
                   0,
-                  4
+                  5
                 ]
               }
             }
@@ -9954,73 +9966,69 @@
         "tobias harris": {
           "team": "DET",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 19.5,
-              "reb": 7.0,
-              "ast": 1.5,
-              "tpm": 1.8,
-              "minutes": 37.5
+              "pts": 18.2,
+              "reb": 6.8,
+              "ast": 1.8,
+              "tpm": 1.6,
+              "minutes": 38.0
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T15": [
                   4,
-                  4
+                  5
                 ],
                 "T20": [
                   3,
-                  4
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T6": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T8": [
                   2,
-                  4
-                ],
-                "T10": [
-                  0,
-                  4
+                  5
                 ]
               },
               "AST": {
                 "T2": [
-                  1,
-                  4
+                  2,
+                  5
                 ],
                 "T4": [
                   1,
-                  4
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T2": [
                   3,
-                  4
+                  5
                 ],
                 "T3": [
                   0,
-                  4
+                  5
                 ],
                 "T4": [
                   0,
-                  4
+                  5
                 ]
               }
             }
@@ -10030,81 +10038,81 @@
         "donovan mitchell": {
           "team": "CLE",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 33.0,
-              "reb": 6.2,
+              "pts": 30.6,
+              "reb": 5.8,
               "ast": 2.8,
-              "tpm": 3.0,
-              "minutes": 36.8
+              "tpm": 2.6,
+              "minutes": 37.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T15": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T20": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T25": [
                   3,
-                  4
+                  5
                 ],
                 "T30": [
                   3,
-                  4
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T6": [
                   2,
-                  4
+                  5
                 ],
                 "T8": [
                   1,
-                  4
+                  5
                 ],
                 "T10": [
                   1,
-                  4
+                  5
                 ]
               },
               "AST": {
                 "T2": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T4": [
                   1,
-                  4
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T2": [
                   4,
-                  4
+                  5
                 ],
                 "T3": [
                   2,
-                  4
+                  5
                 ],
                 "T4": [
                   2,
-                  4
+                  5
                 ]
               }
             }
@@ -10335,69 +10343,73 @@
         "evan mobley": {
           "team": "CLE",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 13.2,
-              "reb": 6.5,
-              "ast": 4.5,
-              "tpm": 1.0,
-              "minutes": 36.5
+              "pts": 14.4,
+              "reb": 6.8,
+              "ast": 5.2,
+              "tpm": 1.2,
+              "minutes": 37.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T15": [
-                  1,
-                  4
+                  2,
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T6": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T8": [
-                  3,
-                  4
+                  4,
+                  5
                 ]
               },
               "AST": {
                 "T2": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T4": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T6": [
-                  0,
-                  4
+                  1,
+                  5
+                ],
+                "T8": [
+                  1,
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T2": [
-                  1,
-                  4
+                  2,
+                  5
                 ],
                 "T3": [
                   0,
-                  4
+                  5
                 ],
                 "T4": [
                   0,
-                  4
+                  5
                 ]
               }
             }
@@ -10632,61 +10644,69 @@
         "jarrett allen": {
           "team": "CLE",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 12.8,
-              "reb": 4.8,
-              "ast": 1.5,
+              "pts": 13.4,
+              "reb": 5.8,
+              "ast": 1.4,
               "tpm": 0.0,
-              "minutes": 28.2
+              "minutes": 29.8
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T15": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T20": [
                   1,
-                  4
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T6": [
+                  2,
+                  5
+                ],
+                "T8": [
                   1,
-                  4
+                  5
+                ],
+                "T10": [
+                  1,
+                  5
                 ]
               },
               "AST": {
                 "T2": [
                   1,
-                  4
+                  5
                 ],
                 "T4": [
                   0,
-                  4
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
                   0,
-                  4
+                  5
                 ],
                 "T2": [
                   0,
-                  4
+                  5
                 ],
                 "T3": [
                   0,
-                  4
+                  5
                 ]
               }
             }
@@ -10879,81 +10899,89 @@
         "james harden": {
           "team": "CLE",
           "series_stats": {
-            "n": 4,
+            "n": 5,
             "avgs": {
-              "pts": 18.8,
-              "reb": 4.0,
-              "ast": 7.0,
-              "tpm": 2.2,
-              "minutes": 37.2
+              "pts": 21.0,
+              "reb": 4.8,
+              "ast": 6.8,
+              "tpm": 2.4,
+              "minutes": 38.4
             },
             "tier_hits": {
               "PTS": {
                 "T10": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T15": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T20": [
-                  2,
-                  4
+                  3,
+                  5
+                ],
+                "T25": [
+                  1,
+                  5
+                ],
+                "T30": [
+                  1,
+                  5
                 ]
               },
               "REB": {
                 "T4": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T6": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T8": [
-                  1,
-                  4
+                  2,
+                  5
                 ]
               },
               "AST": {
                 "T2": [
-                  4,
-                  4
+                  5,
+                  5
                 ],
                 "T4": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T6": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T8": [
                   1,
-                  4
+                  5
                 ],
                 "T10": [
                   1,
-                  4
+                  5
                 ]
               },
               "TPM": {
                 "T1": [
-                  3,
-                  4
+                  4,
+                  5
                 ],
                 "T2": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T3": [
-                  2,
-                  4
+                  3,
+                  5
                 ],
                 "T4": [
                   1,
-                  4
+                  5
                 ]
               }
             }
@@ -18088,5 +18116,5 @@
       }
     }
   ],
-  "context_block": "## SERIES CONTEXT \u2014 PLAYOFFS\nPer-series performance data computed from completed playoff games + full regular season H2H matchup history. Season H2H is shown for ALL series regardless of games played \u2014 it is the baseline that captures the player-vs-opponent relationship across home/away environments. Series stats reflect actual playoff performance to date.\n\nUse this section to supplement QUANT STATS:\n  - Series-specific trend (over/under-performing vs season baseline?)\n  - Series state \u2014 dominant/desperate teams have structurally different game scripts\n  - Home/away H2H split \u2014 home court matters in a 7-game series\n  - First playoff meeting (0 H2H games) \u2014 treat as higher variance; lean on season DvP and pace signals instead\n=== DET vs ORL \u2014 East | DET leads 4-3 | GAME 8 (LATE) ===\nState: DET [FAVORABLE] / ORL [TRAILING]\nNote: Competitive series \u2014 both teams playing to win every game. Standard game scripts apply.\nGame log:\n  Game 1 (2026-04-19, DET home): DET 101 \u2014 ORL 112 (W: ORL)\n  Game 2 (2026-04-22, DET home): DET 98 \u2014 ORL 83 (W: DET)\n  Game 3 (2026-04-25, DET away): ORL 113 \u2014 DET 105 (W: ORL)\n  Game 4 (2026-04-27, DET away): ORL 94 \u2014 DET 88 (W: ORL)\n  Game 5 (2026-04-29, DET home): DET 116 \u2014 ORL 109 (W: DET)\n  Game 6 (2026-05-01, DET away): ORL 79 \u2014 DET 93 (W: DET)\n  Game 7 (2026-05-03, DET home): DET 116 \u2014 ORL 94 (W: DET)\n\n--- Cade Cunningham (DET) ---\n  THIS SERIES (7 games): 32.4 PTS / 5.7 REB / 7.1 AST / 3.0 3PM  (40.3 min avg)\n  Series tier hits:\n  PTS: T10 7/7 | T15 7/7 | T20 7/7 | T25 7/7 | T30 4/7\n  REB: T4 6/7 | T6 3/7 | T8 2/7 | T10 1/7\n  AST: T2 7/7 | T4 6/7 | T6 4/7 | T8 3/7 | T10 2/7 | T12 1/7\n  TPM: T1 7/7 | T2 6/7 | T3 5/7 | T4 2/7\n  SEASON H2H vs ORL (3 regular season games): 32.7 PTS / 8.3 REB / 10.7 AST / 2.3 3PM\n  H2H tier hits:\n  PTS: T10 3/3 | T15 3/3 | T20 3/3 | T25 3/3 | T30 2/3\n  REB: T4 3/3 | T6 3/3 | T8 1/3 | T10 1/3 | T12 1/3\n  AST: T2 3/3 | T4 3/3 | T6 3/3 | T8 3/3 | T10 3/3 | T12 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 1/3 | T4 1/3\n  H2H splits: HOME (2g): 34.5 PTS / 9.5 REB / 10.5 AST | AWAY (1g): 29.0 PTS / 6.0 REB / 11.0 AST\n--- Jalen Duren (DET) ---\n  THIS SERIES (7 games): 10.6 PTS / 9.4 REB / 2.1 AST / 0.0 3PM  (31.4 min avg)\n  Series tier hits:\n  PTS: T10 4/7 | T15 1/7\n  REB: T4 7/7 | T6 7/7 | T8 6/7 | T10 1/7 | T12 1/7\n  AST: T2 4/7 | T4 1/7\n  TPM: T1 0/7 | T2 0/7 | T3 0/7\n  SEASON H2H vs ORL (4 regular season games): 17.8 PTS / 11.0 REB / 2.2 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 1/4\n  REB: T4 4/4 | T6 4/4 | T8 4/4 | T10 3/4 | T12 2/4\n  AST: T2 3/4 | T4 1/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 18.5 PTS / 12.5 REB / 2.0 AST | AWAY (2g): 17.0 PTS / 9.5 REB / 2.5 AST\n--- Ausar Thompson (DET) ---\n  THIS SERIES (7 games): 8.6 PTS / 8.7 REB / 3.1 AST / 0.0 3PM  (32.7 min avg)\n  Series tier hits:\n  PTS: T10 2/7 | T15 1/7\n  REB: T4 7/7 | T6 6/7 | T8 5/7 | T10 2/7 | T12 1/7\n  AST: T2 4/7 | T4 3/7 | T6 2/7\n  TPM: T1 0/7 | T2 0/7 | T3 0/7\n  SEASON H2H vs ORL (4 regular season games): 9.2 PTS / 8.0 REB / 4.2 AST / 0.2 3PM\n  H2H tier hits:\n  PTS: T10 1/4\n  REB: T4 3/4 | T6 3/4 | T8 2/4 | T10 2/4\n  AST: T2 4/4 | T4 2/4 | T6 2/4\n  TPM: T1 1/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 10.0 PTS / 9.0 REB / 4.0 AST | AWAY (2g): 8.5 PTS / 7.0 REB / 4.5 AST\n\n=== CLE vs TOR \u2014 East | CLE leads 4-3 | GAME 8 (LATE) ===\nState: CLE [FAVORABLE] / TOR [TRAILING]\nNote: Competitive series \u2014 both teams playing to win every game. Standard game scripts apply.\nGame log:\n  Game 1 (2026-04-18, CLE home): CLE 126 \u2014 TOR 113 (W: CLE)\n  Game 2 (2026-04-20, CLE home): CLE 115 \u2014 TOR 105 (W: CLE)\n  Game 3 (2026-04-23, CLE away): TOR 126 \u2014 CLE 104 (W: TOR)\n  Game 4 (2026-04-26, CLE away): TOR 93 \u2014 CLE 89 (W: TOR)\n  Game 5 (2026-04-29, CLE home): CLE 125 \u2014 TOR 120 (W: CLE)\n  Game 6 (2026-05-01, CLE away): TOR 112 \u2014 CLE 110 (W: TOR)\n  Game 7 (2026-05-03, CLE home): CLE 114 \u2014 TOR 102 (W: CLE)\n\n--- Donovan Mitchell (CLE) ---\n  THIS SERIES (7 games): 23.1 PTS / 4.9 REB / 3.0 AST / 2.9 3PM  (35.0 min avg)\n  Series tier hits:\n  PTS: T10 7/7 | T15 7/7 | T20 5/7 | T25 2/7 | T30 2/7\n  REB: T4 5/7 | T6 2/7\n  AST: T2 6/7 | T4 2/7 | T6 0/7\n  TPM: T1 7/7 | T2 6/7 | T3 4/7 | T4 3/7\n  SEASON H2H vs TOR (2 regular season games): 24.0 PTS / 3.5 REB / 7.0 AST / 2.5 3PM\n  H2H tier hits:\n  PTS: T10 2/2 | T15 2/2 | T20 1/2 | T25 1/2 | T30 1/2\n  REB: T4 1/2 | T6 1/2\n  AST: T2 2/2 | T4 2/2 | T6 2/2 | T8 1/2 | T10 0/2\n  TPM: T1 2/2 | T2 2/2 | T3 1/2 | T4 0/2\n  H2H splits: HOME (1g): 31.0 PTS / 6.0 REB / 6.0 AST | AWAY (1g): 17.0 PTS / 1.0 REB / 8.0 AST\n--- Evan Mobley (CLE) ---\n  THIS SERIES (7 games): 18.1 PTS / 8.6 REB / 3.4 AST / 1.3 3PM  (33.1 min avg)\n  Series tier hits:\n  PTS: T10 6/7 | T15 5/7 | T20 3/7 | T25 2/7\n  REB: T4 7/7 | T6 7/7 | T8 4/7 | T10 1/7 | T12 1/7\n  AST: T2 6/7 | T4 3/7 | T6 1/7\n  TPM: T1 5/7 | T2 2/7 | T3 2/7 | T4 0/7\n  SEASON H2H vs TOR (3 regular season games): 16.7 PTS / 7.3 REB / 3.3 AST / 1.7 3PM\n  H2H tier hits:\n  PTS: T10 2/3 | T15 1/3 | T20 1/3 | T25 1/3\n  REB: T4 3/3 | T6 2/3 | T8 2/3 | T10 0/3\n  AST: T2 3/3 | T4 1/3 | T6 0/3\n  TPM: T1 3/3 | T2 2/3 | T3 0/3 | T4 0/3\n  H2H splits: HOME (2g): 18.0 PTS / 8.5 REB / 3.0 AST | AWAY (1g): 14.0 PTS / 5.0 REB / 4.0 AST\n--- Jarrett Allen (CLE) ---\n  THIS SERIES (7 games): 11.4 PTS / 8.3 REB / 0.9 AST / 0.0 3PM  (28.3 min avg)\n  Series tier hits:\n  PTS: T10 5/7 | T15 1/7 | T20 1/7\n  REB: T4 5/7 | T6 4/7 | T8 2/7 | T10 2/7 | T12 2/7\n  AST: T2 1/7\n  TPM: T1 0/7 | T2 0/7 | T3 0/7\n  SEASON H2H vs TOR (1 regular season games): 6.0 PTS / 8.0 REB / 0.0 AST / 0.0 3PM\n  H2H tier hits:\n  REB: T4 1/1 | T6 1/1 | T8 1/1 | T10 0/1\n  AST: T2 0/1\n  TPM: T1 0/1 | T2 0/1 | T3 0/1\n  H2H splits: HOME (1g): 6.0 PTS / 8.0 REB / 0.0 AST\n--- James Harden (CLE) ---\n  THIS SERIES (7 games): 20.6 PTS / 5.3 REB / 6.1 AST / 2.6 3PM  (37.0 min avg)\n  Series tier hits:\n  PTS: T10 7/7 | T15 7/7 | T20 3/7 | T25 1/7\n  REB: T4 5/7 | T6 3/7 | T8 2/7\n  AST: T2 7/7 | T4 6/7 | T6 3/7 | T8 3/7 | T10 1/7\n  TPM: T1 7/7 | T2 5/7 | T3 4/7 | T4 2/7\n  SEASON H2H: No regular season meetings found (first-time playoff opponent or data gap).\n\n=== DET vs CLE \u2014 East | Tied 2-2 | GAME 5 (LATE) ===\nTONIGHT: Game 5 at DET. CLE on the road.\nState: DET [TRAILING] / CLE [TRAILING]\nNote: Competitive series \u2014 both teams playing to win every game. Standard game scripts apply.\nGame log:\n  Game 1 (2026-05-05, DET home): DET 111 \u2014 CLE 101 (W: DET)\n  Game 2 (2026-05-07, DET home): DET 107 \u2014 CLE 97 (W: DET)\n  Game 3 (2026-05-09, DET away): CLE 116 \u2014 DET 109 (W: CLE)\n  Game 4 (2026-05-11, DET away): CLE 112 \u2014 DET 103 (W: CLE)\n\n--- Cade Cunningham (DET) ---\n  THIS SERIES (4 games): 23.5 PTS / 4.8 REB / 8.2 AST / 2.2 3PM  (40.5 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 3/4 | T25 2/4\n  REB: T4 1/4 | T6 1/4 | T8 1/4 | T10 1/4\n  AST: T2 4/4 | T4 4/4 | T6 4/4 | T8 2/4 | T10 2/4\n  TPM: T1 4/4 | T2 4/4 | T3 1/4 | T4 0/4\n  SEASON H2H vs CLE (4 regular season games): 18.5 PTS / 6.8 REB / 8.0 AST / 0.8 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 2/4 | T20 2/4 | T25 2/4\n  REB: T4 4/4 | T6 3/4 | T8 1/4 | T10 1/4\n  AST: T2 4/4 | T4 4/4 | T6 3/4 | T8 1/4 | T10 1/4 | T12 1/4\n  TPM: T1 2/4 | T2 1/4 | T3 0/4\n  H2H splits: HOME (2g): 18.5 PTS / 7.5 REB / 5.5 AST | AWAY (2g): 18.5 PTS / 6.0 REB / 10.5 AST\n--- Jalen Duren (DET) ---\n  THIS SERIES (4 games): 9.5 PTS / 7.0 REB / 2.0 AST / 0.0 3PM  (31.0 min avg)\n  Series tier hits:\n  PTS: T10 2/4\n  REB: T4 3/4 | T6 2/4 | T8 2/4 | T10 2/4 | T12 1/4\n  AST: T2 2/4 | T4 1/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  SEASON H2H vs CLE (3 regular season games): 21.7 PTS / 12.3 REB / 2.0 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 2/3 | T15 2/3 | T20 2/3 | T25 1/3 | T30 1/3\n  REB: T4 3/3 | T6 3/3 | T8 2/3 | T10 2/3 | T12 2/3\n  AST: T2 2/3 | T4 0/3\n  TPM: T1 0/3 | T2 0/3 | T3 0/3\n  H2H splits: HOME (2g): 20.5 PTS / 11.5 REB / 2.5 AST | AWAY (1g): 24.0 PTS / 14.0 REB / 1.0 AST\n--- Ausar Thompson (DET) ---\n  THIS SERIES (4 games): 8.5 PTS / 6.5 REB / 3.2 AST / 0.0 3PM  (26.2 min avg)\n  Series tier hits:\n  PTS: T10 2/4\n  REB: T4 4/4 | T6 3/4 | T8 1/4\n  AST: T2 3/4 | T4 2/4 | T6 0/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  SEASON H2H vs CLE (4 regular season games): 12.0 PTS / 6.2 REB / 3.2 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 2/4 | T15 2/4\n  REB: T4 3/4 | T6 3/4 | T8 2/4\n  AST: T2 3/4 | T4 2/4 | T6 1/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 12.0 PTS / 5.5 REB / 2.5 AST | AWAY (2g): 12.0 PTS / 7.0 REB / 4.0 AST\n--- Tobias Harris (DET) ---\n  THIS SERIES (4 games): 19.5 PTS / 7.0 REB / 1.5 AST / 1.8 3PM  (37.5 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 3/4\n  REB: T4 4/4 | T6 3/4 | T8 2/4 | T10 0/4\n  AST: T2 1/4 | T4 1/4\n  TPM: T1 4/4 | T2 3/4 | T3 0/4 | T4 0/4\n  SEASON H2H: No regular season meetings found (first-time playoff opponent or data gap).\n--- Donovan Mitchell (CLE) ---\n  THIS SERIES (4 games): 33.0 PTS / 6.2 REB / 2.8 AST / 3.0 3PM  (36.8 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 4/4 | T25 3/4 | T30 3/4\n  REB: T4 4/4 | T6 2/4 | T8 1/4 | T10 1/4\n  AST: T2 4/4 | T4 1/4\n  TPM: T1 4/4 | T2 4/4 | T3 2/4 | T4 2/4\n  SEASON H2H vs DET (2 regular season games): 32.5 PTS / 3.5 REB / 2.5 AST / 2.5 3PM\n  H2H tier hits:\n  PTS: T10 2/2 | T15 2/2 | T20 2/2 | T25 2/2 | T30 2/2\n  REB: T4 1/2 | T6 1/2\n  AST: T2 2/2 | T4 0/2\n  TPM: T1 2/2 | T2 2/2 | T3 1/2 | T4 0/2\n  H2H splits: HOME (1g): 30.0 PTS / 6.0 REB / 3.0 AST | AWAY (1g): 35.0 PTS / 1.0 REB / 2.0 AST\n--- Evan Mobley (CLE) ---\n  THIS SERIES (4 games): 13.2 PTS / 6.5 REB / 4.5 AST / 1.0 3PM  (36.5 min avg)\n  Series tier hits:\n  PTS: T10 3/4 | T15 1/4\n  REB: T4 3/4 | T6 3/4 | T8 3/4\n  AST: T2 4/4 | T4 4/4 | T6 0/4\n  TPM: T1 3/4 | T2 1/4 | T3 0/4 | T4 0/4\n  SEASON H2H vs DET (4 regular season games): 17.8 PTS / 8.0 REB / 3.8 AST / 2.2 3PM\n  H2H tier hits:\n  PTS: T10 4/4 | T15 4/4 | T20 1/4\n  REB: T4 4/4 | T6 2/4 | T8 2/4 | T10 2/4 | T12 1/4\n  AST: T2 3/4 | T4 3/4 | T6 0/4\n  TPM: T1 4/4 | T2 3/4 | T3 1/4 | T4 1/4\n  H2H splits: HOME (2g): 16.5 PTS / 4.5 REB / 4.5 AST | AWAY (2g): 19.0 PTS / 11.5 REB / 3.0 AST\n--- Jarrett Allen (CLE) ---\n  THIS SERIES (4 games): 12.8 PTS / 4.8 REB / 1.5 AST / 0.0 3PM  (28.2 min avg)\n  Series tier hits:\n  PTS: T10 2/4 | T15 2/4 | T20 1/4\n  REB: T4 3/4 | T6 1/4\n  AST: T2 1/4 | T4 0/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  SEASON H2H vs DET (4 regular season games): 13.2 PTS / 4.8 REB / 1.5 AST / 0.0 3PM\n  H2H tier hits:\n  PTS: T10 2/4 | T15 2/4 | T20 2/4 | T25 1/4\n  REB: T4 2/4 | T6 2/4 | T8 1/4\n  AST: T2 2/4 | T4 1/4\n  TPM: T1 0/4 | T2 0/4 | T3 0/4\n  H2H splits: HOME (2g): 4.0 PTS / 1.5 REB / 0.0 AST | AWAY (2g): 22.5 PTS / 8.0 REB / 3.0 AST\n--- James Harden (CLE) ---\n  THIS SERIES (4 games): 18.8 PTS / 4.0 REB / 7.0 AST / 2.2 3PM  (37.2 min avg)\n  Series tier hits:\n  PTS: T10 4/4 | T15 3/4 | T20 2/4\n  REB: T4 2/4 | T6 2/4 | T8 1/4\n  AST: T2 4/4 | T4 3/4 | T6 3/4 | T8 1/4 | T10 1/4\n  TPM: T1 3/4 | T2 2/4 | T3 2/4 | T4 1/4\n  SEASON H2H vs DET (1 regular season games): 18.0 PTS / 5.0 REB / 7.0 AST / 2.0 3PM\n  H2H tier hits:\n  PTS: T10 1/1 | T15 1/1 | T20 0/1\n  REB: T4 1/1 | T6 0/1 | T8 0/1\n  AST: T2 1/1 | T4 1/1 | T6 1/1 | T8 0/1 | T10 0/1\n  TPM: T1 1/1 | T2 1/1 | T3 0/1 | T4 0/1\n  H2H splits: HOME (1g): 18.0 PTS / 5.0 REB / 7.0 AST"
+  "context_block": ""
 }
