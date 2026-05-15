@@ -1,11 +1,69 @@
 {
-  "date": "2026-05-14",
-  "generated_at": "2026-05-14T08:17:27.179096-07:00",
-  "player_notes": {},
-  "game_notes": {},
-  "raw_item_count": 0,
-  "filtered_item_count": 0,
+  "date": "2026-05-15",
+  "generated_at": "2026-05-15T08:12:06.030797-07:00",
+  "player_notes": {
+    "james harden": "Scored a playoff-best 30 points in Game 5 OT win; elevated role and usage confirmed heading into Game 6 vs. Detroit.",
+    "duncan robinson": "Missed Game 5 with lower back soreness; status unclear for Game 6, monitor injury report.",
+    "og anunoby": "Growing optimism he returns for start of ECF; availability for potential Knicks series opener is improving.",
+    "donovan mitchell": "Posted 21 points in Game 5 OT win; standard role, no injury concerns noted heading into Game 6."
+  },
+  "game_notes": {
+    "DET vs CLE": "Duncan Robinson (back soreness) missed Game 5 and status is uncertain for Game 6, affecting Detroit's perimeter rotation and 3PT volume.",
+    "SAS vs MIN": "Timberwolves face elimination in Game 6; Anthony Edwards expected to shoulder heavy usage load in a must-win spot."
+  },
+  "raw_item_count": 47,
+  "filtered_item_count": 41,
   "fetch_errors": [],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "CLE vs DET \u2014 Series Status",
+      "current_context_fact": "The season context document contains no R2 series diary for CLE vs DET. The last documented playoff series for CLE was R1 vs TOR (CLE wins 4-3). The last documented series for DET was R1 vs ORL (DET wins 4-3 in Game 7). No R2 matchup or scores are recorded in the context.",
+      "conflict": "Multiple news items confirm CLE vs DET is an active R2 series. Headlines state: 'Cavaliers outlast Pistons in OT, score 1st road win of playoffs' and 'James Harden scores 30 and Cavaliers rally past Pistons 117-113 in OT for 3-2 series lead' (published May 14). A May 15 headline references 'Game 6' in this series. CLE leads 3-2. Duncan Robinson was OUT for DET in Game 5 with lower back soreness. The NBA confirmed a no-call on Jarrett Allen in closing seconds of Game 5 regulation was correct.",
+      "urgency": "critical",
+      "suggested_action": "Add R2 East series diary for (4) CLE vs (1) DET. Record that CLE leads 3-2 after G5 OT win (117-113). Note Harden scored 30 (playoff-best), Mitchell had 21. Note Duncan Robinson was OUT for DET in G5 (lower back soreness) \u2014 add to injury landscape. Note controversial no-call on Jarrett Allen in closing seconds of regulation (NBA confirmed correct). Update series context to reflect G6 is upcoming."
+    },
+    {
+      "player_or_team": "SAS vs MIN \u2014 Series Status",
+      "current_context_fact": "The season context document contains no R2 series diary for SAS vs MIN. The last documented SAS series was R1 vs POR (SAS wins 4-1). The last documented MIN series was R1 vs DEN (MIN wins 4-2 with Edwards OUT).",
+      "conflict": "A May 14 headline reads 'Wembanyama and the Spurs look to clinch series against Minnesota,' and a May 15 headline references 'Game 6 vs. Spurs' as a 'moment' for Anthony Edwards. This confirms SAS vs MIN is an active R2 series, with SAS apparently holding a series lead heading into G6. Edwards appears to be active/available for G6 (discussed as playing a key role), which directly updates his OUT status from the R1 injury landscape.",
+      "urgency": "critical",
+      "suggested_action": "Add R2 West series diary for (2) SAS vs (6) MIN. Record that SAS leads the series (at minimum leads heading into G6 per 'clinch' framing). Critically update Anthony Edwards' injury status \u2014 he appears active for G6, removing or modifying his 'OUT, left knee' designation from the R1 injury landscape. Update McDaniels' status as well given his R1 injury concern. Add series context for G6."
+    },
+    {
+      "player_or_team": "Anthony Edwards",
+      "current_context_fact": "Playoff Injury Landscape states Edwards confirmed OUT for G5 (DEN series) with left knee injury, severity unclear. The R1 DEN-MIN diary ends with MIN winning 4-2 with Edwards OUT the entire G6.",
+      "conflict": "May 15 headlines reference Edwards playing in 'Game 6 vs. Spurs' \u2014 'McNutt: Game 6 vs. Spurs is a moment for Ant-Man' and 'Stephen A.: Ant, Wolves climbing uphill battle in West' both discuss Edwards' active role in the SAS-MIN R2 series. He is clearly available and playing in R2.",
+      "urgency": "critical",
+      "suggested_action": "Update Edwards' status from OUT (left knee) to active/available for R2. Remove or revise the 'do not assume any baseline minutes until cleared' directive. Add a note that he returned for R2 vs SAS. Update minutes and availability details as further game log data becomes available."
+    },
+    {
+      "player_or_team": "OG Anunoby",
+      "current_context_fact": "The R1 NYK vs ATL series diary ends with NYK winning 4-2. The context notes Anunoby's series production and career playoff AST CAUTION but contains no mention of a hamstring injury or any post-series health concern for Anunoby.",
+      "conflict": "A May 13 headline reads 'Sources: Optimism Knicks' OG Anunoby returns for start of ECF' \u2014 indicating Anunoby has suffered a hamstring injury after R1 and his availability for the Eastern Conference Finals is in question, though there is growing optimism he returns.",
+      "urgency": "critical",
+      "suggested_action": "Add OG Anunoby to the active injury concerns section with a hamstring injury designation (post-R1). Note that sources indicate growing optimism he returns for the start of the ECF, but his status is uncertain. This is a critical variable for any NYK R2/ECF prop picks."
+    },
+    {
+      "player_or_team": "LAL \u2014 Swept by OKC in R2",
+      "current_context_fact": "The context document shows LAL advancing from R1 (defeated HOU 4-2). No R2 series for LAL is documented. The R2 key note after the LAL-HOU series focuses on Reaves' conditioning and LeBron's managed minutes.",
+      "conflict": "A May 13 headline reads 'Has LeBron played his last game with the Lakers? Stephen A. weighs in' with description 'after they were swept by the Thunder' \u2014 confirming LAL was swept by OKC in R2. LAL is eliminated.",
+      "urgency": "critical",
+      "suggested_action": "Add LAL as eliminated in R2 (swept by OKC). Update the playoff bracket to reflect OKC advancing past LAL. Add a brief R2 series note for OKC vs LAL. Update LeBron's future/status context noting the sweep and offseason uncertainty."
+    },
+    {
+      "player_or_team": "PHI \u2014 R2 Series Status (vs NYK implied)",
+      "current_context_fact": "PHI won R1 vs BOS 4-3. The R2 bracket would place PHI against NYK (3-seed vs 7-seed path). No R2 series diary exists for PHI or NYK. The '76ers looking for collaborative approach from next GM' headline suggests front office activity.",
+      "conflict": "The May 14 headline 'Myers, 76ers looking for collaborative approach from next GM' confirms the 76ers are in a GM search \u2014 this is consistent with Daryl Morey's departure being referenced in another headline ('Stephen A.'s pick to replace Daryl Morey in Philly'). While not a direct series conflict, it confirms PHI's front office situation. More directly, the NYK offense discussion ('JWill: Knicks' offense is best in the NBA') implies NYK is still active in the playoffs, which is consistent. No direct conflict on series scores found in today's news for this matchup.",
+      "urgency": "monitor",
+      "suggested_action": "Note that PHI's GM search (replacing Daryl Morey) is active \u2014 add this front office context. Confirm R2 NYK vs PHI series status from additional sources and add series diary when available."
+    },
+    {
+      "player_or_team": "GSW \u2014 Steve Kerr coaching status",
+      "current_context_fact": "Context lists Steve Kerr as GSW head coach. Season context notes 'Kerr expressed uncertainty about his coaching future after the loss' (play-in elimination vs PHX).",
+      "conflict": "A May 14 headline reads 'Why Steve Kerr stayed with the Warriors' \u2014 confirming Kerr has decided to remain as GSW head coach, resolving the uncertainty flagged in the context document. Additionally, a May 15 headline confirms Warriors assistants Terry Stotts and Jerry Stackhouse are departing.",
+      "urgency": "monitor",
+      "suggested_action": "Update the GSW coaching note to reflect Kerr has confirmed he is staying. Remove the 'uncertainty about coaching future' language. Add note that assistants Stotts and Stack"
+    }
+  ],
   "staleness_flags": []
 }
