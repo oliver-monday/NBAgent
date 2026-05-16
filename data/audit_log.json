@@ -8237,5 +8237,147 @@
       "hit_rate_pct": 100.0,
       "delta_vs_overall_pp": 10.0
     }
+  },
+  {
+    "date": "2026-05-15",
+    "total_picks": 30,
+    "voided_picks": 0,
+    "hits": 24,
+    "misses": 6,
+    "no_data": 0,
+    "hit_rate_pct": 80.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 11,
+        "hits": 10,
+        "hit_rate_pct": 90.9
+      },
+      "REB": {
+        "picks": 9,
+        "hits": 7,
+        "hit_rate_pct": 77.8
+      },
+      "AST": {
+        "picks": 7,
+        "hits": 6,
+        "hit_rate_pct": 85.7
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 1,
+        "hit_rate_pct": 33.3
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 17,
+        "hits": 13,
+        "hit_rate_pct": 76.5,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 11,
+        "hits": 9,
+        "hit_rate_pct": 81.8,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Blowout-exemption discipline for Wembanyama on PTS held correctly: despite a 30-point SAS blowout win and only 27 minutes played, his T15 PTS pick hit (19 actual). The analyst correctly distinguished Wembanyama from secondary-scorer blowout risk and applied the explicit exemption directive \u2014 this calibration is working.",
+      "Tier step-down mechanics via FG_MARGIN and FG_COLD flags prevented overreach on multiple picks: Castle PTS (T15\u2192T10 via FG_MARGIN_NEG, hit 32), De'Aaron Fox PTS (T15\u2192T10 via FG_COLD, hit 21), Vassell PTS (T10 held at minimum via FG_MARGIN_THIN, hit 11). All three of these picks would have failed or been marginal at the unadjusted tier. The FG_MARGIN/FG_COLD step-down rules are generating correct behavior.",
+      "Career playoff REB CAUTION on Gobert was structurally correct directionally but the pick still ran at T6 in a blowout context \u2014 the caution signal was applied as a penalty (-8pp) rather than a skip, and the game produced a 30-point SAS blowout loss where Gobert played only 22 minutes. The CAUTION flag was well-calibrated even if the pick ultimately missed; the -8pp reduction appropriately priced this risk.",
+      "Castle AST T4 at 82% confidence (top pick) hit with 6 actual assists \u2014 the 100% overall and 5/5 series data with consistent tag justified the top_pick designation, and the SAS blowout context did not suppress a primary playmaker's assist floor. This is the correct profile for a top_pick: structural floor, not ceiling reach.",
+      "The DET\u00d7AST suppressor has now been tested across a full 6-game series: Ausar Thompson and other DET secondary creators have been subject to the caution directive throughout, and the slate-level AST hit rate of 85.7% (6/7) confirms the system is not over-applying the suppressor to primary creators (Cunningham AST T6 hit with 8 actual assists). The suppressor's applicability to non-primary creators is validated and its non-applicability to primary creators is equally confirmed."
+    ],
+    "lessons": [
+      "Wembanyama REB T8 missed in a 30-point SAS blowout win (6 actual, needed 8): The blowout exemption directive for Wembanyama explicitly covers counting-stat floors in blowout games, and the analyst cited it during the tier walk. However, the exemption was validated against PTS, not REB specifically. With only 27 minutes in a lopsided game, Wembanyama's REB opportunities were structurally compressed regardless of exemption status \u2014 the OBS_WALK to T6 was declined due to no market, but the miss margin (6 actual vs 8 threshold) is directly consistent with the 27-minute blowout load. The lesson is not that the exemption was wrongly applied, but that Wembanyama REB T8+ in a potential large-spread game requires a harder examination of whether the 25th-pct gate truly clears, independent of the blowout exemption.",
+      "Both 3PM misses (Harris T1 at 75%, Wembanyama T1 at 77%) occurred in the same blowout game context (DET in a 21-point loss, SAS in a 30-point win respectively). Harris shot 0-for on 3s in 25 minutes with a documented prior ankle sprain from Game 5 affecting shot selection; Wembanyama hit 0 threes in 27 minutes of reduced blowout-game minutes. The 3PM prop type produced only 1 hit from 3 picks (33.3%) on this slate. The Wembanyama 3PM miss is particularly notable: the series rate (3/5 at T1) was already below 70% at T1, and the analyst correctly noted this but used the 80% overall rate as the primary baseline. In a blowout win with 27 minutes, Wemby's 3PM attempts were limited \u2014 the game script created structural suppression that the overall baseline did not capture.",
+      "Julius Randle PTS T10 missed badly (3 actual, 1-8 FG) in a 30-point blowout loss. The tier walk correctly identified FG_MARGIN_NEG and could not step below T10 (minimum tier), applied a -3pp net penalty, and landed at 70% confidence. The actual outcome (3 points on 1-8 FG, 24 minutes) reflects a complete shooting collapse in a season-ending blowout. The analyst's thesis noted the thin cushion (series avg 14.8 pts, only 4.8 above T10) and the tough SAS defense. This is a case where the minimum-tier floor rule carried the pick into a game that produced a catastrophic outcome \u2014 the structural inability to step below T10 removed the natural safety valve that step-down logic would otherwise provide. No recommendation is warranted per the variance/blowout classification, but this documents the inherent risk when minimum-tier picks face blowout scenarios.",
+      "Julius Randle AST T2 missed (1 actual) in the same 30-point blowout loss. The analyst applied a -10pp penalty (soft_floor -5pp + series underperformance -5pp) and explicitly flagged the blowout AST collapse risk for Randle as a prior auditor lesson. Despite that awareness and the heavy penalty, the pick ran at 75%. The series rate at T2 was already 3/5=60%, which is a borderline case. In a blowout loss where Randle played only 24 minutes on 1-8 FG, his facilitation role was non-existent. The series underperformance signal (3/5 at T2) combined with the VOLATILE+blowout risk warranted a skip rather than a reduced-confidence pick."
+    ],
+    "recommendations": [
+      "BLOWOUT EXPOSURE ON MINIMUM-TIER PTS PICKS: When a player's FG_MARGIN_NEG forces a step to T10 (minimum tier) AND the pre-game spread is \u22655.5 points AND the player is a secondary scorer on the trailing team in a playoff elimination game, treat the minimum-tier floor as soft rather than hard \u2014 apply a skip-eligible flag rather than automatically running the pick at 70%. The Randle PTS T10 miss (3 actual, 1-8 FG, 24 min in a 30-point blowout loss) demonstrates that the minimum-tier rule removes the safety valve in precisely the scenarios where blowout game-script risk is highest.",
+      "3PM T1 PICKS IN BLOWOUT-RISK CONTEXTS REQUIRE SERIES RATE CONFIRMATION: When a 3PM T1 pick has a series rate below 70% (e.g. Wembanyama 3/5=60%, Harris 5/5 but ankle-compromised), require that the series rate independently qualifies at \u226570% before proceeding \u2014 do not rely solely on the overall 10-game baseline to override a series signal that is below threshold. Both 3PM misses on this slate had contextual risk factors (Wembanyama: blowout minutes; Harris: prior ankle sprain) that the series rate was already capturing. The 3PM prop type at 33.3% (1/3) on this slate reflects this systematic gap.",
+      "GOBERT REB IN SAS BLOWOUT CONTEXTS \u2014 HARD STEP TO T4: The career playoff REB CAUTION (trajectory monotonic_down) for Gobert combined with a series rate of only 4/5 at T6 and the SAS floor compression pattern should trigger an automatic step to T4 rather than a penalized T6 pick. The T6 pick (6 needed, 3 actual in 22 minutes) missed by a large margin in a blowout. At T4, a 22-minute blowout game would still likely have produced a hit (3 rebounds exceeds T4 floor by interpretation). Rule: when Gobert faces SAS in a potential blowout game (pre-game spread \u22655.5 favoring SAS), cap his REB pick at T4 regardless of the 25th-pct gate calculation at T6.",
+      "AST T2 SKIP THRESHOLD FOR POWER FORWARDS IN SERIES WITH SUB-70% SERIES RATES: When a PF/C player shows a series AST rate below 70% at T2 (Randle: 3/5=60%) AND the pre-game spread is \u22655.5 points in a direction that would make their team the losing side, treat T2 AST as skip-eligible rather than a penalized pick. The soft_floor -5pp and series underperformance -5pp penalties correctly identified the risk but did not prevent the pick from running. A 60% series rate at T2 in a blowout-risk scenario for a power forward with PTS-heavy role (AST role is soft_floor) warrants a hard skip rather than a confidence reduction.",
+      "WEMBANYAMA REB T8+ IN GAMES WITH PRE-GAME SPREAD \u22655 REQUIRES 25TH-PCT GATE HARD PASS: The blowout exemption for Wembanyama applies to PTS and counting-stat floors but does not guarantee sufficient minutes for REB accumulation in dominant blowout wins. For REB specifically, when SAS's pre-game spread is \u22655 points (blowout-likely scenario) and Wembanyama's walk requires T8 or higher, require the 25th-pct gate to confirm with certainty (3rd-lowest L10 strictly > pick_value, no ambiguity) before proceeding. The OBS_WALK decline from T8 to T6 due to no market is a structural gap \u2014 when the walk would step down but no market exists, apply an additional -5pp confidence penalty at the held tier rather than absorbing it with a 2pp buffer."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Tobias Harris",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: DET @ CLE final 115-94, DET lost by 21 \u2014 BLOWOUT. Harris played for the losing side (DET). STEP 1: Harris played 25 minutes; non-zero REB (5 actual) confirms activity. 3PM actual = 0. STEP 2: POST-GAME NEWS confirms Harris had a prior left ankle sprain from Game 5 with no confirmed mid-game exit in this game. The news block explicitly states the lingering ankle injury 'may have affected his shooting and shot selection.' This is not an injury_exit event (no mid-game exit confirmed); it is a pre-existing injury affecting performance. No post_game_event field set on the pick object for this player. Classification: model_gap_rule \u2014 the pick was made at 75% (capped from 80% via SHORT_SAMPLE -5pp and 80% ceiling), but the pre-existing ankle sprain from Game 5 was known context at pick time. The lineup_update notes the ankle sprain history but the revised_confidence remained 80% (unchanged from direction perspective). The system had no formal rule to discount 3PM picks for players carrying a documented multi-game ankle injury affecting shot selection, even when the injury was flagged in pre-game news. STEP 3: The analyst's reasoning cited '5/5 series at T1, consistent tag' as the anchor. The consistent tag and historical series data did not account for the ankle injury's specific impact on jump-shooting mechanics. STEP 4: Hit rate was 10/10 overall at T1 \u2014 the miss contradicts the perfect season-level rate, pointing to the ankle factor as the causal mechanism. STEP 5: Tier walk correctly capped at T1 (T2 series 3/5=60% fails); the T1 selection was the only viable option. STEP 6: Amendment direction=unchanged (Robinson absence does not affect Harris 3PM). The gap is a missing rule: prior-game soft-tissue injury documented in series diary should apply a mandatory 3PM confidence reduction even when QUESTIONABLE listing is absent, because the post-game news from Game 5 created observable risk."
+      },
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "REB",
+        "pick_value": 8,
+        "actual_value": 6,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ MIN final 139-109, SAS won by 30 \u2014 BLOWOUT. Wembanyama played for the winning side. POST-GAME NEWS confirms: 'Wembanyama played only 27 minutes in a 30-point blowout win and finished with 6 rebounds, falling short of the over 8 mark. Reduced playing time in a comfortable victory limited his rebounding opportunities.' STEP 1: Wembanyama was active (PTS=19 confirmed via PTS pick HIT). 3PM=0 (separate miss). REB=6 actual, needed 8. STEP 2: No injury_exit. The blowout exemption directive for Wembanyama was invoked by the analyst and applies to counting-stat floors \u2014 but the exemption was primarily validated against PTS production in blowout games, not REB accumulation under reduced-minutes blowout conditions. With 27 minutes in a 30-point blowout win, the REB opportunity count was structurally insufficient to reach T8. The OBS_WALK from T8 to T6 was declined due to no market, and a 2pp buffer was applied instead. This is model_gap_rule: the signal existed (pre-game spread of -5.5, blowout-likely scenario) and the walk correctly attempted to step down but was blocked by market availability. The rule gap is that when a walk step-down is declined due to no market, the buffer penalty (+2pp reduction) is insufficient compensation \u2014 a larger structural discount is needed for the held tier in blowout-likely spreads. STEP 3: The analyst reasoning correctly identified the 25th-pct gate ambiguity and held at T8 conservatively. The 5-game series sample was genuinely thin and the gate analysis was honest about the uncertainty. STEP 4: Hit rate 8/10 overall at T8 (series 4/5=80%) supported the pick. STEP 5: The walk correctly escalated the 25th-pct gate concern and attempted a step; the market limitation created a structural trap. STEP 6: No lineup_update present. The miss margin (6 actual vs 8 threshold) is exactly consistent with 27-minute blowout load \u2014 this was a direct consequence of the pre-game spread generating a blowout that the analyst correctly feared but could not fully hedge."
+      },
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ MIN final 139-109, SAS won by 30 \u2014 BLOWOUT. STEP 1: Wembanyama active (PTS=19, REB=6). 3PM=0. STEP 2: No injury_exit. The analyst correctly noted that the series rate at T1 was 3/5=60% \u2014 below 70% \u2014 but used the 10-game overall rate of 80% as the primary baseline, per playoff rules favoring the overall window over a small series sample. In a 30-point blowout win with 27 minutes played, Wembanyama's shot attempts were reduced and his 3-point attempts specifically may have been eliminated in the final stretch of the game when garbage time sets in. The model_gap_rule is that the series rate at T1 (3/5=60%) was already signaling structural suppression in this specific matchup context, and the override with the 80% overall rate ignored a meaningful within-series pattern. Additionally, the blowout exemption for Wembanyama explicitly covers PTS and counting stats but does not address 3PM attempt volume in blowout-win garbage time. STEP 3: The analyst's reasoning cited 'MIN switching scheme creates catch-and-shoot opportunities' \u2014 this is correct in competitive games but irrelevant in a 30-point blowout where MIN's defensive structure collapses and SAS may not need to execute half-court offense in the fourth quarter. STEP 4: Hit rate 8/10 overall \u2014 the miss contradicts the baseline. STEP 5: T1 was the correct tier (T2 series 3/5=60% fails); only T1 viable. The fact that the only viable tier had a below-70% series rate should have triggered additional caution. STEP 6: No lineup_update. The rule gap: when a 3PM T1 pick's series rate is below 70% AND the pre-game spread is \u22655 points on the player's side (blowout-win likely), require the series rate to independently clear 70% \u2014 do not rely solely on the overall baseline to proceed."
+      },
+      {
+        "player_name": "Julius Randle",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 3,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ MIN final 139-109, SAS won by 30 \u2014 BLOWOUT. Randle played for the losing side (MIN). POST-GAME NEWS confirms: 'Randle shot just 1-of-8 from the field for 3 points in 24 minutes as Minnesota was blown out 139-109 in a season-ending Game 6 loss. The miss was due to poor shooting performance in a blowout, not injury or limited minutes.' STEP 1: Randle active (24 min, 3 pts on 1-8 FG, 7 REB). PTS=3, needed 10. STEP 2: No injury_exit. The pick was forced to minimum tier T10 via FG_MARGIN_NEG step-down (could not step below T10). The analyst correctly identified this constraint and the cushion thinness (series avg 14.8 pts, only 4.8 above T10). The actual outcome (1-8 FG, 3 pts, 24 min in a 30-point blowout loss) reflects both a shooting collapse and blowout game-script suppression. The minimum-tier rule removed the safety valve: a player with FG_MARGIN_NEG whose team faces a potential blowout loss cannot be stepped below T10 even though the structural risk is high. This is model_gap_rule: the signal (FG_MARGIN_NEG + pre-game spread of +5.5 MIN/elimination game + tough SAS defense + dossier PTS suppression) was present, but the minimum-tier convention prevented the natural resolution (step to a lower tier or skip). The pick ran at 70% \u2014 the lowest possible confidence \u2014 but still ran. STEP 3: The analyst's reasoning acknowledged the thin cushion and tough defense, and landing at 70% reflects maximum caution within the current ruleset. The reasoning was structurally honest but could not resolve the minimum-tier trap. STEP 4: Hit rate 10/10 H2H vs SAS and 5/5 series at T10 \u2014 both perfect historical rates, making this a genuine blowout-driven collapse rather than a selection error. The historical data was accurate; the blowout scenario was the causal mechanism. STEP 5: OBS_WALK from T10 to T5 was declined (no valid tier). The market limitation compounded the minimum-tier constraint. STEP 6: No lineup_update present. The gap: when FG_MARGIN_NEG forces a hold at minimum tier AND pre-game spread \u22655.5 on the opposing side AND the player is a secondary scorer in a blowout-risk game, minimum-tier picks should be skip-eligible rather than forced to run."
+      },
+      {
+        "player_name": "Julius Randle",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ MIN final 139-109, SAS won by 30 \u2014 BLOWOUT. Randle played for the losing side (MIN), 24 minutes. STEP 1: Randle active. AST=1, needed 2. Miss by 1 unit. STEP 2: No injury_exit. The analyst applied a -10pp penalty (soft_floor -5pp + series underperformance -5pp) and explicitly flagged the 'blowout AST collapse risk for Randle as a prior auditor lesson.' Despite the penalty and explicit awareness, the pick ran at 75%. The series rate at T2 was 3/5=60% \u2014 below 70% \u2014 which the analyst acknowledged and priced in via the 5pp series underperformance penalty. The blowout outcome (24 minutes, 1-8 FG, non-functional offensive role) produced exactly the AST collapse the prior auditor lesson warned about. This is model_gap_rule: the signal (series 3/5=60% at T2, prior auditor lesson on Randle AST in blowout loss, soft_floor scoring-role indicator, pre-game spread favoring SAS) existed and was partially acted upon, but the confidence reduction mechanism stopped short of triggering a skip. The rule gap is that a prior auditor lesson explicitly documenting AST blowout collapse risk, combined with a below-70% series rate, should trigger a hard skip rather than a -10pp confidence reduction. STEP 3: The analyst's reasoning stated '90% overall at T2, soft_floor downgrade applied; series 3/5 priced in via penalty reduction' \u2014 the framing prioritized the overall rate over the series pattern. In hindsight, the series pattern (60%) was the more predictive signal for this specific matchup. STEP 4: Hit rate 9/10 overall \u2014 strong baseline. The series underperformance (3/5) was the leading indicator of risk in this specific matchup, and the auditor's prior lesson had already flagged the mechanism. STEP 5: T4 failed (0/5 series), T2 was the only viable tier \u2014 the pick had no safe alternative to run or skip. STEP 6: No lineup_update. The lesson from the prior audit was partially operationalized but needs to be upgraded to a skip rule: when a prior auditor lesson explicitly names a player's prop-type blowout collapse pattern AND the current game's pre-game spread is \u22655.5 on the opposing side, that combination should function as a hard skip trigger, not merely a confidence deduction."
+      },
+      {
+        "player_name": "Rudy Gobert",
+        "prop_type": "REB",
+        "pick_value": 6,
+        "actual_value": 3,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ MIN final 139-109, SAS won by 30 \u2014 BLOWOUT. Gobert played for the losing side (MIN). POST-GAME NEWS confirms: 'Gobert grabbed only 3 rebounds in 22 minutes as Minnesota was blown out 139-109 in Game 6. He was reportedly dealing with a left rib sprain heading into the game, and the blowout likely limited his opportunities and minutes.' STEP 1: Gobert active (22 min, 3 REB). Needed 6. STEP 2: No injury_exit confirmed. The post-game news references a left rib sprain (pre-existing) but no confirmed mid-game exit. Gobert was listed NOT_LISTED at injury check time \u2014 the rib sprain was not formally on the injury report at pick time. The pick ran at 72%. The analyst walked down from T10 (series 3/5=60%) \u2192 T8 (series 3/5=60%) \u2192 T6 (series 4/5=80% \u2713) after extensive tier gate analysis. The career playoff REB CAUTION (trajectory monotonic_down, -8pp applied) was correctly identified. In a 30-point blowout loss with 22 minutes played (below the proj_min floor even with elimination override active), Gobert's rebounding opportunities were structurally compressed: fewer possessions in the fourth quarter (trailing team in garbage time), reduced paint presence as MIN's offense collapsed, and the documented rib sprain further limiting his physical assertiveness. This is model_gap_rule: the signal existed (career REB CAUTION + series rate declining from T8 \u2192 T6 \u2192 consistent misses + SAS floor compression pattern as opponent + pre-game spread of -5.5 favoring SAS in a potential blowout). The rule gap is twofold: (1) the SAS floor compression pattern applies to opponent players but also indirectly to MIN players in blowout losses (fewer clean rebounding situations); (2) the pre-game rib sprain information that materialized in post-game news was potentially available pre-game but was not on the formal injury report, creating a documentation gap. The tier walk was thorough and honest but ultimately could not resolve that T6 in a potential blowout loss against SAS is structurally riskier than the series rate alone suggests. STEP 3: Analyst reasoning correctly stepped T10\u2192T8\u2192T6 and applied CAUTION penalties. The reasoning did not have access to the rib sprain information formally. STEP 4: Hit rate 8/10 overall \u2014 baseline was adequate. Series 4/5 at T6 appeared sufficient. STEP 5: T6 was the highest viable tier after extensive gate analysis. The walk was disciplined. STEP 6: No lineup_update. The rule gap: when Gobert faces SAS (with SAS floor compression active) AND pre-game spread is \u22655.5 favoring SAS, cap REB at T4 rather than T6, independent of the 25th-pct gate calculation."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 25,
+      "hits": 20,
+      "misses": 5,
+      "hit_rate_pct": 80.0,
+      "delta_vs_overall_pp": 0.0
+    }
   }
 ]

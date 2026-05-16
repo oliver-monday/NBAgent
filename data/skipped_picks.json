@@ -13,10 +13,10 @@
       "compound_conditions_met": 4,
       "compound_threshold": 3
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-15",
@@ -32,10 +32,10 @@
       "confidence_after_penalties": 72,
       "minimum_floor": 75
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-15",
@@ -56,10 +56,10 @@
         "road_underdog -5pp"
       ]
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 6.0 < tier 15"
   },
   {
     "date": "2026-05-15",
@@ -75,10 +75,10 @@
       "series_hit_rate": "2/5",
       "available_lower_market": false
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-15",
@@ -99,10 +99,10 @@
         "VOLATILE -3pp"
       ]
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 10"
   },
   {
     "date": "2026-05-15",
@@ -120,9 +120,9 @@
       "reason": "C/PF position triggers AST T4+ hard gate vs non-soft defense. Walked down to T2 which qualifies.",
       "gate_condition": "position=PF/C AND opp_today=tough"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
   }
 ]

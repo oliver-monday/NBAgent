@@ -8330,5 +8330,131 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 39.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-05-15",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "H27 HARD AVOID 3PM + VOLATILE iron_floor override + 4 compound skip conditions (VOLATILE, iron_floor=false after override, HARD AVOID dossier, drive/FT game-script pattern). All four auditor-recommended compound skip conditions met \u2014 skip regardless of within-series rate.",
+      "compound_conditions_met": 4,
+      "compound_threshold": 3
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-05-15",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "VOLATILE -3pp brings 75% overall below 75% 3PM minimum floor after deduction (72%). Series 3/5=60% at T2 provides no sufficient baseline to override.",
+      "confidence_after_penalties": 72,
+      "minimum_floor": 75
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-05-15",
+    "player_name": "Tobias Harris",
+    "team": "DET",
+    "opponent": "CLE",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "Road underdog penalty -5pp + SHORT_SAMPLE -5pp + VOLATILE -3pp stack produces 67% confidence, below 68% PTS minimum floor. Raw_avgs cushion (18.2 - 15 = 3.2 pts) triggers road underdog penalty.",
+      "confidence_before_floor": 67,
+      "minimum_floor": 68,
+      "penalties_applied": [
+        "SHORT_SAMPLE -5pp",
+        "VOLATILE -3pp",
+        "road_underdog -5pp"
+      ]
+    },
+    "actual_value": 6.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 6.0 < tier 15"
+  },
+  {
+    "date": "2026-05-15",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "opponent": "CLE",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "Series 2/5=40% at T6 below 70% minimum floor with \u22653 game series sample; no lower market available (T4 not listed for Duren REB). Per auditor recommendation: when series rate <70% AND no lower market exists, classify as merit_below_floor.",
+      "series_hit_rate": "2/5",
+      "available_lower_market": false
+    },
+    "actual_value": 11.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 11.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-15",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "FG_MARGIN_THIN:8% step-down at minimum PTS tier, plus vs_tough=58% (-7pp) + VOLATILE -3pp = -12pp total on 75% base = 63%, below 68% PTS floor. History of Allen T10 miss vs tough DET defense confirmed.",
+      "confidence_after_penalties": 63,
+      "minimum_floor": 68,
+      "penalties_applied": [
+        "FG_MARGIN_THIN -2pp",
+        "vs_tough=58% -7pp",
+        "VOLATILE -3pp"
+      ]
+    },
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-05-15",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "C/PF",
+      "raw_avgs_ast": 5.2,
+      "opp_defense_rating": "tough",
+      "reason": "C/PF position triggers AST T4+ hard gate vs non-soft defense. Walked down to T2 which qualifies.",
+      "gate_condition": "position=PF/C AND opp_today=tough"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
   }
 ]
