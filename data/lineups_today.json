@@ -1,35 +1,64 @@
 {
   "asof_date": "2026-05-17",
-  "built_at_utc": "2026-05-17T23:11:35Z",
+  "built_at_utc": "2026-05-17T23:38:24Z",
   "source": "rotowire",
-  "CLE": {
+  "DET": {
     "starters": [
       {
         "position": "PG",
-        "name": "James Harden",
+        "name": "Cade Cunningham",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "Donovan Mitchell",
+        "name": "Daniss Jenkins",
         "injury_status": null
       },
       {
         "position": "SF",
-        "name": "Max Strus",
+        "name": "Ausar Thompson",
         "injury_status": null
       },
       {
         "position": "PF",
-        "name": "Evan Mobley",
+        "name": "Tobias Harris",
         "injury_status": null
       },
       {
         "position": "C",
-        "name": "Jarrett Allen",
+        "name": "Jalen Duren",
         "injury_status": null
       }
     ],
+    "confirmed": false
+  },
+  "snapshot_at_analyst_run": {
+    "written_at": "2026-05-17T07:25:17.718999-07:00",
+    "teams": {
+      "CLE": {
+        "starters": [
+          "James Harden",
+          "Donovan Mitchell",
+          "Dean Wade",
+          "Evan Mobley",
+          "Jarrett Allen"
+        ],
+        "confirmed": false
+      },
+      "DET": {
+        "starters": [
+          "Cade Cunningham",
+          "Daniss Jenkins",
+          "Ausar Thompson",
+          "Tobias Harris",
+          "Jalen Duren"
+        ],
+        "confirmed": false
+      }
+    }
+  },
+  "CLE": {
+    "starters": [],
     "confirmed": false,
     "projected_minutes": [
       {
@@ -123,60 +152,5 @@
         "injury_status": "OUT"
       }
     ]
-  },
-  "DET": {
-    "starters": [
-      {
-        "position": "PG",
-        "name": "Cade Cunningham",
-        "injury_status": null
-      },
-      {
-        "position": "SG",
-        "name": "Daniss Jenkins",
-        "injury_status": null
-      },
-      {
-        "position": "SF",
-        "name": "Ausar Thompson",
-        "injury_status": null
-      },
-      {
-        "position": "PF",
-        "name": "Tobias Harris",
-        "injury_status": null
-      },
-      {
-        "position": "C",
-        "name": "Jalen Duren",
-        "injury_status": null
-      }
-    ],
-    "confirmed": false
-  },
-  "snapshot_at_analyst_run": {
-    "written_at": "2026-05-17T07:25:17.718999-07:00",
-    "teams": {
-      "CLE": {
-        "starters": [
-          "James Harden",
-          "Donovan Mitchell",
-          "Dean Wade",
-          "Evan Mobley",
-          "Jarrett Allen"
-        ],
-        "confirmed": false
-      },
-      "DET": {
-        "starters": [
-          "Cade Cunningham",
-          "Daniss Jenkins",
-          "Ausar Thompson",
-          "Tobias Harris",
-          "Jalen Duren"
-        ],
-        "confirmed": false
-      }
-    }
   }
 }
