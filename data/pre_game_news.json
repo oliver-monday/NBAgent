@@ -1,79 +1,59 @@
 {
-  "date": "2026-05-17",
-  "generated_at": "2026-05-17T07:24:33.397328-07:00",
+  "date": "2026-05-18",
+  "generated_at": "2026-05-18T09:22:27.579543-07:00",
   "player_notes": {
-    "og anunoby": "Fully practiced Friday and Saturday; says hamstring not as bad as 2024 injury. Trending toward available for ECF Game 1 \u2014 monitor official game-day status.",
-    "jalen williams": "Declared himself healthy entering WCF after missing 6 games with a Grade 1 left hamstring strain. Expect return to starting role and normal minutes vs. Spurs."
+    "jalen williams": "Williams declared himself healthy entering the WCF after missing six games with a Grade 1 left hamstring strain. Full return to rotation expected; props should reflect normal usage.",
+    "og anunoby": "Practiced again Saturday; described right hamstring injury as less severe than 2024 version. Monitor availability/minutes restriction for Knicks-Cavaliers ECF opener."
   },
   "game_notes": {
-    "OKC vs SAS": "Jalen Williams returning from 6-game hamstring absence; his presence restores OKC's full rotation and affects usage/minutes distribution for other Thunder wings."
+    "OKC vs SAS": "Jalen Williams returns healthy after 6-game absence \u2014 boosts his prop floors and may affect minutes distribution for Thunder bench wings.",
+    "NYK vs CLE": "Anunoby practicing but hamstring injury is a live concern; potential minutes restriction or late scratch risk for Knicks."
   },
-  "raw_item_count": 38,
-  "filtered_item_count": 37,
+  "raw_item_count": 41,
+  "filtered_item_count": 40,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "CLE vs DET \u2014 Playoff Series Status",
-      "current_context_fact": "The season context document contains no R2 series diary for CLE vs DET, and the playoff bracket section does not reflect R2 matchups or series scores.",
-      "conflict": "News confirms CLE vs DET is in a Game 7 (Eastern Conference semifinals, R2), with DET winning Game 6 115-94 (Cunningham 21 pts) to force it. The series is ongoing at R2, not R1. The context doc's R1 bracket shows DET vs ORL and CLE vs TOR \u2014 both of those series are over and these teams have advanced to face each other in R2.",
+      "player_or_team": "NOP Head Coach",
+      "current_context_fact": "NOP | James Borrego (interim) | Replaced Willie Green, Nov 2025",
+      "conflict": "Today's news reports the Pelicans are hiring Jamahl Mosley as head coach on a five-year contract. The article notes he spent the past five seasons in Orlando (going 189-221), which aligns with his listed role as ORL coach in the context doc.",
       "urgency": "critical",
-      "suggested_action": "Add R2 series diary for DET vs CLE (Eastern Conference Semifinals). Document that DET won Game 6 115-94 (Cunningham 21) to force Game 7. Series is tied 3-3 heading into Game 7 on or around May 17-18. Update playoff bracket to reflect R2 matchups."
-    },
-    {
-      "player_or_team": "SAS vs MIN \u2014 Playoff Series Status",
-      "current_context_fact": "The context doc's R1 diary for DEN vs MIN ends with MIN winning the series 4-2. There is no R2 series entry for SAS vs MIN.",
-      "conflict": "News confirms SAS eliminated MIN in Game 6 of what must be an R2 series (139-109 blowout), with Castle, Fox, and Harper accounting for nearly half of SAS's scoring. Edwards walked over to congratulate the Spurs after the loss. SAS advances to the Western Conference Finals vs OKC.",
-      "urgency": "critical",
-      "suggested_action": "Add R2 series diary for SAS vs MIN showing SAS wins 4-2, with Game 6 being a 139-109 SAS blowout (Castle 32 pts). Edwards confirmed played despite prior left knee injury concerns. Update playoff bracket to show SAS advances to WCF vs OKC."
-    },
-    {
-      "player_or_team": "OKC vs SAS \u2014 Western Conference Finals",
-      "current_context_fact": "The context doc has no entry for the Western Conference Finals. The R1 OKC vs PHX diary ends with OKC advancing.",
-      "conflict": "News confirms OKC vs SAS Western Conference Finals is scheduled, with Game 1 imminent (headline: 'Wembanyama and the Spurs visit Oklahoma City to start Western Conference finals'). The NBA MVP announcement was timed for the day before Game 1.",
-      "urgency": "critical",
-      "suggested_action": "Add WCF matchup entry for (1) OKC vs (2) SAS. Series has not yet begun as of the news date. Game 1 is in Oklahoma City."
+      "suggested_action": "Update NOP head coach from 'James Borrego (interim)' to 'Jamahl Mosley' (hired May 2026). Also update ORL head coach entry \u2014 Mosley is departing ORL, so ORL now has a coaching vacancy or interim situation that needs to be tracked."
     },
     {
       "player_or_team": "Jalen Williams (OKC)",
-      "current_context_fact": "R1 OKC vs PHX diary: 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round'; 'Jalen Williams still OUT (hamstring)' noted through the series sweep.",
-      "conflict": "News headline: 'Thunder's Jalen Williams says he's healthy entering WCF' \u2014 Williams declared himself healthy after missing the past six games due to a Grade 1 left hamstring strain.",
+      "current_context_fact": "OKC vs (8) PHX R1 diary: 'Jalen Williams (OKC) \u2014 Series over... Holmgren and Hartenstein's combined series production confirms OKC can sustain their championship-caliber ceiling without their second-best player' and playoff injury landscape: Williams listed as OUT/questionable with left hamstring throughout R1.",
+      "conflict": "Today's news reports: 'Thunder star wing Jalen Williams, who has missed the past six games due to a Grade 1 strain in his left hamstring, declared himself healthy entering the Western Conference finals.'",
       "urgency": "critical",
-      "suggested_action": "Update Jalen Williams' injury status to HEALTHY/ACTIVE for the WCF. Remove the 'primary health variable' caveat \u2014 he has self-declared fit and the hamstring concern that persisted through R1 is resolved. Treat as fully available for OKC vs SAS Game 1."
+      "suggested_action": "Update Jalen Williams' status to HEALTHY / available for WCF vs SAS. Remove any OUT/questionable designation. Note he missed R2 games (6 games per the article) but has declared himself ready for the conference finals. This significantly upgrades OKC's offensive ceiling for the WCF."
+    },
+    {
+      "player_or_team": "DET vs CLE R2 / Playoff Bracket",
+      "current_context_fact": "Season context does not include R2 results. DET is listed as the 1-seed East with 60-22 record and in the playoff bracket section only R1 matchups are confirmed.",
+      "conflict": "Multiple news items confirm CLE defeated DET in Game 7 (125-94 blowout) and has advanced to the Eastern Conference finals to face NYK. DET's season is over. The ECF matchup is NYK vs CLE.",
+      "urgency": "critical",
+      "suggested_action": "Add R2 result: CLE defeated DET 4-3 (Game 7: CLE 125, DET 94). DET is eliminated. Update bracket to show ECF matchup: NYK vs CLE. Add DET to eliminated teams list. Update CLE's status to ECF participant."
+    },
+    {
+      "player_or_team": "WCF / Playoff Bracket (SAS vs OKC)",
+      "current_context_fact": "Season context only lists R1 matchups. No R2 or conference finals results are documented.",
+      "conflict": "Multiple news items confirm the Western Conference finals matchup is OKC (Thunder) vs SAS (Spurs), and the Eastern Conference finals is NYK (Knicks) vs CLE (Cavaliers). Both conference finals are now set and apparently beginning.",
+      "urgency": "critical",
+      "suggested_action": "Update playoff bracket to reflect: WCF = OKC vs SAS; ECF = NYK vs CLE. Document which teams were eliminated in R2 (DET eliminated by CLE; LAL and MIN eliminated \u2014 implied by bracket). Add R2 series results for all four matchups once known and begin conference finals series diaries."
     },
     {
       "player_or_team": "OG Anunoby (NYK)",
-      "current_context_fact": "The NYK vs ATL R1 series diary ends with NYK winning 4-2. No R2 health concerns for Anunoby are documented in the context. The injury landscape section has no entry for Anunoby.",
-      "conflict": "News confirms Anunoby has a right hamstring injury and has been practicing \u2014 'Anunoby practices again, says hamstring not as bad as '24' and 'OG Anunoby (hamstring) full participant in practice.' NYK is preparing for Eastern Conference Finals (Game 1 on Sunday or Tuesday).",
+      "current_context_fact": "NYK vs ATL series diary notes Anunoby healthy and contributing through G6. No hamstring injury mentioned anywhere in the context document for Anunoby in the 2025-26 playoffs.",
+      "conflict": "Today's news states: 'OG Anunoby practiced again Saturday with the Knicks, saying afterward that his right hamstring injury is not as bad as the one he suffered in the 2024 playoffs.' This confirms Anunoby has a documented right hamstring injury heading into the ECF.",
       "urgency": "critical",
-      "suggested_action": "Add Anunoby right hamstring injury to the Active Injury Concerns section. He is a full practice participant and believes it is less severe than his 2024 hamstring issue, but this is a new documented injury concern heading into the ECF. Flag as monitor/day-to-day and note full practice participation as of May 16."
+      "suggested_action": "Add OG Anunoby to the active injury concerns section with a right hamstring injury designation. Note he practiced Saturday (May 16) and described it as less severe than his 2024 hamstring injury. Flag as a monitor item for ECF Game 1 availability and potential minutes restriction. This is a meaningful prop risk factor for any Anunoby picks in the ECF."
     },
     {
-      "player_or_team": "Anthony Edwards (MIN)",
-      "current_context_fact": "Injury landscape: 'Edwards confirmed OUT for G5 with severity still unclear. Treat as a primary injury concern for G6.' DEN vs MIN diary ends with MIN winning series 4-2 with Edwards OUT for Game 6.",
-      "conflict": "News confirms Edwards played in at least one subsequent game (headline references him walking to the Spurs bench after a SAS vs MIN game to congratulate them, implying he played or was present in the R2 series). The description 'Edwards unsure how Wolves can get over hump after loss to Spurs' confirms MIN lost to SAS in R2 and Edwards was involved/present, suggesting he returned at some point in R2.",
+      "player_or_team": "Shai Gilgeous-Alexander (OKC)",
+      "current_context_fact": "No mention of SGA winning a second consecutive MVP award in the season context document.",
+      "conflict": "Today's news confirms SGA has won his second consecutive NBA MVP award, becoming the 14th player in league history to win back-to-back MVPs. The finalists were SGA, Jokic, and Wembanyama.",
       "urgency": "monitor",
-      "suggested_action": "Note that Edwards apparently returned for some portion of the SAS vs MIN R2 series (given his post-game interaction with SAS bench). Update his status to reflect he played in R2 but MIN was eliminated. The specific games and minutes he appeared in R2 should be documented when available."
-    },
-    {
-      "player_or_team": "NYK \u2014 R2 Playoff Status",
-      "current_context_fact": "The context doc shows NYK won R1 vs ATL 4-2. No R2 matchup is documented.",
-      "conflict": "News references 'Knicks' ECF preparations' with Anunoby practicing for Eastern Conference Finals, Game 1 'on either Sunday or Tuesday.' NYK is in the ECF.",
-      "urgency": "critical",
-      "suggested_action": "Add NYK's R2 result and ECF matchup. Determine NYK's R2 opponent (likely PHI given the bracket) and their series result, then document the ECF matchup. NYK is preparing to host ECF Game 1."
-    },
-    {
-      "player_or_team": "Steve Kerr (GSW)",
-      "current_context_fact": "Injury landscape: 'Kerr expressed uncertainty about his coaching future after the loss' (after GSW's play-in elimination vs PHX).",
-      "conflict": "News headline: 'Kerr critical of coaching job, excited for return to Warriors' \u2014 Kerr has decided to return to GSW for a 13th season, resolving the uncertainty noted in the context doc.",
-      "urgency": "monitor",
-      "suggested_action": "Update Kerr's status: he has confirmed he is returning to GSW for the 2026-27 season. Remove the 'uncertainty about his coaching future' note and replace with 'confirmed returning for 13th season.'"
-    },
-    {
-      "player_or_team": "James Harden (CLE) \u2014 all-time scoring milestone",
-      "current_context_fact": "No mention of Harden's all-time playoff scoring rank in the context document.",
-      "conflict": "News confirms Harden passed Stephen Curry for 10th place on the NBA's all-time postseason scoring list during Game 6 of the CLE vs DET Eastern Conference semifinal. This is a new factual data point about his career standing.",
-      "urgency": "monitor",
-      "suggested_action": "Minor update: add to Harden's player note that he passed Curry for 10th on the all-time playoff scoring list during the 2026 playoffs. Not operationally critical for prop-picking but relevant context."
+      "suggested_action": "Update SGA player note to reflect he has won back-to-back MVP awards (2024-25 and 2025-26). This is contextual/biographical and does not affect prop modeling directly, but is relevant background for the WCF context."
     }
   ],
   "staleness_flags": []
