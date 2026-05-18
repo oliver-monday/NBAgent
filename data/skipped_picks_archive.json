@@ -8456,5 +8456,152 @@
     "would_have_hit": false,
     "skip_verdict": "correct_skip",
     "skip_verdict_notes": "Actual 2.0 < tier 4"
+  },
+  {
+    "date": "2026-05-17",
+    "player_name": "Cade Cunningham",
+    "team": "DET",
+    "opponent": "CLE",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "VOLATILE -3% brings overall 70% to 67%, below 75% 3PM minimum floor",
+      "base_rate": "70%",
+      "volatile_penalty": "-3pp",
+      "final_confidence": "67%",
+      "floor": "75%"
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
+  },
+  {
+    "date": "2026-05-17",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "H27 HARD AVOID 3PM (43% actual vs 76% assigned playoff suppressor) + VOLATILE overrides iron_floor + trend=down + all 4 auditor compound-skip conditions active",
+      "hard_avoid_directive": "H27: HARD AVOID 3PM for Mitchell",
+      "volatile_iron_floor_override": "iron_floor overridden by VOLATILE+iron_floor incompatibility",
+      "auditor_rule": "4-condition compound skip: VOLATILE + iron_floor=false + dossier HARD AVOID + trend=down"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-05-17",
+    "player_name": "Evan Mobley",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "ast_hard_gate",
+    "rule_context": {
+      "player_position": "C",
+      "raw_avgs_ast": 4.7,
+      "opp_today_rating": "tough",
+      "required_rating": "soft",
+      "reason": "PF/C position with opp_today=tough; AST T4+ hard gate requires soft defense to proceed"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-05-17",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "H27 PTS AVOID in G5-7: -33pp series-specific suppressor brings 90% base below 68% floor; FG_MARGIN_NEG step-down also required",
+      "h27_directive": "AVOID PTS especially games 5+",
+      "late_fader_penalty": "-5pp",
+      "h27_g57_suppressor": "-33pp",
+      "final_confidence_estimate": "below 68%",
+      "floor": "68%"
+    },
+    "actual_value": 9.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 9.0 < tier 10"
+  },
+  {
+    "date": "2026-05-17",
+    "player_name": "James Harden",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "H27 3PM AVOID in G5+; series T2 rate 4/6=67% below 70% floor; VOLATILE brings overall 75% to 72%, below 75% 3PM floor",
+      "h27_directive": "AVOID 3PM especially games 5+",
+      "series_rate": "4/6=67%",
+      "volatile_adjusted": "72%",
+      "floor": "75%"
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
+  },
+  {
+    "date": "2026-05-17",
+    "player_name": "Jalen Duren",
+    "team": "DET",
+    "opponent": "CLE",
+    "prop_type": "REB",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "Series rate <70% at all available FanDuel tiers (T6=3/6=50%, T8=3/6=50%, T10=3/6=50%); auditor rule: series \u22653 games and rate <70% \u2192 merit_below_floor; no valid lower market than T6",
+      "series_t6_rate": "3/6=50%",
+      "series_t8_rate": "3/6=50%",
+      "available_markets": "T6 T8 T10 T12",
+      "volatile_tag": true,
+      "career_playoff_reb": "-1.1"
+    },
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-17",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "opponent": "DET",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_tier_step",
+    "rule_context": {
+      "fg_margin_thin_pct": 4,
+      "flagged_tier": 10,
+      "next_tier": "none \u2014 T10 is minimum valid PTS tier",
+      "reason": "FG_MARGIN_THIN:4% at T10 with no lower available tier; rule mandates drop one tier and skip if cascade exhausted"
+    },
+    "actual_value": 23.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 23.0 \u2265 tier 10"
   }
 ]

@@ -15,10 +15,10 @@
       "final_confidence": "67%",
       "floor": "75%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-05-17",
@@ -35,10 +35,10 @@
       "volatile_iron_floor_override": "iron_floor overridden by VOLATILE+iron_floor incompatibility",
       "auditor_rule": "4-condition compound skip: VOLATILE + iron_floor=false + dossier HARD AVOID + trend=down"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   },
   {
     "date": "2026-05-17",
@@ -56,10 +56,10 @@
       "required_rating": "soft",
       "reason": "PF/C position with opp_today=tough; AST T4+ hard gate requires soft defense to proceed"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
   },
   {
     "date": "2026-05-17",
@@ -78,10 +78,10 @@
       "final_confidence_estimate": "below 68%",
       "floor": "68%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 9.0 < tier 10"
   },
   {
     "date": "2026-05-17",
@@ -99,10 +99,10 @@
       "volatile_adjusted": "72%",
       "floor": "75%"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 2"
   },
   {
     "date": "2026-05-17",
@@ -121,10 +121,10 @@
       "volatile_tag": true,
       "career_playoff_reb": "-1.1"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-17",
@@ -141,9 +141,9 @@
       "next_tier": "none \u2014 T10 is minimum valid PTS tier",
       "reason": "FG_MARGIN_THIN:4% at T10 with no lower available tier; rule mandates drop one tier and skip if cascade exhausted"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 23.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 23.0 \u2265 tier 10"
   }
 ]

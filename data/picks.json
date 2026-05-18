@@ -65433,8 +65433,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 13.0,
     "market_line": 14.5,
     "market_implied_prob": 98.36,
     "market_book": "fanduel",
@@ -65462,7 +65462,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 75,
       "revised_reasoning": "Wade is a role player; his absence does not meaningfully affect Cunningham's scoring volume or matchup."
-    }
+    },
+    "clv_pp": 0.32
   },
   {
     "date": "2026-05-17",
@@ -65489,8 +65490,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "MISS",
+    "actual_value": 5.0,
     "market_line": 5.5,
     "market_implied_prob": 90.0,
     "market_book": "fanduel",
@@ -65538,7 +65539,8 @@
       "first_observed_at": "2026-05-17T16:11:39.717806-07:00",
       "last_observed_at": "2026-05-17T16:11:39.717806-07:00",
       "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
-    }
+    },
+    "clv_pp": -0.91
   },
   {
     "date": "2026-05-17",
@@ -65569,8 +65571,8 @@
       "from_tier": 20,
       "to_tier": 15
     },
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 26.0,
     "market_line": 14.5,
     "market_implied_prob": 96.77,
     "market_book": "fanduel",
@@ -65598,7 +65600,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 70,
       "revised_reasoning": "Wade absence does not affect Mitchell's usage or scoring role; core starters unchanged."
-    }
+    },
+    "clv_pp": 0.62
   },
   {
     "date": "2026-05-17",
@@ -65625,8 +65628,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 8.0,
     "market_line": 1.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -65674,7 +65677,8 @@
       "first_observed_at": "2026-05-17T16:11:39.717806-07:00",
       "last_observed_at": "2026-05-17T16:11:39.717806-07:00",
       "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
-    }
+    },
+    "clv_pp": 0.0
   },
   {
     "date": "2026-05-17",
@@ -65705,8 +65709,8 @@
       "from_tier": 15,
       "to_tier": 10
     },
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 21.0,
     "market_line": 9.5,
     "market_implied_prob": 90.0,
     "market_book": "fanduel",
@@ -65742,7 +65746,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 74,
       "revised_reasoning": "Wade is not a usage or spacing driver for Mobley; scoring role and paint access unaffected."
-    }
+    },
+    "clv_pp": 1.49
   },
   {
     "date": "2026-05-17",
@@ -65769,8 +65774,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 12.0,
     "market_line": 5.5,
     "market_implied_prob": 86.67,
     "market_book": "fanduel",
@@ -65806,7 +65811,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 72,
       "revised_reasoning": "Wade is not a rim anchor; Mobley's rebounding competition and opportunities are unchanged."
-    }
+    },
+    "clv_pp": -0.34
   },
   {
     "date": "2026-05-17",
@@ -65829,8 +65835,8 @@
     "reasoning": "H27 AST bulletproof in late playoff games; series 5/6, competitive=90%, vs_tough=84%.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 6.0,
     "market_line": 3.5,
     "market_implied_prob": 93.33,
     "market_book": "fanduel",
@@ -65858,7 +65864,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 78,
       "revised_reasoning": "Wade's absence has no direct link to Harden's playmaking or assist volume in late playoff games."
-    }
+    },
+    "clv_pp": 1.02
   },
   {
     "date": "2026-05-17",
@@ -65881,8 +65888,8 @@
     "reasoning": "T6 25th-pct gate uncertain; T4 at 95% with consistent tag and CLE frontcourt depleted.",
     "obs_penalty": null,
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 3.5,
     "market_implied_prob": 94.12,
     "market_book": "fanduel",
@@ -65918,7 +65925,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 80,
       "revised_reasoning": "Wade is not a rim anchor; frontcourt rebounding dynamic for Thompson is unaffected."
-    }
+    },
+    "clv_pp": -0.62
   },
   {
     "date": "2026-05-17",
@@ -65946,7 +65954,7 @@
     },
     "obs_walk": null,
     "result": null,
-    "actual_value": null,
+    "actual_value": 5.0,
     "market_line": 9.5,
     "market_implied_prob": 91.67,
     "market_book": "fanduel",
@@ -65965,7 +65973,7 @@
     "kalshi_market_listed": false,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-17T23:40:01.501719-07:00",
-    "voided": false,
+    "voided": true,
     "lineup_update": {
       "triggered_by": [
         "Dean Wade (CLE) removed from projected starters"
@@ -65974,7 +65982,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 72,
       "revised_reasoning": "Wade not tagged as defensive anchor; no meaningful impact on Harris scoring volume or matchup."
-    }
+    },
+    "void_reason": "injury_exit_mid_game"
   },
   {
     "date": "2026-05-17",
@@ -66002,7 +66011,7 @@
     },
     "obs_walk": null,
     "result": null,
-    "actual_value": null,
+    "actual_value": 0.0,
     "market_line": 0.5,
     "market_implied_prob": 80.0,
     "market_book": "fanduel",
@@ -66029,7 +66038,7 @@
     "kalshi_morning_implied_prob": 72.0,
     "injury_status_at_check": "NOT_LISTED",
     "injury_check_time": "2026-05-17T23:40:01.501719-07:00",
-    "voided": false,
+    "voided": true,
     "lineup_update": {
       "triggered_by": [
         "Dean Wade (CLE) removed from projected starters"
@@ -66038,7 +66047,8 @@
       "direction": "unchanged",
       "revised_confidence_pct": 75,
       "revised_reasoning": "Wade's absence provides no direct spacing or 3PM benefit; not a perimeter defensive anchor."
-    }
+    },
+    "void_reason": "injury_exit_mid_game"
   },
   {
     "date": "2026-05-17",
@@ -66065,8 +66075,8 @@
       "savings_pp": 0.0
     },
     "obs_walk": null,
-    "result": null,
-    "actual_value": null,
+    "result": "HIT",
+    "actual_value": 7.0,
     "market_line": 3.5,
     "market_implied_prob": 96.15,
     "market_book": "fanduel",
@@ -66102,6 +66112,7 @@
       "direction": "unchanged",
       "revised_confidence_pct": 72,
       "revised_reasoning": "Wade is not a rim anchor or frontcourt presence; Allen's rebounding opportunities are unaffected."
-    }
+    },
+    "clv_pp": -0.62
   }
 ]
