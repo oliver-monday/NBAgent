@@ -1,11 +1,35 @@
 {
-  "date": "2026-05-17",
-  "generated_at": "2026-05-18T09:20:11.818895-07:00",
+  "date": "2026-05-18",
+  "generated_at": "2026-05-19T09:15:52.545988-07:00",
   "players": {
-    "ausar thompson": {
+    "chet holmgren": {
       "event_type": "no_data",
-      "detail": "Played 29 minutes in Game 7 loss; 5 pts, 7 reb, 2 blk in blowout",
-      "minutes_played": 29.0,
+      "detail": "Played 41 minutes, scored 8 points. No injury exit or DNP indicated.",
+      "minutes_played": 41.0,
+      "source_url": null,
+      "confidence": "inferred",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": null,
+      "web_narrative": "Holmgren played 41 minutes but shot poorly, finishing with just 8 points and falling short of the 10-point threshold. No injury or restriction noted; the miss appears to be cold shooting in a competitive double-overtime game."
+    },
+    "de'aaron fox": {
+      "event_type": "dnp",
+      "detail": "Fox did not play in Game 1; Dylan Harper started in his place, indicating Fox was out.",
+      "minutes_played": 0,
+      "source_url": null,
+      "confidence": "confirmed",
+      "injury_status_at_check": "QUESTIONABLE",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": null,
+      "web_narrative": "Fox was listed as questionable pre-game and did not play in Game 1 of the Western Conference Finals, with Dylan Harper taking his starting spot against the Thunder."
+    },
+    "devin vassell": {
+      "event_type": "no_data",
+      "detail": "Played 51 minutes in a double-overtime game. No injury or restriction flagged.",
+      "minutes_played": 51.0,
       "source_url": null,
       "confidence": "inferred",
       "injury_status_at_check": "NOT_LISTED",
@@ -14,9 +38,21 @@
       "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "cade cunningham": {
+    "isaiah hartenstein": {
+      "event_type": "minutes_restriction",
+      "detail": "Played only 12 minutes in a double-overtime game, consistent with a calf/soleus injury limiting his availability.",
+      "minutes_played": 12.0,
+      "source_url": null,
+      "confidence": "confirmed",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": null,
+      "web_narrative": "Hartenstein was limited to just 12 minutes in a double-overtime loss, likely due to a lingering right soleus strain. His restricted role left him with only 2 rebounds, well short of the 6-rebound prop."
+    },
+    "jalen williams": {
       "event_type": "no_data",
-      "detail": "Played 37 minutes in Game 7 loss; went 5-16 FG including 0-7 from three in blowout loss",
+      "detail": "Returned from hamstring injury and played 37 minutes, scoring 26 points in double-overtime loss.",
       "minutes_played": 37.0,
       "source_url": null,
       "confidence": "confirmed",
@@ -24,36 +60,12 @@
       "injury_language_detected": false,
       "injury_scan_term": null,
       "espn_fetch_ok": null,
-      "web_narrative": "Cunningham finished with 13 points on 5-of-16 shooting, going 0-for-7 from three-point range in a 31-point blowout loss. Cold shooting, particularly from deep, explains the miss on the points over 15 prop."
-    },
-    "donovan mitchell": {
-      "event_type": "no_data",
-      "detail": "Played 31 minutes in Game 7 win; 26 pts, 8 ast, 6 reb in blowout victory",
-      "minutes_played": 31.0,
-      "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "evan mobley": {
+    "shai gilgeous-alexander": {
       "event_type": "no_data",
-      "detail": "Played 36 minutes in Game 7 win; 21 pts, 12 reb, 6 ast in dominant blowout",
-      "minutes_played": 36.0,
-      "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": null,
-      "web_narrative": null
-    },
-    "james harden": {
-      "event_type": "no_data",
-      "detail": "Played 36 minutes in Game 7 win; no external sources available",
-      "minutes_played": 36.0,
+      "detail": "Played 51 minutes in a double-overtime game. No injury or restriction flagged.",
+      "minutes_played": 51.0,
       "source_url": null,
       "confidence": "inferred",
       "injury_status_at_check": "NOT_LISTED",
@@ -62,10 +74,10 @@
       "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "jarrett allen": {
+    "stephon castle": {
       "event_type": "no_data",
-      "detail": "Played 25 minutes in Game 7 blowout win; 23 pts, 7 reb on efficient shooting",
-      "minutes_played": 25.0,
+      "detail": "Played 49 minutes in a double-overtime win, posting a double-double. No flags.",
+      "minutes_played": 49.0,
       "source_url": null,
       "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
@@ -74,17 +86,17 @@
       "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "tobias harris": {
-      "event_type": "minutes_restriction",
-      "detail": "Played only 23 minutes; carried a left ankle sprain sustained in Game 5 into Game 7",
-      "minutes_played": 23.0,
+    "victor wembanyama": {
+      "event_type": "no_data",
+      "detail": "Played 49 minutes in a double-overtime win, recording a historic 41-point, 24-rebound performance.",
+      "minutes_played": 49.0,
       "source_url": null,
       "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
       "espn_fetch_ok": null,
-      "web_narrative": "Harris played just 23 minutes in a 31-point blowout loss, going 0-for-6 from the field for 5 points. He had suffered a left ankle sprain in Game 5 of the prior series, which likely limited his effectiveness and playing time, contributing to the miss on the points over 10 prop."
+      "web_narrative": null
     }
   },
   "fetch_errors": []

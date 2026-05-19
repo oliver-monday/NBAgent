@@ -8503,5 +8503,109 @@
       "hit_rate_pct": 77.8,
       "delta_vs_overall_pp": 0.0
     }
+  },
+  {
+    "date": "2026-05-18",
+    "total_picks": 9,
+    "voided_picks": 3,
+    "hits": 8,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 88.9,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "SGA PTS T20 structural lock held perfectly: SGA scored 24 in 51 OT minutes against a tough SAS defense, validating the season-context directive that T20 is pre-qualified and should not be evaluated as a pick decision. The 93% confidence assignment and the tier-walk logic that skipped T25 due to FG_MARGIN_THIN and H2H thinness were both correct. The Analyst's reasoning \u2014 'Structural 95% floor at T20; consistent tag, 7 days rest, elite scorer exemption active' \u2014 was exactly right.",
+      "Stephon Castle AST T4 iron_floor validation: Castle posted 11 AST in 49 OT minutes, a massive hit on a 4/4 H2H pick at 88% confidence. The Analyst correctly identified that Castle's 100% overall AST T4 rate and the elite-playmaker exemption (raw_avgs AST ~6.2, exempting the hard gate) made this a structurally sound top pick. The lineup update correctly flagged upside (revised to 93%) after Fox went OUT, and the actual result validated the direction. The 10/10 hit rate display and [consistent] tag were the right inputs to anchor on.",
+      "Wembanyama PTS T15 and REB T8 both hit emphatically (41 PTS, 24 REB in 49 OT minutes): The blowout exemption directive for Wemby was not tested since the game was CLOSE (7-point margin in double OT), but the structural logic \u2014 that Wemby's counting stat floors hold regardless of game script \u2014 was validated by an extraordinary individual performance. The -5pp rib G1 caution was appropriate process (prior series context warranted it), but the actual output confirms full health. The REB T8 pick, which required careful 25th-percentile gate analysis and landed at 72% after VOLATILE deduction, was fully vindicated by a 24-rebound performance.",
+      "Vassell 3PM T1 iron_floor pick correctly executed: Vassell hit 3 triples in 51 OT minutes, a comfortable hit on the 9/10 / iron_floor pick at 82%. The Analyst correctly noted that season-level quant showed T2 below threshold and stepped to T1, then anchored on the iron_floor tag and perfect H2H (4/4 vs OKC). The 82% confidence assignment was conservative relative to the supporting signals, but the process \u2014 trusting iron_floor at T1 and not overreaching to T2 on series-only data \u2014 was sound.",
+      "Castle PTS T15 and REB T4 both hit (17 PTS, 6 REB): The FG_MARGIN_NEG step from T20 to T15 was correct process and the 9/10 overall hit rate held. The REB T4 pick correctly applied the VOLATILE -3pp deduction and landed at 72%, and the series SAS-MIN T4 6/6 floor was validated. The lineup update correctly flagged upside on Castle PTS (Fox OUT redistributing usage) \u2014 the actual 17 PTS in 49 minutes confirmed the upside direction. Both picks were well-constructed and hit cleanly."
+    ],
+    "lessons": [
+      "Holmgren PTS T10 miss (8 actual vs 10 pick): The FG_MARGIN_NEG step from T15 to T10 was executed correctly, but the miss occurred in a competitive double-overtime game where Holmgren shot poorly across 41 full minutes \u2014 no injury, no restriction. The post-game news confirms cold shooting as the mechanism. The Analyst's near-perfect T10 series data (4/4 vs PHX, 4/4 vs LAL) was genuine but did not account for the variance risk of a new series opponent (WCF G1 vs SAS) where Holmgren had limited H2H data at T10 specifically. The observation that 'vs_tough=60% at T15' was noted but then dismissed when stepping to T10 \u2014 the tough-defense signal persisted at T10 even if numerically softer.",
+      "Hartenstein REB T6 miss (2 actual vs 6 pick): The miss was caused by a confirmed minutes restriction \u2014 Hartenstein played only 12 minutes due to a lingering right soleus strain. The post-game news explicitly confirms this. The injury_status_at_check was NOT_LISTED at pick time, meaning no pre-game signal existed to void the pick. This is a clean injury_event miss \u2014 the analytical framework (T6 at 80%, VOLATILE -3pp, 25th-pct gate passed, structural SAS-center-OUT rationale) was sound given available information. The amendment correctly left confidence unchanged (the Fox OUT note was correctly identified as not affecting Hartenstein's rebounding matchup)."
+    ],
+    "recommendations": [
+      "For WCF/ECF Game 1 picks on OKC secondary scorers facing SAS's defense: the new-series variance risk for Holmgren PTS is structurally higher than prior-series T10 data implies. When the Analyst steps down via FG_MARGIN_NEG from T15 to T10 for a VOLATILE secondary scorer opening a new series against a top-3 defense, apply an additional -5pp new-series adjustment at T10 if fewer than 3 H2H data points exist at that specific tier vs. the current opponent. The 7/10 overall hit rate and the 'near-perfect T10 series data' from different prior-series opponents are not fully transferable when the new matchup has 0 games of direct evidence. This would have pushed Holmgren's confidence below 70% and produced a skip.",
+      "Injury-triggered minutes restriction risk on REB props for players with documented soft-tissue concerns (calf, soleus, hamstring): Hartenstein's right soleus strain was not flagged on the injury report at pick time (NOT_LISTED), but the post-game news confirms the restriction was injury-driven. The system should add a soft-tissue watch rule: if the post-game news context from any prior game in the current series or recent regular season documents a soft-tissue strain (calf, soleus, hamstring) for a player currently listed NOT_LISTED on the injury report, apply a -5pp precautionary penalty to any REB pick at T6+ and flag the pick as elevated-DNP-risk. Hartenstein had a documented series history that warranted this scrutiny.",
+      "The SAS floor compression pattern (mean miss margin -5.0 on misses) is validated by the Hartenstein miss context: when opposing-team players are picked vs. SAS at lower-tier props (T6 REB), the floor compression risk compounds with any minutes-restriction event. For the remainder of this WCF series, apply standard SAS floor compression caution to OKC secondary players at REB T6 \u2014 prefer T4 or require iron_floor at T6 before selecting.",
+      "The lineup_update agent's upward revisions on Castle PTS (72%\u219279%) and Castle AST (88%\u219293%) after Fox's confirmed OUT were directionally correct and the actual results validated both. The agent correctly identified Fox as a usage redistributor toward Castle. This Fox-OUT\u2192Castle-usage pattern should be codified: when a primary creator on a two-star team goes OUT, the secondary playmaker's PTS and AST picks should receive a systematic +5pp upward revision when the revised_confidence is still within the valid pick range. The agent applied this correctly; the reinforcement is to document it as a standing rule for future lineup update logic.",
+      "Double-overtime game context (51 minutes played for SGA, Vassell, and Castle; 49 for Wemby) inflated all SAS and OKC counting stats significantly. When grading this slate, all hits should be noted as OT-volume-assisted. For forward-looking G2 picks in this series: the Analyst should apply a regression-to-mean consideration on SAS player PTS/REB/AST picks, as G1 double-OT production (Castle 11 AST, Wemby 41 PTS/24 REB) will have elevated market lines for G2. Do not anchor G2 tier selection on G1 OT-inflated outputs \u2014 use season and series averages as the baseline and evaluate whether inflated G2 market lines still clear the qualifying hit-rate thresholds at the walked tier."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Chet Holmgren",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 8,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: SAS @ OKC final 122-115, CLOSE (7-point margin, double overtime). Neither side experienced blowout game-script compression; 51 minutes of play were available for both teams' starters. STEP 1 \u2014 Holmgren played 41 full minutes with 8 PTS per post-game news; no injury, no restriction. STEP 2 \u2014 No injury exit in post-game news; pick was NOT_LISTED at check time. Miss classification: variance. The Analyst executed a textbook FG_MARGIN_NEG step from T15 to T10, landing at a tier with near-perfect prior-series data (4/4 vs PHX, 4/4 vs LAL at T10). The 7/10 overall hit rate at the original T15 tier was the Analyst's primary baseline, and stepping to T10 was structurally correct per rule. The miss was 2 points short (8 vs 10) in a double-OT competitive game against a top-tier SAS defense \u2014 cold shooting across 41 full minutes in Game 1 of a new series is within the normal variance distribution for a VOLATILE-tagged scorer. STEP 3 \u2014 The Analyst's reasoning ('FG_MARGIN_NEG stepped T15\u2192T10; near-perfect T10 hit rate across both prior playoff series') correctly identified the tier-walk logic and the supporting data. The weakness in the reasoning was implicitly treating prior-series T10 data from PHX and LAL as fully transferable to a new WCF G1 matchup against SAS's defense \u2014 but this is a known limitation of cross-series extrapolation, not an analytical error given available rules. STEP 4 \u2014 Hit rate display was 7/10 at T15; T10 was near-perfect in prior series. A miss on a near-perfect-T10 pick in a new series against a tough defense is within distribution. STEP 5 \u2014 Tier walk was sound: FG_MARGIN_NEG correctly forced the step, T10 was the appropriate landing tier with market available. No tier_skip_error or data_conflict. STEP 6 \u2014 Amendment was unchanged (direction: unchanged); Fox OUT correctly assessed as not affecting Holmgren's paint scoring or usage. Amendment performance: neutral."
+      },
+      {
+        "player_name": "Isaiah Hartenstein",
+        "prop_type": "REB",
+        "pick_value": 6,
+        "actual_value": 2,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 Game context: SAS @ OKC final 122-115, CLOSE (7-point margin, double overtime). Not a blowout; game script not a causal factor. STEP 1 \u2014 Hartenstein played only 12 minutes per confirmed post-game news; 2 rebounds in severely restricted minutes. STEP 2 \u2014 Post-game news confirms: MINUTES RESTRICTION \u2014 'Hartenstein was limited to just 12 minutes in a double-overtime loss, likely due to a lingering right soleus strain. His restricted role left him with only 2 rebounds, well short of the 6-rebound prop.' Classification: injury_event. The injury_status_at_check was NOT_LISTED at pick time \u2014 no pre-game signal was available to void this pick. The analytical framework (T6 at 80%, VOLATILE -3pp to 77%, 25th-pct gate passed at T6 with 3rd-lowest estimated at 8, structural SAS-center-vacuum rationale) was sound given available information. The miss is entirely attributable to an undetected in-game minutes restriction from a soft-tissue injury that was not surfaced on the pre-game injury report. STEP 3 \u2014 The Analyst's reasoning ('T6 REB at 80% floor; 3 SAS centers OUT and series data confirm interior vacuum') was analytically valid for a fully healthy Hartenstein; the vacuum rationale was correct in the abstract but irrelevant once minutes were restricted to 12. STEP 4 \u2014 Hit rate display was 8/10 at T6 overall; prior series data (3/4 vs PHX, 4/4 vs LAL) supported the selection. A miss on an 8/10 pick due to a confirmed injury restriction is not a signal failure. STEP 5 \u2014 Tier walk correctly stepped from T8 (25th-pct gate failed at 8<8 exact match) to T6 (25th-pct gate passed at 6<8). No tier_skip_error. STEP 6 \u2014 Amendment was unchanged (direction: unchanged); Fox correctly assessed as not affecting Hartenstein's rebounding matchup. Amendment performance: neutral. Per GUARD 1: no lesson or recommendation is generated targeting the Analyst's pick selection logic for this miss."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 7,
+      "hits": 6,
+      "misses": 1,
+      "hit_rate_pct": 85.7,
+      "delta_vs_overall_pp": -3.2
+    }
   }
 ]

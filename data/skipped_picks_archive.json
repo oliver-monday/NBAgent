@@ -8603,5 +8603,185 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 23.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "PTS",
+      "tier_considered": 20,
+      "reason": "SGA does not appear in FanDuel Market Availability section \u2014 no markets available for SGA on any prop"
+    },
+    "actual_value": 24.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 24.0 \u2265 tier 20"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "SGA does not appear in FanDuel Market Availability section \u2014 no markets available for SGA on any prop"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "SGA does not appear in FanDuel Market Availability section \u2014 no markets available for SGA on any prop"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "3pm_trend_down_low_minutes",
+    "rule_context": {
+      "player_name": "Stephon Castle",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "trend=down on 3PM triggers mandatory step below T1 minimum; no iron_floor and 8/10 does not meet 9+/10 exception threshold \u2014 skip per rules"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Victor Wembanyama",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "VOLATILE -3% reduces 75% base to 72%, below 75% 3PM minimum confidence floor"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "No FanDuel market for SGA; additionally VOLATILE+T6 -8% penalty on 70% base = 62%, below 68% AST floor"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "AST",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Jalen Williams",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "VOLATILE -3% on 70% base = 67%, below 68% AST minimum floor"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 4"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Devin Vassell",
+      "prop_type": "PTS",
+      "tier_considered": 10,
+      "reason": "FG_MARGIN_THIN -5%, VOLATILE -3%, tough defense -5% = -13pp total on 80% base = 67%, below 68% PTS floor"
+    },
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-05-18",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Dylan Harper",
+      "prop_type": "PTS",
+      "tier_considered": 10,
+      "reason": "FG_MARGIN_THIN -9%, VOLATILE -3%, tough defense -10% = -22pp (-20pp capped) on 80% base = 60%, well below 68% PTS floor"
+    },
+    "actual_value": 24.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 24.0 \u2265 tier 10"
   }
 ]
