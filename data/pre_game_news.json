@@ -1,59 +1,60 @@
 {
-  "date": "2026-05-18",
-  "generated_at": "2026-05-18T09:22:27.579543-07:00",
+  "date": "2026-05-19",
+  "generated_at": "2026-05-19T09:18:00.483676-07:00",
   "player_notes": {
-    "jalen williams": "Williams declared himself healthy entering the WCF after missing six games with a Grade 1 left hamstring strain. Full return to rotation expected; props should reflect normal usage.",
-    "og anunoby": "Practiced again Saturday; described right hamstring injury as less severe than 2024 version. Monitor availability/minutes restriction for Knicks-Cavaliers ECF opener."
+    "karl-anthony towns": "Towns has shifted into a primary playmaking role ('Point KAT') for NYK, boosting his assists upside entering the ECF vs CLE.",
+    "jalen brunson": "Brunson identified as a top bet/DFS play for Knicks-Cavs Game 1; no injury concerns noted.",
+    "mikal bridges": "Bridges flagged as a top bet/DFS play alongside Brunson for ECF opener vs CLE.",
+    "donovan mitchell": "Mitchell led CLE to a dominant Game 7 win; entering ECF vs NYK with momentum, no injury concerns noted."
   },
   "game_notes": {
-    "OKC vs SAS": "Jalen Williams returns healthy after 6-game absence \u2014 boosts his prop floors and may affect minutes distribution for Thunder bench wings.",
-    "NYK vs CLE": "Anunoby practicing but hamstring injury is a live concern; potential minutes restriction or late scratch risk for Knicks."
+    "SAS vs OKC": "De'Aaron Fox (right ankle sprain) was OUT for Game 1; monitor status for Game 2. His absence impacts SAS guard rotation and increases usage for Harper and others."
   },
-  "raw_item_count": 41,
-  "filtered_item_count": 40,
+  "raw_item_count": 50,
+  "filtered_item_count": 47,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "NOP Head Coach",
-      "current_context_fact": "NOP | James Borrego (interim) | Replaced Willie Green, Nov 2025",
-      "conflict": "Today's news reports the Pelicans are hiring Jamahl Mosley as head coach on a five-year contract. The article notes he spent the past five seasons in Orlando (going 189-221), which aligns with his listed role as ORL coach in the context doc.",
+      "player_or_team": "De'Aaron Fox (SAS)",
+      "current_context_fact": "The playoff series diaries and injury notes treat Fox as an active participant in SAS's R2 series vs OKC (West Finals). Fox appeared in R1 series clincher (G5 vs POR: 21/3/9, 8-14 FG, 2 3PM, 34 min).",
+      "conflict": "Today's news explicitly states: 'Spurs guard De'Aaron Fox was ruled out for Game 1 of the West finals against the Thunder on Monday night because of a right ankle sprain.' This is a confirmed absence for WCF G1.",
       "urgency": "critical",
-      "suggested_action": "Update NOP head coach from 'James Borrego (interim)' to 'Jamahl Mosley' (hired May 2026). Also update ORL head coach entry \u2014 Mosley is departing ORL, so ORL now has a coaching vacancy or interim situation that needs to be tracked."
+      "suggested_action": "Add Fox to ACTIVE WITH DOCUMENTED CONCERNS (or a new WCF injury section): Fox ruled OUT for WCF G1 (SAS vs OKC) with a right ankle sprain. His availability for G2 and beyond is unknown. SAS's offensive structure without Fox shifts greater load to Castle, Harper, Vassell, and Wembanyama. Do not assume Fox availability until cleared."
     },
     {
-      "player_or_team": "Jalen Williams (OKC)",
-      "current_context_fact": "OKC vs (8) PHX R1 diary: 'Jalen Williams (OKC) \u2014 Series over... Holmgren and Hartenstein's combined series production confirms OKC can sustain their championship-caliber ceiling without their second-best player' and playoff injury landscape: Williams listed as OUT/questionable with left hamstring throughout R1.",
-      "conflict": "Today's news reports: 'Thunder star wing Jalen Williams, who has missed the past six games due to a Grade 1 strain in his left hamstring, declared himself healthy entering the Western Conference finals.'",
+      "player_or_team": "SAS vs OKC \u2014 WCF G1 result",
+      "current_context_fact": "The season context document contains no entry for the WCF (SAS vs OKC) \u2014 the playoff series diaries end at R1. The bracket shows SAS and OKC as R2 participants but no game results are recorded.",
+      "conflict": "Multiple news items confirm WCF G1 has already been played: 'Victor Wembanyama had 41 points and 24 rebounds... San Antonio Spurs beat the Oklahoma City Thunder 122-115 in double overtime.' SAS leads 1-0. SGA said 'I have to be better' after the loss. Dylan Harper had 24 points and a team playoff-record 7 steals.",
       "urgency": "critical",
-      "suggested_action": "Update Jalen Williams' status to HEALTHY / available for WCF vs SAS. Remove any OUT/questionable designation. Note he missed R2 games (6 games per the article) but has declared himself ready for the conference finals. This significantly upgrades OKC's offensive ceiling for the WCF."
+      "suggested_action": "Add WCF series diary entry: SAS vs OKC G1 (May 18) \u2014 SAS 122, OKC 115 (2OT). Wembanyama 41/24. Harper 24 pts, 7 steals (team playoff record). Fox OUT (right ankle sprain). SGA underperformed by his own admission. SAS leads 1-0. Update playoff bracket/standings to reflect SAS 1-0 series lead."
     },
     {
-      "player_or_team": "DET vs CLE R2 / Playoff Bracket",
-      "current_context_fact": "Season context does not include R2 results. DET is listed as the 1-seed East with 60-22 record and in the playoff bracket section only R1 matchups are confirmed.",
-      "conflict": "Multiple news items confirm CLE defeated DET in Game 7 (125-94 blowout) and has advanced to the Eastern Conference finals to face NYK. DET's season is over. The ECF matchup is NYK vs CLE.",
+      "player_or_team": "NYK vs CLE \u2014 ECF series status",
+      "current_context_fact": "The season context document shows no ECF entries. The bracket shows NYK and CLE as R2 participants but no results beyond R1 are recorded.",
+      "conflict": "Multiple news items confirm the ECF (NYK vs CLE) is underway or beginning imminently: 'Cavaliers-Knicks series opener in the Eastern Conference finals,' 'Knicks, Cavaliers open East finals at Madison Square Garden,' predictions being made for the series. Additionally, DET was eliminated by CLE in R2 (Game 7, 125-94 loss: 'Detroit Pistons see season end with 31-point loss in Game 7'), meaning CLE defeated DET in R2 to advance.",
       "urgency": "critical",
-      "suggested_action": "Add R2 result: CLE defeated DET 4-3 (Game 7: CLE 125, DET 94). DET is eliminated. Update bracket to show ECF matchup: NYK vs CLE. Add DET to eliminated teams list. Update CLE's status to ECF participant."
+      "suggested_action": "Update playoff bracket: CLE defeated DET 4-3 in R2 (G7: CLE 125, DET 94). NYK advanced from R2 (opponent and result not confirmed in news but implied by ECF setup). Add ECF series: NYK vs CLE \u2014 Game 1 at MSG, series just beginning as of May 19. Update eliminated teams list to include DET."
     },
     {
-      "player_or_team": "WCF / Playoff Bracket (SAS vs OKC)",
-      "current_context_fact": "Season context only lists R1 matchups. No R2 or conference finals results are documented.",
-      "conflict": "Multiple news items confirm the Western Conference finals matchup is OKC (Thunder) vs SAS (Spurs), and the Eastern Conference finals is NYK (Knicks) vs CLE (Cavaliers). Both conference finals are now set and apparently beginning.",
-      "urgency": "critical",
-      "suggested_action": "Update playoff bracket to reflect: WCF = OKC vs SAS; ECF = NYK vs CLE. Document which teams were eliminated in R2 (DET eliminated by CLE; LAL and MIN eliminated \u2014 implied by bracket). Add R2 series results for all four matchups once known and begin conference finals series diaries."
-    },
-    {
-      "player_or_team": "OG Anunoby (NYK)",
-      "current_context_fact": "NYK vs ATL series diary notes Anunoby healthy and contributing through G6. No hamstring injury mentioned anywhere in the context document for Anunoby in the 2025-26 playoffs.",
-      "conflict": "Today's news states: 'OG Anunoby practiced again Saturday with the Knicks, saying afterward that his right hamstring injury is not as bad as the one he suffered in the 2024 playoffs.' This confirms Anunoby has a documented right hamstring injury heading into the ECF.",
-      "urgency": "critical",
-      "suggested_action": "Add OG Anunoby to the active injury concerns section with a right hamstring injury designation. Note he practiced Saturday (May 16) and described it as less severe than his 2024 hamstring injury. Flag as a monitor item for ECF Game 1 availability and potential minutes restriction. This is a meaningful prop risk factor for any Anunoby picks in the ECF."
-    },
-    {
-      "player_or_team": "Shai Gilgeous-Alexander (OKC)",
-      "current_context_fact": "No mention of SGA winning a second consecutive MVP award in the season context document.",
-      "conflict": "Today's news confirms SGA has won his second consecutive NBA MVP award, becoming the 14th player in league history to win back-to-back MVPs. The finalists were SGA, Jokic, and Wembanyama.",
+      "player_or_team": "ORL \u2014 head coach",
+      "current_context_fact": "Head coach listed as Jamahl Mosley for ORL.",
+      "conflict": "News reports: 'Pelicans hire Jamahl Mosley, fired by Magic, as head coach' and 'How Perk, Stephen A. feel about Pelicans hiring Jamahl Mosley.' Mosley has been fired by ORL and hired by NOP.",
       "urgency": "monitor",
-      "suggested_action": "Update SGA player note to reflect he has won back-to-back MVP awards (2024-25 and 2025-26). This is contextual/biographical and does not affect prop modeling directly, but is relevant background for the WCF context."
+      "suggested_action": "Update ORL head coach entry \u2014 Mosley has been fired by ORL and hired by NOP. ORL's head coach position is now vacant or filled by a new hire. Update NOP entry: James Borrego (interim) replaced by Jamahl Mosley. Note: ORL is eliminated so this does not affect active playoff picks, but the coaching table is now incorrect."
+    },
+    {
+      "player_or_team": "SGA \u2014 WCF G1 performance and T20 streak",
+      "current_context_fact": "SGA's T20 structural lock directive states: 'The only valid question is whether T25 or T30 clears given game context.' Playoff confirmation notes G1 vs PHX (25 pts) as streak intact.",
+      "conflict": "News reports SGA 'didn't perform up to that lofty standard' in WCF G1 vs SAS, with SGA himself saying 'I have to be better.' The game went to 2OT with SAS winning 122-115. SGA's specific point total is not confirmed in headlines, but the underperformance framing and 2OT context are confirmed. The T20 streak status needs verification \u2014 if SGA scored below 20 in 2OT, the streak would be broken. However, headlines do not explicitly confirm a sub-20 game; the 'letdown' framing is relative to MVP expectations.",
+      "urgency": "monitor",
+      "suggested_action": "Verify SGA's exact point total from WCF G1. If he scored 20+, T20 lock remains intact and add game to playoff confirmation log. If he scored below 20, the historic consecutive 20-point game streak has ended \u2014 this would be the most significant player note update in the entire document. Flag as urgent verification needed before any SGA prop picks for WCF G2."
+    },
+    {
+      "player_or_team": "Cade Cunningham / DET \u2014 playoff elimination",
+      "current_context_fact": "DET is listed in the playoff bracket as advancing from R1 (defeated ORL 4-3). No R2 result is recorded. The playoff injury landscape notes Cunningham as healthy with no injury concern.",
+      "conflict": "News confirms DET was eliminated in R2 by CLE: 'Detroit Pistons see season end with 31-point loss in Game 7' (125-94). Cade Cunningham quoted: 'That game sucked.' Bickerstaff spoke post-elimination.",
+      "urgency": "critical",
+      "suggested_action": "Update DET status to ELIMINATED in R2 (lost to CLE 4-3, G7: 94-125). Add to eliminated teams list. No further Cunningham or DET player prop context is needed for active playoff picks."
     }
   ],
   "staleness_flags": []
