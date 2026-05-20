@@ -8607,5 +8607,99 @@
       "hit_rate_pct": 85.7,
       "delta_vs_overall_pp": -3.2
     }
+  },
+  {
+    "date": "2026-05-19",
+    "total_picks": 11,
+    "voided_picks": 0,
+    "hits": 10,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 90.9,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 2,
+        "hits": 1,
+        "hit_rate_pct": 50.0
+      },
+      "3PM": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "FG_MARGIN_THIN step-down rule validated across three picks (Mitchell PTS T20\u2192T15, Brunson PTS T20\u2192T15, Anunoby PTS T15\u2192T10): all three hit comfortably (29, 38, 13 actual vs 15, 15, 10 thresholds), confirming the mandatory step-down creates a structurally safer tier without sacrificing coverage \u2014 this rule is correctly calibrated and should continue to be applied without exception.",
+      "Tier-walk discipline at conservative floors proved reliable in an OT game (NYK 115, CLE 104): the competitive game script (11-point NYK win) produced full-minute, high-output performances from nearly all players, and every PTS pick hit by wide margins \u2014 Brunson 38 vs T15, Mitchell 29 vs T15, Mobley 15 vs T10, Harden 15 vs T10, Bridges 18 vs T10, Anunoby 13 vs T10 \u2014 validating that stepped-down tiers in playoff G1 contexts remain sound even when the pre-game analysis flagged multiple caution signals.",
+      "The Harden AST dossier update (5/5 prior playoffs below RS career avg, trajectory net_up but still suppressed vs RS) is correctly captured as a structural risk: the T4 pick at 80% confidence missed by exactly 1 (3 actual vs 4 threshold), consistent with the dossier's finding that Harden's playoff AST runs approximately 1 below his RS career average. The within-series 'bulletproof' framing from H27 did not protect a G1 opening-series context where no within-series baseline yet existed.",
+      "Mobley REB T6 at 80% confidence hit with a 14-actual vs 6-threshold margin \u2014 the most emphatic single-game validation of his playoff rebounding floor in this series. The 25th-percentile gate analysis (3rd-lowest in L10 \u2265 7 > 6) was confirmed correct by an extraordinary 14-rebound output; the conservative 80% cap applied by the analyst was appropriate given the G1 new-series context.",
+      "Anunoby 3PM T1 (trend=down step from T2\u2192T1) hit at exact threshold (1 actual vs 1 pick value) \u2014 the mandatory trend=down step-down rule correctly protected against a higher-tier overshoot while still capturing a valid pick. The 'capped at 80% for non-iron-floor 3PM' rule held, and the actual outcome (exactly 1 three) confirms T1 was the structurally correct landing tier after the step."
+    ],
+    "lessons": [
+      "Harden AST T4 in a G1 series-opener context: the H27 'bulletproof' AST designation (100% in mid/late playoff games) was misapplied to a G1 opening game where no within-series baseline exists. The dossier update explicitly states that Harden's AST is stable WITHIN a series but consistently suppressed vs regular-season averages (~1 below RS career), and that high tiers (T6+) are not supported by career playoff data. In G1 of a new series, the within-series stability anchor has no foundation \u2014 the pick at 80% at T4 effectively treated G1 as a mid-series game, which was analytically incorrect. The 8/10 hit_rate_display reflects the full-season quant window, but the series-specific (R2 vs NYK) baseline was zero at pick time, and the general playoff suppression signal should have driven confidence closer to 72-75% rather than 80%.",
+      "The post-game news notes a possible lingering hand injury from the prior series that may have affected Harden's playmaking in G1. This was not flagged in the injury report (NOT_LISTED at check time) and therefore could not have been incorporated into the pick. However, when carry-over injury language appears in post-series news, the workflow should flag this as a risk factor for the opening game of the subsequent series \u2014 particularly for a playmaking-dependent prop like AST."
+    ],
+    "recommendations": [
+      "For AST picks on James Harden in G1 of any new playoff series: apply a G1-new-series penalty of -8pp to confidence (net of the H27 'bulletproof' designation) and cap confidence at 75% regardless of H27 framing. The bulletproof AST designation is validated within a series after 1-2 games establish a baseline, not in advance of G1 where the opponent's specific defensive scheme against Harden's playmaking is untested. The dossier update's 'avoid high tiers (T6+) based on RS AST volume' directive extends to T4 in G1 contexts: prefer T2 at 75-78% confidence until at least one game of within-series data is available.",
+      "Implement a cross-series carry-over injury scan for the opening game of each new playoff series: when post-game news from the prior series mentions a non-listed injury (e.g. 'lingering hand injury' for Harden), flag the player's playmaking and shooting props for the next series G1 with a -5pp confidence penalty even if the injury report shows NOT_LISTED. This is a workflow enhancement, not a pick selection rule change, but it directly addresses the information gap that contributed to the Harden AST miss.",
+      "The H27 AST 'bulletproof' designation should carry an explicit game-number gate in the tier_walk evaluation: 'bulletproof applies to games G2+ within a series only.' For G1, use the career playoff cross-series suppression signal (5/5 below RS, ~1 below RS career average) as the primary confidence anchor and treat within-series stability as a forward-looking expectation rather than a current pick justification. This prevents the misapplication observed in this pick and is consistent with the dossier update's explicit framing.",
+      "The 76-80% confidence band went 2/3 (66.7%) against an expected 78.0% \u2014 the single miss (Harden AST at 80%) accounts for the entire underperformance. No systemic recalibration is warranted from one miss in this band, but the analyst should monitor whether AST picks in the 76-80% band for primary playmakers in G1 new-series contexts carry disproportionate miss risk. If this pattern appears in R2 G1 contexts as well, consider capping AST picks for primary playmakers at 75% in series-opening games as a standing rule."
+    ],
+    "miss_details": [
+      {
+        "player_name": "James Harden",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 GAME CONTEXT: CLE @ NYK final 104-115, NYK won by 11 \u2014 COMPETITIVE game script. No blowout context; full minutes were played by all parties (Harden logged 42 minutes confirmed). Game script is not a causal factor for this miss. STEP 1 \u2014 ACTIVITY: Harden played 42 minutes and scored 15 points, confirming full activity. The miss is stat-specific (AST = 3 vs threshold 4). STEP 2 \u2014 CLASSIFICATION: No injury_exit in post-game news (web recap mentions a possible hand injury but he played 42 full minutes without a mid-game exit \u2014 not an injury_event). Not a workflow_gap (NOT_LISTED pre-game). The pick at 80% confidence on AST T4 in a G1 new-series context represents a model_gap_rule: the signal existed (dossier update explicitly states Harden's playoff AST runs ~1 below RS career, 5/5 prior playoffs below RS, trajectory net_up but still suppressed), but the analyst rule misapplied the H27 'bulletproof' AST designation to a G1 game where no within-series baseline had been established. The 'bulletproof' framing is validated WITHIN a series (H31) but does not constitute a G1 baseline \u2014 the dossier update explicitly states 'trust dossier's within-series stability but do NOT extrapolate to high tiers (T6+) based on RS AST volume.' The same principle applies to T4 in a G1 context: without any within-series games, the career playoff suppression signal (\u22481 below RS career) should have governed. At RS career ~6.3 APG, playoff suppression of ~1 unit pushes the expected playoff floor to ~5.3 APG, still above T4 \u2014 but in a G1 road game vs a new opponent with an adjusted scheme and a reported (non-listed) hand issue, the margin was too thin for 80% confidence. STEP 3 \u2014 ORIGINAL REASONING CRITIQUE: The reasoning correctly identified T4 as the best qualifying tier (skipping T6 due to VOLATILE+raw_avgs \u2265 6.0 penalty logic) and noted the H27 'bulletproof' AST designation alongside 6/7 R2 vs DET. The flaw was treating the 6/7 DET series data and the H27 designation as directly transferable to a G1 context vs a new opponent (NYK) with a different defensive scheme \u2014 this is the specific rule gap. The analyst applied -5% for new-series and landed at 80%, but the new-series penalty should have been steeper given that the 'bulletproof' evidence is retrospective (within DET/TOR series) and the career suppression data is prospective (applies to any new series G1). STEP 4 \u2014 HIT RATE: hit_rate_display = '8/10' at T4 (combined R2 vs DET 6/7 and TOR series 6/7 per tier_walk). This is a strong rate, but it reflects within-series performance \u2014 the G1 new-series context was treated as equivalent to a mid-series game, which was the analytical error. STEP 5 \u2014 TIER WALK: The walk correctly rejected T6 (VOLATILE + raw_avgs \u2265 6.0 = -8pp penalty cascade) and landed at T4 as the correct tier. No tier_skip_error or data_conflict. The walk was technically sound; the confidence calibration at that tier in a G1 context was the issue. STEP 6 \u2014 AMENDMENT: No lineup_update sub-object present \u2014 the afternoon agent did not flag a downside amendment. Post-game news notes a possible lingering hand injury from the prior series, which was not captured by the NOT_LISTED injury check and was therefore unavailable to the analyst at pick time. This amplifies the model_gap_rule classification: the rule for applying the H27 bulletproof designation without a G1 gate allowed the confidence to remain at 80% despite structural suppression signals that warranted a lower ceiling in a series-opening context."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 9,
+      "hits": 8,
+      "misses": 1,
+      "hit_rate_pct": 88.9,
+      "delta_vs_overall_pp": -2.0
+    }
   }
 ]
