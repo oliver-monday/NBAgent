@@ -1,60 +1,56 @@
 {
-  "date": "2026-05-19",
-  "generated_at": "2026-05-19T09:18:00.483676-07:00",
+  "date": "2026-05-20",
+  "generated_at": "2026-05-20T09:26:20.698119-07:00",
   "player_notes": {
-    "karl-anthony towns": "Towns has shifted into a primary playmaking role ('Point KAT') for NYK, boosting his assists upside entering the ECF vs CLE.",
-    "jalen brunson": "Brunson identified as a top bet/DFS play for Knicks-Cavs Game 1; no injury concerns noted.",
-    "mikal bridges": "Bridges flagged as a top bet/DFS play alongside Brunson for ECF opener vs CLE.",
-    "donovan mitchell": "Mitchell led CLE to a dominant Game 7 win; entering ECF vs NYK with momentum, no injury concerns noted."
+    "jalen brunson": "Dropped 38 points in Game 1 OT win vs. Cavs, sparking a 22-point 4th-quarter comeback. High confidence in points and assists props heading into Game 2.",
+    "james harden": "Was relentlessly targeted and exploited by Brunson in Game 1; poor defensive performance may signal reduced effectiveness on both ends. Monitor usage if Cavs adjust.",
+    "shai gilgeous-alexander": "Self-admitted subpar Game 1 vs. Spurs despite winning MVP; expect bounce-back attempt in Game 2, but Spurs defense held him in check.",
+    "chet holmgren": "Criticized after being outplayed by Wembanyama in Game 1; potential confidence/minutes concern if Thunder make lineup/role adjustments for Game 2.",
+    "victor wembanyama": "Dominant Game 1 performance vs. Thunder; points, rebounds, blocks props have elevated floor with Spurs holding 1-0 series lead.",
+    "dylan harper": "Electric Game 1 performance for Spurs vs. Thunder; emerging role warrants attention on points and assists props for Game 2."
   },
   "game_notes": {
-    "SAS vs OKC": "De'Aaron Fox (right ankle sprain) was OUT for Game 1; monitor status for Game 2. His absence impacts SAS guard rotation and increases usage for Harper and others."
+    "SAS vs OKC": "Spurs lead 1-0; Wembanyama dominant, SGA underperformed. Thunder may adjust rotation/scheme, watch for minutes changes around Holmgren.",
+    "NYK vs CLE": "Knicks lead 1-0 after historic comeback; Cavs coach Atkinson under scrutiny for late-game management. Cavs may adjust Harden's role defensively in Game 2."
   },
   "raw_item_count": 50,
-  "filtered_item_count": 47,
+  "filtered_item_count": 46,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "De'Aaron Fox (SAS)",
-      "current_context_fact": "The playoff series diaries and injury notes treat Fox as an active participant in SAS's R2 series vs OKC (West Finals). Fox appeared in R1 series clincher (G5 vs POR: 21/3/9, 8-14 FG, 2 3PM, 34 min).",
-      "conflict": "Today's news explicitly states: 'Spurs guard De'Aaron Fox was ruled out for Game 1 of the West finals against the Thunder on Monday night because of a right ankle sprain.' This is a confirmed absence for WCF G1.",
+      "player_or_team": "Dallas Mavericks / Jason Kidd",
+      "current_context_fact": "DAL | Jason Kidd | (no note)",
+      "conflict": "Today's news confirms Jason Kidd has been fired as Mavericks coach after five seasons (multiple headlines: 'Jason Kidd out as Mavericks coach after five seasons', 'mutual decision Tuesday evening'). Masai Ujiri wanted a 'clean slate' per Shams Charania.",
       "urgency": "critical",
-      "suggested_action": "Add Fox to ACTIVE WITH DOCUMENTED CONCERNS (or a new WCF injury section): Fox ruled OUT for WCF G1 (SAS vs OKC) with a right ankle sprain. His availability for G2 and beyond is unknown. SAS's offensive structure without Fox shifts greater load to Castle, Harper, Vassell, and Wembanyama. Do not assume Fox availability until cleared."
+      "suggested_action": "Update the HEAD COACHES table: DAL entry should reflect Kidd is no longer coach. Mark as 'vacant' or update with new hire if announced. Note: DAL is eliminated from playoffs so this has no immediate prop impact, but the roster/coaching table is factually wrong."
     },
     {
-      "player_or_team": "SAS vs OKC \u2014 WCF G1 result",
-      "current_context_fact": "The season context document contains no entry for the WCF (SAS vs OKC) \u2014 the playoff series diaries end at R1. The bracket shows SAS and OKC as R2 participants but no game results are recorded.",
-      "conflict": "Multiple news items confirm WCF G1 has already been played: 'Victor Wembanyama had 41 points and 24 rebounds... San Antonio Spurs beat the Oklahoma City Thunder 122-115 in double overtime.' SAS leads 1-0. SGA said 'I have to be better' after the loss. Dylan Harper had 24 points and a team playoff-record 7 steals.",
+      "player_or_team": "NYK vs CLE \u2014 Round 2 series context",
+      "current_context_fact": "The season context document contains no R2 series diary entries. The playoff bracket shows (3) NYK vs (4) CLE as an R1 matchup, and both teams advanced (CLE won R1 4-3 vs TOR, NYK won R1 4-2 vs ATL). No R2 matchup or game results are recorded.",
+      "conflict": "Multiple news items confirm NYK vs CLE is now the Eastern Conference Finals (not R2 \u2014 this is the ECF/R3 level), and Game 1 has already been played: NYK defeated CLE 115-104 in OT, with Brunson scoring 38 points and the Knicks erasing a 22-point fourth-quarter deficit. NYK leads the series 1-0. The series is described as the 'Eastern Conference finals.' This means both teams advanced through R2 as well, which is entirely unrecorded in the context doc.",
       "urgency": "critical",
-      "suggested_action": "Add WCF series diary entry: SAS vs OKC G1 (May 18) \u2014 SAS 122, OKC 115 (2OT). Wembanyama 41/24. Harper 24 pts, 7 steals (team playoff record). Fox OUT (right ankle sprain). SGA underperformed by his own admission. SAS leads 1-0. Update playoff bracket/standings to reflect SAS 1-0 series lead."
+      "suggested_action": "Add R2 results for both NYK and CLE (their R2 opponents and outcomes are not in the news but must have occurred). Add ECF series diary entry: NYK vs CLE, NYK leads 1-0 after Game 1 (NYK 115, CLE 104 OT). Record Brunson 38 pts, 22-point comeback in Q4. Update playoff bracket/round tracking. This is a major gap \u2014 multiple rounds of results are missing from the context doc."
     },
     {
-      "player_or_team": "NYK vs CLE \u2014 ECF series status",
-      "current_context_fact": "The season context document shows no ECF entries. The bracket shows NYK and CLE as R2 participants but no results beyond R1 are recorded.",
-      "conflict": "Multiple news items confirm the ECF (NYK vs CLE) is underway or beginning imminently: 'Cavaliers-Knicks series opener in the Eastern Conference finals,' 'Knicks, Cavaliers open East finals at Madison Square Garden,' predictions being made for the series. Additionally, DET was eliminated by CLE in R2 (Game 7, 125-94 loss: 'Detroit Pistons see season end with 31-point loss in Game 7'), meaning CLE defeated DET in R2 to advance.",
+      "player_or_team": "SAS vs OKC \u2014 Western Conference Finals",
+      "current_context_fact": "The season context document contains no WCF entries. OKC advanced past PHX (4-0 sweep) and SAS advanced past POR (4-1). No R2 matchup results are recorded for either team.",
+      "conflict": "Multiple news items confirm SAS vs OKC is now the Western Conference Finals, and Game 1 has already been played with SAS winning ('Spurs, Thunder in Game 2', 'Dylan Harper talks epic Game 1 win over Thunder', 'Wembanyama and the Spurs visit Oklahoma City with 1-0 series lead', 'Thunder remain championship favorites despite a Game 1 loss'). SAS leads 1-0. Dylan Harper had an 'electric performance.' SGA said 'I have to be better' and Stephen A. noted if Thunder lose Game 2 'they're done.' This means both teams advanced through R2, which is entirely unrecorded.",
       "urgency": "critical",
-      "suggested_action": "Update playoff bracket: CLE defeated DET 4-3 in R2 (G7: CLE 125, DET 94). NYK advanced from R2 (opponent and result not confirmed in news but implied by ECF setup). Add ECF series: NYK vs CLE \u2014 Game 1 at MSG, series just beginning as of May 19. Update eliminated teams list to include DET."
+      "suggested_action": "Add R2 results for both OKC and SAS. Add WCF series diary entry: SAS vs OKC, SAS leads 1-0 after Game 1 (SAS won, Harper had a standout performance, SGA underperformed by his standards). Update playoff bracket to reflect conference finals stage. Stephen A.'s 'they're done if they lose G2' comment implies Game 2 is imminent \u2014 this is an active series needing tracking."
     },
     {
-      "player_or_team": "ORL \u2014 head coach",
-      "current_context_fact": "Head coach listed as Jamahl Mosley for ORL.",
-      "conflict": "News reports: 'Pelicans hire Jamahl Mosley, fired by Magic, as head coach' and 'How Perk, Stephen A. feel about Pelicans hiring Jamahl Mosley.' Mosley has been fired by ORL and hired by NOP.",
+      "player_or_team": "Shai Gilgeous-Alexander (OKC)",
+      "current_context_fact": "SGA's consecutive 20-point games record is described as intact through R1. The T20 structural lock directive applies. No R2 or WCF performance data is present.",
+      "conflict": "SGA 'says I have to be better after Thunder letdown vs. Spurs' in WCF Game 1, and was 'presented his second straight MVP trophy in a pregame ceremony.' The MVP award is a new confirmed fact (back-to-back MVP). His Game 1 WCF performance is described as a 'letdown' \u2014 unclear if he scored below 20, but the framing suggests underperformance. The T20 streak status in WCF G1 needs confirmation.",
       "urgency": "monitor",
-      "suggested_action": "Update ORL head coach entry \u2014 Mosley has been fired by ORL and hired by NOP. ORL's head coach position is now vacant or filled by a new hire. Update NOP entry: James Borrego (interim) replaced by Jamahl Mosley. Note: ORL is eliminated so this does not affect active playoff picks, but the coaching table is now incorrect."
+      "suggested_action": "Confirm whether SGA's 20-point consecutive game streak survived WCF G1 (news says 'letdown' but does not confirm sub-20 output). Add WCF G1 performance data once available. Update context to reflect SGA won his second consecutive MVP award (confirmed by news). If streak is intact, reinforce T20 lock. If broken, this is a critical update to the entire SGA prop framework."
     },
     {
-      "player_or_team": "SGA \u2014 WCF G1 performance and T20 streak",
-      "current_context_fact": "SGA's T20 structural lock directive states: 'The only valid question is whether T25 or T30 clears given game context.' Playoff confirmation notes G1 vs PHX (25 pts) as streak intact.",
-      "conflict": "News reports SGA 'didn't perform up to that lofty standard' in WCF G1 vs SAS, with SGA himself saying 'I have to be better.' The game went to 2OT with SAS winning 122-115. SGA's specific point total is not confirmed in headlines, but the underperformance framing and 2OT context are confirmed. The T20 streak status needs verification \u2014 if SGA scored below 20 in 2OT, the streak would be broken. However, headlines do not explicitly confirm a sub-20 game; the 'letdown' framing is relative to MVP expectations.",
-      "urgency": "monitor",
-      "suggested_action": "Verify SGA's exact point total from WCF G1. If he scored 20+, T20 lock remains intact and add game to playoff confirmation log. If he scored below 20, the historic consecutive 20-point game streak has ended \u2014 this would be the most significant player note update in the entire document. Flag as urgent verification needed before any SGA prop picks for WCF G2."
-    },
-    {
-      "player_or_team": "Cade Cunningham / DET \u2014 playoff elimination",
-      "current_context_fact": "DET is listed in the playoff bracket as advancing from R1 (defeated ORL 4-3). No R2 result is recorded. The playoff injury landscape notes Cunningham as healthy with no injury concern.",
-      "conflict": "News confirms DET was eliminated in R2 by CLE: 'Detroit Pistons see season end with 31-point loss in Game 7' (125-94). Cade Cunningham quoted: 'That game sucked.' Bickerstaff spoke post-elimination.",
+      "player_or_team": "NBA coaching carousel \u2014 ORL, CHI, NOP, MIL",
+      "current_context_fact": "NOP | James Borrego (interim) | Replaced Willie Green, Nov 2025. MIL | Doc Rivers. ORL | Jamahl Mosley. CHI | Billy Donovan.",
+      "conflict": "News headline states 'Orlando and Chicago are still looking for long-term fits, while New Orleans and Milwaukee have found their next coaches.' This implies: (1) ORL has parted with Jamahl Mosley and has a coaching vacancy, (2) CHI has parted with Billy Donovan and has a vacancy, (3) NOP has hired a permanent coach (replacing interim Borrego), (4) MIL has hired a new coach (replacing Doc Rivers). All four of these represent potential conflicts with the HEAD COACHES table, though the specific new hires are not named in the headlines.",
       "urgency": "critical",
-      "suggested_action": "Update DET status to ELIMINATED in R2 (lost to CLE 4-3, G7: 94-125). Add to eliminated teams list. No further Cunningham or DET player prop context is needed for active playoff picks."
+      "suggested_action": "Investigate and update HEAD COACHES table for ORL (Mosley likely out), CHI (Donovan likely out), NOP (new permanent hire replacing Borrego), and MIL (new hire replacing Rivers). These are all eliminated teams so no immediate playoff prop impact, but the coaching table will be stale for next season context."
     }
   ],
   "staleness_flags": []
