@@ -14,10 +14,10 @@
       "tier_considered": 4,
       "reason": "No FanDuel market available for SGA AST at any tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 4"
   },
   {
     "date": "2026-05-20",
@@ -34,10 +34,10 @@
       "tier_considered": 1,
       "reason": "No FanDuel market available for SGA 3PM at any tier"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
   },
   {
     "date": "2026-05-20",
@@ -56,10 +56,10 @@
       "final_confidence_before_skip": 67,
       "minimum_floor": 72
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 17.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 17.0 \u2265 tier 8"
   },
   {
     "date": "2026-05-20",
@@ -78,10 +78,10 @@
       "dvp_rating": "tough",
       "reason": "trend=down + vs_tough=54% (tough DvP) triggers unconditional 3PM hard skip. No iron_floor. 7/10 at T1 insufficient to override."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-20",
@@ -100,10 +100,10 @@
       "final_confidence_before_skip": 62,
       "minimum_floor": 68
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 4"
   },
   {
     "date": "2026-05-20",
@@ -122,10 +122,10 @@
       "final_confidence_before_skip": 63,
       "minimum_floor": 68
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 22.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 22.0 \u2265 tier 10"
   },
   {
     "date": "2026-05-20",
@@ -144,9 +144,9 @@
       "final_confidence_before_skip": 64,
       "minimum_floor": 68
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 10"
   }
 ]

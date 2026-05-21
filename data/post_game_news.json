@@ -1,23 +1,35 @@
 {
-  "date": "2026-05-19",
-  "generated_at": "2026-05-20T09:24:22.111611-07:00",
+  "date": "2026-05-20",
+  "generated_at": "2026-05-21T09:14:12.607185-07:00",
   "players": {
-    "donovan mitchell": {
+    "chet holmgren": {
       "event_type": "no_data",
-      "detail": "Played 41 minutes, scored 29 points in OT loss",
-      "minutes_played": 41.0,
+      "detail": "Played 27 minutes with no confirmed injury exit; missed rebound prop with 4 rebounds in 27 minutes",
+      "minutes_played": 27.0,
+      "source_url": null,
+      "confidence": "inferred",
+      "injury_status_at_check": "NOT_LISTED",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": null,
+      "web_narrative": "Holmgren played 27 minutes and finished with 4 rebounds, falling short of the over 6 line. No confirmed injury exit; limited minutes may reflect normal playoff rotation management or matchup decisions."
+    },
+    "de'aaron fox": {
+      "event_type": "dnp",
+      "detail": "Ruled out for Game 2 of WCF due to ankle injury",
+      "minutes_played": 0,
       "source_url": null,
       "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
+      "injury_status_at_check": "QUESTIONABLE",
       "injury_language_detected": false,
       "injury_scan_term": null,
       "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "evan mobley": {
+    "devin vassell": {
       "event_type": "no_data",
-      "detail": "Played 40 minutes, no injury flags",
-      "minutes_played": 40.0,
+      "detail": "Played 38 minutes with no flags or external sources indicating any issue",
+      "minutes_played": 38.0,
       "source_url": null,
       "confidence": "inferred",
       "injury_status_at_check": "NOT_LISTED",
@@ -26,10 +38,22 @@
       "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "jalen brunson": {
+    "dylan harper": {
+      "event_type": "injury_exit",
+      "detail": "Exited Game 2 in the third quarter with a right hamstring injury and did not return; ruled out for remainder of game",
+      "minutes_played": 25.0,
+      "source_url": null,
+      "confidence": "confirmed",
+      "injury_status_at_check": "QUESTIONABLE",
+      "injury_language_detected": false,
+      "injury_scan_term": null,
+      "espn_fetch_ok": null,
+      "web_narrative": "Harper suffered a right hamstring injury in the third quarter and was ruled out for the remainder of the game, finishing with 2 rebounds in 25 minutes \u2014 well below the over 4 rebound line. The early exit directly caused him to miss his rebound prop."
+    },
+    "shai gilgeous-alexander": {
       "event_type": "no_data",
-      "detail": "Played 46 minutes including OT, scored 38 points in win",
-      "minutes_played": 46.0,
+      "detail": "Played 38 minutes, posting 30 points, 4 rebounds, and 9 assists in a normal game performance",
+      "minutes_played": 38.0,
       "source_url": null,
       "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
@@ -38,22 +62,10 @@
       "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "james harden": {
+    "stephon castle": {
       "event_type": "no_data",
-      "detail": "Played 42 minutes, recorded only 3 assists vs 4 assist prop",
-      "minutes_played": 42.0,
-      "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": null,
-      "web_narrative": "Harden finished with just 3 assists in 42 minutes of the Game 1 OT loss, falling one short of the over line. He struggled offensively (5-16 FG) and may have been hampered by a lingering hand injury noted during the prior series, which could have affected his playmaking."
-    },
-    "jarrett allen": {
-      "event_type": "no_data",
-      "detail": "Played 35 minutes, no injury flags",
-      "minutes_played": 35.0,
+      "detail": "Played 38 minutes with 25 points, 5 rebounds, and 8 assists in a normal game performance",
+      "minutes_played": 38.0,
       "source_url": null,
       "confidence": "confirmed",
       "injury_status_at_check": "NOT_LISTED",
@@ -62,24 +74,12 @@
       "espn_fetch_ok": null,
       "web_narrative": null
     },
-    "mikal bridges": {
+    "victor wembanyama": {
       "event_type": "no_data",
-      "detail": "Played 42 minutes, scored 18 points in OT win",
-      "minutes_played": 42.0,
+      "detail": "Played 37 minutes with no flags or external sources indicating any issue",
+      "minutes_played": 37.0,
       "source_url": null,
-      "confidence": "confirmed",
-      "injury_status_at_check": "NOT_LISTED",
-      "injury_language_detected": false,
-      "injury_scan_term": null,
-      "espn_fetch_ok": null,
-      "web_narrative": null
-    },
-    "og anunoby": {
-      "event_type": "no_data",
-      "detail": "Played 34 minutes despite hamstring concern; cleared pregame",
-      "minutes_played": 34.0,
-      "source_url": null,
-      "confidence": "confirmed",
+      "confidence": "inferred",
       "injury_status_at_check": "NOT_LISTED",
       "injury_language_detected": false,
       "injury_scan_term": null,
