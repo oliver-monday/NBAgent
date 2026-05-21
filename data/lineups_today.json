@@ -1,35 +1,64 @@
 {
   "asof_date": "2026-05-21",
-  "built_at_utc": "2026-05-21T23:17:27Z",
+  "built_at_utc": "2026-05-21T23:38:29Z",
   "source": "rotowire",
-  "CLE": {
+  "NYK": {
     "starters": [
       {
         "position": "PG",
-        "name": "James Harden",
+        "name": "Jalen Brunson",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "Donovan Mitchell",
+        "name": "Josh Hart",
         "injury_status": null
       },
       {
         "position": "SF",
-        "name": "Dean Wade",
+        "name": "Mikal Bridges",
         "injury_status": null
       },
       {
         "position": "PF",
-        "name": "Evan Mobley",
+        "name": "OG Anunoby",
         "injury_status": null
       },
       {
         "position": "C",
-        "name": "Jarrett Allen",
+        "name": "Karl-Anthony Towns",
         "injury_status": null
       }
     ],
+    "confirmed": false
+  },
+  "snapshot_at_analyst_run": {
+    "written_at": "2026-05-21T09:17:03.017349-07:00",
+    "teams": {
+      "CLE": {
+        "starters": [
+          "James Harden",
+          "Donovan Mitchell",
+          "Dean Wade",
+          "Evan Mobley",
+          "Jarrett Allen"
+        ],
+        "confirmed": false
+      },
+      "NYK": {
+        "starters": [
+          "Jalen Brunson",
+          "Josh Hart",
+          "Mikal Bridges",
+          "OG Anunoby",
+          "Karl-Anthony Towns"
+        ],
+        "confirmed": false
+      }
+    }
+  },
+  "CLE": {
+    "starters": [],
     "confirmed": false,
     "projected_minutes": [
       {
@@ -123,60 +152,5 @@
         "injury_status": null
       }
     ]
-  },
-  "NYK": {
-    "starters": [
-      {
-        "position": "PG",
-        "name": "Jalen Brunson",
-        "injury_status": null
-      },
-      {
-        "position": "SG",
-        "name": "Josh Hart",
-        "injury_status": null
-      },
-      {
-        "position": "SF",
-        "name": "Mikal Bridges",
-        "injury_status": null
-      },
-      {
-        "position": "PF",
-        "name": "OG Anunoby",
-        "injury_status": null
-      },
-      {
-        "position": "C",
-        "name": "Karl-Anthony Towns",
-        "injury_status": null
-      }
-    ],
-    "confirmed": false
-  },
-  "snapshot_at_analyst_run": {
-    "written_at": "2026-05-21T09:17:03.017349-07:00",
-    "teams": {
-      "CLE": {
-        "starters": [
-          "James Harden",
-          "Donovan Mitchell",
-          "Dean Wade",
-          "Evan Mobley",
-          "Jarrett Allen"
-        ],
-        "confirmed": false
-      },
-      "NYK": {
-        "starters": [
-          "Jalen Brunson",
-          "Josh Hart",
-          "Mikal Bridges",
-          "OG Anunoby",
-          "Karl-Anthony Towns"
-        ],
-        "confirmed": false
-      }
-    }
   }
 }
