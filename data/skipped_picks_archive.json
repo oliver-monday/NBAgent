@@ -9053,5 +9053,162 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 12.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-05-21",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "opponent": "CLE",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Jalen Brunson",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "base_confidence": 70,
+      "volatile_penalty": -8,
+      "final_confidence": 62,
+      "floor": 68,
+      "reason": "VOLATILE+T6 -8pp penalty (raw_avgs AST \u2265 6.0 but < 8.0 triggers -8pp not hard skip); final 62% below 68% AST floor"
+    },
+    "actual_value": 14.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 14.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-21",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "NYK",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Donovan Mitchell",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "HARD AVOID dossier directive + VOLATILE overrides iron_floor tag; career playoff 3PM actual hit rate 43% vs 76% assigned \u2014 structurally below 75% 3PM floor"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-05-21",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "opponent": "NYK",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Jarrett Allen",
+      "prop_type": "PTS",
+      "tier_considered": 10,
+      "base_confidence": 80,
+      "volatile_penalty": -3,
+      "fg_margin_thin_penalty": -5,
+      "tough_defense_penalty": -7,
+      "final_confidence": 65,
+      "floor": 68,
+      "reason": "FG_MARGIN_THIN at minimum tier cannot step down; vs_tough=61% creates material downgrade; cumulative penalties drop below 68% floor"
+    },
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-05-21",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "opponent": "CLE",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "no FanDuel market available for Karl-Anthony Towns on any prop"
+    },
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-05-21",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "opponent": "CLE",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "REB",
+      "tier_considered": 8,
+      "reason": "no FanDuel market available for Karl-Anthony Towns on any prop"
+    },
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 8"
+  },
+  {
+    "date": "2026-05-21",
+    "player_name": "Mikal Bridges",
+    "team": "NYK",
+    "opponent": "CLE",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Mikal Bridges",
+      "prop_type": "PTS",
+      "tier_considered": 10,
+      "base_confidence": 75,
+      "volatile_penalty": -3,
+      "min_floor_penalty": -5,
+      "final_confidence": 67,
+      "floor": 68,
+      "reason": "min_floor=20.8 < 24, no proj_min available, not elimination game \u2014 min_floor penalty at minimum PTS tier drops confidence below 68% floor"
+    },
+    "actual_value": 19.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 19.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-05-21",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "NYK",
+    "prop_type": "PTS",
+    "tier_considered": 20,
+    "direction": "OVER",
+    "skip_reason": "fg_margin_thin_tier_step",
+    "rule_context": {
+      "player_name": "Donovan Mitchell",
+      "prop_type": "PTS",
+      "tier_considered": 20,
+      "stepped_to": 15,
+      "fg_margin_flag": "FG_MARGIN_THIN:5%",
+      "reason": "FG_MARGIN_THIN triggers mandatory step T20\u2192T15; T15 emitted as separate pick at 80% confidence"
+    },
+    "actual_value": 26.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 26.0 \u2265 tier 20"
   }
 ]
