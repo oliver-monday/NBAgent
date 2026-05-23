@@ -1,67 +1,66 @@
 {
-  "date": "2026-05-22",
-  "generated_at": "2026-05-22T08:49:05.903097-07:00",
+  "date": "2026-05-23",
+  "generated_at": "2026-05-23T07:29:35.387529-07:00",
   "player_notes": {
-    "jalen williams": "Day-to-day with a left hamstring injury after exiting Game 2; status is game-to-game. If he misses or is limited, significant usage shifts to SGA and other Thunder wings \u2014 fade Williams props until cleared.",
-    "de'aaron fox": "Out again for Game 3 with a right high ankle sprain (missed Game 2 as well). Avoid all Fox props; his absence elevates usage for other Spurs guards.",
-    "dylan harper": "Suffered a right hamstring injury in Game 2 and is set for an MRI. Status highly uncertain \u2014 avoid Harper props until MRI results known.",
-    "shai gilgeous-alexander": "Scored 30 in Game 2 with full usage; no injury concerns noted. Elevated role further if Jalen Williams misses Game 3 \u2014 positive lean on SGA scoring/assists props."
+    "jalen williams": "Out for Game 4 vs. Spurs with a left hamstring injury. Significant minutes/usage shift \u2014 monitor OKC bench and SGA usage bumps.",
+    "de'aaron fox": "Cleared to play in Game 4 vs. Thunder despite ankle injury. No known restriction mentioned.",
+    "dylan harper": "Cleared to play in Game 4 vs. Thunder despite adductor injury. No known restriction mentioned."
   },
   "game_notes": {
-    "OKC vs SAS": "Spurs are without De'Aaron Fox (ankle) and Dylan Harper (hamstring/MRI pending), severely thinning their guard rotation. Thunder's Jalen Williams is day-to-day with a hamstring injury \u2014 his absence would further concentrate OKC's offense through SGA."
+    "OKC vs SAN": "Jalen Williams (hamstring) is out, boosting OKC bench usage \u2014 bench scored 76 pts in Game 3. Fox and Harper both cleared to play for San Antonio."
   },
-  "raw_item_count": 50,
-  "filtered_item_count": 50,
+  "raw_item_count": 49,
+  "filtered_item_count": 49,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "Jalen Williams (OKC)",
-      "current_context_fact": "Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round \u2014 his return would restore their ceiling to its highest level. [R1 OKC vs PHX diary: Williams exited G2 of R1 with left hamstring injury, listed questionable]",
-      "conflict": "Two news items from 2026-05-21 confirm Williams exited Game 2 of the WCF (vs SAS) with a left hamstring injury and did not return, with an MRI scheduled. A third item (Shams Charania via ESPN) states Williams is 'day-to-day' with the hamstring injury. This means Williams' hamstring issue has recurred or persisted into the Western Conference Finals \u2014 the context doc's injury landscape only references his R1 hamstring injury and his apparent availability during the OKC-PHX sweep, but does not reflect this new WCF Game 2 exit.",
+      "player_or_team": "OKC vs SAS \u2014 Series Status",
+      "current_context_fact": "The season context document contains no R2 or Conference Finals series diary for OKC vs SAS. The last documented OKC series was R1 vs PHX (swept 4-0). The last documented SAS series was R1 vs POR (won 4-1).",
+      "conflict": "Multiple news items confirm OKC and SAS are now in the Western Conference Finals, with OKC leading 2-1 after winning Game 3 on the road 123-108. SGA had 26 points and 12 assists. Wembanyama had 26 points but acknowledged needing to be a better 'team player.' The series is active and ongoing.",
       "urgency": "critical",
-      "suggested_action": "Update the playoff injury landscape to reflect that Jalen Williams exited WCF Game 2 vs SAS with a left hamstring injury, is set for an MRI, and is listed day-to-day per Shams Charania. Update the WCF series diary/context to note his absence status for Game 3 and beyond. This is a primary OKC variable for all remaining WCF picks."
+      "suggested_action": "Add a WCF series diary for OKC vs SAS. Update playoff bracket to reflect Conference Finals stage. OKC leads 2-1. Key facts: SGA continues scoring (T20 lock intact), Wembanyama is healthy and playing (26 pts in G3), bench contributed 76 points in G3 comeback from 15-0 deficit."
+    },
+    {
+      "player_or_team": "NYK vs CLE \u2014 Series Status",
+      "current_context_fact": "The season context document contains no R2 or Conference Finals series diary for NYK vs CLE. The last documented NYK series was R1 vs ATL (won 4-2). The last documented CLE series was R1 vs TOR (won 4-3).",
+      "conflict": "Multiple news items confirm NYK and CLE are now in the Eastern Conference Finals, with NYK leading 2-0 after winning Game 2 109-93. Josh Hart scored a playoff career-high 26 points. Jalen Brunson had 19 points and 14 assists. CLE is down 0-2.",
+      "urgency": "critical",
+      "suggested_action": "Add an ECF series diary for NYK vs CLE. Update playoff bracket to reflect Conference Finals stage. NYK leads 2-0. Key facts: Brunson active and producing (19 pts, 14 AST in G2), Hart as a key secondary contributor, CLE facing 0-2 deficit."
+    },
+    {
+      "player_or_team": "Jalen Williams (OKC)",
+      "current_context_fact": "R2 key note states: 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round \u2014 his return would restore their ceiling to its highest level.' R1 playoff injury landscape notes him as OUT with left hamstring in the PHX series.",
+      "conflict": "Today's news confirms 'Thunder star wing Jalen Williams was ruled out for Friday night's Game 3 of the Western Conference finals with an injured left hamstring.' Williams remains OUT in the WCF (Game 3), meaning he has not returned through at least WCF G3.",
+      "urgency": "critical",
+      "suggested_action": "Update playoff injury landscape: Jalen Williams (OKC) remains OUT with left hamstring strain through WCF Game 3. Has not returned since R1. Remove any implication that his return was imminent; he is still sidelined in the Conference Finals."
     },
     {
       "player_or_team": "De'Aaron Fox (SAS)",
-      "current_context_fact": "Fox 21/3/9 (8-14 FG, 2 3PM, 34 min) delivered the series-clinching performance [R1 SAS vs POR G5 diary]. No injury noted post-R1 for Fox.",
-      "conflict": "News from 2026-05-21 confirms De'Aaron Fox sat out Game 2 of the WCF vs Thunder due to a right high ankle sprain \u2014 described as his 'second consecutive game' missed. This means Fox has missed at least Games 1 and 2 of the WCF, which is not reflected anywhere in the season context document.",
-      "urgency": "critical",
-      "suggested_action": "Add De'Aaron Fox to the active injury concerns section with: right high ankle sprain, OUT for WCF Games 1 and 2 (at minimum). Update WCF SAS vs OKC series diary to reflect his absence. Note that Stephen A. Smith commentary frames Fox's injury as influencing the series outcome. This is a critical variable for all SAS player props going forward."
+      "current_context_fact": "No injury note for Fox in the playoff injury landscape beyond the R1 SAS vs POR series diary, where he was healthy.",
+      "conflict": "News headline states 'Spurs' Harper (adductor), Fox (ankle) cleared to play in G3 vs. Thunder' \u2014 indicating Fox had an ankle injury concern heading into WCF Game 3, though he was cleared to play.",
+      "urgency": "monitor",
+      "suggested_action": "Add a note to the playoff injury landscape: De'Aaron Fox (SAS) was listed with an ankle concern heading into WCF G3 but was cleared to play. Monitor for any recurrence or game-time restriction in subsequent games."
     },
     {
       "player_or_team": "Dylan Harper (SAS)",
-      "current_context_fact": "Harper 17/3/1 (6-9 FG, 1 3PM, 26 min) [R1 SAS vs POR G5 diary \u2014 last entry for Harper, treated as healthy entering R2].",
-      "conflict": "News from 2026-05-21 reports Dylan Harper suffered a right hamstring injury during SAS's Game 2 loss to OKC in the WCF and is set for an MRI. This is a new injury with unknown severity not reflected in the context document.",
-      "urgency": "critical",
-      "suggested_action": "Add Dylan Harper to the active injury concerns section: right hamstring injury sustained in WCF Game 2, MRI pending. Update WCF SAS vs OKC series diary to note his exit. Treat his availability for Game 3 and beyond as uncertain until MRI results and updated injury report are available. This compounds SAS's injury crisis alongside Fox's ankle."
-    },
-    {
-      "player_or_team": "NYK vs CLE (Eastern Conference Finals)",
-      "current_context_fact": "The playoff bracket shows NYK (3-seed) and CLE (4-seed) as R1 opponents of ATL and TOR respectively. The season context's playoff diaries end at R1. No R2 or ECF series diary exists in the document.",
-      "conflict": "Multiple news items confirm the Knicks and Cavaliers are now in the Eastern Conference Finals, with NYK leading 2-0 (won Game 2 109-93 on 2026-05-21/22). Josh Hart scored a playoff career-high 26 points. Brunson had 19 points and 14 assists. James Harden (CLE) is referenced as being outplayed by Brunson in Game 1. The context doc has no ECF series diary and does not reflect this matchup or its current state.",
-      "urgency": "critical",
-      "suggested_action": "Create an ECF series diary for NYK vs CLE. Document that NYK leads 2-0, with Game 2 final score 109-93. Note Josh Hart's 26-point career playoff high, Brunson's 19 pts/14 AST in G2, and Harden's struggles (referenced in news as being outplayed in G1). Add R2 outcomes for both NYK and CLE (advancing past ATL and TOR respectively) to the bracket status section."
-    },
-    {
-      "player_or_team": "OKC vs SAS (Western Conference Finals)",
-      "current_context_fact": "The playoff bracket shows OKC (1-seed) and SAS (2-seed) as R1 opponents of PHX and POR respectively. The context's playoff diaries end at R1. No WCF series diary exists.",
-      "conflict": "Multiple news items confirm OKC and SAS are in the Western Conference Finals. SAS won Game 1 in double overtime 122-115 (described as the most-watched WCF Game 1 in NBA history at 9.2M viewers). OKC won Game 2 122-113 behind SGA's 30 points, evening the series 1-1. The series is now shifting to San Antonio for Game 3. The context doc has no WCF series diary and does not reflect this matchup or current series state.",
-      "urgency": "critical",
-      "suggested_action": "Create a WCF series diary for OKC vs SAS. Document that the series is tied 1-1: SAS won G1 in 2OT (122-115), OKC won G2 (122-113) behind SGA 30 pts and 21 forced turnovers. Note Fox (ankle, OUT G1 and G2), Harper (hamstring, MRI pending from G2 exit), and Jalen Williams (hamstring, MRI, day-to-day) as the critical injury variables. Add R2 advancement for both OKC and SAS to the bracket status."
-    },
-    {
-      "player_or_team": "Shai Gilgeous-Alexander (OKC)",
-      "current_context_fact": "SGA T20 structural lock status unquestioned across the full R1 series [OKC vs PHX series diary]. No WCF game data exists in context.",
-      "conflict": "News confirms SGA scored 30 points in WCF Game 2 (OKC 122-113 win over SAS), continuing his 20+ point streak into the WCF. Multiple articles reference his performance as validating his MVP status. This is new game data that should be logged.",
+      "current_context_fact": "No injury note for Dylan Harper in the playoff injury landscape. He was referenced in the R1 SAS vs POR series diary as a secondary offensive contributor (27/10/3 in G3 on 9-12 FG).",
+      "conflict": "News headline states 'Spurs' Harper (adductor), Fox (ankle) cleared to play in G3 vs. Thunder' \u2014 indicating Harper had an adductor injury concern heading into WCF Game 3, though he was cleared to play.",
       "urgency": "monitor",
-      "suggested_action": "Log SGA's WCF G2 performance (30 pts) in the new WCF series diary. T20 structural lock remains intact and confirmed through WCF G2. Begin WCF tier-walk evaluation data for T25/T30 context."
+      "suggested_action": "Add a note to the playoff injury landscape: Dylan Harper (SAS) was listed with an adductor concern heading into WCF G3 but was cleared to play. Monitor for any limitation or minutes restriction in subsequent games."
     },
     {
-      "player_or_team": "Jason Kidd (DAL)",
-      "current_context_fact": "Head coaches table lists DAL coach as Jason Kidd.",
-      "conflict": "News from 2026-05-20 reports Masai Ujiri 'addresses the media following Jason Kidd's dismissal as the Dallas Mavericks' head coach after five seasons.' Kidd has been fired from DAL.",
+      "player_or_team": "Donovan Mitchell (CLE)",
+      "current_context_fact": "R1 series diary documents Mitchell's persistent shooting slump across G3-G7 of the TOR series (five consecutive sub-30 games). R2 key note: 'Mitchell's persistent shooting slump across G3-G7 is CLE's most critical tactical variable \u2014 whether this represents a structural TOR defensive adjustment that carried into the G7 win or a correctable efficiency pattern determines his R2 ceiling.'",
+      "conflict": "News headline 'Down 0-2? Donovan Mitchell and the Cavaliers have been here before' confirms Mitchell and CLE are now in the ECF down 0-2 to NYK, indicating the series is active and Mitchell's R2 performance context is now established (CLE lost Games 1 and 2).",
       "urgency": "monitor",
-      "suggested_action": "Update the DAL head coach entry to reflect Jason Kidd's dismissal. Note DAL is eliminated from the 2026 playoffs, so this does not affect active playoff picks, but the coach table fact is stale and should be updated with 'Jason Kidd (fired May 2026)' or replaced with interim/new hire if known."
+      "suggested_action": "Add ECF series context for CLE: Mitchell and the Cavaliers are down 0-2 to NYK. Update the R2 section to reflect that the shooting slump concern from the TOR series appears to be continuing or at minimum has not been resolved through at least ECF G2, based on the 109-93 G2 loss."
+    },
+    {
+      "player_or_team": "Jalen Brunson (NYK)",
+      "current_context_fact": "R1 series diary (G6) notes: 'Brunson's left ankle status is THE critical NYK variable \u2014 his third-quarter exit in the series-clinching game introduces genuine availability and minutes-restriction uncertainty.' R2 key note flags the ankle as the primary NYK health variable.",
+      "conflict": "Today's news shows Brunson had 19 points and 14 assists in NYK's ECF Game 2 win (109-93), suggesting he is active and productive in the ECF. The 14 assists in particular indicate his playmaking is not restricted.",
+      "urgency": "monitor",
+      "suggested_action": "Update Brunson's injury status: His ECF G2 performance (19 pts, 14 AST) indicates the left ankle concern from the R1 G6 exit has not materially limited him through at least ECF G2. Downgrade from critical concern to monitor; treat as day-to-day but no longer flag as a primary availability risk unless new injury information emerges."
     }
   ],
   "staleness_flags": []
