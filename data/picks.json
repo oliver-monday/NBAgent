@@ -69403,6 +69403,18 @@
       "direction": "up",
       "revised_confidence_pct": 76,
       "revised_reasoning": "Fox OUT removes primary creator; Wemby becomes key playmaker from high post; VOLATILE limits bump."
+    },
+    "clv_warning": {
+      "type": "ast_lost_close",
+      "live_clv_pp": -1.67,
+      "morning_implied_prob": 89.5,
+      "market_implied_prob": 87.8,
+      "threshold": -0.5,
+      "proposed_penalty_pp": 5,
+      "applied": false,
+      "first_observed_at": "2026-05-22T17:15:37.889731-07:00",
+      "last_observed_at": "2026-05-22T17:15:37.889731-07:00",
+      "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
     }
   },
   {
@@ -69588,14 +69600,14 @@
     },
     "clv_warning": {
       "type": "ast_lost_close",
-      "live_clv_pp": -0.62,
+      "live_clv_pp": -1.53,
       "morning_implied_prob": 96.8,
-      "market_implied_prob": 96.2,
+      "market_implied_prob": 95.2,
       "threshold": -0.5,
       "proposed_penalty_pp": 5,
       "applied": false,
       "first_observed_at": "2026-05-22T16:19:28.593018-07:00",
-      "last_observed_at": "2026-05-22T16:43:47.957815-07:00",
+      "last_observed_at": "2026-05-22T17:15:37.889731-07:00",
       "source_backtest": "H34 \u2014 backtest_clv_ast_disagree (2026-04-30)"
     }
   },
