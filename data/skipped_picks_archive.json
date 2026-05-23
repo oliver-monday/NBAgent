@@ -9210,5 +9210,126 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 26.0 \u2265 tier 20"
+  },
+  {
+    "date": "2026-05-22",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_penalty": -8,
+      "tough_defense_penalty": -5,
+      "total_penalty": -13,
+      "final_confidence": 62,
+      "floor_required": 68,
+      "reason": "VOLATILE+T6 -8pp + tough opp_today vs_tough=59% -5pp = 62%, below 68% AST floor"
+    },
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-22",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "trend=down mandatory step-down below T1 minimum; no iron_floor on 3PM; overall=75% (not 9+/10); must skip per trend=down below-minimum rule"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-05-22",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_penalty": -3,
+      "fg_margin_thin_penalty": -3,
+      "tough_defense_penalty": -5,
+      "questionable_soft_tissue_penalty": -5,
+      "total_penalty": -16,
+      "final_confidence": 59,
+      "floor_required": 68,
+      "reason": "VOLATILE -3pp, FG_MARGIN_THIN:2% -3pp, opp_today=tough -5pp, QUES hamstring -5pp = 59%, below floor; T10 in FanDuel but not in quant-available markets shown (Williams FanDuel shows PTS T15 only, T10 not listed for Williams)"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-05-22",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "reason": "Fox confirmed OUT for WCF Game 3 per pre-game news; missed G1 and G2; all props skipped"
+    },
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-05-22",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "AST",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "De'Aaron Fox",
+      "prop_type": "AST",
+      "tier_considered": 4,
+      "reason": "Fox confirmed OUT; additionally T4 AST not in FanDuel market for Fox (markets show T8/T10/T12 only); moot as Fox is OUT"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 6.0 < tier 8"
+  },
+  {
+    "date": "2026-05-22",
+    "player_name": "Jalen Williams",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "AST",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "market_gate_reject",
+    "rule_context": {
+      "failure_mode": "player_absent",
+      "reason": "Jalen Williams not in FanDuel market data \u2014 Python gate fired after LLM violated MARKET AVAILABILITY GATE",
+      "available_tiers": null
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]

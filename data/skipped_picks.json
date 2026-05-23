@@ -17,10 +17,10 @@
       "floor_required": 68,
       "reason": "VOLATILE+T6 -8pp + tough opp_today vs_tough=59% -5pp = 62%, below 68% AST floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-22",
@@ -34,10 +34,10 @@
     "rule_context": {
       "reason": "trend=down mandatory step-down below T1 minimum; no iron_floor on 3PM; overall=75% (not 9+/10); must skip per trend=down below-minimum rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-22",
@@ -61,8 +61,8 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   },
   {
     "date": "2026-05-22",
@@ -76,10 +76,10 @@
     "rule_context": {
       "reason": "Fox confirmed OUT for WCF Game 3 per pre-game news; missed G1 and G2; all props skipped"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 15.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 15.0 \u2265 tier 15"
   },
   {
     "date": "2026-05-22",
@@ -96,10 +96,10 @@
       "tier_considered": 4,
       "reason": "Fox confirmed OUT; additionally T4 AST not in FanDuel market for Fox (markets show T8/T10/T12 only); moot as Fox is OUT"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 6.0 < tier 8"
   },
   {
     "date": "2026-05-22",
@@ -117,7 +117,7 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]

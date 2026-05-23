@@ -8908,5 +8908,120 @@
       "hit_rate_pct": 75.0,
       "delta_vs_overall_pp": 0.0
     }
+  },
+  {
+    "date": "2026-05-22",
+    "total_picks": 13,
+    "voided_picks": 1,
+    "hits": 11,
+    "misses": 2,
+    "no_data": 0,
+    "hit_rate_pct": 84.6,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 4,
+        "hits": 2,
+        "hit_rate_pct": 50.0
+      },
+      "AST": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 4,
+        "hits": 2,
+        "hit_rate_pct": 50.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "SGA PTS T20 structural lock validated again: 26 actual vs T20 pick in a competitive WCF road game (OKC won by 15) \u2014 the iron_floor directive and the streak-based pre-qualification of T20 continue to be calibrated correctly. The FG_COLD step-down from T25 to T20 was appropriate and the tier held comfortably.",
+      "Castle AST T4 at 88% confidence (100% overall, consistent tag, Fox absent) delivered 7 AST vs 4 pick \u2014 the primary ball-handler usage expansion reasoning was confirmed. The 10/10 overall hit rate on Castle AST and the explicit Fox-absence justification for expanded creation role both proved sound.",
+      "Vassell 3PM iron_floor T1 at 88% hit with 3 actual threes vs T1 \u2014 the 9/10 overall + 6/6 H2H vs OKC perfect record + trend=up combination correctly supported high confidence. Iron_floor designation on 3PM props where H2H is perfect continues to be a reliable structural anchor.",
+      "The 76-80% confidence band went 6/6 (100% actual vs 78% expected), and the 86%+ band went 3/3 (100% actual vs 90% expected) \u2014 both above-minimum bands are well-calibrated and the picks in those ranges were correctly supported by quant data. The system's confidence hierarchy is functioning.",
+      "Holmgren PTS T10 iron_floor pick at 80% correctly absorbed the dual -10pp penalty (tough defense + WCF G1 miss) and still hit with 14 actual vs T10 \u2014 the penalty structure correctly preserved the pick at a reasonable confidence level rather than skipping it, and the iron_floor designation on PTS was validated."
+    ],
+    "lessons": [
+      "Wembanyama REB T8 missed badly (4 actual vs 8 pick) in a competitive game (OKC won by 15, not a blowout). The post-game news confirms no structural explanation \u2014 a pure individual poor rebounding performance in 39 full minutes. The pick was made at 72% confidence exactly at the REB floor, driven by VOLATILE -3pp and the WCF G1/G2 series data (24 and 17 boards). The extreme sample variance within this WCF series (24\u219217\u21924) is a critical calibration data point: Wembanyama's REB output in playoff series can swing dramatically game-to-game, and the 7/10 hit rate at T8 masked this intra-series volatility. The tier walk correctly stepped down from T12 to T8 given the VOLATILE tag, but even T8 was exposed when Wemby had one of his rare poor rebounding nights.",
+      "Holmgren REB T4 missed (3 actual vs 4 pick) in the same competitive game. The pick was at 72% confidence \u2014 the minimum floor \u2014 after correctly stepping down from T6 via the 25th-percentile gate (WCF G1 actual was 4, gate correctly fired). At T4 the pick still missed by 1 with 3 actual rebounds in 28 minutes played. The miss-by-1 in a competitive game where Wembanyama is actively competing for interior boards represents genuine rebound-competition suppression. The quant 25th-pct gate worked correctly (walked from T6 to T4) but even T4 was not protected against SAS's elite interior rebounding environment with Wembanyama on the other side.",
+      "Dylan Harper PTS T10 missed as an injury exit (6 actual in 17 minutes before leaving with a right leg injury). The pick carried a QUESTIONABLE soft-tissue designation at pick time, which triggered a -5pp injury penalty. The post_game_event field on the pick confirms 'injury_exit' \u2014 the pre-game QUESTIONABLE status correctly anticipated structural risk and the penalties were applied, but the QUESTIONABLE status on a soft-tissue injury in a high-leverage WCF game ultimately materialized as a DNP-equivalent outcome. The injury trajectory from G2 (exit) to G3 (not starting) confirms the severity was underweighted at pick time.",
+      "The 70-75% confidence band went 2/5 (40.0% actual vs 72.5% expected) \u2014 a significant undercalibration at the low end. Two of the three misses (Wembanyama REB and Holmgren REB) were in this band, and both were REB props in a game featuring Wembanyama's elite interior rebounding presence. The third pick in this band that missed was Harper (injury exit). This band's underperformance is partially explained by the concentration of REB props in a single game with an elite rebounder on the other side \u2014 not a systematic calibration error, but a clustering risk."
+    ],
+    "recommendations": [
+      "Implement an intra-series REB volatility penalty for Wembanyama specifically: when WCF or ECF series REB data shows a spread of 10+ boards across first two games (e.g., 24 and 17 in G1/G2), apply an additional -5pp to REB confidence at any tier in G3+, on top of the existing VOLATILE -3pp. A player whose REB output swings 7 boards across two games is structurally more volatile than the VOLATILE tag alone captures. This is distinct from blowout game script \u2014 the swing occurred across two competitive/normal-margin games.",
+      "Add an opponent interior rebounding competition penalty for OKC player REB props when Wembanyama is the opposing center: the SAS floor compression pattern correctly describes opponent player suppression, but Wembanyama's DREB dominance (league-best DREB%, career rebounding averages) specifically compresses OKC interior REB volume on the offensive glass and contested boards. For OKC big men (Holmgren, Hartenstein) picking REB in a SAS matchup, apply an additional -5pp on any tier where pick_value \u2265 4, reflecting the structural competition. This is a model_gap_signal that the quant pipeline does not currently compute.",
+      "Establish a hard skip rule for QUESTIONABLE soft-tissue injuries (hamstring, calf, soleus, ankle) in WCF/ECF game contexts for players whose injury was documented as an in-game exit in the immediately preceding game (i.e., G2 exit \u2192 G3 QUESTIONABLE). The Harper pick correctly applied a -5pp QUESTIONABLE penalty but still ran at 70% \u2014 the minimum floor. A player who exited G2 with a soft-tissue injury and is QUESTIONABLE for G3 should be treated as DOUBTFUL-equivalent for pick purposes when the injury was a mid-game exit (not a pre-game designation), resulting in a skip rather than a floor-confidence pick.",
+      "The 70-75% confidence band clustering in REB props from a single game (two misses: Wemby REB and Holmgren REB, both OKC vs SAS G3) highlights a parlay/concentration risk: when multiple picks at the 70-75% floor share the same game and the same prop type (REB), the effective correlation between outcomes is high. The Analyst should flag when \u22652 REB picks from the same game are both at 70-75% confidence, and require at least one to step down further or be replaced with a higher-confidence alternative. This reduces slate-level exposure to correlated low-confidence REB misses.",
+      "For Holmgren REB specifically in SAS matchups: the 25th-pct gate correctly fired and walked T6\u2192T4, but T4 still missed by 1 (3 actual). The tier walk was sound, but the pick_value=4 minimum tier was reached in an environment with documented SAS floor compression (-5.0 mean miss margin), Wembanyama's interior presence, and a minutes projection of 28 (which materialized exactly). When the tier walk exhausts to the minimum tier (T4 for REB) AND the game opponent has SAS floor compression active AND the pick involves an interior/combo big man, treat this as a soft skip signal even at T4 \u2014 the combination of minimum tier + floor compression environment + elite opposing rebounder produces structural tail risk that the minimum tier exception was not designed to absorb."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "REB",
+        "pick_value": 8,
+        "actual_value": 4,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 GAME CONTEXT: OKC @ SAS final 123-108, OKC won by 15. Labeled COMPETITIVE (margin 10-19). Game script is not a causal blowout factor. STEP 1 \u2014 ACTIVITY: Player recorded 26 PTS, 3 AST, and 4 REB in 39 full minutes \u2014 fully active, no DNP or exit. STEP 2 \u2014 INJURY STATUS: NOT_LISTED at check time; post-game news confirms he played 39 minutes without any mid-game exit. No injury_exit event. The web recap explicitly states: 'No structural explanation for the rebounding shortfall is available beyond a poor individual performance on the boards.' Classification: variance. STEP 3 \u2014 ORIGINAL REASONING CRITIQUE: The analyst's reasoning cited 5/7 H2H vs OKC at T8, WCF G1=24 and G2=17 both clearing T8, SAS's elite DREB% as a home-court anchor, and no blowout risk. All contextual inputs were sound. The miss was a pure individual off-night (4 boards in 39 minutes) with no structural mechanism. STEP 4 \u2014 HIT RATE: 7/10 hit rate display (70%) at the selected T8 tier \u2014 this is a pick that acknowledges a 30% miss rate by construction. A miss on a 7/10 pick is within the expected distribution. STEP 5 \u2014 TIER WALK: The walk correctly stepped from T12 (quant best_tier) down through intermediate tiers to T8 given VOLATILE -3pp and the pick operated exactly at the 72% REB floor. The walk was properly executed. STEP 6 \u2014 AMENDMENT: direction=unchanged, revised_confidence_pct=72 \u2014 the afternoon amendment found no meaningful update. The pick ran at its original confidence with no new information to exploit. Intra-series REB variance for Wembanyama has proven extreme (24\u219217\u21924 across three games) \u2014 this is a calibration note for future series games but does not override the variance classification for this instance."
+      },
+      {
+        "player_name": "Chet Holmgren",
+        "prop_type": "REB",
+        "pick_value": 4,
+        "actual_value": 3,
+        "miss_classification": "model_gap_signal",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 GAME CONTEXT: OKC @ SAS final 123-108, OKC won by 15. COMPETITIVE game. Game script is not a blowout causal factor. STEP 1 \u2014 ACTIVITY: Player recorded 14 PTS, 3 REB in 28 minutes \u2014 fully active. STEP 2 \u2014 INJURY STATUS: NOT_LISTED at check; post-game news confirms he played 28 minutes with no injury flag. No injury_exit event. Classification: model_gap_signal. STEP 3 \u2014 ORIGINAL REASONING CRITIQUE: The analyst's reasoning was 'WCF G1=4 REB confirms T6 unsafe; T4 floor holds at 95%+ base.' The 25th-percentile gate correctly fired and walked T6\u2192T4 \u2014 the walk itself was sound. However, the reasoning did not account for the structural rebound competition dynamic: Wembanyama dominates interior boards (career DREB dominance, league-best SAS DREB%, WCF G3 actual 4 boards for Wemby but prior games 24/17) on the other side, compressing OKC interior REB volume on the offensive glass and contested situations. This mechanism \u2014 opposing elite rebounder specifically compressing OKC big men's REB floor at T4 \u2014 is not a signal the quant pipeline currently computes. STEP 4 \u2014 HIT RATE: 8/10 hit rate display at the original T6 tier; after walking to T4, the expected rate was ~95% base, yet the actual 28 minutes materialized (projecting ~23) and the final count was 3 boards. The miss was by exactly 1 unit on a minimum-tier pick. STEP 5 \u2014 TIER WALK: The walk exhausted to the minimum viable tier (T4) \u2014 this is the system's floor, not a freely chosen tier. When the walk ends at the minimum, there is no further step-down available, and the risk of a near-miss at the minimum tier is structurally elevated. The SAS floor compression signal (mean miss margin -5.0) was noted in the tier walk notes but its applicability to OKC rebounding \u2014 not just opponent player scoring \u2014 was not fully modeled. STEP 6 \u2014 AMENDMENT: direction=unchanged, revised_confidence_pct=72 \u2014 amendment correctly noted Williams OUT is a perimeter role with no meaningful rebounding redistribution to Holmgren. The afternoon agent's restraint was appropriate. The miss reflects a missing quant signal: opponent elite-rebounder presence suppressing OKC interior board-count even at minimum tier. This is not caught by any existing rule and requires a new signal to address."
+      },
+      {
+        "player_name": "Dylan Harper",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 6,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": null,
+        "root_cause": "FAST PATH \u2014 POST-GAME NEWS: The post_game_event field on the pick object is set to 'injury_exit', and the post-game news context confirms: 'Harper left Game 2 of the Western Conference Finals with a right leg injury after diving for a loose ball, limiting him to 17 minutes and just 6 points. He was subsequently held out of the starting lineup for Game 3 due to the hip/leg injury.' Classification: injury_event. Player was active at pick time (QUESTIONABLE status, not OUT/DOUBTFUL), exited mid-game due to injury, and scored 6 PTS in 17 minutes before forced exit. The -5pp QUESTIONABLE soft-tissue penalty was correctly applied at pick time and the pick ran at the 70% floor, but the injury materialized as a mid-game exit rendering the statistical outcome moot. Amendment status: no lineup_update sub-object present \u2014 the afternoon agent did not amend this pick (Harper's QUESTIONABLE status was already reflected in the original -5pp penalty). Miss not attributable to pick selection logic."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 8,
+      "hits": 6,
+      "misses": 2,
+      "hit_rate_pct": 75.0,
+      "delta_vs_overall_pp": -9.6
+    }
   }
 ]
