@@ -7667,5 +7667,265 @@
     "cannib_freed": false,
     "cannib_idx": null,
     "cannib_detail": null
+  },
+  {
+    "date": "2026-05-24",
+    "generated_at": "2026-05-24T11:46:41.847907-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "teammate",
+    "player_name": "Chet Holmgren",
+    "team": "OKC",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 70,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 77.27,
+        "market_odds": -340
+      }
+    },
+    "upgrade_tiers": {
+      "REB": {
+        "tier": 6,
+        "hit_rate_pct": 80,
+        "trend": "down",
+        "volatility": "volatile",
+        "market_implied_pct": 80.0,
+        "market_odds": -400,
+        "morning_tier": 4,
+        "morning_confidence_pct": 72
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "3PM T1 70% [down] (mkt 77%, edge -7pp); REB T6 80% [down] (mkt 80%, edge +0pp)",
+    "best_edge_pp": 0.0,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-24",
+    "generated_at": "2026-05-24T11:46:41.847907-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "opponent",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "card_type": "upgrade",
+    "qualifying_tiers": {},
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 55.56,
+        "market_odds": -125,
+        "morning_tier": 10,
+        "morning_confidence_pct": 70
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "PTS T15 75% [stable] (mkt 56%, edge +19pp)",
+    "best_edge_pp": 19.4,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-24",
+    "generated_at": "2026-05-24T11:46:41.847907-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "opponent",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 2,
+        "hit_rate_pct": 90,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 71.43,
+        "market_odds": -250
+      },
+      "3PM": {
+        "tier": 2,
+        "hit_rate_pct": 70,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 80.77,
+        "market_odds": -420
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "AST T2 90% [down] (mkt 71%, edge +19pp); 3PM T2 70% [up] (mkt 81%, edge -11pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": 18.6,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-24",
+    "generated_at": "2026-05-24T11:46:41.847907-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "teammate",
+    "player_name": "Isaiah Hartenstein",
+    "team": "OKC",
+    "card_type": "upgrade",
+    "qualifying_tiers": {},
+    "upgrade_tiers": {
+      "REB": {
+        "tier": 8,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 50.0,
+        "market_odds": 100,
+        "morning_tier": 4,
+        "morning_confidence_pct": 72
+      }
+    },
+    "spread_delta": null,
+    "morning_context": null,
+    "reasoning": "REB T8 70% [stable] (mkt 50%, edge +20pp)",
+    "best_edge_pp": 20.0,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-24",
+    "generated_at": "2026-05-24T11:46:41.847907-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "teammate",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "AST": {
+        "tier": 6,
+        "hit_rate_pct": 75,
+        "trend": "up",
+        "volatility": "volatile",
+        "market_implied_pct": 82.76,
+        "market_odds": -480
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "AST T6 75% [up] (mkt 83%, edge -8pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -7.8,
+    "best_edge_prop": "AST",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-24",
+    "generated_at": "2026-05-24T11:46:41.847907-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "opponent",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "card_type": "mixed",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 4,
+        "hit_rate_pct": 85,
+        "trend": "stable",
+        "volatility": "moderate",
+        "market_implied_pct": 82.46,
+        "market_odds": -470
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 85,
+        "trend": "down",
+        "volatility": "moderate",
+        "market_implied_pct": 81.48,
+        "market_odds": -440
+      }
+    },
+    "upgrade_tiers": {
+      "PTS": {
+        "tier": 15,
+        "hit_rate_pct": 85,
+        "trend": "up",
+        "volatility": "moderate",
+        "market_implied_pct": 67.74,
+        "market_odds": -210,
+        "morning_tier": 10,
+        "morning_confidence_pct": 88
+      }
+    },
+    "spread_delta": null,
+    "morning_context": "skipped this morning (reb_floor_skip, merit_below_floor)",
+    "reasoning": "REB T4 85% [stable] (mkt 82%, edge +3pp); 3PM T1 85% [down] (mkt 81%, edge +4pp); PTS T15 85% [up] (mkt 68%, edge +17pp); skipped this morning (reb_floor_skip, merit_below_floor)",
+    "best_edge_pp": 17.3,
+    "best_edge_prop": "PTS",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
+  },
+  {
+    "date": "2026-05-24",
+    "generated_at": "2026-05-24T11:46:41.847907-07:00",
+    "triggered_by": "Jalen Williams",
+    "triggered_by_team": "OKC",
+    "side": "opponent",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "card_type": "new_pick",
+    "qualifying_tiers": {
+      "REB": {
+        "tier": 12,
+        "hit_rate_pct": 70,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 72.6,
+        "market_odds": -265
+      },
+      "3PM": {
+        "tier": 1,
+        "hit_rate_pct": 75,
+        "trend": "stable",
+        "volatility": "volatile",
+        "market_implied_pct": 86.11,
+        "market_odds": -620
+      }
+    },
+    "upgrade_tiers": {},
+    "spread_delta": null,
+    "morning_context": "skipped this morning (merit_below_floor)",
+    "reasoning": "REB T12 70% [stable] (mkt 73%, edge -3pp); 3PM T1 75% [stable] (mkt 86%, edge -11pp); skipped this morning (merit_below_floor)",
+    "best_edge_pp": -2.6,
+    "best_edge_prop": "REB",
+    "priority": "standard",
+    "cannib_freed": false,
+    "cannib_idx": null,
+    "cannib_detail": null
   }
 ]
