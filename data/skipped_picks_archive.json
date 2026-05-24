@@ -9331,5 +9331,112 @@
     "would_have_hit": null,
     "skip_verdict": "no_data",
     "skip_verdict_notes": "player not found in yesterday's game log"
+  },
+  {
+    "date": "2026-05-23",
+    "player_name": "Donovan Mitchell",
+    "team": "CLE",
+    "opponent": "NYK",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 80,
+      "volatile_penalty": -3,
+      "trend_down_no_market_penalty": -5,
+      "hard_avoid_dossier_penalty": -5,
+      "final_confidence": 67,
+      "prop_floor": 75,
+      "note": "VOLATILE+iron_floor incompatibility overrides iron_floor; trend=down step to T1 blocked by no market (T1 not available); HARD AVOID playoff dossier applies"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 2"
+  },
+  {
+    "date": "2026-05-23",
+    "player_name": "Jalen Brunson",
+    "team": "NYK",
+    "opponent": "CLE",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_ast_t6_penalty": -8,
+      "final_confidence": 67,
+      "ast_floor": 68,
+      "note": "VOLATILE + AST T6: raw_avgs AST \u2265 6.0 applies -8pp instead of hard skip; 75% - 8% = 67% below 68% AST minimum floor"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-23",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "opponent": "CLE",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "no FanDuel market available"
+    },
+    "actual_value": 13.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 13.0 < tier 15"
+  },
+  {
+    "date": "2026-05-23",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "opponent": "CLE",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "REB",
+      "tier_considered": 8,
+      "reason": "no FanDuel market available"
+    },
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 8"
+  },
+  {
+    "date": "2026-05-23",
+    "player_name": "Jarrett Allen",
+    "team": "CLE",
+    "opponent": "NYK",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 80,
+      "volatile_penalty": -3,
+      "vs_tough_adjustment": -6,
+      "fg_margin_thin_penalty": -5,
+      "final_confidence": 66,
+      "pts_floor": 68,
+      "note": "FG_MARGIN_THIN:0% + VOLATILE + vs_tough=62% produce cumulative -14pp; 80%-14%=66% below 68% floor"
+    },
+    "actual_value": 17.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 17.0 \u2265 tier 10"
   }
 ]

@@ -9023,5 +9023,99 @@
       "hit_rate_pct": 75.0,
       "delta_vs_overall_pp": -9.6
     }
+  },
+  {
+    "date": "2026-05-23",
+    "total_picks": 12,
+    "voided_picks": 0,
+    "hits": 11,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 91.7,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 7,
+        "hits": 7,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Tier-step-down on FG_MARGIN signals worked precisely: Mitchell PTS stepped T20\u2192T15 (actual 23), Brunson PTS stepped T25\u2192T20 (actual 30), Harden PTS stepped T15\u2192T10 (actual 19) \u2014 all three produced comfortable wins at their walked tiers. The FG_MARGIN step-down mechanism is correctly calibrated and should be maintained.",
+      "Within-series miss penalties on Harden AST T4 were well-applied: the analyst correctly identified ECF G1 (2 AST) and G2 (3 AST) as systematic NYK-specific suppression signals, applied an -11pp total penalty, and emitted at the 70% floor. Harden delivered 5 AST \u2014 the T4 pick hit despite the cautious confidence level, validating the floor emission rather than a skip.",
+      "Trend=down step-down on 3PM props (Harden 3PM T2\u2192T1, Anunoby 3PM T2\u2192T1) both hit: Harden made exactly 1 three-pointer and Anunoby made 3. The mandatory trend=down step-down on 3PM is correctly designed and continues to protect against needless T2 exposure when trend is declining.",
+      "Mobley REB T6 with the 25th-percentile exact-match gate handling was correctly resolved: the analyst identified the T4-minimum-tier exception, held at T6, applied a -2pp penalty, and the pick hit exactly at 6 rebounds (actual_value = 6 = pick_value). The exact-threshold grading rule (HITs when actual >= pick_value) confirmed this as a clean hit, not a near-miss.",
+      "Allen REB T4 minimum-tier exception was correctly invoked: the analyst identified the 25th-percentile exact-match gate, applied the T4-minimum exception, capped at 72%, and Allen delivered 7 rebounds. The minimum-tier exception logic is sound and prevents unnecessary step-downs to non-existent lower markets."
+    ],
+    "lessons": [
+      "Brunson 3PM T1 iron_floor miss (0-for-4 from three, actual 0): The iron_floor designation at 3PM T1 was based on a 9/10 hit rate and 5/5 H2H vs CLE, yet Brunson went 0-for-4 in a high-volume 41-minute, 30-point performance that relied entirely on free throws (10-12) and mid-range looks. The post-game web recap confirms this was a deliberate shot-selection shift \u2014 he attacked the rim and drew fouls rather than pulling up from perimeter. This is a variance outcome on a structurally sound pick: the iron_floor label reflects real historical frequency, and a single 0-for-4 game in a competitive ECF context where the player altered his shot diet does not invalidate the designation. No rule change is warranted."
+    ],
+    "recommendations": [
+      "Brunson 3PM iron_floor context note \u2014 no rule change warranted, but add a series-diary annotation: Brunson's G3 ECF 3PM miss (0-for-4) was driven by a deliberate drive-and-draw-fouls game plan (10-12 FT) rather than shooting failure. For G4 and beyond in this CLE series, the analyst should monitor whether CLE's defensive scheme is specifically encouraging Brunson to attack the rim rather than pull up, which could structurally suppress his 3PA volume even at T1. If the pattern repeats in G4 (low 3PA with high FTA), consider treating Brunson 3PM T1 as non-iron_floor within this specific series matchup and applying a -5pp series-context penalty.",
+      "3PM iron_floor review for high-usage playoff scorers: When a player carries an iron_floor designation on 3PM T1 but their last two series games show a shift toward drive-heavy, free-throw-reliant scoring (indicated by FTA > 8 with low 3PA), the iron_floor should be conditionally suspended for that game. Add a rule: if FGA_type_split or FT_volume in recent L2 series games implies a drive-first game plan, treat 3PM T1 as standard (non-iron_floor) and cap at 80% rather than 88%+. This does not require new quant signals \u2014 it can be inferred from the series diary entries which already track FT patterns.",
+      "The 86%+ confidence band went 0/1 (Brunson 3PM T1 at 88%) versus a 90% expectation. With only one pick in this band, no structural recalibration is warranted. However, the Analyst should note that 86%+ confidence should only be assigned when iron_floor is accompanied by no within-series 3PM suppression signals. The Brunson G2 ECF performance data (1 three-pointer, series trend available at pick time) could have been a soft flag to cap at 80% rather than 88%. Recommendation: for 3PM iron_floor picks at 86%+, require that the player's L2 series games both show \u22652 three-point attempts, not just \u22651 make. If L2 3PA falls below 2 in either game, cap the iron_floor 3PM pick at 80% regardless of overall hit rate.",
+      "The NYK-CLE ECF G3 competitive game (13-point NYK win) validated the analyst's decision to hold 3PM T1 picks despite the series miss risk signals. Both Harden 3PM T1 and Anunoby 3PM T1 hit \u2014 the trend=down step-down mechanism correctly identified and managed the structural risk without over-suppressing confidence. Continue applying trend=down as a step trigger (T2\u2192T1) rather than a skip trigger for 3PM props in playoff series context.",
+      "No systematic selection errors occurred on this slate. The one miss (Brunson 3PM T1) is classified as variance and does not warrant tightening of selection logic. The analyst correctly executed step-downs across six different props (Mitchell PTS, Brunson PTS, Brunson 3PM, Harden PTS, Harden 3PM, Anunoby 3PM), applied within-series miss penalties where appropriate (Harden AST), and invoked the correct minimum-tier exceptions (Allen REB T4). The selection framework is operating correctly for ECF-round playoff picks."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Jalen Brunson",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0 \u2014 GAME CONTEXT: NYK @ CLE final 121-108, NYK won by 13 \u2014 COMPETITIVE game script. Game script is not a causal factor. STEP 1 \u2014 ACTIVITY: Brunson played 41 minutes and scored 30 points, confirming full participation. The 0-for-4 from three is a shot-selection outcome, not a DNP or injury outcome. STEP 2 \u2014 CLASSIFICATION: No injury_exit in post-game news. The post-game web recap confirms Brunson went 0-for-4 from three in a deliberate drive-and-draw-fouls game plan (10-12 FT), relying on mid-range and rim attacks rather than perimeter shooting. This is variance: the pick carried a 9/10 hit rate, iron_floor designation, and 5/5 H2H vs CLE. The underlying structural support for T1 was sound; Brunson simply did not attempt his normal volume of threes in this game and converted none of his four attempts. STEP 3 \u2014 ORIGINAL REASONING CRITIQUE: The reasoning correctly identified the T1 iron_floor and 5/5 H2H vs CLE, and appropriately stepped from T2 to T1 due to trend=down. The one element not captured was Brunson's demonstrated ability to shift to a drive-heavy game plan within a series when the opponent's scheme incentivizes attacking the rim \u2014 the ECF G2 result (3 AST, playmaking-focus game) foreshadowed that Brunson adapts his approach game-to-game, and his FT volume in this game (10-12) is consistent with that adaptation. STEP 4 \u2014 HIT RATE: 9/10 overall hit rate at T1; 5/5 H2H vs CLE. A miss on a 9/10 pick is statistically expected roughly once per 10 picks \u2014 this is within normal distribution. STEP 5 \u2014 TIER WALK: The tier walk correctly stepped T2\u2192T1 on trend=down and identified iron_floor at T1 with 90% overall. The walked tier was the maximum supportable tier given the data. No tier_walk_flag warranted. STEP 6 \u2014 AMENDMENT: No lineup_update sub-object present; no amendment to note. Guard 2 applies: this is a variance miss \u2014 no recommendation targeting selection logic is warranted."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 10,
+      "hits": 9,
+      "misses": 1,
+      "hit_rate_pct": 90.0,
+      "delta_vs_overall_pp": -1.7
+    }
   }
 ]
