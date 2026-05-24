@@ -1,149 +1,173 @@
 {
-  "asof_date": "2026-05-23",
-  "built_at_utc": "2026-05-23T23:39:19Z",
+  "asof_date": "2026-05-24",
+  "built_at_utc": "2026-05-24T14:24:02Z",
   "source": "rotowire",
-  "NYK": {
+  "OKC": {
     "starters": [
       {
         "position": "PG",
-        "name": "Jalen Brunson",
+        "name": "Shai Gilgeous-Alexander",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "Josh Hart",
+        "name": "Luguentz Dort",
         "injury_status": null
       },
       {
         "position": "SF",
-        "name": "Mikal Bridges",
-        "injury_status": null
+        "name": "Jalen Williams",
+        "injury_status": "QUES"
       },
       {
         "position": "PF",
-        "name": "OG Anunoby",
+        "name": "Chet Holmgren",
         "injury_status": null
       },
       {
         "position": "C",
-        "name": "Karl-Anthony Towns",
+        "name": "Isaiah Hartenstein",
         "injury_status": null
       }
     ],
     "confirmed": false,
     "projected_minutes": [
       {
-        "name": "Jalen Brunson",
-        "minutes": 41,
+        "name": "S. Gilgeous-Alexander",
+        "minutes": 38,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Mikal Bridges",
-        "minutes": 37,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Karl-Anthony Towns",
-        "minutes": 34,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "OG Anunoby",
-        "minutes": 33,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Josh Hart",
+        "name": "Chet Holmgren",
         "minutes": 31,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Miles McBride",
-        "minutes": 16,
+        "name": "Luguentz Dort",
+        "minutes": 25,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Landry Shamet",
+        "name": "Jalen Williams",
+        "minutes": 24,
+        "section": "STARTERS",
+        "injury_status": "QUES"
+      },
+      {
+        "name": "Isaiah Hartenstein",
+        "minutes": 23,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Cason Wallace",
+        "minutes": 28,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Alex Caruso",
+        "minutes": 25,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Jared McCain",
+        "minutes": 21,
+        "section": "STARTERS",
+        "injury_status": null
+      },
+      {
+        "name": "Jaylin Williams",
         "minutes": 15,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Mitchell Robinson",
-        "minutes": 14,
+        "name": "Isaiah Joe",
+        "minutes": 10,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Jordan Clarkson",
-        "minutes": 12,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jose Alvarado",
-        "minutes": 7,
-        "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Jeremy Sochan",
+        "name": "Kenrich Williams",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Ariel Hukporti",
+        "name": "Aaron Wiggins",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Tyler Kolek",
+        "name": "Nikola Topic",
         "minutes": 0,
         "section": "STARTERS",
         "injury_status": null
       },
       {
-        "name": "Pacome Dadiet",
+        "name": "Ajay Mitchell",
         "minutes": 0,
         "section": "STARTERS",
-        "injury_status": null
-      },
-      {
-        "name": "Mohamed Diawara",
-        "minutes": 0,
-        "section": "STARTERS",
-        "injury_status": null
+        "injury_status": "OUT"
       }
     ]
   },
+  "SAS": {
+    "starters": [
+      {
+        "position": "PG",
+        "name": "De'Aaron Fox",
+        "injury_status": null
+      },
+      {
+        "position": "SG",
+        "name": "Stephon Castle",
+        "injury_status": null
+      },
+      {
+        "position": "SF",
+        "name": "Devin Vassell",
+        "injury_status": null
+      },
+      {
+        "position": "PF",
+        "name": "Julian Champagnie",
+        "injury_status": null
+      },
+      {
+        "position": "C",
+        "name": "Victor Wembanyama",
+        "injury_status": null
+      }
+    ],
+    "confirmed": false
+  },
   "snapshot_at_analyst_run": {
-    "written_at": "2026-05-23T07:30:22.170342-07:00",
+    "written_at": "2026-05-24T07:24:46.491633-07:00",
     "teams": {
-      "NYK": {
+      "OKC": {
         "starters": [
-          "Jalen Brunson",
-          "Josh Hart",
-          "Mikal Bridges",
-          "OG Anunoby",
-          "Karl-Anthony Towns"
+          "Shai Gilgeous-Alexander",
+          "Luguentz Dort",
+          "Jalen Williams",
+          "Chet Holmgren",
+          "Isaiah Hartenstein"
         ],
         "confirmed": false
       },
-      "CLE": {
+      "SAS": {
         "starters": [
-          "James Harden",
-          "Donovan Mitchell",
-          "Dean Wade",
-          "Evan Mobley",
-          "Jarrett Allen"
+          "De'Aaron Fox",
+          "Stephon Castle",
+          "Devin Vassell",
+          "Julian Champagnie",
+          "Victor Wembanyama"
         ],
         "confirmed": false
       }
