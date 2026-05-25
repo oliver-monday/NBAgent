@@ -9438,5 +9438,115 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 17.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-05-24",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_deduction": -3,
+      "tough_defense_deduction": -5,
+      "final_confidence": 67,
+      "minimum_floor": 68,
+      "note": "VOLATILE -3pp + opp_today=tough -5pp = 67%, below 68% AST floor"
+    },
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-24",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 75,
+      "volatile_deduction": -3,
+      "intra_series_volatility_penalty": -5,
+      "final_confidence": 67,
+      "minimum_floor": 72,
+      "note": "VOLATILE -3pp + intra-series volatility (G1=4, G2=17, 13-board swing) -5pp = 67% < 72% REB floor; cascaded through T12\u2192T10\u2192T8"
+    },
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 8"
+  },
+  {
+    "date": "2026-05-24",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "reb_floor_skip",
+    "rule_context": {
+      "pick_value": 4,
+      "offensive_first_check": true,
+      "raw_avgs_pts": 20,
+      "raw_avgs_ast": 6.2,
+      "l10_reb_minimum": 4,
+      "floor_within_2_of_pick": true,
+      "note": "Offensive-first player (PTS ~20, AST ~6.2); REB floor (lowest L10 value) is 4, within 2 of pick_value=4 \u2014 skip gate fires"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 4"
+  },
+  {
+    "date": "2026-05-24",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "trend": "down",
+      "iron_floor": false,
+      "hit_rate_at_t1": "8/10",
+      "note": "Trend=down at T1; no iron_floor and hit rate is 8/10 (not 9+/10) \u2014 mandatory step below minimum tier, skip"
+    },
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-05-24",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 2,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "base_confidence": 70,
+      "iron_floor_overridden": true,
+      "override_reason": "VOLATILE+iron_floor incompatibility on 3PM",
+      "volatile_deduction": -3,
+      "final_confidence": 67,
+      "minimum_floor": 75,
+      "note": "iron_floor overridden by VOLATILE tag per 3PM incompatibility rule; 70%-3%=67% below 75% 3PM floor"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   }
 ]

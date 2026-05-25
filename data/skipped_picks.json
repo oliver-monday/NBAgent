@@ -16,10 +16,10 @@
       "minimum_floor": 68,
       "note": "VOLATILE -3pp + opp_today=tough -5pp = 67%, below 68% AST floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 7.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-24",
@@ -38,10 +38,10 @@
       "minimum_floor": 72,
       "note": "VOLATILE -3pp + intra-series volatility (G1=4, G2=17, 13-board swing) -5pp = 67% < 72% REB floor; cascaded through T12\u2192T10\u2192T8"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 8"
   },
   {
     "date": "2026-05-24",
@@ -61,10 +61,10 @@
       "floor_within_2_of_pick": true,
       "note": "Offensive-first player (PTS ~20, AST ~6.2); REB floor (lowest L10 value) is 4, within 2 of pick_value=4 \u2014 skip gate fires"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 4"
   },
   {
     "date": "2026-05-24",
@@ -81,10 +81,10 @@
       "hit_rate_at_t1": "8/10",
       "note": "Trend=down at T1; no iron_floor and hit rate is 8/10 (not 9+/10) \u2014 mandatory step below minimum tier, skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 1.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-24",
@@ -104,9 +104,9 @@
       "minimum_floor": 75,
       "note": "iron_floor overridden by VOLATILE tag per 3PM incompatibility rule; 70%-3%=67% below 75% 3PM floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 2"
   }
 ]
