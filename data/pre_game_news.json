@@ -1,67 +1,64 @@
 {
-  "date": "2026-05-24",
-  "generated_at": "2026-05-24T07:24:09.030494-07:00",
+  "date": "2026-05-25",
+  "generated_at": "2026-05-25T08:49:14.860411-07:00",
   "player_notes": {
-    "de'aaron fox": "Confirmed active for Game 4 despite ankle injury. No reported minutes restriction.",
-    "dylan harper": "Confirmed active for Game 4 despite adductor injury. No reported minutes restriction.",
-    "shai gilgeous-alexander": "26 pts, 12 assists in Game 3; matchup analysis flags him as Thunder's primary containment target for Spurs in Game 4.",
-    "victor wembanyama": "26 pts in Game 3 loss; acknowledged needing to be more of a team player, suggesting possible usage/shot volume adjustment in Game 4."
+    "ajay mitchell": "Ruled out for Game 5 (WCF) with a right calf strain. Rotation minutes will be redistributed among OKC guards."
   },
   "game_notes": {
-    "OKC vs SAS": "Ajay Mitchell (Thunder) ruled out Game 4 with right calf strain \u2014 minor rotation shift, but Thunder bench already logged 76 pts in Game 3 so depth remains intact."
+    "OKC vs SAS": "Ajay Mitchell (OKC guard) is out with a calf strain, thinning OKC's backcourt rotation. De'Aaron Fox and Dylan Harper both confirmed available for SAS."
   },
-  "raw_item_count": 43,
-  "filtered_item_count": 43,
+  "raw_item_count": 42,
+  "filtered_item_count": 42,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "NYK vs CLE \u2014 Playoff Series Status",
-      "current_context_fact": "The season context document contains no R2 series diary for NYK vs CLE. The last documented playoff round for both teams was R1 (NYK defeated ATL 4-2, CLE defeated TOR 4-3).",
-      "conflict": "Today's news confirms NYK and CLE are in the Eastern Conference Finals (R2/ECF), with NYK leading 3-0 after a 121-108 Game 3 victory on 2026-05-24. Brunson scored 30, Bridges added 22. CLE is down 0-3 and facing elimination.",
+      "player_or_team": "OKC Thunder / SAS Spurs \u2014 WCF Series Status",
+      "current_context_fact": "The season context document contains no entry for a Western Conference Finals series between OKC and SAS. The playoff bracket shows R1 results but does not document any R2 or Conference Finals series diaries for OKC vs SAS.",
+      "conflict": "Today's news confirms OKC vs SAS is the Western Conference Finals, currently tied 2-2 after SAS won Game 4 103-82. Wembanyama scored 33 points, 8 rebounds, 5 assists, 3 blocks. The Thunder turned in their worst offensive performance in years. The series is described as a 'pick em' at this point.",
       "urgency": "critical",
-      "suggested_action": "Add ECF series diary for NYK vs CLE. Update bracket/series status: NYK leads CLE 3-0 in the ECF. Key player notes: Brunson 30 pts G3, Bridges 22 pts G3 (significant given his diminished role concern from R1). Mitchell and Cavs offense struggling \u2014 Stephen A. called them 'pathetic.' NYK on 10-game win streak in the playoffs."
+      "suggested_action": "Add a WCF series diary entry for OKC vs SAS. Series is tied 2-2. SAS won Game 4 103-82 behind Wembanyama's 33/8/5/3blk. OKC had their worst offensive output in years. Update playoff bracket/status to reflect this is the active WCF."
     },
     {
-      "player_or_team": "OKC vs SAS \u2014 Playoff Series Status",
-      "current_context_fact": "The season context document contains no R2/WCF series diary for OKC vs SAS. The last documented playoff round for both teams was R1 (OKC swept PHX 4-0, SAS defeated POR 4-1).",
-      "conflict": "Today's news confirms OKC and SAS are in the Western Conference Finals, with OKC leading 2-1 after a 123-108 Game 3 win on 2026-05-23. SGA had 26 pts and 12 AST. OKC came back from a 15-0 deficit. Game 4 is scheduled for 2026-05-25 (Sunday). Wembanyama had a team-high 26 pts but said he needs to be 'more of a team player' after the G3 loss.",
+      "player_or_team": "NYK Knicks / CLE Cavaliers \u2014 ECF Series Status",
+      "current_context_fact": "The season context document contains no entry for an Eastern Conference Finals series between NYK and CLE. The playoff bracket shows only R1 results.",
+      "conflict": "Today's news confirms NYK vs CLE is the Eastern Conference Finals. NYK leads 3-0 after a 121-108 Game 3 victory (Brunson 30, Bridges 22). Knicks are one win from the NBA Finals \u2014 their first Finals appearance since 1999. CLE coach Kenny Atkinson made comments about analytics. NYK has won 10 straight playoff games.",
       "urgency": "critical",
-      "suggested_action": "Add WCF series diary for OKC vs SAS. Update bracket/series status: OKC leads SAS 2-1 in the WCF. Key notes: SGA 26/12ast in G3; OKC bench scored 76 pts; Wemby 26 pts in loss; SAS trailed 15-0 early. OKC were underdogs for G3 (first time as playoff underdogs in 34 games)."
+      "suggested_action": "Add an ECF series diary entry for NYK vs CLE. NYK leads 3-0. Game 3 final: NYK 121, CLE 108 (Brunson 30, Bridges 22). NYK is one win from the Finals. Update playoff bracket/status to reflect this is the active ECF. Note Knicks' 10-game winning streak."
     },
     {
-      "player_or_team": "De'Aaron Fox (SAS) \u2014 Injury Status",
-      "current_context_fact": "The playoff injury landscape does not document any ankle injury for De'Aaron Fox. Fox is listed as a healthy SAS player.",
-      "conflict": "News from 2026-05-23 reports Fox had an ankle injury concern but was cleared to play in G3 vs Thunder. News from 2026-05-23 also confirms Fox and Harper are expected to play in G4.",
-      "urgency": "monitor",
-      "suggested_action": "Add to injury landscape: Fox has an ankle concern that required clearance before G3. He played G3 and is confirmed to play G4, but the ankle should be monitored as an active day-to-day concern heading into subsequent WCF games."
-    },
-    {
-      "player_or_team": "Dylan Harper (SAS) \u2014 Injury Status",
-      "current_context_fact": "The playoff injury landscape and player notes do not document any adductor injury for Dylan Harper.",
-      "conflict": "News from 2026-05-23 reports Harper had an adductor injury concern but was cleared to play in G3 vs Thunder. He is also confirmed to play in G4.",
-      "urgency": "monitor",
-      "suggested_action": "Add to injury landscape: Harper has an adductor concern that required clearance before G3. He played G3 and is confirmed to play G4, but should be monitored as a day-to-day concern."
-    },
-    {
-      "player_or_team": "Ajay Mitchell (OKC) \u2014 Injury Status",
-      "current_context_fact": "The playoff injury landscape does not document any injury for Ajay Mitchell. He is not mentioned in the injury section.",
-      "conflict": "News from 2026-05-24 confirms Thunder have ruled out Ajay Mitchell for Game 4 of the WCF with a right calf strain.",
+      "player_or_team": "Ajay Mitchell (OKC)",
+      "current_context_fact": "Ajay Mitchell is not mentioned anywhere in the season context document \u2014 no player note, no injury entry, no role context.",
+      "conflict": "Today's news reports Ajay Mitchell has been ruled out of Game 4 (WCF) with a right calf strain, and Brian Windhorst flagged OKC's performance without both Jalen Williams AND Ajay Mitchell as a concern. This indicates Mitchell is a meaningful rotation player whose absence is noted as a significant factor for OKC.",
       "urgency": "critical",
-      "suggested_action": "Add to injury landscape: Ajay Mitchell (OKC) ruled OUT for WCF G4 with a right calf strain. Assess impact on OKC rotation/bench depth for G4 and beyond."
+      "suggested_action": "Add Ajay Mitchell (OKC) to the injury landscape. He has a right calf strain and was ruled out for WCF Game 4. Note him as a meaningful OKC rotation contributor. His absence alongside Jalen Williams (hamstring) is being flagged as a concern for OKC's offensive performance."
     },
     {
-      "player_or_team": "Mikal Bridges (NYK) \u2014 Role/Performance Status",
-      "current_context_fact": "R1 series diary notes Bridges had a 'diminished role' throughout the NYK-ATL series \u2014 multiple games under 21 minutes, persistent coaching concern. His last noted performance was G6: 24/5/3 (10-12 FG) in a blowout.",
-      "conflict": "Today's news reports Bridges scored 22 points in NYK's G3 ECF win over CLE (121-108 on 2026-05-24), suggesting his role is not diminished in the ECF and he is contributing as a meaningful scorer.",
+      "player_or_team": "Jalen Williams (OKC)",
+      "current_context_fact": "Playoff injury landscape last updated 2026-05-04. OKC vs PHX R1 diary notes Jalen Williams OUT with hamstring through the series sweep. R2 key note states: 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round.'",
+      "conflict": "Today's news (Windhorst headline) references OKC playing 'without Jalen Williams and Ajay Mitchell' in the WCF Game 4 context, confirming Williams remains OUT in the WCF (Game 4 of OKC vs SAS). He has not returned as of Game 4.",
+      "urgency": "critical",
+      "suggested_action": "Update Jalen Williams' injury status: he remains OUT through at least WCF Game 4 (May 25, 2026). The R2 key note anticipated his return but he has not yet returned. Confirm he is still sidelined with the hamstring injury in the WCF."
+    },
+    {
+      "player_or_team": "De'Aaron Fox and Dylan Harper (SAS)",
+      "current_context_fact": "The season context document has no injury flags for Fox or Harper in any post-R1 context. The SAS vs POR series diary notes both as healthy contributors.",
+      "conflict": "Today's news reports: 'Injured Spurs guards De'Aaron Fox and Dylan Harper are both expected to play Sunday in Game 4 of the Western Conference finals, coach Mitch Johnson said.' The word 'injured' indicates both players had documented injury concerns heading into Game 4 that are not reflected in the context document.",
+      "urgency": "critical",
+      "suggested_action": "Add injury notes for De'Aaron Fox and Dylan Harper (SAS). Both were listed as injured heading into WCF Game 4 but were confirmed to play by coach Mitch Johnson. Document the nature of the injuries when available and flag as day-to-day / monitor for Game 5."
+    },
+    {
+      "player_or_team": "Cade Cunningham (DET) \u2014 All-NBA",
+      "current_context_fact": "The All-NBA section references SGA, Jokic, and Wembanyama in player notes but the season context document does not reference Cunningham as an All-NBA selection.",
+      "conflict": "Today's news reports: 'SGA, Jokic, Wembanyama, Doncic, Cunningham make 1st-team All-NBA.' Cunningham is named to the All-NBA First Team. Additionally, Luka Doncic is listed as a 1st-team All-NBA selection despite the context noting he was OUT with a Grade 2 hamstring for R1.",
       "urgency": "monitor",
-      "suggested_action": "Update Bridges' role assessment: His R1 diminished-role pattern does not appear to have carried into the ECF. Update with ECF G3 performance (22 pts) and recalibrate his role expectations for remaining ECF games."
+      "suggested_action": "Add Cade Cunningham as a 1st-team All-NBA selection to his player note. Note that Luka Doncic also made 1st-team All-NBA (consistent with his elite regular season despite playoff absence). These are awards context notes, not roster/availability conflicts, but should be reflected for completeness."
     },
     {
-      "player_or_team": "Victor Wembanyama \u2014 2026 Defensive Player of the Year",
+      "player_or_team": "Victor Wembanyama \u2014 Defensive Player of the Year",
       "current_context_fact": "The season context document does not mention Wembanyama winning the 2025-26 Defensive Player of the Year award.",
-      "conflict": "News from 2026-05-23 reports Wembanyama was named the lone unanimous All-Defensive First Team selection for 2026, and the headline references him as the '2026 Defensive Player of the Year.'",
+      "conflict": "Today's news headline states: 'Why Victor Wembanyama's most dominant skill remains a mystery' and refers to him as 'the 2026 Defensive Player of the Year.' This confirms Wembanyama won the DPOY award for 2025-26.",
       "urgency": "monitor",
-      "suggested_action": "Add to Wembanyama's player note: He won the 2025-26 NBA Defensive Player of the Year award and was the unanimous All-Defensive First Team selection. Also note: Chet Holmgren, Ausar Thompson, Rudy Gobert, and Derrick White made the All-Defensive First Team."
+      "suggested_action": "Add to Wembanyama's player note that he won the 2025-26 Defensive Player of the Year award. Relevant context for his role/value framing in prop analysis."
     }
   ],
   "staleness_flags": []
