@@ -1,64 +1,60 @@
 {
-  "date": "2026-05-25",
-  "generated_at": "2026-05-25T08:49:14.860411-07:00",
+  "date": "2026-05-26",
+  "generated_at": "2026-05-26T09:40:03.541441-07:00",
   "player_notes": {
-    "ajay mitchell": "Ruled out for Game 5 (WCF) with a right calf strain. Rotation minutes will be redistributed among OKC guards."
+    "jalen williams": "Williams was absent for Thunder in Game 4 (per Windhorst concern about OKC playing without him). Monitor availability for Game 5 \u2014 his absence significantly hurt OKC's offense.",
+    "victor wembanyama": "Dropped 33 pts, 8 reb, 5 ast, 3 blk in Game 4 win. Trending as the dominant force in this series; high floor across all prop categories for Game 5.",
+    "chet holmgren": "Described as looking 'defeated' heading into Game 5. Possible minutes or role concern worth monitoring \u2014 fade if body language/effort concerns persist.",
+    "de'aaron fox": "Profiled as Spurs' veteran closer/leader. Elevated role and usage expected in a pivotal Game 5."
   },
   "game_notes": {
-    "OKC vs SAS": "Ajay Mitchell (OKC guard) is out with a calf strain, thinning OKC's backcourt rotation. De'Aaron Fox and Dylan Harper both confirmed available for SAS."
+    "OKC vs SAS": "Jalen Williams' availability is unresolved after missing time in Game 4 \u2014 his status is critical for Thunder prop and rotation decisions. Thunder had their worst offensive game in years without him."
   },
-  "raw_item_count": 42,
-  "filtered_item_count": 42,
+  "raw_item_count": 50,
+  "filtered_item_count": 49,
   "fetch_errors": [],
   "suggested_context_updates": [
     {
-      "player_or_team": "OKC Thunder / SAS Spurs \u2014 WCF Series Status",
-      "current_context_fact": "The season context document contains no entry for a Western Conference Finals series between OKC and SAS. The playoff bracket shows R1 results but does not document any R2 or Conference Finals series diaries for OKC vs SAS.",
-      "conflict": "Today's news confirms OKC vs SAS is the Western Conference Finals, currently tied 2-2 after SAS won Game 4 103-82. Wembanyama scored 33 points, 8 rebounds, 5 assists, 3 blocks. The Thunder turned in their worst offensive performance in years. The series is described as a 'pick em' at this point.",
+      "player_or_team": "NYK vs CLE \u2014 Eastern Conference Finals",
+      "current_context_fact": "The season context document contains no ECF series diary or bracket update. The last documented series results show R1 completed, with CLE and NYK both advancing. The playoff bracket section shows CLE (4-seed) and NYK (3-seed) as playoff teams but contains no R2 or ECF matchup documentation.",
+      "conflict": "Multiple news items confirm the Knicks have swept the Cavaliers in the Eastern Conference Finals (4-0), winning Game 4 on May 25 by a score of 130-93, and have advanced to the NBA Finals for the first time since 1999. Karl-Anthony Towns had 19 points and 14 rebounds in the clincher. Donovan Mitchell and James Harden have expressed commitment to staying in Cleveland.",
       "urgency": "critical",
-      "suggested_action": "Add a WCF series diary entry for OKC vs SAS. Series is tied 2-2. SAS won Game 4 103-82 behind Wembanyama's 33/8/5/3blk. OKC had their worst offensive output in years. Update playoff bracket/status to reflect this is the active WCF."
+      "suggested_action": "Add ECF series result: NYK defeats CLE 4-0. Update playoff bracket to reflect NYK as the East representative in the NBA Finals. Add ECF diary entries for Games 1-4. Note that CLE is eliminated. Mitchell and Harden expressed desire to remain together in Cleveland (offseason context)."
     },
     {
-      "player_or_team": "NYK Knicks / CLE Cavaliers \u2014 ECF Series Status",
-      "current_context_fact": "The season context document contains no entry for an Eastern Conference Finals series between NYK and CLE. The playoff bracket shows only R1 results.",
-      "conflict": "Today's news confirms NYK vs CLE is the Eastern Conference Finals. NYK leads 3-0 after a 121-108 Game 3 victory (Brunson 30, Bridges 22). Knicks are one win from the NBA Finals \u2014 their first Finals appearance since 1999. CLE coach Kenny Atkinson made comments about analytics. NYK has won 10 straight playoff games.",
+      "player_or_team": "OKC vs SAS \u2014 Western Conference Finals",
+      "current_context_fact": "The season context document contains no WCF series diary. The playoff bracket shows OKC (1-seed West) and SAS (2-seed West) as playoff teams but contains no R2 or WCF matchup documentation.",
+      "conflict": "Multiple news items confirm OKC vs SAS is currently tied 2-2 in the Western Conference Finals, with SAS winning Game 4 on May 25 by a score of 103-82. Wembanyama scored 33 points, 8 rebounds, 5 assists, and 3 blocks. The Thunder held to their worst offensive performance in years. Game 5 is upcoming. Reports note Jalen Williams and Ajay Mitchell were both absent for OKC in Game 4, with Windhorst raising alarm bells about OKC's performance without them.",
       "urgency": "critical",
-      "suggested_action": "Add an ECF series diary entry for NYK vs CLE. NYK leads 3-0. Game 3 final: NYK 121, CLE 108 (Brunson 30, Bridges 22). NYK is one win from the Finals. Update playoff bracket/status to reflect this is the active ECF. Note Knicks' 10-game winning streak."
-    },
-    {
-      "player_or_team": "Ajay Mitchell (OKC)",
-      "current_context_fact": "Ajay Mitchell is not mentioned anywhere in the season context document \u2014 no player note, no injury entry, no role context.",
-      "conflict": "Today's news reports Ajay Mitchell has been ruled out of Game 4 (WCF) with a right calf strain, and Brian Windhorst flagged OKC's performance without both Jalen Williams AND Ajay Mitchell as a concern. This indicates Mitchell is a meaningful rotation player whose absence is noted as a significant factor for OKC.",
-      "urgency": "critical",
-      "suggested_action": "Add Ajay Mitchell (OKC) to the injury landscape. He has a right calf strain and was ruled out for WCF Game 4. Note him as a meaningful OKC rotation contributor. His absence alongside Jalen Williams (hamstring) is being flagged as a concern for OKC's offensive performance."
+      "suggested_action": "Add WCF series diary: SAS vs OKC tied 2-2. Add Game 4 result (SAS 103-82). Update Jalen Williams injury status \u2014 he remains OUT for WCF (hamstring, now also Ajay Mitchell absent). Add Wembanyama G4 stat line (33/8/5/3blk). Note series is at Game 5 with OKC no longer having home-court advantage in the series narrative."
     },
     {
       "player_or_team": "Jalen Williams (OKC)",
-      "current_context_fact": "Playoff injury landscape last updated 2026-05-04. OKC vs PHX R1 diary notes Jalen Williams OUT with hamstring through the series sweep. R2 key note states: 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round.'",
-      "conflict": "Today's news (Windhorst headline) references OKC playing 'without Jalen Williams and Ajay Mitchell' in the WCF Game 4 context, confirming Williams remains OUT in the WCF (Game 4 of OKC vs SAS). He has not returned as of Game 4.",
+      "current_context_fact": "R2 key note states: 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round \u2014 his return would restore their ceiling to its highest level.' The R1 OKC-PHX diary notes Williams went out in G2 with a left hamstring and was OUT through the series sweep.",
+      "conflict": "Today's news confirms Williams remains OUT in the WCF (Game 4 vs SAS), and Windhorst specifically calls out OKC playing without 'Jalen Williams and Ajay Mitchell' as a concern. Williams has not returned as of WCF Game 4 (May 25).",
       "urgency": "critical",
-      "suggested_action": "Update Jalen Williams' injury status: he remains OUT through at least WCF Game 4 (May 25, 2026). The R2 key note anticipated his return but he has not yet returned. Confirm he is still sidelined with the hamstring injury in the WCF."
+      "suggested_action": "Update Jalen Williams status: still OUT in WCF as of Game 4 (May 25). Has not returned from hamstring injury. Also flag Ajay Mitchell as an additional OKC absence not previously documented in the injury landscape."
     },
     {
-      "player_or_team": "De'Aaron Fox and Dylan Harper (SAS)",
-      "current_context_fact": "The season context document has no injury flags for Fox or Harper in any post-R1 context. The SAS vs POR series diary notes both as healthy contributors.",
-      "conflict": "Today's news reports: 'Injured Spurs guards De'Aaron Fox and Dylan Harper are both expected to play Sunday in Game 4 of the Western Conference finals, coach Mitch Johnson said.' The word 'injured' indicates both players had documented injury concerns heading into Game 4 that are not reflected in the context document.",
+      "player_or_team": "Ajay Mitchell (OKC)",
+      "current_context_fact": "Ajay Mitchell is not mentioned anywhere in the season context document's injury landscape or player notes.",
+      "conflict": "Windhorst's report specifically names Ajay Mitchell as OUT alongside Jalen Williams for OKC in the WCF, describing both absences as alarm-bell concerns for the Thunder.",
       "urgency": "critical",
-      "suggested_action": "Add injury notes for De'Aaron Fox and Dylan Harper (SAS). Both were listed as injured heading into WCF Game 4 but were confirmed to play by coach Mitch Johnson. Document the nature of the injuries when available and flag as day-to-day / monitor for Game 5."
+      "suggested_action": "Add Ajay Mitchell (OKC) to the playoff injury landscape as OUT for WCF Game 4 (May 25). Note his absence alongside Williams is flagged by Windhorst as a significant OKC concern heading into Game 5."
     },
     {
-      "player_or_team": "Cade Cunningham (DET) \u2014 All-NBA",
-      "current_context_fact": "The All-NBA section references SGA, Jokic, and Wembanyama in player notes but the season context document does not reference Cunningham as an All-NBA selection.",
-      "conflict": "Today's news reports: 'SGA, Jokic, Wembanyama, Doncic, Cunningham make 1st-team All-NBA.' Cunningham is named to the All-NBA First Team. Additionally, Luka Doncic is listed as a 1st-team All-NBA selection despite the context noting he was OUT with a Grade 2 hamstring for R1.",
+      "player_or_team": "Shai Gilgeous-Alexander (OKC) \u2014 All-NBA",
+      "current_context_fact": "The context doc references SGA as back-to-back MVP and holder of the consecutive 20-point games record but does not document 2025-26 All-NBA selections.",
+      "conflict": "News confirms SGA was named to the First-Team All-NBA for 2025-26, as a unanimous selection alongside Nikola Jokic. Wembanyama missed unanimous first-team by one vote and was also named First-Team All-NBA. Luka Doncic and Cade Cunningham also made First-Team All-NBA per the headline.",
       "urgency": "monitor",
-      "suggested_action": "Add Cade Cunningham as a 1st-team All-NBA selection to his player note. Note that Luka Doncic also made 1st-team All-NBA (consistent with his elite regular season despite playoff absence). These are awards context notes, not roster/availability conflicts, but should be reflected for completeness."
+      "suggested_action": "Add 2025-26 All-NBA First Team: SGA (unanimous), Jokic (unanimous), Wembanyama, Doncic, Cunningham. This is context/color information; no prop-relevant facts are directly contradicted, but the document should reflect current awards for completeness."
     },
     {
-      "player_or_team": "Victor Wembanyama \u2014 Defensive Player of the Year",
-      "current_context_fact": "The season context document does not mention Wembanyama winning the 2025-26 Defensive Player of the Year award.",
-      "conflict": "Today's news headline states: 'Why Victor Wembanyama's most dominant skill remains a mystery' and refers to him as 'the 2026 Defensive Player of the Year.' This confirms Wembanyama won the DPOY award for 2025-26.",
-      "urgency": "monitor",
-      "suggested_action": "Add to Wembanyama's player note that he won the 2025-26 Defensive Player of the Year award. Relevant context for his role/value framing in prop analysis."
+      "player_or_team": "NYK \u2014 Playoff Bracket / Series Status",
+      "current_context_fact": "The playoff bracket and series diaries only document through R1 (ATL eliminated in R1 G6, CLE advancing from R1). There is no R2 or ECF documentation for NYK's path.",
+      "conflict": "NYK has now completed an 11-game unbeaten playoff run (per Windhorst) to reach the NBA Finals, sweeping the ECF. This means NYK went 4-0 in R2 and 4-0 in the ECF (or some combination producing an 11-0 record). The Knicks are in the NBA Finals for the first time since 1999.",
+      "urgency": "critical",
+      "suggested_action": "Update NYK playoff record to reflect advancement to NBA Finals via 11-game win streak. Add R2 and ECF results. Note Brunson's ankle health (last documented as a concern after G6 vs ATL) and any updates through the ECF. NYK's Finals opponent will be either OKC or SAS pending WCF Game 5."
     }
   ],
   "staleness_flags": []
