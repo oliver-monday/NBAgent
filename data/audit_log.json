@@ -9231,5 +9231,109 @@
       "hit_rate_pct": 88.9,
       "delta_vs_overall_pp": 5.6
     }
+  },
+  {
+    "date": "2026-05-25",
+    "total_picks": 11,
+    "voided_picks": 0,
+    "hits": 9,
+    "misses": 2,
+    "no_data": 0,
+    "hit_rate_pct": 81.8,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 5,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 1,
+        "hits": 0,
+        "hit_rate_pct": 0.0
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "FG_MARGIN_THIN step-down (T20\u2192T15) on Donovan Mitchell PTS was correctly executed and validated: Mitchell scored 31 in a blowout win for NYK, comfortably clearing T15. The step-down rule added safety margin without sacrificing the pick, and the 8/10 hit-rate at the walked tier held.",
+      "Blowout-resilient tier selection was confirmed across all NYK players in the 130-93 win: Brunson (31 min, 2 threes), Bridges (30 min, 15 pts), Anunoby (27 min, 17 pts, 1 three), and Towns (26 min, 14 REB) all cleared their conservative base tiers despite garbage-time minute reductions. The Analyst correctly anchored picks at T1/T10 rather than reaching for higher tiers in a potential blowout-scripted close-out game.",
+      "The OG Anunoby LATE_FADER rule application was correct: the dossier modifier fires only at Games 5\u20137, and this was Game 4 of the NYK-CLE series. No penalty was applied, and Anunoby hit T10 PTS (17 actual) and T1 3PM (1 actual, exact threshold = HIT per grading rule). The Analyst's careful reading of the game-in-series threshold prevented an unnecessary confidence reduction.",
+      "Karl-Anthony Towns REB T8 cleared the 25th-percentile gate (pick_value 8 < 3rd-lowest of ~9 in L10) and hit comfortably with 14 rebounds. The Analyst's conservative 77% confidence on a dossier-designated 'safe prop' with an 85% overall rate and 5/6 H2H appropriately reflected the blowout-context uncertainty on the away side; the pick hit by a wide margin, validating the tier selection even if the confidence haircut was overly cautious.",
+      "Career playoff 3PM CAUTION on James Harden (worsening trajectory, monotonic_down) was directionally validated by the 0-for-6 shooting performance. Although the pick was ultimately classified as a miss driven by a cold shooting night in a blowout, the Analyst had already applied -13pp in combined penalties (trend=down held via 9/10 exception + career playoff 3PM caution), correctly flagging this as a structurally fragile pick at the minimum 75% confidence floor. The caution machinery was working even though the miss materialized."
+    ],
+    "lessons": [
+      "Mitchell AST T2 missed (actual 1) in a 37-point blowout loss: the post-game news confirms no specific injury explanation and notes blowout context as the likely suppressor of late-game facilitation. The Analyst applied a -5pp late-series AST dossier penalty but did not apply a blowout risk discount. The pre-game spread was only 2.5 points, so the blowout was not foreseeable from spread alone \u2014 this limits the model_gap_rule classification. The miss appears driven by blowout game-script on the losing side, which compressed Mitchell's fourth-quarter minutes and AST opportunities, in combination with a plausible minor lower-body issue noted in post-game context. The 9/10 hit-rate and 95% vs_tough context were legitimate but did not account for the tail scenario of a lopsided elimination-game blowout against the player's team.",
+      "Harden 3PM T1 missed (actual 0, went 0-for-6): the career playoff 3PM CAUTION signal (monotonic_down trajectory) fired correctly and produced a -13pp penalty, but the pick still ran at the 75% floor. The actual outcome \u2014 zero threes on six attempts in a blowout loss \u2014 is the worst-case realization of the structural suppression signal. The system held at T1 via the 9/10 overall exception; however, the combination of (a) career playoff 3PM monotonic_down, (b) trend=down on 3PM, (c) blowout losing-side game script, and (d) CLE trailing 3-0 in the series created a compound downside environment that a 75% floor pick could not absorb. The Analyst correctly identified all individual risk factors but assembled them into a floor pick rather than a skip."
+    ],
+    "recommendations": [
+      "For the Mitchell AST miss: introduce a blowout-risk compounding rule for AST picks on players whose teams are heavy elimination underdogs in a close-out game, even when pre-game spread is narrow. Specifically: when a player is on the losing team in an elimination context AND the game ultimately becomes a BLOWOUT (margin \u226520), AST production is structurally suppressed in Q4 garbage time. Since spread alone cannot predict blowout outcomes, apply an additional -5pp confidence penalty to AST T2+ picks in close-out games where the player's team is the trailing-series side (i.e., facing series elimination), to account for the elevated blowout tail risk in desperation games that go wrong.",
+      "For the Harden 3PM miss: when three or more compounding 3PM suppression signals fire simultaneously \u2014 (1) career playoff 3PM trajectory monotonic_down, (2) trend=down quant tag, and (3) player team is facing elimination or is the losing-series side \u2014 treat this combination as a mandatory SKIP rather than a floor pick at 75%. The 9/10 overall exception that holds a step-down at T1 should be overrideable by a compound suppression trigger: if career playoff 3PM CAUTION + trend=down fire together, the pick must be skipped regardless of overall T1 hit rate. This prevents the 75% floor from functioning as a soft landing pad for structurally fragile 3PM props.",
+      "Reinforce the existing LATE_FADER game-in-series threshold discipline: the Analyst correctly did not fire the LATE_FADER modifier on either Anunoby PTS or Mobley PTS in Game 4 (modifier activates at Game 5). This precision should be maintained \u2014 do not pre-apply LATE_FADER before Game 5 even when a series is 3-0 and Game 4 is a potential sweep game. The sweep context is already captured via the informational conservative haircut process; double-penalizing before the threshold is overfitting.",
+      "For AST props on players whose teams are in a blowout-elimination risk scenario (close-out game, trailing in series), add an explicit blowout_losing_side_AST_cap: reduce maximum confidence to 80% for any AST pick, regardless of vs_tough hit rate or overall hit rate. This is narrower than the full blowout_secondary_scorer rule and targets the specific mechanism: the losing team's star being benched in Q4 with the game out of reach, eliminating late-game facilitation opportunities that dominate AST counts.",
+      "Validate the no_data pipeline coverage for blowout games: seven of eleven picks today returned NO_DATA box score entries despite the game being completed. Inferred post-game news was the primary classification mechanism. The audit pipeline should flag when a game's margin \u226520 and more than 50% of picks in that game return NO_DATA, as blowout garbage-time substitutions and unusual stat lines are precisely the scenarios most likely to generate pipeline gaps. Ensuring confirmed box score data rather than inferred entries for blowout games would improve miss classification accuracy."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Donovan Mitchell",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: NYK @ CLE final 130-93, NYK won by 37. BLOWOUT. Mitchell was on the LOSING side (CLE). Blowout on the losing side suppresses Q3-Q4 facilitation as the losing team's starters are benched in garbage time and offensive rhythm is disrupted. STEP 1 \u2014 Activity confirmed: Mitchell played 32 minutes per post-game news, recorded 1 AST (active, not a DNP). STEP 2 \u2014 No injury_exit event in post-game news; minor lower-body concern noted as possible context but no confirmed mid-game exit. Classification: model_gap_rule. The structural mechanism \u2014 blowout losing-side game script suppressing late-game AST opportunities \u2014 was not captured by the pre-game analysis. The pre-game spread was only 2.5 points, so the blowout was not flagged as a risk factor, and no blowout-losing-side AST discount was applied. STEP 3 \u2014 The Analyst's reasoning cited 9/10 hit rate, 95% vs_tough performance, trend=up, and elimination-game minutes security. All were sound inputs for a competitive game; none accounted for the tail scenario of a 37-point blowout where Mitchell's Q4 facilitation role was eliminated. The -5pp late-series AST dossier penalty was correctly applied but insufficient to reflect the compound blowout risk. STEP 4 \u2014 Hit rate 9/10 is legitimate but applies to games where Mitchell played a full facilitation role; in a one-sided blowout loss, the distribution collapses. STEP 5 \u2014 Tier walk correctly identified T4 as failing and walked to T2 at 9/10; the selected tier was the right tier in normal game scripts, confirming the pick logic was sound. The miss is attributable to the rule not applying a blowout-risk discount for close-out games on the losing side. STEP 6 \u2014 No lineup_update amendment present. The signal that would have flagged this \u2014 a blowout_losing_side_AST discount \u2014 does not exist in the current rule set, making this a model_gap_rule rather than a selection_error."
+      },
+      {
+        "player_name": "James Harden",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0 \u2014 Game context: NYK @ CLE final 130-93, NYK won by 37. BLOWOUT. Harden was on the LOSING side (CLE). Blowout on the losing side compounds all shooting variance \u2014 volume may be maintained (Harden shot 0-for-6 from three, confirming normal attempt volume) but efficiency collapses as defensive pressure intensifies without offensive coherence, and the game script disrupts rhythm. STEP 1 \u2014 Activity confirmed: post-game news confirms Harden played 33 minutes and attempted 6 threes with 0 makes \u2014 active, not a DNP. STEP 2 \u2014 No injury_exit event. Classification: model_gap_rule. Three compounding 3PM suppression signals were present and correctly identified: (1) career playoff 3PM trajectory monotonic_down, (2) trend=down quant tag, (3) blowout losing-side game script. The Analyst assembled these into a -13pp penalty cascade and landed at the 75% floor pick rather than a skip. The rule does not yet specify that compound 3PM suppression (career playoff CAUTION + trend=down simultaneously active) on a losing-side close-out team triggers a mandatory skip rather than a floor pick. STEP 3 \u2014 The Analyst's reasoning was thorough: FG_MARGIN_NEG step-down to T10 on PTS (separate pick) was correct; the 3PM tier walk correctly held at T1 via 9/10 exception; career playoff 3PM caution was applied. The gap was not in the analysis but in the rule's output: the 75% floor functions as a soft landing for a prop that carried structural suppression signals in three independent dimensions. STEP 4 \u2014 Hit rate 9/10 at T1 overall is real but reflects long-run performance; in a context combining playoff 3PM trajectory decline, trend=down, and blowout elimination pressure, the applicable distribution is narrower and more suppressed than the overall T1 rate implies. STEP 5 \u2014 Tier walk confirmed T2 failed on series data (DET 4/7=57%, TOR 5/7=71%), T1 was the only viable tier, and the 9/10 exception was the sole mechanism preventing a step-below-minimum skip. The tier walk itself surfaces that T1 was a last-resort tier reached by exhausting all higher options \u2014 a signal of structural fragility that the current rules treat as a 'hold' rather than a 'skip.' STEP 6 \u2014 No lineup_update amendment present. The miss would have been avoided by a compound-suppression mandatory skip rule (career playoff 3PM CAUTION + trend=down = SKIP regardless of T1 overall hit rate), which does not currently exist in the prompt rule set."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 11,
+      "hits": 9,
+      "misses": 2,
+      "hit_rate_pct": 81.8,
+      "delta_vs_overall_pp": 0.0
+    }
   }
 ]
