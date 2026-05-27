@@ -9335,5 +9335,118 @@
       "hit_rate_pct": 81.8,
       "delta_vs_overall_pp": 0.0
     }
+  },
+  {
+    "date": "2026-05-26",
+    "total_picks": 11,
+    "voided_picks": 2,
+    "hits": 10,
+    "misses": 1,
+    "no_data": 0,
+    "hit_rate_pct": 90.9,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 2,
+        "hits": 1,
+        "hit_rate_pct": 50.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Castle AST T4 (100% hit rate, consistent tag) hit comfortably with 6 actual vs 4 threshold \u2014 the system's discipline of selecting a tier with a 10/10 historical rate and a consistent tag, refusing to reach to T6/T8 without confirmed 7+/10 at those tiers, is calibrated correctly and should be maintained.",
+      "Fox AST T4 (90% overall, WCF series 4/4) hit with 8 actual vs 4 threshold despite Fox battling an ankle injury that ultimately ruled him out of Game 2 \u2014 the AST prop's independence from point-scoring efficiency was validated; Fox's playmaking function held even when his scoring was suppressed by the injury. The pick's injury resilience on an AST prop vs a PTS prop is a meaningful calibration insight.",
+      "Hartenstein REB T6 walked down to T4 via 25th-pct gate uncertainty, and he posted 15 rebounds \u2014 the conservative walk-down cost ceiling upside but the T4 pick was structurally sound and the reasoning (SAS bigs all out, elevated rebounding floor) was directionally correct. The gate mechanism worked as a safety valve without missing the hit.",
+      "Holmgren PTS T10 with iron_floor held at standard tier despite Jalen Williams QUES/OUT on same team \u2014 the rule exempting iron_floor picks from the absent-teammate step-down was validated: Holmgren posted 16 points in 30 minutes. Iron_floor on PTS correctly identifies structural scoring floors that persist through lineup variance.",
+      "Castle 3PM T1 hit with 3 actual (78% confidence, stable trend, H2H 7/9) \u2014 the system's discipline of capping non-iron_floor 3PM picks at 80% and using the H2H rate (78%) as the honest confidence anchor rather than inflating off the 85% overall rate was appropriate; the pick worked and the conservatism was correct for a non-iron_floor 3PM in an away playoff context."
+    ],
+    "lessons": [
+      "Wembanyama 3PM T1 missed: he went 0-for-5 from three in 38 minutes despite an 8/10 overall hit rate and H2H 8/9 vs OKC. The WCF series prior-game pattern (3-3-3 in G2-G4) and the H2H rate are genuine signals, but a 0-for-5 outcome on a VOLATILE prop with no iron_floor in an elimination road game is within the distribution for a player whose 3PM output carries meaningful game-to-game variance. This is a variance miss \u2014 the pick was constructed correctly per the rules (VOLATILE -3pp applied, non-iron_floor cap at 80%, 75% final confidence), and the 8/10 hit rate means roughly 2 misses per 10 picks are expected.",
+      "Fox PTS T10 missed with 9 actual vs 10 threshold (miss by 1): Fox was battling a persistent ankle injury from the prior series and the post-game news confirms he was visibly limited, finishing with only 9 points in 33 minutes. This is an injury_event \u2014 the ankle limitation structurally suppressed his scoring floor below a threshold that his historical data (6/7 H2H at T10, WCF avg 17.7 PPG) predicted would hold. The pick object shows post_game_event = 'injury_exit' and the injury_check_time was NOT_LISTED, meaning the ankle issue was not surfaced on the pre-game injury report despite being a known carry-over condition from the prior series. The FG_MARGIN_THIN step-down from T15 to T10 provided genuine protection \u2014 T15 would have missed more severely \u2014 validating the cascade mechanism.",
+      "Fox 3PM T1 missed with 0 actual vs 1 threshold: The post_game_event = 'injury_exit' and the ankle limitation are the direct explanation. Fox shot 0-for-3 from three in a game where his overall shooting was suppressed by the ankle (9 points on restricted effectiveness). The trend=down tag and -5pp penalty were directionally correct but insufficient to prevent the pick \u2014 the ankle's carry-over severity was not reflected in the NOT_LISTED injury status. This is an injury_event miss. The 9/10 exception rule that held the pick at T1 despite trend=down was mechanically correct per the rules, but the cumulative risk profile (trend=down + known ankle carry-over + away playoff game) warrants a forward-looking note about chronic carry-over injuries that do not appear on injury reports."
+    ],
+    "recommendations": [
+      "Implement a chronic carry-over injury penalty for players confirmed to be 'fighting through' a known injury from a prior series that does not appear on the official pre-game injury report. When post-game news from the immediately preceding game references an ankle, knee, or similar structural injury as ongoing, apply a mandatory -5pp confidence reduction to PTS and 3PM props for that player in the next game even if NOT_LISTED on the injury report. This would have caught both Fox PTS T10 and Fox 3PM T1 \u2014 the ankle was documented as a carry-over condition and the injury report gap was the structural failure point.",
+      "For 3PM props on VOLATILE-tagged players with no iron_floor in away playoff elimination games (spread < 8), evaluate whether the pick should require the H2H hit rate alone (not the blended overall rate) to meet the 75% 3PM floor threshold before emitting. Wembanyama's 3PM T1 had an H2H of 8/9 (89%) and an overall blended rate around 75-78% after VOLATILE penalty \u2014 both cleared the floor. But his WCF series variance (0-for-5 in G5 after 3-3-3 in G2-G4) is a within-series cold signal that the current VOLATILE tag does not fully capture. Consider adding a within-series 3PM cold check: if the player has 0 3PM in the most recent series game, apply an additional -3pp on top of the existing VOLATILE penalty for the next game's 3PM pick.",
+      "The 3PM prop type is 1/3 (33.3%) on this slate, the weakest category, driven by two injury-event misses (Fox) and one variance miss (Wembanyama). This is not a systematic selection error requiring rule changes, but it reinforces the existing directive to treat 3PM non-iron_floor picks as structurally lower-confidence. Confirm that the 80% non-iron_floor cap on 3PM props is functioning as designed and is not being inflated by H2H rates that blend regular-season and early-series data \u2014 for WCF/ECF games, the within-series 3PM sample should be weighted more heavily than cross-series H2H.",
+      "Fox's two misses (PTS T10 and 3PM T1) both carry post_game_event = 'injury_exit' and share the same root cause. When a player has multiple props picked on the same day and a known chronic injury, all props for that player should be reviewed together during the afternoon lineup update \u2014 if one prop is flagged for downside (e.g. PTS revised down per FG_MARGIN_THIN), the 3PM prop should receive the same injury-awareness review even if the injury tag is NOT_LISTED. The current lineup_update logic revised confidence_pct for Fox's 3PM from 75% to 75% (unchanged) with reasoning that Williams has no defensive impact \u2014 this was correct reasoning about the lineup change but missed the more important Fox-specific ankle risk entirely."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0: SAS @ OKC final 114-127, OKC won by 13 \u2014 COMPETITIVE game script. Not a blowout; game script is neutral context. STEP 1: Wembanyama played 38 minutes and posted 20 PTS (per PTS pick actual_value), confirming full activity with no injury exit. STEP 2: Post-game news confirms 0-for-5 from three in 38 minutes \u2014 this is a shooting performance outcome, not an injury or workflow event. No post_game_event = injury_exit on this pick. Classification: variance. STEP 3: The analyst's reasoning cited H2H vs OKC T1=8/9 (89%), stable trend, and WCF series G2-G4 making 3-3-3 threes as the primary thesis. The reasoning correctly applied VOLATILE -3pp and the non-iron_floor 3PM cap at 80%, landing at 75% confidence. The thesis was structurally sound given the data available at pick time. What it could not capture is within-series game-to-game 3PM variance for a VOLATILE player \u2014 going 0-for-5 on attempts is a genuine cold night rather than a structural miss. STEP 4: Hit rate of 8/10 means approximately 2 misses per 10 occurrences are expected. This outcome is within that distribution. The VOLATILE tag (-3pp applied) acknowledged this risk. STEP 5: Tier walk correctly identified T1 as the only viable tier (T2/T3 lacked confirmed qualifying rates) and applied the VOLATILE penalty \u2014 walk was sound. STEP 6: Lineup update direction = unchanged (Williams QUES); correctly assessed as no material effect on Wembanyama 3PM. The amendment was appropriate and the confidence held at 76%. Miss is variance \u2014 the pick was constructed correctly, and a 0-for-5 three-point shooting night is within the expected 20% miss rate for an 8/10 proposition, particularly for a VOLATILE-tagged prop with no iron_floor."
+      },
+      {
+        "player_name": "De'Aaron Fox",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 9.0,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0: SAS @ OKC final 114-127, OKC won by 13 \u2014 COMPETITIVE game script. Not a blowout. STEP 1: Fox played 33 minutes and recorded 8 AST (per AST pick actual_value = 8.0), confirming full activity. He did not exit mid-game but was clearly limited by his ankle. STEP 2: Post-game news and pick object both confirm post_game_event = 'injury_exit' and detail: 'Fox has been battling an ankle injury since the prior series; confirmed ruled out of Game 2 of the West Finals, sources note he is fighting through the ankle issue.' The web recap states he played 33 minutes but was clearly limited, finishing with only 9 points. Fast path applies: injury_event classification. STEP 3: The analyst's reasoning cited FG_MARGIN_THIN step from T15\u2192T10 and H2H 6/7 at T10 with WCF avg 17.7 PPG. The reasoning was mechanically correct per available data \u2014 the ankle was NOT_LISTED on the pre-game injury report, so the analyst had no quant signal forcing a further reduction. The FG_MARGIN_THIN cascade actually provided protection by stepping from T15 to T10; had the pick remained at T15, the miss margin would have been 6 points rather than 1. STEP 4: Hit rate 7/10 \u2014 this is a lower-confidence tier that carries genuine miss risk. STEP 5: Tier walk was sound given available data; FG_MARGIN_THIN correctly forced the conservative step-down. STEP 6: Lineup update direction = unchanged (Williams assessment). The amendment correctly noted Williams has no defensive anchor impact on Fox, but did not surface the Fox ankle carry-over risk \u2014 this is the structural gap. Root cause: In-game injury limitation confirmed by post-game news \u2014 Fox battling a persistent ankle injury from the prior series that was NOT_LISTED on the pre-game report but visibly suppressed his scoring (9 PTS in 33 min vs 17.7 WCF avg). Miss not attributable to pick selection logic; the walk-down from T15 to T10 via FG_MARGIN_THIN provided material protection. Injury_event classification per post_game_event field on pick object."
+      },
+      {
+        "player_name": "De'Aaron Fox",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0.0,
+        "miss_classification": "injury_event",
+        "tier_walk_flag": null,
+        "root_cause": "STEP 0: SAS @ OKC final 114-127, OKC won by 13 \u2014 COMPETITIVE game script. Not a blowout. STEP 1: Fox played 33 minutes with confirmed activity (8 AST, 9 PTS across co-picks). STEP 2: Post-game news and pick object both confirm post_game_event = 'injury_exit': 'Fox has been battling an ankle injury since the prior series; confirmed ruled out of Game 2 of the West Finals, fighting through the ankle issue.' Web recap confirms he was clearly limited, with only 9 points and 0-for-3 from three. Fast path applies: injury_event classification. STEP 3: The analyst's reasoning applied the 9/10 exception rule to hold at T1 despite trend=down (mandatory hold when overall rate is 9/10 and hard-skip conditions do not apply), then applied -5pp for trend=down and capped at 80% non-iron_floor ceiling. The reasoning was mechanically correct per rules \u2014 the ankle was NOT_LISTED, preventing any injury-based reduction. The trend=down tag was a directionally correct signal that the analyst appropriately penalized, but -5pp was insufficient given the undisclosed severity of the ankle limitation. STEP 4: Hit rate 9/10 \u2014 high overall rate but the trend=down tag indicated deteriorating form that the injury context explains. STEP 5: T1 was the only viable tier given trend=down; holding via the 9/10 exception was rule-compliant. STEP 6: Lineup update direction = unchanged; the amendment correctly assessed Williams' absence as immaterial to Fox's 3PM but did not flag the Fox ankle risk. Root cause: In-game injury limitation confirmed by post-game news \u2014 same ankle condition as PTS miss suppressed Fox's shooting output (0-for-3 from three in a competitive game). Miss not attributable to pick selection logic; the trend=down penalty was directionally correct but the ankle severity was obscured by NOT_LISTED injury status. Injury_event classification per post_game_event field on pick object."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 5,
+      "hits": 4,
+      "misses": 1,
+      "hit_rate_pct": 80.0,
+      "delta_vs_overall_pp": -10.9
+    }
   }
 ]

@@ -14,10 +14,10 @@
       "tier_considered": 20,
       "reason": "no FanDuel market available \u2014 SGA not listed in FANDUEL MARKET AVAILABILITY section"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 32.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 32.0 \u2265 tier 20"
   },
   {
     "date": "2026-05-26",
@@ -34,10 +34,10 @@
       "tier_considered": 6,
       "reason": "no FanDuel market available \u2014 SGA not listed in FANDUEL MARKET AVAILABILITY section"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
   },
   {
     "date": "2026-05-26",
@@ -54,10 +54,10 @@
       "tier_considered": 1,
       "reason": "no FanDuel market available \u2014 SGA not listed in FANDUEL MARKET AVAILABILITY section"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-05-26",
@@ -74,10 +74,10 @@
       "tier_considered": 8,
       "reason": "VOLATILE -3pp reduces T8 overall 70% to 67%, below 72% REB floor; 25th-pct gate also fires with recent G3/G4 both at 8 REB (exact match to T8 threshold)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 6.0 < tier 8"
   },
   {
     "date": "2026-05-26",
@@ -94,10 +94,10 @@
       "tier_considered": 10,
       "reason": "FG_MARGIN_THIN:9% fires on T10 (minimum PTS tier); no lower PTS tier exists to step to \u2014 cascade exhausted, skip"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 6.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 6.0 < tier 10"
   },
   {
     "date": "2026-05-26",
@@ -114,10 +114,10 @@
       "tier_considered": 4,
       "reason": "VOLATILE -3pp (72%) + REB slump penalty -5pp (potential G4 miss) = 67%, below 72% REB floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 4.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 4.0 \u2265 tier 4"
   },
   {
     "date": "2026-05-26",
@@ -134,10 +134,10 @@
       "tier_considered": 10,
       "reason": "Triple-condition minimum-tier skip: FG_MARGIN_THIN:4% fires on T10 (minimum PTS tier) + competitive=58% below 65% threshold + non-primary scorer (avg PTS < 18). Codified from 2026-05-24 auditor recommendation."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 5.0 < tier 10"
   },
   {
     "date": "2026-05-26",
@@ -156,7 +156,7 @@
     },
     "actual_value": null,
     "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "skip_verdict": "no_data",
+    "skip_verdict_notes": "player not found in yesterday's game log"
   }
 ]
