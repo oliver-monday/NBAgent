@@ -1,11 +1,59 @@
 {
-  "date": "2026-05-27",
-  "generated_at": "2026-05-27T09:36:57.180805-07:00",
-  "player_notes": {},
-  "game_notes": {},
-  "raw_item_count": 0,
-  "filtered_item_count": 0,
+  "date": "2026-05-28",
+  "generated_at": "2026-05-28T09:51:40.748933-07:00",
+  "player_notes": {
+    "shai gilgeous-alexander": "Scored 32 points in Game 5 win; no injury concerns noted. Full availability expected for Game 6 closeout attempt vs. Spurs.",
+    "victor wembanyama": "Held to 20 points in Game 5; coach explicitly said Spurs need more from him in Game 6. Fatigue has been raised as a concern \u2014 monitor output carefully, but no injury/availability issue reported."
+  },
+  "game_notes": {
+    "OKC vs SAS": "Thunder lead series 3-2 and are closing out at home in Game 6. Wembanyama under pressure to elevate; Thunder role players (Caruso, Wallace, McCain) contributed heavily in Game 5, suggesting continued balanced scoring distribution for OKC."
+  },
+  "raw_item_count": 45,
+  "filtered_item_count": 41,
   "fetch_errors": [],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "OKC vs SAS \u2014 Series State",
+      "current_context_fact": "The season context's playoff bracket and series diaries show OKC vs PHX in R1 (OKC won 4-0) and SAS vs POR in R1 (SAS won 4-1), but no R2 or conference finals series diary exists in the document.",
+      "conflict": "Today's news confirms OKC leads SAS 3-2 in what is described as the 'Western Conference finals' (Game 6 is tonight, May 28). SGA scored 32 in Game 5 (127-114 OKC win). The series is deep into the conference finals, which is not reflected in the context document at all \u2014 the context has no R2 or WCF series diary for OKC vs SAS.",
+      "urgency": "critical",
+      "suggested_action": "Add an OKC vs SAS Western Conference Finals series diary. OKC leads 3-2, Game 6 is tonight (May 28). SGA scored 32 in Game 5. Wembanyama had an 'off night' (20 points per the news) in Game 5 loss. The context document must be updated to reflect the current conference finals stage and all series results since R1 ended."
+    },
+    {
+      "player_or_team": "NYK \u2014 Playoff Stage / Opponent",
+      "current_context_fact": "NYK wins series 4-2 vs ATL (series diary ends with G6 clincher). No R2 diary exists in the context document.",
+      "conflict": "Today's news references the Knicks as Eastern Conference champions ('Should Knicks want OKC or Spurs more in the NBA Finals?' and 'Trump plans to attend NBA Finals game at MSG'). NYK has already advanced past R2 and the ECF and is the confirmed Finals representative \u2014 the context only shows them through R1.",
+      "urgency": "critical",
+      "suggested_action": "Update context to reflect NYK as Eastern Conference champions heading to the NBA Finals. Add R2 and ECF series results for NYK. The 'NYK were swept by the Knicks' reference in the CLE coach note also confirms CLE was eliminated (swept) by NYK in R2."
+    },
+    {
+      "player_or_team": "CLE \u2014 Coach Kenny Atkinson",
+      "current_context_fact": "CLE coach listed as Kenny Atkinson. CLE eliminated TOR 4-3 in R1 per series diary.",
+      "conflict": "News confirms Kenny Atkinson is returning as Cavaliers coach 'despite getting swept by the Knicks' \u2014 meaning CLE was swept (0-4) by NYK in R2. The context has no record of CLE's R2 result.",
+      "urgency": "critical",
+      "suggested_action": "Add that CLE was eliminated by NYK in R2 (swept 0-4). Atkinson returning as coach is confirmed for next season \u2014 this is not a conflict with the context but confirms his status. The primary update needed is logging CLE's R2 elimination."
+    },
+    {
+      "player_or_team": "Victor Wembanyama \u2014 Health/Performance",
+      "current_context_fact": "Wembanyama player note states: 'Treat as fully healthy entering R2. No injury concern.' and 'R1 series is over \u2014 SAS advances.' The last documented Wembanyama game in the context is SAS's R1 G5 clincher (17/14/3, fully healthy).",
+      "conflict": "News from May 27 reports Wembanyama was 'held to 20 points' in Game 5 of the WCF loss to OKC (127-114), coach Johnson said 'we're going to need to get him going,' Perkins said Wemby got 'punked,' and the NBA warned Wembanyama for violating media rules after he refused to speak to reporters post-game. SAS faces elimination in Game 6 tonight. His performance in WCF G5 suggests a difficult night, and there may be fatigue/performance concerns.",
+      "urgency": "critical",
+      "suggested_action": "Update context to reflect WCF series state: SAS trails OKC 2-3, facing elimination in Game 6 tonight (May 28). Wembanyama had a subpar Game 5 (20 pts, described as 'off night'). Coach Johnson flagged needing more from him. Add WCF series diary for OKC vs SAS. Note the NBA media rules warning. Reassess 'fully healthy' status \u2014 fatigue is being cited as a potential concern by analysts."
+    },
+    {
+      "player_or_team": "Jalen Williams (OKC) \u2014 Availability",
+      "current_context_fact": "Playoff injury landscape states Jalen Williams had a left hamstring injury in R1 G2 vs PHX and was OUT through the R1 sweep. R2 key note says 'Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into the next round.'",
+      "conflict": "Today's news on the OKC vs SAS WCF series (Game 5 recap: 'Thunder use balanced attack... Alex Caruso, Cason Wallace and Jared McCain') does not mention Williams as unavailable, and the series is deep in the WCF (3-2 OKC). His status \u2014 whether he returned or is still out \u2014 is unresolved in the context but the WCF series is live.",
+      "urgency": "monitor",
+      "suggested_action": "Investigate and update Jalen Williams' current availability for the WCF. The news articles covering WCF Game 5 emphasize role players (Caruso 22 pts, Wallace, McCain) rather than Williams, which may indicate he is still not contributing at full capacity or remains out. Update the injury landscape section with his current WCF status."
+    },
+    {
+      "player_or_team": "Jalen Williams \u2014 player_name tag mismatch in news",
+      "current_context_fact": "Jalen Williams is an OKC player on the roster.",
+      "conflict": "One news item tagged 'jalen williams' actually describes Pelicans coach Jamahl Mosley discussing Zion Williamson \u2014 this is a metadata/tagging error in the news feed, not a real conflict with the context. No action needed on the context document.",
+      "urgency": "monitor",
+      "suggested_action": "No change needed to context. The news item tagged 'jalen williams' is about Zion Williamson and NOP coach Mosley \u2014 irrelevant to OKC's Jalen Williams. Flag as news feed tagging error only."
+    }
+  ],
   "staleness_flags": []
 }
