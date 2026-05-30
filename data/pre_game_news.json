@@ -1,11 +1,52 @@
 {
-  "date": "2026-05-29",
-  "generated_at": "2026-05-29T09:43:51.948470-07:00",
-  "player_notes": {},
-  "game_notes": {},
-  "raw_item_count": 0,
-  "filtered_item_count": 0,
+  "date": "2026-05-30",
+  "generated_at": "2026-05-30T07:26:51.386840-07:00",
+  "player_notes": {
+    "jalen williams": "OUT for Game 7 vs. Spurs (hamstring). Zero usage \u2014 fade all props.",
+    "mitchell robinson": "Broken right pinkie finger; plans to play in NBA Finals Game 1 with a brace. Monitor for minutes restriction and reduced rebounding/finishing impact near the rim."
+  },
+  "game_notes": {
+    "SAS vs OKC": "Jalen Williams (hamstring) is OUT for Game 7, removing OKC's second-best scorer. Expect elevated usage and prop upside for SGA and other Thunder role players absorbing his 30+ playoff minutes."
+  },
+  "raw_item_count": 39,
+  "filtered_item_count": 37,
   "fetch_errors": [],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "Jalen Williams (OKC)",
+      "current_context_fact": "Jalen Williams' hamstring recovery timeline is the primary OKC health variable heading into R2 \u2014 his return would restore their ceiling to its highest level; SGA's playmaking expansion (8 AST in G4) and Holmgren's double-double consistency are the tactical patterns that define OKC's R2 identity regardless of Williams' availability.",
+      "conflict": "News confirms Williams returned for Game 6 of the Western Conference Finals (played 10 minutes, scored 1 point) but will NOT play in Game 7 vs. Spurs. The context doc last tracked Williams as OUT during R1 vs PHX and mentions him as a health variable for R2, but does not reflect his brief G6 return or his confirmed G7 absence in the WCF.",
+      "urgency": "critical",
+      "suggested_action": "Update Jalen Williams' status to: returned briefly in WCF G6 (10 min, 1 pt), but confirmed OUT for WCF Game 7 vs. Spurs on 2026-05-30. His hamstring remains a limiting factor. Remove any implication that his return is imminent or that his availability is merely uncertain."
+    },
+    {
+      "player_or_team": "OKC vs SAS \u2014 playoff series status",
+      "current_context_fact": "The context doc's playoff bracket and series diaries only reflect R1 results. No R2 or Conference Finals series diaries exist for OKC vs SAS.",
+      "conflict": "News confirms OKC vs SAS is in the Western Conference Finals and has reached Game 7, with SAS winning Game 6 (118-91 blowout) to force it. The Thunder-Spurs WCF Game 7 is scheduled for 2026-05-30. The Eastern Conference champion is already confirmed as the Knicks.",
+      "urgency": "critical",
+      "suggested_action": "Add WCF series entry for OKC vs SAS: series is tied 3-3 heading into Game 7 on 2026-05-30. SAS won G6 118-91 (Wembanyama 28/10). Jalen Williams is OUT for G7. SGA was below his regular-season average in G6. NYK is confirmed as the Eastern Conference champion and will face the WCF winner in the NBA Finals."
+    },
+    {
+      "player_or_team": "NYK (Mitchell Robinson)",
+      "current_context_fact": "No mention of Mitchell Robinson injury in the context doc's playoff injury landscape beyond his role as NYK's offensive rebounder providing '4-5 extra possessions per game.'",
+      "conflict": "News confirms Mitchell Robinson has a broken right pinkie finger (surgery performed). He plans to play in the NBA Finals wearing a brace, but there is 'no timetable for return' per initial reporting. His availability and effectiveness for the Finals is a documented health concern.",
+      "urgency": "critical",
+      "suggested_action": "Add to playoff injury landscape: Mitchell Robinson (NYK) \u2014 broken right pinkie finger, underwent surgery. Plans to play in NBA Finals with a brace. Flag as an active health concern that may limit his effectiveness, particularly his offensive rebounding role (noted as giving NYK '4-5 extra possessions per game'). Monitor his game-time status and any minutes/role restrictions."
+    },
+    {
+      "player_or_team": "ORL Magic \u2014 Head Coach",
+      "current_context_fact": "Head coach listed as Jamahl Mosley for ORL.",
+      "conflict": "News reports the Orlando Magic are finalizing a deal to hire San Antonio Spurs associate head coach Sean Sweeney as their new head coach (reported by Shams Charania, May 29-30, 2026). This implies Mosley is no longer the ORL head coach.",
+      "urgency": "critical",
+      "suggested_action": "Update ORL head coach from Jamahl Mosley to Sean Sweeney (hire being finalized as of 2026-05-29). Note Sweeney is coming from SAS where he was associate head coach."
+    },
+    {
+      "player_or_team": "SGA (OKC) \u2014 consecutive 20-point games streak",
+      "current_context_fact": "TIER-WALK DIRECTIVE: PTS T20 is pre-qualified for SGA. The streak makes T20 a structural lock. 'Playoff confirmation (G1 vs PHX, Apr 19): SGA scored 25 on 5-18 FG \u2014 inefficient shooting night but still cleared T20 comfortably. Streak intact through first playoff game.'",
+      "conflict": "News headline states 'Gilgeous-Alexander finished with less than half his regular-season average as the Thunder dropped Game 6' of the WCF. His regular-season average was 30.0 PPG, meaning he scored approximately 14-15 points in G6 \u2014 which would end his consecutive 20-point games streak if accurate.",
+      "urgency": "critical",
+      "suggested_action": "Investigate and update SGA's consecutive 20-point games streak status. If he scored below 20 in WCF Game 6, the historic streak has ended and the T20 structural lock directive must be revoked entirely. The tier-walk directive starting at T20 as a pre-qualified lock cannot stand if the streak is broken. Treat SGA's PTS props with standard tier-walk evaluation until streak status is confirmed."
+    }
+  ],
   "staleness_flags": []
 }
