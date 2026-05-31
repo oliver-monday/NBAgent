@@ -10024,5 +10024,105 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 6.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-05-30",
+    "player_name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "opponent": "SAS",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Shai Gilgeous-Alexander",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "no FanDuel market available"
+    },
+    "actual_value": 9.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 9.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-30",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "AST",
+    "tier_considered": 6,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Stephon Castle",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "VOLATILE+AST T6+ penalty (-8pp) on base 70% drops to 62%, below 68% AST floor; stepped to T4"
+    },
+    "actual_value": 6.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 6.0 \u2265 tier 6"
+  },
+  {
+    "date": "2026-05-30",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Stephon Castle",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "trend=down mandatory step-down below T1 minimum; no iron_floor or 9+/10 exception; forced skip"
+    },
+    "actual_value": 0.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 0.0 < tier 1"
+  },
+  {
+    "date": "2026-05-30",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "3PM",
+    "tier_considered": 1,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "De'Aaron Fox",
+      "prop_type": "3PM",
+      "tier_considered": 1,
+      "reason": "trend=down mandatory step-down below T1 minimum; no iron_floor or 9+/10 exception; ankle carry-over also supports skip"
+    },
+    "actual_value": 3.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 3.0 \u2265 tier 1"
+  },
+  {
+    "date": "2026-05-30",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "OKC",
+    "prop_type": "REB",
+    "tier_considered": 8,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Victor Wembanyama",
+      "prop_type": "REB",
+      "tier_considered": 8,
+      "reason": "T8 minimum available FanDuel tier; WCF within-series T8 4/6 (67%) fails 70% threshold; no lower market available; no pick"
+    },
+    "actual_value": 7.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 7.0 < tier 8"
   }
 ]
