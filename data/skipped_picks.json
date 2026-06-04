@@ -14,10 +14,10 @@
       "tier_considered": 6,
       "reason": "Best qualifying tier T6 (75% overall) has no FanDuel market; available markets T8/T10/T12 fail 70% hit rate requirement (~60% at T8)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 6"
   },
   {
     "date": "2026-06-03",
@@ -38,10 +38,10 @@
       "minimum_floor": 75,
       "reason": "VOLATILE -3pp drops 75% base to 72%, below 75% 3PM minimum confidence floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-06-03",
@@ -63,10 +63,10 @@
       "minimum_floor": 75,
       "reason": "VOLATILE overrides iron_floor on 3PM; -3pp drops 70% to 67%, below 75% 3PM minimum floor. Carry-forward rule: VOLATILE + iron_floor overridden + confidence \u226474% = skip."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 1.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 1.0 < tier 2"
   },
   {
     "date": "2026-06-03",
@@ -88,10 +88,10 @@
       "minimum_floor": 68,
       "reason": "VOLATILE+AST T6 primary playmaker -8pp + tough defense vs_tough=61% -5pp = -13pp; 57% below 68% AST floor. Picked T4 instead."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 3.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 3.0 < tier 6"
   },
   {
     "date": "2026-06-03",
@@ -110,10 +110,10 @@
       "hit_rate": "7/10",
       "reason": "VOLATILE + 7/10 + T25+ = volatile_weak_combo hard skip. No Brunson exemption exists at T25."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 30.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 30.0 \u2265 tier 25"
   },
   {
     "date": "2026-06-03",
@@ -138,10 +138,10 @@
       "minimum_floor": 68,
       "reason": "FG_MARGIN_NEG steps T20\u2192T15. VOLATILE -3% + KAT STRONG CAUTION -5% + road underdog near-threshold -5% = -13pp. 75%-13%=62%, below 68% PTS floor."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 15"
   },
   {
     "date": "2026-06-03",
@@ -158,10 +158,10 @@
       "tier_considered": 8,
       "reason": "Karl-Anthony Towns has no FanDuel alternate prop markets listed for today's game."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 12.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 12.0 \u2265 tier 8"
   },
   {
     "date": "2026-06-03",
@@ -182,9 +182,9 @@
       "minimum_floor": 72,
       "reason": "VOLATILE -3pp drops 70% base to 67%, below 72% REB minimum floor. Minimum-tier B2B null cap (ceiling 72%) does not raise floor confidence."
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
   }
 ]
