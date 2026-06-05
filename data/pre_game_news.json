@@ -1,11 +1,66 @@
 {
-  "date": "2026-06-04",
-  "generated_at": "2026-06-04T09:22:19.420498-07:00",
-  "player_notes": {},
-  "game_notes": {},
-  "raw_item_count": 0,
-  "filtered_item_count": 0,
+  "date": "2026-06-05",
+  "generated_at": "2026-06-05T08:50:57.708761-07:00",
+  "player_notes": {
+    "jalen brunson": "Played through an early injury in Game 1, scoring 30 pts including 13 in Q4. Monitor injury status for Game 2, but finished strong \u2014 no indication of restrictions.",
+    "mitchell robinson": "Available for NBA Finals after hand surgery; practiced before Game 1. His return could affect KAT's rebounding volume and frontcourt minutes distribution."
+  },
+  "game_notes": {
+    "NYK vs SAS": "Mitchell Robinson available after hand surgery, potentially compressing Knicks frontcourt minutes. Brunson nursing an undisclosed early-game injury \u2014 worth monitoring official Game 2 injury report."
+  },
+  "raw_item_count": 46,
+  "filtered_item_count": 46,
   "fetch_errors": [],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "NYK / SAS \u2014 NBA Finals",
+      "current_context_fact": "The season context's playoff bracket shows R1 matchups and series diaries through R1 only. The most recent playoff round documented is R1. OKC is listed as the defending champion (2024-25). No NBA Finals matchup between NYK and SAS is documented anywhere in the context.",
+      "conflict": "Multiple news items confirm the 2026 NBA Finals are currently underway between the New York Knicks and San Antonio Spurs, with NYK winning Game 1 on the road 105-95. This means both teams advanced through R1, R2, and conference finals \u2014 none of which are documented in the season context. The context doc has no record of this Finals matchup, the intermediate rounds, or the series score.",
+      "urgency": "critical",
+      "suggested_action": "Add the 2026 NBA Finals matchup (NYK vs SAS, NYK leads 1-0 after Game 1 105-95 road win) to the playoff bracket section. Document all intermediate rounds (R2, ECF, WCF) that led to this matchup. Update the playoff series diary section with at minimum a Game 1 entry for the Finals."
+    },
+    {
+      "player_or_team": "Jalen Brunson (NYK)",
+      "current_context_fact": "Series diary G6 entry states: 'Brunson's left ankle status is THE critical NYK variable \u2014 his third-quarter exit in the series-clinching game introduces genuine availability and minutes-restriction uncertainty.' Last documented Brunson entry covers the ATL series (R1), where he exited G6 with a left ankle injury.",
+      "conflict": "News confirms Brunson scored 30 points in NBA Finals Game 1, including 13 points in the fourth quarter to lead a comeback from a 14-point deficit. He is active and performing at a star level with no apparent ankle restriction. Additionally, the NBA is investigating an interaction between Brunson and courtside fans in Game 1.",
+      "urgency": "critical",
+      "suggested_action": "Update Brunson's status: his left ankle concern from R1 G6 has resolved \u2014 he is healthy and performing at full capacity in the NBA Finals (30 pts in G1). Remove or downgrade the ankle concern flag. Add note about NBA investigation into fan interaction in Finals G1 (monitor for any suspension risk, though current reporting indicates investigation only)."
+    },
+    {
+      "player_or_team": "Victor Wembanyama (SAS)",
+      "current_context_fact": "Last documented Wembanyama entry is from R1 vs POR series (SAS wins 4-1). Context states: 'Treat as fully healthy entering R2. No injury concern.' R1 diary ends with SAS advancing.",
+      "conflict": "News confirms Wembanyama is active in the NBA Finals (G1 vs NYK), that SAS lost Game 1 105-95, and that a fan ran onto the court and attempted a selfie with Wembanyama during G1, briefly halting play. Wembanyama expressed confidence SAS will bounce back. No new injury reported.",
+      "urgency": "critical",
+      "suggested_action": "Update Wembanyama's playoff context to reflect he is in the NBA Finals (G1 played, SAS lost 95-105). Add Finals G1 diary entry. The fan court-storming incident is noted but no injury resulted \u2014 confirm no health concern from incident. Context should reflect the series is now Knicks vs Spurs with NYK leading 1-0."
+    },
+    {
+      "player_or_team": "Karl-Anthony Towns (NYK)",
+      "current_context_fact": "Towns' last documented entry is in the R1 ATL series diary. No Finals-level context exists. Context notes his season-long rebounding consistency (17, 21, 17, 10, 14, 11 across ATL series).",
+      "conflict": "News references Towns' performance in NBA Finals Game 1 and analyst commentary that Towns' defense 'relatively neutralized' Wembanyama in Game 1. Towns is active and a key Finals variable.",
+      "urgency": "critical",
+      "suggested_action": "Add Finals Game 1 context for Towns \u2014 specifically his defensive assignment on Wembanyama and his offensive contribution. Update playoff diary to reflect Finals participation."
+    },
+    {
+      "player_or_team": "Stephon Castle (SAS)",
+      "current_context_fact": "Castle's last documented entry is from R1 vs POR. Context states he is healthy and confirms series production (16/1/8 in G4, 15/3/5 in G5). No Finals context exists.",
+      "conflict": "News headline ('This could be Stephon Castle's moment to announce his value in the NBA') confirms Castle is active in the NBA Finals. No injury reported.",
+      "urgency": "critical",
+      "suggested_action": "Update Castle's playoff context to reflect he is active in the NBA Finals. Add note that he is a key SAS variable in the Finals series. Add Finals G1 diary entry when data becomes available."
+    },
+    {
+      "player_or_team": "Mikal Bridges (NYK)",
+      "current_context_fact": "Bridges' last documented playoff entry is from the R1 ATL series (G6: 24/5/3, 10-12 FG in a blowout). Context notes his diminished role across G1-G5 of the ATL series but G6 eruption in blowout context.",
+      "conflict": "News references Bridges as a Finals betting/DFS consideration for Game 1, confirming he is active in the NBA Finals. His role and health status through R2 and ECF are undocumented in the context.",
+      "urgency": "critical",
+      "suggested_action": "Update Bridges' playoff context to reflect he is active in the NBA Finals. Document his role evolution through R2 and ECF (currently missing). Add Finals series diary context."
+    },
+    {
+      "player_or_team": "OKC Thunder \u2014 defending champion status",
+      "current_context_fact": "Context states 'OKC | Mark Daigneault | Won 2025 NBA Championship' and the 2024-25 playoffs section shows OKC won the championship with SGA as Finals MVP.",
+      "conflict": "The 2026 NBA Finals are between NYK and SAS \u2014 meaning OKC did NOT repeat as champions and was eliminated somewhere in the 2025-26 playoffs. OKC's defending champion status is now historical only.",
+      "urgency": "monitor",
+      "suggested_action": "Note that OKC was eliminated in the 2025-26 playoffs (specific round undocumented in news but implied by NYK-SAS Finals). Update context to clarify OKC is the 2024-25 champion only, not the current defending champion heading into a Finals. Add OKC's elimination round when data is available."
+    }
+  ],
   "staleness_flags": []
 }
