@@ -9847,5 +9847,90 @@
       "hit_rate_pct": 87.5,
       "delta_vs_overall_pp": 26.0
     }
+  },
+  {
+    "date": "2026-06-05",
+    "total_picks": 13,
+    "voided_picks": 0,
+    "hits": 13,
+    "misses": 0,
+    "no_data": 0,
+    "hit_rate_pct": 100.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 6,
+        "hits": 6,
+        "hit_rate_pct": 100.0
+      },
+      "REB": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0
+      },
+      "3PM": {
+        "picks": 3,
+        "hits": 3,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 7,
+        "hits": 7,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 4,
+        "hits": 4,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "FG_MARGIN_THIN and FG_MARGIN_NEG step-down discipline validated across three PTS picks: Brunson stepped T20\u2192T15, KAT stepped T20\u2192T15, Castle stepped T15\u2192T10. All three hit comfortably (Brunson 20, KAT 21, Castle 14 vs thresholds of 15, 15, 10 respectively). The mandatory step-down rule correctly absorbed FG efficiency uncertainty and produced reliable floors in a CLOSE Finals game (1-point margin).",
+      "Trend=down step-down to T1 with 9+/10 exception held for both Brunson 3PM (iron_floor) and OG Anunoby 3PM (9/10 exception). Both hit convincingly \u2014 Brunson 2 actual vs T1, Anunoby 2 actual vs T1. The rule hierarchy of 'step down, then check whether 9+/10 or iron_floor rescues T1' is correctly calibrated for Finals-level competition on perimeter shooting props.",
+      "Castle AST T4 at 87% confidence was the highest-confidence pick on the slate and hit exactly at threshold (4 actual vs pick_value 4). The consistent tag + perfect in-series POR and MIN T4 records + 96% vs-tough rate justified the elevated confidence. Exact-threshold hits count as HITs per grading rule \u2014 this reinforces that the system does not need to over-adjust away from threshold picks when structural signals are convergent.",
+      "Vassell AST T2 and 3PM T1 both hit well above threshold (5 actual AST vs T2, 3 actual 3PM vs T1). The soft_floor -5pp penalty on AST (PTS/AST ratio > 3x) was applied correctly and did not prevent the pick from being made \u2014 it appropriately reduced confidence without a skip, and the underlying structural floor was genuine. The VOLATILE+iron_floor override on Vassell 3PM was handled correctly: iron_floor overridden, trend=down step applied, 9+/10 series exception invoked, resulting in a 75% pick that hit with a 3-actual result.",
+      "Wembanyama PTS T15 at 82% confidence hit with 29 actual \u2014 the FG_COLD blocked step-down (-5pp penalty in lieu of unavailable T10 market) was the correct resolution when no lower market existed. The 40-minute load in a 1-point CLOSE game confirms the proj_min floor was not a concern, and the blowout exemption directive correctly did not fire given the tight margin. Dylan Harper PTS T10 at 70% hit with 15 actual despite the min_floor <24 penalty \u2014 the Finals elevation of his role (32 minutes played per post-game news, above his 26.3 average) rendered the min_floor concern moot, validating that floor penalties should be applied conservatively rather than as hard skips when Finals context suggests role expansion."
+    ],
+    "lessons": [
+      "No misses occurred on this slate. One structural observation for future reference: Harper's min_floor <24 penalty was applied correctly at pick time (reducing confidence from ~73% to 70%), but his actual 32-minute Finals deployment exceeded his season average of 26.3. In Finals or late-round playoff games where a player's role is actively expanding, the min_floor penalty should be accompanied by a note that Finals-context role elevation may render the penalty conservative \u2014 this does not change the rule but informs how to interpret the resulting confidence level.",
+      "Castle's 28 minutes played (per post-game news, below the 33-minute proj_min implied in pick reasoning) produced 14 PTS and 4 AST \u2014 both threshold hits. The reduced minutes were likely blowout-adjacent game management in a 1-point game? No \u2014 the game was CLOSE (1-point margin), so the 28-minute figure reflects either standard rotation management or foul trouble. This is worth noting: AST T4 hitting exactly at 4 on 28 minutes (rather than the projected 33+) confirms the structural floor is genuinely robust. No rule change warranted, but the exact-threshold hit on reduced minutes should be logged as evidence that Castle's AST floor is durable even under minute compression."
+    ],
+    "recommendations": [
+      "No misses occurred on this slate. No corrective rule changes are warranted from this session. The analyst's tier-walk discipline, step-down execution, and confidence calibration were all validated across 13 picks in a CLOSE (1-point margin) Finals game \u2014 the most stress-testing environment possible for structural floor props.",
+      "Continue applying the FG_COLD and FG_MARGIN_NEG/THIN mandatory step-down rules without modification. Three step-downs on this slate (Brunson T20\u2192T15, KAT T20\u2192T15, Castle T15\u2192T10) all produced comfortable hits. The rule is correctly absorbing FG efficiency risk without over-stepping to unavailable tiers.",
+      "The blocked step-down penalty (-5pp in lieu of unavailable lower market) for Wembanyama PTS T15 worked correctly. For future picks where FG_COLD fires on a player whose only available markets are T15+ (common for Centers/forwards on FanDuel), continue applying the -5pp conversion penalty rather than skipping \u2014 the G2 result confirms the structural floor holds even when the ideal step-down tier is unavailable.",
+      "Castle AST T4 hitting exactly at threshold (4 actual) in 28 minutes on a CLOSE game script is the strongest confirmation yet that his structural AST floor is Finals-durable. In future Games 3-7 of this series, if Castle's minutes are projected at 28-33 (rotation management pattern), the T4 AST pick should continue to qualify at 85%+ confidence provided no VOLATILE tag emerges on his AST line.",
+      "Vassell AST T2 hit with 5 actual \u2014 well above threshold \u2014 despite the soft_floor -5pp penalty. If Vassell's AST trend continues upward and his role in the Finals expands (38 minutes played in G2 vs his series averages), consider whether the soft_floor penalty remains warranted in later games. The PTS/AST ratio rule is correctly applied for T4+, but T2 AST picks for high-usage wings with trend=up may be systematically under-confident when series role expansion is evident."
+    ],
+    "miss_details": [],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 9,
+      "hits": 9,
+      "misses": 0,
+      "hit_rate_pct": 100.0,
+      "delta_vs_overall_pp": 0.0
+    }
   }
 ]
