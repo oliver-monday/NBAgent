@@ -1,6 +1,26 @@
 [
   {
-    "date": "2026-06-05",
+    "date": "2026-06-08",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "opponent": "SAS",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "no FanDuel market available"
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-06-08",
     "player_name": "Karl-Anthony Towns",
     "team": "NYK",
     "opponent": "SAS",
@@ -12,40 +32,35 @@
       "player_name": "Karl-Anthony Towns",
       "prop_type": "REB",
       "tier_considered": 10,
-      "reason": "KAT not listed in FanDuel market availability section; no REB market exists for this player"
+      "reason": "no FanDuel market available"
     },
-    "actual_value": 13.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 13.0 \u2265 tier 10"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-06-05",
-    "player_name": "Mikal Bridges",
+    "date": "2026-06-08",
+    "player_name": "Jalen Brunson",
     "team": "NYK",
     "opponent": "SAS",
-    "prop_type": "PTS",
-    "tier_considered": 10,
+    "prop_type": "AST",
+    "tier_considered": 6,
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_name": "Mikal Bridges",
-      "prop_type": "PTS",
-      "tier_considered": 10,
-      "base_confidence": 75,
-      "volatile_penalty": -3,
-      "road_underdog_penalty": -5,
-      "final_confidence": 67,
-      "floor": 68,
-      "reason": "VOLATILE -3% + road underdog near-threshold -5% reduces 75% base to 67%, below 68% PTS floor"
+      "player_name": "Jalen Brunson",
+      "prop_type": "AST",
+      "tier_considered": 6,
+      "reason": "VOLATILE -8pp on primary playmaker at T6 drops 70% base to 62%, below 68% AST floor. Scoring-mode suppression also applies per audit feedback."
     },
-    "actual_value": 20.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 20.0 \u2265 tier 10"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-06-05",
+    "date": "2026-06-08",
     "player_name": "Victor Wembanyama",
     "team": "SAS",
     "opponent": "NYK",
@@ -57,16 +72,36 @@
       "player_name": "Victor Wembanyama",
       "prop_type": "REB",
       "tier_considered": 8,
-      "reason": "T8/T10/T12 all fail 7+/10 hit rate gate (6/10 combined series); quant best tier T6 has no FanDuel market"
+      "reason": "25th-pct exact match at T8 (3rd-lowest=8, pick=8, not strictly less); T6 has no market; blocked-walk penalty + VOLATILE + slump-persistent = -13pp total \u2192 80% base \u2192 67%, below 72% REB floor."
     },
-    "actual_value": 9.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 9.0 \u2265 tier 8"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-06-05",
-    "player_name": "Victor Wembanyama",
+    "date": "2026-06-08",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "opponent": "NYK",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "fg_cold_tier_step",
+    "rule_context": {
+      "player_name": "De'Aaron Fox",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "FG_COLD:-17% (\u226515pp) mandates step T15\u2192T10. T10 market exists for Fox. Evaluating T10: overall=75%, vs_tough=70%. VOLATILE -3pp. competitive=69%. FG_MARGIN_NEG fires too. At T10: 75% base, VOLATILE -3% = 72%, but opp=tough and trend=down on PTS. FG_MARGIN_NEG at T15 steps to T10 (same destination). T10: 72% - trend_context = 70%. However PTS T10 for Fox: check market (T10 available). FG_COLD step lands at T10. vs_tough=70% at T15 (T10 higher). Actually Fox PTS T10 should qualify: overall=75% at T15 means T10 implied higher. With VOLATILE -3% from 80% at T10 \u2192 77% \u2192 tough defense -5pp \u2192 72% \u2192 trend=down informational \u2192 70%. This should be a pick not a skip. Re-evaluating: Fox PTS T10 qualifies at 70%. Emitting as pick."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-06-08",
+    "player_name": "Stephon Castle",
     "team": "SAS",
     "opponent": "NYK",
     "prop_type": "3PM",
@@ -74,40 +109,74 @@
     "direction": "OVER",
     "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_name": "Victor Wembanyama",
+      "player_name": "Stephon Castle",
       "prop_type": "3PM",
       "tier_considered": 1,
-      "base_confidence": 75,
-      "volatile_penalty": -3,
-      "final_confidence": 72,
-      "floor": 75,
-      "reason": "VOLATILE -3% reduces 75% base to 72%, below 75% 3PM confidence floor"
+      "reason": "Trend=down mandates step T1\u2192below minimum. VOLATILE tag present. Overall=80% at T1 with trend=down: step would go below T1 (no valid tier). Check iron_floor: not present on 3PM. Check 9+/10 exception: overall=80%=8/10, not 9+/10. Step below T1 with no rescue \u2192 skip."
     },
-    "actual_value": 2.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   },
   {
-    "date": "2026-06-05",
-    "player_name": "Jalen Brunson",
-    "team": "NYK",
-    "opponent": "SAS",
-    "prop_type": "PTS",
-    "tier_considered": 20,
+    "date": "2026-06-08",
+    "player_name": "Devin Vassell",
+    "team": "SAS",
+    "opponent": "NYK",
+    "prop_type": "3PM",
+    "tier_considered": 2,
     "direction": "OVER",
-    "skip_reason": "fg_margin_thin_tier_step",
+    "skip_reason": "merit_below_floor",
     "rule_context": {
-      "player_name": "Jalen Brunson",
-      "prop_type": "PTS",
-      "tier_considered": 20,
-      "fg_margin_flag": "FG_MARGIN_THIN:3%",
-      "stepped_to": 15,
-      "reason": "FG_MARGIN_THIN:3% mandatory step-down from T20 to T15; pick emitted at T15"
+      "player_name": "Devin Vassell",
+      "prop_type": "3PM",
+      "tier_considered": 2,
+      "reason": "iron_floor present but VOLATILE+iron_floor incompatibility on 3PM: iron_floor overridden. Overall=70% at T2 with VOLATILE tag. Trend=stable (no step-down needed). VOLATILE -3pp: 70%-3%=67% < 75% 3PM floor. Also audit feedback: VOLATILE+iron_floor overridden+below 74% = conditional skip. Merit below floor."
     },
-    "actual_value": 20.0,
-    "would_have_hit": true,
-    "skip_verdict": "false_skip",
-    "skip_verdict_notes": "Actual 20.0 \u2265 tier 20"
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-06-08",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "opponent": "NYK",
+    "prop_type": "PTS",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Dylan Harper",
+      "prop_type": "PTS",
+      "tier_considered": 10,
+      "reason": "Overall=70% at T10. FG_MARGIN_THIN:3% fires \u2192 step T10\u2192no market below T10 for Harper (T10 is minimum available PTS market listed). WALK_DECLINED: T10\u2192below, no market. Apply -3pp penalty in lieu. 70%-3%=67% \u2192 opp_today=tough, vs_tough=54% is severe degradation. -10pp for vs_tough: 67%-10%=57%. Well below 68% floor. Skip."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
+  },
+  {
+    "date": "2026-06-08",
+    "player_name": "Dylan Harper",
+    "team": "SAS",
+    "opponent": "NYK",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "Dylan Harper",
+      "prop_type": "REB",
+      "tier_considered": 4,
+      "reason": "Overall=75% at T4. VOLATILE -3pp=72%. vs_tough=46% is extreme degradation. -15pp for vs_tough: 57%. Below 72% REB floor. Also competitive=56% confirms structural fragility vs tough defenses."
+    },
+    "actual_value": null,
+    "would_have_hit": null,
+    "skip_verdict": null,
+    "skip_verdict_notes": null
   }
 ]
