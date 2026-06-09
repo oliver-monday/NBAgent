@@ -1,47 +1,11 @@
 {
-  "date": "2026-06-08",
-  "generated_at": "2026-06-08T09:46:25.709182-07:00",
+  "date": "2026-06-09",
+  "generated_at": "2026-06-09T08:53:57.394747-07:00",
   "player_notes": {},
   "game_notes": {},
-  "raw_item_count": 27,
-  "filtered_item_count": 26,
+  "raw_item_count": 0,
+  "filtered_item_count": 0,
   "fetch_errors": [],
-  "suggested_context_updates": [
-    {
-      "player_or_team": "NYK / SAS \u2014 NBA Finals",
-      "current_context_fact": "The season context document contains no mention of the NBA Finals or R2/R3/Conference Finals results. The playoff bracket shows R1 matchups and series diaries only through R1. The NYK section shows them eliminating ATL 4-2 in R1. SAS is shown eliminating POR 4-1 in R1. No further rounds are documented.",
-      "conflict": "Today's news confirms the 2026 NBA Finals are currently in progress with NYK vs SAS, NYK leading 2-0, with Game 3 scheduled at Madison Square Garden on Monday (June 8, 2026). This means NYK and SAS both advanced through R2 and the Conference Finals \u2014 none of which is documented in the season context. The context document is missing multiple rounds of playoff results.",
-      "urgency": "critical",
-      "suggested_action": "Add full R2, Conference Finals, and NBA Finals (through G2) results and series diaries for NYK and SAS. At minimum, document: (1) NYK's R2 and ECF opponents and results; (2) SAS's R2 and WCF opponents and results; (3) NBA Finals G1 and G2 results/box scores and series diary. All player notes, injury statuses, and role contexts for active Finals players (Brunson, Towns, Anunoby, Bridges, Wembanyama, Fox, Castle, etc.) need to reflect their current playoff arc through the Finals, not just R1."
-    },
-    {
-      "player_or_team": "Jalen Brunson (NYK)",
-      "current_context_fact": "R2 key note after NYK-ATL series: 'Brunson's left ankle status is THE critical NYK variable \u2014 his third-quarter exit in the series-clinching game introduces genuine availability and minutes-restriction uncertainty.'",
-      "conflict": "Today's news (Jun 8) covers Brunson ahead of NBA Finals Game 3, describing him as the 'undisputed king of New York' and showing him keeping focus for G3. He is clearly active and playing in the Finals, meaning the ankle injury concern from the ATL series did not result in any missed time through at least Finals G1 and G2.",
-      "urgency": "critical",
-      "suggested_action": "Update Brunson's injury status to reflect he is healthy and playing in the NBA Finals. Remove or downgrade the left ankle concern flag. Document his Finals G1 and G2 performance in a series diary."
-    },
-    {
-      "player_or_team": "Victor Wembanyama (SAS)",
-      "current_context_fact": "R1 series diary and injury notes treat Wembanyama as fully healthy after concussion protocol clearance in G4 vs POR. Last documented playoff appearance: SAS clinched R1 4-1 vs POR in G5 (Apr 28).",
-      "conflict": "Today's news (Jun 8) shows Wembanyama actively participating in the NBA Finals (receiving invitations around NYC ahead of G3/G4, SAS 'confident they can dig out of 2-0 hole'). He is confirmed healthy and playing in the Finals. His status and performance through Finals G1 and G2 are undocumented in the context.",
-      "urgency": "critical",
-      "suggested_action": "Add Wembanyama's R2, WCF, and Finals G1/G2 performance data to the context document. Confirm fully healthy status for Finals. Add NBA Finals series diary entries."
-    },
-    {
-      "player_or_team": "ATL \u2014 Quin Snyder coaching status",
-      "current_context_fact": "Head coaches table lists ATL coach as 'Quin Snyder' with no note about extension or contract status.",
-      "conflict": "Today's news (Jun 8) reports: 'Atlanta Hawks head coach Quin Snyder has agreed to a multiyear contract extension.' This is a new confirmed development not reflected in the context.",
-      "urgency": "monitor",
-      "suggested_action": "Update the ATL head coach entry to note Snyder signed a multiyear extension in June 2026. This confirms coaching continuity and is relevant for any 2026-27 forward-looking context."
-    },
-    {
-      "player_or_team": "CLE \u2014 ECF context",
-      "current_context_fact": "The playoff bracket and diaries show CLE eliminated TOR 4-3 in R1. No further CLE playoff results are documented.",
-      "conflict": "Today's news references 'Game 3 of the Eastern Conference finals between the New York Knicks and Cleveland Cavaliers' (in the Taylor Swift seat auction headline), confirming CLE advanced to the ECF where they faced NYK. CLE's R2 matchup, results, and ECF results are entirely absent from the context document.",
-      "urgency": "critical",
-      "suggested_action": "Add CLE's R2 series results and ECF series diary (NYK vs CLE). Document all relevant player performance arcs, injury updates, and series outcomes through the ECF."
-    }
-  ],
+  "suggested_context_updates": [],
   "staleness_flags": []
 }
