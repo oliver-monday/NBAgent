@@ -9932,5 +9932,119 @@
       "hit_rate_pct": 100.0,
       "delta_vs_overall_pp": 0.0
     }
+  },
+  {
+    "date": "2026-06-08",
+    "total_picks": 16,
+    "voided_picks": 0,
+    "hits": 13,
+    "misses": 3,
+    "no_data": 0,
+    "hit_rate_pct": 81.2,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 7,
+        "hits": 5,
+        "hit_rate_pct": 71.4
+      },
+      "REB": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 5,
+        "hits": 4,
+        "hit_rate_pct": 80.0
+      },
+      "3PM": {
+        "picks": 2,
+        "hits": 2,
+        "hit_rate_pct": 100.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 12,
+        "hits": 10,
+        "hit_rate_pct": 83.3,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 3,
+        "hits": 2,
+        "hit_rate_pct": 66.7,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Castle AST T4 iron_floor/consistent tag at 87% held perfectly \u2014 actual 5 AST vs pick_value 4. The cross-series pattern (MIN 6/6, POR 5/5, NYK series 4/5 prior) confirmed a structural playmaking floor that the soft_floor -5pp and PTS/AST ratio adjustment were correctly conservative but not over-restrictive. The 87% confidence on the only 86%+ pick going 100% validates the high-confidence gate calibration.",
+      "Iron_floor 3PM T1 picks (Brunson 3PM, both hit) confirmed the rule's value: trend=down step from T2 to T1 held by iron_floor designation, with Brunson recording 3 actual 3PM vs pick_value 1. The VOLATILE+iron_floor incompatibility check (3PM line did not carry VOLATILE) was correctly resolved, allowing the iron_floor to stand. This is proper rule application.",
+      "Fox AST T4 at 80% hit with actual 8 AST \u2014 the soft_floor -5pp penalty was applied correctly given the PTS/AST ratio > 3x rule, and the road Finals context conservative cap at 80% was appropriate. The 5/5 H2H series record proved durable as a floor signal even in a competitive road game.",
+      "The 70-75% confidence band outperformed its expected rate significantly (83.3% actual vs 72.5% expected across 12 picks, 10 hits). This suggests the conservative capping decisions made across multiple picks in this band \u2014 Vassell PTS 70%, KAT PTS 70%, OG PTS 70%, OG REB 72%, Bridges PTS 72%, Bridges AST 72%, Castle PTS/REB 72% \u2014 are producing picks that are structurally sounder than their assigned confidence implies. The conservative floor is working correctly.",
+      "Wembanyama PTS T15 hit (32 actual vs 15 pick_value) despite FG_COLD mandatory step from T20. The blowout exemption for Wemby as primary scorer was correctly not invoked (spread_abs=2.5, CLOSE game) and the T20\u2192T15 step was properly executed when T10 was unavailable. The system correctly avoided over-stepping when the market structure didn't support it."
+    ],
+    "lessons": [
+      "KAT PTS T15 missed badly (11 actual vs 15 pick_value) despite 8/10 hit_rate_display and 4/5 H2H series record at T15. The STRONG CAUTION from H27 (massive suppression signal) was treated as a 'directional signal, not hard penalty' and partially offset by LATE_RISER +3pp. With a 4-point miss in a CLOSE game (SAS won by 4), this was not a game-script-driven collapse \u2014 KAT simply shot poorly. The H27 STRONG CAUTION deserved more weight than it received; the -3.7 career playoff PTS suppression combined with FG_MARGIN_NEG step should have produced a harder downgrade or a skip recommendation rather than a 70% selection.",
+      "Bridges PTS T10 missed catastrophically (2 actual vs 10 pick_value, 29 minutes played). The tier_walk correctly identified ATL series T10=3/6 (50%) as poor but weighted the SAS series (4/5) and PHI series (4/4) more heavily. However, Bridges' persistent role instability documented across the entire NYK-ATL and NYK-SAS series diaries \u2014 multiple games under 21 minutes, coaching concern flagged repeatedly \u2014 was a structural signal that a 'diminished role' outcome was a live risk in any given game. His 29 minutes in G3 (vs 41 in G2) confirms the role compression risk materialized. The ATL series 3/6 T10 history was the correct warning signal and should have been weighted more heavily than single-series H2H recency.",
+      "Vassell AST T2 missed with 0 actual assists in 38 full minutes despite a 10/10 hit_rate_display and 4/4 H2H series record. Post-game news confirms he played full minutes with no injury \u2014 he simply had zero assist opportunities. The 95% base rate at T2 with consistent tag created overconfidence in what is ultimately a low-volume AST prop (raw_avgs ~2.5). A player averaging ~2-3 AST can routinely record 0 in any individual game; the 10/10 streak was vulnerable to regression, and the road Finals context with NYK's defensive attention on limiting SAS secondary facilitation represented a structural risk that the soft_floor -5pp adjustment did not adequately discount."
+    ],
+    "recommendations": [
+      "Upgrade the KAT H27 STRONG CAUTION directive from 'directional signal' to 'mandatory tier step-down' in NBA Finals context. When H27 shows STRONG CAUTION on PTS (not merely caution) and the player is on the losing side of a CLOSE or COMPETITIVE game script, the LATE_RISER offset should not be permitted to restore the original tier. Specifically: H27 STRONG CAUTION + FG_MARGIN_NEG \u2192 execute two full tier steps (T20\u2192T15\u2192T10) rather than one, with no partial offset from LATE_RISER. This would have moved KAT to T10, which he hit (11 actual \u2265 10).",
+      "Establish a 'persistent role instability' flag for secondary scorers who have logged \u22652 games under 25 minutes in the current series (regardless of season baseline). When this flag is active AND the ATL-series (or multi-series cross-check) T10 hit rate is below 60%, treat PTS T10 as a skip regardless of the current-series H2H record. Bridges' ATL series 3/6 T10 combined with documented coaching minutes compression across G2-G4 of the SAS series should have triggered this. The current-series H2H recency bias overrode a legitimate structural pattern.",
+      "Apply a 'low-volume AST regression cap' for secondary players (raw_avgs AST < 4.0) at T2: when the hit rate is \u22659/10 in H2H or series data but raw_avgs AST < 4.0, cap confidence at 72% rather than 80%, regardless of the consistent tag. The 95%\u219280% path for Vassell AST T2 remained too high for a player where 0-assist games are a normal distribution outcome. A hard 72% cap on secondary-player AST T2 (raw_avgs < 4.0) would reflect the true variance risk of low-volume AST props more accurately.",
+      "When a SAS away player has both FG_COLD and trend=down on PTS and the opponent is NYK (confirmed tough defense), require the combined penalty to execute a mandatory confidence floor reduction to 70% maximum, even after the tier step. Vassell PTS hit at 70% validates the floor conservatism here \u2014 the -10pp vs_tough degradation penalty was the correct mechanism and should be formalized as a rule: 'SAS road + FG_COLD + trend=down + tough opponent \u2192 cap at 70% after step, no exceptions for cross-series records.' This rule was applied correctly for Vassell PTS and should be locked in.",
+      "The 76-80% confidence band underperformed (66.7% actual vs 78.0% expected, 2/3 hits) driven by the Vassell AST T2 miss. Before assigning confidence in the 76-80% band to AST props with raw_avgs < 4.0, require one of: (a) iron_floor=true confirmed, (b) opponent AST DvP rated 'soft,' or (c) consistent tag with cross-series 10/10 record across \u22653 different series. Vassell had the consistent tag and 10/10 but only 2 series, and the road Finals context introduced compression risk that the 80% confidence did not adequately reflect. The 76-80% band is currently the weakest-calibrated band and needs tighter gates for low-volume props."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Karl-Anthony Towns",
+        "prop_type": "PTS",
+        "pick_value": 15,
+        "actual_value": 11,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ NYK final 115-111, CLOSE game (margin 4). Game script is neutral \u2014 not a blowout, no garbage-time compression applies. STEP 1: KAT played 38 minutes, recorded 11 PTS \u2014 active, full game, statistical miss not a DNP/injury. STEP 2: No injury_exit in post-game news ('no confirmed injury affected his Game 3 output'). Miss classified as model_gap_rule. STEP 3: The analyst's reasoning correctly applied the FG_MARGIN_NEG step (T20\u2192T15) and noted the H27 STRONG CAUTION, but treated it as a 'directional signal, not hard penalty' and allowed LATE_RISER +3pp to partially restore confidence. The H27 STRONG CAUTION on KAT's PTS (-3.7 career playoff suppression) is the strongest available suppression signal in the dossier system and was under-weighted. In a CLOSE Finals game where KAT shot inefficiently (11 PTS in 38 min), the defensive pressure of a SAS tough defense activated the suppression in full. STEP 4: Hit_rate_display was 8/10 and trend=stable \u2014 both reasonable, but the H27 STRONG CAUTION is a cross-season structural signal that overrides single-series recency. The 4/5 H2H at T15 this series was real but KAT's career playoff suppression makes any T15+ pick structurally fragile. STEP 5: Tier_walk executed T20\u2192T15 (one mandatory step for FG_MARGIN_NEG). A two-step walk (T20\u2192T15\u2192T10) would have landed at T10=11 actual, which is a HIT. The analyst had the correct mechanism (FG_MARGIN_NEG + H27 CAUTION) but the rule did not require the second step that H27 STRONG CAUTION should have mandated. The missing rule: H27 STRONG CAUTION on PTS should trigger an additional mandatory step beyond FG_MARGIN_NEG. STEP 6: No lineup_update amendment present."
+      },
+      {
+        "player_name": "Mikal Bridges",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 2,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ NYK final 115-111, CLOSE game (margin 4). No blowout game-script applies. STEP 1: Bridges played 29 minutes and recorded 2 PTS \u2014 active but with severely reduced minutes and output. STEP 2: No injury_exit in post-game news ('No source explicitly explains the reduced minutes or poor shooting; no injury exit is confirmed'). This is a coaching deployment and cold-shooting collapse in a CLOSE game. Miss classified as model_gap_rule. STEP 3: The analyst's reasoning identified the ATL series 3/6 T10 as concerning but downweighted it against SAS series (4/5) and PHI series (4/4). This recency-bias weighting was the structural error. The series diaries consistently documented Bridges' role instability: multiple sub-21-minute games in the ATL series (G2-G4), described as 'persistent coaching concern.' This was a live, documented structural risk in the pick context that the tier_walk did not fully operationalize. The VOLATILE -3pp penalty acknowledged risk but was insufficient given the role compression pattern. STEP 4: Hit_rate_display was 8/10 \u2014 reasonable at face value, but the ATL series cross-check (3/6 = 50%) was the correct forward-looking signal for a player with documented role instability. The analyst correctly noted it but did not translate it into a skip or a lower-tier selection. STEP 5: Tier_walk correctly evaluated T15 (inconsistent per ATL series) and stepped to T10. At T10 with ATL series 3/6, the ceiling rule should arguably have fired (need 7+/10 at primary tier for non-floor picks). The analyst's base of ~78% before VOLATILE was too high given the cross-series ATL data. STEP 6: No lineup_update amendment present. Bridges' 29-minute deployment in a CLOSE game is consistent with Coach Brown continuing to deploy him in a compressed role \u2014 a pattern that has repeated 4+ times this postseason and should now be treated as a structural role-compression signal rather than variance."
+      },
+      {
+        "player_name": "Devin Vassell",
+        "prop_type": "AST",
+        "pick_value": 2,
+        "actual_value": 0,
+        "miss_classification": "variance",
+        "tier_walk_flag": "null",
+        "root_cause": "STEP 0: SAS @ NYK final 115-111, CLOSE game (margin 4). No blowout game-script applies. STEP 1: Vassell played 38 full minutes and recorded 0 AST but scored 11 PTS \u2014 active, full game, played his normal role. STEP 2: No injury_exit. Post-game news confirms 'he simply had no assist opportunities or involvement in the passing game on this night.' Miss classified as variance. STEP 3: The analyst's reasoning was structurally sound \u2014 95% base rate at T2, consistent tag, 4/4 H2H series record, 6/6 MIN series record, vs_tough=79%, competitive=85%. The soft_floor -5pp and 80% cap were correctly applied. The pick was calibrated correctly given available data. STEP 4: Hit_rate_display was 10/10 \u2014 the strongest available signal in the system. Trend=up. The 80% confidence was actually conservative given the 10/10 rate. STEP 5: Tier_walk correctly skipped T4 (MIN series 2/6) and selected T2 (95% overall). The walk was sound. STEP 6: No lineup_update amendment present. A player averaging 2-3 AST will record 0 in some individual games as a normal distributional outcome \u2014 in a CLOSE game with NYK's defense focused on limiting SAS facilitation, Vassell having zero passing opportunities in 38 minutes is within normal variance for a secondary player at this AST volume. The 10/10 streak was bound to produce a 0-assist game eventually; this is the outcome, not a selection failure. Per Guard 2, no recommendation is warranted from this variance miss."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 9,
+      "hits": 9,
+      "misses": 0,
+      "hit_rate_pct": 100.0,
+      "delta_vs_overall_pp": 18.8
+    }
   }
 ]
