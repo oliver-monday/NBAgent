@@ -1,35 +1,64 @@
 {
   "asof_date": "2026-06-10",
-  "built_at_utc": "2026-06-10T23:15:44Z",
+  "built_at_utc": "2026-06-10T23:50:33Z",
   "source": "rotowire",
-  "SAS": {
+  "NYK": {
     "starters": [
       {
         "position": "PG",
-        "name": "De'Aaron Fox",
+        "name": "Jalen Brunson",
         "injury_status": null
       },
       {
         "position": "SG",
-        "name": "Stephon Castle",
+        "name": "Josh Hart",
         "injury_status": null
       },
       {
         "position": "SF",
-        "name": "Devin Vassell",
+        "name": "Mikal Bridges",
         "injury_status": null
       },
       {
         "position": "PF",
-        "name": "Julian Champagnie",
+        "name": "OG Anunoby",
         "injury_status": null
       },
       {
         "position": "C",
-        "name": "Victor Wembanyama",
+        "name": "Karl-Anthony Towns",
         "injury_status": null
       }
     ],
+    "confirmed": false
+  },
+  "snapshot_at_analyst_run": {
+    "written_at": "2026-06-10T09:33:03.259988-07:00",
+    "teams": {
+      "SAS": {
+        "starters": [
+          "De'Aaron Fox",
+          "Stephon Castle",
+          "Devin Vassell",
+          "Julian Champagnie",
+          "Victor Wembanyama"
+        ],
+        "confirmed": false
+      },
+      "NYK": {
+        "starters": [
+          "Jalen Brunson",
+          "Josh Hart",
+          "Mikal Bridges",
+          "OG Anunoby",
+          "Karl-Anthony Towns"
+        ],
+        "confirmed": false
+      }
+    }
+  },
+  "SAS": {
+    "starters": [],
     "confirmed": false,
     "projected_minutes": [
       {
@@ -123,60 +152,5 @@
         "injury_status": null
       }
     ]
-  },
-  "NYK": {
-    "starters": [
-      {
-        "position": "PG",
-        "name": "Jalen Brunson",
-        "injury_status": null
-      },
-      {
-        "position": "SG",
-        "name": "Josh Hart",
-        "injury_status": null
-      },
-      {
-        "position": "SF",
-        "name": "Mikal Bridges",
-        "injury_status": null
-      },
-      {
-        "position": "PF",
-        "name": "OG Anunoby",
-        "injury_status": null
-      },
-      {
-        "position": "C",
-        "name": "Karl-Anthony Towns",
-        "injury_status": null
-      }
-    ],
-    "confirmed": false
-  },
-  "snapshot_at_analyst_run": {
-    "written_at": "2026-06-10T09:33:03.259988-07:00",
-    "teams": {
-      "SAS": {
-        "starters": [
-          "De'Aaron Fox",
-          "Stephon Castle",
-          "Devin Vassell",
-          "Julian Champagnie",
-          "Victor Wembanyama"
-        ],
-        "confirmed": false
-      },
-      "NYK": {
-        "starters": [
-          "Jalen Brunson",
-          "Josh Hart",
-          "Mikal Bridges",
-          "OG Anunoby",
-          "Karl-Anthony Towns"
-        ],
-        "confirmed": false
-      }
-    }
   }
 }
