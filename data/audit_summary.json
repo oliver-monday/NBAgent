@@ -1,48 +1,48 @@
 {
-  "generated_at": "2026-06-09",
-  "entries_included": 84,
+  "generated_at": "2026-06-11",
+  "entries_included": 85,
   "overall": {
-    "total_picks": 1681,
+    "total_picks": 1696,
     "voided": 97,
-    "hits": 1426,
+    "hits": 1441,
     "misses": 239,
     "injury_exclusions": 25,
-    "hit_rate_pct": 87.0
+    "hit_rate_pct": 87.1
   },
   "prop_type_summary": {
     "PTS": {
-      "picks": 658,
-      "hits": 573,
+      "picks": 663,
+      "hits": 578,
       "injury_exclusions": 12,
-      "hit_rate_pct": 88.7
+      "hit_rate_pct": 88.8
     },
     "REB": {
-      "picks": 280,
-      "hits": 235,
+      "picks": 284,
+      "hits": 239,
       "injury_exclusions": 3,
-      "hit_rate_pct": 84.8
+      "hit_rate_pct": 85.1
     },
     "AST": {
-      "picks": 467,
-      "hits": 387,
+      "picks": 471,
+      "hits": 391,
       "injury_exclusions": 6,
-      "hit_rate_pct": 83.9
+      "hit_rate_pct": 84.1
     },
     "3PM": {
-      "picks": 254,
-      "hits": 206,
+      "picks": 256,
+      "hits": 208,
       "injury_exclusions": 4,
-      "hit_rate_pct": 82.4
+      "hit_rate_pct": 82.5
     }
   },
   "high_conviction_summary": {
     "threshold_market_implied_prob": 85.0,
-    "n_days_included": 36,
-    "n_picks": 472,
-    "hits": 417,
+    "n_days_included": 37,
+    "n_picks": 482,
+    "hits": 427,
     "misses": 55,
-    "hit_rate_pct": 88.3,
-    "delta_vs_overall_pp": 1.3
+    "hit_rate_pct": 88.6,
+    "delta_vs_overall_pp": 1.5
   },
   "miss_classification_totals": {
     "variance": 88,
@@ -54,19 +54,19 @@
   },
   "confidence_calibration_totals": {
     "70-75": {
-      "picks": 849,
-      "hits": 717,
-      "hit_rate_pct": 84.5
+      "picks": 861,
+      "hits": 729,
+      "hit_rate_pct": 84.7
     },
     "76-80": {
-      "picks": 636,
-      "hits": 545,
+      "picks": 638,
+      "hits": 547,
       "hit_rate_pct": 85.7
     },
     "81-85": {
-      "picks": 100,
-      "hits": 89,
-      "hit_rate_pct": 89.0
+      "picks": 101,
+      "hits": 90,
+      "hit_rate_pct": 89.1
     },
     "86+": {
       "picks": 42,
@@ -87,45 +87,52 @@
     "Vassell AST T2 missed with 0 actual assists in 38 full minutes despite a 10/10 hit_rate_display and 4/4 H2H series record. Post-game news confirms he played full minutes with no injury \u2014 he simply had zero assist opportunities. The 95% base rate at T2 with consistent tag created overconfidence in what is ultimately a low-volume AST prop (raw_avgs ~2.5). A player averaging ~2-3 AST can routinely record 0 in any individual game; the 10/10 streak was vulnerable to regression, and the road Finals context with NYK's defensive attention on limiting SAS secondary facilitation represented a structural risk that the soft_floor -5pp adjustment did not adequately discount."
   ],
   "recent_reinforcements": [
-    "FG_MARGIN_THIN and FG_MARGIN_NEG step-down discipline validated across three PTS picks: Brunson stepped T20\u2192T15, KAT stepped T20\u2192T15, Castle stepped T15\u2192T10. All three hit comfortably (Brunson 20, KAT 21, Castle 14 vs thresholds of 15, 15, 10 respectively). The mandatory step-down rule correctly absorbed FG efficiency uncertainty and produced reliable floors in a CLOSE Finals game (1-point margin).",
-    "Trend=down step-down to T1 with 9+/10 exception held for both Brunson 3PM (iron_floor) and OG Anunoby 3PM (9/10 exception). Both hit convincingly \u2014 Brunson 2 actual vs T1, Anunoby 2 actual vs T1. The rule hierarchy of 'step down, then check whether 9+/10 or iron_floor rescues T1' is correctly calibrated for Finals-level competition on perimeter shooting props.",
-    "Castle AST T4 at 87% confidence was the highest-confidence pick on the slate and hit exactly at threshold (4 actual vs pick_value 4). The consistent tag + perfect in-series POR and MIN T4 records + 96% vs-tough rate justified the elevated confidence. Exact-threshold hits count as HITs per grading rule \u2014 this reinforces that the system does not need to over-adjust away from threshold picks when structural signals are convergent.",
-    "Vassell AST T2 and 3PM T1 both hit well above threshold (5 actual AST vs T2, 3 actual 3PM vs T1). The soft_floor -5pp penalty on AST (PTS/AST ratio > 3x) was applied correctly and did not prevent the pick from being made \u2014 it appropriately reduced confidence without a skip, and the underlying structural floor was genuine. The VOLATILE+iron_floor override on Vassell 3PM was handled correctly: iron_floor overridden, trend=down step applied, 9+/10 series exception invoked, resulting in a 75% pick that hit with a 3-actual result.",
-    "Wembanyama PTS T15 at 82% confidence hit with 29 actual \u2014 the FG_COLD blocked step-down (-5pp penalty in lieu of unavailable T10 market) was the correct resolution when no lower market existed. The 40-minute load in a 1-point CLOSE game confirms the proj_min floor was not a concern, and the blowout exemption directive correctly did not fire given the tight margin. Dylan Harper PTS T10 at 70% hit with 15 actual despite the min_floor <24 penalty \u2014 the Finals elevation of his role (32 minutes played per post-game news, above his 26.3 average) rendered the min_floor concern moot, validating that floor penalties should be applied conservatively rather than as hard skips when Finals context suggests role expansion.",
-    "Castle AST T4 iron_floor/consistent tag at 87% held perfectly \u2014 actual 5 AST vs pick_value 4. The cross-series pattern (MIN 6/6, POR 5/5, NYK series 4/5 prior) confirmed a structural playmaking floor that the soft_floor -5pp and PTS/AST ratio adjustment were correctly conservative but not over-restrictive. The 87% confidence on the only 86%+ pick going 100% validates the high-confidence gate calibration.",
     "Iron_floor 3PM T1 picks (Brunson 3PM, both hit) confirmed the rule's value: trend=down step from T2 to T1 held by iron_floor designation, with Brunson recording 3 actual 3PM vs pick_value 1. The VOLATILE+iron_floor incompatibility check (3PM line did not carry VOLATILE) was correctly resolved, allowing the iron_floor to stand. This is proper rule application.",
     "Fox AST T4 at 80% hit with actual 8 AST \u2014 the soft_floor -5pp penalty was applied correctly given the PTS/AST ratio > 3x rule, and the road Finals context conservative cap at 80% was appropriate. The 5/5 H2H series record proved durable as a floor signal even in a competitive road game.",
     "The 70-75% confidence band outperformed its expected rate significantly (83.3% actual vs 72.5% expected across 12 picks, 10 hits). This suggests the conservative capping decisions made across multiple picks in this band \u2014 Vassell PTS 70%, KAT PTS 70%, OG PTS 70%, OG REB 72%, Bridges PTS 72%, Bridges AST 72%, Castle PTS/REB 72% \u2014 are producing picks that are structurally sounder than their assigned confidence implies. The conservative floor is working correctly.",
-    "Wembanyama PTS T15 hit (32 actual vs 15 pick_value) despite FG_COLD mandatory step from T20. The blowout exemption for Wemby as primary scorer was correctly not invoked (spread_abs=2.5, CLOSE game) and the T20\u2192T15 step was properly executed when T10 was unavailable. The system correctly avoided over-stepping when the market structure didn't support it."
+    "Wembanyama PTS T15 hit (32 actual vs 15 pick_value) despite FG_COLD mandatory step from T20. The blowout exemption for Wemby as primary scorer was correctly not invoked (spread_abs=2.5, CLOSE game) and the T20\u2192T15 step was properly executed when T10 was unavailable. The system correctly avoided over-stepping when the market structure didn't support it.",
+    "FINALS SERIES H2H WEIGHTING: All 15 picks benefited from the analyst correctly prioritizing current-series H2H data over broader L10 overall rates. Brunson PTS T20 (6/6 H2H at T20 this series), Fox AST T4 (6/6 H2H), and Castle AST T4 (perfect cross-series record) all produced dominant hits (36, 7, and 5 actual respectively against thresholds of 20, 4, and 4). The rule to treat current-series H2H as the primary confidence signal in a Finals context is validated emphatically by this slate.",
+    "MANDATORY STEP-DOWN EXECUTION: Every FG_MARGIN-triggered step-down was executed correctly and all five stepped-down picks hit. OG Anunoby PTS (FG_MARGIN_THIN: T15\u2192T10, actual 33), Castle PTS (FG_MARGIN_NEG: T15\u2192T10, actual 13), Brunson PTS (FG_MARGIN_NEG: T20\u2192T15 declined for no market, penalty applied instead, actual 36), Harper PTS (FG_MARGIN_THIN: T15\u2192T10, actual 21), and Wembanyama PTS (FG_MARGIN_NEG: T20\u2192T15 declined for no market, actual 24). The walk-decline penalty mechanism (-2pp in lieu of blocked step) is correctly operationalized when no lower-tier market exists.",
+    "TREND=DOWN STEP-DOWN ON 3PM: Both 3PM picks used the trend=down mandatory step-down from T2 to T1 (Brunson 3PM and OG Anunoby 3PM), and both hit by wide margins (actual 3 vs. T1 for Brunson, actual 7 vs. T1 for OG). The structural protection of stepping down one tier on a declining 3PM trend, even when the H2H series record was strong at T2, proved correct \u2014 the actual outputs would have cleared T2 as well, but the conservative step-down maintained sound discipline in a CLOSE Finals game where 3PM variance is elevated.",
+    "MINIMUM-TIER REB CAP AT 72%: Four REB T4 picks (OG Anunoby, Castle, Vassell, Harper) were capped at 72% per the minimum-tier rule when B2B hit rate validation was absent, and all four hit (actuals: 4, 5, 5, 4 against threshold 4). The exact-threshold grading rule (actual >= pick_value is a HIT) was correctly applied \u2014 OG Anunoby REB hit exactly at 4, and Brunson (actual 2 vs. T2 on AST) hit exactly at 2. These are not near-misses. The 72% cap provides the right ceiling for structurally thin rebounding props at minimum tier.",
+    "WEMBANYAMA PTS T20 IN COMPETITIVE FINALS: Wembanyama PTS T20 hit at 24 actual despite the analyst correctly noting the vs_tough rate drop (71%) and applying the FG_MARGIN_NEG walk-decline penalty. The analyst's decision to hold at T20 rather than declining to no-pick when the T15 market was unavailable was validated. The 44 minutes logged (post-game news) confirms full health and no blowout-compression \u2014 the CLOSE game script (NYK won by 1) meant no starters were rested, which is the ideal context for a held T20 pick. The Wembanyama blowout exemption directive was correctly not needed here given the close margin.",
+    "CLOSE GAME CONTEXT SUPPORTED ALL PICKS: The SAS @ NYK game finished 107-106 (NYK won by 1), a CLOSE game script with no blowout compression on either side. Every pick on this slate benefited from this game context \u2014 no starters were removed early, no garbage-time minute compression occurred, and both teams' primary scorers logged 37-44 minutes (Brunson 44, Fox 37, Wemby 44, OG 41). The analyst's spread_abs=2.5 blowout risk assessment (no blowout penalty applied) was correct ex ante and confirmed by the final margin."
   ],
   "recent_recommendations": [
-    "No misses occurred on this slate. No corrective rule changes are warranted from this session. The analyst's tier-walk discipline, step-down execution, and confidence calibration were all validated across 13 picks in a CLOSE (1-point margin) Finals game \u2014 the most stress-testing environment possible for structural floor props.",
-    "Continue applying the FG_COLD and FG_MARGIN_NEG/THIN mandatory step-down rules without modification. Three step-downs on this slate (Brunson T20\u2192T15, KAT T20\u2192T15, Castle T15\u2192T10) all produced comfortable hits. The rule is correctly absorbing FG efficiency risk without over-stepping to unavailable tiers.",
-    "The blocked step-down penalty (-5pp in lieu of unavailable lower market) for Wembanyama PTS T15 worked correctly. For future picks where FG_COLD fires on a player whose only available markets are T15+ (common for Centers/forwards on FanDuel), continue applying the -5pp conversion penalty rather than skipping \u2014 the G2 result confirms the structural floor holds even when the ideal step-down tier is unavailable.",
-    "Castle AST T4 hitting exactly at threshold (4 actual) in 28 minutes on a CLOSE game script is the strongest confirmation yet that his structural AST floor is Finals-durable. In future Games 3-7 of this series, if Castle's minutes are projected at 28-33 (rotation management pattern), the T4 AST pick should continue to qualify at 85%+ confidence provided no VOLATILE tag emerges on his AST line.",
-    "Vassell AST T2 hit with 5 actual \u2014 well above threshold \u2014 despite the soft_floor -5pp penalty. If Vassell's AST trend continues upward and his role in the Finals expands (38 minutes played in G2 vs his series averages), consider whether the soft_floor penalty remains warranted in later games. The PTS/AST ratio rule is correctly applied for T4+, but T2 AST picks for high-usage wings with trend=up may be systematically under-confident when series role expansion is evident.",
     "Upgrade the KAT H27 STRONG CAUTION directive from 'directional signal' to 'mandatory tier step-down' in NBA Finals context. When H27 shows STRONG CAUTION on PTS (not merely caution) and the player is on the losing side of a CLOSE or COMPETITIVE game script, the LATE_RISER offset should not be permitted to restore the original tier. Specifically: H27 STRONG CAUTION + FG_MARGIN_NEG \u2192 execute two full tier steps (T20\u2192T15\u2192T10) rather than one, with no partial offset from LATE_RISER. This would have moved KAT to T10, which he hit (11 actual \u2265 10).",
     "Establish a 'persistent role instability' flag for secondary scorers who have logged \u22652 games under 25 minutes in the current series (regardless of season baseline). When this flag is active AND the ATL-series (or multi-series cross-check) T10 hit rate is below 60%, treat PTS T10 as a skip regardless of the current-series H2H record. Bridges' ATL series 3/6 T10 combined with documented coaching minutes compression across G2-G4 of the SAS series should have triggered this. The current-series H2H recency bias overrode a legitimate structural pattern.",
     "Apply a 'low-volume AST regression cap' for secondary players (raw_avgs AST < 4.0) at T2: when the hit rate is \u22659/10 in H2H or series data but raw_avgs AST < 4.0, cap confidence at 72% rather than 80%, regardless of the consistent tag. The 95%\u219280% path for Vassell AST T2 remained too high for a player where 0-assist games are a normal distribution outcome. A hard 72% cap on secondary-player AST T2 (raw_avgs < 4.0) would reflect the true variance risk of low-volume AST props more accurately.",
     "When a SAS away player has both FG_COLD and trend=down on PTS and the opponent is NYK (confirmed tough defense), require the combined penalty to execute a mandatory confidence floor reduction to 70% maximum, even after the tier step. Vassell PTS hit at 70% validates the floor conservatism here \u2014 the -10pp vs_tough degradation penalty was the correct mechanism and should be formalized as a rule: 'SAS road + FG_COLD + trend=down + tough opponent \u2192 cap at 70% after step, no exceptions for cross-series records.' This rule was applied correctly for Vassell PTS and should be locked in.",
-    "The 76-80% confidence band underperformed (66.7% actual vs 78.0% expected, 2/3 hits) driven by the Vassell AST T2 miss. Before assigning confidence in the 76-80% band to AST props with raw_avgs < 4.0, require one of: (a) iron_floor=true confirmed, (b) opponent AST DvP rated 'soft,' or (c) consistent tag with cross-series 10/10 record across \u22653 different series. Vassell had the consistent tag and 10/10 but only 2 series, and the road Finals context introduced compression risk that the 80% confidence did not adequately reflect. The 76-80% band is currently the weakest-calibrated band and needs tighter gates for low-volume props."
+    "The 76-80% confidence band underperformed (66.7% actual vs 78.0% expected, 2/3 hits) driven by the Vassell AST T2 miss. Before assigning confidence in the 76-80% band to AST props with raw_avgs < 4.0, require one of: (a) iron_floor=true confirmed, (b) opponent AST DvP rated 'soft,' or (c) consistent tag with cross-series 10/10 record across \u22653 different series. Vassell had the consistent tag and 10/10 but only 2 series, and the road Finals context introduced compression risk that the 80% confidence did not adequately reflect. The 76-80% band is currently the weakest-calibrated band and needs tighter gates for low-volume props.",
+    "NO RULE CHANGES WARRANTED FROM THIS SLATE: All 15 picks hit with zero misses across a CLOSE Finals game (margin 1). Every major rule application was validated \u2014 mandatory step-downs, VOLATILE deductions, soft_floor penalties, minimum-tier caps, trend=down 3PM steps, and current-series H2H weighting all fired correctly. No selection errors, model gap events, or variance misses occurred. The analyst's tier-walk discipline in a high-pressure Finals context produced a structurally sound slate.",
+    "CONTINUE CURRENT-SERIES H2H PRIORITY IN FINALS: The analyst correctly identified that in-series H2H records (Brunson 6/6 at T20, Fox 6/6 at T4 AST, Castle 9/10 at T4 AST cross-series, OG 5/6 at T10 PTS) are the most predictive signals available once a Finals series reaches Game 4. Continue weighting these above broader L10 overall rates in Games 5-7 if the series extends \u2014 the competitive game script and familiarity with defensive schemes make within-series calibration superior to seasonal averages at this stage.",
+    "MONITOR WEMBANYAMA PTS TIER ELEVATION FOR GAME 5: Wembanyama logged 44 minutes in Game 4 (a CLOSE game) and scored 24 actual against a T20 pick. The analyst correctly held at T20 due to FG_MARGIN_NEG and vs_tough (71%), but if Game 5 presents a larger spread (SAS winning the series would change game urgency dynamics) and the FG_MARGIN signal neutralizes, the H2H series data (5/6 at T25) now justifies evaluating T25. The walked_tier=20 with declined T15 step was correct here, but T25 re-evaluation is warranted if the quant competitive rate at T25 crosses the 8/10 confirmation threshold.",
+    "VALIDATE OG ANUNOBY LATE_FADER DIRECTIVE FOR GAMES 5-7: The H31 LATE_FADER modifier for OG Anunoby PTS did not fire in Game 4 (per tier_walk: 'Game 4 of Finals, not Games 5-7'). OG scored 33 actual against a T10 pick. If the series reaches Game 5, the LATE_FADER rule activates and requires a mandatory confidence reduction on his PTS props \u2014 the analyst must not carry forward the Game 4 uninhibited result as evidence against the LATE_FADER directive. The structural caution should be applied fresh for each game once the H31 window opens.",
+    "MAINTAIN EXACT-THRESHOLD HIT GRADING DISCIPLINE: This slate produced two exact-threshold results \u2014 OG Anunoby REB (actual 4 = pick_value 4) and Mikal Bridges AST (actual 2 = pick_value 2). Both were correctly graded as HITs per the grading rule (actual_value >= pick_value). The analyst and auditor must continue enforcing this rule without introducing 'near-miss' or 'line-value concern' framing for exact-threshold outcomes \u2014 doing so would artificially inflate miss counts and contaminate tier calibration feedback."
   ],
   "skip_validation": {
-    "no_market": {
-      "total": 2,
-      "false_skips": 0,
-      "correct_skips": 2,
+    "volatile_weak_combo": {
+      "total": 1,
+      "false_skips": 1,
+      "correct_skips": 0,
       "no_data": 0,
-      "false_skip_rate": 0.0
+      "false_skip_rate": 100.0
     },
-    "merit_below_floor": {
-      "total": 6,
-      "false_skips": 5,
+    "no_market": {
+      "total": 3,
+      "false_skips": 2,
       "correct_skips": 1,
       "no_data": 0,
-      "false_skip_rate": 83.3
+      "false_skip_rate": 66.7
     },
-    "fg_cold_tier_step": {
+    "merit_below_floor": {
+      "total": 4,
+      "false_skips": 3,
+      "correct_skips": 1,
+      "no_data": 0,
+      "false_skip_rate": 75.0
+    },
+    "ast_hard_gate": {
       "total": 1,
       "false_skips": 0,
       "correct_skips": 1,
@@ -154,37 +161,37 @@
     }
   },
   "clv_summary": {
-    "total_with_clv": 877,
-    "beat_close": 235,
-    "lost_close": 262,
-    "no_movement": 380,
+    "total_with_clv": 892,
+    "beat_close": 238,
+    "lost_close": 267,
+    "no_movement": 387,
     "avg_clv_pp": -0.01,
-    "beat_close_pct": 26.8,
-    "beat_close_hit_rate_pct": 85.5,
-    "lost_close_hit_rate_pct": 80.5,
-    "no_move_hit_rate_pct": 86.1
+    "beat_close_pct": 26.7,
+    "beat_close_hit_rate_pct": 85.7,
+    "lost_close_hit_rate_pct": 80.9,
+    "no_move_hit_rate_pct": 86.3
   },
   "playoff_calibration": {
     "70-75": {
-      "picks": 446,
-      "hits": 375,
-      "hit_rate_pct": 84.1,
-      "regular_season_pct": 84.5,
-      "divergence_pp": -0.4
+      "picks": 458,
+      "hits": 387,
+      "hit_rate_pct": 84.5,
+      "regular_season_pct": 84.7,
+      "divergence_pp": -0.2
     },
     "76-80": {
-      "picks": 256,
-      "hits": 217,
-      "hit_rate_pct": 84.8,
+      "picks": 258,
+      "hits": 219,
+      "hit_rate_pct": 84.9,
       "regular_season_pct": 85.7,
-      "divergence_pp": -0.9
+      "divergence_pp": -0.8
     },
     "81-85": {
-      "picks": 36,
-      "hits": 32,
-      "hit_rate_pct": 88.9,
-      "regular_season_pct": 89.0,
-      "divergence_pp": -0.1
+      "picks": 37,
+      "hits": 33,
+      "hit_rate_pct": 89.2,
+      "regular_season_pct": 89.1,
+      "divergence_pp": 0.1
     },
     "86+": {
       "picks": 24,
@@ -194,12 +201,12 @@
       "divergence_pp": -4.8
     },
     "_overall": {
-      "picks": 762,
-      "hits": 644,
-      "hit_rate_pct": 84.5,
+      "picks": 777,
+      "hits": 659,
+      "hit_rate_pct": 84.8,
       "date_range": {
         "start": "2026-04-18",
-        "end": "2026-06-08"
+        "end": "2026-06-10"
       }
     }
   }

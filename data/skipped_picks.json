@@ -18,10 +18,10 @@
       "tier": 25,
       "reason": "VOLATILE + 7/10 at T25 triggers volatile_weak_combo hard skip; no applicable exception (no iron_floor, no Brunson PTS exemption listed)"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 36.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 36.0 \u2265 tier 25"
   },
   {
     "date": "2026-06-10",
@@ -38,10 +38,10 @@
       "tier_considered": 15,
       "reason": "no FanDuel market available for Karl-Anthony Towns on any prop"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 13.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 13.0 < tier 15"
   },
   {
     "date": "2026-06-10",
@@ -58,10 +58,10 @@
       "tier_considered": 10,
       "reason": "no FanDuel market available for Karl-Anthony Towns on any prop"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 10"
   },
   {
     "date": "2026-06-10",
@@ -82,10 +82,10 @@
       "floor": 68,
       "reason": "FG_COLD -15% applies penalty since T10 is minimum; VOLATILE -3% stack drops below 68% PTS floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 7.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 7.0 < tier 10"
   },
   {
     "date": "2026-06-10",
@@ -102,10 +102,10 @@
       "tier_considered": 6,
       "reason": "T6 best tier has no FanDuel market; T8 (lowest available) cannot confirm 7+/10 in L10 required by REB T8 ceiling rule"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 13.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 13.0 \u2265 tier 6"
   },
   {
     "date": "2026-06-10",
@@ -126,10 +126,10 @@
       "floor": 75,
       "reason": "After VOLATILE -3% playoff deduction, confidence drops to 72%, below the 75% 3PM minimum floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 2.0 \u2265 tier 1"
   },
   {
     "date": "2026-06-10",
@@ -148,10 +148,10 @@
       "opp_defense_rating": "tough",
       "reason": "AST T4+ hard gate fires: raw_avgs AST < 4.0 and opp_today=tough; must be soft to proceed at T4+"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 4"
   },
   {
     "date": "2026-06-10",
@@ -172,10 +172,10 @@
       "floor": 75,
       "reason": "Recent G3 miss at T2 triggers 3PM cold-streak penalty; VOLATILE+iron_floor override removes structural protection; final confidence below 75% 3PM floor"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 2"
   },
   {
     "date": "2026-06-10",
@@ -196,9 +196,9 @@
       "floor": 68,
       "reason": "FG_COLD -14% (not \u226515% so informational but contextual), VOLATILE -3%, vs_tough=68% drops confidence below 68% PTS floor after penalty stack"
     },
-    "actual_value": null,
-    "would_have_hit": null,
-    "skip_verdict": null,
-    "skip_verdict_notes": null
+    "actual_value": 18.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 18.0 \u2265 tier 15"
   }
 ]
