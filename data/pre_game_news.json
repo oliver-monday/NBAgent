@@ -1,60 +1,11 @@
 {
-  "date": "2026-06-10",
-  "generated_at": "2026-06-10T09:32:17.324353-07:00",
-  "player_notes": {
-    "karl-anthony towns": "Knicks coach Mike Brown stated it is 'extremely important' to get Towns more touches late in games after his underuse was flagged in Game 3 loss. Positive indicator for Points and Rebounds props in Game 4.",
-    "victor wembanyama": "Posted 32 pts, 8 reb, 6 ast in Game 3 win; no flagrant foul assessed for Brunson shove, so no suspension risk. High-volume performance trending for all prop categories in Game 4.",
-    "jalen brunson": "Took blame for Game 3 loss; expect elevated usage and shot attempts as Knicks' primary initiator in a must-win Game 4 framing. No injury concerns noted."
-  },
-  "game_notes": {
-    "SAS vs NYK": "Knicks hold 2-1 series lead heading into Game 4; Mike Brown signaling intentional scheme adjustment to feed KAT more, which may redistribute touches away from perimeter players."
-  },
-  "raw_item_count": 49,
-  "filtered_item_count": 46,
+  "date": "2026-06-11",
+  "generated_at": "2026-06-11T09:50:28.587995-07:00",
+  "player_notes": {},
+  "game_notes": {},
+  "raw_item_count": 0,
+  "filtered_item_count": 0,
   "fetch_errors": [],
-  "suggested_context_updates": [
-    {
-      "player_or_team": "NYK vs SAS \u2014 NBA Finals",
-      "current_context_fact": "The season context document contains no mention of the NBA Finals or a NYK vs SAS Finals matchup. The playoff bracket section ends at R1 results and R2 references, with no Finals entry. The 2025-26 champion is not recorded.",
-      "conflict": "Today's news confirms the 2026 NBA Finals are underway between the New York Knicks and the San Antonio Spurs. NYK leads the series 2-1 after Game 3 (SAS won Game 3, 115-111, at MSG). Game 4 is imminent. This is a confirmed Finals matchup not reflected anywhere in the season context document.",
-      "urgency": "critical",
-      "suggested_action": "Add a Finals section to the playoff bracket: NYK vs SAS, NYK leads 2-1. Add Game 3 diary entry: SAS 115, NYK 111 \u2014 Wembanyama 32/8/6. Update all downstream series diary sections for NYK and SAS to reflect their R2/ECF/WCF/Finals progression."
-    },
-    {
-      "player_or_team": "Victor Wembanyama (SAS)",
-      "current_context_fact": "Player note states 'SERIES IS OVER \u2014 BOS eliminated' under Derrick White, and the SAS R1 series diary ends with 'SAS wins series 4-1 \u2014 SERIES CLINCHED.' The injury landscape entry states 'Treat as fully healthy entering R2. No injury concern.' The context document has no record of Wembanyama's performance beyond R1.",
-      "conflict": "Today's news confirms Wembanyama is active and performing at an elite level in the NBA Finals (Game 3: 32 points, 8 rebounds, 6 assists in a SAS win at MSG). He shoved Jalen Brunson in Game 3 but was not assessed a flagrant foul. He is clearly healthy and playing major minutes in the Finals.",
-      "urgency": "critical",
-      "suggested_action": "Update Wembanyama's status to reflect he is in the NBA Finals. Add Game 3 Finals line (32/8/6). Note the Brunson shove incident (no flagrant assessed). Confirm fully healthy through Finals Game 3."
-    },
-    {
-      "player_or_team": "Jalen Brunson (NYK)",
-      "current_context_fact": "The NYK vs ATL series diary G6 entry notes: 'the post-game news confirms he exited to the locker room in the third quarter with an apparent left ankle injury and played only 29 minutes, making his scoring the lowest of the series and introducing a genuine health concern heading into R2.' No further Brunson health or performance updates exist in the document beyond that point.",
-      "conflict": "Today's news references Brunson actively playing in Game 3 of the NBA Finals (he was shoved by Wembanyama, and Stephen A. is blaming the Knicks' Game 3 loss partly on Brunson). He is clearly active and playing in the Finals, meaning the left ankle concern from the ATL series has resolved sufficiently for him to play through multiple playoff rounds.",
-      "urgency": "critical",
-      "suggested_action": "Update Brunson's injury status: left ankle concern from ATL series G6 has not prevented him from competing through R2, ECF, and into the NBA Finals. Add Finals context \u2014 he played Game 3 vs SAS, was shoved by Wembanyama (no flagrant called), and is active for Game 4."
-    },
-    {
-      "player_or_team": "Karl-Anthony Towns (NYK)",
-      "current_context_fact": "The NYK vs ATL series diary is the last recorded context for Towns. His last noted line was a triple-double in G6 (12/11/10, 1-4 FG, 28 min) in a blowout. No Finals context exists.",
-      "conflict": "Today's news reports that Knicks coach Mike Brown said it is 'extremely important' to get Towns more touches after NYK's Game 3 loss to SAS, indicating Towns' involvement was insufficient in Game 3 and that he is an active player in the Finals with a role adjustment being prioritized heading into Game 4.",
-      "urgency": "critical",
-      "suggested_action": "Add Finals context for Towns: he is active in the NYK vs SAS Finals, his involvement was limited in Game 3 (coach Brown flagged this post-game), and a deliberate effort to increase his touches is the stated Game 4 adjustment. Update his series diary accordingly."
-    },
-    {
-      "player_or_team": "Stephon Castle (SAS)",
-      "current_context_fact": "Castle's last noted performance in the context document is from the SAS vs POR R1 series (series clinched in G5). His player note references a GTD designation as of March 19. No Finals context exists.",
-      "conflict": "Today's news quotes Castle post-Game 3 of the NBA Finals: 'Extra effort helped Spurs secure Game 3.' He is active, playing, and speaking publicly as a key contributor in the Finals.",
-      "urgency": "critical",
-      "suggested_action": "Update Castle's status to reflect he is active and contributing in the NBA Finals (through Game 3). Add his quote/role note from Game 3. Remove any lingering GTD/injury ambiguity as he is clearly healthy and playing Finals minutes."
-    },
-    {
-      "player_or_team": "OKC Thunder \u2014 playoff status",
-      "current_context_fact": "The season context states OKC is the 1-seed West and won their R1 series vs PHX 4-0. The document references R2 variables for OKC (Jalen Williams hamstring recovery). No elimination or further result is recorded. OKC won the 2024-25 championship.",
-      "conflict": "Today's news references Sam Presti defending Chet Holmgren and SGA following 'their disappointing playoff exit,' confirming OKC has been eliminated from the 2025-26 playoffs at some point after R1. They did not repeat as champions.",
-      "urgency": "critical",
-      "suggested_action": "Update OKC's playoff status to ELIMINATED (round and opponent unknown from this news, but confirmed eliminated). Note that OKC did not repeat as champions. The 2025-26 champion will be either NYK or SAS. Remove any forward-looking R2+ projections for OKC."
-    }
-  ],
+  "suggested_context_updates": [],
   "staleness_flags": []
 }

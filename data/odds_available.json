@@ -1,9 +1,217 @@
 {
-  "date": "2026-06-10",
-  "fetched_at": "2026-06-10T09:32:16.648889-07:00",
+  "date": "2026-06-11",
+  "fetched_at": "2026-06-11T09:50:27.794004-07:00",
   "bookmaker": "fanduel",
   "games_fetched": 1,
   "players": {
+    "josh hart": {
+      "display_name": "Josh Hart",
+      "AST": [
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 76.19,
+          "odds": -320
+        },
+        {
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 40.32,
+          "odds": 148
+        },
+        {
+          "tier": 8,
+          "line": 7.5,
+          "implied_prob": 15.62,
+          "odds": 540
+        },
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 7.14,
+          "odds": 1300
+        }
+      ],
+      "PTS": [
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 49.5,
+          "odds": 102
+        },
+        {
+          "tier": 15,
+          "line": 14.5,
+          "implied_prob": 18.52,
+          "odds": 440
+        },
+        {
+          "tier": 20,
+          "line": 19.5,
+          "implied_prob": 6.25,
+          "odds": 1500
+        }
+      ],
+      "REB": [
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 97.83,
+          "odds": -4500
+        },
+        {
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 84.85,
+          "odds": -560
+        },
+        {
+          "tier": 8,
+          "line": 7.5,
+          "implied_prob": 62.41,
+          "odds": -166
+        },
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 41.67,
+          "odds": 140
+        },
+        {
+          "tier": 12,
+          "line": 11.5,
+          "implied_prob": 21.74,
+          "odds": 360
+        }
+      ],
+      "3PM": [
+        {
+          "tier": 1,
+          "line": 0.5,
+          "implied_prob": 79.59,
+          "odds": -390
+        },
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 43.86,
+          "odds": 128
+        },
+        {
+          "tier": 3,
+          "line": 2.5,
+          "implied_prob": 20.0,
+          "odds": 400
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 8.33,
+          "odds": 1100
+        }
+      ]
+    },
+    "devin vassell": {
+      "display_name": "Devin Vassell",
+      "AST": [
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 76.19,
+          "odds": -320
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 27.4,
+          "odds": 265
+        },
+        {
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 7.14,
+          "odds": 1300
+        }
+      ],
+      "PTS": [
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 76.74,
+          "odds": -330
+        },
+        {
+          "tier": 15,
+          "line": 14.5,
+          "implied_prob": 42.74,
+          "odds": 134
+        },
+        {
+          "tier": 20,
+          "line": 19.5,
+          "implied_prob": 17.86,
+          "odds": 460
+        },
+        {
+          "tier": 25,
+          "line": 24.5,
+          "implied_prob": 6.67,
+          "odds": 1400
+        }
+      ],
+      "REB": [
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 77.78,
+          "odds": -350
+        },
+        {
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 40.98,
+          "odds": 144
+        },
+        {
+          "tier": 8,
+          "line": 7.5,
+          "implied_prob": 16.95,
+          "odds": 490
+        },
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 7.14,
+          "odds": 1300
+        }
+      ],
+      "3PM": [
+        {
+          "tier": 1,
+          "line": 0.5,
+          "implied_prob": 94.74,
+          "odds": -1800
+        },
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 73.33,
+          "odds": -275
+        },
+        {
+          "tier": 3,
+          "line": 2.5,
+          "implied_prob": 46.3,
+          "odds": 116
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 25.0,
+          "odds": 300
+        }
+      ]
+    },
     "deaaron fox": {
       "display_name": "De'Aaron Fox",
       "AST": [
@@ -16,8 +224,8 @@
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 61.83,
-          "odds": -162
+          "implied_prob": 63.24,
+          "odds": -172
         },
         {
           "tier": 8,
@@ -42,66 +250,173 @@
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 83.33,
-          "odds": -500
+          "implied_prob": 87.01,
+          "odds": -670
         },
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 50.5,
-          "odds": -102
+          "implied_prob": 56.9,
+          "odds": -132
         },
         {
           "tier": 20,
           "line": 19.5,
-          "implied_prob": 21.74,
-          "odds": 360
+          "implied_prob": 25.97,
+          "odds": 285
         },
         {
           "tier": 25,
           "line": 24.5,
-          "implied_prob": 7.69,
-          "odds": 1200
+          "implied_prob": 10.0,
+          "odds": 900
+        },
+        {
+          "tier": 30,
+          "line": 29.5,
+          "implied_prob": 3.23,
+          "odds": 3000
         }
       ],
       "REB": [
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 44.64,
-          "odds": 124
+          "implied_prob": 47.62,
+          "odds": 110
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 14.29,
-          "odds": 600
+          "implied_prob": 16.13,
+          "odds": 520
         }
       ],
       "3PM": [
         {
           "tier": 1,
           "line": 0.5,
-          "implied_prob": 77.27,
-          "odds": -340
+          "implied_prob": 77.78,
+          "odds": -350
         },
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 40.32,
-          "odds": 148
+          "implied_prob": 42.02,
+          "odds": 138
         },
         {
           "tier": 3,
           "line": 2.5,
-          "implied_prob": 17.54,
-          "odds": 470
+          "implied_prob": 18.87,
+          "odds": 430
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 7.14,
-          "odds": 1300
+          "implied_prob": 7.69,
+          "odds": 1200
+        }
+      ]
+    },
+    "victor wembanyama": {
+      "display_name": "Victor Wembanyama",
+      "AST": [
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 90.0,
+          "odds": -900
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 47.62,
+          "odds": 110
+        },
+        {
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 15.62,
+          "odds": 540
+        },
+        {
+          "tier": 8,
+          "line": 7.5,
+          "implied_prob": 5.26,
+          "odds": 1800
+        }
+      ],
+      "PTS": [
+        {
+          "tier": 15,
+          "line": 14.5,
+          "implied_prob": 98.59,
+          "odds": -7000
+        },
+        {
+          "tier": 20,
+          "line": 19.5,
+          "implied_prob": 91.67,
+          "odds": -1100
+        },
+        {
+          "tier": 25,
+          "line": 24.5,
+          "implied_prob": 71.43,
+          "odds": -250
+        },
+        {
+          "tier": 30,
+          "line": 29.5,
+          "implied_prob": 44.64,
+          "odds": 124
+        }
+      ],
+      "REB": [
+        {
+          "tier": 8,
+          "line": 7.5,
+          "implied_prob": 90.91,
+          "odds": -1000
+        },
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 76.19,
+          "odds": -320
+        },
+        {
+          "tier": 12,
+          "line": 11.5,
+          "implied_prob": 51.92,
+          "odds": -108
+        }
+      ],
+      "3PM": [
+        {
+          "tier": 1,
+          "line": 0.5,
+          "implied_prob": 91.67,
+          "odds": -1100
+        },
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 65.99,
+          "odds": -194
+        },
+        {
+          "tier": 3,
+          "line": 2.5,
+          "implied_prob": 36.76,
+          "odds": 172
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 18.52,
+          "odds": 440
         }
       ]
     },
@@ -111,32 +426,32 @@
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 94.74,
-          "odds": -1800
+          "implied_prob": 93.33,
+          "odds": -1400
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 72.6,
-          "odds": -265
+          "implied_prob": 68.25,
+          "odds": -215
         },
         {
           "tier": 8,
           "line": 7.5,
-          "implied_prob": 41.32,
-          "odds": 142
+          "implied_prob": 35.71,
+          "odds": 180
         },
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 21.74,
-          "odds": 360
+          "implied_prob": 16.67,
+          "odds": 500
         },
         {
           "tier": 12,
           "line": 11.5,
-          "implied_prob": 8.62,
-          "odds": 1060
+          "implied_prob": 6.67,
+          "odds": 1400
         }
       ],
       "PTS": [
@@ -149,34 +464,34 @@
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 63.5,
-          "odds": -174
+          "implied_prob": 62.41,
+          "odds": -166
         },
         {
           "tier": 20,
           "line": 19.5,
-          "implied_prob": 32.79,
-          "odds": 205
+          "implied_prob": 30.3,
+          "odds": 230
         },
         {
           "tier": 25,
           "line": 24.5,
-          "implied_prob": 12.82,
-          "odds": 680
+          "implied_prob": 11.76,
+          "odds": 750
         },
         {
           "tier": 30,
           "line": 29.5,
-          "implied_prob": 5.56,
-          "odds": 1700
+          "implied_prob": 4.76,
+          "odds": 2000
         }
       ],
       "REB": [
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 74.68,
-          "odds": -295
+          "implied_prob": 76.19,
+          "odds": -320
         },
         {
           "tier": 6,
@@ -187,8 +502,8 @@
         {
           "tier": 8,
           "line": 7.5,
-          "implied_prob": 14.29,
-          "odds": 600
+          "implied_prob": 15.15,
+          "odds": 560
         },
         {
           "tier": 10,
@@ -201,26 +516,26 @@
         {
           "tier": 1,
           "line": 0.5,
-          "implied_prob": 79.59,
-          "odds": -390
+          "implied_prob": 78.26,
+          "odds": -360
         },
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 43.86,
-          "odds": 128
+          "implied_prob": 42.02,
+          "odds": 138
         },
         {
           "tier": 3,
           "line": 2.5,
-          "implied_prob": 19.23,
-          "odds": 420
+          "implied_prob": 18.87,
+          "odds": 430
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 8.33,
-          "odds": 1100
+          "implied_prob": 7.69,
+          "odds": 1200
         }
       ]
     },
@@ -236,8 +551,8 @@
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 59.35,
-          "odds": -146
+          "implied_prob": 59.68,
+          "odds": -148
         },
         {
           "tier": 8,
@@ -254,28 +569,28 @@
         {
           "tier": 12,
           "line": 11.5,
-          "implied_prob": 5.26,
-          "odds": 1800
+          "implied_prob": 4.76,
+          "odds": 2000
         }
       ],
       "PTS": [
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 98.04,
-          "odds": -5000
+          "implied_prob": 98.36,
+          "odds": -6000
         },
         {
           "tier": 20,
           "line": 19.5,
-          "implied_prob": 87.8,
-          "odds": -720
+          "implied_prob": 88.89,
+          "odds": -800
         },
         {
           "tier": 25,
           "line": 24.5,
-          "implied_prob": 68.75,
-          "odds": -220
+          "implied_prob": 69.7,
+          "odds": -230
         },
         {
           "tier": 30,
@@ -288,14 +603,14 @@
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 40.65,
-          "odds": 146
+          "implied_prob": 46.3,
+          "odds": 116
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 12.82,
-          "odds": 680
+          "implied_prob": 15.15,
+          "odds": 560
         }
       ],
       "3PM": [
@@ -308,109 +623,8 @@
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 72.6,
-          "odds": -265
-        },
-        {
-          "tier": 3,
-          "line": 2.5,
-          "implied_prob": 45.45,
-          "odds": 120
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 25.64,
-          "odds": 290
-        }
-      ]
-    },
-    "devin vassell": {
-      "display_name": "Devin Vassell",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 72.97,
-          "odds": -270
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 23.81,
-          "odds": 320
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 6.25,
-          "odds": 1500
-        }
-      ],
-      "PTS": [
-        {
-          "tier": 10,
-          "line": 9.5,
           "implied_prob": 74.36,
           "odds": -290
-        },
-        {
-          "tier": 15,
-          "line": 14.5,
-          "implied_prob": 38.17,
-          "odds": 162
-        },
-        {
-          "tier": 20,
-          "line": 19.5,
-          "implied_prob": 15.15,
-          "odds": 560
-        },
-        {
-          "tier": 25,
-          "line": 24.5,
-          "implied_prob": 6.25,
-          "odds": 1500
-        }
-      ],
-      "REB": [
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 74.68,
-          "odds": -295
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 38.76,
-          "odds": 158
-        },
-        {
-          "tier": 8,
-          "line": 7.5,
-          "implied_prob": 15.15,
-          "odds": 560
-        },
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 6.25,
-          "odds": 1500
-        }
-      ],
-      "3PM": [
-        {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 95.24,
-          "odds": -2000
-        },
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 73.33,
-          "odds": -275
         },
         {
           "tier": 3,
@@ -421,115 +635,8 @@
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 25.64,
-          "odds": 290
-        }
-      ]
-    },
-    "josh hart": {
-      "display_name": "Josh Hart",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 97.22,
-          "odds": -3500
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 70.15,
-          "odds": -235
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 33.33,
-          "odds": 200
-        },
-        {
-          "tier": 8,
-          "line": 7.5,
-          "implied_prob": 11.76,
-          "odds": 750
-        },
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 6.25,
-          "odds": 1500
-        }
-      ],
-      "PTS": [
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 57.63,
-          "odds": -136
-        },
-        {
-          "tier": 15,
-          "line": 14.5,
-          "implied_prob": 24.39,
-          "odds": 310
-        },
-        {
-          "tier": 20,
-          "line": 19.5,
-          "implied_prob": 8.33,
-          "odds": 1100
-        }
-      ],
-      "REB": [
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 86.67,
-          "odds": -650
-        },
-        {
-          "tier": 8,
-          "line": 7.5,
-          "implied_prob": 64.54,
-          "odds": -182
-        },
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 42.02,
-          "odds": 138
-        },
-        {
-          "tier": 12,
-          "line": 11.5,
-          "implied_prob": 21.28,
-          "odds": 370
-        }
-      ],
-      "3PM": [
-        {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 83.33,
-          "odds": -500
-        },
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 50.98,
-          "odds": -104
-        },
-        {
-          "tier": 3,
-          "line": 2.5,
-          "implied_prob": 25.0,
-          "odds": 300
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 11.11,
-          "odds": 800
+          "implied_prob": 26.32,
+          "odds": 280
         }
       ]
     },
@@ -539,58 +646,58 @@
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 93.33,
-          "odds": -1400
+          "implied_prob": 91.67,
+          "odds": -1100
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 58.33,
-          "odds": -140
+          "implied_prob": 53.05,
+          "odds": -113
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 22.73,
-          "odds": 340
+          "implied_prob": 20.0,
+          "odds": 400
         },
         {
           "tier": 8,
           "line": 7.5,
-          "implied_prob": 7.69,
-          "odds": 1200
+          "implied_prob": 6.67,
+          "odds": 1400
         }
       ],
       "PTS": [
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 92.31,
-          "odds": -1200
+          "implied_prob": 91.67,
+          "odds": -1100
         },
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 69.23,
-          "odds": -225
+          "implied_prob": 65.99,
+          "odds": -194
         },
         {
           "tier": 20,
           "line": 19.5,
-          "implied_prob": 36.76,
-          "odds": 172
+          "implied_prob": 33.33,
+          "odds": 200
         },
         {
           "tier": 25,
           "line": 24.5,
-          "implied_prob": 16.67,
-          "odds": 500
+          "implied_prob": 14.29,
+          "odds": 600
         },
         {
           "tier": 30,
           "line": 29.5,
-          "implied_prob": 6.67,
-          "odds": 1400
+          "implied_prob": 6.25,
+          "odds": 1500
         }
       ],
       "REB": [
@@ -603,8 +710,8 @@
         {
           "tier": 8,
           "line": 7.5,
-          "implied_prob": 87.01,
-          "odds": -670
+          "implied_prob": 86.67,
+          "odds": -650
         },
         {
           "tier": 10,
@@ -615,129 +722,34 @@
         {
           "tier": 12,
           "line": 11.5,
-          "implied_prob": 47.62,
-          "odds": 110
+          "implied_prob": 49.02,
+          "odds": 104
         }
       ],
       "3PM": [
         {
           "tier": 1,
           "line": 0.5,
-          "implied_prob": 80.39,
-          "odds": -410
+          "implied_prob": 77.78,
+          "odds": -350
         },
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 45.45,
-          "odds": 120
+          "implied_prob": 41.67,
+          "odds": 140
         },
         {
           "tier": 3,
           "line": 2.5,
-          "implied_prob": 20.41,
-          "odds": 390
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 8.62,
-          "odds": 1060
-        }
-      ]
-    },
-    "victor wembanyama": {
-      "display_name": "Victor Wembanyama",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 89.47,
-          "odds": -850
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 46.3,
-          "odds": 116
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 14.29,
-          "odds": 600
-        }
-      ],
-      "PTS": [
-        {
-          "tier": 15,
-          "line": 14.5,
-          "implied_prob": 98.04,
-          "odds": -5000
-        },
-        {
-          "tier": 20,
-          "line": 19.5,
-          "implied_prob": 87.01,
-          "odds": -670
-        },
-        {
-          "tier": 25,
-          "line": 24.5,
-          "implied_prob": 67.21,
-          "odds": -205
-        },
-        {
-          "tier": 30,
-          "line": 29.5,
-          "implied_prob": 40.65,
-          "odds": 146
-        }
-      ],
-      "REB": [
-        {
-          "tier": 8,
-          "line": 7.5,
-          "implied_prob": 89.47,
-          "odds": -850
-        },
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 75.0,
-          "odds": -300
-        },
-        {
-          "tier": 12,
-          "line": 11.5,
-          "implied_prob": 50.98,
-          "odds": -104
-        }
-      ],
-      "3PM": [
-        {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 92.31,
-          "odds": -1200
-        },
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 66.44,
-          "odds": -198
-        },
-        {
-          "tier": 3,
-          "line": 2.5,
-          "implied_prob": 36.76,
-          "odds": 172
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
           "implied_prob": 18.87,
           "odds": 430
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 7.14,
+          "odds": 1300
         }
       ]
     },
@@ -753,46 +765,52 @@
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 45.05,
-          "odds": 122
+          "implied_prob": 43.48,
+          "odds": 130
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 15.15,
-          "odds": 560
+          "implied_prob": 14.29,
+          "odds": 600
         },
         {
           "tier": 8,
           "line": 7.5,
-          "implied_prob": 5.26,
-          "odds": 1800
+          "implied_prob": 4.76,
+          "odds": 2000
         }
       ],
       "PTS": [
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 80.0,
-          "odds": -400
+          "implied_prob": 86.11,
+          "odds": -620
         },
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 47.62,
-          "odds": 110
+          "implied_prob": 56.52,
+          "odds": -130
         },
         {
           "tier": 20,
           "line": 19.5,
-          "implied_prob": 20.41,
-          "odds": 390
+          "implied_prob": 26.32,
+          "odds": 280
         },
         {
           "tier": 25,
           "line": 24.5,
-          "implied_prob": 7.69,
-          "odds": 1200
+          "implied_prob": 10.31,
+          "odds": 870
+        },
+        {
+          "tier": 30,
+          "line": 29.5,
+          "implied_prob": 4.76,
+          "odds": 2000
         }
       ],
       "REB": [
@@ -805,52 +823,52 @@
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 59.68,
-          "odds": -148
+          "implied_prob": 58.33,
+          "odds": -140
         },
         {
           "tier": 8,
           "line": 7.5,
-          "implied_prob": 30.77,
-          "odds": 225
+          "implied_prob": 30.3,
+          "odds": 230
         },
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 15.15,
-          "odds": 560
+          "implied_prob": 13.7,
+          "odds": 630
         },
         {
           "tier": 12,
           "line": 11.5,
-          "implied_prob": 6.25,
-          "odds": 1500
+          "implied_prob": 5.56,
+          "odds": 1700
         }
       ],
       "3PM": [
         {
           "tier": 1,
           "line": 0.5,
-          "implied_prob": 77.27,
-          "odds": -340
+          "implied_prob": 80.77,
+          "odds": -420
         },
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 42.37,
-          "odds": 136
+          "implied_prob": 46.73,
+          "odds": 114
         },
         {
           "tier": 3,
           "line": 2.5,
-          "implied_prob": 18.87,
-          "odds": 430
+          "implied_prob": 22.22,
+          "odds": 350
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 7.69,
-          "odds": 1200
+          "implied_prob": 9.09,
+          "odds": 1000
         }
       ]
     },
@@ -860,80 +878,68 @@
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 82.14,
-          "odds": -460
+          "implied_prob": 83.05,
+          "odds": -490
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 34.97,
-          "odds": 186
+          "implied_prob": 36.5,
+          "odds": 174
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 10.0,
-          "odds": 900
+          "implied_prob": 10.75,
+          "odds": 830
         }
       ],
       "PTS": [
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 70.15,
-          "odds": -235
+          "implied_prob": 63.24,
+          "odds": -172
         },
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 33.56,
-          "odds": 198
+          "implied_prob": 28.17,
+          "odds": 255
         },
         {
           "tier": 20,
           "line": 19.5,
-          "implied_prob": 11.76,
-          "odds": 750
-        },
-        {
-          "tier": 25,
-          "line": 24.5,
-          "implied_prob": 5.26,
-          "odds": 1800
+          "implied_prob": 10.31,
+          "odds": 870
         }
       ],
       "REB": [
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 49.5,
-          "odds": 102
+          "implied_prob": 47.62,
+          "odds": 110
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 17.86,
-          "odds": 460
-        },
-        {
-          "tier": 8,
-          "line": 7.5,
-          "implied_prob": 6.25,
-          "odds": 1500
+          "implied_prob": 16.13,
+          "odds": 520
         }
       ],
       "3PM": [
         {
           "tier": 1,
           "line": 0.5,
-          "implied_prob": 80.39,
-          "odds": -410
+          "implied_prob": 80.77,
+          "odds": -420
         },
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 45.45,
-          "odds": 120
+          "implied_prob": 45.87,
+          "odds": 118
         },
         {
           "tier": 3,
@@ -946,196 +952,6 @@
           "line": 3.5,
           "implied_prob": 9.09,
           "odds": 1000
-        }
-      ]
-    },
-    "og anunoby": {
-      "display_name": "OG Anunoby",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 56.14,
-          "odds": -128
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 12.82,
-          "odds": 680
-        }
-      ],
-      "PTS": [
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 90.0,
-          "odds": -900
-        },
-        {
-          "tier": 15,
-          "line": 14.5,
-          "implied_prob": 62.41,
-          "odds": -166
-        },
-        {
-          "tier": 20,
-          "line": 19.5,
-          "implied_prob": 32.79,
-          "odds": 205
-        },
-        {
-          "tier": 25,
-          "line": 24.5,
-          "implied_prob": 13.7,
-          "odds": 630
-        },
-        {
-          "tier": 30,
-          "line": 29.5,
-          "implied_prob": 6.25,
-          "odds": 1500
-        }
-      ],
-      "REB": [
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 82.14,
-          "odds": -460
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 49.5,
-          "odds": 102
-        },
-        {
-          "tier": 8,
-          "line": 7.5,
-          "implied_prob": 21.74,
-          "odds": 360
-        },
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 9.09,
-          "odds": 1000
-        }
-      ],
-      "3PM": [
-        {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 93.33,
-          "odds": -1400
-        },
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 69.23,
-          "odds": -225
-        },
-        {
-          "tier": 3,
-          "line": 2.5,
-          "implied_prob": 41.32,
-          "odds": 142
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 22.22,
-          "odds": 350
-        }
-      ]
-    },
-    "julian champagnie": {
-      "display_name": "Julian Champagnie",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 45.45,
-          "odds": 120
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 8.62,
-          "odds": 1060
-        }
-      ],
-      "PTS": [
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 51.46,
-          "odds": -106
-        },
-        {
-          "tier": 15,
-          "line": 14.5,
-          "implied_prob": 21.74,
-          "odds": 360
-        },
-        {
-          "tier": 20,
-          "line": 19.5,
-          "implied_prob": 7.69,
-          "odds": 1200
-        }
-      ],
-      "REB": [
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 73.68,
-          "odds": -280
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 37.31,
-          "odds": 168
-        },
-        {
-          "tier": 8,
-          "line": 7.5,
-          "implied_prob": 15.15,
-          "odds": 560
-        },
-        {
-          "tier": 10,
-          "line": 9.5,
-          "implied_prob": 6.67,
-          "odds": 1400
-        }
-      ],
-      "3PM": [
-        {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 91.67,
-          "odds": -1100
-        },
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 66.67,
-          "odds": -200
-        },
-        {
-          "tier": 3,
-          "line": 2.5,
-          "implied_prob": 38.76,
-          "odds": 158
-        },
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 20.41,
-          "odds": 390
         }
       ]
     },
@@ -1145,73 +961,234 @@
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 40.0,
-          "odds": 150
+          "implied_prob": 57.63,
+          "odds": -136
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 9.09,
-          "odds": 1000
-        }
-      ],
-      "3PM": [
-        {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 42.74,
-          "odds": 134
-        },
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 14.29,
-          "odds": 600
-        }
-      ]
-    },
-    "miles mcbride": {
-      "display_name": "Miles McBride",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 33.78,
-          "odds": 196
+          "implied_prob": 16.67,
+          "odds": 500
         }
       ],
       "PTS": [
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 12.82,
-          "odds": 680
+          "implied_prob": 14.29,
+          "odds": 600
+        }
+      ],
+      "REB": [
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 15.62,
+          "odds": 540
         }
       ],
       "3PM": [
         {
           "tier": 1,
           "line": 0.5,
-          "implied_prob": 62.12,
-          "odds": -164
+          "implied_prob": 56.52,
+          "odds": -130
         },
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 25.97,
-          "odds": 285
+          "implied_prob": 22.73,
+          "odds": 340
         },
         {
           "tier": 3,
           "line": 2.5,
-          "implied_prob": 10.31,
-          "odds": 870
+          "implied_prob": 8.62,
+          "odds": 1060
+        }
+      ]
+    },
+    "og anunoby": {
+      "display_name": "OG Anunoby",
+      "AST": [
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 53.05,
+          "odds": -113
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 4.76,
-          "odds": 2000
+          "implied_prob": 10.75,
+          "odds": 830
+        }
+      ],
+      "PTS": [
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 96.15,
+          "odds": -2500
+        },
+        {
+          "tier": 15,
+          "line": 14.5,
+          "implied_prob": 76.19,
+          "odds": -320
+        },
+        {
+          "tier": 20,
+          "line": 19.5,
+          "implied_prob": 46.3,
+          "odds": 116
+        },
+        {
+          "tier": 25,
+          "line": 24.5,
+          "implied_prob": 22.73,
+          "odds": 340
+        },
+        {
+          "tier": 30,
+          "line": 29.5,
+          "implied_prob": 10.0,
+          "odds": 900
+        }
+      ],
+      "REB": [
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 81.13,
+          "odds": -430
+        },
+        {
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 48.54,
+          "odds": 106
+        },
+        {
+          "tier": 8,
+          "line": 7.5,
+          "implied_prob": 21.74,
+          "odds": 360
+        },
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 8.62,
+          "odds": 1060
+        }
+      ],
+      "3PM": [
+        {
+          "tier": 1,
+          "line": 0.5,
+          "implied_prob": 96.15,
+          "odds": -2500
+        },
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 76.74,
+          "odds": -330
+        },
+        {
+          "tier": 3,
+          "line": 2.5,
+          "implied_prob": 50.5,
+          "odds": -102
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 28.57,
+          "odds": 250
+        }
+      ]
+    },
+    "julian champagnie": {
+      "display_name": "Julian Champagnie",
+      "AST": [
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 35.71,
+          "odds": 180
+        }
+      ],
+      "PTS": [
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 49.5,
+          "odds": 102
+        },
+        {
+          "tier": 15,
+          "line": 14.5,
+          "implied_prob": 19.23,
+          "odds": 420
+        },
+        {
+          "tier": 20,
+          "line": 19.5,
+          "implied_prob": 7.14,
+          "odds": 1300
+        }
+      ],
+      "REB": [
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 71.43,
+          "odds": -250
+        },
+        {
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 34.48,
+          "odds": 190
+        },
+        {
+          "tier": 8,
+          "line": 7.5,
+          "implied_prob": 12.82,
+          "odds": 680
+        },
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 6.25,
+          "odds": 1500
+        }
+      ],
+      "3PM": [
+        {
+          "tier": 1,
+          "line": 0.5,
+          "implied_prob": 94.12,
+          "odds": -1600
+        },
+        {
+          "tier": 2,
+          "line": 1.5,
+          "implied_prob": 71.01,
+          "odds": -245
+        },
+        {
+          "tier": 3,
+          "line": 2.5,
+          "implied_prob": 43.1,
+          "odds": 132
+        },
+        {
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 22.73,
+          "odds": 340
         }
       ]
     },
@@ -1229,155 +1206,71 @@
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 33.56,
-          "odds": 198
+          "implied_prob": 32.79,
+          "odds": 205
         },
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 11.76,
-          "odds": 750
-        },
-        {
-          "tier": 20,
-          "line": 19.5,
-          "implied_prob": 4.76,
-          "odds": 2000
+          "implied_prob": 10.75,
+          "odds": 830
         }
       ],
       "3PM": [
         {
           "tier": 1,
           "line": 0.5,
-          "implied_prob": 85.71,
-          "odds": -600
+          "implied_prob": 86.67,
+          "odds": -650
         },
         {
           "tier": 2,
           "line": 1.5,
-          "implied_prob": 57.63,
-          "odds": -136
+          "implied_prob": 56.52,
+          "odds": -130
         },
         {
           "tier": 3,
           "line": 2.5,
-          "implied_prob": 31.25,
-          "odds": 220
+          "implied_prob": 29.85,
+          "odds": 235
         },
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 15.62,
-          "odds": 540
+          "implied_prob": 13.7,
+          "odds": 630
         }
       ]
     },
     "keldon johnson": {
       "display_name": "Keldon Johnson",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 22.22,
-          "odds": 350
-        }
-      ],
       "PTS": [
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 25.64,
-          "odds": 290
+          "implied_prob": 30.77,
+          "odds": 225
         },
         {
           "tier": 15,
           "line": 14.5,
-          "implied_prob": 7.69,
-          "odds": 1200
-        }
-      ],
-      "REB": [
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 34.01,
-          "odds": 194
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 11.11,
-          "odds": 800
-        }
-      ],
-      "3PM": [
-        {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 50.0,
-          "odds": 100
-        },
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 17.24,
-          "odds": 480
-        },
-        {
-          "tier": 3,
-          "line": 2.5,
-          "implied_prob": 6.25,
-          "odds": 1500
-        }
-      ]
-    },
-    "luke kornet": {
-      "display_name": "Luke Kornet",
-      "AST": [
-        {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 18.87,
-          "odds": 430
-        }
-      ],
-      "REB": [
-        {
-          "tier": 4,
-          "line": 3.5,
-          "implied_prob": 26.32,
-          "odds": 280
-        },
-        {
-          "tier": 6,
-          "line": 5.5,
-          "implied_prob": 8.62,
-          "odds": 1060
-        }
-      ]
-    },
-    "jordan clarkson": {
-      "display_name": "Jordan Clarkson",
-      "PTS": [
-        {
-          "tier": 10,
-          "line": 9.5,
           "implied_prob": 10.0,
           "odds": 900
         }
       ],
-      "3PM": [
+      "REB": [
         {
-          "tier": 1,
-          "line": 0.5,
-          "implied_prob": 37.88,
-          "odds": 164
+          "tier": 4,
+          "line": 3.5,
+          "implied_prob": 39.37,
+          "odds": 154
         },
         {
-          "tier": 2,
-          "line": 1.5,
-          "implied_prob": 11.76,
-          "odds": 750
+          "tier": 6,
+          "line": 5.5,
+          "implied_prob": 13.7,
+          "odds": 630
         }
       ]
     },
@@ -1387,40 +1280,51 @@
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 8.62,
-          "odds": 1060
+          "implied_prob": 10.75,
+          "odds": 830
         }
       ],
       "REB": [
         {
           "tier": 4,
           "line": 3.5,
-          "implied_prob": 65.75,
-          "odds": -192
+          "implied_prob": 67.21,
+          "odds": -205
         },
         {
           "tier": 6,
           "line": 5.5,
-          "implied_prob": 36.76,
-          "odds": 172
+          "implied_prob": 40.32,
+          "odds": 148
         },
         {
           "tier": 8,
           "line": 7.5,
-          "implied_prob": 18.87,
-          "odds": 430
+          "implied_prob": 21.28,
+          "odds": 370
         },
         {
           "tier": 10,
           "line": 9.5,
-          "implied_prob": 10.0,
-          "odds": 900
+          "implied_prob": 11.76,
+          "odds": 750
         },
         {
           "tier": 12,
           "line": 11.5,
-          "implied_prob": 5.26,
-          "odds": 1800
+          "implied_prob": 6.67,
+          "odds": 1400
+        }
+      ]
+    },
+    "miles mcbride": {
+      "display_name": "Miles McBride",
+      "PTS": [
+        {
+          "tier": 10,
+          "line": 9.5,
+          "implied_prob": 9.09,
+          "odds": 1000
         }
       ]
     }
