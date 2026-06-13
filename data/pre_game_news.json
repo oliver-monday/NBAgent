@@ -1,11 +1,52 @@
 {
-  "date": "2026-06-12",
-  "generated_at": "2026-06-12T09:14:35.497201-07:00",
-  "player_notes": {},
-  "game_notes": {},
-  "raw_item_count": 0,
-  "filtered_item_count": 0,
+  "date": "2026-06-13",
+  "generated_at": "2026-06-13T07:58:24.208436-07:00",
+  "player_notes": {
+    "de'aaron fox": "Fox had a rough Game 4 and is under scrutiny, but coach Mitch Johnson publicly reaffirmed confidence in him \u2014 no role change indicated. Monitor for potential usage dip if struggles continue, but no restriction reported.",
+    "victor wembanyama": "Reports indicate Spurs need to better manage Wemby's energy/minutes in Game 5. Potential minutes management could cap his counting stats ceiling."
+  },
+  "game_notes": {
+    "NYK vs SAS": "Spurs coaching staff flagged need to manage Wembanyama's workload in Game 5, which could affect his minutes and per-game totals. Fox remains in starting role despite poor Game 4 showing."
+  },
+  "raw_item_count": 25,
+  "filtered_item_count": 24,
   "fetch_errors": [],
-  "suggested_context_updates": [],
+  "suggested_context_updates": [
+    {
+      "player_or_team": "NYK vs SAS \u2014 NBA Finals",
+      "current_context_fact": "The season context document's playoff bracket shows R1 matchups and R1/R2 series diaries only. The furthest progression documented is R1 series conclusions. No NBA Finals matchup is documented. NYK and SAS are listed as Eastern and Western conference playoff teams respectively, but no Finals series exists in the context.",
+      "conflict": "Multiple news items from June 11-13, 2026 confirm the NYK Knicks vs SAS Spurs are currently playing in the 2026 NBA Finals, with Game 5 scheduled (NYK leads 3-1 after a 'shocking comeback win in Game 4'). The context document contains no R2, conference finals, or Finals bracket data \u2014 the playoff progression has advanced significantly beyond what is documented.",
+      "urgency": "critical",
+      "suggested_action": "Add full R2, ECF, WCF, and NBA Finals bracket results and series diary through Game 4. NYK has advanced from the East and SAS from the West. NYK leads the Finals 3-1 heading into Game 5 on approximately June 13, 2026. All R2/ECF/WCF series results are missing and must be populated."
+    },
+    {
+      "player_or_team": "Jalen Brunson (NYK)",
+      "current_context_fact": "Game 6 diary entry (Apr 30): 'the post-game news confirms he exited to the locker room in the third quarter with an apparent left ankle injury and played only 29 minutes, making his scoring the lowest of the series and introducing a genuine health concern heading into R2.'",
+      "conflict": "News from June 12-13 describes Brunson as actively leading the Knicks in the NBA Finals against the Spurs, with a headline calling him 'the undisputed king of New York' and another noting 'Brunson and the Knicks look to clinch NBA Finals.' His role as the primary Knicks engine in the Finals implies the left ankle concern did not result in a serious or limiting injury through the Finals.",
+      "urgency": "monitor",
+      "suggested_action": "Update Brunson's injury status \u2014 the left ankle concern flagged after R1 G6 has not prevented him from performing through the Finals. Note that ankle appears resolved or manageable based on his continued Finals participation as NYK's primary offensive engine."
+    },
+    {
+      "player_or_team": "OG Anunoby (NYK)",
+      "current_context_fact": "Player note states: 'AST CAUTION \u2014 career playoff avg 1.5 vs RS career 2.2 (-0.7, -7.5pp at T4, 2 of 3 prior playoffs below RS, trajectory net_down). Treatment: avoid AST T4+ in playoffs; T2 acceptable; standard tier-walk on other props.' Series diary notes Anunoby's AST pattern across R1: '1, 4, 4, 1, 1' across five games.",
+      "conflict": "News from June 12 reports 'Anunoby in hunt for Finals MVP' and 'There's a compelling case for Anunoby to be NBA Finals MVP,' indicating he has been one of the best performers in the Finals \u2014 an elevated role and production level beyond what R1 data captured. His Finals MVP candidacy implies scoring/performance elevation that may update his prop context significantly.",
+      "urgency": "monitor",
+      "suggested_action": "Update Anunoby's player note to reflect his elevated Finals performance and MVP candidacy. His role and production have clearly expanded through the playoff run. Add Finals series diary data when available. The MVP candidacy suggests his PTS and possibly other counting stats have been performing at a higher level than R1 baselines indicated."
+    },
+    {
+      "player_or_team": "Victor Wembanyama (SAS)",
+      "current_context_fact": "Playoff injury landscape states: 'Victor Wembanyama (SAS) \u2014 SERIES OVER (SAS advances). Concussion protocol cleared before G4; G4: 27/12/3 and G5: 17/14/3 confirm full health and no residual restriction. Treat as fully healthy entering R2. No injury concern.' The context ends with SAS advancing past POR in R1.",
+      "conflict": "News from June 12 states 'Windhorst: Spurs must manage Wemby's energy better in Game 5' (of the Finals), suggesting a new performance/energy management concern has emerged during the Finals. Additionally, the Knicks fans pelting him with an egg after Game 4 suggests he had a rough Game 4 outing. This indicates either a performance dip or fatigue concern in the Finals that is not captured in the context.",
+      "urgency": "monitor",
+      "suggested_action": "Add a Finals-specific note for Wembanyama flagging the energy management concern raised by Windhorst after Game 4 of the Finals. Monitor whether this translates to a minutes restriction or role adjustment in Game 5. The context doc needs the full R2/WCF/Finals series diary for SAS to properly capture his current state."
+    },
+    {
+      "player_or_team": "De'Aaron Fox (SAS)",
+      "current_context_fact": "Fox is documented as a SAS starter and key contributor throughout R1 vs POR, with his R1 G5 line: '21/3/9 (8-14 FG, 2 3PM, 34 min).' No performance concerns flagged heading into R2.",
+      "conflict": "News from June 11-12 reports Fox had a 'rough showing in Game 4' of the NBA Finals, with debate over 'how much blame De'Aaron Fox deserves' and Mitch Johnson 'emphasizing belief in De'Aaron Fox' \u2014 indicating a significant performance issue for Fox in Finals Game 4 that requires context updating.",
+      "urgency": "monitor",
+      "suggested_action": "Add a Finals-specific performance flag for De'Aaron Fox noting his rough Game 4 showing. Update the playoff series diary to include Finals context. His role and efficiency in Game 5 should be treated with extra scrutiny given the coach's public messaging about belief in him, which typically signals a recent performance concern."
+    }
+  ],
   "staleness_flags": []
 }
