@@ -10805,5 +10805,129 @@
     "would_have_hit": true,
     "skip_verdict": "false_skip",
     "skip_verdict_notes": "Actual 18.0 \u2265 tier 15"
+  },
+  {
+    "date": "2026-06-13",
+    "player_name": "Victor Wembanyama",
+    "team": "SAS",
+    "opponent": "NYK",
+    "prop_type": "PTS",
+    "tier_considered": 25,
+    "direction": "OVER",
+    "skip_reason": "volatile_weak_combo",
+    "rule_context": {
+      "player_name": "Victor Wembanyama",
+      "prop_type": "PTS",
+      "tier_considered": 25,
+      "hit_rate": "7/10 (70%)",
+      "volatile_tag": true,
+      "reason": "VOLATILE + T25 + 7/10 exact hit rate triggers volatile_weak_combo hard skip; Wembanyama PTS exemption applies only to volatile_weak_combo at T20 per auditor note, not T25"
+    },
+    "actual_value": 19.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 19.0 < tier 25"
+  },
+  {
+    "date": "2026-06-13",
+    "player_name": "Stephon Castle",
+    "team": "SAS",
+    "opponent": "NYK",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "reb_floor_skip",
+    "rule_context": {
+      "player_name": "Stephon Castle",
+      "prop_type": "REB",
+      "tier_considered": 4,
+      "reason": "Offensive-first player REB gate: raw_avgs PTS > 20 and raw_avgs AST > 6; lowest L10 REB = 3 (G4 of Finals), which is within 2 of pick_value=4; gate fires regardless of T4 minimum exception"
+    },
+    "actual_value": 5.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 5.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-06-13",
+    "player_name": "OG Anunoby",
+    "team": "NYK",
+    "opponent": "SAS",
+    "prop_type": "REB",
+    "tier_considered": 4,
+    "direction": "OVER",
+    "skip_reason": "reb_floor_skip",
+    "rule_context": {
+      "player_name": "OG Anunoby",
+      "prop_type": "REB",
+      "tier_considered": 4,
+      "reason": "Offensive-first player REB gate: raw_avgs PTS > 20; lowest L10 REB = 3 (Finals G1), within 2 of pick_value=4; gate fires"
+    },
+    "actual_value": 8.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 8.0 \u2265 tier 4"
+  },
+  {
+    "date": "2026-06-13",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "opponent": "SAS",
+    "prop_type": "REB",
+    "tier_considered": 10,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "REB",
+      "tier_considered": 10,
+      "reason": "Karl-Anthony Towns does not appear in FanDuel Market Availability section; no market exists for any KAT prop"
+    },
+    "actual_value": 10.0,
+    "would_have_hit": true,
+    "skip_verdict": "false_skip",
+    "skip_verdict_notes": "Actual 10.0 \u2265 tier 10"
+  },
+  {
+    "date": "2026-06-13",
+    "player_name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "opponent": "SAS",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "no_market",
+    "rule_context": {
+      "player_name": "Karl-Anthony Towns",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "reason": "Karl-Anthony Towns does not appear in FanDuel Market Availability section"
+    },
+    "actual_value": 2.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 2.0 < tier 15"
+  },
+  {
+    "date": "2026-06-13",
+    "player_name": "De'Aaron Fox",
+    "team": "SAS",
+    "opponent": "NYK",
+    "prop_type": "PTS",
+    "tier_considered": 15,
+    "direction": "OVER",
+    "skip_reason": "merit_below_floor",
+    "rule_context": {
+      "player_name": "De'Aaron Fox",
+      "prop_type": "PTS",
+      "tier_considered": 15,
+      "confidence_after_penalties": 67,
+      "floor": 68,
+      "reason": "T15 overall=70% \u2192 VOLATILE playoff -3% \u2192 67%, below 68% PTS floor; stepped to T10 which qualifies"
+    },
+    "actual_value": 7.0,
+    "would_have_hit": false,
+    "skip_verdict": "correct_skip",
+    "skip_verdict_notes": "Actual 7.0 < tier 15"
   }
 ]

@@ -10129,5 +10129,148 @@
       "hit_rate_pct": 100.0,
       "delta_vs_overall_pp": 0.0
     }
+  },
+  {
+    "date": "2026-06-13",
+    "total_picks": 15,
+    "voided_picks": 0,
+    "hits": 9,
+    "misses": 6,
+    "no_data": 0,
+    "hit_rate_pct": 60.0,
+    "prop_type_breakdown": {
+      "PTS": {
+        "picks": 5,
+        "hits": 3,
+        "hit_rate_pct": 60.0
+      },
+      "REB": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0
+      },
+      "AST": {
+        "picks": 4,
+        "hits": 3,
+        "hit_rate_pct": 75.0
+      },
+      "3PM": {
+        "picks": 5,
+        "hits": 2,
+        "hit_rate_pct": 40.0
+      }
+    },
+    "confidence_calibration": {
+      "70-75": {
+        "picks": 9,
+        "hits": 5,
+        "hit_rate_pct": 55.6,
+        "expected_hit_rate_pct": 72.5
+      },
+      "76-80": {
+        "picks": 5,
+        "hits": 3,
+        "hit_rate_pct": 60.0,
+        "expected_hit_rate_pct": 78.0
+      },
+      "81-85": {
+        "picks": 0,
+        "hits": 0,
+        "hit_rate_pct": 0.0,
+        "expected_hit_rate_pct": 83.0
+      },
+      "86+": {
+        "picks": 1,
+        "hits": 1,
+        "hit_rate_pct": 100.0,
+        "expected_hit_rate_pct": 90.0
+      }
+    },
+    "reinforcements": [
+      "Castle AST T4 iron_floor + 11/11 cross-series consistency held again (actual 4, exactly at threshold) \u2014 the 87% confidence pick at the 86+ band returned 100% on the day and confirms iron_floor AST picks on primary playmakers are the strongest signal on this slate. Carrying this directive forward as validated.",
+      "Fox AST T4 at 80% confidence hit cleanly (actual 5) despite the ankle injury that suppressed his PTS on the same night \u2014 confirms the AST line is structurally more resilient than PTS for Fox in playoff contexts, and that the 90% overall rate with 89% vs_tough was appropriately weighted over the singular PTS concern.",
+      "Brunson 3PM T2 (actual 4, HIT) was correctly identified using current-series H2H as primary signal (4/4 Finals at T2 entering G5) over the overall 70% quant rate \u2014 the analyst's auditor-guidance-driven upweighting of in-series data produced the correct outcome and should continue as Finals-context methodology.",
+      "Wembanyama REB T8 walk-decline mechanism (T6 had no market) was correctly applied \u2014 the pick stayed at T8 with the walk-decline penalty, actual value was 14, a dominant hit. The mechanism of identifying the correct tier and applying the penalty rather than abandoning the pick was sound.",
+      "Bridges AST T2 at 73% confidence (actual 4, HIT) confirmed the H2H 7/7 vs SAS as the dominant signal even when overall quant base was below the 68% floor \u2014 the Finals-context override of overall base with in-series H2H produced the correct result, validating the auditor guidance on this methodology."
+    ],
+    "lessons": [
+      "3PM props went 2/5 on the slate (40%), the worst-performing category, driven by three misses: Castle 3PM T1 (0 actual), Wembanyama 3PM T2 (1 actual), and Anunoby 3PM T2 (1 actual). A Finals closeout game produced a collective perimeter shooting collapse on the SAS side (Castle 0 threes, Wembanyama 1) and on the NYK side (Anunoby 1). This pattern \u2014 multiple shooters going cold simultaneously in a high-stakes closeout game \u2014 is a known variance cluster that props cannot individually anticipate, but the concentration of 3PM picks on a single closeout game slate amplified exposure.",
+      "Castle PTS T10 miss (actual 6) was driven by a confirmed ankle injury carried from Game 2 that produced a 1-for-10 shooting performance described as 'going missing.' The quant-side pick was defensible (stepped down from T15 due to FG_MARGIN_NEG, series floor of 13+ in all four prior Finals games), but the ankle injury's suppressive effect on FG efficiency was not captured in injury_status_at_check (NOT_LISTED). The post-game news confirms the ankle was a real limitation \u2014 this is a case where the injury context was known in the series diary (Castle ankle injury noted in G2) but not reflected in the pick object's formal injury flag.",
+      "Fox PTS T10 miss (actual 7) was explicitly confirmed by post-game news as ankle-injury-driven \u2014 sources note he had been nursing the ankle throughout the postseason. The quant-side tier walk correctly flagged VOLATILE and applied the playoff PTS suppression signal, stepping down from T15 to T10. The miss at 7 points (3 short of T10) in 37 full minutes reflects the ankle's real-time suppressive effect rather than a role or minutes compression issue. This is a case where the structural injury signal existed in the series landscape but was absent from the formal injury_status_at_check field.",
+      "Brunson AST T4 miss (actual 3) in a game where he scored 45 points and won Finals MVP exemplifies the scoring-mode AST suppression pattern at its most extreme. His 45-point closeout performance concentrated his usage entirely on scoring, leaving only 3 assists despite 41 full minutes. The trend=down signal and the auditor's prior note about competitive=67% at T6 being a red flag were correct directional signals; at T4 (80% overall, competitive=91%), the pick appeared structurally sound, but the extreme scoring-concentration game script overrode the AST floor in a manner that the quant's competitive rate did not fully capture for MVP-caliber closeout performances.",
+      "Wembanyama 3PM T2 miss (actual 1) is the most analytically significant 3PM miss: the prior four Finals games showed exactly 2-2-2-2 threes (perfect T2 consistency), and trend=up, yet he went 1-for-6 in the closeout game. The overall quant tier=1 (T2 below the 75% aggregate floor) was the correct systemic signal that was overridden by in-series H2H data. The lesson: when overall quant tier selection places T2 below the qualification threshold and the only justification for picking it is in-series streakiness, the aggregate signal deserves more weight \u2014 especially for a VOLATILE-tagged shooter in a high-pressure closeout environment."
+    ],
+    "recommendations": [
+      "Implement a Finals closeout game 3PM exposure cap: on any game identified as a potential series-clinching game (series score 3-1 or greater), reduce the maximum number of 3PM picks across both teams combined to 2. This slate carried five 3PM picks in a single closeout game and went 2/5 (40%). The concentration risk of multiple 3PM props in a single high-stakes game amplifies correlated variance \u2014 perimeter shooting can collapse collectively in closeout environments. Cap total 3PM picks per series-clinching game to reduce correlated exposure.",
+      "When the quant tier selection places the target tier below the 75% 3PM aggregate floor (i.e., overall quant tier=1 and T2 is being justified by in-series H2H alone), do NOT override the aggregate signal for VOLATILE-tagged players. Apply this rule specifically: if VOLATILE is present on 3PM AND overall quant T2 rate is sub-75% AND the only justification is in-series streakiness, skip the pick rather than using H2H override. Wembanyama 3PM T2 (overall quant tier=1, VOLATILE, H2H override justified the pick) is the direct reference case \u2014 4/4 series streak broke in the closeout game.",
+      "For players with a confirmed injury noted in the series diary (Castle ankle G2, Fox ankle postseason-long) but NOT_LISTED in the formal injury_status_at_check, apply a mandatory confidence deduction of -5pp to all PTS picks for that player going forward in the series. The formal injury flag and the series diary are two separate data sources; when they diverge (diary confirms injury, flag is NOT_LISTED), the diary signal must create a quant penalty. This would have reduced Castle PTS confidence from 72% to 67% (below the 68% floor, triggering a skip) and Fox PTS confidence from 70% to 65% (below the 68% floor, triggering a skip), preventing both misses.",
+      "For primary-scorer-playmakers (players averaging 25+ PPG in a series who are also primary AST sources), apply an explicit scoring-concentration game script modifier on AST props: in any game where the player's series-average PTS exceeds 30 AND pre-game spread implies a competitive or close game, reduce AST confidence by -5pp to account for scoring-mode suppression. Brunson's G5 (45 pts, 3 AST) is the clearest illustration \u2014 his 80% overall AST T4 rate did not account for the extreme right tail of his scoring distribution consuming his distribution share.",
+      "Anunoby 3PM T2 was marked top_pick (iron_floor=false, non-eligible) \u2014 a data inconsistency noted in the pick object where top_pick=true despite iron_floor being explicitly overridden or absent. Enforce a hard constraint: top_pick can only be set true when iron_floor=true AND the VOLATILE+iron_floor incompatibility rule has NOT fired. Add a validation check at pick submission time that rejects top_pick=true for any pick where iron_floor is false or overridden, preventing this classification error from recurring."
+    ],
+    "miss_details": [
+      {
+        "player_name": "Stephon Castle",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 6,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "Game context: NYK @ SAS, final 94-90, CLOSE margin \u2014 game script is not a causal factor. Castle played 32 minutes and scored only 6 points on 1-for-10 shooting, confirmed by post-game news as a cold-shooting performance linked to the ankle injury he suffered in Game 2 of the Finals. The injury_status_at_check field read NOT_LISTED, so no formal injury flag existed at pick time. However, the series diary explicitly documented Castle's Game 2 ankle injury ('had previously injured his ankle in Game 2 but played through it' \u2014 confirmed source). The tier walk correctly stepped T15\u2192T10 due to FG_MARGIN_NEG and the pick was made at 72% confidence citing the Finals series floor of 13+ points in all four prior games (4/4 at T10). Hit rate was 7/10, trend=down, VOLATILE present. The miss is attributable to the gap between the formal injury tracking system (NOT_LISTED) and the qualitative injury knowledge available in the series diary \u2014 the pick object carried no penalty for the documented ankle injury despite its presence in the series record. A series-diary-sourced injury penalty of -5pp would have pushed confidence below the 68% floor, producing a skip. This is a model_gap_rule miss: the signal (ankle injury in series diary) existed in the system context, but no rule translated diary-documented injuries into a confidence deduction when the formal flag was absent. No amendment was present."
+      },
+      {
+        "player_name": "Stephon Castle",
+        "prop_type": "3PM",
+        "pick_value": 1,
+        "actual_value": 0,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "Game context: NYK @ SAS, final 94-90, CLOSE \u2014 game script is not a causal factor. Castle recorded 0 threes on what post-game news describes as a 1-for-10 overall FG night driven by an ankle injury. The trend=down step from T2\u2192T1 was correctly executed, and the 8/10 overall hit rate at T1 (80%) with H2H 6/7 vs NYK supported the pick at 75% confidence. The ankle injury that suppressed his entire offensive output also explains the 3PM zero \u2014 a player shooting 1-for-10 from the field is unlikely to reach any 3PM threshold. However, the 3PM miss is best classified as variance rather than a second instance of model_gap_rule: the T1 threshold (1+ three) is the lowest possible tier, the hit rate supported it at 80%, and the miss was driven by a global shooting collapse rather than a structural 3PM selection error. The ankle-injury-to-3PM causal chain is the same as the PTS miss but the classification at the lowest available tier with an 8/10 hit rate points to variance. No amendment was present."
+      },
+      {
+        "player_name": "Victor Wembanyama",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "Game context: NYK @ SAS, final 94-90, CLOSE \u2014 game script is not a causal factor. Wembanyama scored 19 points and grabbed 14 rebounds but went 1-for-6 from three (actual 1, pick value 2). Post-game news confirms the miss was purely shooting inefficiency \u2014 'poor shooting efficiency from deep rather than any injury or game situation.' The analyst's reasoning leaned heavily on the in-series H2H showing exactly 2-2-2-2 threes across all four prior Finals games, treating this streak as the dominant signal over the overall quant computation which placed T2 below the 75% aggregate floor (quant tier=1 at 75% overall). The VOLATILE tag was present, trend=up, and the analyst correctly capped at 77% (below the 80% non-iron_floor ceiling). The structural gap: the quant system's own tier selection (tier=1) was signaling that T2 is below the aggregate viability threshold, but the in-series streak override was applied, producing a pick that the aggregate model would have skipped. The rule gap is that no explicit constraint exists preventing in-series H2H from overriding a quant tier placement of T1 (sub-75% aggregate) for a VOLATILE-tagged player. The four-game streak of exactly 2 threes was a convincing pattern that broke precisely in the highest-pressure game of the season. This is model_gap_rule: the aggregate quant signal (tier=1, sub-75% T2) existed but the override mechanism was applied without a VOLATILE+sub-75%-aggregate hard stop. No amendment was present."
+      },
+      {
+        "player_name": "De'Aaron Fox",
+        "prop_type": "PTS",
+        "pick_value": 10,
+        "actual_value": 7,
+        "miss_classification": "model_gap_rule",
+        "tier_walk_flag": null,
+        "root_cause": "Game context: NYK @ SAS, final 94-90, CLOSE \u2014 game script is not a causal factor. Fox played 37 full minutes and scored only 7 points (3 below the T10 threshold). Post-game news explicitly confirms a lingering ankle injury managed throughout the postseason suppressed his offensive production. The injury_status_at_check was NOT_LISTED \u2014 no formal flag existed at pick time. The tier walk correctly stepped T15\u2192T10 (T15 failed after VOLATILE deduction dropped confidence to 67%, below the 68% floor), and the analyst cited T10 base ~85% with VOLATILE -3% producing 77%. Hit rate was 7/10, trend=stable. The series diary context did not flag Fox's ankle as prominently as Castle's, but the post-game web recap confirms it was a known postseason-long condition. The same structural gap applies as in the Castle PTS miss: the formal injury system was silent (NOT_LISTED) while the qualitative injury signal (postseason ankle management) existed in the broader series context. A rule translating postseason-long injury management into a mandatory PTS confidence deduction would have caught this. The miss is 3 points below threshold in 37 full minutes \u2014 not a near-miss of 1 \u2014 confirming the injury materially suppressed output beyond normal variance. This is model_gap_rule: the injury signal existed in qualitative form (postseason ankle management mentioned in multiple post-game sources) but no rule converted it into a pick-time confidence penalty when the formal flag was absent. No amendment was present."
+      },
+      {
+        "player_name": "Jalen Brunson",
+        "prop_type": "AST",
+        "pick_value": 4,
+        "actual_value": 3,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "Game context: NYK @ SAS, final 94-90, CLOSE \u2014 game script is not a causal factor. Brunson scored 45 points (Finals MVP performance) in 41 minutes but recorded only 3 assists, one below the T4 threshold. Post-game news confirms 'his scoring usage in the closeout game left limited opportunities to distribute.' The analyst's reasoning was sound: 80% overall T4, competitive=91%, vs_tough=86%, and VOLATILE -3% deduction applied. Hit rate was 8/10, trend=down (informational on AST). The scoring-mode AST suppression pattern was noted in the tier walk but the competitive=91% rate at T4 was treated as the dominant signal. The miss is by exactly 1 unit (3 vs 4). This is a variant of the scoring-concentration suppression at its extreme tail \u2014 a 45-point game concentrated his usage entirely on scoring, a game-script scenario the quant's competitive rate does not separately model. However, the pick was structurally sound: 80% overall, 8/10 hit rate, the correct tier was selected, and the outcome was within normal distribution variance for a player averaging ~6 AST who hit 3 in a career-scoring-volume game. Classified as variance rather than model_gap_rule because the trend=down signal was present and incorporated (-3% VOLATILE applied), and the 80% overall rate legitimately supports a miss 20% of the time. No amendment was present."
+      },
+      {
+        "player_name": "OG Anunoby",
+        "prop_type": "3PM",
+        "pick_value": 2,
+        "actual_value": 1,
+        "miss_classification": "variance",
+        "tier_walk_flag": null,
+        "root_cause": "Game context: NYK @ SAS, final 94-90, CLOSE \u2014 game script is not a causal factor. Anunoby scored 11 points but hit only 1 three in 33 minutes (actual 1, pick value 2). Post-game news confirms 'a classic regression game where his shooting simply did not fall' after a historic 7-for-9 Game 4 performance from three. The analyst's reasoning was correctly grounded: 85% overall T2, H2H vs SAS 6/7, Finals series 4/4 at T2 entering Game 5 (including the 7-three Game 4). Trend=up, no VOLATILE tag on 3PM, capped at 80% (non-iron_floor ceiling). The pick was marked top_pick=true \u2014 this is a metadata error since iron_floor=false and the non-iron_floor cap was in effect, but it does not affect the grading. The miss is a single-game regression following a historically extreme shooting performance. The 85% overall rate, 8/10 hit rate, and 4/4 in-series consistency all supported the pick. Post-game news explicitly frames this as a regression outcome, not a structural failure. This is variance: the pick was sound, Anunoby simply had an off shooting night in the closeout game. Note: the top_pick=true flag with iron_floor=false is a data quality error \u2014 the validation rule requiring iron_floor=true for top_pick eligibility was not enforced on this pick. No amendment was present."
+      }
+    ],
+    "no_data_details": [],
+    "high_conviction_breakdown": {
+      "threshold_market_implied_prob": 85.0,
+      "n_picks": 9,
+      "hits": 6,
+      "misses": 3,
+      "hit_rate_pct": 66.7,
+      "delta_vs_overall_pp": 6.7
+    }
   }
 ]
